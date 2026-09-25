@@ -101,6 +101,11 @@ CREATE TABLE appropriations_observation (
     amount_type              TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
                                                                   'transfer', 'offsetting_collection', 'supplemental',
                                                                   'other')),
+    -- which of an account's lines this is when it prints more than one of the
+    -- same amount_type in a cell (NSF R&RA base vs 'defense'); NULL for the
+    -- account's own line. Never '' -- a blank is NULL, so the fact key below
+    -- can't tell two spellings of "none" apart.
+    component                TEXT CHECK (component IS NULL OR component <> ''),
     offsetting_collections   INTEGER NOT NULL CHECK (offsetting_collections IN (0, 1)),
     transfer_link_account_id TEXT REFERENCES account (canonical_account_id),
     source_document_id       TEXT NOT NULL REFERENCES source_document (document_id),
@@ -118,12 +123,18 @@ CREATE TABLE appropriations_observation (
     -- looking up (account.subcommittee, fiscal_year, stage) in Bill Report
     -- Reference. Stored as a real key; the loader checks bill_id / report_id
     -- agree with the row it points at.
-    bill_report_reference_id TEXT REFERENCES bill_report_reference (reference_id),
-    -- The pilot has two 'budget authority' rows per NSF R&RA cell (base and
-    -- defense) told apart only by source_table_or_section's suffix, so the
-    -- natural key has to include it.
-    UNIQUE (canonical_account_id, fiscal_year, stage, amount_type, source_table_or_section)
+    bill_report_reference_id TEXT REFERENCES bill_report_reference (reference_id)
 ) STRICT;
+
+-- A fact's identity: one account's one amount type in one fiscal year and
+-- stage, told apart by component and transfer counterpart where an account
+-- has more than one. Section text is description, not identity. An
+-- expression index, not UNIQUE(...): SQLite treats NULLs as distinct in a
+-- UNIQUE constraint, so two base-line rows (component NULL) would never
+-- collide.
+CREATE UNIQUE INDEX observation_fact ON appropriations_observation (
+    canonical_account_id, fiscal_year, stage, amount_type,
+    ifnull(component, ''), ifnull(transfer_link_account_id, ''));
 
 CREATE INDEX observation_by_account ON appropriations_observation (canonical_account_id, fiscal_year, stage);
 CREATE INDEX observation_by_document ON appropriations_observation (source_document_id);

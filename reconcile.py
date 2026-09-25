@@ -67,17 +67,19 @@ def observation_key(o):
     return (o["account_path"], o["column_header"], o.get("fiscal_year"), o.get("stage"))
 
 
-def compare(advance_obs, official_obs):
-    """-> (pairs, differing pairs, advance-only, official-only)."""
-    off = {observation_key(o): o for o in official_obs}
-    adv = {observation_key(o): o for o in advance_obs}
+def compare(advance_obs, official_obs, key=observation_key):
+    """-> (pairs, differing pairs, advance-only, official-only). Two
+    observations are the same fact when key() says so; a pair differs when
+    their amounts do. (approps_store reuses this with the store's fact key.)"""
+    off = {key(o): o for o in official_obs}
+    adv = {key(o): o for o in advance_obs}
     pairs = [(adv[k], off[k]) for k in adv if k in off]
     diffs = [(a, o) for a, o in pairs if a["amount"] != o["amount"]]
     return pairs, diffs, [adv[k] for k in adv if k not in off], [off[k] for k in off if k not in adv]
 
 
-def _record(observation_id, expected, observed, result):
-    return {"validation_id": str(uuid.uuid4()), "observation_id": observation_id, "rule_applied": RULE,
+def _record(observation_id, expected, observed, result, rule=RULE):
+    return {"validation_id": str(uuid.uuid4()), "observation_id": observation_id, "rule_applied": rule,
             "expected_result": expected, "observed_result": observed, "result": result,
             "human_review_status": "pending" if result == "flag" else None, "reviewer": None, "resolution": None}
 

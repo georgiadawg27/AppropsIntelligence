@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v10.xlsx).
+loaded from the committed pilot workbook (reference/..._v12.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,7 +26,12 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v10.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v12.xlsx"
+# v12's Account.historical_names display list wasn't updated for the two
+# accounts given new former names; everything else loads. Waived, and pinned
+# exactly (Load.test_v12_display_list_problems_are_the_known_two), so a fixed
+# workbook makes that test fail and the waiver comes out.
+WAIVE = ("historical_names_display",)
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -43,7 +48,7 @@ class StoreTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.db = Path(cls.tmp.name) / "approps.db"
-        cls.report = S.load(WORKBOOK, cls.db)
+        cls.report = S.load(WORKBOOK, cls.db, waive=WAIVE)
 
     @classmethod
     def tearDownClass(cls):
@@ -63,8 +68,16 @@ class StoreTest(unittest.TestCase):
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         self.assertEqual(self.report["rows"], {
-            "account": 30, "historical_name": 2, "source_document": 23, "bill_report_reference": 41,
-            "appropriations_observation": 983, "account_relationship": 2, "validation_record": 89})
+            "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
+            "appropriations_observation": 979, "account_relationship": 2, "validation_record": 89})
+
+    def test_v12_display_list_problems_are_the_known_two(self):
+        self.assertEqual(self.report["waived"], {"historical_names_display": [
+            "ACC-NASA-SPACEOPS: Account.historical_names [] != Historical Name ['LEO and Spaceflight Operations']",
+            "ACC-NASA-STEM-ENGAGEMENT: Account.historical_names [] != Historical Name "
+            "['Education', 'STEM Opportunities formerly Education']"]})
+        with self.assertRaises(S.LoadError):                            # not waived: refused
+            S.load(WORKBOOK, Path(self.tmp.name) / "unwaived.db")
 
     def test_foreign_keys_are_enforced_not_just_declared(self):
         # SQLite ignores REFERENCES unless the connection turns them on
@@ -83,7 +96,7 @@ class Load(StoreTest):
 
     def test_spelling_variant_is_mapped_and_counted(self):
         self.assertEqual(self.report["value_map"],
-                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 983})
+                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 979})
 
     def test_dates_are_iso_dates(self):
         self.assertEqual(self.conn.execute("SELECT publication_date FROM source_document "
@@ -97,10 +110,21 @@ class Load(StoreTest):
         self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation "
                                            "WHERE bill_report_reference_id IS NULL").fetchone()[0], 0)
 
-    def test_document_identity_questions_are_warned(self):
+    def test_document_identity_is_the_documents_own(self):
+        # v11+ records each document as what it is (v10 recorded the column
+        # taken from it); the type/stage check no longer fires
         text = "\n".join(self.report["warnings"])
-        self.assertIn("SRC-CRPT-119HRPT652: a committee_report recorded at stage 'Enacted'", text)
-        self.assertIn("SRC-EXPL-FY2026-PB", text)
+        self.assertNotIn("recorded at stage", text)
+        d = self.conn.execute("SELECT fiscal_year, stage, also_covers FROM source_document "
+                              "WHERE document_id = 'SRC-CRPT-119HRPT652'").fetchone()
+        self.assertEqual(tuple(d), (2027, "House Reported", "FY2026 Enacted"))
+
+    def test_moved_citations_keep_the_old_pages_is_warned(self):
+        # v11/v12 re-cited 23 FY2026 Enacted observations to the enacted JES
+        # but kept H.Rept. 119-652's pages
+        stale = [w for w in self.report["warnings"]
+                 if "source_page '169-170' is outside SRC-EXPL-FY2026-PB's table pages '128-130'" in w]
+        self.assertEqual(len(stale), 23)
 
 
 class NasaScienceAcceptance(StoreTest):
@@ -139,7 +163,6 @@ class NasaScienceAcceptance(StoreTest):
                 ((2024, "President's Budget"), 8_260_800_000, "SRC-CRPT-118SRPT62", 219),
                 ((2023, "Enacted"), 7_795_000_000, "SRC-CRPT-118SRPT62", 219),
                 ((2026, "Senate Reported"), 7_300_000_000, "SRC-CRPT-119SRPT44", 217),
-                ((2026, "Enacted"), 7_250_000_000, "SRC-CRPT-119HRPT652", 169),
                 ((2020, "House Reported"), 7_161_300_000, "SRC-CRPT-116HRPT101", 148),
                 ((2017, "Enacted"), 5_764_900_000, "SRC-CRPT-115HRPT231", 120),
                 ((2018, "President's Budget"), 5_711_800_000, "SRC-CRPT-115HRPT231", 120)):
@@ -147,6 +170,16 @@ class NasaScienceAcceptance(StoreTest):
             lo, hi = map(int, o["source_page"].split("-"))
             self.assertEqual((o["amount"], o["source_document_id"]), (amount, doc), (fy, stage))
             self.assertTrue(lo <= page <= hi, (fy, stage, o["source_page"]))
+
+    @unittest.expectedFailure       # v12 keeps H.Rept. 119-652's pages (169-170) on the re-cited row
+    def test_fy2026_enacted_cites_the_enacted_jes_table_page(self):
+        # the uploaded FY2026 JES (fy26_cjs_jes.pdf) prints Science 7,250,000
+        # in its Final Bill column on PDF page 128
+        _, h = self.query("NASA Science")
+        o = {(o["fiscal_year"], o["stage"]): o for o in h["observations"]}[(2026, "Enacted")]
+        self.assertEqual((o["amount"], o["source_document_id"]), (7_250_000_000, "SRC-EXPL-FY2026-PB"))
+        lo, hi = map(int, o["source_page"].split("-"))
+        self.assertTrue(lo <= 128 <= hi, o["source_page"])
 
     def test_every_value_cites_a_source_document_that_exists(self):
         _, h = self.query("NASA Science")
@@ -180,7 +213,7 @@ class ExplorationAcceptance(StoreTest):
     def test_relationship_is_shown_not_merged(self):
         _, h = self.query("Exploration")
         self.assertEqual([(r["relationship_id"], r["other_account_id"]) for r in h["relationships"]],
-                         [("REL-0001", "ACC-NASA-EXPLTECH")])
+                         [("REL-0006", "ACC-NASA-EXPLTECH")])
         self.assertNotIn("ACC-NASA-EXPLTECH", {o["canonical_account_id"] for o in h["observations"]})
 
     def test_matching_pool_reads_review_state_from_the_store(self):
@@ -195,7 +228,8 @@ class Resolve(StoreTest):
     def test_same_name_in_two_agencies_is_not_guessed(self):
         res, _ = self.query("Office of Inspector General")
         self.assertEqual((res["match"], res["account"]), ("ambiguous", None))
-        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:2], ["ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:3],
+                         ["ACC-DOJ-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
         self.assertEqual(self.query("NSF Office of Inspector General")[0]["account"]["canonical_account_id"], "ACC-NSF-OIG")
         self.assertEqual(self.query("Office of Inspector General", agency="NASA")[0]["account"]["canonical_account_id"],
                          "ACC-NASA-OIG")
@@ -225,43 +259,103 @@ class StoreCopyTest(StoreTest):
 
 
 class ResolutionCascade(StoreCopyTest):
-    def test_v10_resolution_that_reached_one_observation_is_reported(self):
-        text = "\n".join(self.report["warnings"])
-        self.assertIn("validation_record VAL-0081 resolves ACC-NASA-EXPLTECH's identity, but its own observation is "
-                      "still flagged (OBS-0522); 2 other observation(s) of the account are still flagged with no "
-                      "resolved record: OBS-0523, OBS-0524", text)
-        self.assertIn("validation_record VAL-0082 resolves ACC-NASA-LEO's identity", text)
+    """v12 has no open identity question, so each test sets one up: the three
+    Exploration Technology observations flagged at 0.5 with one account_identity
+    finding (the v10 state), under v12's REL-0005 (Space Technology ->
+    Exploration Technology, uncertain, unreviewed)."""
+
+    EXPLTECH = ["OBS-0522", "OBS-0523", "OBS-0524"]
+
+    def setUp(self):
+        super().setUp()
+        with self.conn:
+            self.conn.execute("UPDATE appropriations_observation SET verification_status = 'flagged', confidence = 0.5 "
+                              "WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+            self.conn.execute("INSERT INTO validation_record (validation_id, observation_id, rule_applied, result, "
+                              "human_review_status) VALUES ('VAL-ID', 'OBS-0522', 'account_identity', 'flag', 'pending')")
+
+    def test_a_resolution_that_reached_one_observation_is_reported(self):
+        self.conn.execute("UPDATE validation_record SET human_review_status = 'resolved' WHERE validation_id = 'VAL-ID'")
+        self.assertEqual(S.stale_resolution_warnings(self.conn), [
+            "validation_record VAL-ID resolves ACC-NASA-EXPLTECH's identity, but its own observation is still "
+            "flagged (OBS-0522); 2 other observation(s) of the account are still flagged with no resolved record: "
+            "OBS-0523, OBS-0524"])
+        self.assertEqual([w for w in self.report["warnings"] if "resolves" in w], [])       # v12 itself: none
 
     def test_resolution_reaches_every_observation_it_decides(self):
-        s = S.resolve_relationship(self.conn, "REL-0001", "Reviewer", "withdrawn proposal, never adopted")
-        self.assertEqual(s["observations"], ["OBS-0522", "OBS-0523", "OBS-0524"])
-        self.assertEqual(s["records_updated"], ["VAL-0081"])
-        self.assertEqual(s["records_created"], ["VAL-REL-0001-OBS-0523", "VAL-REL-0001-OBS-0524"])
+        spacetech_before = self.conn.execute("SELECT count(*) FROM validation_record v JOIN appropriations_observation o "
+                                             "USING (observation_id) WHERE o.canonical_account_id = 'ACC-NASA-SPACETECH'"
+                                             ).fetchone()[0]
+        s = S.resolve_relationship(self.conn, "REL-0005", "Reviewer", "distinct proposed line")
+        self.assertEqual(s["observations"], self.EXPLTECH)
+        self.assertEqual(s["records_updated"], ["VAL-ID"])
+        self.assertEqual(s["records_created"], ["VAL-REL-0005-OBS-0523", "VAL-REL-0005-OBS-0524"])
         self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), [])
+        self.assertEqual({r[0] for r in self.conn.execute(
+            "SELECT confidence FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")}, {0.95})
         for oid in s["observations"]:
             r = self.conn.execute("SELECT human_review_status, reviewer, resolution FROM validation_record "
                                   "WHERE observation_id = ? AND rule_applied = 'account_identity'", (oid,)).fetchall()
-            self.assertEqual([tuple(x) for x in r], [("resolved", "Reviewer", "withdrawn proposal, never adopted")], oid)
+            self.assertEqual([tuple(x) for x in r], [("resolved", "Reviewer", "distinct proposed line")], oid)
         self.assertEqual(self.conn.execute("SELECT human_reviewed FROM account_relationship "
-                                           "WHERE relationship_id = 'REL-0001'").fetchone()[0], 1)
-        # the other relationship's observations are not this resolution's
-        self.assertEqual(self.flagged("ACC-NASA-LEO"), ["OBS-0525", "OBS-0526", "OBS-0527"])
-        self.assertFalse(any("ACC-NASA-EXPLTECH" in w for w in S.stale_resolution_warnings(self.conn)))
+                                           "WHERE relationship_id = 'REL-0005'").fetchone()[0], 1)
+        # the relationship's other account: its 37 verified rows weren't waiting on it
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record v JOIN appropriations_observation o "
+                                           "USING (observation_id) WHERE o.canonical_account_id = 'ACC-NASA-SPACETECH'"
+                                           ).fetchone()[0], spacetech_before)
+        self.assertEqual({r[0] for r in self.conn.execute("SELECT DISTINCT confidence FROM appropriations_observation "
+                                                          "WHERE canonical_account_id = 'ACC-NASA-SPACETECH'")}, {1.0})
+        self.assertEqual(S.stale_resolution_warnings(self.conn), [])
 
     def test_another_open_finding_keeps_its_observation_flagged(self):
         self.conn.execute("INSERT INTO validation_record (validation_id, observation_id, rule_applied, result) "
                           "VALUES ('VAL-X', 'OBS-0523', 'table_total', 'fail')")
         self.conn.commit()
-        s = S.resolve_relationship(self.conn, "REL-0001", "Reviewer", "withdrawn proposal")
+        s = S.resolve_relationship(self.conn, "REL-0005", "Reviewer", "distinct proposed line")
         self.assertEqual(s["still_flagged"], ["OBS-0523"])
+        self.assertEqual(self.conn.execute("SELECT confidence FROM appropriations_observation "
+                                           "WHERE observation_id = 'OBS-0523'").fetchone()[0], 0.5)
         self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), ["OBS-0523"])
 
     def test_refused_resolution_changes_nothing(self):
         with self.assertRaises(LookupError):
             S.resolve_relationship(self.conn, "REL-9999", "Reviewer", "x")
         with self.assertRaises(ValueError):
-            S.resolve_relationship(self.conn, "REL-0001", "", "x")
-        self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), ["OBS-0522", "OBS-0523", "OBS-0524"])
+            S.resolve_relationship(self.conn, "REL-0005", "", "x")
+        self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), self.EXPLTECH)
+
+
+class FactKey(StoreCopyTest):
+    """(canonical_account_id, fiscal_year, stage, amount_type, component,
+    transfer_link_account_id) -- section text is not identity."""
+
+    def test_v12_has_no_collisions(self):
+        self.assertEqual(self.conn.execute(
+            "SELECT count(*) FROM (SELECT 1 FROM appropriations_observation GROUP BY canonical_account_id, fiscal_year, "
+            "stage, amount_type, ifnull(component, ''), ifnull(transfer_link_account_id, '') HAVING count(*) > 1)"
+        ).fetchone()[0], 0)
+        # the 42 facts that collided without component / transfer link
+        rows = self.conn.execute("SELECT canonical_account_id, component, transfer_link_account_id FROM "
+                                 "appropriations_observation WHERE canonical_account_id IN ('ACC-NSF-RRA', 'ACC-DOJ-CVF') "
+                                 "AND amount_type IN ('budget authority', 'transfer', 'rescission')").fetchall()
+        self.assertEqual(sum(1 for r in rows if r[1] == "defense"), 40)
+        self.assertEqual({(r[1], r[2]) for r in rows if r[0] == "ACC-DOJ-CVF"},
+                         {("Transfer to OVW", "ACC-DOJ-VAWA"), ("Transfer to OIG", "ACC-DOJ-OIG"),
+                          ("FY27 CHIMP", None), ("FY27 CHIMP Pop-Up", None)})
+
+    def test_same_fact_with_other_section_text_is_refused(self):
+        # a base line (component NULL): a plain UNIQUE would let this in
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.conn.execute(
+                "INSERT INTO appropriations_observation (observation_id, canonical_account_id, fiscal_year, stage, "
+                "amount, amount_type, offsetting_collections, source_document_id, source_table_or_section, "
+                "extraction_method, confidence, verification_status) SELECT 'DUP', canonical_account_id, fiscal_year, "
+                "stage, amount, amount_type, 0, source_document_id, 'other words', extraction_method, confidence, "
+                "verification_status FROM appropriations_observation WHERE observation_id = 'OBS-0081'")
+
+    def test_blank_component_is_null_not_empty(self):
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.conn.execute("UPDATE appropriations_observation SET component = '' WHERE observation_id = 'OBS-0081'")
 
 
 HOUSE_PDF = ROOT / "document_store" / "CRPT-119hrpt652.pdf"
@@ -270,36 +364,73 @@ VISION_FIXTURES = ROOT / "tests" / "fixtures" / "vision_cache"
 
 @unittest.skipUnless(HOUSE_PDF.exists(), "CRPT-119hrpt652.pdf not present")
 class PipelineToStore(StoreCopyTest):
-    """The vision path's Title III output goes into the store and answers
-    the same query -- the extraction half and the store half joined."""
+    """The vision path's Title III output goes into the store that already
+    holds v12, through the same compare as advance-copy reconciliation."""
 
-    def test_extraction_output_loads_and_is_queryable(self):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
         import extract_approps as ex
         with tempfile.TemporaryDirectory() as out:
             r = ex.run(HOUSE_PDF, title="TITLE III", cache_dir=VISION_FIXTURES, offline=True, out_dir=out, verbose=False)
-        # only this document's facts, so nothing is counted twice
-        self.conn.execute("DELETE FROM validation_record")
-        self.conn.execute("DELETE FROM appropriations_observation")
-        rows = [row for row in (S.observation_row(o, "SRC-CRPT-119HRPT652") for o in r["observations"]) if row]
-        with self.conn:
-            for row in rows:
-                self.conn.execute(f"INSERT INTO appropriations_observation ({', '.join(row)}) "
-                                  f"VALUES ({', '.join('?' for _ in row)})", list(row.values()))
+        cls.result = r
+        cls.rows = [row for row in (S.observation_row(o, "SRC-CRPT-119HRPT652") for o in r["observations"]) if row]
+
+    def science(self):
+        return [dict(r) for r in self.conn.execute(
+            "SELECT * FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-SCIENCE' "
+            "ORDER BY fiscal_year, stage")]
+
+    def test_every_account_row_crosses_the_boundary(self):
         # every line item, plus the agency totals (accounts in the pilot); no
         # other rollup and no memo line
-        lines = {o["observation_id"] for o in r["observations"] if not (o["is_rollup"] or o["is_memo"])}
-        extra = {row["canonical_account_id"] for row in rows if row["observation_id"] not in lines}
-        self.assertTrue(lines <= {row["observation_id"] for row in rows})
+        lines = {o["observation_id"] for o in self.result["observations"] if not (o["is_rollup"] or o["is_memo"])}
+        extra = {row["canonical_account_id"] for row in self.rows if row["observation_id"] not in lines}
+        self.assertTrue(lines <= {row["observation_id"] for row in self.rows})
         self.assertEqual(extra, {"ACC-NASA-TOTAL", "ACC-NSF-TOTAL"})
 
-        res, h = self.query("NASA Science")
-        got = {(o["fiscal_year"], o["stage"]): o["amount"] for o in h["observations"]}
-        want = {(o["fiscal_year"], o["stage"]): o["amount"] for o in workbook_rows("Appropriations Observation")
-                if o["canonical_account_id"] == "ACC-NASA-SCIENCE" and o["source_document_id"] == "SRC-CRPT-119HRPT652"}
-        self.assertEqual(want, {(2026, "Enacted"): 7_250_000_000})
-        self.assertEqual(got[(2026, "Enacted")], 7_250_000_000)          # dollars, not thousands
-        self.assertEqual(h["observations"][0]["chamber"], "N/A")
-        self.assertIn((2027, "House Reported"), got)                      # the column the pilot didn't load
+    def test_same_facts_confirm_new_facts_add_nothing_twice(self):
+        before = self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0]
+        out = S.add_observations(self.conn, self.rows)
+        self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 18, "conflicting": 0, "added": 18, "held": 2})
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before + 18)
+        sci = {(o["fiscal_year"], o["stage"]): o for o in self.science()}
+        self.assertEqual(len(self.science()), 41)                       # 40 + FY2027 House Reported, no duplicate
+        self.assertEqual((sci[(2026, "Enacted")]["observation_id"], sci[(2026, "Enacted")]["amount"]),
+                         ("OBS-0081", 7_250_000_000))                   # the stored row, confirmed
+        rec = self.conn.execute("SELECT result, observed_result FROM validation_record WHERE observation_id = 'OBS-0081' "
+                                "AND rule_applied = 'cross_document'").fetchone()
+        self.assertEqual(rec[0], "pass")
+        self.assertIn("7,250,000,000 per SRC-CRPT-119HRPT652", rec[1])
+        new = sci[(2027, "House Reported")]
+        self.assertEqual((new["source_document_id"], new["chamber"], new["amount"] % 1000), ("SRC-CRPT-119HRPT652", "House", 0))
+
+    def test_different_value_for_a_stored_fact_is_flagged_not_stored(self):
+        rows = [dict(r, amount=r["amount"] + 1000) if r["canonical_account_id"] == "ACC-NASA-SCIENCE"
+                and r["fiscal_year"] == 2026 else r for r in self.rows]
+        out = S.add_observations(self.conn, rows)
+        self.assertEqual(out["conflicting"], ["OBS-0081"])
+        sci = {(o["fiscal_year"], o["stage"]): o for o in self.science()}
+        self.assertEqual((sci[(2026, "Enacted")]["amount"], sci[(2026, "Enacted")]["verification_status"]),
+                         (7_250_000_000, "flagged"))
+        rec = self.conn.execute("SELECT result, human_review_status, observed_result FROM validation_record "
+                                "WHERE observation_id = 'OBS-0081' AND rule_applied = 'cross_document'").fetchone()
+        self.assertEqual(tuple(rec[:2]), ("flag", "pending"))
+        self.assertIn("7,250,001,000", rec[2])
+
+    def test_unknown_component_name_is_held(self):
+        # the pipeline says 'Defense function' (as printed); v12 says 'defense'
+        out = S.add_observations(self.conn, self.rows)
+        held = [r for r in self.rows if r["observation_id"] in out["held"]]
+        self.assertEqual({(r["canonical_account_id"], r["component"], r["fiscal_year"]) for r in held},
+                         {("ACC-NSF-RRA", "Defense function", 2026), ("ACC-NSF-RRA", "Defense function", 2027)})
+        self.assertEqual({r[0] for r in self.conn.execute(
+            "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
+            {None, "defense"})
+
+    def test_repeated_fact_in_one_batch_is_refused(self):
+        with self.assertRaises(ValueError):
+            S.add_observations(self.conn, self.rows + [dict(self.rows[0], observation_id="again")])
 
     def test_an_account_row_without_an_account_is_refused(self):
         o = {"observation_id": "x", "account_match": "ambiguous", "canonical_account_id": None,
@@ -336,7 +467,7 @@ class LoadRefuses(unittest.TestCase):
 
     def refuse(self, path, text):
         with self.assertRaises(S.LoadError) as cm:
-            S.load(path, self.dir / "x.db")
+            S.load(path, self.dir / "x.db", waive=() if text == "Account.historical_names" else WAIVE)
         self.assertIn(text, str(cm.exception))
         self.assertFalse((self.dir / "x.db").exists())
 
@@ -368,12 +499,12 @@ class LoadRefuses(unittest.TestCase):
 
     def test_failed_load_leaves_the_existing_database(self):
         db = self.dir / "x.db"
-        S.load(WORKBOOK, db)
+        S.load(WORKBOOK, db, waive=WAIVE)
         before = db.read_bytes()
         bad = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
                                                        "source_document_id"), "value", "SRC-NOT-THERE"))
         with self.assertRaises(S.LoadError):
-            S.load(bad, db)
+            S.load(bad, db, waive=WAIVE)
         self.assertEqual(db.read_bytes(), before)
 
 

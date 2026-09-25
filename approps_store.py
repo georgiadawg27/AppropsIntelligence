@@ -28,6 +28,7 @@ does during extraction.
 """
 
 import argparse
+from collections import Counter
 import datetime as dt
 import json
 import re
@@ -148,6 +149,7 @@ TABS = [
         ("observation_id", to_text, True), ("canonical_account_id", to_text, True), ("fiscal_year", to_int, True),
         ("stage", to_text, True), ("chamber", to_text, False), ("bill_id", to_text, False),
         ("report_id", to_text, False), ("amount", to_int, True), ("amount_type", to_text, True),
+        ("component", to_text, False),
         ("offsetting_collections", to_bool, True), ("transfer_link_account_id", to_text, False),
         ("source_document_id", to_text, True), ("source_page", to_text, False),
         ("source_table_or_section", to_text, False), ("extraction_method", to_text, True),
@@ -388,15 +390,113 @@ def observation_row(o, source_document_id):
                          f"({o['account_match']})")
     if not isinstance(o["amount"], int):
         raise ValueError(f"{o['observation_id']}: amount {o['amount']!r} is not whole dollars")
-    section = o["source_table_or_section"] + (f" ({o['account_component']})" if o.get("account_component") else "")
+    # component: an emergency line is already told apart by amount_type
+    # (supplemental), as the workbook does; a sub-line inheriting its parent's
+    # account ("Defense function" under R&RA) keeps its label as printed
+    component = None
+    if o.get("account_match") == "inherited":
+        component = o["account_name_as_written"].strip()
     return {"observation_id": o["observation_id"], "canonical_account_id": o["canonical_account_id"],
             "fiscal_year": o["fiscal_year"], "stage": o["stage"], "chamber": o["chamber"],
             "bill_id": o.get("bill_id"), "report_id": o.get("report_id"), "amount": o["amount"],
-            "amount_type": o["amount_type"], "offsetting_collections": int(bool(o["offsetting_collections"])),
+            "amount_type": o["amount_type"], "component": component,
+            "offsetting_collections": int(bool(o["offsetting_collections"])),
             "transfer_link_account_id": o.get("transfer_link_account_id"),
             "source_document_id": source_document_id, "source_page": o["source_page"],
-            "source_table_or_section": section, "extraction_method": o["extraction_method"],
+            "source_table_or_section": o["source_table_or_section"], "extraction_method": o["extraction_method"],
             "confidence": o["extraction_confidence"], "verification_status": o["verification_status"]}
+
+
+def fact_key(o):
+    """What makes two observations the same real-world fact -- the store's
+    observation_fact index. Section text, source and page are description."""
+    return (o["canonical_account_id"], o["fiscal_year"], o["stage"], o["amount_type"],
+            o.get("component"), o.get("transfer_link_account_id"))
+
+
+def add_observations(conn, rows):
+    """
+    Add observations (e.g. observation_row() output from an extraction) to a
+    store that may already hold the same facts from another source. Same
+    mechanism as advance-copy reconciliation (reconcile.compare), with the
+    store's fact key:
+
+      - same fact, same amount   -> not stored twice: a cross_document pass
+                                    record on the stored observation cites the
+                                    second source
+      - same fact, other amount  -> not stored twice: the stored observation is
+                                    flagged, and a pending cross_document flag
+                                    record carries the incoming amount and
+                                    source for a person to decide
+      - a new fact               -> stored
+      - a new fact with a component the store has never used for that
+        account (e.g. 'Defense function' where every stored year says
+        'defense')             -> held, not stored: a pending flag record on
+                                    the stored row(s) it may be another name
+                                    for (same amount type and cell if there
+                                    are any, else the latest year's)
+    One transaction. -> summary dict of observation ids per outcome.
+    """
+    from reconcile import compare, _record          # the advance-copy mechanism
+    dup = [k for k, n in Counter(fact_key(r) for r in rows).items() if n > 1]
+    if dup:
+        raise ValueError(f"incoming rows repeat a fact: {dup[:5]}")
+    existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation")]
+    pairs, diffs, new_only, _ = compare(rows, existing, key=fact_key)
+    differing = {id(n) for n, _ in diffs}
+    vocabulary = {}
+    for o in existing:
+        vocabulary.setdefault(o["canonical_account_id"], set()).add(o["component"])
+
+    def may_duplicate(new):
+        """Stored rows a held observation may be another name for."""
+        same = [o for o in existing if o["canonical_account_id"] == new["canonical_account_id"]
+                and o["amount_type"] == new["amount_type"]]
+        named = [o for o in same if o["component"] is not None] or same
+        cell = [o for o in named if (o["fiscal_year"], o["stage"]) == (new["fiscal_year"], new["stage"])]
+        if cell:
+            return cell
+        latest = max((o["fiscal_year"] for o in named), default=None)
+        return [o for o in named if o["fiscal_year"] == latest]
+
+    def src(o):
+        return f"{o['source_document_id']} p.{o['source_page']}"
+
+    def add_record(rec):
+        conn.execute(f"INSERT INTO validation_record ({', '.join(rec)}) VALUES ({', '.join('?' for _ in rec)})",
+                     list(rec.values()))
+
+    out = {"confirmed": [], "conflicting": [], "added": [], "held": []}
+    with conn:
+        for new, old in pairs:
+            if id(new) in differing:
+                add_record(_record(old["observation_id"], f"{old['amount']:,} per {src(old)}",
+                                   f"{new['amount']:,} per {src(new)} (incoming {new['observation_id']})",
+                                   "flag", rule="cross_document"))
+                conn.execute("UPDATE appropriations_observation SET verification_status = 'flagged' "
+                             "WHERE observation_id = ?", (old["observation_id"],))
+                out["conflicting"].append(old["observation_id"])
+            else:
+                add_record(_record(old["observation_id"], f"{old['amount']:,} per {src(old)}",
+                                   f"{new['amount']:,} per {src(new)} (incoming {new['observation_id']})",
+                                   "pass", rule="cross_document"))
+                out["confirmed"].append(old["observation_id"])
+        for new in new_only:
+            known = vocabulary.get(new["canonical_account_id"])
+            if known and new["component"] not in known:
+                for old in may_duplicate(new):
+                    add_record(_record(old["observation_id"],
+                                       f"component {old['component']!r}: {old['amount']:,} per {src(old)}",
+                                       f"incoming {new['observation_id']} has component {new['component']!r} "
+                                       f"({new['amount']:,} per {src(new)}, FY{new['fiscal_year']} {new['stage']}), "
+                                       f"a component this account has never used -- another name for this one, "
+                                       f"or a new line? Not stored.", "flag", rule="cross_document"))
+                out["held"].append(new["observation_id"])
+                continue
+            conn.execute(f"INSERT INTO appropriations_observation ({', '.join(new)}) "
+                         f"VALUES ({', '.join('?' for _ in new)})", list(new.values()))
+            out["added"].append(new["observation_id"])
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -411,34 +511,49 @@ def open_findings(conn, observation_id, excluding_rule=None):
         "AND (? IS NULL OR rule_applied <> ?)", (observation_id, excluding_rule, excluding_rule))]
 
 
+# A person confirming a relationship resolves the account-identity doubt a low
+# confidence was about: one step removed from a directly approved Historical
+# Name (1.0), level with other human-confirmed judgment calls.
+RESOLVED_IDENTITY_CONFIDENCE = 0.95
+
+
 def resolve_relationship(conn, relationship_id, reviewer, resolution, verification_status="human-verified"):
     """
     Record a person's resolution of an Account Relationship and carry it to
-    every observation it decides: all observations of from_account_id, the
-    account whose identity the relationship is about.
+    every observation it decides: the observations of either of its accounts
+    that the open identity question is holding back -- flagged, or carrying
+    an unresolved account_identity finding. (Not every observation of the
+    accounts: a relationship's direction doesn't say which side was in
+    doubt, and already-verified rows aren't waiting on it.)
 
       - the relationship: human_reviewed = 1
       - each of those observations: its account_identity Validation Record is
         marked resolved (reviewer, resolution) -- one is created for an
         observation that had none, so no observation is left resting on
         another's record
-      - an observation that is 'flagged' becomes verification_status, unless
-        it still has another open finding (a failed total, say), which the
-        relationship doesn't decide
-    One transaction. Confidence is left as it is. -> summary dict.
+      - an observation that is 'flagged' becomes verification_status and its
+        confidence is raised to RESOLVED_IDENTITY_CONFIDENCE (never lowered),
+        unless it still has another open finding (a failed total, say), which
+        the relationship doesn't decide -- then both stay as they are
+    One transaction. -> summary dict.
     """
     rel = conn.execute("SELECT * FROM account_relationship WHERE relationship_id = ?", (relationship_id,)).fetchone()
     if rel is None:
         raise LookupError(f"no account relationship {relationship_id!r}")
     if not reviewer or not resolution:
         raise ValueError("a resolution needs a reviewer and the resolution text")
-    summary = {"relationship_id": relationship_id, "account": rel["from_account_id"], "observations": [],
+    summary = {"relationship_id": relationship_id, "accounts": [rel["from_account_id"], rel["to_account_id"]],
+               "observations": [],
                "records_updated": [], "records_created": [], "status_changed": [], "still_flagged": []}
     with conn:
         conn.execute("UPDATE account_relationship SET human_reviewed = 1 WHERE relationship_id = ?", (relationship_id,))
-        for o in conn.execute("SELECT observation_id, verification_status FROM appropriations_observation "
-                              "WHERE canonical_account_id = ? ORDER BY observation_id",
-                              (rel["from_account_id"],)).fetchall():
+        for o in conn.execute(
+                "SELECT o.observation_id, o.verification_status FROM appropriations_observation o "
+                "WHERE o.canonical_account_id IN (?, ?) AND (o.verification_status = 'flagged' OR EXISTS ("
+                "  SELECT 1 FROM validation_record v WHERE v.observation_id = o.observation_id "
+                "  AND v.rule_applied = 'account_identity' AND v.result <> 'pass' "
+                "  AND (v.human_review_status IS NULL OR v.human_review_status <> 'resolved'))) "
+                "ORDER BY o.observation_id", (rel["from_account_id"], rel["to_account_id"])).fetchall():
             oid = o["observation_id"]
             summary["observations"].append(oid)
             recs = [r["validation_id"] for r in conn.execute(
@@ -461,21 +576,37 @@ def resolve_relationship(conn, relationship_id, reviewer, resolution, verificati
                 if open_findings(conn, oid, excluding_rule="account_identity"):
                     summary["still_flagged"].append(oid)
                 else:
-                    conn.execute("UPDATE appropriations_observation SET verification_status = ? WHERE observation_id = ?",
-                                 (verification_status, oid))
+                    conn.execute("UPDATE appropriations_observation SET verification_status = ?, "
+                                 "confidence = max(confidence, ?) WHERE observation_id = ?",
+                                 (verification_status, RESOLVED_IDENTITY_CONFIDENCE, oid))
                     summary["status_changed"].append(oid)
     return summary
 
 
-def load(workbook, db_path):
+# Cross-tab checks a person may knowingly waive for one load (e.g. while a
+# fixed workbook is on its way). A waived check still runs; its problems are
+# listed in the load report under "waived".
+WAIVABLE = {"historical_names_display": check_historical_names}
+
+
+def load(workbook, db_path, waive=()):
     """Build a fresh database at db_path from the workbook. -> load report."""
+    unknown = set(waive) - set(WAIVABLE)
+    if unknown:
+        raise ValueError(f"not a waivable check: {sorted(unknown)} (waivable: {sorted(WAIVABLE)})")
     db_path = Path(db_path)
     tmp = db_path.with_name(db_path.name + ".building")
     tmp.unlink(missing_ok=True)
-    report = {"workbook": str(workbook), "value_map": {}, "rows": {}, "warnings": []}
+    report = {"workbook": str(workbook), "value_map": {}, "rows": {}, "warnings": [], "waived": {}}
     tabs = read_tabs(workbook)
     rows = convert_rows(tabs, report)
-    problems = check_historical_names(rows) + check_bill_report_lookups(tabs, rows)
+    problems = check_bill_report_lookups(tabs, rows)
+    for name, check in WAIVABLE.items():
+        found = check(rows)
+        if name in waive:
+            report["waived"][name] = found
+        else:
+            problems = found + problems
     if problems:
         raise LoadError("workbook contradicts itself:\n  " + "\n  ".join(problems[:20])
                         + (f"\n  ... {len(problems) - 20} more" if len(problems) > 20 else ""))
@@ -614,7 +745,7 @@ def history(conn, account_id):
             "WHERE observation_id = ? ORDER BY validation_id", (r["observation_id"],))]
         obs.append(rec)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
-                            o["amount_type"], o["source_table_or_section"] or "", o["observation_id"]))
+                            o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     # gaps in the four-stage series, from the account's first fiscal year to
     # the latest one the store holds for any account -- a year nobody entered
     # for this account shows as missing, never as zero
@@ -650,15 +781,17 @@ def print_history(res, h, out=sys.stdout):
           f"{r['other_name']!r} ({r['other_status']}) has {r['other_observations']} observation(s), "
           f"FY{r['other_fiscal_years'][0]}-FY{r['other_fiscal_years'][1]}, not included below\n")
     w("\n")
-    head = ("FY", "Stage", "Amount type", "Amount ($)", "Status", "Conf", "Source document", "Pages", "Section")
-    rows = [(str(o["fiscal_year"]), o["stage"], o["amount_type"], fmt_amount(o["amount"]), o["verification_status"],
+    head = ("FY", "Stage", "Amount type", "Component", "Amount ($)", "Status", "Conf", "Source document", "Pages",
+            "Section")
+    rows = [(str(o["fiscal_year"]), o["stage"], o["amount_type"], o["component"] or "", fmt_amount(o["amount"]),
+             o["verification_status"],
              f"{o['confidence']:g}", o["source_document_id"], o["source_page"] or "",
              (o["source_table_or_section"] or "")
              + "".join(f"  [{v['rule_applied']}:{v['result']}]" for v in o["validation"]))
             for o in h["observations"]]
     widths = [max(len(x) for x in col) for col in zip(head, *rows)] if rows else [len(x) for x in head]
     for i, r in enumerate([head] + rows):
-        w("  ".join(c.rjust(widths[j]) if j == 3 else c.ljust(widths[j]) for j, c in enumerate(r)).rstrip() + "\n")
+        w("  ".join(c.rjust(widths[j]) if j == 4 else c.ljust(widths[j]) for j, c in enumerate(r)).rstrip() + "\n")
         if i == 0:
             w("  ".join("-" * x for x in widths) + "\n")
     w(f"\n{len(rows)} observation(s)")
@@ -700,10 +833,14 @@ def cmd_history(args):
 
 def cmd_load(args):
     try:
-        report = load(args.workbook, args.db)
+        report = load(args.workbook, args.db, waive=args.waive)
     except LoadError as e:
         raise SystemExit(f"load failed, nothing written: {e}")
     print(f"{args.db}: " + ", ".join(f"{t} {n}" for t, n in report["rows"].items()))
+    for name, found in report["waived"].items():
+        print(f"  WAIVED {name}: {len(found)} problem(s)")
+        for msg in found:
+            print(f"    {msg}")
     for k, n in report["value_map"].items():
         print(f"  mapped {k} ({n} rows)")
     if report["warnings"]:
@@ -719,7 +856,7 @@ def cmd_resolve_relationship(args):
         s = resolve_relationship(conn, args.relationship_id, args.reviewer, args.resolution)
     except (LookupError, ValueError) as e:
         raise SystemExit(str(e))
-    print(f"{s['relationship_id']} resolved for {s['account']}: {len(s['observations'])} observation(s); "
+    print(f"{s['relationship_id']} resolved ({' / '.join(s['accounts'])}): {len(s['observations'])} observation(s); "
           f"{len(s['records_updated'])} record(s) updated, {len(s['records_created'])} created; "
           f"{len(s['status_changed'])} no longer flagged"
           + (f"; still flagged for another open finding: {', '.join(s['still_flagged'])}" if s["still_flagged"] else ""))
@@ -732,6 +869,8 @@ def main(argv=None):
     pl = sub.add_parser("load", help="build the database from the pilot workbook")
     pl.add_argument("workbook")
     pl.add_argument("--db", default=str(DEFAULT_DB))
+    pl.add_argument("--waive", action="append", default=[], choices=sorted(WAIVABLE),
+                    help="load despite this cross-tab check's problems (listed in the report)")
     pl.set_defaults(func=cmd_load)
     ph = sub.add_parser("history", help="an account's observation history")
     ph.add_argument("name", help="account name, optionally led by its agency ('NASA Science')")
