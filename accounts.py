@@ -161,6 +161,12 @@ COMPONENTS = {
     "chimp": ["CHIMP"],                         # CVF, H.R. 8845 / CBO ("FY27 CHIMP")
     "chimp_pop_up": ["CHIMP Pop-Up"],           # ("FY27 CHIMP Pop-Up")
 }
+# Components set from where a figure sits in the table, never from its label:
+# a separate supplemental appropriations act or a budget amendment listed in
+# a table's "Other Appropriations" section. Not label-matched (no aliases), so
+# a printed row label can't fuzzy-match onto one.
+STRUCTURAL_COMPONENTS = ("supplemental_act", "budget_amendment")
+VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS)
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 
 

@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v16.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v19.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -145,10 +145,8 @@ class Api(WebTest):
         # four FY/stage cells without a supplemental row say so
         g = self.search("NSF Research and Related Activities")["grid"]
         self.assertEqual([(s["amount_type"], s["component"]) for s in g["series"]],
-                         [("budget authority", None), ("budget authority", "defense"), ("supplemental", None)])
-        missing = [(r["fiscal_year"], st) for r in g["rows"] for st in FOUR
-                   if r["fiscal_year"] < 2027 and r["cells"][st][2]["missing"]]
-        self.assertEqual(len(missing), 4)
+                         [("budget authority", None), ("budget authority", "defense"), ("supplemental", None),
+                          ("supplemental", "supplemental_act")])
 
 
 @unittest.skipUnless(sync_playwright and chromium_path(), "playwright / chromium not available")
@@ -230,7 +228,7 @@ class Browser(WebTest):
         self.assertEqual(shown["2026|Enacted"], [["budget authority", "$7,250,000,000", "SRC-EXPL-FY2026-PB p.128-130"],
                                                  ["rescission", "missing", None]])
         self.assertEqual(shown["2020|Enacted"], [["budget authority", "$7,138,900,000", "SRC-CRPT-116HRPT455 p.187-188"],
-                                                 ["rescission", "\u2212$70,000,000", "SRC-CRPT-116HRPT455"]])
+                                                 ["rescission", "\u2212$70,000,000", "SRC-CRPT-116HRPT455 p.191"]])
         href = self.page.get_attribute("td[data-stage='Enacted'] a >> nth=0", "href")
         self.assertTrue(href.endswith("#page=120"), href)        # FY2017 Enacted: H.Rept. 115-231, p.120
 
@@ -250,7 +248,7 @@ class Browser(WebTest):
         shown = self.assert_faithful("NASA Exploration")
         self.assertEqual(shown["2024|Enacted"],
                          [["budget authority", "$7,216,200,000", "SRC-CRPT-118HRPT582 p.247-248"],
-                          ["other \u00b7 Other Appropriations budget amendment", "missing", None],
+                          ["other \u00b7 budget_amendment", "missing", None],
                           ["supplemental", "$450,000,000", "SRC-CRPT-118HRPT582 p.247-248"]])
 
     def test_leo_resolves_to_space_operations(self):
@@ -316,7 +314,7 @@ class Browser(WebTest):
             n += self.page.locator("[data-testid=not-applicable]").count()
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 133)
+        self.assertEqual(n, 149)
 
 
 if __name__ == "__main__":

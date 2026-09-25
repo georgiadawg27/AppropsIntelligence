@@ -362,9 +362,9 @@ def data_quality_warnings(conn):
                         f"-- entered in thousands?")
     for r in conn.execute("SELECT observation_id, component FROM appropriations_observation WHERE component IS NOT NULL "
                           "UNION ALL SELECT confirmed_absence_id, component FROM confirmed_absence WHERE component IS NOT NULL"):
-        if r["component"] not in A.COMPONENTS:
+        if r["component"] not in A.VOCABULARY:
             warnings.append(f"{r[0]}: component {r['component']!r} is not in the component vocabulary "
-                            f"{sorted(A.COMPONENTS)}")
+                            f"{sorted(A.VOCABULARY)}")
     for r in conn.execute("SELECT o.observation_id, o.chamber, o.stage FROM appropriations_observation o"):
         want = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                 "Senate Passed": "Senate"}.get(r["stage"], "N/A")

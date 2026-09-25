@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v16.xlsx).
+loaded from the committed pilot workbook (reference/..._v19.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,7 +26,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v16.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v19.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -64,23 +64,30 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         self.assertEqual(self.report["rows"], {
             "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
-            "appropriations_observation": 878, "confirmed_absence": 133, "account_relationship": 2,
+            "appropriations_observation": 864, "confirmed_absence": 149, "account_relationship": 2,
             "validation_record": 89})
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
 
-    def test_v16_warnings_are_the_known_ones(self):
-        # v16 added five observations with no source_page, two of them (the
-        # FY2020 request's budget amendment) entered in thousands and with a
-        # component outside the vocabulary -- pinned so a fix shows up here
+    def test_v19_warnings_are_the_known_ones(self):
+        # v19 re-cited the seven supplemental-act figures to their Other
+        # Appropriations pages, but three documents still record only their
+        # Title III pages -- pinned so the fix (widened ranges) shows up here
         self.assertEqual(self.report["waived"], {})
         self.assertEqual(self.report["warnings"], [
-            *(f"observation {o}: source_page is blank (cites {d})" for o, d in (
-                ("OBS-0986", "SRC-CRPT-118SRPT198"), ("OBS-0987", "SRC-CRPT-116HRPT455"),
-                ("OBS-0988", "SRC-CRPT-116SRPT127"), ("OBS-0989", "SRC-CRPT-116HRPT101"),
-                ("OBS-0990", "SRC-CRPT-116HRPT101"))),
-            "observation OBS-0989: amount 1,374,700 is not a whole thousand dollars -- entered in thousands?",
-            *(f"{o}: component 'Other Appropriations budget amendment' is not in the component vocabulary "
-              f"['chimp', 'chimp_pop_up', 'defense']" for o in ("OBS-0989", "OBS-0990"))])
+            f"observation {o}: source_page '{pg}' is outside {d}'s table pages '{rng}'" for o, pg, d, rng in (
+                ("OBS-0660", "224", "SRC-CRPT-118SRPT62", "219-220"), ("OBS-0664", "224", "SRC-CRPT-117HRPT395", "219-220"),
+                ("OBS-0680", "134", "SRC-CRPT-115HRPT704", "128-129"), ("OBS-0776", "224", "SRC-CRPT-118SRPT62", "219-220"),
+                ("OBS-0796", "134", "SRC-CRPT-115HRPT704", "128-129"), ("OBS-0860", "224", "SRC-CRPT-117HRPT395", "219-220"))])
+
+    def test_new_observations_cite_pages_inside_their_documents(self):
+        for oid, page, doc in (("OBS-0986", "229", "SRC-CRPT-118SRPT198"), ("OBS-0987", "191", "SRC-CRPT-116HRPT455"),
+                               ("OBS-0988", "193", "SRC-CRPT-116SRPT127"), ("OBS-0989", "152", "SRC-CRPT-116HRPT101"),
+                               ("OBS-0990", "152", "SRC-CRPT-116HRPT101")):
+            o = self.conn.execute("SELECT source_page, source_document_id FROM appropriations_observation "
+                                  "WHERE observation_id = ?", (oid,)).fetchone()
+            rng = self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?", (doc,)).fetchone()[0]
+            self.assertEqual(tuple(o), (page, doc))
+            self.assertTrue(S.within(page, rng), (oid, page, rng))
 
     def test_fy2027_house_links_are_the_verified_packages(self):
         # both fetched live and checked: the report is byte-identical to the
@@ -109,7 +116,7 @@ class Load(StoreTest):
 
     def test_spelling_variant_is_mapped_and_counted(self):
         self.assertEqual(self.report["value_map"],
-                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 878})
+                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 864})
 
     def test_dates_are_iso_dates(self):
         self.assertEqual(self.conn.execute("SELECT publication_date FROM source_document "
@@ -134,8 +141,9 @@ class Load(StoreTest):
 
     def test_every_citation_is_inside_its_documents_table_pages(self):
         # v11/v12 re-cited 23 FY2026 Enacted observations to the enacted JES
-        # but kept H.Rept. 119-652's pages; v13 fixed them
-        self.assertEqual([w for w in self.report["warnings"] if "outside" in w], [])
+        # but kept H.Rept. 119-652's pages (fixed in v13); the only ones
+        # outside now are v19's six (see test_v19_warnings_are_the_known_ones)
+        self.assertEqual(len([w for w in self.report["warnings"] if "outside" in w]), 6)
 
     def test_blank_request_is_missing_not_zero(self):
         # v13 dropped the $0 rows where the request column prints '---'
@@ -217,8 +225,8 @@ class ExplorationAcceptance(StoreTest):
     def test_base_and_supplemental_split(self):
         _, h = self.query("NASA Exploration")
         obs = h["observations"]
-        self.assertEqual(len(obs), 55)
-        self.assertEqual(len(h["absences"]), 26)
+        self.assertEqual(len(obs), 50)
+        self.assertEqual(len(h["absences"]), 31)
         by = {(o["fiscal_year"], o["stage"], o["amount_type"]): o["amount"] for o in obs}
         self.assertEqual({t for (_, _, t) in by}, {"budget authority", "supplemental", "other"})
         self.assertEqual(by[(2024, "Enacted", "budget authority")], 7_216_200_000)
@@ -230,7 +238,7 @@ class ExplorationAcceptance(StoreTest):
             res, h = self.query(text)
             self.assertEqual((res["account"]["canonical_account_id"], res["match"], res["via"]),
                              ("ACC-NASA-EXPLORATION", kind, "historical_name"))
-            self.assertEqual(len(h["observations"]), 55)
+            self.assertEqual(len(h["observations"]), 50)
 
     def test_relationship_is_shown_not_merged(self):
         _, h = self.query("Exploration")
@@ -367,12 +375,11 @@ class FactKey(StoreCopyTest):
 
     def test_components_are_the_canonical_vocabulary(self):
         import accounts
-        off = [tuple(r) for r in self.conn.execute(
-            "SELECT observation_id, component FROM appropriations_observation WHERE component IS NOT NULL ORDER BY 1")
-            if r[1] not in accounts.COMPONENTS]
-        # v16's two budget-amendment rows (see Load.test_v16_warnings_are_the_known_ones)
-        self.assertEqual(off, [("OBS-0989", "Other Appropriations budget amendment"),
-                               ("OBS-0990", "Other Appropriations budget amendment")])
+        used = {r[0] for r in self.conn.execute("SELECT DISTINCT component FROM appropriations_observation")}
+        self.assertEqual(used, {None} | set(accounts.VOCABULARY))
+        # structural components are never reached from a printed label
+        for c in accounts.STRUCTURAL_COMPONENTS:
+            self.assertEqual(accounts.match_component(c.replace("_", " "))[1], "unmatched")
 
     def test_same_fact_with_other_section_text_is_refused(self):
         # a base line (component NULL): a plain UNIQUE would let this in
@@ -423,7 +430,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 133)
+        self.assertEqual(n, 149)
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
@@ -512,7 +519,7 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual(out["held"], [])
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense"})
+            {None, "defense", "supplemental_act"})
 
     def test_unknown_component_name_is_held(self):
         rows = [dict(r, component="Defense base") if r["canonical_account_id"] == "ACC-NSF-RRA" and r["component"]
@@ -521,7 +528,7 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual(len(out["held"]), 2)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense"})
+            {None, "defense", "supplemental_act"})
 
     def test_repeated_fact_in_one_batch_is_refused(self):
         with self.assertRaises(ValueError):
@@ -588,16 +595,17 @@ class LoadRefuses(unittest.TestCase):
         self.assertEqual(report["waived"], {"historical_names_display": [
             "ACC-NASA-EXPLORATION: Account.historical_names [] != Historical Name ['Deep Space Exploration Systems']"]})
 
-    def test_widened_table_range_covers_title_iii_and_title_v_citations(self):
+    def test_full_table_ranges_clear_the_page_warnings(self):
+        # the three documents v19 still records by their Title III pages,
+        # widened to their whole comparative tables (checked page by page)
         def edit(wb):
-            self.cell(wb, "Source Document", "SRC-CRPT-118SRPT198", "source_page").value = "220-231"
-            self.cell(wb, "Appropriations Observation", "OBS-0986", "source_page").value = "229"      # Title V
+            for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
+                             ("SRC-CRPT-115HRPT704", "120-135")):
+                self.cell(wb, "Source Document", doc, "source_page").value = rng
             self.cell(wb, "Appropriations Observation", "OBS-0987", "source_page").value = "300"      # outside
         report = S.load(self.mutate(edit), self.dir / "x.db")
-        warned = [w for w in report["warnings"] if "OBS-0986" in w or "SRPT198" in w or "outside" in w]
-        # the Title III rows still citing '227-228' and OBS-0986 at p.229 are inside 220-231
-        self.assertEqual(warned, ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's "
-                                  "table pages '187-188'"])
+        self.assertEqual(report["warnings"], ["observation OBS-0987: source_page '300' is outside "
+                                              "SRC-CRPT-116HRPT455's table pages '178-197'"])
 
     def test_display_list_drift(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),
