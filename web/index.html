@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Appropriations History</title>
+<style>
+  :root {
+    --bg: #fbfbfa; --fg: #1d1d1b; --muted: #6b6b66; --line: #e2e1dc; --card: #ffffff;
+    --accent: #1f5f8b; --former-bg: #eef5ea; --former-fg: #2f5d1e; --warn-bg: #fdf3e2; --warn-fg: #7a4b00;
+    --missing-fg: #8a8a84; --missing-bg: repeating-linear-gradient(135deg, #f4f3ef 0 6px, #ecebe6 6px 12px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --fg: #ecebe6; --muted: #a09f99; --line: #2e2d2a; --card: #1e1e1b;
+      --accent: #7fb6e0; --former-bg: #1f2d1a; --former-fg: #b5d9a4; --warn-bg: #33270f; --warn-fg: #f0c878;
+      --missing-fg: #8d8c86; --missing-bg: repeating-linear-gradient(135deg, #232320 0 6px, #2a2a26 6px 12px);
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  form { display: flex; gap: 8px; margin-bottom: 16px; }
+  input[type=search] { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border: 1px solid var(--line);
+                       border-radius: 8px; background: var(--card); color: var(--fg); }
+  button { font: inherit; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--accent);
+           background: var(--accent); color: #fff; cursor: pointer; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .candidates button { display: block; width: 100%; text-align: left; margin-top: 8px; background: var(--card);
+                       color: var(--fg); border-color: var(--line); }
+  .candidates button:hover { border-color: var(--accent); }
+  .candidates small { color: var(--muted); }
+  h2 { font-size: 18px; margin: 0 0 4px; }
+  .meta { color: var(--muted); font-size: 13px; }
+  .note { border-radius: 8px; padding: 10px 12px; margin-top: 12px; font-size: 14px; }
+  .former { background: var(--former-bg); color: var(--former-fg); }
+  .rel { background: var(--warn-bg); color: var(--warn-fg); }
+  .legend { color: var(--muted); font-size: 13px; margin: 8px 0; }
+  .missing-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; background: var(--missing-bg);
+                  color: var(--missing-fg); font-size: 12px; letter-spacing: .02em; }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; font-variant-numeric: tabular-nums; }
+  th, td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; text-align: left; }
+  th { font-size: 13px; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); }
+  td.fy { font-weight: 600; white-space: nowrap; }
+  .line + .line { margin-top: 6px; }
+  .series { color: var(--muted); font-size: 12px; }
+  .amt { font-weight: 600; }
+  .cite { font-size: 12px; color: var(--muted); }
+  .cite a { color: var(--accent); text-decoration: none; }
+  .flag { color: var(--warn-fg); font-size: 12px; }
+  td.empty { background: var(--missing-bg); }
+  .error { color: #b3261e; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Appropriations history</h1>
+  <p class="sub">CJS Title III pilot &middot; read-only &middot; every figure cites the document and page it came from</p>
+
+  <form id="search-form" role="search">
+    <input id="q" type="search" name="q" autocomplete="off" aria-label="Account name"
+           placeholder="Account name, e.g. NASA Science, Deep Space Exploration Systems, Office of Inspector General">
+    <button type="submit">Search</button>
+  </form>
+
+  <div id="message" role="status"></div>
+  <section id="candidates" class="panel candidates" hidden data-testid="candidates"></section>
+  <section id="result" hidden data-testid="result">
+    <div class="panel" id="account-panel"></div>
+    <div class="panel">
+      <div class="legend">Amounts in dollars. <span class="missing-chip">missing</span> = no figure on file for that
+        fiscal year and stage &mdash; not zero. A $0 shown is a zero recorded in the data.</div>
+      <div class="table-wrap"><table id="grid" data-testid="grid"></table></div>
+    </div>
+    <div class="panel" id="sources"></div>
+  </section>
+</main>
+
+<script>
+"use strict";
+const $ = (sel) => document.querySelector(sel);
+const el = (tag, props = {}, ...kids) => {
+  const n = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (k === "class") n.className = v; else if (k === "dataset") Object.assign(n.dataset, v);
+    else if (k === "text") n.textContent = v; else n.setAttribute(k, v);
+  }
+  for (const kid of kids) if (kid != null) n.append(kid);
+  return n;
+};
+const money = (v) => (v < 0 ? "−$" : "$") + Math.abs(v).toLocaleString("en-US");
+const seriesLabel = (s) => s.amount_type + (s.component ? " · " + s.component : "");
+
+async function getJSON(url) {
+  const r = await fetch(url);
+  const body = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
+  if (!r.ok) throw new Error(body.error || `HTTP ${r.status}`);
+  return body;
+}
+
+function reset(msg, isError) {
+  $("#candidates").hidden = true;
+  $("#result").hidden = true;
+  $("#message").textContent = msg || "";
+  $("#message").className = isError ? "error" : "";
+}
+
+async function runSearch(q) {
+  reset("Searching…");
+  try {
+    const data = await getJSON("/api/search?q=" + encodeURIComponent(q));
+    if (data.status === "matched") return showAccount(data);
+    showCandidates(q, data);
+  } catch (e) { reset("Error: " + e.message, true); }
+}
+
+async function pick(id, q) {
+  reset("Loading…");
+  try {
+    const data = await getJSON("/api/account/" + encodeURIComponent(id));
+    data.pickedFrom = q;
+    showAccount(data);
+  } catch (e) { reset("Error: " + e.message, true); }
+}
+
+function showCandidates(q, data) {
+  reset("");
+  const box = $("#candidates");
+  box.replaceChildren();
+  const where = data.resolved.agency ? ` in ${data.resolved.agency}` : "";
+  box.append(el("p", { text: data.status === "ambiguous"
+    ? `“${q}” matches more than one account${where}. Pick one — nothing is guessed:`
+    : `No account matches “${q}”${where}.` + (data.candidates.length ? " Nearest names:" : "") }));
+  for (const c of data.candidates) {
+    const b = el("button", { type: "button", dataset: { id: c.canonical_account_id, testid: "candidate" } },
+      el("strong", { text: c.canonical_name }), " — " + c.agency + " ",
+      el("small", { text: `${c.canonical_account_id}` + (c.name !== c.canonical_name ? ` · as “${c.name}”` : "")
+                          + (data.status === "unmatched" ? ` · ${c.distance} edits away` : "") }));
+    b.addEventListener("click", () => pick(c.canonical_account_id, q));
+    box.append(b);
+  }
+  box.hidden = false;
+}
+
+function showAccount(data) {
+  reset("");
+  const h = data.history, a = h.account, r = data.resolved;
+  const panel = $("#account-panel");
+  panel.replaceChildren(
+    el("h2", { text: a.canonical_name, "data-testid": "account-name" }),
+    el("div", { class: "meta", text: `${a.agency} / ${a.bureau || "—"} · ${a.status} · ${a.fund_type} fund · ${a.canonical_account_id}` }));
+
+  if (r && r.via === "historical_name") {
+    const hn = h.historical_names.find((n) => n.former_name === r.matched_name) || {};
+    panel.append(el("div", { class: "note former", "data-testid": "former-name" },
+      `Matched through a former name: “${r.matched_name}” is what documents printed for this account` +
+      (r.match === "ocr_corrected" ? ` (you typed “${r.name}”, ${r.distance} edit${r.distance === 1 ? "" : "s"} away)` : "") +
+      `. ` + (hn.evidence ? `Evidence: ${hn.evidence}` : "")));
+  } else if (r && r.match === "ocr_corrected") {
+    panel.append(el("div", { class: "note former", "data-testid": "fuzzy" },
+      `You typed “${r.name}”; matched “${r.matched_name}” (${r.distance} edit${r.distance === 1 ? "" : "s"} away).`));
+  } else if (r && r.via === "agency_total") {
+    panel.append(el("div", { class: "note former" }, `“${r.query}” is an agency: showing its agency total.`));
+  } else if (data.pickedFrom) {
+    panel.append(el("div", { class: "note", "data-testid": "picked" }, `Picked from the matches for “${data.pickedFrom}”.`));
+  }
+  const others = h.historical_names.filter((n) => !r || n.former_name !== r.matched_name).map((n) => n.former_name);
+  if (others.length) panel.append(el("div", { class: "meta", text: "Also printed as: " + others.map((n) => `“${n}”`).join(", ") }));
+  for (const rel of h.relationships) {
+    panel.append(el("div", { class: "note rel", "data-testid": "relationship" },
+      `${rel.relationship_id}: ${rel.from_account_id} ${rel.relationship_type} ${rel.to_account_id} ` +
+      `(FY${rel.effective_fiscal_year}, confidence ${rel.confidence}, ${rel.human_reviewed ? "reviewed" : "not yet reviewed"}). ` +
+      `“${rel.other_name}” has ${rel.other_observations} observation(s) of its own, not included below.`));
+  }
+  renderGrid(data.grid, h);
+  renderSources(h);
+  $("#result").hidden = false;
+}
+
+function cite(o) {
+  const first = (o.source_page || "").split("-")[0];
+  const href = o.url_or_identifier && /^https?:/.test(o.url_or_identifier)
+    ? o.url_or_identifier + (first ? "#page=" + first : "") : null;
+  const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
+  return el("div", { class: "cite" }, href ? el("a", { href, target: "_blank", rel: "noopener", text: label }) : label);
+}
+
+function renderGrid(grid, h) {
+  const t = $("#grid");
+  t.replaceChildren();
+  const multi = grid.series.length > 1;
+  t.append(el("thead", {}, el("tr", {}, el("th", { text: "FY" }), ...grid.stages.map((s) => el("th", { text: s })))));
+  const body = el("tbody");
+  for (const row of grid.rows) {
+    const tr = el("tr", { dataset: { fy: row.fiscal_year } }, el("td", { class: "fy", text: "FY" + row.fiscal_year }));
+    for (const stage of grid.stages) {
+      const lines = row.cells[stage];
+      const td = el("td", { dataset: { stage, testid: "cell" } });
+      if (lines.every((l) => l.missing)) {
+        td.className = "empty";
+        td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+      } else {
+        for (const l of lines) {
+          const line = el("div", { class: "line", dataset: { series: seriesLabel(l) } });
+          if (multi) line.append(el("div", { class: "series", text: seriesLabel(l) }));
+          if (l.missing) line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+          for (const o of l.observations) {
+            line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }), cite(o));
+            if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")
+              line.append(el("div", { class: "flag", text: o.verification_status }));
+          }
+          td.append(line);
+        }
+      }
+      tr.append(td);
+    }
+    body.append(tr);
+  }
+  t.append(body);
+}
+
+function renderSources(h) {
+  const seen = new Map();
+  for (const o of h.observations) if (!seen.has(o.source_document_id)) seen.set(o.source_document_id, o);
+  const box = $("#sources");
+  box.replaceChildren(el("h2", { text: "Sources" }));
+  const ul = el("ul");
+  for (const [id, o] of seen) {
+    const link = /^https?:/.test(o.url_or_identifier)
+      ? el("a", { href: o.url_or_identifier, target: "_blank", rel: "noopener", text: o.url_or_identifier })
+      : o.url_or_identifier;
+    ul.append(el("li", {}, el("strong", { text: id }),
+      ` — ${o.document_type}, ${o.source_agency}, published ${o.publication_date}, FY${o.document_fiscal_year} ${o.document_stage} · `, link));
+  }
+  box.append(ul);
+}
+
+$("#search-form").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const q = $("#q").value.trim();
+  if (q) { history.replaceState(null, "", "?q=" + encodeURIComponent(q)); runSearch(q); }
+});
+const initial = new URLSearchParams(location.search).get("q");
+if (initial) { $("#q").value = initial; runSearch(initial); }
+</script>
+</body>
+</html>

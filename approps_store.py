@@ -173,8 +173,15 @@ DERIVED_COLUMNS = {"Appropriations Observation": {"bill_url", "report_jes_url"}}
 # Load
 # ---------------------------------------------------------------------------
 
-def connect(db_path):
-    conn = sqlite3.connect(db_path)
+def connect(db_path, readonly=False):
+    """readonly: opened with SQLite's mode=ro, so nothing through this
+    connection can write (the web UI's connections)."""
+    if readonly:
+        if not Path(db_path).exists():
+            raise FileNotFoundError(db_path)
+        conn = sqlite3.connect(f"{Path(db_path).resolve().as_uri()}?mode=ro", uri=True, check_same_thread=False)
+    else:
+        conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
@@ -721,7 +728,10 @@ def history(conn, account_id):
     """An account's full record: the account, its former names, its account
     relationships (each way), and every observation with its source document
     and validation records, by fiscal year and stage."""
-    acct = dict(conn.execute("SELECT * FROM account WHERE canonical_account_id = ?", (account_id,)).fetchone())
+    row = conn.execute("SELECT * FROM account WHERE canonical_account_id = ?", (account_id,)).fetchone()
+    if row is None:
+        raise LookupError(f"no account {account_id!r}")
+    acct = dict(row)
     former = [dict(r) for r in conn.execute(
         "SELECT * FROM historical_name WHERE canonical_account_id = ? ORDER BY historical_name_id", (account_id,))]
     rels = []
@@ -760,6 +770,34 @@ def history(conn, account_id):
                if (y, s) not in have] if first is not None else []
     return {"account": acct, "historical_names": former, "relationships": rels, "observations": obs,
             "missing_cells": missing}
+
+
+def history_grid(h):
+    """
+    history() laid out as fiscal year x the four core stages. An account can
+    have more than one series (amount_type + component: Exploration's budget
+    authority and supplemental, R&RA's base and defense lines); each cell
+    lists every series, and a series with no observation in that cell is
+    {"missing": true} -- never a zero, never left out. Other stages (House /
+    Senate Passed) appear as extra columns only if the account has them.
+    -> {"stages", "series": [{"amount_type", "component"}], "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
+    """
+    obs = h["observations"]
+    series = sorted({(o["amount_type"], o["component"]) for o in obs},
+                    key=lambda k: (k[0] != "budget authority", k[0], k[1] is not None, k[1] or ""))
+    stages = STAGE_ORDER[:4] + [s for s in STAGE_ORDER[4:] if any(o["stage"] == s for o in obs)]
+    years = sorted({o["fiscal_year"] for o in obs} | {y for y, _ in h["missing_cells"]})
+    by = {}
+    for o in obs:
+        by.setdefault((o["fiscal_year"], o["stage"], o["amount_type"], o["component"]), []).append(o)
+    rows = []
+    for y in years:
+        cells = {}
+        for st in stages:
+            cells[st] = [{"amount_type": t, "component": c, "missing": not by.get((y, st, t, c)),
+                          "observations": by.get((y, st, t, c), [])} for t, c in series]
+        rows.append({"fiscal_year": y, "cells": cells})
+    return {"stages": stages, "series": [{"amount_type": t, "component": c} for t, c in series], "rows": rows}
 
 
 def fmt_amount(v):
