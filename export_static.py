@@ -31,6 +31,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 import accounts as A
@@ -49,13 +50,15 @@ def reference_workbook():
 
 
 def committed_date(path):
-    """ISO date of the last commit touching the workbook, or None outside git."""
+    """UTC ISO time of the last commit touching the workbook, or None outside git.
+    Formatted here, not by git: git versions render %cI differently (+00:00 vs Z),
+    which would make the export differ between a laptop and the Actions runner."""
     try:
-        out = subprocess.run(["git", "log", "-1", "--format=%cI", "--", str(path)], cwd=ROOT,
+        out = subprocess.run(["git", "log", "-1", "--format=%ct", "--", str(path)], cwd=ROOT,
                              capture_output=True, text=True, check=True).stdout.strip()
-        return out or None
     except (OSError, subprocess.CalledProcessError):
         return None
+    return datetime.fromtimestamp(int(out), timezone.utc).isoformat() if out else None
 
 
 def dump(obj, path):

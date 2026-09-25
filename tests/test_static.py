@@ -17,6 +17,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest import mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -118,6 +119,16 @@ class Export(StaticTest):
         static = (self.out / "index.html").read_text()
         self.assertEqual(static, live.replace("<head>", "<head>\n" + E.DATA_META, 1))
         self.assertEqual((self.out / "match.js").read_text(), (ROOT / "web" / "match.js").read_text())
+
+    def test_commit_date_does_not_depend_on_the_git_version(self):
+        # git 2.55 (the Actions runner) renders %cI as ...Z, older git as
+        # ...+00:00; the export must not flip between them
+        def fake_git(cmd, **kw):
+            fmt = next(a for a in cmd if a.startswith("--format="))
+            out = {"--format=%cI": "2026-09-25T20:55:20Z", "--format=%ct": "1790369720"}[fmt]
+            return subprocess.CompletedProcess(cmd, 0, stdout=out + "\n", stderr="")
+        with mock.patch.object(E.subprocess, "run", fake_git):
+            self.assertEqual(E.committed_date(WORKBOOK), "2026-09-25T20:55:20+00:00")
 
     def test_committed_docs_are_current(self):
         # docs/ is what the export makes from the committed workbook and web/
