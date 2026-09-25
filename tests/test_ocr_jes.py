@@ -71,7 +71,7 @@ class JesTitleIIIAcceptance(unittest.TestCase):
         sd = self.result["source_document"]
         self.assertEqual((sd["ingest_method"], sd["document_type"], sd["stage"], sd["fiscal_year"], sd["subcommittee"],
                           sd["advance_copy"], sd["confirmation_status"]),
-                         ("manual", "joint_explanatory_statement", "Enacted", 2026, "CJS", False, "no_official_counterpart"))
+                         ("manual", "explanatory_statement", "Enacted", 2026, "CJS", False, "no_official_counterpart"))
 
     def test_routed_to_the_free_ocr_path(self):
         routes = Counter(r["reason"] for r in self.result["page_routing"])

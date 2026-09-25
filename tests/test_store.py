@@ -9,6 +9,7 @@ Needs openpyxl (loading only).
 
 import contextlib
 import io
+import shutil
 import sqlite3
 import sys
 import tempfile
@@ -209,6 +210,104 @@ class Resolve(StoreTest):
                 self.assertEqual(S.main(["history", *args, "--db", str(self.db)]), code, args)
 
 
+class StoreCopyTest(StoreTest):
+    """Tests that write: each gets its own copy of the loaded database."""
+
+    def setUp(self):
+        self.path = Path(self.tmp.name) / f"{self.id().rsplit('.', 1)[-1]}.db"
+        shutil.copy(self.db, self.path)
+        self.conn = S.connect(self.path)
+
+    def flagged(self, account):
+        return [r[0] for r in self.conn.execute(
+            "SELECT observation_id FROM appropriations_observation WHERE canonical_account_id = ? "
+            "AND verification_status = 'flagged' ORDER BY 1", (account,))]
+
+
+class ResolutionCascade(StoreCopyTest):
+    def test_v10_resolution_that_reached_one_observation_is_reported(self):
+        text = "\n".join(self.report["warnings"])
+        self.assertIn("validation_record VAL-0081 resolves ACC-NASA-EXPLTECH's identity, but its own observation is "
+                      "still flagged (OBS-0522); 2 other observation(s) of the account are still flagged with no "
+                      "resolved record: OBS-0523, OBS-0524", text)
+        self.assertIn("validation_record VAL-0082 resolves ACC-NASA-LEO's identity", text)
+
+    def test_resolution_reaches_every_observation_it_decides(self):
+        s = S.resolve_relationship(self.conn, "REL-0001", "Reviewer", "withdrawn proposal, never adopted")
+        self.assertEqual(s["observations"], ["OBS-0522", "OBS-0523", "OBS-0524"])
+        self.assertEqual(s["records_updated"], ["VAL-0081"])
+        self.assertEqual(s["records_created"], ["VAL-REL-0001-OBS-0523", "VAL-REL-0001-OBS-0524"])
+        self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), [])
+        for oid in s["observations"]:
+            r = self.conn.execute("SELECT human_review_status, reviewer, resolution FROM validation_record "
+                                  "WHERE observation_id = ? AND rule_applied = 'account_identity'", (oid,)).fetchall()
+            self.assertEqual([tuple(x) for x in r], [("resolved", "Reviewer", "withdrawn proposal, never adopted")], oid)
+        self.assertEqual(self.conn.execute("SELECT human_reviewed FROM account_relationship "
+                                           "WHERE relationship_id = 'REL-0001'").fetchone()[0], 1)
+        # the other relationship's observations are not this resolution's
+        self.assertEqual(self.flagged("ACC-NASA-LEO"), ["OBS-0525", "OBS-0526", "OBS-0527"])
+        self.assertFalse(any("ACC-NASA-EXPLTECH" in w for w in S.stale_resolution_warnings(self.conn)))
+
+    def test_another_open_finding_keeps_its_observation_flagged(self):
+        self.conn.execute("INSERT INTO validation_record (validation_id, observation_id, rule_applied, result) "
+                          "VALUES ('VAL-X', 'OBS-0523', 'table_total', 'fail')")
+        self.conn.commit()
+        s = S.resolve_relationship(self.conn, "REL-0001", "Reviewer", "withdrawn proposal")
+        self.assertEqual(s["still_flagged"], ["OBS-0523"])
+        self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), ["OBS-0523"])
+
+    def test_refused_resolution_changes_nothing(self):
+        with self.assertRaises(LookupError):
+            S.resolve_relationship(self.conn, "REL-9999", "Reviewer", "x")
+        with self.assertRaises(ValueError):
+            S.resolve_relationship(self.conn, "REL-0001", "", "x")
+        self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), ["OBS-0522", "OBS-0523", "OBS-0524"])
+
+
+HOUSE_PDF = ROOT / "document_store" / "CRPT-119hrpt652.pdf"
+VISION_FIXTURES = ROOT / "tests" / "fixtures" / "vision_cache"
+
+
+@unittest.skipUnless(HOUSE_PDF.exists(), "CRPT-119hrpt652.pdf not present")
+class PipelineToStore(StoreCopyTest):
+    """The vision path's Title III output goes into the store and answers
+    the same query -- the extraction half and the store half joined."""
+
+    def test_extraction_output_loads_and_is_queryable(self):
+        import extract_approps as ex
+        with tempfile.TemporaryDirectory() as out:
+            r = ex.run(HOUSE_PDF, title="TITLE III", cache_dir=VISION_FIXTURES, offline=True, out_dir=out, verbose=False)
+        # only this document's facts, so nothing is counted twice
+        self.conn.execute("DELETE FROM validation_record")
+        self.conn.execute("DELETE FROM appropriations_observation")
+        rows = [row for row in (S.observation_row(o, "SRC-CRPT-119HRPT652") for o in r["observations"]) if row]
+        with self.conn:
+            for row in rows:
+                self.conn.execute(f"INSERT INTO appropriations_observation ({', '.join(row)}) "
+                                  f"VALUES ({', '.join('?' for _ in row)})", list(row.values()))
+        # every line item, plus the agency totals (accounts in the pilot); no
+        # other rollup and no memo line
+        lines = {o["observation_id"] for o in r["observations"] if not (o["is_rollup"] or o["is_memo"])}
+        extra = {row["canonical_account_id"] for row in rows if row["observation_id"] not in lines}
+        self.assertTrue(lines <= {row["observation_id"] for row in rows})
+        self.assertEqual(extra, {"ACC-NASA-TOTAL", "ACC-NSF-TOTAL"})
+
+        res, h = self.query("NASA Science")
+        got = {(o["fiscal_year"], o["stage"]): o["amount"] for o in h["observations"]}
+        want = {(o["fiscal_year"], o["stage"]): o["amount"] for o in workbook_rows("Appropriations Observation")
+                if o["canonical_account_id"] == "ACC-NASA-SCIENCE" and o["source_document_id"] == "SRC-CRPT-119HRPT652"}
+        self.assertEqual(want, {(2026, "Enacted"): 7_250_000_000})
+        self.assertEqual(got[(2026, "Enacted")], 7_250_000_000)          # dollars, not thousands
+        self.assertEqual(h["observations"][0]["chamber"], "N/A")
+        self.assertIn((2027, "House Reported"), got)                      # the column the pilot didn't load
+
+    def test_an_account_row_without_an_account_is_refused(self):
+        o = {"observation_id": "x", "account_match": "ambiguous", "canonical_account_id": None,
+             "account_name_as_written": "Office of Inspector General"}
+        with self.assertRaises(ValueError):
+            S.observation_row(o, "SRC-CRPT-119HRPT652")
+
+
 @unittest.skipUnless(openpyxl, "openpyxl not installed")
 class LoadRefuses(unittest.TestCase):
     """Each mutation is something the loader must refuse rather than store."""
@@ -243,7 +342,7 @@ class LoadRefuses(unittest.TestCase):
 
     def test_unknown_enum_value(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
-                                                        "verification_status"), "value", "provisional"))
+                                                        "verification_status"), "value", "human_verified"))
         self.refuse(path, "CHECK constraint failed")
 
     def test_dangling_reference(self):

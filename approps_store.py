@@ -6,6 +6,7 @@ query surface on it.
 
     python approps_store.py load path/to/CJS_Title_III_Science_Pilot_Schema_Loaded_v10.xlsx [--db approps.db]
     python approps_store.py history "NASA Science" [--db approps.db] [--json]
+    python approps_store.py resolve-relationship REL-0001 --reviewer NAME --resolution TEXT [--db approps.db]
 
 load: builds a fresh database from the pilot workbook's 7 data tabs. Values
 are converted strictly -- a value that doesn't fit its column stops the load
@@ -333,7 +334,137 @@ def data_quality_warnings(conn):
                             f"not the document")
     for r in conn.execute("SELECT * FROM bill_report_reference WHERE report_id IS NULL OR bill_url IS NULL"):
         warnings.append(f"bill_report_reference {r['reference_id']}: report_id/bill_url blank")
+    warnings += stale_resolution_warnings(conn)
     return warnings
+
+
+def stale_resolution_warnings(conn):
+    """An account-level review (account_identity) resolved on one observation
+    while other observations of the same account are still flagged with no
+    resolved account_identity record of their own -- the resolution didn't
+    reach every observation it decides. Reported, not repaired: the workbook
+    is the record."""
+    out = []
+    for v in conn.execute(
+            "SELECT v.validation_id, o.canonical_account_id FROM validation_record v "
+            "JOIN appropriations_observation o USING (observation_id) "
+            "WHERE v.rule_applied = 'account_identity' AND v.human_review_status = 'resolved' "
+            "ORDER BY v.validation_id"):
+        stale = [r[0] for r in conn.execute(
+            "SELECT o.observation_id FROM appropriations_observation o "
+            "WHERE o.canonical_account_id = ? AND o.verification_status = 'flagged' AND NOT EXISTS ("
+            "  SELECT 1 FROM validation_record w WHERE w.observation_id = o.observation_id "
+            "  AND w.rule_applied = 'account_identity' AND w.human_review_status = 'resolved') "
+            "ORDER BY o.observation_id", (v["canonical_account_id"],))]
+        still_flagged = [r[0] for r in conn.execute(
+            "SELECT o.observation_id FROM appropriations_observation o JOIN validation_record w USING (observation_id) "
+            "WHERE w.validation_id = ? AND o.verification_status = 'flagged'", (v["validation_id"],))]
+        if stale or still_flagged:
+            out.append(f"validation_record {v['validation_id']} resolves {v['canonical_account_id']}'s identity, but "
+                       + "; ".join(filter(None, [
+                           f"its own observation is still flagged ({', '.join(still_flagged)})" if still_flagged else "",
+                           f"{len(stale)} other observation(s) of the account are still flagged with no resolved "
+                           f"record: {', '.join(stale)}" if stale else ""])))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# Pipeline boundary: an extraction observation as a store row
+# ---------------------------------------------------------------------------
+
+def observation_row(o, source_document_id):
+    """
+    One extract_approps observation -> an appropriations_observation row, or
+    None for a row that isn't an account's funding figure (a rollup other
+    than an agency total, a memo line). Raises ValueError for an account row
+    the store can't take as is -- one with no canonical account (unmatched or
+    ambiguous: it goes to a person first) or an amount that isn't whole
+    dollars.
+    """
+    if "account_match" not in o:
+        return None
+    if not o.get("canonical_account_id"):
+        raise ValueError(f"{o['observation_id']}: {o['account_name_as_written']!r} has no canonical account "
+                         f"({o['account_match']})")
+    if not isinstance(o["amount"], int):
+        raise ValueError(f"{o['observation_id']}: amount {o['amount']!r} is not whole dollars")
+    section = o["source_table_or_section"] + (f" ({o['account_component']})" if o.get("account_component") else "")
+    return {"observation_id": o["observation_id"], "canonical_account_id": o["canonical_account_id"],
+            "fiscal_year": o["fiscal_year"], "stage": o["stage"], "chamber": o["chamber"],
+            "bill_id": o.get("bill_id"), "report_id": o.get("report_id"), "amount": o["amount"],
+            "amount_type": o["amount_type"], "offsetting_collections": int(bool(o["offsetting_collections"])),
+            "transfer_link_account_id": o.get("transfer_link_account_id"),
+            "source_document_id": source_document_id, "source_page": o["source_page"],
+            "source_table_or_section": section, "extraction_method": o["extraction_method"],
+            "confidence": o["extraction_confidence"], "verification_status": o["verification_status"]}
+
+
+# ---------------------------------------------------------------------------
+# Review: a resolved relationship reaches every observation it decides
+# ---------------------------------------------------------------------------
+
+def open_findings(conn, observation_id, excluding_rule=None):
+    """Validation records on an observation that are not a pass and not resolved."""
+    return [dict(r) for r in conn.execute(
+        "SELECT * FROM validation_record WHERE observation_id = ? AND result <> 'pass' "
+        "AND (human_review_status IS NULL OR human_review_status <> 'resolved') "
+        "AND (? IS NULL OR rule_applied <> ?)", (observation_id, excluding_rule, excluding_rule))]
+
+
+def resolve_relationship(conn, relationship_id, reviewer, resolution, verification_status="human-verified"):
+    """
+    Record a person's resolution of an Account Relationship and carry it to
+    every observation it decides: all observations of from_account_id, the
+    account whose identity the relationship is about.
+
+      - the relationship: human_reviewed = 1
+      - each of those observations: its account_identity Validation Record is
+        marked resolved (reviewer, resolution) -- one is created for an
+        observation that had none, so no observation is left resting on
+        another's record
+      - an observation that is 'flagged' becomes verification_status, unless
+        it still has another open finding (a failed total, say), which the
+        relationship doesn't decide
+    One transaction. Confidence is left as it is. -> summary dict.
+    """
+    rel = conn.execute("SELECT * FROM account_relationship WHERE relationship_id = ?", (relationship_id,)).fetchone()
+    if rel is None:
+        raise LookupError(f"no account relationship {relationship_id!r}")
+    if not reviewer or not resolution:
+        raise ValueError("a resolution needs a reviewer and the resolution text")
+    summary = {"relationship_id": relationship_id, "account": rel["from_account_id"], "observations": [],
+               "records_updated": [], "records_created": [], "status_changed": [], "still_flagged": []}
+    with conn:
+        conn.execute("UPDATE account_relationship SET human_reviewed = 1 WHERE relationship_id = ?", (relationship_id,))
+        for o in conn.execute("SELECT observation_id, verification_status FROM appropriations_observation "
+                              "WHERE canonical_account_id = ? ORDER BY observation_id",
+                              (rel["from_account_id"],)).fetchall():
+            oid = o["observation_id"]
+            summary["observations"].append(oid)
+            recs = [r["validation_id"] for r in conn.execute(
+                "SELECT validation_id FROM validation_record WHERE observation_id = ? AND rule_applied = 'account_identity'",
+                (oid,))]
+            if recs:
+                conn.executemany("UPDATE validation_record SET human_review_status = 'resolved', reviewer = ?, "
+                                 "resolution = ? WHERE validation_id = ?", [(reviewer, resolution, v) for v in recs])
+                summary["records_updated"] += recs
+            else:
+                vid = f"VAL-{relationship_id}-{oid}"
+                conn.execute(
+                    "INSERT INTO validation_record (validation_id, observation_id, rule_applied, expected_result, "
+                    "observed_result, result, human_review_status, reviewer, resolution) "
+                    "VALUES (?, ?, 'account_identity', ?, ?, 'flag', 'resolved', ?, ?)",
+                    (vid, oid, f"account identity decided by Account Relationship {relationship_id}",
+                     f"{rel['from_account_id']} {rel['relationship_type']} {rel['to_account_id']}", reviewer, resolution))
+                summary["records_created"].append(vid)
+            if o["verification_status"] == "flagged":
+                if open_findings(conn, oid, excluding_rule="account_identity"):
+                    summary["still_flagged"].append(oid)
+                else:
+                    conn.execute("UPDATE appropriations_observation SET verification_status = ? WHERE observation_id = ?",
+                                 (verification_status, oid))
+                    summary["status_changed"].append(oid)
+    return summary
 
 
 def load(workbook, db_path):
@@ -582,6 +713,19 @@ def cmd_load(args):
     return 0
 
 
+def cmd_resolve_relationship(args):
+    conn = connect(args.db)
+    try:
+        s = resolve_relationship(conn, args.relationship_id, args.reviewer, args.resolution)
+    except (LookupError, ValueError) as e:
+        raise SystemExit(str(e))
+    print(f"{s['relationship_id']} resolved for {s['account']}: {len(s['observations'])} observation(s); "
+          f"{len(s['records_updated'])} record(s) updated, {len(s['records_created'])} created; "
+          f"{len(s['status_changed'])} no longer flagged"
+          + (f"; still flagged for another open finding: {', '.join(s['still_flagged'])}" if s["still_flagged"] else ""))
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1], formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -595,6 +739,13 @@ def main(argv=None):
     ph.add_argument("--db", default=str(DEFAULT_DB))
     ph.add_argument("--json", action="store_true")
     ph.set_defaults(func=cmd_history)
+    pr = sub.add_parser("resolve-relationship",
+                        help="record a person's resolution of an Account Relationship on every observation it decides")
+    pr.add_argument("relationship_id")
+    pr.add_argument("--reviewer", required=True)
+    pr.add_argument("--resolution", required=True)
+    pr.add_argument("--db", default=str(DEFAULT_DB))
+    pr.set_defaults(func=cmd_resolve_relationship)
     args = p.parse_args(argv)
     return args.func(args)
 

@@ -261,7 +261,7 @@ class RecordedHouseTable(unittest.TestCase):
         self.assertEqual(confirmed, {"Transfer from immigration examinations fee account",
                                      "Offsetting fee collections - current year", "Offsetting fee collections"})
         unconfirmed = {o["account_name_as_written"] for o in self.result["observations"]
-                       if o["verification_reason"] == "hierarchy from model-read indent only"}
+                       if "hierarchy from model-read indent only" in (o["verification_reason"] or "").split("; ")}
         self.assertEqual(unconfirmed, {"Defense function", "Diversion control fund"})
 
     def test_observation_ids_unique(self):

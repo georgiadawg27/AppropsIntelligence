@@ -72,7 +72,7 @@ def compare(advance_obs, official_obs):
     off = {observation_key(o): o for o in official_obs}
     adv = {observation_key(o): o for o in advance_obs}
     pairs = [(adv[k], off[k]) for k in adv if k in off]
-    diffs = [(a, o) for a, o in pairs if a["amount_dollars"] != o["amount_dollars"]]
+    diffs = [(a, o) for a, o in pairs if a["amount"] != o["amount"]]
     return pairs, diffs, [adv[k] for k in adv if k not in off], [off[k] for k in off if k not in adv]
 
 
@@ -114,14 +114,14 @@ def reconcile(advance_id, official_id, manifest, store_dir, out_dir, cache_dir=e
             outcome = "superseded"
             for a, o in diffs:
                 records.append(_record(a["observation_id"],
-                                       f"{o['amount_dollars']} per official {official_id} (Source Document {off_doc_id})",
-                                       f"{a['amount_dollars']} per advance copy {advance_id} (Source Document {adv_doc_id})",
+                                       f"{o['amount']} per official {official_id} (Source Document {off_doc_id})",
+                                       f"{a['amount']} per advance copy {advance_id} (Source Document {adv_doc_id})",
                                        "flag"))
             for a in adv_only:
                 records.append(_record(a["observation_id"], f"no counterpart in official {official_id} ({off_doc_id})",
-                                       f"{a['amount_dollars']} per advance copy {advance_id} ({adv_doc_id})", "flag"))
+                                       f"{a['amount']} per advance copy {advance_id} ({adv_doc_id})", "flag"))
             for o in off_only:
-                records.append(_record(o["observation_id"], f"{o['amount_dollars']} per official {official_id} ({off_doc_id})",
+                records.append(_record(o["observation_id"], f"{o['amount']} per official {official_id} ({off_doc_id})",
                                        f"not in advance copy {advance_id} ({adv_doc_id})", "flag"))
             counterpart = {observation_key(a): o["observation_id"] for a, o in pairs}
             for a in advance["observations"]:

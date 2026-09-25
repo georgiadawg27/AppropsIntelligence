@@ -97,7 +97,7 @@ class ManualIngest(unittest.TestCase):
         with TempStore() as d:
             res, m = ingest(JES, source_url="https://example.invalid/jes.pdf", source_agency="Senate Committee on Appropriations")
             doc = ex.describe_package(res["package_id"], m[res["package_id"]])
-            self.assertEqual((doc["document_type"], doc["stage"], doc["chamber"]), ("joint_explanatory_statement", "Enacted", "N/A"))
+            self.assertEqual((doc["document_type"], doc["stage"], doc["chamber"]), ("explanatory_statement", "Enacted", "N/A"))
             sd = ex.source_document_fields(res["package_id"], "sha", doc, m[res["package_id"]], [])
             self.assertEqual((sd["ingest_method"], sd["advance_copy"], sd["confirmation_status"], sd["subcommittee"],
                               sd["url_or_identifier"]),
@@ -174,7 +174,7 @@ class AdvanceCopyReconciliation(unittest.TestCase):
         def tamper(res):
             for o in res["observations"]:
                 if o["account_name_as_written"] == "Science" and o["column_header"] == "Committee recommendation":
-                    o["amount_dollars"] += 1000
+                    o["amount"] += 1000
         with TempStore() as d:
             res, m = self.advance(d, pymupdf.open(SENATE).tobytes(garbage=4, deflate=True))
             self.arrive(d, m)

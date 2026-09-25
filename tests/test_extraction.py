@@ -119,12 +119,25 @@ class TitleIIIAcceptance(unittest.TestCase):
         self.assertEqual(s["failures"], 0)
         self.assertEqual(s["by_rule"]["table_total"], {"pass": 6})
         # everything auto-validated except Defense function: nested under
-        # R&RA only by model-read indent, which no arithmetic confirms
+        # R&RA only by model-read indent, which no arithmetic confirms, and so
+        # only inherits R&RA as its account -- a person confirms both
         unverified = {(o["account_path"], o["column_header"]): o["verification_reason"]
                       for o in self.result["observations"] if o["verification_status"] != "auto-validated"}
         defense = "National Science Foundation / Research and related activities / Defense function"
-        self.assertEqual(unverified, {(defense, c): "hierarchy from model-read indent only"
+        self.assertEqual(unverified, {(defense, c): "hierarchy from model-read indent only; "
+                                                    "account name not matched to a canonical account"
                                       for c in ("FY 2026 Enacted", "Bill")})
+
+    def test_every_account_row_has_its_canonical_account(self):
+        # the vision path matches accounts too, not only OCR
+        rows = {o["account_path"]: (o.get("canonical_account_id"), o.get("account_match"))
+                for o in self.result["observations"] if not (o["is_rollup"] or o["is_memo"])}
+        self.assertEqual(rows["National Aeronautics and Space Administration / Science"], ("ACC-NASA-SCIENCE", "exact"))
+        self.assertEqual(rows["National Aeronautics and Space Administration / Space Operations"],
+                         ("ACC-NASA-SPACEOPS", "ocr_corrected"))          # canonical name is singular
+        self.assertEqual(rows["National Science Foundation / Research and related activities / Defense function"],
+                         ("ACC-NSF-RRA", "inherited"))
+        self.assertEqual([p for p, (acct, _) in rows.items() if acct is None], [])
 
     def test_title_boundaries(self):
         titles = {o["title"] for o in self.result["observations"]}
@@ -137,7 +150,7 @@ class TitleIIIAcceptance(unittest.TestCase):
         stem = by_path(self.result, "Bill")[
             "National Aeronautics and Space Administration / "
             "Science, Technology, Engineering, and Mathematics Engagement"]
-        self.assertEqual(stem["amount_dollars"], 0)
+        self.assertEqual(stem["amount"], 0)
         self.assertTrue(stem["amount_is_dash_zero"])
 
     def test_no_delta_observations(self):
@@ -149,16 +162,16 @@ class TitleIIIAcceptance(unittest.TestCase):
         self.assertTrue(memo["is_memo"])
         self.assertFalse(memo["is_rollup"])
         total = paths["Total, Title III, Science"]
-        self.assertEqual(total["amount_dollars"], 33_196_301_000)   # not doubled by the memo
+        self.assertEqual(total["amount"], 33_196_301_000)   # not doubled by the memo
 
     def test_stage_and_fiscal_year(self):
         o = by_path(self.result, "Bill")["National Aeronautics and Space Administration / Science"]
         self.assertEqual((o["fiscal_year"], o["stage"], o["chamber"]), (2027, "House Reported", "House"))
         o = by_path(self.result)["National Aeronautics and Space Administration / Science"]
-        self.assertEqual((o["fiscal_year"], o["stage"]), (2026, "Enacted"))
-        self.assertEqual(o["amount"], 7_250_000)
+        self.assertEqual((o["fiscal_year"], o["stage"], o["chamber"]), (2026, "Enacted", "N/A"))
+        self.assertEqual(o["amount_in_units"], 7_250_000)
         self.assertEqual(o["amount_unit"], "thousands")
-        self.assertEqual(o["amount_dollars"], 7_250_000_000)
+        self.assertEqual(o["amount"], 7_250_000_000)            # dollars at the pipeline boundary
 
 
 @needs_pdf

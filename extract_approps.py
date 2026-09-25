@@ -127,7 +127,7 @@ BILL_VERSION_STAGES = {
 }
 
 
-MANUAL_DOC_TYPES = {"jes": "joint_explanatory_statement", "committee_report": "committee_report",
+MANUAL_DOC_TYPES = {"jes": "explanatory_statement", "committee_report": "committee_report",
                     "bill": "bill", "public_law": "public_law", "other": "other"}
 STAGE_CHAMBER = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                  "Senate Passed": "Senate", "Enacted": "N/A", "President's Budget": "N/A"}
@@ -894,15 +894,17 @@ def build_observations(nodes, cols, unit, page_meta, doc, table_title):
                 "is_memo": node.kind == "memo",
                 "fiscal_year": col["fiscal_year"],
                 "stage": col["stage"],
-                "chamber": doc["chamber"] if col["stage"] == doc["stage"] else None,
+                "chamber": STAGE_CHAMBER.get(col["stage"]),
                 "bill_id": doc["bill_id"],
                 "report_id": doc["report_id"],
                 "column_header": col["header"],
                 "column_index": col["index"],
-                "amount": amount,
+                # amount is dollars (the Data Dictionary's amount) from here on;
+                # the value in the table's own unit is kept beside it
+                "amount": amount * mult if amount is not None else None,
+                "amount_in_units": amount,
                 "amount_as_printed": (cell["raw"] or "").strip(),
                 "amount_unit": unit,
-                "amount_dollars": amount * mult if amount is not None else None,
                 "amount_is_dash_zero": cell["kind"] == "dash",
                 **t,
                 "transfer_counterpart_name_as_written": None,
@@ -1155,7 +1157,6 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     # 4-5. Rows -> hierarchy -> observations -> validation.
     page_texts = [r["text"] for r in routes]
     source_document = source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
-    ocr_document = bool(ocr_table_pages)
 
     def assemble():
         page_meta, rows, units_by_page, headers, table_title = {}, [], {}, None, ""
@@ -1215,26 +1216,27 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                           for n in selected for c in cols
                           if c["kind"] == "value" and c["index"] < len(n.cells) and n.cells[c["index"]].get("leader")]
         account_rows = []
-        if ocr_document:
-            # OCR labels are noisy ("Sci e nee"): match each row to a
-            # canonical account by edit distance (accounts.py); the match
-            # feeds the account_identity check.
-            matches = accounts.match_nodes(selected)
-            for o in observations:
-                mt = matches.get(o["node_id"])
-                if mt is not None:
-                    o.update(canonical_account_id=mt["canonical_account_id"], canonical_name=mt["canonical_name"],
-                             account_component=mt["component"], account_match=mt["match"],
-                             account_match_distance=mt["distance"], account_match_via=mt.get("via"),
-                             account_matched_name=mt.get("matched_name"))
-            for n in selected:
-                mt = matches.get(n.id)
-                if mt and mt["canonical_account_id"]:
-                    account_rows.append({"account_path": " / ".join(n.path), "source_page": n.page, "title": n.title,
-                                         "canonical_account_id": mt["canonical_account_id"],
-                                         "account_component": mt["component"],
-                                         "blank_columns": [c["header"] for c in cols if c["kind"] == "value"
-                                                           and (c["index"] >= len(n.cells) or n.cells[c["index"]]["kind"] == "blank")]})
+        # Every path: match each row to a canonical account (accounts.py)
+        # -- by edit distance, since OCR labels are noisy ("Sci e nee"),
+        # and text/vision labels go through the same rule. An observation
+        # needs canonical_account_id to be stored at all; the match feeds
+        # the account_identity check.
+        matches = accounts.match_nodes(selected)
+        for o in observations:
+            mt = matches.get(o["node_id"])
+            if mt is not None:
+                o.update(canonical_account_id=mt["canonical_account_id"], canonical_name=mt["canonical_name"],
+                         account_component=mt["component"], account_match=mt["match"],
+                         account_match_distance=mt["distance"], account_match_via=mt.get("via"),
+                         account_matched_name=mt.get("matched_name"))
+        for n in selected:
+            mt = matches.get(n.id)
+            if mt and mt["canonical_account_id"]:
+                account_rows.append({"account_path": " / ".join(n.path), "source_page": n.page, "title": n.title,
+                                     "canonical_account_id": mt["canonical_account_id"],
+                                     "account_component": mt["component"],
+                                     "blank_columns": [c["header"] for c in cols if c["kind"] == "value"
+                                                       and (c["index"] >= len(n.cells) or n.cells[c["index"]]["kind"] == "blank")]})
         records, summary = validate_approps.validate(selected, cols, observations, page_meta, unit,
                                                      source_document=source_document)
         return {"page_meta": page_meta, "table_title": table_title, "bill_fy": bill_fy, "cols": cols,
@@ -1416,12 +1418,12 @@ def compare_ground_truth(result, gt_path):
                 hits = [o for o in result["observations"] if o["column_header"] == col and o["row_kind"] == "total"
                         and title_key(re.sub(r"^total\s*[,.]?\s*", "", o["account_name_as_written"], flags=re.I))
                         == title_key(item["title_total"])]
-                got = hits[0]["amount_dollars"] if len(hits) == 1 else None
+                got = hits[0]["amount"] if len(hits) == 1 else None
             elif "canonical_account_id" in item:
                 k = (item["canonical_account_id"], item.get("component"), col)
                 hits = by_account.get(k, [])
                 if len(hits) == 1:
-                    got = hits[0]["amount_dollars"]
+                    got = hits[0]["amount"]
                 elif hits:
                     got = None                    # two rows claim one account: not a match
                 elif item.get("printed") is False:
@@ -1434,7 +1436,7 @@ def compare_ground_truth(result, gt_path):
                 key = (item["account_path"], col)
                 o = by_key.get(key)
                 if o is not None:
-                    got = o["amount_dollars"]
+                    got = o["amount"]
                 elif item["account_path"] is None:
                     got = NOT_PRINTED
                 elif key in blanks:

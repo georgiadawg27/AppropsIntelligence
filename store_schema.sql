@@ -14,13 +14,12 @@
 --     that they round-trip through date(); money is INTEGER whole dollars
 --     (SQLite has no decimal type, and REAL would put float error into
 --     amounts -- every pilot and pipeline amount is whole dollars).
---   * Identifiers are TEXT: the Data Dictionary says UUID, the pilot uses
---     readable ids (ACC-NASA-SCIENCE, OBS-0001); the pipeline emits UUIDs.
---     TEXT holds both.
+--   * Identifiers are TEXT: the pilot uses readable ids (ACC-NASA-SCIENCE,
+--     OBS-0001), the pipeline emits UUIDs. TEXT holds both.
 --
--- Enums are CHECKs holding exactly the Data Dictionary's values, plus the
--- values listed as "not in the Data Dictionary" below, which the pilot uses
--- and which are pending a write-back to the Dictionary.
+-- Enums are CHECKs holding exactly the Data Dictionary's values (including
+-- the 2026-09-25 additions: cbo_cost_estimate, provisional, superseded,
+-- bill_report_reference_id).
 
 CREATE TABLE account (
     canonical_account_id    TEXT PRIMARY KEY,
@@ -60,9 +59,7 @@ CREATE TABLE source_document (
     url_or_identifier   TEXT NOT NULL,
     document_type       TEXT NOT NULL CHECK (document_type IN ('bill', 'committee_report', 'explanatory_statement',
                                                                'public_law', 'presidents_budget', 'budget_appendix',
-                                                               'other',
-                                                               -- not in the Data Dictionary (pilot: CBO estimate)
-                                                               'cbo_cost_estimate')),
+                                                               'other', 'cbo_cost_estimate')),
     congress_session    TEXT,
     fiscal_year         INTEGER NOT NULL,
     publication_date    TEXT CHECK (publication_date IS NULL OR date(publication_date) IS publication_date),
@@ -75,8 +72,8 @@ CREATE TABLE source_document (
     also_covers         TEXT
 ) STRICT;
 
--- Not in the Data Dictionary (the workbook's own tab): the bill / report for
--- one subcommittee x fiscal year x stage.
+-- The bill / report for one subcommittee x fiscal year x stage (the
+-- workbook's Bill Report Reference tab).
 CREATE TABLE bill_report_reference (
     reference_id   TEXT PRIMARY KEY,
     subcommittee   TEXT NOT NULL,
@@ -112,12 +109,15 @@ CREATE TABLE appropriations_observation (
     extraction_method        TEXT NOT NULL CHECK (extraction_method IN ('AI-extracted', 'human-entered', 'hybrid',
                                                                         'text-extracted')),
     confidence               REAL NOT NULL CHECK (confidence BETWEEN 0 AND 1),
+    -- provisional: an unconfirmed advance copy that passed every check;
+    -- superseded: replaced by the official document's value (reconcile.py)
     verification_status      TEXT NOT NULL CHECK (verification_status IN ('unverified', 'auto-validated',
-                                                                          'human-verified', 'flagged')),
-    -- not in the Data Dictionary: the workbook derives bill_id / report_id /
-    -- bill_url / report_jes_url by looking up (account.subcommittee,
-    -- fiscal_year, stage) in Bill Report Reference. Stored as a real key; the
-    -- loader checks bill_id / report_id agree with the row it points at.
+                                                                          'human-verified', 'flagged',
+                                                                          'provisional', 'superseded')),
+    -- The workbook derives bill_id / report_id / bill_url / report_jes_url by
+    -- looking up (account.subcommittee, fiscal_year, stage) in Bill Report
+    -- Reference. Stored as a real key; the loader checks bill_id / report_id
+    -- agree with the row it points at.
     bill_report_reference_id TEXT REFERENCES bill_report_reference (reference_id),
     -- The pilot has two 'budget authority' rows per NSF R&RA cell (base and
     -- defense) told apart only by source_table_or_section's suffix, so the
