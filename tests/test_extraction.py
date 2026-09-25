@@ -134,7 +134,7 @@ class TitleIIIAcceptance(unittest.TestCase):
                 for o in self.result["observations"] if not (o["is_rollup"] or o["is_memo"])}
         self.assertEqual(rows["National Aeronautics and Space Administration / Science"], ("ACC-NASA-SCIENCE", "exact"))
         self.assertEqual(rows["National Aeronautics and Space Administration / Space Operations"],
-                         ("ACC-NASA-SPACEOPS", "ocr_corrected"))          # canonical name is singular
+                         ("ACC-NASA-SPACEOPS", "exact"))                  # v13: canonical name is plural, as printed
         self.assertEqual(rows["National Science Foundation / Research and related activities / Defense function"],
                          ("ACC-NSF-RRA", "inherited"))
         self.assertEqual([p for p, (acct, _) in rows.items() if acct is None], [])

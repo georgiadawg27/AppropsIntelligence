@@ -329,6 +329,33 @@ def check_cbo_estimate(bill_type, bill_number):
         return False
 
 
+RETRY_DELAY_SECONDS = 5
+
+
+def transient(e):
+    """A failure worth one retry: the network, a server error, or throttling."""
+    if isinstance(e, HTTPError):
+        return e.code >= 500 or e.code == 429
+    return isinstance(e, (URLError, TimeoutError, ConnectionError))
+
+
+def with_retry(call, sleep=None):
+    """call() once, and once more after RETRY_DELAY_SECONDS if the first
+    failure is transient. -> (result, attempts). Re-raises the last error."""
+    try:
+        return call(), 1
+    except (HTTPError, URLError, TimeoutError, ConnectionError) as e:
+        if not transient(e):
+            e.attempts = 1
+            raise
+        (sleep or time.sleep)(RETRY_DELAY_SECONDS)
+    try:
+        return call(), 2
+    except (HTTPError, URLError, TimeoutError, ConnectionError) as e:
+        e.attempts = 2
+        raise
+
+
 def run(api_key, tracked_bills, since):
     """
     BILLS are detected by polling the collection and matching the bill number.
@@ -342,13 +369,19 @@ def run(api_key, tracked_bills, since):
     manifest = load_manifest()
     results = []
 
+    # A failure is retried once if transient, then recorded as a result --
+    # never only printed, so a caller sees what didn't arrive.
     def store(package_id):
         try:
-            result = fetch_and_store(package_id, api_key, manifest)
-            print(f"    {package_id}: {result['status']}")
+            result, attempts = with_retry(lambda: fetch_and_store(package_id, api_key, manifest))
+            if attempts > 1:
+                result["attempts"] = attempts
+            print(f"    {package_id}: {result['status']}" + (" (after a retry)" if attempts > 1 else ""))
             results.append(result)
-        except (HTTPError, URLError) as e:
+        except (HTTPError, URLError, TimeoutError, ConnectionError) as e:
             print(f"    {package_id}: fetch failed ({e})", file=sys.stderr)
+            results.append({"package_id": package_id, "status": "fetch_failed", "error": str(e),
+                            "attempts": getattr(e, "attempts", 1)})
 
     print(f"Checking BILLS since {since}...")
     try:
@@ -366,9 +399,11 @@ def run(api_key, tracked_bills, since):
         print(f"Checking {collection} related to matched bills...")
         for pkg in bills:
             try:
-                related = fetch_related(pkg["packageId"], collection, api_key)
-            except (HTTPError, URLError) as e:
+                related, _ = with_retry(lambda: fetch_related(pkg["packageId"], collection, api_key))
+            except (HTTPError, URLError, TimeoutError, ConnectionError) as e:
                 print(f"  Failed to look up {collection} for {pkg['packageId']}: {e}", file=sys.stderr)
+                results.append({"package_id": pkg["packageId"], "status": "related_lookup_failed",
+                                "collection": collection, "error": str(e), "attempts": getattr(e, "attempts", 1)})
                 continue
             print(f"  {pkg['packageId']}: {len(related)} related {collection} package(s)")
             for rel in related:

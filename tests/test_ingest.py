@@ -164,6 +164,57 @@ class RelatedLookupRouting(unittest.TestCase):
             self.assertEqual(g.fetch_related("BILLS-119s2354rs", "PLAW", "k"), [])
 
 
+class FetchFailuresAreVisible(unittest.TestCase):
+    """Offline: a failed fetch or /related lookup is retried once when
+    transient, then recorded as a result -- never only printed to stderr
+    (the live LiveRelatedLookup test once lost BILLS-119s2354rs that way)."""
+
+    BILL = [{"packageId": "BILLS-119s2354rs", "title": "S. 2354 (RS)"}]
+
+    def run_with(self, fetch, related=lambda pid, c, k: []):
+        sleeps = []
+        with TempStore(), mock.patch.object(g, "fetch_new_packages", return_value=self.BILL), \
+                mock.patch.object(g, "fetch_related", side_effect=related), \
+                mock.patch.object(g, "fetch_and_store", side_effect=fetch), \
+                mock.patch.object(g.time, "sleep", side_effect=sleeps.append), \
+                mock.patch("sys.stderr"), mock.patch("sys.stdout"):
+            results = g.run("k", ["119S2354"], "2025-01-01T00:00:00Z")
+        return results, sleeps
+
+    def failing(self, *errors):
+        errors = list(errors)
+
+        def fetch(pid, k, m):
+            if errors:
+                raise errors.pop(0)
+            return {"package_id": pid, "status": "stored"}
+        return fetch
+
+    def test_transient_failure_is_retried_once(self):
+        results, sleeps = self.run_with(self.failing(g.URLError("connection reset")))
+        self.assertEqual(results, [{"package_id": "BILLS-119s2354rs", "status": "stored", "attempts": 2}])
+        self.assertEqual(sleeps, [g.RETRY_DELAY_SECONDS])
+
+    def test_second_failure_is_recorded_not_dropped(self):
+        results, _ = self.run_with(self.failing(g.HTTPError("u", 503, "Unavailable", {}, None),
+                                                g.HTTPError("u", 503, "Unavailable", {}, None)))
+        self.assertEqual([(r["package_id"], r["status"], r["attempts"]) for r in results],
+                         [("BILLS-119s2354rs", "fetch_failed", 2)])
+
+    def test_client_error_is_not_retried(self):
+        results, sleeps = self.run_with(self.failing(g.HTTPError("u", 404, "Not Found", {}, None)))
+        self.assertEqual([(r["status"], r["attempts"]) for r in results], [("fetch_failed", 1)])
+        self.assertEqual(sleeps, [])
+
+    def test_failed_related_lookup_is_recorded(self):
+        def related(pid, c, k):
+            raise g.URLError("timed out")
+        results, sleeps = self.run_with(self.failing(), related)
+        failed = [(r["package_id"], r["status"], r["collection"], r["attempts"]) for r in results
+                  if r["status"] == "related_lookup_failed"]
+        self.assertEqual(failed, [("BILLS-119s2354rs", "related_lookup_failed", c, 2) for c in g.RELATED_COLLECTIONS])
+
+
 @needs_key
 class LiveRelatedLookup(unittest.TestCase):
     """Tracked bill -> /related -> fetch_and_store, against the real API. Only

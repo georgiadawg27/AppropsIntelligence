@@ -149,6 +149,28 @@ def match_label(label, agency_heading, row_kind, accounts=None):
                                           else "historical_name")}
 
 
+# Component vocabulary (Appropriations Observation.component): canonical
+# value -> the ways documents print it. A printed label is matched to a
+# canonical value with the same rule as an account name (best_match: letters
+# only, edit distance, unambiguous), after dropping a leading fiscal-year tag
+# ("FY27 CHIMP"). No component (the account's own line) is None, never a
+# string. A label that matches nothing is kept as printed, so the store holds
+# it for review instead of inventing a component.
+COMPONENTS = {
+    "defense": ["Defense function"],            # NSF R&RA sub-line in the House and Senate tables
+    "chimp": ["CHIMP"],                         # CVF, H.R. 8845 / CBO ("FY27 CHIMP")
+    "chimp_pop_up": ["CHIMP Pop-Up"],           # ("FY27 CHIMP Pop-Up")
+}
+FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
+
+
+def match_component(label):
+    """-> (canonical component or the label as printed, match kind)."""
+    text = FY_TAG_RE.sub("", label or "").strip()
+    kind, canonical, _, _ = best_match(text, sorted(COMPONENTS), lambda c: [c] + COMPONENTS[c])
+    return (canonical, kind) if canonical else (text, kind)
+
+
 def match_nodes(nodes, accounts=None):
     """Match every node; a nested line that doesn't match inherits its parent
     line's account. -> {node.id: match or None}."""

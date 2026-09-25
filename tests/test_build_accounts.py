@@ -92,13 +92,27 @@ class BuildAccounts(unittest.TestCase):
         self.assertIn("not in the Account tab", str(cm.exception))
 
 
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v13.xlsx"
+
+
 class CommittedReference(unittest.TestCase):
-    def test_reference_carries_the_two_approved_former_names(self):
+    def test_reference_carries_the_approved_former_names(self):
         accts = {a["canonical_account_id"]: a for a in json.loads((ROOT / "reference" / "accounts.json").read_text())["accounts"]}
-        self.assertEqual(accts["ACC-NASA-EXPLORATION"]["historical_names"], ["Deep Space Exploration Systems"])
-        self.assertEqual(accts["ACC-NSF-STEM-EDUCATION"]["historical_names"], ["Education and Human Resources"])
-        self.assertIn("Historical Name", json.loads((ROOT / "reference" / "accounts.json").read_text())["source"])
+        self.assertEqual({k: a["historical_names"] for k, a in accts.items() if a["historical_names"]}, {
+            "ACC-NASA-EXPLORATION": ["Deep Space Exploration Systems"],
+            "ACC-NSF-STEM-EDUCATION": ["Education and Human Resources"],
+            "ACC-NASA-SPACEOPS": ["LEO and Spaceflight Operations"],
+            "ACC-NASA-EXPLTECH": ["Exploration Research and Technology"],
+            "ACC-NASA-STEM-ENGAGEMENT": ["Education", "STEM Opportunities formerly Education"]})
+        self.assertNotIn("ACC-NASA-LEO", accts)
         self.assertFalse((ROOT / "reference" / "historical_names.json").exists())
+
+    @unittest.skipUnless(openpyxl, "openpyxl not installed")
+    def test_reference_is_in_sync_with_the_committed_workbook(self):
+        # accounts.json is exactly what build_accounts.py makes from the
+        # workbook the store loads -- a new workbook without a rebuild fails here
+        committed = json.loads((ROOT / "reference" / "accounts.json").read_text())
+        self.assertEqual(committed, load_builder().accounts_from_workbook(WORKBOOK))
 
 
 if __name__ == "__main__":

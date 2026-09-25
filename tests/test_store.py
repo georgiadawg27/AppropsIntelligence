@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v12.xlsx).
+loaded from the committed pilot workbook (reference/..._v13.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,12 +26,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v12.xlsx"
-# v12's Account.historical_names display list wasn't updated for the two
-# accounts given new former names; everything else loads. Waived, and pinned
-# exactly (Load.test_v12_display_list_problems_are_the_known_two), so a fixed
-# workbook makes that test fail and the waiver comes out.
-WAIVE = ("historical_names_display",)
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v13.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -48,7 +43,7 @@ class StoreTest(unittest.TestCase):
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.db = Path(cls.tmp.name) / "approps.db"
-        cls.report = S.load(WORKBOOK, cls.db, waive=WAIVE)
+        cls.report = S.load(WORKBOOK, cls.db)
 
     @classmethod
     def tearDownClass(cls):
@@ -69,15 +64,14 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         self.assertEqual(self.report["rows"], {
             "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
-            "appropriations_observation": 979, "account_relationship": 2, "validation_record": 89})
+            "appropriations_observation": 977, "account_relationship": 2, "validation_record": 89})
 
-    def test_v12_display_list_problems_are_the_known_two(self):
-        self.assertEqual(self.report["waived"], {"historical_names_display": [
-            "ACC-NASA-SPACEOPS: Account.historical_names [] != Historical Name ['LEO and Spaceflight Operations']",
-            "ACC-NASA-STEM-ENGAGEMENT: Account.historical_names [] != Historical Name "
-            "['Education', 'STEM Opportunities formerly Education']"]})
-        with self.assertRaises(S.LoadError):                            # not waived: refused
-            S.load(WORKBOOK, Path(self.tmp.name) / "unwaived.db")
+    def test_v13_loads_clean_with_nothing_waived(self):
+        self.assertEqual(self.report["waived"], {})
+        self.assertEqual(self.report["warnings"], [
+            "source_document SRC-CBO-HR8845-FY2027: also_covers entry is not a fiscal year + stage: "
+            "'Every account in this Mechanism Coverage Pass (Titles I, II, V, VII of HR-8845)'",
+            "bill_report_reference BR-CJS-FY2027-HOUSE: bill_url, report_jes_url blank"])
 
     def test_foreign_keys_are_enforced_not_just_declared(self):
         # SQLite ignores REFERENCES unless the connection turns them on
@@ -96,7 +90,7 @@ class Load(StoreTest):
 
     def test_spelling_variant_is_mapped_and_counted(self):
         self.assertEqual(self.report["value_map"],
-                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 979})
+                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 977})
 
     def test_dates_are_iso_dates(self):
         self.assertEqual(self.conn.execute("SELECT publication_date FROM source_document "
@@ -119,12 +113,18 @@ class Load(StoreTest):
                               "WHERE document_id = 'SRC-CRPT-119HRPT652'").fetchone()
         self.assertEqual(tuple(d), (2027, "House Reported", "FY2026 Enacted"))
 
-    def test_moved_citations_keep_the_old_pages_is_warned(self):
+    def test_every_citation_is_inside_its_documents_table_pages(self):
         # v11/v12 re-cited 23 FY2026 Enacted observations to the enacted JES
-        # but kept H.Rept. 119-652's pages
-        stale = [w for w in self.report["warnings"]
-                 if "source_page '169-170' is outside SRC-EXPL-FY2026-PB's table pages '128-130'" in w]
-        self.assertEqual(len(stale), 23)
+        # but kept H.Rept. 119-652's pages; v13 fixed them
+        self.assertEqual([w for w in self.report["warnings"] if "outside" in w], [])
+
+    def test_blank_request_is_missing_not_zero(self):
+        # v13 dropped the $0 rows where the request column prints '---'
+        for acct, cells in (("ACC-NASA-STEM-ENGAGEMENT", [(2019, "President's Budget"), (2020, "President's Budget")]),
+                            ("ACC-NASA-SPACETECH", [(2019, "President's Budget"), (2019, "House Reported"),
+                                                    (2020, "President's Budget")])):
+            h = S.history(self.conn, acct)
+            self.assertTrue(set(cells) <= set(h["missing_cells"]), acct)
 
 
 class NasaScienceAcceptance(StoreTest):
@@ -171,7 +171,6 @@ class NasaScienceAcceptance(StoreTest):
             self.assertEqual((o["amount"], o["source_document_id"]), (amount, doc), (fy, stage))
             self.assertTrue(lo <= page <= hi, (fy, stage, o["source_page"]))
 
-    @unittest.expectedFailure       # v12 keeps H.Rept. 119-652's pages (169-170) on the re-cited row
     def test_fy2026_enacted_cites_the_enacted_jes_table_page(self):
         # the uploaded FY2026 JES (fy26_cjs_jes.pdf) prints Science 7,250,000
         # in its Final Bill column on PDF page 128
@@ -329,7 +328,7 @@ class FactKey(StoreCopyTest):
     """(canonical_account_id, fiscal_year, stage, amount_type, component,
     transfer_link_account_id) -- section text is not identity."""
 
-    def test_v12_has_no_collisions(self):
+    def test_v13_has_no_collisions(self):
         self.assertEqual(self.conn.execute(
             "SELECT count(*) FROM (SELECT 1 FROM appropriations_observation GROUP BY canonical_account_id, fiscal_year, "
             "stage, amount_type, ifnull(component, ''), ifnull(transfer_link_account_id, '') HAVING count(*) > 1)"
@@ -340,8 +339,12 @@ class FactKey(StoreCopyTest):
                                  "AND amount_type IN ('budget authority', 'transfer', 'rescission')").fetchall()
         self.assertEqual(sum(1 for r in rows if r[1] == "defense"), 40)
         self.assertEqual({(r[1], r[2]) for r in rows if r[0] == "ACC-DOJ-CVF"},
-                         {("Transfer to OVW", "ACC-DOJ-VAWA"), ("Transfer to OIG", "ACC-DOJ-OIG"),
-                          ("FY27 CHIMP", None), ("FY27 CHIMP Pop-Up", None)})
+                         {(None, "ACC-DOJ-VAWA"), (None, "ACC-DOJ-OIG"), ("chimp", None), ("chimp_pop_up", None)})
+
+    def test_components_are_the_canonical_vocabulary(self):
+        import accounts
+        used = {r[0] for r in self.conn.execute("SELECT DISTINCT component FROM appropriations_observation")}
+        self.assertEqual(used, {None} | set(accounts.COMPONENTS))
 
     def test_same_fact_with_other_section_text_is_refused(self):
         # a base line (component NULL): a plain UNIQUE would let this in
@@ -392,8 +395,8 @@ class PipelineToStore(StoreCopyTest):
     def test_same_facts_confirm_new_facts_add_nothing_twice(self):
         before = self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0]
         out = S.add_observations(self.conn, self.rows)
-        self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 18, "conflicting": 0, "added": 18, "held": 2})
-        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before + 18)
+        self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 19, "conflicting": 0, "added": 19, "held": 0})
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before + 19)
         sci = {(o["fiscal_year"], o["stage"]): o for o in self.science()}
         self.assertEqual(len(self.science()), 41)                       # 40 + FY2027 House Reported, no duplicate
         self.assertEqual((sci[(2026, "Enacted")]["observation_id"], sci[(2026, "Enacted")]["amount"]),
@@ -418,12 +421,24 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual(tuple(rec[:2]), ("flag", "pending"))
         self.assertIn("7,250,001,000", rec[2])
 
-    def test_unknown_component_name_is_held(self):
-        # the pipeline says 'Defense function' (as printed); v12 says 'defense'
+    def test_printed_component_maps_to_the_canonical_one(self):
+        # printed 'Defense function' -> 'defense' (accounts.match_component):
+        # FY2026 Enacted confirms v13's row, FY2027 House Reported is new
+        defense = [r for r in self.rows if r["canonical_account_id"] == "ACC-NSF-RRA" and r["component"]]
+        self.assertEqual({(r["fiscal_year"], r["stage"], r["component"]) for r in defense},
+                         {(2026, "Enacted", "defense"), (2027, "House Reported", "defense")})
         out = S.add_observations(self.conn, self.rows)
-        held = [r for r in self.rows if r["observation_id"] in out["held"]]
-        self.assertEqual({(r["canonical_account_id"], r["component"], r["fiscal_year"]) for r in held},
-                         {("ACC-NSF-RRA", "Defense function", 2026), ("ACC-NSF-RRA", "Defense function", 2027)})
+        self.assertIn("OBS-0728", out["confirmed"])                     # FY2026 Enacted R&RA defense, 118,800,000
+        self.assertEqual(out["held"], [])
+        self.assertEqual({r[0] for r in self.conn.execute(
+            "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
+            {None, "defense"})
+
+    def test_unknown_component_name_is_held(self):
+        rows = [dict(r, component="Defense base") if r["canonical_account_id"] == "ACC-NSF-RRA" and r["component"]
+                else r for r in self.rows]
+        out = S.add_observations(self.conn, rows)
+        self.assertEqual(len(out["held"]), 2)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
             {None, "defense"})
@@ -467,7 +482,7 @@ class LoadRefuses(unittest.TestCase):
 
     def refuse(self, path, text):
         with self.assertRaises(S.LoadError) as cm:
-            S.load(path, self.dir / "x.db", waive=() if text == "Account.historical_names" else WAIVE)
+            S.load(path, self.dir / "x.db")
         self.assertIn(text, str(cm.exception))
         self.assertFalse((self.dir / "x.db").exists())
 
@@ -486,6 +501,13 @@ class LoadRefuses(unittest.TestCase):
                                               "value", "yes"))
         self.refuse(path, "not a boolean")
 
+    def test_waived_check_still_reports_its_problems(self):
+        path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),
+                                              "value", None))
+        report = S.load(path, self.dir / "x.db", waive=("historical_names_display",))
+        self.assertEqual(report["waived"], {"historical_names_display": [
+            "ACC-NASA-EXPLORATION: Account.historical_names [] != Historical Name ['Deep Space Exploration Systems']"]})
+
     def test_display_list_drift(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),
                                               "value", "Deep Space Exploration Systems (FY2024 JES and earlier)"))
@@ -499,12 +521,12 @@ class LoadRefuses(unittest.TestCase):
 
     def test_failed_load_leaves_the_existing_database(self):
         db = self.dir / "x.db"
-        S.load(WORKBOOK, db, waive=WAIVE)
+        S.load(WORKBOOK, db)
         before = db.read_bytes()
         bad = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
                                                        "source_document_id"), "value", "SRC-NOT-THERE"))
         with self.assertRaises(S.LoadError):
-            S.load(bad, db, waive=WAIVE)
+            S.load(bad, db)
         self.assertEqual(db.read_bytes(), before)
 
 

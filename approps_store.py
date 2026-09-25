@@ -334,8 +334,10 @@ def data_quality_warnings(conn):
                             f"{d['stage']!r} (FY{d['fiscal_year']}) -- a {d['document_type']} is a "
                             f"{' / '.join(allowed)} document; the row may describe the column taken from it, "
                             f"not the document")
-    for r in conn.execute("SELECT * FROM bill_report_reference WHERE report_id IS NULL OR bill_url IS NULL"):
-        warnings.append(f"bill_report_reference {r['reference_id']}: report_id/bill_url blank")
+    for r in conn.execute("SELECT * FROM bill_report_reference ORDER BY reference_id"):
+        empty = [c for c in ("bill_id", "report_id", "bill_url", "report_jes_url") if r[c] is None]
+        if empty:
+            warnings.append(f"bill_report_reference {r['reference_id']}: {', '.join(empty)} blank")
     warnings += stale_resolution_warnings(conn)
     return warnings
 
@@ -392,10 +394,12 @@ def observation_row(o, source_document_id):
         raise ValueError(f"{o['observation_id']}: amount {o['amount']!r} is not whole dollars")
     # component: an emergency line is already told apart by amount_type
     # (supplemental), as the workbook does; a sub-line inheriting its parent's
-    # account ("Defense function" under R&RA) keeps its label as printed
+    # account ("Defense function" under R&RA) is mapped to the canonical
+    # component vocabulary (accounts.match_component) -- or kept as printed
+    # when nothing matches, which add_observations then holds for review
     component = None
     if o.get("account_match") == "inherited":
-        component = o["account_name_as_written"].strip()
+        component, _ = A.match_component(o["account_name_as_written"])
     return {"observation_id": o["observation_id"], "canonical_account_id": o["canonical_account_id"],
             "fiscal_year": o["fiscal_year"], "stage": o["stage"], "chamber": o["chamber"],
             "bill_id": o.get("bill_id"), "report_id": o.get("report_id"), "amount": o["amount"],
