@@ -118,7 +118,13 @@ class TitleIIIAcceptance(unittest.TestCase):
         s = self.result["validation_summary"]
         self.assertEqual(s["failures"], 0)
         self.assertEqual(s["by_rule"]["table_total"], {"pass": 6})
-        self.assertEqual(set(s["verification_status_counts"]), {"auto-validated"})
+        # everything auto-validated except Defense function: nested under
+        # R&RA only by model-read indent, which no arithmetic confirms
+        unverified = {(o["account_path"], o["column_header"]): o["verification_reason"]
+                      for o in self.result["observations"] if o["verification_status"] != "auto-validated"}
+        defense = "National Science Foundation / Research and related activities / Defense function"
+        self.assertEqual(unverified, {(defense, c): "hierarchy from model-read indent only"
+                                      for c in ("FY 2026 Enacted", "Bill")})
 
     def test_title_boundaries(self):
         titles = {o["title"] for o in self.result["observations"]}

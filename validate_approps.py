@@ -13,6 +13,13 @@ Implemented here:
                   delta column equals the difference of its two value columns;
                   a total's memo breakdown ("Appropriations", "Rescissions")
                   reconciles to the total
+  structural   -- (image path) a line nested under the line above it only
+                  because the model read it as indented must have that parent
+                  line equal the sum of its indented lines; otherwise the
+                  nesting is unconfirmed and the child's observations stay
+                  unverified ("hierarchy from model-read indent only"). A
+                  neighbouring subtotal can't confirm nesting -- it sums the
+                  same rows whether they're nested or siblings.
   source_text  -- the amount as printed appears in the row's raw text
   unit         -- the amount's unit matches the unit its own page declares
   semantic     -- non-budget-authority lines (transfers, rescissions,
@@ -30,6 +37,8 @@ import uuid
 from collections import Counter, defaultdict
 
 AUTO_PUBLISH_CONFIDENCE = 0.90
+MODEL_INDENT_REASON = "hierarchy from model-read indent only"
+DETERMINISTIC_LAYOUT_SOURCES = {"text_layer"}      # indent measured from page geometry
 FAILED_CONFIDENCE = 0.50
 SEMANTIC_KEYWORDS = ("rescission", "chimp", "emergency", "advance appropriation", "transfer",
                      "offsetting", "fee collection", "cancellation")
@@ -162,6 +171,40 @@ def validate(nodes, cols, observations, page_meta, unit):
                 else:
                     implicated.add(obs["observation_id"])
 
+    # --- nesting read from indentation ------------------------------------
+    unconfirmed_nesting = set()
+    by_id = {n.id: n for n in nodes}
+    nested = defaultdict(list)
+    for node in nodes:
+        parent = node.parent_line
+        if node.kind == "line" and parent is not None and parent.kind == "line":
+            nested[parent.id].append(node)
+    for parent_id, kids in nested.items():
+        parent = by_id.get(parent_id)
+        if parent is None or page_meta[parent.page].get("source") in DETERMINISTIC_LAYOUT_SOURCES:
+            continue
+        sums = []
+        for col in value_cols:
+            stated = _cell_value(parent, col["index"])
+            kid_vals = [_cell_value(k, col["index"]) for k in kids]
+            if stated is None or any(v is None for v in kid_vals):
+                continue
+            sums.append((col, stated, sum(kid_vals)))
+        confirmed = bool(sums) and all(stated == total for _, stated, total in sums)
+        detail = "; ".join(f"[{c['header']}] {_fmt(st)} vs {_fmt(t)}" for c, st, t in sums)
+        for kid in kids:
+            for col in value_cols:
+                obs = obs_by.get((kid.id, col["index"]))
+                if obs is None:
+                    continue
+                record(obs, "structural",
+                       f"nested under {parent.label!r} by model-read indent: the parent equals the sum of its "
+                       f"indented lines [{'; '.join(k.label for k in kids)}]",
+                       detail or "no comparable values",
+                       "pass" if confirmed else "flag")
+                if not confirmed:
+                    unconfirmed_nesting.add(obs["observation_id"])
+
     # --- per-observation checks ------------------------------------------
     for o in observations:
         raw = re.sub(r"\s+", " ", o["raw_text_excerpt"] or "")
@@ -189,11 +232,14 @@ def validate(nodes, cols, observations, page_meta, unit):
     for o in observations:
         res = results_by_obs[o["observation_id"]]
         oid = o["observation_id"]
+        o["verification_reason"] = None
         if "fail" in res or oid in implicated:
             o["extraction_confidence"] = min(o["extraction_confidence"], FAILED_CONFIDENCE)
             o["verification_status"] = "flagged"
         elif "flag" in res or oid not in arithmetic_pass:
             o["verification_status"] = "unverified"
+            if oid in unconfirmed_nesting:
+                o["verification_reason"] = MODEL_INDENT_REASON
         elif o["extraction_confidence"] >= AUTO_PUBLISH_CONFIDENCE:
             o["verification_status"] = "auto-validated"
         else:
