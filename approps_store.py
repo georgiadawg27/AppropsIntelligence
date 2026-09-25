@@ -323,6 +323,19 @@ DOCUMENT_TYPE_STAGES = {
 }
 
 
+def page_span(pages):
+    """'227-228' -> (227, 228); '229' -> (229, 229); unreadable -> None."""
+    m = re.fullmatch(r"\s*(\d+)\s*(?:[-\u2013]\s*(\d+))?\s*", pages or "")
+    return (int(m.group(1)), int(m.group(2) or m.group(1))) if m else None
+
+
+def within(pages, table_pages):
+    """An observation's page(s) inside its document's recorded table pages
+    (a document's range may be the whole comparative table)."""
+    a, b = page_span(pages), page_span(table_pages)
+    return bool(a and b and b[0] <= a[0] <= a[1] <= b[1])
+
+
 def data_quality_warnings(conn):
     """Questions for a human, not load failures."""
     warnings = []
@@ -339,7 +352,7 @@ def data_quality_warnings(conn):
                             f"{d['document_id']}, which neither is nor also_covers that fiscal year + stage")
         if o["source_page"] is None:
             warnings.append(f"observation {o['observation_id']}: source_page is blank (cites {d['document_id']})")
-        elif o["source_page"] != d["source_page"]:
+        elif not within(o["source_page"], d["source_page"]):
             warnings.append(f"observation {o['observation_id']}: source_page {o['source_page']!r} is outside "
                             f"{d['document_id']}'s table pages {d['source_page']!r}")
     # every source table prints amounts in thousands (CBO: millions), so a

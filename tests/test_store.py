@@ -588,6 +588,17 @@ class LoadRefuses(unittest.TestCase):
         self.assertEqual(report["waived"], {"historical_names_display": [
             "ACC-NASA-EXPLORATION: Account.historical_names [] != Historical Name ['Deep Space Exploration Systems']"]})
 
+    def test_widened_table_range_covers_title_iii_and_title_v_citations(self):
+        def edit(wb):
+            self.cell(wb, "Source Document", "SRC-CRPT-118SRPT198", "source_page").value = "220-231"
+            self.cell(wb, "Appropriations Observation", "OBS-0986", "source_page").value = "229"      # Title V
+            self.cell(wb, "Appropriations Observation", "OBS-0987", "source_page").value = "300"      # outside
+        report = S.load(self.mutate(edit), self.dir / "x.db")
+        warned = [w for w in report["warnings"] if "OBS-0986" in w or "SRPT198" in w or "outside" in w]
+        # the Title III rows still citing '227-228' and OBS-0986 at p.229 are inside 220-231
+        self.assertEqual(warned, ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's "
+                                  "table pages '187-188'"])
+
     def test_display_list_drift(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),
                                               "value", "Deep Space Exploration Systems (FY2024 JES and earlier)"))
