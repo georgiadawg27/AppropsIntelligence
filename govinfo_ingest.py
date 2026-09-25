@@ -3,8 +3,9 @@ govinfo_ingest.py
 
 Detect / Fetch & hash stages of the Data Pipeline (see the scoping doc's
 "Data Pipeline and Ingestion Architecture" section). Polls GPO's govinfo.gov
-API for new or updated BILLS, CRPT (committee report), and PLAW (public law)
-packages for a set of tracked bills, downloads them, hashes them, and stores
+API for new or updated BILLS packages for a set of tracked bills, follows each
+one's /related links to its CRPT (committee report) and PLAW (public law)
+packages, downloads them, hashes them, and stores
 them locally with a manifest -- so re-running this doesn't re-download
 anything that hasn't actually changed.
 
@@ -44,7 +45,7 @@ ENV_PATH = Path(__file__).resolve().parent / ".env"
 load_dotenv(ENV_PATH, override=True)
 
 API_BASE = "https://api.govinfo.gov"
-COLLECTIONS = ["BILLS", "CRPT", "PLAW"]
+RELATED_COLLECTIONS = ["CRPT", "PLAW"]
 STORE_DIR = Path("./document_store")
 MANIFEST_PATH = STORE_DIR / "manifest.json"
 
@@ -106,6 +107,20 @@ def fetch_new_packages(collection, since_iso, api_key, doc_class=None):
             break
         offset_mark = next_page.split("offsetMark=")[1].split("&")[0]
     return packages
+
+
+def fetch_related(package_id, collection, api_key):
+    """
+    Use govinfo's /related service to find the packages in another collection
+    (CRPT reports, PLAW public laws) that belong to the same bill.
+    """
+    try:
+        data = api_get(f"/related/{package_id}/{collection}", api_key)
+    except HTTPError as e:
+        if e.code == 404:  # no relationship of that kind (yet)
+            return []
+        raise
+    return [r for r in data.get("results", []) if r.get("packageId")]
 
 
 def pdf_link_for(package_id, summary):
@@ -198,24 +213,50 @@ def check_cbo_estimate(bill_type, bill_number):
 
 
 def run(api_key, tracked_bills, since):
+    """
+    BILLS are detected by polling the collection and matching the bill number.
+    Committee reports and public laws can't be found that way -- a report's
+    packageId and title don't carry the bill number (S. 2354's report is
+    CRPT-119srpt44, titled "DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, ...")
+    -- so each matched bill is expanded through govinfo's /related service
+    instead of scanning the CRPT / PLAW collections.
+    """
     manifest = load_manifest()
     results = []
-    for collection in COLLECTIONS:
-        print(f"Checking {collection} since {since}...")
+
+    def store(package_id):
         try:
-            packages = fetch_new_packages(collection, since, api_key)
+            result = fetch_and_store(package_id, api_key, manifest)
+            print(f"    {package_id}: {result['status']}")
+            results.append(result)
         except (HTTPError, URLError) as e:
-            print(f"  Failed to poll {collection}: {e}", file=sys.stderr)
-            continue
-        relevant = [p for p in packages if matches_tracked_bill(p.get("title"), p.get("packageId"), tracked_bills)]
-        print(f"  {len(packages)} packages modified, {len(relevant)} match tracked bills")
-        for pkg in relevant:
+            print(f"    {package_id}: fetch failed ({e})", file=sys.stderr)
+
+    print(f"Checking BILLS since {since}...")
+    try:
+        packages = fetch_new_packages("BILLS", since, api_key)
+    except (HTTPError, URLError) as e:
+        print(f"  Failed to poll BILLS: {e}", file=sys.stderr)
+        packages = []
+    bills = [p for p in packages if matches_tracked_bill(p.get("title"), p.get("packageId"), tracked_bills)]
+    print(f"  {len(packages)} packages modified, {len(bills)} match tracked bills")
+    for pkg in bills:
+        store(pkg["packageId"])
+
+    seen = set()   # every version of a bill relates to the same report / law
+    for collection in RELATED_COLLECTIONS:
+        print(f"Checking {collection} related to matched bills...")
+        for pkg in bills:
             try:
-                result = fetch_and_store(pkg["packageId"], api_key, manifest)
-                print(f"    {pkg['packageId']}: {result['status']}")
-                results.append(result)
+                related = fetch_related(pkg["packageId"], collection, api_key)
             except (HTTPError, URLError) as e:
-                print(f"    {pkg['packageId']}: fetch failed ({e})", file=sys.stderr)
+                print(f"  Failed to look up {collection} for {pkg['packageId']}: {e}", file=sys.stderr)
+                continue
+            print(f"  {pkg['packageId']}: {len(related)} related {collection} package(s)")
+            for rel in related:
+                if rel["packageId"] not in seen:
+                    seen.add(rel["packageId"])
+                    store(rel["packageId"])
     save_manifest(manifest)
     return results
 

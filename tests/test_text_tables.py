@@ -120,6 +120,15 @@ class SenateTitleIII:
         if missing:
             self.skipTest(f"{len(missing)} pilot figures not supplied in {gt.name} (e.g. {missing[0]})")
         ok, rows = ex.compare_ground_truth(self.result, gt)
+        exact = [n for n, w, g, m in rows if m and isinstance(g, int)]
+        blank = [n for n, w, g, m in rows if m and g == ex.BLANK]
+        absent = [n for n, w, g, m in rows if m and g == ex.NOT_PRINTED]
+        print(f"\n{self.package_id}: {len(rows)} pilot figures -- {len(exact)} exact numeric matches, "
+              f"{len(blank)} pilot 0 vs printed blank, {len(absent)} pilot 0 with no row printed, "
+              f"{sum(1 for r in rows if not r[3])} mismatches")
+        for n, w, g, m in rows:
+            if not isinstance(g, int) or not m:
+                print(f"    {'ok  ' if m else 'FAIL'} {n}: pilot {w:,} / extracted {g if not isinstance(g, int) else f'{g:,}'}")
         self.assertEqual([(n, w, g) for n, w, g, m in rows if not m], [])
 
 

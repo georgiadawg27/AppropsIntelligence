@@ -988,6 +988,11 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
 
     selected_nodes = [n for n in nodes if title_filter_ok(n, target_key)]
     observations = build_observations(selected_nodes, cols, unit, page_meta, doc, table_title)
+    # Cells printed as dot leaders: blank, so no observation -- but recorded,
+    # so "printed blank" stays distinguishable from "no such row".
+    printed_blanks = [{"account_path": " / ".join(n.path), "column_header": c["header"], "source_page": n.page}
+                      for n in selected_nodes for c in cols
+                      if c["kind"] == "value" and c["index"] < len(n.cells) and n.cells[c["index"]].get("leader")]
 
     # 5. Validate.
     records, summary = validate_approps.validate(selected_nodes, cols, observations, page_meta, unit)
@@ -1027,6 +1032,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
         },
         "page_routing": [{k: v for k, v in r.items() if k != "text"} for r in routes],
         "observations": observations,
+        "printed_blanks": printed_blanks,
         "validation_records": records,
         "validation_summary": summary,
     }
@@ -1068,16 +1074,37 @@ def missing_ground_truth(gt_path):
             if i.get("amount_dollars") is None]
 
 
+BLANK, NOT_PRINTED = "blank", "not printed"
+
+
 def compare_ground_truth(result, gt_path):
+    """
+    -> (ok, [(name, want, got, match)]). got is the extracted dollar amount,
+    or BLANK when the cell is printed as dot leaders, or NOT_PRINTED when the
+    ground truth says the document has no such row (account_path null), or
+    None when the row wasn't found. The pilot records "no funding" as 0 and
+    has no blank state, so want == 0 matches BLANK and NOT_PRINTED -- callers
+    that need to tell those apart from exact numeric matches look at got.
+    """
     gt = json.loads(Path(gt_path).read_text())
     by_key = {(o["account_path"], o["column_header"]): o for o in result["observations"]}
+    blanks = {(b["account_path"], b["column_header"]) for b in result.get("printed_blanks", [])}
     checks = ground_truth_checks(gt)
     rows, ok = [], True
     for check in checks:
         for item in check["expected"]:
-            o = by_key.get((item["account_path"], check["column_header"]))
-            got = o["amount_dollars"] if o else None
-            match = item["amount_dollars"] is not None and got == item["amount_dollars"]
+            key = (item["account_path"], check["column_header"])
+            o = by_key.get(key)
+            if o is not None:
+                got = o["amount_dollars"]
+            elif item["account_path"] is None:
+                got = NOT_PRINTED
+            elif key in blanks:
+                got = BLANK
+            else:
+                got = None
+            want = item["amount_dollars"]
+            match = want is not None and (got == want or (want == 0 and got in (BLANK, NOT_PRINTED)))
             ok &= match
             name = item["name"] if len(checks) == 1 else f"[{check['series']}] {item['name']}"
             rows.append((name, item["amount_dollars"], got, match))
@@ -1114,7 +1141,7 @@ def print_report(result, gt_rows=None):
     if gt_rows is not None:
         print("\nGround truth:")
         for name, want, got, match in gt_rows:
-            g = f"{got:,}" if got is not None else "MISSING"
+            g = f"{got:,}" if isinstance(got, int) else (got or "MISSING")
             w = f"{want:,}" if want is not None else "(not supplied)"
             tag = "OK  " if match else ("----" if want is None else "FAIL")
             print(f"  {tag} {name:65s} want {w:>16}  got {g:>16}")
