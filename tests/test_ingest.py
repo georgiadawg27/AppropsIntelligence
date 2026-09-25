@@ -138,10 +138,9 @@ class RelatedLookupRouting(unittest.TestCase):
     """Offline: committee reports / public laws are found through each
     matched bill's /related links, not by scanning CRPT / PLAW titles."""
 
-    def test_report_title_never_carries_the_bill_number(self):
+    def test_report_id_never_carries_the_bill_number(self):
         # why the old CRPT scan could never match S. 2354's report
-        title = "DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, AND RELATED AGENCIES APPROPRIATIONS BILL, 2026"
-        self.assertFalse(g.matches_tracked_bill(title, "CRPT-119srpt44", ["S2354"]))
+        self.assertIsNone(g.matches_tracked_bill("CRPT-119srpt44", {"S2354": ("119", "s", "2354")}))
 
     def test_run_expands_matched_bills_through_related(self):
         bills = [{"packageId": "BILLS-119s2354rs", "title": "S. 2354 (RS)"},
@@ -155,7 +154,7 @@ class RelatedLookupRouting(unittest.TestCase):
                 mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: related.get((pid, c), [])), \
                 mock.patch.object(g, "fetch_and_store",
                                   side_effect=lambda pid, k, m: stored.append(pid) or {"package_id": pid, "status": "stored"}):
-            g.run("k", ["S2354"], "2025-01-01T00:00:00Z")
+            g.run("k", ["119S2354"], "2025-01-01T00:00:00Z")
         self.assertEqual([c.args[0] for c in poll.call_args_list], ["BILLS"])   # no CRPT/PLAW scan
         self.assertEqual(stored, ["BILLS-119s2354rs", "BILLS-119s2354is", "CRPT-119srpt44"])
 
@@ -177,11 +176,61 @@ class LiveRelatedLookup(unittest.TestCase):
         bill = {"packageId": "BILLS-119s2354rs",
                 "title": g.api_get("/packages/BILLS-119s2354rs/summary", KEY)["title"]}
         with TempStore() as store, mock.patch.object(g, "fetch_new_packages", return_value=[bill]):
-            results = g.run(KEY, ["S2354"], "2025-01-01T00:00:00Z")
+            results = g.run(KEY, ["119S2354"], "2025-01-01T00:00:00Z")
             self.assertEqual({r["package_id"]: r["status"] for r in results},
                              {"BILLS-119s2354rs": "stored", "CRPT-119srpt44": "stored"})
             self.assertTrue((store / "CRPT-119srpt44.pdf").read_bytes().startswith(b"%PDF"))
             self.assertIn("CRPT-119srpt44", json.loads((store / "manifest.json").read_text()))
+
+
+class TrackedBillMatching(unittest.TestCase):
+    """Exact Congress + type + number matching (ported from
+    claude/govinfo-api-ingestion-ke9hyd, plus Congress pinning)."""
+
+    def tracked(self, *specs, today=None):
+        return {s: g.parse_bill_spec(s, today) for s in specs}
+
+    def test_number_prefix_does_not_match(self):
+        t = self.tracked("119HR884")
+        self.assertIsNone(g.matches_tracked_bill("BILLS-119hr8845rh", t))
+        self.assertEqual(g.matches_tracked_bill("BILLS-119hr884ih", t), "119HR884")
+
+    def test_type_prefix_does_not_match(self):
+        t = self.tracked("119S5")
+        self.assertIsNone(g.matches_tracked_bill("BILLS-119sres5ats", t))
+        self.assertIsNone(g.matches_tracked_bill("BILLS-119s50is", t))
+        self.assertEqual(g.matches_tracked_bill("BILLS-119s5rs", t), "119S5")
+
+    def test_other_congress_same_number_does_not_match(self):
+        t = self.tracked("119HR8845")
+        self.assertIsNone(g.matches_tracked_bill("BILLS-118hr8845ih", t))
+        self.assertEqual(g.matches_tracked_bill("BILLS-119hr8845rh", t), "119HR8845")
+        t118 = self.tracked("118S2321")
+        self.assertEqual(g.matches_tracked_bill("BILLS-118s2321rs", t118), "118S2321")
+        self.assertIsNone(g.matches_tracked_bill("BILLS-119s2321is", t118))
+
+    def test_bare_spec_means_the_current_congress(self):
+        from datetime import date
+        self.assertEqual(g.parse_bill_spec("H.R. 8845", date(2026, 9, 25)), ("119", "hr", "8845"))
+        self.assertEqual(g.parse_bill_spec("S2321", date(2023, 7, 13)), ("118", "s", "2321"))
+        self.assertEqual(g.current_congress(date(2025, 1, 2)), "118")     # 119th convened Jan 3, 2025
+        self.assertEqual(g.current_congress(date(2025, 1, 3)), "119")
+        t = self.tracked("HR8845", today=date(2026, 9, 25))
+        self.assertIsNone(g.matches_tracked_bill("BILLS-118hr8845ih", t))
+        self.assertEqual(g.matches_tracked_bill("BILLS-119hr8845rh", t), "HR8845")
+
+    def test_spellings_and_bad_specs(self):
+        for spec in ("HR8845", "H.R. 8845", "hr-8845", "119hr8845"):
+            self.assertEqual(g.parse_bill_spec(spec)[1:], ("hr", "8845"))
+        self.assertEqual(g.parse_bill_spec("hjres05")[1:], ("hjres", "5"))
+        for bad in ("8845", "HX8845", "HR"):
+            with self.assertRaises(ValueError):
+                g.parse_bill_spec(bad)
+
+    def test_non_bill_packages_never_match(self):
+        t = self.tracked("119S2354")
+        for pid in ("CRPT-119srpt44", "PLAW-119publ4", "", None):
+            self.assertIsNone(g.matches_tracked_bill(pid, t))
 
 
 if __name__ == "__main__":

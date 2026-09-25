@@ -25,12 +25,16 @@ Usage:
 
     # Defaults to the last 7 days if --since is omitted
     python govinfo_ingest.py --tracked-bills HR8845
+
+    # Bill numbers mean the current Congress; prefix one to track another
+    python govinfo_ingest.py --tracked-bills 118S2321 --since 2023-01-01
 """
 
 import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -178,18 +182,57 @@ def fetch_and_store(package_id, api_key, manifest):
     return {"package_id": package_id, "status": "stored", "hash": content_hash, "path": str(out_path)}
 
 
-def matches_tracked_bill(title, package_id, tracked_bills):
+BILL_TYPES = ("hconres", "sconres", "hjres", "sjres", "hres", "sres", "hr", "s")
+BILL_SPEC_RE = re.compile(r"^(?:(\d{2,3}))?(" + "|".join(BILL_TYPES) + r")(\d+)$")
+BILL_PACKAGE_RE = re.compile(r"^BILLS-(\d+)(" + "|".join(BILL_TYPES) + r")(\d+)([a-z]+)$")
+
+
+def current_congress(today=None):
+    """The Congress in session on a date: the 1st began in 1789, each runs two
+    years from January 3 of an odd year (Jan 1-2 of an odd year still belong
+    to the previous one)."""
+    today = today or datetime.now(timezone.utc).date()
+    year = today.year - 1 if today.year % 2 == 1 and (today.month, today.day) < (1, 3) else today.year
+    return str((year - 1789) // 2 + 1)
+
+
+def parse_bill_spec(spec, today=None):
     """
-    Cheap relevance filter: does this package's id or title reference one of
-    the bill numbers you're tracking (e.g. "HR8845", "S2354")? Good enough
-    for a first pass -- a production version would parse the bill number out
-    of packageId directly (e.g. BILLS-119hr8845rh -> hr8845) rather than
-    substring-matching against the title.
+    "HR8845", "H.R. 8845", "hjres5" -> ("119", "hr", "8845") -- pinned to the
+    current Congress, so the same number from another Congress never matches;
+    a congress prefix pins a different one: "118S2321" -> ("118", "s", "2321").
     """
-    if not tracked_bills:
-        return True
-    hay = f"{package_id} {title or ''}".lower().replace("-", "").replace(".", "").replace(" ", "")
-    return any(b.lower().replace(".", "").replace(" ", "") in hay for b in tracked_bills)
+    norm = re.sub(r"[\s.\-]", "", spec).lower()
+    m = BILL_SPEC_RE.match(norm)
+    if not m:
+        raise ValueError(f"can't parse bill number {spec!r} (expected e.g. HR8845, S2354, 118S2321)")
+    return m.group(1) or current_congress(today), m.group(2), str(int(m.group(3)))
+
+
+def parse_bill_package_id(package_id):
+    """BILLS-119hr8845rh -> ("119", "hr", "8845", "rh"), or None."""
+    m = BILL_PACKAGE_RE.match(package_id or "")
+    return (m.group(1), m.group(2), m.group(3), m.group(4)) if m else None
+
+
+def matches_tracked_bill(package_id, tracked):
+    """
+    Exact match on Congress + bill type + number parsed out of the packageId,
+    so HR884 doesn't match hr8845, S5 doesn't match sres5, and 118th-Congress
+    H.R. 8845 doesn't match 119th-Congress H.R. 8845. tracked maps each spec
+    to parse_bill_spec(spec). Returns the matching tracked spec (or "*" when
+    nothing is tracked), else None.
+    """
+    parsed = parse_bill_package_id(package_id)
+    if not parsed:
+        return None
+    if not tracked:
+        return "*"
+    congress, bill_type, number, _ = parsed
+    for spec, (t_congress, t_type, t_number) in tracked.items():
+        if (congress, bill_type, number) == (t_congress, t_type, t_number):
+            return spec
+    return None
 
 
 def check_cbo_estimate(bill_type, bill_number):
@@ -221,6 +264,7 @@ def run(api_key, tracked_bills, since):
     -- so each matched bill is expanded through govinfo's /related service
     instead of scanning the CRPT / PLAW collections.
     """
+    tracked = {spec: parse_bill_spec(spec) for spec in tracked_bills}
     manifest = load_manifest()
     results = []
 
@@ -238,7 +282,7 @@ def run(api_key, tracked_bills, since):
     except (HTTPError, URLError) as e:
         print(f"  Failed to poll BILLS: {e}", file=sys.stderr)
         packages = []
-    bills = [p for p in packages if matches_tracked_bill(p.get("title"), p.get("packageId"), tracked_bills)]
+    bills = [p for p in packages if matches_tracked_bill(p.get("packageId"), tracked)]
     print(f"  {len(packages)} packages modified, {len(bills)} match tracked bills")
     for pkg in bills:
         store(pkg["packageId"])
@@ -265,7 +309,7 @@ def main():
     parser = argparse.ArgumentParser(description="Detect and store new govinfo.gov documents for tracked bills.")
     parser.add_argument("--api-key", default=os.environ.get("GOVINFO_API_KEY"),
                         help="api.data.gov key; defaults to GOVINFO_API_KEY from .env (https://api.data.gov/signup/)")
-    parser.add_argument("--tracked-bills", default="", help="Comma-separated bill numbers, e.g. HR8845,S2354")
+    parser.add_argument("--tracked-bills", default="", help="Comma-separated bill numbers, e.g. HR8845,S2354 (current Congress) or 118S2321")
     parser.add_argument("--since", default=None, help="ISO date to check from, e.g. 2026-01-01 (default: 7 days ago)")
     args = parser.parse_args()
     if not args.api_key:
@@ -278,6 +322,11 @@ def main():
         since = f"{since}T00:00:00Z"
 
     tracked = [b.strip() for b in args.tracked_bills.split(",") if b.strip()]
+    try:
+        for spec in tracked:
+            parse_bill_spec(spec)
+    except ValueError as e:
+        parser.error(str(e))
     run(args.api_key, tracked, since)
 
 
