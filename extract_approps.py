@@ -59,6 +59,7 @@ shell's inherited environment.
 """
 
 import argparse
+from collections import Counter
 import base64
 import hashlib
 import json
@@ -464,13 +465,29 @@ def classify_row(row, cells):
             (printed and all(c["paren"] for c in printed if c["kind"] != "dash")
              and any(c["paren"] for c in printed)):
         return "memo"
+    # Rollups are recognised by label text alone -- never by indentation or a
+    # model-judged rule line. Checked against every House and Senate table
+    # read so far: every row with one of these labels is a rollup, and no
+    # rollup row lacks one except Senate's "...reclassification (emergency)"
+    # (left as a line, so its parent's total fails loudly and is flagged).
     if low.startswith("grand total"):
         return "grand_total"
     if low.startswith("total"):
         return "total"
-    if low.startswith("subtotal") or row.get("rule_above", "none") != "none":
+    if low.startswith("subtotal") or is_account_rollup(label):
         return "subtotal"
     return "line"
+
+
+TRAILING_TOTAL_RE = re.compile(r"\S\s+total$", re.I)
+
+
+def is_account_rollup(label):
+    """Rollups of a single account: "Direct appropriation" (the account net of
+    its own offsetting collections / transfers) and "<account> Total" (e.g.
+    House "OIG Total")."""
+    low = label.strip().lower()
+    return low == "direct appropriation" or bool(TRAILING_TOTAL_RE.search(low) and not low.startswith(("total", "subtotal", "grand total")))
 
 
 class Node:
@@ -567,6 +584,40 @@ def build_hierarchy(rows, table_starts_with_title):
                 node.parent_line = prev
                 node.path = frame_path() + [prev.label, label]
             top.items.append(node)
+
+        elif kind == "subtotal" and is_account_rollup(label):
+            # One account's rollup. Its children are the lines since the last
+            # heading or rollup -- unless some of those are indent-nested (the
+            # House prints an account's offsets indented under it), in which
+            # case only the last top-level line and the lines nested under it.
+            # "<account> Total" always takes the last top-level line and its
+            # nested lines. The arithmetic check on the rollup then tests the
+            # grouping indentation produced.
+            tail = []
+            for item in reversed(top.items[top.run_start:]):
+                if item.kind != "line":
+                    break
+                tail.insert(0, item)
+            in_tail = {id(n) for n in tail}
+            top_level = [i for i, n in enumerate(tail)
+                         if n.parent_line is None or id(n.parent_line) not in in_tail]
+            has_nesting = len(top_level) < len(tail)
+            if label.strip().lower() == "direct appropriation" and not has_nesting:
+                group = tail
+            else:
+                group = tail[top_level[-1]:] if top_level else []
+            in_group = {id(n) for n in group}
+            node.children = group
+            if group:
+                # name it for its account: several "Direct appropriation"
+                # rows can sit under one heading
+                node.path = frame_path() + [group[0].label, label]
+            # "_nested": the grouping came from model-read indentation, so this
+            # rollup's arithmetic is what confirms (or refutes) that nesting.
+            node.match = "single_account_nested" if any(
+                n.parent_line is not None and id(n.parent_line) in in_group for n in group) else "single_account"
+            node.complete = top.complete and bool(group)
+            top.items = top.items[:len(top.items) - len(group)] + [node]
 
         elif kind == "subtotal":
             # "Subtotal, Exploration" (Senate) rolls up only the lines named
@@ -738,6 +789,7 @@ def build_observations(nodes, cols, unit, page_meta, doc, table_title):
     """One observation per (row, value column). Delta columns are derivable and
     produce none; headings produce none."""
     obs = []
+    seen_keys = Counter()
     mult = UNIT_MULTIPLIERS[unit]
     for node in nodes:
         for col in cols:
@@ -748,6 +800,10 @@ def build_observations(nodes, cols, unit, page_meta, doc, table_title):
                 continue
             amount = cell["value"]
             key = f"{doc['package_id']}|p{node.page}|{' / '.join(node.path)}|{col['header']}"
+            # the same label can repeat under one heading on one page; keep ids distinct
+            seen_keys[key] += 1
+            if seen_keys[key] > 1:
+                key += f"|#{seen_keys[key]}"
             src = page_meta[node.page]
             t = amount_type_for(node)
             heading_frames = node.frames

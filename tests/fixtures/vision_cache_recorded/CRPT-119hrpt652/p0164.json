@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 164,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:44.736332+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:09:21.820534+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "United States Marshals Service",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "United States Marshals Service"
+      },
+      {
+        "label": "Salaries and expenses",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "1,702,000",
+          "1,741,000",
+          "+39,000"
+        ],
+        "raw_text": "Salaries and expenses.................................. 1,702,000 1,741,000 +39,000"
+      },
+      {
+        "label": "Construction",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "8,000",
+          "8,000",
+          "---"
+        ],
+        "raw_text": "Construction........................................... 8,000 8,000 ---"
+      },
+      {
+        "label": "Federal Prisoner Detention",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "2,236,000",
+          "2,996,363",
+          "+760,363"
+        ],
+        "raw_text": "Federal Prisoner Detention............................. 2,236,000 2,996,363 +760,363"
+      },
+      {
+        "label": "Total, United States Marshals Service",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "3,946,000",
+          "4,745,363",
+          "+799,363"
+        ],
+        "raw_text": "Total, United States Marshals Service.......... 3,946,000 4,745,363 +799,363"
+      },
+      {
+        "label": "National Security Division",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "National Security Division"
+      },
+      {
+        "label": "Salaries and expenses",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "117,200",
+          "121,000",
+          "+3,800"
+        ],
+        "raw_text": "Salaries and expenses.................................. 117,200 121,000 +3,800"
+      },
+      {
+        "label": "Interagency Law Enforcement",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Interagency Law Enforcement"
+      },
+      {
+        "label": "Interagency Crime and Drug Enforcement",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "300,000",
+          "483,735",
+          "+183,735"
+        ],
+        "raw_text": "Interagency Crime and Drug Enforcement................. 300,000 483,735 +183,735"
+      }
+    ],
+    "legibility_notes": "Page number 164 printed sideways in right margin; text otherwise clear."
+  }
+}

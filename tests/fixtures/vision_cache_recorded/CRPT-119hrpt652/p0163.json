@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 163,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:42.000751+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:09:12.025786+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "Legal Activities",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Legal Activities"
+      },
+      {
+        "label": "Salaries and expenses, general legal activities",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "900,000",
+          "1,015,000",
+          "+115,000"
+        ],
+        "raw_text": "Salaries and expenses, general legal activities....... 900,000 1,015,000 +115,000"
+      },
+      {
+        "label": "Vaccine Injury Compensation Trust Fund",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "22,700",
+          "22,700",
+          "---"
+        ],
+        "raw_text": "Vaccine Injury Compensation Trust Fund............... 22,700 22,700 ---"
+      },
+      {
+        "label": "Salaries and expenses, Antitrust Division",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "310,000",
+          "313,000",
+          "+3,000"
+        ],
+        "raw_text": "Salaries and expenses, Antitrust Division............ 310,000 313,000 +3,000"
+      },
+      {
+        "label": "Offsetting fee collections - current year",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-310,000",
+          "-313,000",
+          "-3,000"
+        ],
+        "raw_text": "Offsetting fee collections - current year........ -310,000 -313,000 -3,000"
+      },
+      {
+        "label": "Direct appropriation",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "---",
+          "---",
+          "---"
+        ],
+        "raw_text": "Direct appropriation......................... --- --- ---"
+      },
+      {
+        "label": "Salaries and expenses, United States Attorneys",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "2,621,000",
+          "2,748,577",
+          "+127,577"
+        ],
+        "raw_text": "Salaries and expenses, United States Attorneys........ 2,621,000 2,748,577 +127,577"
+      },
+      {
+        "label": "United States Trustee System Fund",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "205,000",
+          "197,702",
+          "-7,298"
+        ],
+        "raw_text": "United States Trustee System Fund................... 205,000 197,702 -7,298"
+      },
+      {
+        "label": "Offsetting fee collections",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-205,000",
+          "-279,000",
+          "-74,000"
+        ],
+        "raw_text": "Offsetting fee collections...................... -205,000 -279,000 -74,000"
+      },
+      {
+        "label": "Direct appropriation",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "---",
+          "-81,298",
+          "-81,298"
+        ],
+        "raw_text": "Direct appropriation......................... --- -81,298 -81,298"
+      },
+      {
+        "label": "Salaries and expenses, Foreign Claims Settlement Commission",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "2,504",
+          "2,512",
+          "+8"
+        ],
+        "raw_text": "Salaries and expenses, Foreign Claims Settlement Commission.................................... 2,504 2,512 +8"
+      },
+      {
+        "label": "Fees and expenses of witnesses",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "320,000",
+          "320,000",
+          "---"
+        ],
+        "raw_text": "Fees and expenses of witnesses....................... 320,000 320,000 ---"
+      },
+      {
+        "label": "Salaries and expenses, Community Relations Service",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "20,000",
+          "---",
+          "-20,000"
+        ],
+        "raw_text": "Salaries and expenses, Community Relations Service.... 20,000 --- -20,000"
+      },
+      {
+        "label": "Assets Forfeiture Fund",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "20,514",
+          "20,514",
+          "---"
+        ],
+        "raw_text": "Assets Forfeiture Fund............................... 20,514 20,514 ---"
+      },
+      {
+        "label": "Total, Legal Activities",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "3,906,718",
+          "4,048,005",
+          "+141,287"
+        ],
+        "raw_text": "Total, Legal Activities...................... 3,906,718 4,048,005 +141,287"
+      }
+    ],
+    "legibility_notes": "Page number 163 printed sideways in right margin."
+  }
+}

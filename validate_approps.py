@@ -91,6 +91,7 @@ def validate(nodes, cols, observations, page_meta, unit):
     delta_cols = [c for c in cols if c["kind"] == "delta"]
 
     # --- rollups: table_total / structural -------------------------------
+    rollup_results = defaultdict(list)          # node id -> results over value columns
     for node in nodes:
         if node.kind not in ("subtotal", "total", "grand_total"):
             continue
@@ -116,6 +117,7 @@ def validate(nodes, cols, observations, page_meta, unit):
                 + (f" -- {note}" if note else ""))
             if col["kind"] != "value":
                 continue
+            rollup_results[node.id].append(result)
             obs = obs_by.get((node.id, col["index"]))
             if obs is None:
                 continue
@@ -192,6 +194,15 @@ def validate(nodes, cols, observations, page_meta, unit):
             sums.append((col, stated, sum(kid_vals)))
         confirmed = bool(sums) and all(stated == total for _, stated, total in sums)
         detail = "; ".join(f"[{c['header']}] {_fmt(st)} vs {_fmt(t)}" for c, st, t in sums)
+        # ...or an account rollup whose children were picked by that very
+        # nesting ("Direct appropriation" = account + its indented offsets)
+        # adds up: a wrong indent would have given it different children.
+        group = {parent.id} | {k.id for k in kids}
+        for r in nodes:
+            if (getattr(r, "match", None) == "single_account_nested" and {c.id for c in r.children} == group
+                    and rollup_results.get(r.id) and all(x == "pass" for x in rollup_results[r.id])):
+                confirmed = True
+                detail = f"confirmed by {r.label!r} (p{r.page}) = {parent.label!r} + its indented lines"
         for kid in kids:
             for col in value_cols:
                 obs = obs_by.get((kid.id, col["index"]))
