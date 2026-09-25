@@ -30,8 +30,8 @@ How detection works (verified against the live API):
 Usage:
     python govinfo_ingest.py --api-key YOUR_KEY --tracked-bills HR8845,S2354 --since 2026-01-01
 
-    # Key can come from the environment instead of the command line
-    GOVINFO_API_KEY=... python govinfo_ingest.py --tracked-bills HR8845
+    # Or put GOVINFO_API_KEY in .env at the project root (see .env.example)
+    python govinfo_ingest.py --tracked-bills HR8845
 
     # Defaults to the last 7 days if --since is omitted
     python govinfo_ingest.py --api-key YOUR_KEY --tracked-bills HR8845
@@ -49,6 +49,12 @@ from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+
+from dotenv import load_dotenv
+
+# Project-root .env holds both GOVINFO_API_KEY and ANTHROPIC_API_KEY. Real
+# environment variables still win over .env values.
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 API_BASE = "https://api.govinfo.gov"
 RELATED_COLLECTIONS = ["CRPT", "PLAW"]
@@ -319,13 +325,13 @@ def main():
     parser.add_argument(
         "--api-key",
         default=os.environ.get("GOVINFO_API_KEY"),
-        help="api.data.gov key (get one at https://api.data.gov/signup/); defaults to $GOVINFO_API_KEY",
+        help="api.data.gov key (get one at https://api.data.gov/signup/); defaults to GOVINFO_API_KEY from .env",
     )
     parser.add_argument("--tracked-bills", default="", help="Comma-separated bill numbers, e.g. HR8845,S2354")
     parser.add_argument("--since", default=None, help="ISO date to check from, e.g. 2026-01-01 (default: 7 days ago)")
     args = parser.parse_args()
     if not args.api_key:
-        parser.error("an API key is required: pass --api-key or set GOVINFO_API_KEY")
+        parser.error("an API key is required: pass --api-key or set GOVINFO_API_KEY in .env")
 
     since = args.since
     if not since:
