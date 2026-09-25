@@ -74,6 +74,8 @@ from pathlib import Path
 import pymupdf
 from dotenv import load_dotenv
 
+import accounts
+import ocr_tables
 import text_tables
 import validate_approps
 
@@ -125,10 +127,30 @@ BILL_VERSION_STAGES = {
 }
 
 
-def describe_package(package_id):
-    """Source Document fields that follow from a govinfo package id alone."""
+MANUAL_DOC_TYPES = {"jes": "joint_explanatory_statement", "committee_report": "committee_report",
+                    "bill": "bill", "public_law": "public_law", "other": "other"}
+STAGE_CHAMBER = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
+                 "Senate Passed": "Senate", "Enacted": "N/A", "President's Budget": "N/A"}
+
+
+def load_manifest_entry(package_id, manifest_path):
+    try:
+        return json.loads(Path(manifest_path).read_text()).get(package_id)
+    except (OSError, ValueError):
+        return None
+
+
+def describe_package(package_id, manifest_entry=None):
+    """Source Document fields that follow from a govinfo package id alone --
+    or, for a manually ingested document, from what was recorded at ingest."""
     info = {"package_id": package_id, "document_type": "other", "stage": None,
             "chamber": None, "congress_session": None, "bill_id": None, "report_id": None}
+    if manifest_entry and manifest_entry.get("ingest_method") == "manual":
+        stage = manifest_entry.get("stage")
+        info.update(document_type=MANUAL_DOC_TYPES.get(manifest_entry.get("doc_type"), "other"),
+                    stage=stage, chamber=STAGE_CHAMBER.get(stage),
+                    bill_id=manifest_entry.get("bill_id"), report_id=manifest_entry.get("report_id"))
+        return info
     m = re.match(r"CRPT-(\d+)([hs])rpt(\d+)", package_id)
     if m:
         congress, ch, num = m.groups()
@@ -197,6 +219,10 @@ def route_page(page):
     content = content_text(raw)
     if PLACEHOLDER_RE.search(raw):
         route, reason = "vision", "gpo_offset_folio_placeholder"
+    elif len(content) >= MIN_CONTENT_CHARS and ocr_tables.has_ocr_layer(page):
+        # a scan with an invisible OCR text layer: read that text for free,
+        # with a vision re-read only for pages that fail the arithmetic gate
+        route, reason = "ocr", "ocr_text_layer_over_scan"
     elif len(content) < MIN_CONTENT_CHARS:
         route, reason = "vision", f"near_empty_text_layer ({len(content)} chars)"
     else:
@@ -390,7 +416,10 @@ def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
         if result.get("orientation_ok"):
             total["seconds"] = round(total["seconds"], 1)
             return result, total, rot, used_dpi
-    raise VisionError(f"page {page.number + 1}: no upright rendering among rotations {tried}")
+    err = VisionError(f"page {page.number + 1}: no upright rendering among rotations {tried}")
+    total["seconds"] = round(total["seconds"], 1)
+    err.usage = total                  # those calls were paid for: the caller logs them
+    raise err
 
 
 # ---------------------------------------------------------------------------
@@ -428,6 +457,13 @@ def norm_name(s):
     s = s.lower().replace("&", "and")
     s = re.sub(r"[^a-z0-9 ]+", " ", s)
     return re.sub(r"\s+", " ", s).strip()
+
+
+def squash(s):
+    """Letters and digits only: how a rollup label is compared with the
+    section or lines it names, so OCR's stray spaces ("Expl oration",
+    "Nat ional Aeronautics") don't break the match."""
+    return norm_name(s).replace(" ", "")
 
 
 def title_key(label):
@@ -487,7 +523,9 @@ def is_account_rollup(label):
     its own offsetting collections / transfers) and "<account> Total" (e.g.
     House "OIG Total")."""
     low = label.strip().lower()
-    return low == "direct appropriation" or bool(TRAILING_TOTAL_RE.search(low) and not low.startswith(("total", "subtotal", "grand total")))
+    letters = re.sub(r"[^a-z]", "", low)          # OCR splits words: "Di rect appropriation"
+    return letters == "directappropriation" or bool(TRAILING_TOTAL_RE.search(low)
+                                                    and not low.startswith(("total", "subtotal", "grand total")))
 
 
 class Node:
@@ -602,7 +640,7 @@ def build_hierarchy(rows, table_starts_with_title):
             top_level = [i for i, n in enumerate(tail)
                          if n.parent_line is None or id(n.parent_line) not in in_tail]
             has_nesting = len(top_level) < len(tail)
-            if label.strip().lower() == "direct appropriation" and not has_nesting:
+            if re.sub(r"[^a-z]", "", label.lower()) == "directappropriation" and not has_nesting:
                 group = tail
             else:
                 group = tail[top_level[-1]:] if top_level else []
@@ -625,12 +663,12 @@ def build_hierarchy(rows, table_starts_with_title):
             # (emergency)"), and doesn't close the run: a later unnamed
             # "Subtotal" still includes it. A bare "Subtotal" (House) sums
             # everything since the previous bare subtotal.
-            m = re.match(r"subtotal\s*,\s*(.+)", label, flags=re.I)
-            named = norm_name(m.group(1)) if m else None
+            m = re.match(r"subtotal\s*[,.]\s*(.+)", label, flags=re.I)
+            named = squash(m.group(1)) if m else None
             n = 0
             if named:
                 run = top.items[top.run_start:]
-                while n < len(run) and run[-1 - n].kind == "line" and norm_name(run[-1 - n].label).startswith(named):
+                while n < len(run) and run[-1 - n].kind == "line" and squash(run[-1 - n].label).startswith(named):
                     n += 1
             if n:
                 node.children = top.items[len(top.items) - n:]
@@ -647,22 +685,30 @@ def build_hierarchy(rows, table_starts_with_title):
         elif kind == "grand_total":
             while len(stack) > 1:
                 fold_into_parent()
-            node.children = [n for n in root.items]
+            # a grand total sums the title-level totals, never another grand
+            # total printed above it; "Grand total excluding <X>" leaves out
+            # the total named X
+            node.children = [n for n in root.items if n.kind != "grand_total"]
+            m = re.search(r"\bexcluding\s+(.+)$", label, flags=re.I)
+            if m:
+                excluded = squash(m.group(1))
+                node.children = [n for n in node.children
+                                 if not squash(re.sub(r"^total\s*[,.]?\s*", "", n.label, flags=re.I)).startswith(excluded)]
             node.match = "title_totals"
             node.complete = root.complete
             node.path, node.frames = [label], []
             root.items.append(node)
 
         elif kind == "total":
-            target = norm_name(re.sub(r"^total\s*,?\s*", "", label, flags=re.I))
-            tkey = title_key(target)
+            target = squash(re.sub(r"^total\s*[,.]?\s*", "", label, flags=re.I))
+            tkey = title_key(re.sub(r"^total\s*[,.]?\s*", "", label, flags=re.I))
             idx = None
             for i in range(len(stack) - 1, 0, -1):
                 f = stack[i]
                 if f.kind == "title" and tkey and title_key(f.name) == tkey:
                     idx = i
                     break
-                fn = norm_name(f.name)
+                fn = squash(f.name)
                 if f.kind == "heading" and fn and (fn == target or target.startswith(fn) or fn.startswith(target)):
                     idx = i
                     break
@@ -719,7 +765,7 @@ def classify_columns(headers, bill_fy, doc_stage):
             elif "request" in low or "budget estimate" in low:
                 col["stage"] = "President's Budget"
                 col["fiscal_year"] = col["fiscal_year"] or bill_fy
-            elif low == "bill" or low.startswith("bill") or "recommend" in low:
+            elif low == "bill" or low.startswith(("bill", "final bill")) or "recommend" in low:
                 col["stage"] = doc_stage
                 col["fiscal_year"] = col["fiscal_year"] or bill_fy
         cols.append(col)
@@ -768,6 +814,10 @@ def amount_type_for(node):
     elif "offsetting" in low or "fee collection" in low:
         t["amount_type"] = "offsetting_collection"
         t["offsetting_collections"] = True
+    elif re.search(r"\(\s*emergency\s*\)\s*$", low):
+        # an emergency line is a separate supplemental observation, as the
+        # pilot stores Exploration / CECR / R&RA
+        t["amount_type"] = "supplemental"
     return t
 
 
@@ -868,14 +918,44 @@ def title_filter_ok(node, target_key):
     return target_key is None or title_key(node.title or "") == target_key
 
 
+def source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts):
+    """Source Document row: govinfo-fetched or manually ingested (proposal
+    approved 2026-09-25: ingest_method, advance_copy, confirmation_status,
+    reconciled_with_document_id, ingested_by)."""
+    m = manifest_entry or {}
+    manual = m.get("ingest_method") == "manual"
+    return {
+        "document_id": str(uuid.uuid5(OBS_NAMESPACE, f"{package_id}|{pdf_sha}")),
+        "package_id": package_id,
+        "source_agency": m.get("source_agency") or ("manual ingest" if manual else "GPO"),
+        "url_or_identifier": (m.get("source_url") or f"manual:{package_id}") if manual
+        else f"https://api.govinfo.gov/packages/{package_id}/pdf",
+        "content_sha256": pdf_sha,
+        "document_type": doc["document_type"],
+        "fiscal_year": m.get("fiscal_year"),
+        "stage": doc["stage"],
+        "congress_session": doc["congress_session"],
+        "subcommittee": m.get("subcommittee") or detect_subcommittee(page_texts),
+        "report_id": doc["report_id"],
+        "bill_id": doc["bill_id"],
+        "retrieval_timestamp": m.get("fetched_at") or m.get("ingested_at"),
+        "ingest_method": "manual" if manual else "govinfo_api",
+        "ingested_by": m.get("ingested_by"),
+        "advance_copy": bool(m.get("advance_copy")),
+        "confirmation_status": m.get("confirmation_status") or ("official" if not manual else None),
+        "reconciled_with_document_id": m.get("reconciled_with_document_id"),
+    }
+
+
 def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=False,
-        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False):
+        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False, manifest_path=None):
     pdf_path = Path(pdf_path)
     data = pdf_path.read_bytes()
     pdf_sha = hashlib.sha256(data).hexdigest()
     package_id = pdf_path.stem
     doc_pdf = pymupdf.open(stream=data, filetype="pdf")
-    doc = describe_package(package_id)
+    manifest_entry = load_manifest_entry(package_id, manifest_path or pdf_path.parent / "manifest.json")
+    doc = describe_package(package_id, manifest_entry)
     cache = VisionCache(cache_dir, package_id, pdf_sha)
     if live and offline:
         raise SystemExit("--live and --offline are mutually exclusive")
@@ -889,10 +969,14 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     routes = [route_page(doc_pdf[i]) for i in range(len(doc_pdf))]
     vision_pages = [r["page"] for r in routes if r["route"] == "vision"]
     text_table_pages = text_tables.find_table_pages(doc_pdf, [r["page"] for r in routes if r["route"] == "text"])
-    log(f"{package_id}: {len(routes)} pages, {len(routes) - len(vision_pages)} text, "
-        f"{len(vision_pages)} image-only -> vision")
+    ocr_page_list = [r["page"] for r in routes if r["route"] == "ocr"]
+    ocr_table_pages = ocr_tables.find_table_pages(doc_pdf, ocr_page_list) if ocr_page_list else []
+    log(f"{package_id}: {len(routes)} pages, {len(routes) - len(vision_pages) - len(ocr_page_list)} text, "
+        f"{len(ocr_page_list)} scanned with an OCR layer, {len(vision_pages)} image-only -> vision")
     if text_table_pages:
         log(f"  text-native comparative-table pages (read from the text layer, no API call): {text_table_pages}")
+    if ocr_table_pages:
+        log(f"  OCR comparative-table pages (read from the OCR layer, vision only where it fails): {ocr_table_pages}")
 
     client = None
 
@@ -963,6 +1047,42 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
 
     done = [p for p in table_pages if ensure_transcribed(p)]
 
+    def vision_reread(p, table_headers):
+        """Re-read an OCR page with a vision call (cached like any other).
+        -> a new entry, or a string saying why the OCR reading is kept."""
+        entry = None if live else cache.load(p)
+        if entry and entry["meta"].get("fallback_failed"):
+            return f"vision re-read failed on an earlier run, not retried ({entry['meta']['fallback_failed']})"
+        if not (entry and entry.get("transcription") and entry["meta"].get("fallback_from") == "ocr_text"):
+            page = doc_pdf[p - 1]
+            # the text's direction is in the page's unrotated space; the
+            # rendering already applies the page's own /Rotate
+            direction = text_tables.page_geometry(page)["direction"]
+            rot = ({(1, 0): 0, (0, -1): 90, (-1, 0): 180, (0, 1): 270}.get(direction, 0) - page.rotation) % 360
+            try:
+                result, usage, used_rot, used_dpi = transcribe_page(get_client(), model, page,
+                                                                    rot, dpi, use_fallbacks)
+            except VisionError as e:
+                if getattr(e, "usage", None):
+                    usage_log.append(("transcribe", p, e.usage))
+                    cache.save(p, {"meta": {"pdf_sha256": pdf_sha, "page": p, "fallback_from": "ocr_text",
+                                            "fallback_failed": str(e), "failed_at": _now()},
+                                   "transcription": None})
+                return f"vision unavailable ({e})"
+            entry = {"meta": {"pdf_sha256": pdf_sha, "page": p, "model": usage["model"],
+                              "prompt_version": PROMPT_VERSION, "source": "claude_api", "rotation": used_rot,
+                              "dpi": used_dpi, "transcribed_at": _now(), "fallback_from": "ocr_text"},
+                     "transcription": result}
+            usage_log.append(("transcribe", p, usage))
+            cache.save(p, entry)
+        tr = entry["transcription"]
+        got = [ocr_tables.header_key(h) for h in tr.get("column_headers", [])]
+        want = [ocr_tables.header_key(h) for h in table_headers]
+        if got != want:
+            return f"vision read headers {tr.get('column_headers')} != table's {table_headers}"
+        tr["column_headers"] = list(table_headers)
+        return {"meta": dict(entry["meta"]), "transcription": tr}
+
     # 3b. Text-native table pages: every one is read (no cost); the title
     #     filter is applied to the hierarchy below, so rollups keep complete
     #     children.
@@ -973,6 +1093,16 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                       "transcription": tr}
         done.append(p)
     all_table_pages = sorted(set(all_table_pages) | set(text_table_pages))
+
+    # 3c. OCR table pages: read from the OCR layer; the arithmetic gate below
+    #     decides which of them need a vision re-read.
+    ocr_issues = {}
+    if ocr_table_pages:
+        ocr_trs, ocr_issues = ocr_tables.extract_table(doc_pdf, ocr_table_pages)
+        for p, tr in ocr_trs.items():
+            entries[p] = {"meta": {"pdf_sha256": pdf_sha, "page": p, "source": "ocr_text"}, "transcription": tr}
+            done.append(p)
+        all_table_pages = sorted(set(all_table_pages) | set(ocr_table_pages))
 
     def title_total_seen():
         for p in done:
@@ -990,85 +1120,129 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
         if not title_total_seen():
             log(f"  WARNING: never found the total row for {title}")
 
-    # 4. Rows -> hierarchy -> observations.
-    page_meta = {}
-    rows = []
-    units_by_page = {}
-    headers = None
-    table_title = ""
-    for p in sorted(set(done)):
-        entry = entries[p]
-        tr = entry["transcription"]
-        src = entry["meta"].get("source", "claude_api")
-        method = {"manual_transcription": "human-entered", "text_layer": "text-extracted"}.get(src, "AI-extracted")
-        page_meta[p] = {"extraction_method": method,
-                        "source": src, "model": entry["meta"].get("model"),
-                        "units_declared": tr.get("units_declared", ""),
-                        "units_parsed": parse_units(tr.get("units_declared", "")),
-                        "column_headers": tr.get("column_headers", []),
-                        "legibility_notes": tr.get("legibility_notes", "")}
-        if "column_headers_from_page" in tr:
-            page_meta[p]["column_headers_from_page"] = tr["column_headers_from_page"]
-        units_by_page[p] = tr.get("units_declared", "")
-        if headers is not None and tr["column_headers"] != headers:
-            raise SystemExit(f"p{p} column headers {tr['column_headers']} differ from {headers} "
-                             f"on an earlier page of the same table")
-        headers = headers or tr["column_headers"]
-        table_title = table_title or tr.get("table_title", "")
-        for r in tr["rows"]:
-            vals = list(r.get("values", []))
-            vals += [""] * (len(tr["column_headers"]) - len(vals))
-            rows.append((p, r, [parse_cell(v) for v in vals]))
-
-    if not rows:
-        if not vision_pages:
-            raise SystemExit(f"{package_id}: no comparative statement found -- all {len(routes)} pages have a "
-                             "text layer and none matched the table's header pattern and column layout")
-        raise SystemExit("nothing transcribed -- set ANTHROPIC_API_KEY or point --cache-dir at recorded pages")
-
-    first_table_page = all_table_pages[0] if all_table_pages else None
-    starts_with_title = bool(rows) and done and min(done) == first_table_page and \
-        classify_row(rows[0][1], rows[0][2]) == "title_heading"
-    Node._seq = 0
-    nodes = build_hierarchy(rows, starts_with_title)
-
-    m = re.search(r"BILL\s+FOR\s+(?:FISCAL\s+YEAR\s+)?(\d{4})", table_title, re.I)
-    bill_fy = int(m.group(1)) if m else None
-    cols = classify_columns(headers, bill_fy, doc["stage"])
-    sign_check = text_tables.sign_glyph_check(text_trs, cols) if text_trs else {}
-
-    declared_units = {parse_units(u) for u in units_by_page.values()}
-    unit = next(iter(declared_units)) if len(declared_units) == 1 else None
-    if unit is None:
-        raise SystemExit(f"table pages disagree on units (or declare none): {units_by_page}")
-
-    selected_nodes = [n for n in nodes if title_filter_ok(n, target_key)]
-    observations = build_observations(selected_nodes, cols, unit, page_meta, doc, table_title)
-    # Cells printed as dot leaders: blank, so no observation -- but recorded,
-    # so "printed blank" stays distinguishable from "no such row".
-    printed_blanks = [{"account_path": " / ".join(n.path), "column_header": c["header"], "source_page": n.page}
-                      for n in selected_nodes for c in cols
-                      if c["kind"] == "value" and c["index"] < len(n.cells) and n.cells[c["index"]].get("leader")]
-
-    # 5. Validate.
-    records, summary = validate_approps.validate(selected_nodes, cols, observations, page_meta, unit)
-
+    # 4-5. Rows -> hierarchy -> observations -> validation.
     page_texts = [r["text"] for r in routes]
-    source_document = {
-        "document_id": str(uuid.uuid5(OBS_NAMESPACE, f"{package_id}|{pdf_sha}")),
-        "package_id": package_id,
-        "source_agency": "GPO",
-        "url_or_identifier": f"https://api.govinfo.gov/packages/{package_id}/pdf",
-        "content_sha256": pdf_sha,
-        "document_type": doc["document_type"],
-        "fiscal_year": bill_fy,
-        "stage": doc["stage"],
-        "congress_session": doc["congress_session"],
-        "subcommittee": detect_subcommittee(page_texts),
-        "report_id": doc["report_id"],
-        "bill_id": doc["bill_id"],
-        "retrieval_timestamp": None,
-    }
+    source_document = source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
+    ocr_document = bool(ocr_table_pages)
+
+    def assemble():
+        page_meta, rows, units_by_page, headers, table_title = {}, [], {}, None, ""
+        for p in sorted(set(done)):
+            entry = entries[p]
+            tr = entry["transcription"]
+            src = entry["meta"].get("source", "claude_api")
+            method = {"manual_transcription": "human-entered", "text_layer": "text-extracted",
+                      "ocr_text": "text-extracted"}.get(src, "AI-extracted")
+            page_meta[p] = {"extraction_method": method,
+                            "source": src, "model": entry["meta"].get("model"),
+                            "units_declared": tr.get("units_declared", ""),
+                            "units_parsed": parse_units(tr.get("units_declared", "")),
+                            "column_headers": tr.get("column_headers", []),
+                            "legibility_notes": tr.get("legibility_notes", "")}
+            for k in ("column_headers_from_page", "fallback_from", "fallback_reason"):
+                v = tr.get(k) if k == "column_headers_from_page" else entry["meta"].get(k)
+                if v is not None:
+                    page_meta[p][k] = v
+            units_by_page[p] = tr.get("units_declared", "")
+            if headers is not None and tr["column_headers"] != headers:
+                raise SystemExit(f"p{p} column headers {tr['column_headers']} differ from {headers} "
+                                 f"on an earlier page of the same table")
+            headers = headers or tr["column_headers"]
+            table_title = table_title or tr.get("table_title", "")
+            for r in tr["rows"]:
+                vals = list(r.get("values", []))[:len(tr["column_headers"])]
+                vals += [""] * (len(tr["column_headers"]) - len(vals))
+                rows.append((p, r, [parse_cell(v) for v in vals]))
+
+        if not rows:
+            if not vision_pages:
+                raise SystemExit(f"{package_id}: no comparative statement found -- all {len(routes)} pages have a "
+                                 "text layer and none matched the table's header pattern and column layout")
+            raise SystemExit("nothing transcribed -- set ANTHROPIC_API_KEY or point --cache-dir at recorded pages")
+
+        first_table_page = all_table_pages[0] if all_table_pages else None
+        starts_with_title = bool(rows) and done and min(done) == first_table_page and \
+            classify_row(rows[0][1], rows[0][2]) == "title_heading"
+        Node._seq = 0
+        nodes = build_hierarchy(rows, starts_with_title)
+
+        m = re.search(r"BILL\s+FOR\s+(?:FISCAL\s+YEAR\s+)?(\d{4})|\bACT\s*,\s*(\d{4})", table_title, re.I)
+        bill_fy = int(m.group(1) or m.group(2)) if m else (manifest_entry or {}).get("fiscal_year")
+        cols = classify_columns(headers, bill_fy, doc["stage"])
+
+        declared_units = {parse_units(u) for u in units_by_page.values()}
+        unit = next(iter(declared_units)) if len(declared_units) == 1 else None
+        if unit is None:
+            raise SystemExit(f"table pages disagree on units (or declare none): {units_by_page}")
+
+        selected = [n for n in nodes if title_filter_ok(n, target_key)]
+        observations = build_observations(selected, cols, unit, page_meta, doc, table_title)
+        # Cells printed as dot leaders: blank, so no observation -- but recorded,
+        # so "printed blank" stays distinguishable from "no such row".
+        printed_blanks = [{"account_path": " / ".join(n.path), "column_header": c["header"], "source_page": n.page}
+                          for n in selected for c in cols
+                          if c["kind"] == "value" and c["index"] < len(n.cells) and n.cells[c["index"]].get("leader")]
+        account_rows = []
+        if ocr_document:
+            # OCR labels are noisy ("Sci e nee"): match each row to a
+            # canonical account by edit distance (accounts.py); the match
+            # feeds the account_identity check.
+            matches = accounts.match_nodes(selected)
+            for o in observations:
+                mt = matches.get(o["node_id"])
+                if mt is not None:
+                    o.update(canonical_account_id=mt["canonical_account_id"], canonical_name=mt["canonical_name"],
+                             account_component=mt["component"], account_match=mt["match"],
+                             account_match_distance=mt["distance"])
+            for n in selected:
+                mt = matches.get(n.id)
+                if mt and mt["canonical_account_id"]:
+                    account_rows.append({"account_path": " / ".join(n.path), "source_page": n.page, "title": n.title,
+                                         "canonical_account_id": mt["canonical_account_id"],
+                                         "account_component": mt["component"],
+                                         "blank_columns": [c["header"] for c in cols if c["kind"] == "value"
+                                                           and (c["index"] >= len(n.cells) or n.cells[c["index"]]["kind"] == "blank")]})
+        records, summary = validate_approps.validate(selected, cols, observations, page_meta, unit,
+                                                     source_document=source_document)
+        return {"page_meta": page_meta, "table_title": table_title, "bill_fy": bill_fy, "cols": cols,
+                "unit": unit, "selected": selected, "observations": observations,
+                "printed_blanks": printed_blanks, "account_rows": account_rows,
+                "records": records, "summary": summary}
+
+    built = assemble()
+
+    # 5b. OCR gate: a page with a problem the free path can't resolve (an
+    #     unparseable cell, a header with the wrong column count) or whose
+    #     numbers fail the table's own arithmetic is re-read once by vision.
+    ocr_fallback = {}
+    if ocr_table_pages:
+        in_selection = {n.page for n in built["selected"]}
+        failing = {p: "; ".join(iss) for p, iss in ocr_issues.items() if iss and p in in_selection}
+        for o in built["observations"]:
+            p = int(o["source_page"])
+            if o["verification_status"] == "flagged" and p in ocr_issues and p not in failing:
+                failing[p] = "arithmetic check failed"
+        replaced = False
+        for p, reason in sorted(failing.items()):
+            got = vision_reread(p, entries[p]["transcription"]["column_headers"])
+            if isinstance(got, str):
+                ocr_fallback[p] = {"reason": reason, "result": f"kept OCR: {got}"}
+                continue
+            entries[p] = got
+            entries[p]["meta"].update(fallback_from="ocr_text", fallback_reason=reason)
+            ocr_fallback[p] = {"reason": reason, "result": "re-read by vision"}
+            replaced = True
+        if replaced:
+            built = assemble()
+        for p, f in ocr_fallback.items():
+            log(f"  p{p}: {f['reason'][:80]} -> {f['result']}")
+
+    page_meta, table_title, bill_fy, cols = built["page_meta"], built["table_title"], built["bill_fy"], built["cols"]
+    unit, observations, printed_blanks = built["unit"], built["observations"], built["printed_blanks"]
+    records, summary = built["records"], built["summary"]
+    sign_check = text_tables.sign_glyph_check(text_trs, cols) if text_trs else {}
+    source_document["fiscal_year"] = bill_fy
+
     result = {
         "source_document": source_document,
         "extraction": {
@@ -1084,11 +1258,14 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             "page_sources": {str(p): {k: v for k, v in m.items()} for p, m in page_meta.items()},
             "vision_calls_this_run": [{"pass": k, "page": p, **u} for k, p, u in usage_log],
             "text_table_pages": text_table_pages,
+            "ocr_table_pages": ocr_table_pages,
+            "ocr_fallback": {str(p): f for p, f in ocr_fallback.items()},
             "sign_glyph_check": sign_check,
         },
         "page_routing": [{k: v for k, v in r.items() if k != "text"} for r in routes],
         "observations": observations,
         "printed_blanks": printed_blanks,
+        "account_rows": built["account_rows"],
         "validation_records": records,
         "validation_summary": summary,
     }
@@ -1143,22 +1320,56 @@ def compare_ground_truth(result, gt_path):
     that need to tell those apart from exact numeric matches look at got.
     """
     gt = json.loads(Path(gt_path).read_text())
+    if gt.get("title"):
+        # a ground-truth file covers one title: don't let a same-named row in
+        # another title (a supplemental act's "Total, NASA") compete for a match
+        tk = title_key(gt["title"])
+        result = dict(result, observations=[o for o in result["observations"] if title_key(o.get("title") or "") == tk],
+                      account_rows=[r for r in result.get("account_rows", []) if title_key(r.get("title") or "") == tk])
     by_key = {(o["account_path"], o["column_header"]): o for o in result["observations"]}
     blanks = {(b["account_path"], b["column_header"]) for b in result.get("printed_blanks", [])}
+    # OCR documents: keyed by canonical account (+ component), since labels are noisy
+    by_account, account_blanks = {}, set()
+    for o in result["observations"]:
+        if o.get("canonical_account_id") and o.get("account_match") in ("exact", "ocr_corrected", "inherited"):
+            by_account.setdefault((o["canonical_account_id"], o.get("account_component"), o["column_header"]), []).append(o)
+    for r in result.get("account_rows", []):
+        for h in r["blank_columns"]:
+            account_blanks.add((r["canonical_account_id"], r["account_component"], h))
     checks = ground_truth_checks(gt)
     rows, ok = [], True
     for check in checks:
         for item in check["expected"]:
-            key = (item["account_path"], check["column_header"])
-            o = by_key.get(key)
-            if o is not None:
-                got = o["amount_dollars"]
-            elif item["account_path"] is None:
-                got = NOT_PRINTED
-            elif key in blanks:
-                got = BLANK
+            col = check["column_header"]
+            if "title_total" in item:
+                hits = [o for o in result["observations"] if o["column_header"] == col and o["row_kind"] == "total"
+                        and title_key(re.sub(r"^total\s*[,.]?\s*", "", o["account_name_as_written"], flags=re.I))
+                        == title_key(item["title_total"])]
+                got = hits[0]["amount_dollars"] if len(hits) == 1 else None
+            elif "canonical_account_id" in item:
+                k = (item["canonical_account_id"], item.get("component"), col)
+                hits = by_account.get(k, [])
+                if len(hits) == 1:
+                    got = hits[0]["amount_dollars"]
+                elif hits:
+                    got = None                    # two rows claim one account: not a match
+                elif item.get("printed") is False:
+                    got = NOT_PRINTED
+                elif k in account_blanks:
+                    got = BLANK
+                else:
+                    got = None
             else:
-                got = None
+                key = (item["account_path"], col)
+                o = by_key.get(key)
+                if o is not None:
+                    got = o["amount_dollars"]
+                elif item["account_path"] is None:
+                    got = NOT_PRINTED
+                elif key in blanks:
+                    got = BLANK
+                else:
+                    got = None
             want = item["amount_dollars"]
             match = want is not None and (got == want or (want == 0 and got in (BLANK, NOT_PRINTED)))
             ok &= match

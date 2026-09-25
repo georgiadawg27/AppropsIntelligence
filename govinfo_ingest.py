@@ -28,6 +28,10 @@ Usage:
 
     # Bill numbers mean the current Congress; prefix one to track another
     python govinfo_ingest.py --tracked-bills 118S2321 --since 2023-01-01
+
+    # A document the pipeline can't fetch itself (JES, advance copy of a report)
+    python govinfo_ingest.py ingest-local fy26_cjs_jes.pdf --subcommittee CJS --fiscal-year 2026 \\
+        --stage Enacted --doc-type jes --source-url https://www.appropriations.senate.gov/imo/media/doc/fy26_cjs_jes.pdf
 """
 
 import argparse
@@ -178,8 +182,78 @@ def fetch_and_store(package_id, api_key, manifest):
         "details_link": summary.get("detailsLink"),
         "stored_path": str(out_path),
         "fetched_at": datetime.now(timezone.utc).isoformat(),
+        "ingest_method": "govinfo_api",
+        "advance_copy": False,
+        "confirmation_status": "official",
     }
     return {"package_id": package_id, "status": "stored", "hash": content_hash, "path": str(out_path)}
+
+
+# ---------------------------------------------------------------------------
+# Manual ingest: documents the pipeline can't source itself -- a committee
+# report posted before GPO processes it (advance copy), a JES (never a
+# govinfo package). Same store, same manifest, same hashing as
+# fetch_and_store; the extraction and validation that follow are identical.
+# The person finds the file; they don't vouch for its numbers.
+# ---------------------------------------------------------------------------
+
+STAGES = ("President's Budget", "House Reported", "Senate Reported", "House Passed", "Senate Passed", "Enacted")
+DOC_TYPES = ("committee_report", "jes", "bill", "public_law", "other")
+
+
+def manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash):
+    stage_slug = re.sub(r"[^A-Za-z]", "", stage)
+    return f"MANUAL-{subcommittee}-FY{fiscal_year}-{stage_slug}-{doc_type}-{content_hash[:8]}"
+
+
+def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_type, advance_copy,
+                 source_url=None, source_agency=None, bill_id=None, report_id=None, ingested_by=None):
+    """
+    Store a local PDF into document_store/ and the manifest. An advance copy
+    starts "unconfirmed" until reconciled against GPO's official version; a
+    JES (or anything else ingested by hand that isn't an advance copy) has no
+    official counterpart to reconcile against.
+    """
+    if stage not in STAGES:
+        raise ValueError(f"stage must be one of {STAGES}, got {stage!r}")
+    if doc_type not in DOC_TYPES:
+        raise ValueError(f"doc_type must be one of {DOC_TYPES}, got {doc_type!r}")
+    if advance_copy and doc_type == "jes":
+        raise ValueError("a JES is never a govinfo package, so it can't be an advance copy of one")
+    content = Path(pdf_path).read_bytes()
+    if not content.startswith(b"%PDF"):
+        raise ValueError(f"{pdf_path} is not a PDF")
+    content_hash = sha256_of(content)
+    for pid, entry in manifest.items():
+        if entry.get("hash") == content_hash and Path(entry.get("stored_path", "")).exists():
+            return {"package_id": pid, "status": "unchanged", "hash": content_hash}
+    doc_id = manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash)
+    STORE_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = STORE_DIR / f"{doc_id}.pdf"
+    out_path.write_bytes(content)
+    if bill_id:
+        parse_bill_spec(bill_id)                  # reject a malformed bill number up front
+    manifest[doc_id] = {
+        "hash": content_hash,
+        "title": Path(pdf_path).name,
+        "doc_class": doc_type,
+        "stored_path": str(out_path),
+        "ingested_at": datetime.now(timezone.utc).isoformat(),
+        "ingest_method": "manual",
+        "ingested_by": ingested_by,
+        "source_url": source_url,
+        "source_agency": source_agency,
+        "subcommittee": subcommittee,
+        "fiscal_year": int(fiscal_year),
+        "stage": stage,
+        "doc_type": doc_type,
+        "bill_id": bill_id,
+        "report_id": report_id,
+        "advance_copy": bool(advance_copy),
+        "confirmation_status": "unconfirmed" if advance_copy else "no_official_counterpart",
+        "reconciled_with_document_id": None,
+    }
+    return {"package_id": doc_id, "status": "stored", "hash": content_hash, "path": str(out_path)}
 
 
 BILL_TYPES = ("hconres", "sconres", "hjres", "sjres", "hres", "sres", "hr", "s")
@@ -301,11 +375,55 @@ def run(api_key, tracked_bills, since):
                 if rel["packageId"] not in seen:
                     seen.add(rel["packageId"])
                     store(rel["packageId"])
+                if collection == "CRPT" and rel["packageId"] in manifest:
+                    reconcile_advance_copies(manifest, pkg["packageId"], rel["packageId"])
     save_manifest(manifest)
     return results
 
 
+def reconcile_advance_copies(manifest, bill_package_id, official_package_id):
+    """An official committee report just arrived: reconcile any unconfirmed
+    advance copy for the same bill and stage against it (reconcile.py)."""
+    import reconcile                               # pulls in the extraction pipeline; only needed here
+    for advance_id in reconcile.advance_copies_for(manifest, bill_package_id, official_package_id):
+        save_manifest(manifest)
+        report = reconcile.reconcile(advance_id, official_package_id, manifest, STORE_DIR,
+                                     Path("./extractions"), manifest_path=MANIFEST_PATH)
+        print(f"    reconciled advance copy {advance_id} against {official_package_id}: {report['outcome']}")
+
+
+def main_ingest_local(argv):
+    parser = argparse.ArgumentParser(prog="govinfo_ingest.py ingest-local",
+                                     description="Store a document the pipeline can't fetch itself.")
+    parser.add_argument("pdf")
+    parser.add_argument("--subcommittee", required=True, help="e.g. CJS")
+    parser.add_argument("--fiscal-year", type=int, required=True)
+    parser.add_argument("--stage", required=True, choices=STAGES)
+    parser.add_argument("--doc-type", required=True, choices=DOC_TYPES)
+    parser.add_argument("--advance-copy", action="store_true",
+                        help="posted before GPO processed it; reconciled when the official package appears")
+    parser.add_argument("--source-url", help="where the file was found")
+    parser.add_argument("--source-agency", help="who published it, e.g. 'Senate Committee on Appropriations'")
+    parser.add_argument("--bill-id", help="e.g. S2354 -- lets reconciliation find the official report via /related")
+    parser.add_argument("--report-id", help="e.g. S.Rept.119-44, if known")
+    parser.add_argument("--ingested-by", help="who found the file")
+    args = parser.parse_args(argv)
+    manifest = load_manifest()
+    try:
+        res = ingest_local(args.pdf, manifest, subcommittee=args.subcommittee, fiscal_year=args.fiscal_year,
+                           stage=args.stage, doc_type=args.doc_type, advance_copy=args.advance_copy,
+                           source_url=args.source_url, source_agency=args.source_agency, bill_id=args.bill_id,
+                           report_id=args.report_id, ingested_by=args.ingested_by)
+    except ValueError as e:
+        parser.error(str(e))
+    save_manifest(manifest)
+    print(f"{res['package_id']}: {res['status']}" + (f" -> {res['path']}" if res.get("path") else ""))
+    return res
+
+
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "ingest-local":
+        return main_ingest_local(sys.argv[2:])
     parser = argparse.ArgumentParser(description="Detect and store new govinfo.gov documents for tracked bills.")
     parser.add_argument("--api-key", default=os.environ.get("GOVINFO_API_KEY"),
                         help="api.data.gov key; defaults to GOVINFO_API_KEY from .env (https://api.data.gov/signup/)")

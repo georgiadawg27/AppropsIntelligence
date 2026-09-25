@@ -38,7 +38,19 @@ from collections import Counter, defaultdict
 
 AUTO_PUBLISH_CONFIDENCE = 0.90
 MODEL_INDENT_REASON = "hierarchy from model-read indent only"
-DETERMINISTIC_LAYOUT_SOURCES = {"text_layer"}      # indent measured from page geometry
+# indent measured from page geometry (text layer, or OCR word positions), not read by a model
+DETERMINISTIC_LAYOUT_SOURCES = {"text_layer", "ocr_text"}
+
+# Confidence ladder, lowest first (proposal approved 2026-09-25):
+#   0.50  a check failed (FAILED_CONFIDENCE)
+#   0.80  an OCR-read value with nothing arithmetic to check it against
+#   0.85  an unconfirmed advance copy that passed every check (-> "provisional")
+#   0.90  auto-publish threshold
+OCR_UNCHECKED_CONFIDENCE = 0.80
+OCR_UNCHECKED_REASON = "OCR-read value with no arithmetic cross-check"
+PROVISIONAL_CONFIDENCE = 0.85
+PROVISIONAL_REASON = "advance copy, not yet confirmed against the official version"
+ACCOUNT_MATCH_REASON = "account name not matched to a canonical account"
 FAILED_CONFIDENCE = 0.50
 SEMANTIC_KEYWORDS = ("rescission", "chimp", "emergency", "advance appropriation", "transfer",
                      "offsetting", "fee collection", "cancellation")
@@ -63,7 +75,7 @@ def _fmt(v):
     return "None" if v is None else f"{v:,}"
 
 
-def validate(nodes, cols, observations, page_meta, unit):
+def validate(nodes, cols, observations, page_meta, unit, source_document=None):
     obs_by = {(o["node_id"], o["column_index"]): o for o in observations}
     records = []
     results_by_obs = defaultdict(list)
@@ -234,34 +246,68 @@ def validate(nodes, cols, observations, page_meta, unit):
                f"page {o['source_page']} declares {declared!r}",
                "pass" if page_unit == o["amount_unit"] else "fail")
 
+        if "account_match" in o:
+            # OCR document: the label was matched to a canonical account by
+            # edit distance (accounts.py); anything short of a confident
+            # match goes to a person, never auto-matched
+            kind = o["account_match"]
+            record(o, "account_identity",
+                   "canonical account within edit distance "
+                   f"{'0' if kind == 'exact' else '<= min(2, 15% of the name), unambiguous'}",
+                   f"{kind}: {o['account_name_as_written']!r} -> {o.get('canonical_name')!r}"
+                   + (f" (distance {o['account_match_distance']})" if o.get("account_match_distance") else "")
+                   + (f", component {o['account_component']!r}" if o.get("account_component") else ""),
+                   "pass" if kind in ("exact", "ocr_corrected") else "flag")
+
         low = o["account_name_as_written"].lower()
-        if o["amount_type"] != "budget authority" or any(k in low for k in SEMANTIC_KEYWORDS):
+        if o["amount_type"] not in ("budget authority", "supplemental") or any(k in low for k in SEMANTIC_KEYWORDS):
             record(o, "semantic", f"amount_type fits the row label ({o['amount_type']})",
                    f"label {o['account_name_as_written']!r}; memo={o['is_memo']}", "flag")
 
     # --- confidence and verification_status -------------------------------
+    advance = bool(source_document and source_document.get("advance_copy")
+                   and source_document.get("confirmation_status") == "unconfirmed")
     for o in observations:
         res = results_by_obs[o["observation_id"]]
         oid = o["observation_id"]
         o["verification_reason"] = None
+        reasons = []
         if "fail" in res or oid in implicated:
             o["extraction_confidence"] = min(o["extraction_confidence"], FAILED_CONFIDENCE)
             o["verification_status"] = "flagged"
         elif "flag" in res or oid not in arithmetic_pass:
             o["verification_status"] = "unverified"
             if oid in unconfirmed_nesting:
-                o["verification_reason"] = MODEL_INDENT_REASON
+                reasons.append(MODEL_INDENT_REASON)
+            if o.get("account_match") not in (None, "exact", "ocr_corrected"):
+                reasons.append(ACCOUNT_MATCH_REASON)
         elif o["extraction_confidence"] >= AUTO_PUBLISH_CONFIDENCE:
             o["verification_status"] = "auto-validated"
         else:
             o["verification_status"] = "unverified"
 
+        # An OCR-read value that no sum or delta confirms has nothing that
+        # could catch a misread digit: better parsing can't fix that.
+        if page_meta[int(o["source_page"])].get("source") == "ocr_text" and oid not in arithmetic_pass:
+            o["extraction_confidence"] = min(o["extraction_confidence"], OCR_UNCHECKED_CONFIDENCE)
+            reasons.append(OCR_UNCHECKED_REASON)
+        # An unconfirmed advance copy: passed every check, but its source
+        # hasn't been reconciled against GPO's official version yet.
+        if advance and o["verification_status"] == "auto-validated":
+            o["verification_status"] = "provisional"
+            o["extraction_confidence"] = min(o["extraction_confidence"], PROVISIONAL_CONFIDENCE)
+            reasons.append(PROVISIONAL_REASON)
+        o["verification_reason"] = "; ".join(reasons) or None
+
     by_rule = defaultdict(Counter)
     for r in records:
         by_rule[r["rule_applied"]][r["result"]] += 1
+    not_run = dict(NOT_RUN)
+    if any("account_match" in o for o in observations):
+        not_run.pop("account_identity", None)
     summary = {
         "by_rule": {k: dict(v) for k, v in by_rule.items()},
-        "not_run": NOT_RUN,
+        "not_run": not_run,
         "rollup_lines": rollup_lines,
         "failures": sum(1 for r in records if r["result"] == "fail"),
         "verification_status_counts": dict(Counter(o["verification_status"] for o in observations)),
