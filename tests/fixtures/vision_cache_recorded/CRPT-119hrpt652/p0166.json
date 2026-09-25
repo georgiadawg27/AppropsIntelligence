@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 166,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:50.138834+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:09:41.094874+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "Bureau of Alcohol, Tobacco, Firearms and Explosives",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Bureau of Alcohol, Tobacco, Firearms and Explosives"
+      },
+      {
+        "label": "Salaries and expenses",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "1,585,000",
+          "1,300,000",
+          "-285,000"
+        ],
+        "raw_text": "Salaries and expenses.................................. 1,585,000 1,300,000 -285,000"
+      },
+      {
+        "label": "Federal Prison System",
+        "indent": 2,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Federal Prison System"
+      },
+      {
+        "label": "Salaries and expenses",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "8,100,000",
+          "8,225,000",
+          "+125,000"
+        ],
+        "raw_text": "Salaries and expenses.................................. 8,100,000 8,225,000 +125,000"
+      },
+      {
+        "label": "Buildings and facilities",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "279,762",
+          "175,000",
+          "-104,762"
+        ],
+        "raw_text": "Buildings and facilities.............................. 279,762 175,000 -104,762"
+      },
+      {
+        "label": "Limitation on administrative expenses, Federal Prison Industries, Incorporated",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "2,700",
+          "2,700",
+          "---"
+        ],
+        "raw_text": "Limitation on administrative expenses, Federal Prison Industries, Incorporated........................... 2,700 2,700 ---"
+      },
+      {
+        "label": "Total, Federal Prison System",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "8,382,462",
+          "8,402,700",
+          "+20,238"
+        ],
+        "raw_text": "Total, Federal Prison System.................. 8,382,462 8,402,700 +20,238"
+      }
+    ],
+    "legibility_notes": "Page number 166 printed sideways in right margin; not part of the table."
+  }
+}

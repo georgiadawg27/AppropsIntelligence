@@ -1,0 +1,101 @@
+"""
+Build the CJS JES ground truth (FY2026 acceptance, FY2024 breadth check)
+from the pilot workbook.
+
+    python tests/ground_truth/build_jes_ground_truth.py path/to/CJS_Title_III_Science_Pilot_Schema_Loaded_v8.xlsx
+
+The JES is a scan: its row labels are OCR text ("Sci e nee", "Hajor
+Research ..."), so entries are keyed by canonical account + component, not by
+account_path. The extractor assigns canonical accounts by edit distance
+(accounts.py); only exact or confident OCR-corrected matches carry an id, so a
+wrong or doubtful match can't satisfy this test.
+
+Components follow the pilot's source_table_or_section suffix: (base) -> none,
+(emergency) -> "emergency", (defense) -> "defensefunction" (the Defense
+function line, which inherits R&RA's account).
+
+Title III's total has no canonical account; it's checked by title against the
+House report's figure (tests/ground_truth/CRPT-119hrpt652_title_iii_fy2026_enacted.json).
+"""
+
+import hashlib
+import json
+import re
+import sys
+from pathlib import Path
+
+import openpyxl
+
+HERE = Path(__file__).resolve().parent
+COMPONENT = {None: None, "base": None, "emergency": "emergency", "defense": "defensefunction"}
+TITLE_III_PREFIXES = ("ACC-OSTP", "ACC-NSC", "ACC-NASA-", "ACC-NSF-")
+PROFILES = {
+    "fy26_cjs_jes.pdf": {
+        "dest": "fy26_cjs_jes_title_iii.json",
+        "series": [("Final Bill", 2026, "Enacted", "FY2026 Enacted (Final Bill)"),
+                   ("FY 2025 Enacted", 2025, "Enacted", "FY2025 Enacted"),
+                   ("FY 2026 Request", 2026, "President's Budget", "FY2026 President's Budget (Request)")],
+        "not_printed": {("ACC-NSF-RRA", "emergency")},        # no R&RA emergency line in this JES
+        "renamed": {},
+        "house_title_total": True,
+    },
+    "FY24_CJS_Conference_JES_scan_3_3_24.pdf": {
+        "dest": "fy24_cjs_jes_title_iii.json",
+        "series": [("Final Bill", 2024, "Enacted", "FY2024 Enacted (Final Bill)"),
+                   ("FY 2023 Enacted", 2023, "Enacted", "FY2023 Enacted"),
+                   ("FY 2024 Request", 2024, "President's Budget", "FY2024 President's Budget (Request)")],
+        "not_printed": {("ACC-NSF-RRA", "emergency")},
+        # FY2024 printed these accounts under their names of the time; the
+        # canonical names came later. A genuine rename is historical_names'
+        # job, not OCR fuzz, so until those are recorded these stay unmatched.
+        "renamed": {"ACC-NASA-EXPLORATION": "Deep Space Exploration Systems",
+                    "ACC-NSF-STEM-EDUCATION": "Education and Human Resources"},
+        "house_title_total": False,
+    },
+}
+
+
+def build(workbook):
+    for document, profile in PROFILES.items():
+        build_one(workbook, document, profile)
+
+
+def build_one(workbook, document, profile):
+    wb = openpyxl.load_workbook(workbook, data_only=True, read_only=True)
+    rows = list(wb["Appropriations Observation"].iter_rows(values_only=True))
+    pilot = [dict(zip(rows[0], r)) for r in rows[1:] if r[0]]
+    checks = []
+    for column, fy, stage, label in profile["series"]:
+        expected = []
+        for o in pilot:
+            if o["fiscal_year"] != fy or o["stage"] != stage or not o["canonical_account_id"].startswith(TITLE_III_PREFIXES):
+                continue
+            m = re.search(r"\((base|defense|emergency)\)\s*$", o["source_table_or_section"] or "")
+            comp = m.group(1) if m else None
+            item = {"name": f"{o['canonical_account_id']} {o['amount_type']}" + (f" ({comp})" if comp else ""),
+                    "canonical_account_id": o["canonical_account_id"], "component": COMPONENT[comp],
+                    "amount_dollars": int(o["amount"]), "pilot_observation_id": o["observation_id"],
+                    "pilot_source_document_id": o["source_document_id"]}
+            if (o["canonical_account_id"], comp) in profile["not_printed"]:
+                item["printed"] = False
+            if o["canonical_account_id"] in profile["renamed"]:
+                item["requires_historical_name"] = profile["renamed"][o["canonical_account_id"]]
+            expected.append(item)
+        if column == "Final Bill" and profile["house_title_total"]:
+            house = json.loads((HERE / "CRPT-119hrpt652_title_iii_fy2026_enacted.json").read_text())
+            t = next(e for e in house["expected"] if e["account_path"] == "Total, Title III, Science")
+            expected.append({"name": "Total, Title III, Science", "title_total": "TITLE III",
+                             "amount_dollars": t["amount_dollars"], "source": "H.Rept. 119-652 FY 2026 Enacted"})
+        checks.append({"column_header": column, "series": label, "fiscal_year": fy, "stage": stage, "expected": expected})
+    digest = hashlib.sha256(Path(workbook).read_bytes()).hexdigest()
+    out = {"document": document, "title": "TITLE III", "unit": "dollars",
+           "source": f"{Path(workbook).name} (sha256 {digest[:16]}), Appropriations Observation tab; "
+                     f"generated by {Path(__file__).name} -- do not edit by hand.",
+           "checks": checks}
+    dest = HERE / profile["dest"]
+    dest.write_text(json.dumps(out, indent=2) + "\n")
+    print(f"{dest.name}: " + ", ".join(f"{c['series']} {len(c['expected'])}" for c in checks))
+
+
+if __name__ == "__main__":
+    build(sys.argv[1])

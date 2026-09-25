@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 168,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:56.291748+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:10:04.914048+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "Community Oriented Policing Services:",
+        "indent": 0,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Community Oriented Policing Services:"
+      },
+      {
+        "label": "COPS programs",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "800,000",
+          "762,544",
+          "-37,456"
+        ],
+        "raw_text": "COPS programs.................................... 800,000 762,544 -37,456"
+      },
+      {
+        "label": "Total, State and Local Law Enforcement Activities",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "4,486,800",
+          "4,156,544",
+          "-330,256"
+        ],
+        "raw_text": "Total, State and Local Law Enforcement Activities.................................... 4,486,800 4,156,544 -330,256"
+      },
+      {
+        "label": "Total, title II, Department of Justice",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "double",
+        "values": [
+          "37,049,436",
+          "38,612,928",
+          "+1,563,492"
+        ],
+        "raw_text": "Total, title II, Department of Justice.......... 37,049,436 38,612,928 +1,563,492"
+      },
+      {
+        "label": "Appropriations",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(37,049,436)",
+          "(38,612,928)",
+          "(+1,563,492)"
+        ],
+        "raw_text": "Appropriations.............................. (37,049,436) (38,612,928) (+1,563,492)"
+      },
+      {
+        "label": "(by transfer)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "100,000",
+          "100,000",
+          "---"
+        ],
+        "raw_text": "(by transfer)................................... 100,000 100,000 ---"
+      },
+      {
+        "label": "(transfer out)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-100,000",
+          "-100,000",
+          "---"
+        ],
+        "raw_text": "(transfer out).................................. -100,000 -100,000 ---"
+      }
+    ],
+    "legibility_notes": "Page number 168 printed sideways in right margin."
+  }
+}

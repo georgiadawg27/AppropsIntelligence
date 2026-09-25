@@ -1,0 +1,190 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 172,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:59:07.368864+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:10:19.370373+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": [
+      "TITLE V - GENERAL PROVISIONS"
+    ]
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "TITLE V - GENERAL PROVISIONS",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "TITLE V - GENERAL PROVISIONS"
+      },
+      {
+        "label": "Crime Victims Fund (transfer out) (Sec. 510)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(-10,000)",
+          "(-10,000)",
+          "---"
+        ],
+        "raw_text": "Crime Victims Fund (transfer out) (Sec. 510).......... (-10,000) (-10,000) ---"
+      },
+      {
+        "label": "Department of Justice OIG (by transfer)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(10,000)",
+          "(10,000)",
+          "---"
+        ],
+        "raw_text": "Department of Justice OIG (by transfer).......... (10,000) (10,000) ---"
+      },
+      {
+        "label": "DOC National Oceanic and Atmospheric Administration, Operations, Research and Facilities (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "---",
+          "-75,000",
+          "-75,000"
+        ],
+        "raw_text": "DOC National Oceanic and Atmospheric Administration, Operations, Research and Facilities (rescission).... --- -75,000 -75,000"
+      },
+      {
+        "label": "DOC, Economic Development Assistance Programs (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-60,000",
+          "---",
+          "+60,000"
+        ],
+        "raw_text": "DOC, Economic Development Assistance Programs (rescission)........................................ -60,000 --- +60,000"
+      },
+      {
+        "label": "DOJ, Working Capital Fund (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-210,000",
+          "-150,000",
+          "+60,000"
+        ],
+        "raw_text": "DOJ, Working Capital Fund (rescission)................ -210,000 -150,000 +60,000"
+      },
+      {
+        "label": "DOJ, Office of Justice Programs (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-250,000",
+          "-175,000",
+          "+75,000"
+        ],
+        "raw_text": "DOJ, Office of Justice Programs (rescission)......... -250,000 -175,000 +75,000"
+      },
+      {
+        "label": "DOJ, COPS Office (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-25,000",
+          "-25,000",
+          "---"
+        ],
+        "raw_text": "DOJ, COPS Office (rescission)........................ -25,000 -25,000 ---"
+      },
+      {
+        "label": "DOJ, Violence Against Women Prevention and Prosecution Programs (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-36,000",
+          "-36,000",
+          "---"
+        ],
+        "raw_text": "DOJ, Violence Against Women Prevention and Prosecution Programs (rescission).............................. -36,000 -36,000 ---"
+      },
+      {
+        "label": "DOJ, Assets Forfeiture Fund (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-113,200",
+          "---",
+          "+113,200"
+        ],
+        "raw_text": "DOJ, Assets Forfeiture Fund (rescission).............. -113,200 --- +113,200"
+      },
+      {
+        "label": "DOC, Census Working Capital Fund (rescission)",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-15,000",
+          "---",
+          "+15,000"
+        ],
+        "raw_text": "DOC, Census Working Capital Fund (rescission)........ -15,000 --- +15,000"
+      },
+      {
+        "label": "DOC Derivations",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-617,276",
+          "---",
+          "+617,276"
+        ],
+        "raw_text": "DOC Derivations...................................... -617,276 --- +617,276"
+      },
+      {
+        "label": "Total, title V, General Provisions",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "double",
+        "values": [
+          "-1,326,476",
+          "-461,000",
+          "+865,476"
+        ],
+        "raw_text": "Total, title V, General Provisions.............. -1,326,476 -461,000 +865,476"
+      }
+    ],
+    "legibility_notes": "Page number 172 printed sideways in right margin."
+  }
+}

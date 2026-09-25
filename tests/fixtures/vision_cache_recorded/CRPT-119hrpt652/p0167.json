@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 167,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:52.782934+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:09:55.442354+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "State and Local Law Enforcement Activities",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "State and Local Law Enforcement Activities"
+      },
+      {
+        "label": "Office on Violence Against Women:",
+        "indent": 0,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Office on Violence Against Women:"
+      },
+      {
+        "label": "Prevention and prosecution programs (by transfer)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(100,000)",
+          "(100,000)",
+          "---"
+        ],
+        "raw_text": "Prevention and prosecution programs (by transfer).................................. (100,000) (100,000) ---"
+      },
+      {
+        "label": "Crime Victims Fund (transfer out)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(-100,000)",
+          "(-100,000)",
+          "---"
+        ],
+        "raw_text": "Crime Victims Fund (transfer out)............... (-100,000) (-100,000) ---"
+      },
+      {
+        "label": "Violence Against Women Prevention & Prosecution Programs",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "620,000",
+          "625,000",
+          "+5,000"
+        ],
+        "raw_text": "Violence Against Women Prevention & Prosecution Programs ....................................... 620,000 625,000 +5,000"
+      },
+      {
+        "label": "Subtotal",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "620,000",
+          "625,000",
+          "+5,000"
+        ],
+        "raw_text": "Subtotal................................ 620,000 625,000 +5,000"
+      },
+      {
+        "label": "Office of Justice Programs:",
+        "indent": 0,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Office of Justice Programs:"
+      },
+      {
+        "label": "Research, evaluation and statistics",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "55,000",
+          "55,000",
+          "---"
+        ],
+        "raw_text": "Research, evaluation and statistics.............. 55,000 55,000 ---"
+      },
+      {
+        "label": "State and local law enforcement assistance",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "2,400,000",
+          "2,159,200",
+          "-240,800"
+        ],
+        "raw_text": "State and local law enforcement assistance....... 2,400,000 2,159,200 -240,800"
+      },
+      {
+        "label": "Juvenile justice programs",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "375,000",
+          "325,000",
+          "-50,000"
+        ],
+        "raw_text": "Juvenile justice programs........................ 375,000 325,000 -50,000"
+      },
+      {
+        "label": "Public safety officer benefits:",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "Public safety officer benefits:"
+      },
+      {
+        "label": "Death benefits",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "202,000",
+          "195,000",
+          "-7,000"
+        ],
+        "raw_text": "Death benefits............................... 202,000 195,000 -7,000"
+      },
+      {
+        "label": "Disability and education benefits",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "34,800",
+          "34,800",
+          "---"
+        ],
+        "raw_text": "Disability and education benefits............ 34,800 34,800 ---"
+      },
+      {
+        "label": "Subtotal",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "236,800",
+          "229,800",
+          "-7,000"
+        ],
+        "raw_text": "Subtotal................................. 236,800 229,800 -7,000"
+      },
+      {
+        "label": "Total, Office of Justice Programs",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "3,066,800",
+          "2,769,000",
+          "-297,800"
+        ],
+        "raw_text": "Total, Office of Justice Programs.............. 3,066,800 2,769,000 -297,800"
+      }
+    ],
+    "legibility_notes": "Page number 167 printed sideways in right margin. Text is otherwise clear."
+  }
+}

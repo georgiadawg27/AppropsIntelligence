@@ -1,0 +1,9 @@
+__pycache__/
+# Secrets
+.env
+# Raw source PDFs, per-page vision cache and extraction outputs are data, not code
+document_store/
+extraction_cache/
+extractions/
+approps.db
+approps.db.building

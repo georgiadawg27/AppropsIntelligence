@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 170,
+    "source": "manual_transcription",
+    "note": "Hand transcription of the page image (rendered at 200 DPI, rotated upright), recorded in the same shape the Claude vision transcription returns. Lets the parsing, unit normalization, hierarchy and validation stages run offline. It is NOT a record of a Claude API response; a live run overwrites nothing here (live results go to extraction_cache/).",
+    "prompt_version": null,
+    "model": null,
+    "rotation": 90
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "legibility_notes": "",
+    "rows": [
+      {
+        "label": "Office of Inspector General",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "46,500",
+          "46,500",
+          "---"
+        ],
+        "raw_text": "Office of Inspector General 46,500 46,500 ---"
+      },
+      {
+        "label": "Total, National Aeronautics and Space Administration",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "24,438,336",
+          "24,438,336",
+          "---"
+        ],
+        "raw_text": "Total, National Aeronautics and Space Administration 24,438,336 24,438,336 ---"
+      },
+      {
+        "label": "National Science Foundation",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "National Science Foundation"
+      },
+      {
+        "label": "Research and related activities",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "7,057,700",
+          "6,321,069",
+          "-736,631"
+        ],
+        "raw_text": "Research and related activities 7,057,700 6,321,069 -736,631"
+      },
+      {
+        "label": "Defense function",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "118,800",
+          "119,071",
+          "+271"
+        ],
+        "raw_text": "Defense function 118,800 119,071 +271"
+      },
+      {
+        "label": "Subtotal",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "7,176,500",
+          "6,440,140",
+          "-736,360"
+        ],
+        "raw_text": "Subtotal 7,176,500 6,440,140 -736,360"
+      },
+      {
+        "label": "Major Research Equipment and Facilities Construction",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "251,000",
+          "172,950",
+          "-78,050"
+        ],
+        "raw_text": "Major Research Equipment and Facilities Construction 251,000 172,950 -78,050"
+      },
+      {
+        "label": "STEM Education",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "938,250",
+          "---",
+          "-938,250"
+        ],
+        "raw_text": "STEM Education 938,250 --- -938,250"
+      },
+      {
+        "label": "Agency Operations and Award Management",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "355,000",
+          "359,700",
+          "+4,700"
+        ],
+        "raw_text": "Agency Operations and Award Management 355,000 359,700 +4,700"
+      },
+      {
+        "label": "Office of the National Science Board",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "5,090",
+          "3,050",
+          "-2,040"
+        ],
+        "raw_text": "Office of the National Science Board 5,090 3,050 -2,040"
+      },
+      {
+        "label": "Office of Inspector General",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "24,160",
+          "24,160",
+          "---"
+        ],
+        "raw_text": "Office of Inspector General 24,160 24,160 ---"
+      },
+      {
+        "label": "Total, National Science Foundation",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "8,750,000",
+          "7,000,000",
+          "-1,750,000"
+        ],
+        "raw_text": "Total, National Science Foundation 8,750,000 7,000,000 -1,750,000"
+      },
+      {
+        "label": "Total, Title III, Science",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "double",
+        "values": [
+          "33,196,301",
+          "31,446,301",
+          "-1,750,000"
+        ],
+        "raw_text": "Total, Title III, Science 33,196,301 31,446,301 -1,750,000"
+      },
+      {
+        "label": "Appropriations",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(33,196,301)",
+          "(31,446,301)",
+          "(-1,750,000)"
+        ],
+        "raw_text": "Appropriations (33,196,301) (31,446,301) (-1,750,000)"
+      }
+    ]
+  }
+}

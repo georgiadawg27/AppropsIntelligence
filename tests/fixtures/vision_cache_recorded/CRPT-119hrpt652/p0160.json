@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 160,
+    "model": "claude-opus-5",
+    "prompt_version": "2026-09-25.1",
+    "source": "claude_api",
+    "classified_at": "2026-09-25T05:58:33.521385+00:00",
+    "rotation": 90,
+    "dpi": 200,
+    "transcribed_at": "2026-09-25T06:08:35.015202+00:00"
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027 (Amounts in thousands)",
+    "title_headings": []
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "rows": [
+      {
+        "label": "National Oceanic and Atmospheric Administration",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "National Oceanic and Atmospheric Administration"
+      },
+      {
+        "label": "Operations, Research, and Facilities",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "4,540,392",
+          "4,007,653",
+          "-532,739"
+        ],
+        "raw_text": "Operations, Research, and Facilities.................. 4,540,392 4,007,653 -532,739"
+      },
+      {
+        "label": "(by transfer)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(399,644)",
+          "(659,190)",
+          "(+259,546)"
+        ],
+        "raw_text": "(by transfer)...................................... (399,644) (659,190) (+259,546)"
+      },
+      {
+        "label": "Promote and Develop Fund (transfer out)",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "(-399,644)",
+          "(-659,190)",
+          "(-259,546)"
+        ],
+        "raw_text": "Promote and Develop Fund (transfer out).......... (-399,644) (-659,190) (-259,546)"
+      },
+      {
+        "label": "Subtotal",
+        "indent": 2,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "4,540,392",
+          "4,007,653",
+          "-532,739"
+        ],
+        "raw_text": "Subtotal................................... 4,540,392 4,007,653 -532,739"
+      },
+      {
+        "label": "Procurement, Acquisition and Construction",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "1,576,899",
+          "1,790,820",
+          "+213,921"
+        ],
+        "raw_text": "Procurement, Acquisition and Construction............ 1,576,899 1,790,820 +213,921"
+      },
+      {
+        "label": "Pacific Coastal Salmon Recovery",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "65,000",
+          "65,000",
+          "---"
+        ],
+        "raw_text": "Pacific Coastal Salmon Recovery....................... 65,000 65,000 ---"
+      },
+      {
+        "label": "Fishermen's Contingency Fund",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "349",
+          "349",
+          "---"
+        ],
+        "raw_text": "Fishermen's Contingency Fund.......................... 349 349 ---"
+      },
+      {
+        "label": "Fisheries Disaster Assistance",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "300",
+          "300",
+          "---"
+        ],
+        "raw_text": "Fisheries Disaster Assistance......................... 300 300 ---"
+      },
+      {
+        "label": "Fisheries Finance Program Account",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "-12,000",
+          "-13,000",
+          "-1,000"
+        ],
+        "raw_text": "Fisheries Finance Program Account..................... -12,000 -13,000 -1,000"
+      },
+      {
+        "label": "Total, National Oceanic and Atmospheric Administration",
+        "indent": 1,
+        "is_heading": false,
+        "rule_above": "single",
+        "values": [
+          "6,170,940",
+          "5,851,122",
+          "-319,818"
+        ],
+        "raw_text": "Total, National Oceanic and Atmospheric Administration................................ 6,170,940 5,851,122 -319,818"
+      }
+    ],
+    "legibility_notes": "Page number \"160\" printed sideways in right margin; not part of the table."
+  }
+}

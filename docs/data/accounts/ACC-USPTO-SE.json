@@ -1,0 +1,368 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "amount_type": "budget authority",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "offsetting_collection",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "transfer",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "amount_type": "budget authority",
+       "component": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 5160000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8845",
+         "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+         "canonical_account_id": "ACC-USPTO-SE",
+         "chamber": "House",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "cbo_cost_estimate",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2027,
+         "observation_id": "OBS-0971",
+         "offsetting_collections": 0,
+         "publication_date": "2026-05-26",
+         "report_id": "H.Rept.119-652",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+         "source_agency": "Congressional Budget Office",
+         "source_document_id": "SRC-CBO-HR8845-FY2027",
+         "source_page": "1-14",
+         "source_table_or_section": "Title I, Spending",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-0083"
+          }
+         ],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "offsetting_collection",
+       "component": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -5160000000,
+         "amount_type": "offsetting_collection",
+         "bill_id": "H.R.8845",
+         "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+         "canonical_account_id": "ACC-USPTO-SE",
+         "chamber": "House",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "cbo_cost_estimate",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2027,
+         "observation_id": "OBS-0972",
+         "offsetting_collections": 1,
+         "publication_date": "2026-05-26",
+         "report_id": "H.Rept.119-652",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+         "source_agency": "Congressional Budget Office",
+         "source_document_id": "SRC-CBO-HR8845-FY2027",
+         "source_page": "1-14",
+         "source_table_or_section": "Title I, Fee Collections (-) Estimated",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "transfer",
+       "component": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -2000000,
+         "amount_type": "transfer",
+         "bill_id": "H.R.8845",
+         "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+         "canonical_account_id": "ACC-USPTO-SE",
+         "chamber": "House",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "cbo_cost_estimate",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2027,
+         "observation_id": "OBS-0973",
+         "offsetting_collections": 0,
+         "publication_date": "2026-05-26",
+         "report_id": "H.Rept.119-652",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+         "source_agency": "Congressional Budget Office",
+         "source_document_id": "SRC-CBO-HR8845-FY2027",
+         "source_page": "1-14",
+         "source_table_or_section": "Title I, Transfer to OIG",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "amount_type": "budget authority",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "offsetting_collection",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "transfer",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "amount_type": "budget authority",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "offsetting_collection",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "transfer",
+       "component": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null
+   },
+   {
+    "amount_type": "offsetting_collection",
+    "component": null
+   },
+   {
+    "amount_type": "transfer",
+    "component": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Department of Commerce",
+   "bureau": "U.S. Patent and Trademark Office",
+   "canonical_account_id": "ACC-USPTO-SE",
+   "canonical_name": "Salaries and Expenses",
+   "effective_end": null,
+   "effective_start": "2017-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Fully fee-funded: gross spending is offset almost entirely by fee collections.",
+   "status": "active",
+   "subcommittee": "CJS",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 5160000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-USPTO-SE",
+    "chamber": "House",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "cbo_cost_estimate",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2027,
+    "observation_id": "OBS-0971",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-26",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+    "source_agency": "Congressional Budget Office",
+    "source_document_id": "SRC-CBO-HR8845-FY2027",
+    "source_page": "1-14",
+    "source_table_or_section": "Title I, Spending",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-0083"
+     }
+    ],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": -5160000000,
+    "amount_type": "offsetting_collection",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-USPTO-SE",
+    "chamber": "House",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "cbo_cost_estimate",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2027,
+    "observation_id": "OBS-0972",
+    "offsetting_collections": 1,
+    "publication_date": "2026-05-26",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+    "source_agency": "Congressional Budget Office",
+    "source_document_id": "SRC-CBO-HR8845-FY2027",
+    "source_page": "1-14",
+    "source_table_or_section": "Title I, Fee Collections (-) Estimated",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": -2000000,
+    "amount_type": "transfer",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-USPTO-SE",
+    "chamber": "House",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "cbo_cost_estimate",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2027,
+    "observation_id": "OBS-0973",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-26",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf",
+    "source_agency": "Congressional Budget Office",
+    "source_document_id": "SRC-CBO-HR8845-FY2027",
+    "source_page": "1-14",
+    "source_table_or_section": "Title I, Transfer to OIG",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
+    "validation": [],
+    "verification_status": "human-verified"
+   }
+  ],
+  "relationships": []
+ }
+}
