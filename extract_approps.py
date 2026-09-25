@@ -22,7 +22,11 @@ reconciliation.
 
 Vision results are cached per page (extraction_cache/<package_id>/pNNNN.json),
 keyed to the PDF's sha256, so re-running never re-pays for a page that has
-already been read. --offline uses the cache only and never calls the API.
+already been read. --offline uses the cache only and never calls the API;
+--live does the opposite: it ignores cached results and re-reads every
+image-only page with a fresh API call (writing the new results back to the
+cache), which is how the extraction itself -- not just the parsing -- gets
+tested.
 
 Scope right now: the House committee report comparative statement of new
 budget authority (the image-only fold-out table). Text pages are routed and
@@ -35,6 +39,10 @@ Usage:
 
     # Whole comparative table
     python extract_approps.py document_store/CRPT-119hrpt652.pdf
+
+    # Fresh vision calls for every page, cache ignored (tests the model's reading)
+    python extract_approps.py document_store/CRPT-119hrpt652.pdf --title "TITLE III" --live \\
+        --ground-truth tests/ground_truth/CRPT-119hrpt652_title_iii_fy2026_enacted.json
 
     # No API calls: use recorded vision transcriptions only
     python extract_approps.py document_store/CRPT-119hrpt652.pdf --title "TITLE III" \\
@@ -53,6 +61,7 @@ import json
 import os
 import re
 import sys
+import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -328,8 +337,10 @@ def _call_json(client, model, system, content, schema, effort, max_tokens, use_f
         # Server-side refusal fallback: a declined request is re-run on a
         # fallback model inside the same call.
         kwargs.update(betas=["server-side-fallback-2026-07-01"], fallbacks="default")
+    started = time.monotonic()
     with client.beta.messages.stream(**kwargs) as stream:
         msg = stream.get_final_message()
+    seconds = round(time.monotonic() - started, 1)
     if msg.stop_reason == "refusal":
         raise VisionError(f"model refused: {getattr(msg, 'stop_details', None)}")
     if msg.stop_reason == "max_tokens":
@@ -338,7 +349,7 @@ def _call_json(client, model, system, content, schema, effort, max_tokens, use_f
     if text is None:
         raise VisionError("no text block in response")
     usage = {"input_tokens": msg.usage.input_tokens, "output_tokens": msg.usage.output_tokens,
-             "model": msg.model}
+             "seconds": seconds, "model": msg.model}
     return json.loads(text), usage
 
 
@@ -357,6 +368,7 @@ def classify_page(client, model, page, use_fallbacks):
 
 def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
     tried = []
+    total = {"input_tokens": 0, "output_tokens": 0, "seconds": 0.0}
     for rot in (rotation, (rotation + 180) % 360):
         png, used_dpi = render_png(page, dpi=dpi, rotation=rot)
         result, usage = _call_json(
@@ -364,8 +376,13 @@ def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
             [_image_block(png), {"type": "text", "text": TRANSCRIBE_PROMPT}],
             TRANSCRIBE_SCHEMA, effort="high", max_tokens=48000, use_fallbacks=use_fallbacks)
         tried.append(rot)
+        # A wrong-way-up attempt is still paid for: count it.
+        for k in total:
+            total[k] += usage.get(k, 0)
+        total.update(model=usage["model"], attempts=len(tried))
         if result.get("orientation_ok"):
-            return result, usage, rot, used_dpi
+            total["seconds"] = round(total["seconds"], 1)
+            return result, total, rot, used_dpi
     raise VisionError(f"page {page.number + 1}: no upright rendering among rotations {tried}")
 
 
@@ -763,7 +780,7 @@ def title_filter_ok(node, target_key):
 
 
 def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=False,
-        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True):
+        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False):
     pdf_path = Path(pdf_path)
     data = pdf_path.read_bytes()
     pdf_sha = hashlib.sha256(data).hexdigest()
@@ -771,6 +788,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     doc_pdf = pymupdf.open(stream=data, filetype="pdf")
     doc = describe_package(package_id)
     cache = VisionCache(cache_dir, package_id, pdf_sha)
+    if live and offline:
+        raise SystemExit("--live and --offline are mutually exclusive")
     target_key = title_key(title) if title else None
     if title and not target_key:
         raise SystemExit(f"--title must look like 'TITLE III', got {title!r}")
@@ -798,7 +817,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     usage_log = []
     uncached = []
     for p in vision_pages:
-        entry = cache.load(p) or {"meta": {"pdf_sha256": pdf_sha, "page": p}}
+        entry = (None if live else cache.load(p)) or {"meta": {"pdf_sha256": pdf_sha, "page": p}}
         if entry.get("classify") is None and entry.get("transcription") is None:
             try:
                 result, usage = classify_page(get_client(), model, doc_pdf[p - 1], use_fallbacks)
@@ -937,6 +956,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
         "extraction": {
             "extracted_at": _now(),
             "model": model,
+            "mode": "live" if live else ("offline" if offline else "cached"),
             "prompt_version": PROMPT_VERSION,
             "title_filter": title,
             "table_title": table_title,
@@ -1003,6 +1023,17 @@ def print_report(result, gt_rows=None):
     for line in s["rollup_lines"]:
         print("  " + line)
     print(f"\nverification_status: {s['verification_status_counts']}")
+    calls = ex["vision_calls_this_run"]
+    print(f"\nVision calls this run ({ex['mode']}): {len(calls)}")
+    for c in calls:
+        print(f"  {c['pass']:10s} p{c['page']:<4d} in={c['input_tokens']:>7,} out={c['output_tokens']:>7,} "
+              f"{c.get('seconds', 0):>6.1f}s  {c['model']}")
+    if calls:
+        for kind in ("classify", "transcribe"):
+            cs = [c for c in calls if c["pass"] == kind]
+            if cs:
+                print(f"  {kind:10s} total: {len(cs)} calls, in={sum(c['input_tokens'] for c in cs):,} "
+                      f"out={sum(c['output_tokens'] for c in cs):,} {sum(c.get('seconds', 0) for c in cs):.1f}s")
     if gt_rows is not None:
         print("\nGround truth:")
         for name, want, got, match in gt_rows:
@@ -1018,14 +1049,17 @@ def main():
     ap.add_argument("--dpi", type=int, default=200)
     ap.add_argument("--cache-dir", default=str(CACHE_DIR))
     ap.add_argument("--out-dir", default=str(OUT_DIR))
-    ap.add_argument("--offline", action="store_true", help="Use cached vision results only; never call the API")
+    mode = ap.add_mutually_exclusive_group()
+    mode.add_argument("--offline", action="store_true", help="Use cached vision results only; never call the API")
+    mode.add_argument("--live", action="store_true",
+                      help="Ignore cached vision results and call the API for every image-only page")
     ap.add_argument("--no-fallbacks", action="store_true", help="Don't send the server-side refusal fallback beta")
     ap.add_argument("--ground-truth", help="JSON of expected dollar figures to diff against")
     args = ap.parse_args()
 
     result = run(args.pdf, title=args.title, model=args.model, cache_dir=args.cache_dir,
                  offline=args.offline, dpi=args.dpi, out_dir=args.out_dir,
-                 use_fallbacks=not args.no_fallbacks)
+                 use_fallbacks=not args.no_fallbacks, live=args.live)
     gt_ok, gt_rows = (True, None)
     if args.ground_truth:
         gt_ok, gt_rows = compare_ground_truth(result, args.ground_truth)

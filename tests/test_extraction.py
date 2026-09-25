@@ -7,10 +7,17 @@ Needs document_store/CRPT-119hrpt652.pdf (govinfo_ingest.py, or
 curl "https://api.govinfo.gov/packages/CRPT-119hrpt652/pdf?api_key=$GOVINFO_API_KEY").
 Vision results come from tests/fixtures/vision_cache (hand transcriptions of
 pp. 168-171), so no API key is needed and nothing here spends money.
+
+That checks parsing and validation, not the model's reading of the page. To
+run the Title III acceptance test against fresh vision calls instead (cache
+ignored, needs ANTHROPIC_API_KEY in .env, costs money):
+
+    APPROPS_LIVE=1 python -m unittest tests.test_extraction.TitleIIIAcceptance -v
 """
 
 import copy
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -27,6 +34,7 @@ FIXTURES = ROOT / "tests" / "fixtures" / "vision_cache"
 GROUND_TRUTH = ROOT / "tests" / "ground_truth" / "CRPT-119hrpt652_title_iii_fy2026_enacted.json"
 
 needs_pdf = unittest.skipUnless(PDF.exists(), f"{PDF} not present -- fetch it with govinfo_ingest.py")
+LIVE = os.environ.get("APPROPS_LIVE") == "1"
 
 
 def run_offline(cache_dir=FIXTURES, title="TITLE III"):
@@ -86,7 +94,19 @@ class TitleIIIAcceptance(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.result = run_offline()
+        if not LIVE:
+            cls.result = run_offline()
+            return
+        # Fresh vision calls; a throwaway cache so the fixtures are never touched.
+        with tempfile.TemporaryDirectory() as cache, tempfile.TemporaryDirectory() as out:
+            cls.result = ex.run(PDF, title="TITLE III", cache_dir=cache, out_dir=out, live=True, verbose=False)
+        ex.print_report(cls.result, ex.compare_ground_truth(cls.result, GROUND_TRUTH)[1])
+
+    def test_mode(self):
+        self.assertEqual(self.result["extraction"]["mode"], "live" if LIVE else "offline")
+        if LIVE:
+            sources = {v["source"] for v in self.result["extraction"]["page_sources"].values()}
+            self.assertEqual(sources, {"claude_api"})
 
     def test_ground_truth_exact(self):
         ok, rows = ex.compare_ground_truth(self.result, GROUND_TRUTH)
@@ -218,6 +238,15 @@ class VisionOrchestration(unittest.TestCase):
             calls.clear()
             ex.run(PDF, title="TITLE III", cache_dir=cache, out_dir=out, verbose=False)
             self.assertEqual(calls, [])
+            # --live ignores that cache and calls the API for every page again
+            res = ex.run(PDF, title="TITLE III", cache_dir=cache, out_dir=out, verbose=False, live=True)
+            self.assertEqual(sorted(p for k, p in calls if k == "transcribe"), [169, 170, 171])
+            self.assertEqual(len([c for c in calls if c[0] == "classify"]), 38)
+            self.assertEqual(res["extraction"]["mode"], "live")
+
+    def test_live_and_offline_exclusive(self):
+        with self.assertRaises(SystemExit):
+            ex.run(PDF, title="TITLE III", cache_dir=FIXTURES, offline=True, live=True, verbose=False)
 
     def test_rotation_retry(self):
         import pymupdf
