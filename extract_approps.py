@@ -466,6 +466,15 @@ def squash(s):
     return norm_name(s).replace(" ", "")
 
 
+def names_line(named, label):
+    """Does a subtotal named `named` (squashed) cover this line? Its label
+    starts with the name -- allowing the edit distance the account matcher
+    allows for OCR noise (a misspelt "enviromental" still belongs to
+    "Subtotal, Construction and environmental ...")."""
+    head = squash(label)[:len(named)]
+    return head == named or accounts.distance(head, named) <= accounts.allowed_distance(named)
+
+
 def title_key(label):
     m = TITLE_HEADING_RE.match(label or "")
     return f"title {m.group(1).lower()}" if m else None
@@ -668,7 +677,7 @@ def build_hierarchy(rows, table_starts_with_title):
             n = 0
             if named:
                 run = top.items[top.run_start:]
-                while n < len(run) and run[-1 - n].kind == "line" and squash(run[-1 - n].label).startswith(named):
+                while n < len(run) and run[-1 - n].kind == "line" and names_line(named, run[-1 - n].label):
                     n += 1
             if n:
                 node.children = top.items[len(top.items) - n:]
@@ -1218,10 +1227,16 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     if ocr_table_pages:
         in_selection = {n.page for n in built["selected"]}
         failing = {p: "; ".join(iss) for p, iss in ocr_issues.items() if iss and p in in_selection}
-        for o in built["observations"]:
-            p = int(o["source_page"])
-            if o["verification_status"] == "flagged" and p in ocr_issues and p not in failing:
-                failing[p] = "arithmetic check failed"
+        # Only failures a page's own reading can cause: a row on it that fails
+        # its own check (a delta, or a stated total that doesn't add up). A
+        # page merely holding children of a failing rollup isn't re-read --
+        # vision can't fix a hierarchy problem, and it would pay to find that out.
+        page_of = {o["observation_id"]: int(o["source_page"]) for o in built["observations"]}
+        for rec in built["records"]:
+            p = page_of.get(rec["observation_id"])
+            if rec["result"] == "fail" and rec["rule_applied"] in ("structural", "table_total") \
+                    and p in ocr_issues and p not in failing:
+                failing[p] = "arithmetic check failed on this page"
         replaced = False
         for p, reason in sorted(failing.items()):
             got = vision_reread(p, entries[p]["transcription"]["column_headers"])

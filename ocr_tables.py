@@ -89,11 +89,13 @@ def find_header(rows):
     return None
 
 
-def header_columns(r1, r2):
+def header_columns(r1, r2, em):
+    """Header words within 1.5 line-heights of each other belong to one column
+    header ("Final" + "Bill"); columns themselves sit ~3 line-heights apart."""
     ws = [w for w in r1["w"] + r2["w"] if re.search(r"[A-Za-z0-9]", w["t"])]
     groups = []
     for w in sorted(ws, key=lambda w: w["u0"]):
-        if groups and w["u0"] <= groups[-1]["u1"] + 6:
+        if groups and w["u0"] <= groups[-1]["u1"] + 1.5 * em:
             groups[-1]["w"].append(w)
             groups[-1]["u1"] = max(groups[-1]["u1"], w["u1"])
         else:
@@ -102,8 +104,16 @@ def header_columns(r1, r2):
     for g in groups:
         top = [x["t"] for x in sorted(g["w"], key=lambda x: x["u0"]) if x in r1["w"]]
         bot = [x["t"] for x in sorted(g["w"], key=lambda x: x["u0"]) if x in r2["w"]]
-        cols.append({"u0": g["u0"], "u1": g["u1"], "header": re.sub(r"\s+", " ", " ".join(top + bot)).strip()})
+        cols.append({"u0": g["u0"], "u1": g["u1"], "header": repair_header(" ".join(top + bot))})
     return cols
+
+
+BILL_OCR_RE = re.compile(r"\bB\s*i\s*[l1I|]\s*[l1I|]\b")
+
+
+def repair_header(h):
+    """Header words OCR mangles the same way every time: l / 1 / I in "Bill"."""
+    return re.sub(r"\s+", " ", BILL_OCR_RE.sub("Bill", h)).strip()
 
 
 def header_key(h):
@@ -140,7 +150,7 @@ def page_rows(page, cols_hint=None):
     hi = find_header(rows)
     cols, title, units, start = cols_hint, "", "", 0
     if hi is not None:
-        cols = header_columns(rows[hi], rows[hi + 1])
+        cols = header_columns(rows[hi], rows[hi + 1], em)
         above = [r["text"] for r in rows[:hi]]
         units = next((UNITS_RE.search(t).group(0) for t in above if UNITS_RE.search(t)), "")
         title = " ".join(t for t in above if not UNITS_RE.search(t)).strip()

@@ -11,6 +11,7 @@ workbook, keyed by canonical account; the Title III total from H.Rept.
 (recorded live 2026-09-25), so nothing here calls the API.
 """
 
+import json
 import shutil
 import sys
 import tempfile
@@ -32,7 +33,9 @@ JES = ROOT / "fy26_cjs_jes.pdf"
 RECORDED = ROOT / "tests" / "fixtures" / "vision_cache_recorded"
 GT = ROOT / "tests" / "ground_truth" / "fy26_cjs_jes_title_iii.json"
 DOC_ID = "MANUAL-CJS-FY2026-Enacted-jes-398bd046"
-GATED = [117, 118, 120, 121, 122, 123, 124, 125, 126, 127, 130, 131, 132, 135]
+GATED = [117, 118, 120, 121, 122, 126, 127, 132, 135]
+JES24 = ROOT / "FY24_CJS_Conference_JES_scan_3_3_24.pdf"
+GT24 = ROOT / "tests" / "ground_truth" / "fy24_cjs_jes_title_iii.json"
 
 
 def ingest_jes(store):
@@ -132,7 +135,8 @@ class JesWholeTableGate(unittest.TestCase):
         self.assertEqual(sorted(int(p) for p in fb), GATED)
         self.assertTrue(all(f["result"] == "re-read by vision" for f in fb.values()))
         sources = {int(p): m["source"] for p, m in self.result["extraction"]["page_sources"].items()}
-        self.assertEqual(sorted(p for p, s in sources.items() if s == "ocr_text"), [116, 119, 128, 129, 133, 134])
+        self.assertEqual(sorted(p for p, s in sources.items() if s == "ocr_text"),
+                         sorted(set(range(116, 136)) - set(GATED)))
         self.assertEqual(self.result["extraction"]["vision_calls_this_run"], [])
 
     def test_title_iii_still_exact(self):
@@ -184,6 +188,48 @@ class VisionFallbackMechanics(unittest.TestCase):
             self.assertEqual(len(r1["extraction"]["vision_calls_this_run"]), len(seen))  # paid failures are logged
             self.assertEqual(r2["extraction"]["vision_calls_this_run"], [])             # and never re-paid
             self.assertTrue(all(f["result"].startswith("kept OCR") for f in r2["extraction"]["ocr_fallback"].values()))
+
+
+@unittest.skipUnless(JES24.exists(), "FY24_CJS_Conference_JES_scan_3_3_24.pdf not present")
+class Jes24Breadth(unittest.TestCase):
+    """A second scanned JES (FY2024 conference, a different OCR run): the free
+    path alone, no vision, against the pilot."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.tmp = tempfile.TemporaryDirectory()
+        d = Path(cls.tmp.name)
+        with mock.patch.object(g, "STORE_DIR", d / "store"), mock.patch.object(g, "MANIFEST_PATH", d / "store" / "manifest.json"):
+            m = g.load_manifest()
+            res = g.ingest_local(JES24, m, subcommittee="CJS", fiscal_year=2024, stage="Enacted", doc_type="jes",
+                                 advance_copy=False)
+            g.save_manifest(m)
+        with mock.patch.object(ex, "_client", side_effect=no_api):
+            cls.result = ex.run(res["path"], title="TITLE III", cache_dir=d / "cache", out_dir=d / "out", verbose=False)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.tmp.cleanup()
+
+    def test_free_path_only_and_clean(self):
+        self.assertEqual(self.result["extraction"]["ocr_fallback"], {})
+        self.assertEqual([c["header"] for c in self.result["extraction"]["columns"]],
+                         ["FY 2023 Enacted", "FY 2024 Request", "Final Bill", "Final Bill vs Enacted", "Final Bill vs Request"])
+        s = self.result["validation_summary"]
+        self.assertEqual(s["failures"], 0)
+        self.assertEqual(s["by_rule"]["table_total"], {"pass": 9})
+
+    def test_every_figure_exact_except_the_renamed_accounts(self):
+        gt = json.loads(GT24.read_text())
+        renamed = {f"[{c['series']}] {e['name']}" for c in gt["checks"] for e in c["expected"] if e.get("requires_historical_name")}
+        ok, rows = ex.compare_ground_truth(self.result, GT24)
+        self.assertEqual({n for n, w, got, m in rows if not m}, renamed)
+        self.assertEqual(sum(1 for n, w, got, m in rows if m), 63)
+        # the renamed accounts are flagged for review, not guessed
+        for o in self.result["observations"]:
+            if o["account_name_as_written"].startswith(("Deep Space Exploration Systems", "Education and Human Resources")):
+                self.assertEqual(o["account_match"], "unmatched")
+                self.assertNotEqual(o["verification_status"], "auto-validated")
 
 
 class ConfidenceLadder(unittest.TestCase):
