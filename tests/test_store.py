@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v19.xlsx).
+loaded from the committed pilot workbook (reference/..._v20.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,7 +26,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v19.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -68,16 +68,8 @@ class Load(StoreTest):
             "validation_record": 89})
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
 
-    def test_v19_warnings_are_the_known_ones(self):
-        # v19 re-cited the seven supplemental-act figures to their Other
-        # Appropriations pages, but three documents still record only their
-        # Title III pages -- pinned so the fix (widened ranges) shows up here
-        self.assertEqual(self.report["waived"], {})
-        self.assertEqual(self.report["warnings"], [
-            f"observation {o}: source_page '{pg}' is outside {d}'s table pages '{rng}'" for o, pg, d, rng in (
-                ("OBS-0660", "224", "SRC-CRPT-118SRPT62", "219-220"), ("OBS-0664", "224", "SRC-CRPT-117HRPT395", "219-220"),
-                ("OBS-0680", "134", "SRC-CRPT-115HRPT704", "128-129"), ("OBS-0776", "224", "SRC-CRPT-118SRPT62", "219-220"),
-                ("OBS-0796", "134", "SRC-CRPT-115HRPT704", "128-129"), ("OBS-0860", "224", "SRC-CRPT-117HRPT395", "219-220"))])
+    def test_v20_loads_with_no_warnings(self):
+        self.assertEqual((self.report["waived"], self.report["warnings"]), ({}, []))
 
     def test_new_observations_cite_pages_inside_their_documents(self):
         for oid, page, doc in (("OBS-0986", "229", "SRC-CRPT-118SRPT198"), ("OBS-0987", "191", "SRC-CRPT-116HRPT455"),
@@ -141,9 +133,16 @@ class Load(StoreTest):
 
     def test_every_citation_is_inside_its_documents_table_pages(self):
         # v11/v12 re-cited 23 FY2026 Enacted observations to the enacted JES
-        # but kept H.Rept. 119-652's pages (fixed in v13); the only ones
-        # outside now are v19's six (see test_v19_warnings_are_the_known_ones)
-        self.assertEqual(len([w for w in self.report["warnings"] if "outside" in w]), 6)
+        # but kept H.Rept. 119-652's pages (fixed in v13); v19's six
+        # Other Appropriations citations fell outside Title III-only ranges
+        # until v20 recorded the full tables
+        self.assertEqual([w for w in self.report["warnings"] if "outside" in w], [])
+        for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
+                         ("SRC-CRPT-115HRPT704", "120-135"), ("SRC-CRPT-118SRPT198", "220-231"),
+                         ("SRC-CRPT-116HRPT455", "178-197"), ("SRC-CRPT-116SRPT127", "186-195"),
+                         ("SRC-CRPT-116HRPT101", "139-152")):
+            self.assertEqual(self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?",
+                                               (doc,)).fetchone()[0], rng, doc)
 
     def test_blank_request_is_missing_not_zero(self):
         # v13 dropped the $0 rows where the request column prints '---'
@@ -596,8 +595,8 @@ class LoadRefuses(unittest.TestCase):
             "ACC-NASA-EXPLORATION: Account.historical_names [] != Historical Name ['Deep Space Exploration Systems']"]})
 
     def test_full_table_ranges_clear_the_page_warnings(self):
-        # the three documents v19 still records by their Title III pages,
-        # widened to their whole comparative tables (checked page by page)
+        # the full comparative-table ranges (as v20 records them) clear every
+        # page warning; a page outside its document's table still warns
         def edit(wb):
             for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
                              ("SRC-CRPT-115HRPT704", "120-135")):

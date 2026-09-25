@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v19.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 

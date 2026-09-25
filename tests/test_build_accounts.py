@@ -92,7 +92,7 @@ class BuildAccounts(unittest.TestCase):
         self.assertIn("not in the Account tab", str(cm.exception))
 
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v19.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx"
 
 
 class CommittedReference(unittest.TestCase):
