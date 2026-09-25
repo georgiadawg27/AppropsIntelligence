@@ -167,6 +167,28 @@ class AccountRollupGrouping(unittest.TestCase):
         self.assertEqual({o["verification_reason"] for o in defense}, {"hierarchy from model-read indent only"})
 
 
+class GrandTotals(unittest.TestCase):
+    """A grand total never counts another grand total as a child. Before the
+    fix the second one summed the first -- double on most tables, and on S.Rept.
+    119-44 a pass that only compared one printed grand total with the other."""
+
+    def rows(self):
+        return [row("TITLE I - COMMERCE"), row("Salaries", "100", "90"), row("Total, title I, Commerce", "100", "90"),
+                row("TITLE II - JUSTICE"), row("Salaries", "50", "60"), row("Total, title II, Justice", "50", "60"),
+                row("OTHER APPROPRIATIONS"), row("Disaster relief", "30", "---"),
+                row("Total, Other Appropriations", "30", "---"),
+                row("Grand total", "180", "150"),
+                row("Grand total excluding Other Appropriations", "150", "150")]
+
+    def test_children(self):
+        nodes, obs, records, s = run_rows(self.rows())
+        g1, g2 = by_label(nodes, "Grand total")[0], by_label(nodes, "Grand total excluding Other Appropriations")[0]
+        self.assertEqual([c.label for c in g1.children],
+                         ["Total, title I, Commerce", "Total, title II, Justice", "Total, Other Appropriations"])
+        self.assertEqual([c.label for c in g2.children], ["Total, title I, Commerce", "Total, title II, Justice"])
+        self.assertEqual(s["failures"], 0)
+
+
 class RecordedHouseTable(unittest.TestCase):
     """All 17 table pages of H.Rept. 119-652 as Claude actually read them."""
 
