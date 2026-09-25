@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v13.xlsx).
+loaded from the committed pilot workbook (reference/..._v14.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,7 +26,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v13.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v14.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -66,12 +66,19 @@ class Load(StoreTest):
             "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
             "appropriations_observation": 977, "account_relationship": 2, "validation_record": 89})
 
-    def test_v13_loads_clean_with_nothing_waived(self):
+    def test_v14_loads_clean_with_nothing_waived_and_no_warnings(self):
         self.assertEqual(self.report["waived"], {})
-        self.assertEqual(self.report["warnings"], [
-            "source_document SRC-CBO-HR8845-FY2027: also_covers entry is not a fiscal year + stage: "
-            "'Every account in this Mechanism Coverage Pass (Titles I, II, V, VII of HR-8845)'",
-            "bill_report_reference BR-CJS-FY2027-HOUSE: bill_url, report_jes_url blank"])
+        self.assertEqual(self.report["warnings"], [])
+
+    def test_fy2027_house_links_are_the_verified_packages(self):
+        # both fetched live and checked: the report is byte-identical to the
+        # CRPT-119hrpt652 govinfo_ingest stored; the bill's first page is
+        # H.R. 8845 as reported, May 15, 2026
+        r = self.conn.execute("SELECT bill_id, report_id, bill_url, report_jes_url FROM bill_report_reference "
+                              "WHERE reference_id = 'BR-CJS-FY2027-HOUSE'").fetchone()
+        self.assertEqual(tuple(r), ("H.R.8845", "H.Rept.119-652",
+                                    "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+                                    "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf"))
 
     def test_foreign_keys_are_enforced_not_just_declared(self):
         # SQLite ignores REFERENCES unless the connection turns them on

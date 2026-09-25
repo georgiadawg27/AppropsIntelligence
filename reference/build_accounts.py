@@ -2,7 +2,7 @@
 Build reference/accounts.json from the pilot workbook -- the canonical account
 list that OCR-garbled labels are fuzzy-matched against (accounts.py).
 
-    python reference/build_accounts.py reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v13.xlsx
+    python reference/build_accounts.py reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v14.xlsx
 
 Matched names per account: canonical_name (Account tab) plus its former names
 from the Historical Name tab, one row per name. Only rows with human_reviewed
