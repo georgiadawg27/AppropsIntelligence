@@ -154,6 +154,11 @@ TABS = [
         ("source_document_id", to_text, True), ("source_page", to_text, False),
         ("source_table_or_section", to_text, False), ("extraction_method", to_text, True),
         ("confidence", to_real, True), ("verification_status", to_text, True)]),
+    ("Confirmed Absence", "confirmed_absence", [
+        ("confirmed_absence_id", to_text, True), ("canonical_account_id", to_text, True),
+        ("fiscal_year", to_int, True), ("stage", to_text, True), ("amount_type", to_text, True),
+        ("component", to_text, False), ("source_document_id", to_text, True), ("evidence", to_text, True),
+        ("confirmed_date", to_date, False)]),
     ("Account Relationship", "account_relationship", [
         ("relationship_id", to_text, True), ("from_account_id", to_text, True), ("to_account_id", to_text, True),
         ("relationship_type", to_text, True), ("effective_fiscal_year", to_int, False), ("evidence", to_text, True),
@@ -163,6 +168,9 @@ TABS = [
         ("expected_result", to_text, False), ("observed_result", to_text, False), ("result", to_text, True),
         ("human_review_status", to_text, False), ("reviewer", to_text, False), ("resolution", to_text, False)]),
 ]
+
+# Tabs a workbook may not have yet (loaded as empty; the load report says so).
+OPTIONAL_TABS = {"Confirmed Absence"}
 
 # Workbook columns that exist only as lookups into Bill Report Reference; they
 # are checked against it (check_bill_report_lookups), not stored twice.
@@ -193,6 +201,9 @@ def read_tabs(workbook):
     out = {}
     for tab, _, cols in TABS:
         if tab not in wb.sheetnames:
+            if tab in OPTIONAL_TABS:
+                out[tab] = None                       # not in this workbook (vs. present and empty)
+                continue
             raise LoadError(f"workbook has no {tab!r} tab")
         rows = list(wb[tab].iter_rows(values_only=True))
         head = [h.strip() if isinstance(h, str) else h for h in rows[0]]
@@ -610,6 +621,8 @@ def load(workbook, db_path, waive=()):
     tmp.unlink(missing_ok=True)
     report = {"workbook": str(workbook), "value_map": {}, "rows": {}, "warnings": [], "waived": {}}
     tabs = read_tabs(workbook)
+    report["tabs_not_in_workbook"] = sorted(t for t in OPTIONAL_TABS if tabs[t] is None)
+    tabs = {t: v or [] for t, v in tabs.items()}
     rows = convert_rows(tabs, report)
     problems = check_bill_report_lookups(tabs, rows)
     for name, check in WAIVABLE.items():
@@ -760,16 +773,20 @@ def history(conn, account_id):
         obs.append(rec)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
+    absences = [dict(r) for r in conn.execute(
+        "SELECT a.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date "
+        "FROM confirmed_absence a JOIN source_document d ON d.document_id = a.source_document_id "
+        "WHERE a.canonical_account_id = ? ORDER BY a.fiscal_year, a.stage, a.amount_type", (account_id,))]
     # gaps in the four-stage series, from the account's first fiscal year to
-    # the latest one the store holds for any account -- a year nobody entered
-    # for this account shows as missing, never as zero
-    first = min((o["fiscal_year"] for o in obs), default=None)
+    # the latest one the store holds for any account -- a cell with neither an
+    # observation nor a confirmed absence is missing, never zero
+    first = min((o["fiscal_year"] for o in obs + absences), default=None)
     last = conn.execute("SELECT max(fiscal_year) FROM appropriations_observation").fetchone()[0]
-    have = {(o["fiscal_year"], o["stage"]) for o in obs}
+    have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
     missing = [(y, s) for y in range(first, last + 1) for s in STAGE_ORDER[:4]
                if (y, s) not in have] if first is not None else []
     return {"account": acct, "historical_names": former, "relationships": rels, "observations": obs,
-            "missing_cells": missing}
+            "absences": absences, "missing_cells": missing}
 
 
 def history_grid(h):
@@ -777,25 +794,35 @@ def history_grid(h):
     history() laid out as fiscal year x the four core stages. An account can
     have more than one series (amount_type + component: Exploration's budget
     authority and supplemental, R&RA's base and defense lines); each cell
-    lists every series, and a series with no observation in that cell is
-    {"missing": true} -- never a zero, never left out. Other stages (House /
-    Senate Passed) appear as extra columns only if the account has them.
+    lists every series in one of three states:
+      "value"          -- observation(s), with their citations
+      "not_applicable" -- a confirmed absence: the cited document was checked
+                          and prints no such figure (evidence attached)
+      "missing"        -- neither: genuinely unknown. Never a zero, never
+                          left out.
+    Other stages (House / Senate Passed) appear only if the account has them.
     -> {"stages", "series": [{"amount_type", "component"}], "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
-    obs = h["observations"]
-    series = sorted({(o["amount_type"], o["component"]) for o in obs},
+    obs, absent = h["observations"], h.get("absences", [])
+    series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
                     key=lambda k: (k[0] != "budget authority", k[0], k[1] is not None, k[1] or ""))
-    stages = STAGE_ORDER[:4] + [s for s in STAGE_ORDER[4:] if any(o["stage"] == s for o in obs)]
-    years = sorted({o["fiscal_year"] for o in obs} | {y for y, _ in h["missing_cells"]})
-    by = {}
+    stages = STAGE_ORDER[:4] + [s for s in STAGE_ORDER[4:] if any(o["stage"] == s for o in obs + absent)]
+    years = sorted({o["fiscal_year"] for o in obs + absent} | {y for y, _ in h["missing_cells"]})
+    by, gone = {}, {}
     for o in obs:
         by.setdefault((o["fiscal_year"], o["stage"], o["amount_type"], o["component"]), []).append(o)
+    for a in absent:
+        gone[(a["fiscal_year"], a["stage"], a["amount_type"], a["component"])] = a
     rows = []
     for y in years:
         cells = {}
         for st in stages:
-            cells[st] = [{"amount_type": t, "component": c, "missing": not by.get((y, st, t, c)),
-                          "observations": by.get((y, st, t, c), [])} for t, c in series]
+            cells[st] = []
+            for t, c in series:
+                found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
+                state = "value" if found else "not_applicable" if absence else "missing"
+                cells[st].append({"amount_type": t, "component": c, "state": state, "missing": state == "missing",
+                                  "observations": found, "absence": absence})
         rows.append({"fiscal_year": y, "cells": cells})
     return {"stages": stages, "series": [{"amount_type": t, "component": c} for t, c in series], "rows": rows}
 

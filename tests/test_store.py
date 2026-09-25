@@ -64,7 +64,9 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         self.assertEqual(self.report["rows"], {
             "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
-            "appropriations_observation": 977, "account_relationship": 2, "validation_record": 89})
+            "appropriations_observation": 977, "confirmed_absence": 0, "account_relationship": 2,
+            "validation_record": 89})
+        self.assertEqual(self.report["tabs_not_in_workbook"], ["Confirmed Absence"])      # v14 predates the tab
 
     def test_v14_loads_clean_with_nothing_waived_and_no_warnings(self):
         self.assertEqual(self.report["waived"], {})
@@ -366,6 +368,53 @@ class FactKey(StoreCopyTest):
     def test_blank_component_is_null_not_empty(self):
         with self.assertRaises(sqlite3.IntegrityError):
             self.conn.execute("UPDATE appropriations_observation SET component = '' WHERE observation_id = 'OBS-0081'")
+
+
+class ConfirmedAbsenceRules(StoreCopyTest):
+    """value / not applicable / missing -- a fact is observed or confirmed
+    absent, never both."""
+
+    def absent(self, cid, acct, fy, stage, amount_type, component=None, doc="SRC-CRPT-114SRPT239"):
+        self.conn.execute("INSERT INTO confirmed_absence VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                          (cid, acct, fy, stage, amount_type, component, doc, "no such line on pp.139-140",
+                           "2026-09-25"))
+
+    def test_absence_of_an_observed_fact_is_refused(self):
+        with self.assertRaises(sqlite3.IntegrityError) as cm:          # OBS-0605: FY2017 Senate Exploration supplemental $0
+            self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+        self.assertIn("contradicts an observation", str(cm.exception))
+
+    def test_observation_of_an_absent_fact_is_refused(self):
+        self.conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
+        self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+        with self.assertRaises(sqlite3.IntegrityError) as cm:
+            self.conn.execute("INSERT INTO appropriations_observation (observation_id, canonical_account_id, fiscal_year, "
+                              "stage, amount, amount_type, offsetting_collections, source_document_id, extraction_method, "
+                              "confidence, verification_status) VALUES ('OBS-X', 'ACC-NASA-EXPLORATION', 2017, "
+                              "'Senate Reported', 0, 'supplemental', 0, 'SRC-CRPT-114SRPT239', 'human-entered', 1, "
+                              "'human-verified')")
+        self.assertIn("contradicts a confirmed absence", str(cm.exception))
+        with self.assertRaises(sqlite3.IntegrityError):                # one absence per fact
+            self.absent("CA-2", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+
+    def test_grid_has_three_states(self):
+        self.conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
+        self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+        self.absent("CA-2", "ACC-NASA-SPACEOPS", 2017, "Senate Reported", "rescission")
+        g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
+        fy17 = {st: [(l["amount_type"], l["state"]) for l in cells]
+                for st, cells in next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"].items()}
+        self.assertEqual(fy17["Senate Reported"], [("budget authority", "value"), ("supplemental", "not_applicable")])
+        self.assertEqual(fy17["House Reported"], [("budget authority", "value"), ("supplemental", "value")])
+        fy27 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)["cells"]["Enacted"]
+        self.assertEqual({l["state"] for l in fy27}, {"missing"})
+        # a series known only from absences still appears (and the cell isn't "missing")
+        h = S.history(self.conn, "ACC-NASA-SPACEOPS")
+        g = S.history_grid(h)
+        cell = next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"]["Senate Reported"]
+        self.assertEqual([(l["amount_type"], l["state"]) for l in cell],
+                         [("budget authority", "value"), ("rescission", "not_applicable")])
+        self.assertEqual(cell[1]["absence"]["evidence"], "no such line on pp.139-140")
 
 
 HOUSE_PDF = ROOT / "document_store" / "CRPT-119hrpt652.pdf"

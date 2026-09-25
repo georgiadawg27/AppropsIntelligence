@@ -41,6 +41,8 @@
   .legend { color: var(--muted); font-size: 13px; margin: 8px 0; }
   .missing-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; background: var(--missing-bg);
                   color: var(--missing-fg); font-size: 12px; letter-spacing: .02em; }
+  .na-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line);
+             color: var(--muted); font-size: 12px; cursor: help; }
   .table-wrap { overflow-x: auto; }
   table { border-collapse: collapse; width: 100%; min-width: 760px; font-variant-numeric: tabular-nums; }
   th, td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; text-align: left; }
@@ -72,8 +74,9 @@
   <section id="result" hidden data-testid="result">
     <div class="panel" id="account-panel"></div>
     <div class="panel">
-      <div class="legend">Amounts in dollars. <span class="missing-chip">missing</span> = no figure on file for that
-        fiscal year and stage &mdash; not zero. A $0 shown is a zero recorded in the data.</div>
+      <div class="legend">Amounts in dollars. <span class="na-chip">not applicable</span> = the cited document was
+        checked and prints no such figure. <span class="missing-chip">missing</span> = unknown: no figure on file and
+        no confirmed absence &mdash; not zero. A $0 shown is a zero printed in the document.</div>
       <div class="table-wrap"><table id="grid" data-testid="grid"></table></div>
     </div>
     <div class="panel" id="sources"></div>
@@ -200,14 +203,19 @@ function renderGrid(grid, h) {
     for (const stage of grid.stages) {
       const lines = row.cells[stage];
       const td = el("td", { dataset: { stage, testid: "cell" } });
-      if (lines.every((l) => l.missing)) {
+      if (lines.every((l) => l.state === "missing")) {
         td.className = "empty";
         td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
       } else {
         for (const l of lines) {
-          const line = el("div", { class: "line", dataset: { series: seriesLabel(l) } });
+          const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
           if (multi) line.append(el("div", { class: "series", text: seriesLabel(l) }));
-          if (l.missing) line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+          if (l.state === "missing") line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+          if (l.state === "not_applicable") {
+            const a = l.absence;
+            line.append(el("span", { class: "na-chip", "data-testid": "not-applicable", title: a.evidence, text: "not applicable" }),
+                        cite(a));
+          }
           for (const o of l.observations) {
             line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }), cite(o));
             if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")

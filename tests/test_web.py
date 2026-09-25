@@ -59,9 +59,17 @@ class WebTest(unittest.TestCase):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.db = Path(cls.tmp.name) / "approps.db"
         S.load(WORKBOOK, cls.db)
+        conn = S.connect(cls.db)
+        with conn:
+            cls.prepare(conn)
+        conn.close()
         cls.httpd = W.serve(cls.db, port=0, verbose=False)
         cls.base = f"http://127.0.0.1:{cls.httpd.server_address[1]}"
         threading.Thread(target=cls.httpd.serve_forever, daemon=True).start()
+
+    @classmethod
+    def prepare(cls, conn):
+        """Store changes a test class needs before the server starts."""
 
     @classmethod
     def tearDownClass(cls):
@@ -273,3 +281,29 @@ class Browser(WebTest):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+@unittest.skipUnless(sync_playwright and chromium_path(), "playwright / chromium not available")
+class ThreeStates(Browser):
+    """A confirmed absence renders as 'not applicable' with its evidence and
+    the document checked -- distinct from missing, and never $0."""
+
+    @classmethod
+    def prepare(cls, conn):
+        conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
+        conn.execute("INSERT INTO confirmed_absence VALUES ('CA-1', 'ACC-NASA-EXPLORATION', 2017, 'Senate Reported', "
+                     "'supplemental', NULL, 'SRC-CRPT-114SRPT239', 'No Exploration (emergency) line in the table', "
+                     "'2026-09-25')")
+
+    def test_not_applicable_missing_and_value(self):
+        self.search_ui("NASA Exploration")
+        lines = self.page.eval_on_selector_all(
+            "tr[data-fy='2017'] td[data-stage='Senate Reported'] .line",
+            "ls => ls.map(l => [l.dataset.series, l.dataset.state, l.textContent])")
+        self.assertEqual([(a, b) for a, b, _ in lines], [("budget authority", "value"), ("supplemental", "not_applicable")])
+        self.assertIn("not applicable", lines[1][2])
+        self.assertIn("SRC-CRPT-114SRPT239", lines[1][2])
+        self.assertNotIn("$0", lines[1][2])
+        self.assertEqual(self.page.get_attribute("[data-testid=not-applicable]", "title"),
+                         "No Exploration (emergency) line in the table")
+        self.assertEqual(self.page.locator("tr[data-fy='2027'] [data-testid=missing]").count(), 4)

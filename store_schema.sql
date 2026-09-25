@@ -166,3 +166,44 @@ CREATE TABLE validation_record (
 ) STRICT;
 
 CREATE INDEX validation_by_observation ON validation_record (observation_id);
+
+-- A fact a document was checked for and confirmed not to print: no such
+-- line (or the line printed blank in that column). Distinct from a missing
+-- fact (nobody has looked, or the document isn't held) and from a $0
+-- observation (printed, funded at zero). Same fact identity as an
+-- observation; a fact is one or the other, never both (triggers below).
+CREATE TABLE confirmed_absence (
+    confirmed_absence_id TEXT PRIMARY KEY,
+    canonical_account_id TEXT NOT NULL REFERENCES account (canonical_account_id),
+    fiscal_year          INTEGER NOT NULL,
+    stage                TEXT NOT NULL CHECK (stage IN ('President''s Budget', 'House Reported', 'Senate Reported',
+                                                        'Enacted', 'House Passed', 'Senate Passed')),
+    amount_type          TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
+                                                              'transfer', 'offsetting_collection', 'supplemental',
+                                                              'other')),
+    component            TEXT CHECK (component IS NULL OR component <> ''),
+    source_document_id   TEXT NOT NULL REFERENCES source_document (document_id),
+    evidence             TEXT NOT NULL,
+    confirmed_date       TEXT CHECK (confirmed_date IS NULL OR date(confirmed_date) IS confirmed_date)
+) STRICT;
+
+CREATE UNIQUE INDEX confirmed_absence_fact ON confirmed_absence (
+    canonical_account_id, fiscal_year, stage, amount_type, ifnull(component, ''));
+
+CREATE TRIGGER absence_not_observed BEFORE INSERT ON confirmed_absence
+WHEN EXISTS (SELECT 1 FROM appropriations_observation o
+             WHERE o.canonical_account_id = NEW.canonical_account_id AND o.fiscal_year = NEW.fiscal_year
+               AND o.stage = NEW.stage AND o.amount_type = NEW.amount_type
+               AND ifnull(o.component, '') = ifnull(NEW.component, ''))
+BEGIN
+    SELECT RAISE(ABORT, 'confirmed absence contradicts an observation of the same fact');
+END;
+
+CREATE TRIGGER observation_not_absent BEFORE INSERT ON appropriations_observation
+WHEN EXISTS (SELECT 1 FROM confirmed_absence a
+             WHERE a.canonical_account_id = NEW.canonical_account_id AND a.fiscal_year = NEW.fiscal_year
+               AND a.stage = NEW.stage AND a.amount_type = NEW.amount_type
+               AND ifnull(a.component, '') = ifnull(NEW.component, ''))
+BEGIN
+    SELECT RAISE(ABORT, 'observation contradicts a confirmed absence of the same fact');
+END;
