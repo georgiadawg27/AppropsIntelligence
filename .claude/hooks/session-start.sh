@@ -7,7 +7,7 @@
 #    there as APPROPS_ANTHROPIC_API_KEY and written to .env under the name
 #    the scripts read. Key values are never printed.
 # 2. Installs Python dependencies.
-# 3. Fetches the committee report the tests and acceptance run use, if missing.
+# 3. Fetches the committee reports the tests and acceptance runs use, if missing.
 set -euo pipefail
 
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
@@ -43,14 +43,21 @@ PY
 
 pip install --quiet --disable-pip-version-check -r requirements.txt 2>&1 | grep -v "Running pip as the 'root' user" || true
 
-PDF=document_store/CRPT-119hrpt652.pdf
-if [ ! -s "$PDF" ] && [ -n "${GOVINFO_API_KEY:-}" ]; then
-  mkdir -p document_store
-  if curl -sSf -o "$PDF.part" "https://api.govinfo.gov/packages/CRPT-119hrpt652/pdf?api_key=${GOVINFO_API_KEY}"; then
-    mv "$PDF.part" "$PDF"
-    echo "session-start: fetched $PDF"
-  else
-    rm -f "$PDF.part"
-    echo "session-start: could not fetch $PDF (continuing)"
-  fi
-fi
+# Committee reports the tests read, fetched through govinfo_ingest's own
+# fetch_and_store (not a hand-built URL) so the ingest path is what's exercised.
+python3 - <<'PY' || echo "session-start: report fetch failed (continuing)"
+import os
+import govinfo_ingest as g
+
+key = os.environ.get("GOVINFO_API_KEY")
+reports = ["CRPT-119hrpt652", "CRPT-119srpt44", "CRPT-118srpt62"]
+missing = [r for r in reports if not (g.STORE_DIR / f"{r}.pdf").exists()]
+if missing and key:
+    manifest = g.load_manifest()
+    for pid in missing:
+        try:
+            print(f"session-start: {pid}: {g.fetch_and_store(pid, key, manifest)['status']}")
+        except Exception as e:
+            print(f"session-start: {pid}: fetch failed ({e})")
+    g.save_manifest(manifest)
+PY

@@ -108,6 +108,23 @@ def fetch_new_packages(collection, since_iso, api_key, doc_class=None):
     return packages
 
 
+def pdf_link_for(package_id, summary):
+    """
+    Where a package's PDF lives. BILLS and PLAW summaries carry a
+    package-level pdfLink. CRPT (committee report) summaries don't -- their
+    PDF hangs off the report's single granule -- but /packages/{id}/pdf
+    serves the same file (verified byte-identical to the granule PDF for
+    CRPT-119hrpt652 and CRPT-119srpt44). The fallback is CRPT-only: any other
+    collection without a pdfLink still reports no_pdf_available.
+    """
+    link = summary.get("download", {}).get("pdfLink")
+    if link:
+        return link
+    if summary.get("collectionCode") == "CRPT" or package_id.startswith("CRPT-"):
+        return f"{API_BASE}/packages/{package_id}/pdf"
+    return None
+
+
 def fetch_and_store(package_id, api_key, manifest):
     """
     Fetch & hash stage: pull a package's summary, download its PDF, hash it,
@@ -115,21 +132,23 @@ def fetch_and_store(package_id, api_key, manifest):
     i.e. nothing actually changed since the last run.
     """
     summary = api_get(f"/packages/{package_id}/summary", api_key)
-    pdf_link = summary.get("download", {}).get("pdfLink")
+    pdf_link = pdf_link_for(package_id, summary)
     if not pdf_link:
         return {"package_id": package_id, "status": "no_pdf_available"}
 
     req = Request(f"{pdf_link}?api_key={api_key}", headers={"Accept": "application/pdf"})
     with urlopen(req) as resp:
         content = resp.read()
+    if not content.startswith(b"%PDF"):
+        return {"package_id": package_id, "status": "not_a_pdf", "url": pdf_link}
     content_hash = sha256_of(content)
 
     prior = manifest.get(package_id)
-    if prior and prior.get("hash") == content_hash:
+    out_path = STORE_DIR / f"{package_id}.pdf"
+    if prior and prior.get("hash") == content_hash and out_path.exists():
         return {"package_id": package_id, "status": "unchanged", "hash": content_hash}
 
     STORE_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = STORE_DIR / f"{package_id}.pdf"
     out_path.write_bytes(content)
 
     manifest[package_id] = {

@@ -28,10 +28,14 @@ image-only page with a fresh API call (writing the new results back to the
 cache), which is how the extraction itself -- not just the parsing -- gets
 tested.
 
-Scope right now: the House committee report comparative statement of new
-budget authority (the image-only fold-out table). Text pages are routed and
-their text is kept for a later narrative pass, but no observations come from
-them yet.
+Scope right now: the comparative statement of new budget authority, from
+either route:
+  - image-only fold-out inserts (House reports) -> Claude vision calls;
+  - fold-outs typeset as real text (Senate reports) -> text_tables.py, read
+    straight from the text layer and its drawn rules with no API call. A
+    document with no image-only pages never needs ANTHROPIC_API_KEY.
+Other text pages are kept for a later narrative pass; no observations come
+from them yet.
 
 Usage:
     # Title III only (found by content, not page number)
@@ -69,6 +73,7 @@ from pathlib import Path
 import pymupdf
 from dotenv import load_dotenv
 
+import text_tables
 import validate_approps
 
 # Keys come from the project's .env, and win over anything inherited from the
@@ -106,6 +111,7 @@ SLUG_LINE_RES = [re.compile(p) for p in (
 VISION_BASE_CONFIDENCE = 0.95
 TITLE_HEADING_RE = re.compile(r"^\s*title\s+([ivxlc]+)\b", re.I)
 DASH_RE = re.compile(r"^[-\u2010-\u2015\u2212]{1,}$")  # "---", "--", "—", "-"
+LEADER_BLANK_RE = re.compile(r"^\.{2,}$")                # a cell printed as dot leaders only
 
 
 # ---------------------------------------------------------------------------
@@ -429,10 +435,14 @@ def title_key(label):
 
 
 def parse_cell(raw):
-    """-> dict(kind, value, paren). kind: blank | dash | number | unparsed."""
+    """-> dict(kind, value, paren). kind: blank | dash | number | unparsed.
+    A blank printed as dot leaders is still blank (not zero, not missing) but
+    keeps leader=True, so an all-blank line item isn't mistaken for a heading."""
     s = (raw or "").strip().replace("\u2212", "-")
     if not s:
         return {"kind": "blank", "value": None, "paren": False, "raw": raw}
+    if LEADER_BLANK_RE.match(s):
+        return {"kind": "blank", "value": None, "paren": False, "raw": raw, "leader": True}
     paren = s.startswith("(") and s.endswith(")")
     inner = s[1:-1].strip() if paren else s
     if DASH_RE.match(inner):
@@ -447,7 +457,7 @@ def parse_cell(raw):
 def classify_row(row, cells):
     label = row["label"].strip()
     low = label.lower()
-    if all(c["kind"] == "blank" for c in cells):
+    if all(c["kind"] == "blank" and not c.get("leader") for c in cells):
         return "title_heading" if title_key(label) else "heading"
     printed = [c for c in cells if c["kind"] in ("number", "dash", "unparsed")]
     if (label.startswith("(") and label.endswith(")")) or \
@@ -559,11 +569,29 @@ def build_hierarchy(rows, table_starts_with_title):
             top.items.append(node)
 
         elif kind == "subtotal":
-            node.children = top.items[top.run_start:]
-            node.match = "run_since_last_subtotal"
-            node.complete = top.complete
-            top.items = top.items[:top.run_start] + [node]
-            top.run_start = len(top.items)
+            # "Subtotal, Exploration" (Senate) rolls up only the lines named
+            # for that account directly above it ("Exploration", "Exploration
+            # (emergency)"), and doesn't close the run: a later unnamed
+            # "Subtotal" still includes it. A bare "Subtotal" (House) sums
+            # everything since the previous bare subtotal.
+            m = re.match(r"subtotal\s*,\s*(.+)", label, flags=re.I)
+            named = norm_name(m.group(1)) if m else None
+            n = 0
+            if named:
+                run = top.items[top.run_start:]
+                while n < len(run) and run[-1 - n].kind == "line" and norm_name(run[-1 - n].label).startswith(named):
+                    n += 1
+            if n:
+                node.children = top.items[len(top.items) - n:]
+                node.match = "named_run"
+                node.complete = top.complete
+                top.items = top.items[:len(top.items) - n] + [node]
+            else:
+                node.children = top.items[top.run_start:]
+                node.match = "run_since_last_subtotal"
+                node.complete = top.complete
+                top.items = top.items[:top.run_start] + [node]
+                top.run_start = len(top.items)
 
         elif kind == "grand_total":
             while len(stack) > 1:
@@ -625,18 +653,22 @@ def classify_columns(headers, bill_fy, doc_stage):
         col = {"index": i, "header": hn, "kind": "value", "fiscal_year": None, "stage": None}
         if " vs" in low or "compared" in low or "change" in low:
             col["kind"] = "delta"
-            parts = re.split(r"\s+vs\.?\s+", hn, flags=re.I)
+            # "Bill vs. Enacted"; "Senate Committee recommendation compared
+            # with (+ or -) 2025 appropriation"
+            parts = re.split(r"\s+(?:vs\.?|compared\s+with)\s+", hn, flags=re.I)
+            parts = [re.sub(r"^\([^)]*\)\s*", "", x).strip() for x in parts]
             col["minuend"], col["subtrahend"] = (parts + [None])[:2]
         else:
             m = re.search(r"(?:FY\s*)?(\d{4})", hn)
             if m:
                 col["fiscal_year"] = int(m.group(1))
-            if "enacted" in low:
+            if "enacted" in low or (m and "appropriation" in low):
+                # "FY 2026 Enacted"; the Senate's prior-year "2025 appropriation"
                 col["stage"] = "Enacted"
             elif "request" in low or "budget estimate" in low:
                 col["stage"] = "President's Budget"
                 col["fiscal_year"] = col["fiscal_year"] or bill_fy
-            elif low == "bill" or low.startswith("bill") or "recommended" in low:
+            elif low == "bill" or low.startswith("bill") or "recommend" in low:
                 col["stage"] = doc_stage
                 col["fiscal_year"] = col["fiscal_year"] or bill_fy
         cols.append(col)
@@ -655,7 +687,8 @@ def _match_col(cols, name):
         if c["kind"] != "value":
             continue
         h = c["header"].lower()
-        if h == n or h.endswith(n) or (n == "enacted" and "enacted" in h) or (n == "request" and "request" in h):
+        if h == n or h.endswith(n) or n.endswith(h) or (n == "enacted" and "enacted" in h) \
+                or (n == "request" and "request" in h):
             return c["index"]
     return None
 
@@ -799,8 +832,11 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     # 1. Route every page.
     routes = [route_page(doc_pdf[i]) for i in range(len(doc_pdf))]
     vision_pages = [r["page"] for r in routes if r["route"] == "vision"]
+    text_table_pages = text_tables.find_table_pages(doc_pdf, [r["page"] for r in routes if r["route"] == "text"])
     log(f"{package_id}: {len(routes)} pages, {len(routes) - len(vision_pages)} text, "
         f"{len(vision_pages)} image-only -> vision")
+    if text_table_pages:
+        log(f"  text-native comparative-table pages (read from the text layer, no API call): {text_table_pages}")
 
     client = None
 
@@ -871,6 +907,17 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
 
     done = [p for p in table_pages if ensure_transcribed(p)]
 
+    # 3b. Text-native table pages: every one is read (no cost); the title
+    #     filter is applied to the hierarchy below, so rollups keep complete
+    #     children.
+    text_trs = text_tables.extract_table(doc_pdf, text_table_pages) if text_table_pages else {}
+    for p, tr in text_trs.items():
+        entries[p] = {"meta": {"pdf_sha256": pdf_sha, "page": p, "source": "text_layer",
+                               "column_headers_from_page": tr["column_headers_from_page"]},
+                      "transcription": tr}
+        done.append(p)
+    all_table_pages = sorted(set(all_table_pages) | set(text_table_pages))
+
     def title_total_seen():
         for p in done:
             for r in entries[p]["transcription"]["rows"]:
@@ -893,17 +940,23 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     units_by_page = {}
     headers = None
     table_title = ""
-    for p in sorted(done):
+    for p in sorted(set(done)):
         entry = entries[p]
         tr = entry["transcription"]
         src = entry["meta"].get("source", "claude_api")
-        page_meta[p] = {"extraction_method": "human-entered" if src == "manual_transcription" else "AI-extracted",
+        method = {"manual_transcription": "human-entered", "text_layer": "text-extracted"}.get(src, "AI-extracted")
+        page_meta[p] = {"extraction_method": method,
                         "source": src, "model": entry["meta"].get("model"),
                         "units_declared": tr.get("units_declared", ""),
                         "units_parsed": parse_units(tr.get("units_declared", "")),
                         "column_headers": tr.get("column_headers", []),
                         "legibility_notes": tr.get("legibility_notes", "")}
+        if "column_headers_from_page" in tr:
+            page_meta[p]["column_headers_from_page"] = tr["column_headers_from_page"]
         units_by_page[p] = tr.get("units_declared", "")
+        if headers is not None and tr["column_headers"] != headers:
+            raise SystemExit(f"p{p} column headers {tr['column_headers']} differ from {headers} "
+                             f"on an earlier page of the same table")
         headers = headers or tr["column_headers"]
         table_title = table_title or tr.get("table_title", "")
         for r in tr["rows"]:
@@ -912,6 +965,9 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             rows.append((p, r, [parse_cell(v) for v in vals]))
 
     if not rows:
+        if not vision_pages:
+            raise SystemExit(f"{package_id}: no comparative statement found -- all {len(routes)} pages have a "
+                             "text layer and none matched the table's header pattern and column layout")
         raise SystemExit("nothing transcribed -- set ANTHROPIC_API_KEY or point --cache-dir at recorded pages")
 
     first_table_page = all_table_pages[0] if all_table_pages else None
@@ -920,9 +976,10 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     Node._seq = 0
     nodes = build_hierarchy(rows, starts_with_title)
 
-    m = re.search(r"BILL FOR (\d{4})", table_title, re.I)
+    m = re.search(r"BILL\s+FOR\s+(?:FISCAL\s+YEAR\s+)?(\d{4})", table_title, re.I)
     bill_fy = int(m.group(1)) if m else None
     cols = classify_columns(headers, bill_fy, doc["stage"])
+    sign_check = text_tables.sign_glyph_check(text_trs, cols) if text_trs else {}
 
     declared_units = {parse_units(u) for u in units_by_page.values()}
     unit = next(iter(declared_units)) if len(declared_units) == 1 else None
@@ -962,9 +1019,11 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             "table_title": table_title,
             "amount_unit_declared": unit,
             "columns": cols,
-            "pages_transcribed": sorted(done),
+            "pages_transcribed": sorted(set(done)),
             "page_sources": {str(p): {k: v for k, v in m.items()} for p, m in page_meta.items()},
             "vision_calls_this_run": [{"pass": k, "page": p, **u} for k, p, u in usage_log],
+            "text_table_pages": text_table_pages,
+            "sign_glyph_check": sign_check,
         },
         "page_routing": [{k: v for k, v in r.items() if k != "text"} for r in routes],
         "observations": observations,
@@ -994,16 +1053,34 @@ def _now():
 # Reporting
 # ---------------------------------------------------------------------------
 
+def ground_truth_checks(gt):
+    """A ground-truth file checks one column ({"column_header", "expected"})
+    or several ({"checks": [{"column_header", "series", "expected"}, ...]})."""
+    if "checks" in gt:
+        return gt["checks"]
+    return [{"column_header": gt["column_header"], "series": gt["column_header"], "expected": gt["expected"]}]
+
+
+def missing_ground_truth(gt_path):
+    """Names of expected figures that haven't been filled in yet."""
+    gt = json.loads(Path(gt_path).read_text())
+    return [f"{c['series']}: {i['name']}" for c in ground_truth_checks(gt) for i in c["expected"]
+            if i.get("amount_dollars") is None]
+
+
 def compare_ground_truth(result, gt_path):
     gt = json.loads(Path(gt_path).read_text())
     by_key = {(o["account_path"], o["column_header"]): o for o in result["observations"]}
+    checks = ground_truth_checks(gt)
     rows, ok = [], True
-    for item in gt["expected"]:
-        o = by_key.get((item["account_path"], gt["column_header"]))
-        got = o["amount_dollars"] if o else None
-        match = got == item["amount_dollars"]
-        ok &= match
-        rows.append((item["name"], item["amount_dollars"], got, match))
+    for check in checks:
+        for item in check["expected"]:
+            o = by_key.get((item["account_path"], check["column_header"]))
+            got = o["amount_dollars"] if o else None
+            match = item["amount_dollars"] is not None and got == item["amount_dollars"]
+            ok &= match
+            name = item["name"] if len(checks) == 1 else f"[{check['series']}] {item['name']}"
+            rows.append((name, item["amount_dollars"], got, match))
     return ok, rows
 
 
@@ -1038,7 +1115,9 @@ def print_report(result, gt_rows=None):
         print("\nGround truth:")
         for name, want, got, match in gt_rows:
             g = f"{got:,}" if got is not None else "MISSING"
-            print(f"  {'OK  ' if match else 'FAIL'} {name:65s} want {want:>16,}  got {g:>16}")
+            w = f"{want:,}" if want is not None else "(not supplied)"
+            tag = "OK  " if match else ("----" if want is None else "FAIL")
+            print(f"  {tag} {name:65s} want {w:>16}  got {g:>16}")
 
 
 def main():

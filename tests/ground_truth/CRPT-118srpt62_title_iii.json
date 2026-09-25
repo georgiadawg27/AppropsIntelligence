@@ -1,0 +1,332 @@
+{
+  "package_id": "CRPT-118srpt62",
+  "title": "TITLE III",
+  "unit": "dollars",
+  "source": "CJS Title III pilot workbook -- FY2023 Enacted, FY2024 President's Budget, FY2024 Senate Mark. NOT YET FILLED IN: every amount_dollars is null until the pilot figures are supplied; the acceptance test skips until then.",
+  "checks": [
+    {
+      "column_header": "2023 appropriation",
+      "series": "FY2023 Enacted",
+      "expected": [
+        {
+          "name": "OSTP",
+          "account_path": "Office of Science and Technology Policy",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Science",
+          "account_path": "National Aeronautics and Space Administration / Science",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Aeronautics",
+          "account_path": "National Aeronautics and Space Administration / Aeronautics",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Space Technology",
+          "account_path": "National Aeronautics and Space Administration / Space Technology",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Exploration",
+          "account_path": "National Aeronautics and Space Administration / Deep Space Exploration Systems",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Space Operations",
+          "account_path": "National Aeronautics and Space Administration / Space Operations",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA STEM Engagement",
+          "account_path": "National Aeronautics and Space Administration / Science, Technology, Engineering, and Mathematics Engagement",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Safety, Security and Mission Services",
+          "account_path": "National Aeronautics and Space Administration / Safety, Security and Mission Services",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Construction and Environmental Compliance and Restoration",
+          "account_path": "National Aeronautics and Space Administration / Construction and environmental compliance and restoration",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Office of Inspector General",
+          "account_path": "National Aeronautics and Space Administration / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Total",
+          "account_path": "National Aeronautics and Space Administration / Total, National Aeronautics and Space Administration",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Research and related activities",
+          "account_path": "National Science Foundation / Research and related activities",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Research and related activities (Defense function)",
+          "account_path": "National Science Foundation / Defense function",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Major Research Equipment and Facilities Construction",
+          "account_path": "National Science Foundation / Major Research Equipment and Facilities Construction",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF STEM Education",
+          "account_path": "National Science Foundation / Education and Human Resources",
+          "amount_dollars": null,
+          "note": "Printed as 'Education and Human Resources' in the FY2024 table."
+        },
+        {
+          "name": "NSF Agency Operations and Award Management",
+          "account_path": "National Science Foundation / Agency Operations and Award Management",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of the National Science Board",
+          "account_path": "National Science Foundation / Office of the National Science Board",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of Inspector General",
+          "account_path": "National Science Foundation / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Total",
+          "account_path": "National Science Foundation / Total, National Science Foundation",
+          "amount_dollars": null
+        },
+        {
+          "name": "Total, Title III, Science",
+          "account_path": "Total, Title III, Science",
+          "amount_dollars": null
+        }
+      ]
+    },
+    {
+      "column_header": "Budget estimate",
+      "series": "FY2024 President's Budget",
+      "expected": [
+        {
+          "name": "OSTP",
+          "account_path": "Office of Science and Technology Policy",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Science",
+          "account_path": "National Aeronautics and Space Administration / Science",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Aeronautics",
+          "account_path": "National Aeronautics and Space Administration / Aeronautics",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Space Technology",
+          "account_path": "National Aeronautics and Space Administration / Space Technology",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Exploration",
+          "account_path": "National Aeronautics and Space Administration / Deep Space Exploration Systems",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Space Operations",
+          "account_path": "National Aeronautics and Space Administration / Space Operations",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA STEM Engagement",
+          "account_path": "National Aeronautics and Space Administration / Science, Technology, Engineering, and Mathematics Engagement",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Safety, Security and Mission Services",
+          "account_path": "National Aeronautics and Space Administration / Safety, Security and Mission Services",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Construction and Environmental Compliance and Restoration",
+          "account_path": "National Aeronautics and Space Administration / Construction and environmental compliance and restoration",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Office of Inspector General",
+          "account_path": "National Aeronautics and Space Administration / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Total",
+          "account_path": "National Aeronautics and Space Administration / Total, National Aeronautics and Space Administration",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Research and related activities",
+          "account_path": "National Science Foundation / Research and related activities",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Research and related activities (Defense function)",
+          "account_path": "National Science Foundation / Defense function",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Major Research Equipment and Facilities Construction",
+          "account_path": "National Science Foundation / Major Research Equipment and Facilities Construction",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF STEM Education",
+          "account_path": "National Science Foundation / Education and Human Resources",
+          "amount_dollars": null,
+          "note": "Printed as 'Education and Human Resources' in the FY2024 table."
+        },
+        {
+          "name": "NSF Agency Operations and Award Management",
+          "account_path": "National Science Foundation / Agency Operations and Award Management",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of the National Science Board",
+          "account_path": "National Science Foundation / Office of the National Science Board",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of Inspector General",
+          "account_path": "National Science Foundation / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Total",
+          "account_path": "National Science Foundation / Total, National Science Foundation",
+          "amount_dollars": null
+        },
+        {
+          "name": "Total, Title III, Science",
+          "account_path": "Total, Title III, Science",
+          "amount_dollars": null
+        }
+      ]
+    },
+    {
+      "column_header": "Committee recommendation",
+      "series": "FY2024 Senate Mark",
+      "expected": [
+        {
+          "name": "OSTP",
+          "account_path": "Office of Science and Technology Policy",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Science",
+          "account_path": "National Aeronautics and Space Administration / Science",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Aeronautics",
+          "account_path": "National Aeronautics and Space Administration / Aeronautics",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Space Technology",
+          "account_path": "National Aeronautics and Space Administration / Space Technology",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Exploration",
+          "account_path": "National Aeronautics and Space Administration / Deep Space Exploration Systems",
+          "amount_dollars": null,
+          "note": "The Senate table prints this account as a base line plus a separate '(emergency)' line and a 'Subtotal, Deep Space Exploration System' row. account_path points at the base line; if the pilot figure includes the emergency amount, point it at 'National Aeronautics and Space Administration / Subtotal, Deep Space Exploration System' instead."
+        },
+        {
+          "name": "NASA Space Operations",
+          "account_path": "National Aeronautics and Space Administration / Space Operations",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA STEM Engagement",
+          "account_path": "National Aeronautics and Space Administration / Science, Technology, Engineering, and Mathematics Engagement",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Safety, Security and Mission Services",
+          "account_path": "National Aeronautics and Space Administration / Safety, Security and Mission Services",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Construction and Environmental Compliance and Restoration",
+          "account_path": "National Aeronautics and Space Administration / Construction and environmental compliance and restoration",
+          "amount_dollars": null,
+          "note": "The Senate table prints this account as a base line plus a separate '(emergency)' line and a 'Subtotal, ...' row. account_path points at the base line; if the pilot figure includes the emergency amount, point it at 'National Aeronautics and Space Administration / Subtotal, Construction and environmental compliance and restoration' instead."
+        },
+        {
+          "name": "NASA Office of Inspector General",
+          "account_path": "National Aeronautics and Space Administration / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NASA Total",
+          "account_path": "National Aeronautics and Space Administration / Total, National Aeronautics and Space Administration",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Research and related activities",
+          "account_path": "National Science Foundation / Research and related activities",
+          "amount_dollars": null,
+          "note": "The Senate table prints this account as a base line plus a separate '(emergency)' line and a 'Subtotal, Research and related activities' row. account_path points at the base line; if the pilot figure includes the emergency amount, point it at 'National Science Foundation / Subtotal, Research and related activities' instead."
+        },
+        {
+          "name": "NSF Research and related activities (Defense function)",
+          "account_path": "National Science Foundation / Defense function",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Major Research Equipment and Facilities Construction",
+          "account_path": "National Science Foundation / Major Research Equipment and Facilities Construction",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF STEM Education",
+          "account_path": "National Science Foundation / Education and Human Resources",
+          "amount_dollars": null,
+          "note": "Printed as 'Education and Human Resources' in the FY2024 table."
+        },
+        {
+          "name": "NSF Agency Operations and Award Management",
+          "account_path": "National Science Foundation / Agency Operations and Award Management",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of the National Science Board",
+          "account_path": "National Science Foundation / Office of the National Science Board",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Office of Inspector General",
+          "account_path": "National Science Foundation / Office of Inspector General",
+          "amount_dollars": null
+        },
+        {
+          "name": "NSF Total",
+          "account_path": "National Science Foundation / Total, National Science Foundation",
+          "amount_dollars": null
+        },
+        {
+          "name": "Total, Title III, Science",
+          "account_path": "Total, Title III, Science",
+          "amount_dollars": null
+        }
+      ]
+    }
+  ]
+}
