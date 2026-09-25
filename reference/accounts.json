@@ -7,9 +7,10 @@
       "agency": "Executive Office of the President",
       "bureau": "Office of Science and Technology Policy",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSC",
@@ -17,9 +18,10 @@
       "agency": "Executive Office of the President",
       "bureau": "National Space Council",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-TOTAL",
@@ -27,9 +29,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "(Agency Total)",
       "status": "active",
-      "historical_names": "Derived rollup \u2014 equals the sum of NASA's 9 program accounts below; kept as a reference row, not an independent funding decision.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Derived rollup \u2014 equals the sum of NASA's 9 program accounts below; kept as a reference row, not an independent funding decision.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-SCIENCE",
@@ -37,9 +40,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Science Mission Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-AERONAUTICS",
@@ -47,9 +51,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Aeronautics Research Mission Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-SPACETECH",
@@ -57,9 +62,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Space Technology Mission Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-EXPLTECH",
@@ -67,9 +73,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Exploration Systems Development",
       "status": "inactive",
-      "historical_names": "Proposed split from Exploration; appears only in the FY2019 House-reported bill and the FY2019\u2013FY2020 President's Budget requests, never in Senate Reported or Enacted. See Account Relationship REL-0001.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Proposed split from Exploration; appears only in the FY2019 House-reported bill and the FY2019\u2013FY2020 President's Budget requests, never in Senate Reported or Enacted. See Account Relationship REL-0001.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-EXPLORATION",
@@ -77,9 +84,12 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Exploration Systems Development",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": [
+        "Deep Space Exploration Systems"
+      ]
     },
     {
       "canonical_account_id": "ACC-NASA-SPACEOPS",
@@ -87,9 +97,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Space Operations Mission Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-LEO",
@@ -97,9 +108,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Space Operations Mission Directorate",
       "status": "inactive",
-      "historical_names": "Proposed rename of Space Operation; appears only in the FY2019 House-reported bill and the FY2019\u2013FY2020 President's Budget requests, never in Senate Reported or Enacted. See Account Relationship REL-0002.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Proposed rename of Space Operation; appears only in the FY2019 House-reported bill and the FY2019\u2013FY2020 President's Budget requests, never in Senate Reported or Enacted. See Account Relationship REL-0002.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
@@ -107,9 +119,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "STEM Engagement",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
@@ -117,9 +130,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Mission Support Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-CONSTRUCTION",
@@ -127,9 +141,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Mission Support Directorate",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NASA-OIG",
@@ -137,9 +152,10 @@
       "agency": "National Aeronautics and Space Administration",
       "bureau": "Office of Inspector General",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-TOTAL",
@@ -147,9 +163,10 @@
       "agency": "National Science Foundation",
       "bureau": "(Agency Total)",
       "status": "active",
-      "historical_names": "Derived rollup \u2014 equals the sum of NSF's 6 program accounts below; kept as a reference row, not an independent funding decision.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Derived rollup \u2014 equals the sum of NSF's 6 program accounts below; kept as a reference row, not an independent funding decision.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-RRA",
@@ -157,9 +174,10 @@
       "agency": "National Science Foundation",
       "bureau": "Research and Related Activities",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-MREFC",
@@ -167,9 +185,10 @@
       "agency": "National Science Foundation",
       "bureau": "Major Research Equipment and Facilities Construction",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
@@ -177,9 +196,12 @@
       "agency": "National Science Foundation",
       "bureau": "STEM Education",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": [
+        "Education and Human Resources"
+      ]
     },
     {
       "canonical_account_id": "ACC-NSF-AGENCY-OPS",
@@ -187,9 +209,10 @@
       "agency": "National Science Foundation",
       "bureau": "Agency Operations and Award Management",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-NSB",
@@ -197,9 +220,10 @@
       "agency": "National Science Foundation",
       "bureau": "National Science Board",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NSF-OIG",
@@ -207,9 +231,10 @@
       "agency": "National Science Foundation",
       "bureau": "Office of Inspector General",
       "status": "active",
-      "historical_names": null,
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-CVF",
@@ -217,9 +242,10 @@
       "agency": "Department of Justice",
       "bureau": "State, Local, and Tribal Justice Assistance",
       "status": "active",
-      "historical_names": "Appears across multiple bill titles as a transfer-out source (to OVW, to OIG) and carries the FY27 CHIMP / CHIMP Pop-Up mandatory-program adjustment.",
       "fund_type": "trust",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Appears across multiple bill titles as a transfer-out source (to OVW, to OIG) and carries the FY27 CHIMP / CHIMP Pop-Up mandatory-program adjustment.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-AFF",
@@ -227,9 +253,10 @@
       "agency": "Department of Justice",
       "bureau": "Legal Activities and U.S. Marshals",
       "status": "active",
-      "historical_names": null,
       "fund_type": "trust",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": null,
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-WCF",
@@ -237,9 +264,10 @@
       "agency": "Department of Justice",
       "bureau": "Justice Operations, Management, and Accountability",
       "status": "active",
-      "historical_names": "Subject to a Sec. 521(c)(1) rescission in the FY2027 bill.",
       "fund_type": "working_capital",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Subject to a Sec. 521(c)(1) rescission in the FY2027 bill.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-USPTO-SE",
@@ -247,9 +275,10 @@
       "agency": "Department of Commerce",
       "bureau": "U.S. Patent and Trademark Office",
       "status": "active",
-      "historical_names": "Fully fee-funded: gross spending is offset almost entirely by fee collections.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Fully fee-funded: gross spending is offset almost entirely by fee collections.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-ANTITRUST-SE",
@@ -257,9 +286,10 @@
       "agency": "Department of Justice",
       "bureau": "Legal Activities and U.S. Marshals",
       "status": "active",
-      "historical_names": "Offset by Hart-Scott-Rodino fee collections, netting to $0 in FY2027 House Reported.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Offset by Hart-Scott-Rodino fee collections, netting to $0 in FY2027 House Reported.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-USTSF",
@@ -267,9 +297,10 @@
       "agency": "Department of Justice",
       "bureau": "Legal Activities and U.S. Marshals",
       "status": "active",
-      "historical_names": "Offsetting fee collections exceed the account's own direct appropriation.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Offsetting fee collections exceed the account's own direct appropriation.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NOAA-ORF",
@@ -277,9 +308,10 @@
       "agency": "Department of Commerce",
       "bureau": "National Oceanic and Atmospheric Administration",
       "status": "active",
-      "historical_names": "Receives a transfer from the Promote and Develop Fisheries account; also carries a Sec. 521(a)(1) rescission in FY2027.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Receives a transfer from the Promote and Develop Fisheries account; also carries a Sec. 521(a)(1) rescission in FY2027.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-NOAA-PDF",
@@ -287,9 +319,10 @@
       "agency": "Department of Commerce",
       "bureau": "National Oceanic and Atmospheric Administration",
       "status": "active",
-      "historical_names": "Transfers its full balance to Operations, Research, and Facilities every year in this series.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "Transfers its full balance to Operations, Research, and Facilities every year in this series.",
+      "historical_names": []
     },
     {
       "canonical_account_id": "ACC-DOJ-OJP-RESC",
@@ -297,9 +330,10 @@
       "agency": "Department of Justice",
       "bureau": "State, Local, and Tribal Justice Assistance",
       "status": "active",
-      "historical_names": "A rescission-only line (Sec. 521(b)(2)), not a standing program account.",
       "fund_type": "general",
-      "subcommittee": "CJS"
+      "subcommittee": "CJS",
+      "notes": "A rescission-only line (Sec. 521(b)(2)), not a standing program account.",
+      "historical_names": []
     }
   ]
 }

@@ -2,9 +2,11 @@
 accounts.py
 
 Match an OCR-read row label to a canonical account (reference/accounts.json,
-built from the Account tab). This is for OCR noise -- "Sci e nee", "STEH
-Education", "Hajor Research ..." -- so it matches canonical_name only;
-historical_names is reserved for genuine renames and isn't consulted.
+built from the Account tab). One pool of names per account: its canonical
+name and its genuine former names (historical_names, e.g. "Deep Space
+Exploration Systems" for Exploration). Both go through the same fuzzy rule,
+since a former name can be OCR-garbled in an older document exactly like a
+current one.
 
 Rule (proposal, see ACCEPT_*):
   - Compare letters only, lower-cased: OCR's stray spaces and punctuation
@@ -13,10 +15,13 @@ Rule (proposal, see ACCEPT_*):
     itself matched the same way), so NASA's and NSF's "Office of Inspector
     General" can't be confused; a row with no agency heading is matched
     against every account.
+  - An account's distance is its closest name; "via" records whether that
+    was its canonical or a historical name.
   - distance 0 -> "exact".
-  - 1 <= distance <= min(2, 15% of the canonical name's length), and the
-    runner-up is at least 2 edits further away -> "ocr_corrected". A name
-    shorter than 7 letters must match exactly.
+  - 1 <= distance <= min(2, 15% of the matched name's length), and the
+    runner-up account is at least 2 edits further away -> "ocr_corrected".
+    A name shorter than 7 letters must match exactly. An account's own names
+    never compete with each other.
   - Otherwise -> "unmatched" (nothing within the threshold) or "ambiguous"
     (a runner-up too close): no account is assigned, and the observation's
     account_identity check is flagged for human review -- never silently
@@ -65,34 +70,50 @@ def load(path=REFERENCE):
     return json.loads(Path(path).read_text())["accounts"]
 
 
+def names_list(v):
+    """historical_names as a list of names (a single name may come as a string)."""
+    if not v:
+        return []
+    return [v] if isinstance(v, str) else list(v)
+
+
 def allowed_distance(canonical_norm):
     if len(canonical_norm) < 7:
         return 0
     return min(ACCEPT_MAX_DISTANCE, int(ACCEPT_MAX_FRACTION * len(canonical_norm)))
 
 
-def best_match(text, candidates, name_of):
-    """-> (match kind, candidate or None, distance or None)."""
+def best_match(text, candidates, names_of):
+    """-> (match kind, candidate or None, distance or None, matched name).
+    names_of(candidate) -> its names; a candidate's distance is its closest."""
     t = norm(text)
     if not t or not candidates:
-        return "unmatched", None, None
-    scored = sorted((distance(t, norm(name_of(c))), i, c) for i, c in enumerate(candidates))
-    d, _, best = scored[0]
+        return "unmatched", None, None, None
+    scored = []
+    for i, c in enumerate(candidates):
+        names = [n for n in names_of(c) if norm(n)]
+        if names:
+            d, name = min((distance(t, norm(n)), n) for n in names)
+            scored.append((d, i, c, name))
+    if not scored:
+        return "unmatched", None, None, None
+    scored.sort(key=lambda x: (x[0], x[1]))
+    d, _, best, name = scored[0]
     runner = scored[1][0] if len(scored) > 1 else None
     if d == 0:
-        return ("exact", best, 0) if runner != 0 else ("ambiguous", None, 0)
-    if d > allowed_distance(norm(name_of(best))):
-        return "unmatched", None, d
+        return ("exact", best, 0, name) if runner != 0 else ("ambiguous", None, 0, None)
+    if d > allowed_distance(norm(name)):
+        return "unmatched", None, d, None
     if runner is not None and runner < d + AMBIGUITY_MARGIN:
-        return "ambiguous", None, d
-    return "ocr_corrected", best, d
+        return "ambiguous", None, d, None
+    return "ocr_corrected", best, d, name
 
 
 def agency_accounts(agency_heading, accounts):
     if not agency_heading:
         return accounts
     agencies = sorted({a["agency"] for a in accounts})
-    kind, agency, _ = best_match(agency_heading, agencies, lambda x: x)
+    kind, agency, _, _ = best_match(agency_heading, agencies, lambda x: [x])
     return [a for a in accounts if a["agency"] == agency] if agency else []
 
 
@@ -110,8 +131,8 @@ def match_label(label, agency_heading, row_kind, accounts=None):
     if row_kind == "total":
         pool = [a for a in agency_accounts(agency_heading, accounts) if AGENCY_TOTAL_RE.search(a["canonical_name"])] \
             or [a for a in accounts if AGENCY_TOTAL_RE.search(a["canonical_name"])]
-        kind, acct, d = best_match(TOTAL_PREFIX_RE.sub("", text), pool,
-                                   lambda a: AGENCY_TOTAL_RE.sub("", a["canonical_name"]))
+        kind, acct, d, name = best_match(TOTAL_PREFIX_RE.sub("", text), pool,
+                                         lambda a: [AGENCY_TOTAL_RE.sub("", a["canonical_name"])])
         if acct is None:
             return None                     # a title or bureau total: not an account
     else:
@@ -119,10 +140,13 @@ def match_label(label, agency_heading, row_kind, accounts=None):
             component = "emergency"
             text = EMERGENCY_RE.sub("", text)
         pool = [a for a in agency_accounts(agency_heading, accounts) if not AGENCY_TOTAL_RE.search(a["canonical_name"])]
-        kind, acct, d = best_match(text, pool, lambda a: a["canonical_name"])
+        kind, acct, d, name = best_match(text, pool, lambda a: [a["canonical_name"]] + names_list(a.get("historical_names")))
     return {"canonical_account_id": acct["canonical_account_id"] if acct else None,
             "canonical_name": acct["canonical_name"] if acct else None,
-            "component": component, "match": kind, "distance": d}
+            "component": component, "match": kind, "distance": d, "matched_name": name,
+            "via": None if not acct else ("canonical" if name in (acct["canonical_name"],
+                                                                 AGENCY_TOTAL_RE.sub("", acct["canonical_name"]))
+                                          else "historical_name")}
 
 
 def match_nodes(nodes, accounts=None):
@@ -135,6 +159,7 @@ def match_nodes(nodes, accounts=None):
         if m and m["canonical_account_id"] is None and n.kind == "line" and n.parent_line is not None:
             parent = out.get(n.parent_line.id)
             if parent and parent["canonical_account_id"]:
-                m = dict(parent, component=norm(n.label) or None, match="inherited", distance=None)
+                m = dict(parent, component=norm(n.label) or None, match="inherited", distance=None,
+                         matched_name=None, via="parent_line")
         out[n.id] = m
     return out

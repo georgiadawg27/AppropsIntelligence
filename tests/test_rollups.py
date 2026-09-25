@@ -189,6 +189,45 @@ class GrandTotals(unittest.TestCase):
         self.assertEqual(s["failures"], 0)
 
 
+class GrandTotalFalsePassSRpt119_44(unittest.TestCase):
+    """The minimal slice of S.Rept. 119-44's real table (rows as text_tables.py
+    extracts them, pp.211-223) on which the old rule passed "Grand total
+    excluding Other Appropriations" [Committee recommendation]: its children
+    were the IIJA total (blank) plus the grand total above it, which equals
+    it in that column. Only the grand total can make it add up here, so it
+    must not pass."""
+
+    ROWS = [(211, {"label": "TITLE I\u2014DEPARTMENT OF COMMERCE", "indent": 19, "is_heading": True, "rule_above": "none",
+                   "values": ["", "", ""], "raw_text": "TITLE I\u2014DEPARTMENT OF COMMERCE"}),
+            (219, {"label": "TITLE V\u2014GENERAL PROVISIONS", "indent": 20, "is_heading": True, "rule_above": "none",
+                   "values": ["", "", ""], "raw_text": "TITLE V\u2014GENERAL PROVISIONS"}),
+            (222, {"label": "Total, Infrastructure Investment and Jobs Act, 2022", "indent": 3, "is_heading": False,
+                   "rule_above": "single", "values": ["....", "....", "...."],
+                   "raw_text": "Total, Infrastructure Investment and Jobs Act, 2022 .... .... ...."}),
+            (223, {"label": "Grand total", "indent": 0, "is_heading": False, "rule_above": "none",
+                   "values": ["75,587,164", "82,648,000", "+7,060,836"],
+                   "raw_text": "Grand total 75,587,164 82,648,000 +7,060,836"}),
+            (223, {"label": "Grand total excluding Other Appropriations", "indent": 0, "is_heading": False,
+                   "rule_above": "none", "values": ["72,200,500", "82,648,000", "+10,447,500"],
+                   "raw_text": "Grand total excluding Other Appropriations 72,200,500 82,648,000 +10,447,500"})]
+    HEADERS = ["2025 appropriation", "Committee recommendation",
+               "Senate Committee recommendation compared with (+ or -) 2025 appropriation"]
+
+    def test_does_not_pass_by_counting_the_grand_total_above(self):
+        parsed = [(p, r, [ex.parse_cell(v) for v in r["values"]]) for p, r in self.ROWS]
+        ex.Node._seq = 0
+        nodes = ex.build_hierarchy(parsed, table_starts_with_title=True)
+        excl = by_label(nodes, "Grand total excluding Other Appropriations")[0]
+        self.assertNotIn("grand_total", {c.kind for c in excl.children})
+        cols = ex.classify_columns(self.HEADERS, 2026, "Senate Reported")
+        meta = {p: {"source": "text_layer", "extraction_method": "text-extracted", "units_declared": "[In thousands of dollars]",
+                    "units_parsed": "thousands"} for p, _ in self.ROWS}
+        obs = ex.build_observations(nodes, cols, "thousands", meta, ex.describe_package("CRPT-119srpt44"), "T")
+        _, s = va.validate(nodes, cols, obs, meta, "thousands")
+        line = next(l for l in s["rollup_lines"] if "excluding" in l and "[Committee recommendation]" in l)
+        self.assertFalse(line.startswith("PASS"), line)
+
+
 class RecordedHouseTable(unittest.TestCase):
     """All 17 table pages of H.Rept. 119-652 as Claude actually read them."""
 

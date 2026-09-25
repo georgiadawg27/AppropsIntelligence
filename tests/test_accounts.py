@@ -60,11 +60,31 @@ class Threshold(unittest.TestCase):
         self.assertIsNone(m("Total , Title III , Sc ience", None, "total"))              # not an account
         self.assertIsNone(m("Subtotal , Exploration", NASA, "subtotal"))
 
-    def test_historical_names_are_not_consulted(self):
-        # a canonical account's historical_names never feed the OCR matcher
+    def test_former_names_share_the_pool_and_the_rule(self):
+        r = m("Deep Space Exploration Systems")
+        self.assertEqual((r["canonical_account_id"], r["match"], r["via"]), ("ACC-NASA-EXPLORATION", "exact", "historical_name"))
+        r = m("Deep Spaee Exploratlon Systems")                                  # OCR-garbled former name
+        self.assertEqual((r["canonical_account_id"], r["match"], r["distance"]), ("ACC-NASA-EXPLORATION", "ocr_corrected", 2))
+        self.assertEqual(m("Exploration")["via"], "canonical")
+        self.assertEqual(m("Education and Human Resources", NSF)["canonical_account_id"], "ACC-NSF-STEM-EDUCATION")
+
+    def test_an_accounts_own_names_never_make_it_ambiguous(self):
+        accts = [{"canonical_account_id": "A", "canonical_name": "Salaries and expenses", "agency": "X",
+                  "historical_names": ["Salaries and expense"]}]
+        r = A.match_label("Salaries and expensez", None, "line", accts)
+        self.assertEqual((r["match"], r["canonical_account_id"]), ("ocr_corrected", "A"))
+
+    def test_close_names_on_different_accounts_are_ambiguous(self):
+        accts = [{"canonical_account_id": "A", "canonical_name": "Research and facilities", "agency": "X"},
+                 {"canonical_account_id": "B", "canonical_name": "Other things", "agency": "X",
+                  "historical_names": ["Research and facilitiez"]}]
+        r = A.match_label("Research and facilitiex", None, "line", accts)
+        self.assertEqual((r["match"], r["canonical_account_id"]), ("ambiguous", None))
+
+    def test_a_single_former_name_may_be_a_string(self):
         accts = [{"canonical_account_id": "A", "canonical_name": "Space Operation", "agency": "X",
                   "historical_names": "LEO and Spaceflight Operations"}]
-        self.assertEqual(A.match_label("LEO and Spaceflight Operations", None, "line", accts)["match"], "unmatched")
+        self.assertEqual(A.match_label("LEO and Spaceflight Operations", None, "line", accts)["canonical_account_id"], "A")
 
 
 if __name__ == "__main__":

@@ -374,15 +374,21 @@ def _call_json(client, model, system, content, schema, effort, max_tokens, use_f
     with client.beta.messages.stream(**kwargs) as stream:
         msg = stream.get_final_message()
     seconds = round(time.monotonic() - started, 1)
-    if msg.stop_reason == "refusal":
-        raise VisionError(f"model refused: {getattr(msg, 'stop_details', None)}")
-    if msg.stop_reason == "max_tokens":
-        raise VisionError("response truncated at max_tokens")
-    text = next((b.text for b in msg.content if b.type == "text"), None)
-    if text is None:
-        raise VisionError("no text block in response")
+    # the call is paid for whatever comes back: every failure carries its usage
     usage = {"input_tokens": msg.usage.input_tokens, "output_tokens": msg.usage.output_tokens,
              "seconds": seconds, "model": msg.model}
+    problem = None
+    if msg.stop_reason == "refusal":
+        problem = f"model refused: {getattr(msg, 'stop_details', None)}"
+    elif msg.stop_reason == "max_tokens":
+        problem = "response truncated at max_tokens"
+    text = next((b.text for b in msg.content if b.type == "text"), None)
+    if problem is None and text is None:
+        problem = "no text block in response"
+    if problem:
+        err = VisionError(problem)
+        err.usage = usage
+        raise err
     return json.loads(text), usage
 
 
@@ -404,10 +410,19 @@ def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
     total = {"input_tokens": 0, "output_tokens": 0, "seconds": 0.0}
     for rot in (rotation, (rotation + 180) % 360):
         png, used_dpi = render_png(page, dpi=dpi, rotation=rot)
-        result, usage = _call_json(
-            client, model, TRANSCRIBE_SYSTEM,
-            [_image_block(png), {"type": "text", "text": TRANSCRIBE_PROMPT}],
-            TRANSCRIBE_SCHEMA, effort="high", max_tokens=48000, use_fallbacks=use_fallbacks)
+        try:
+            result, usage = _call_json(
+                client, model, TRANSCRIBE_SYSTEM,
+                [_image_block(png), {"type": "text", "text": TRANSCRIBE_PROMPT}],
+                TRANSCRIBE_SCHEMA, effort="high", max_tokens=48000, use_fallbacks=use_fallbacks)
+        except VisionError as e:
+            # count this attempt and any earlier wrong-way-up one
+            for k in total:
+                total[k] += (getattr(e, "usage", None) or {}).get(k, 0)
+            total.update(model=(getattr(e, "usage", None) or {}).get("model", model), attempts=len(tried) + 1,
+                         seconds=round(total["seconds"], 1))
+            e.usage = total
+            raise
         tried.append(rot)
         # A wrong-way-up attempt is still paid for: count it.
         for k in total:
@@ -1000,6 +1015,12 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     # 2. Classify image-only pages (cheap, low-res), from cache where possible.
     entries = {}
     usage_log = []
+
+    def log_failed(kind, p, err):
+        """A failed call is still paid for: log what it cost (offline and
+        missing-key errors carry no usage -- no call was made)."""
+        if getattr(err, "usage", None):
+            usage_log.append((kind, p, dict(err.usage, outcome="failed", error=str(err))))
     uncached = []
     for p in vision_pages:
         entry = (None if live else cache.load(p)) or {"meta": {"pdf_sha256": pdf_sha, "page": p}}
@@ -1007,6 +1028,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             try:
                 result, usage = classify_page(get_client(), model, doc_pdf[p - 1], use_fallbacks)
             except VisionError as e:
+                log_failed("classify", p, e)
                 if offline:
                     uncached.append(p)
                 else:
@@ -1015,7 +1037,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             entry["classify"] = result
             entry["meta"].update(model=usage["model"], prompt_version=PROMPT_VERSION,
                                  source="claude_api", classified_at=_now())
-            usage_log.append(("classify", p, usage))
+            usage_log.append(("classify", p, dict(usage, outcome="ok")))
             cache.save(p, entry)
         if entry.get("classify") is None and entry.get("transcription") is not None:
             # A recorded transcription implies the page is a table page.
@@ -1045,12 +1067,13 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             result, usage, used_rot, used_dpi = transcribe_page(get_client(), model, doc_pdf[p - 1],
                                                                 rot, dpi, use_fallbacks)
         except VisionError as e:
+            log_failed("transcribe", p, e)
             log(f"  p{p}: not transcribed ({e})")
             return False
         entry["transcription"] = result
         entry["meta"].update(model=usage["model"], prompt_version=PROMPT_VERSION, source="claude_api",
                              rotation=used_rot, dpi=used_dpi, transcribed_at=_now())
-        usage_log.append(("transcribe", p, usage))
+        usage_log.append(("transcribe", p, dict(usage, outcome="ok")))
         cache.save(p, entry)
         return True
 
@@ -1072,8 +1095,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                 result, usage, used_rot, used_dpi = transcribe_page(get_client(), model, page,
                                                                     rot, dpi, use_fallbacks)
             except VisionError as e:
+                log_failed("ocr_fallback", p, e)
                 if getattr(e, "usage", None):
-                    usage_log.append(("transcribe", p, e.usage))
                     cache.save(p, {"meta": {"pdf_sha256": pdf_sha, "page": p, "fallback_from": "ocr_text",
                                             "fallback_failed": str(e), "failed_at": _now()},
                                    "transcription": None})
@@ -1082,7 +1105,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                               "prompt_version": PROMPT_VERSION, "source": "claude_api", "rotation": used_rot,
                               "dpi": used_dpi, "transcribed_at": _now(), "fallback_from": "ocr_text"},
                      "transcription": result}
-            usage_log.append(("transcribe", p, usage))
+            usage_log.append(("ocr_fallback", p, dict(usage, outcome="ok")))
             cache.save(p, entry)
         tr = entry["transcription"]
         got = [ocr_tables.header_key(h) for h in tr.get("column_headers", [])]
@@ -1202,7 +1225,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                 if mt is not None:
                     o.update(canonical_account_id=mt["canonical_account_id"], canonical_name=mt["canonical_name"],
                              account_component=mt["component"], account_match=mt["match"],
-                             account_match_distance=mt["distance"])
+                             account_match_distance=mt["distance"], account_match_via=mt.get("via"),
+                             account_matched_name=mt.get("matched_name"))
             for n in selected:
                 mt = matches.get(n.id)
                 if mt and mt["canonical_account_id"]:
@@ -1272,6 +1296,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             "pages_transcribed": sorted(set(done)),
             "page_sources": {str(p): {k: v for k, v in m.items()} for p, m in page_meta.items()},
             "vision_calls_this_run": [{"pass": k, "page": p, **u} for k, p, u in usage_log],
+            "vision_spend": vision_spend(usage_log),
             "text_table_pages": text_table_pages,
             "ocr_table_pages": ocr_table_pages,
             "ocr_fallback": {str(p): f for p, f in ocr_fallback.items()},
@@ -1297,6 +1322,37 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
                 f.write(json.dumps({"page": r["page"], "text": r["text"]}) + "\n")
     result["_paths"] = {"observations": str(out_path), "text_pages": str(text_path)}
     return result
+
+
+# List prices per million tokens (input, output), for the spend estimate
+# only; a model not listed is counted in tokens with no dollar figure.
+PRICE_PER_MTOK = {"claude-opus-5": (5.00, 25.00), "claude-opus-5-5": (4.00, 20.00),
+                  "claude-sonnet-5": (2.00, 10.00), "claude-opus-4-8": (5.00, 25.00)}
+
+
+def vision_spend(usage_log):
+    """Every paid call this run -- succeeded or failed -- in calls, tokens and
+    an estimated cost."""
+    out = {"calls": 0, "failed_calls": 0, "input_tokens": 0, "output_tokens": 0,
+           "estimated_usd": 0.0, "unpriced_calls": 0, "by_outcome": {}}
+    for _, _, u in usage_log:
+        attempts = u.get("attempts", 1)
+        out["calls"] += attempts
+        out["failed_calls"] += attempts if u.get("outcome") == "failed" else 0
+        out["input_tokens"] += u.get("input_tokens", 0)
+        out["output_tokens"] += u.get("output_tokens", 0)
+        price = PRICE_PER_MTOK.get(re.sub(r"-\d{8}$", "", u.get("model") or ""))
+        cost = (u.get("input_tokens", 0) * price[0] + u.get("output_tokens", 0) * price[1]) / 1e6 if price else 0.0
+        if not price:
+            out["unpriced_calls"] += attempts
+        out["estimated_usd"] += cost
+        b = out["by_outcome"].setdefault(u.get("outcome", "ok"), {"calls": 0, "estimated_usd": 0.0})
+        b["calls"] += attempts
+        b["estimated_usd"] += cost
+    out["estimated_usd"] = round(out["estimated_usd"], 4)
+    for b in out["by_outcome"].values():
+        b["estimated_usd"] = round(b["estimated_usd"], 4)
+    return out
 
 
 def _now():
@@ -1412,8 +1468,14 @@ def print_report(result, gt_rows=None):
     calls = ex["vision_calls_this_run"]
     print(f"\nVision calls this run ({ex['mode']}): {len(calls)}")
     for c in calls:
-        print(f"  {c['pass']:10s} p{c['page']:<4d} in={c['input_tokens']:>7,} out={c['output_tokens']:>7,} "
-              f"{c.get('seconds', 0):>6.1f}s  {c['model']}")
+        print(f"  {c['pass']:12s} p{c['page']:<4d} in={c['input_tokens']:>7,} out={c['output_tokens']:>7,} "
+              f"{c.get('seconds', 0):>6.1f}s  {c['model']}"
+              + (f"  FAILED ({c.get('error', '')[:60]})" if c.get("outcome") == "failed" else ""))
+    spend = ex.get("vision_spend")
+    if spend and spend["calls"]:
+        print(f"  spend this run: {spend['calls']} API calls ({spend['failed_calls']} failed), "
+              f"in={spend['input_tokens']:,} out={spend['output_tokens']:,}, ~${spend['estimated_usd']:.2f}"
+              + (f" + {spend['unpriced_calls']} calls on an unpriced model" if spend["unpriced_calls"] else ""))
     if calls:
         for kind in ("classify", "transcribe"):
             cs = [c for c in calls if c["pass"] == kind]

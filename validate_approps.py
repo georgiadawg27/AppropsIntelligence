@@ -256,6 +256,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                    f"{'0' if kind == 'exact' else '<= min(2, 15% of the name), unambiguous'}",
                    f"{kind}: {o['account_name_as_written']!r} -> {o.get('canonical_name')!r}"
                    + (f" (distance {o['account_match_distance']})" if o.get("account_match_distance") else "")
+                   + (f" via former name {o['account_matched_name']!r}" if o.get("account_match_via") == "historical_name" else "")
                    + (f", component {o['account_component']!r}" if o.get("account_component") else ""),
                    "pass" if kind in ("exact", "ocr_corrected") else "flag")
 

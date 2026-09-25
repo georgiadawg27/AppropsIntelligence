@@ -187,6 +187,9 @@ class VisionFallbackMechanics(unittest.TestCase):
             self.assertEqual(sorted(p for p, _ in seen), sorted({p for p, _ in seen}))   # each page tried once
             self.assertEqual(len(r1["extraction"]["vision_calls_this_run"]), len(seen))  # paid failures are logged
             self.assertEqual(r2["extraction"]["vision_calls_this_run"], [])             # and never re-paid
+            spend = r1["extraction"]["vision_spend"]
+            self.assertEqual((spend["calls"], spend["failed_calls"]), (2 * len(seen), 2 * len(seen)))
+            self.assertEqual(r2["extraction"]["vision_spend"]["calls"], 0)
             self.assertTrue(all(f["result"].startswith("kept OCR") for f in r2["extraction"]["ocr_fallback"].values()))
 
 
@@ -219,17 +222,69 @@ class Jes24Breadth(unittest.TestCase):
         self.assertEqual(s["failures"], 0)
         self.assertEqual(s["by_rule"]["table_total"], {"pass": 9})
 
-    def test_every_figure_exact_except_the_renamed_accounts(self):
-        gt = json.loads(GT24.read_text())
-        renamed = {f"[{c['series']}] {e['name']}" for c in gt["checks"] for e in c["expected"] if e.get("requires_historical_name")}
+    def test_every_figure_exact(self):
         ok, rows = ex.compare_ground_truth(self.result, GT24)
-        self.assertEqual({n for n, w, got, m in rows if not m}, renamed)
-        self.assertEqual(sum(1 for n, w, got, m in rows if m), 63)
-        # the renamed accounts are flagged for review, not guessed
-        for o in self.result["observations"]:
-            if o["account_name_as_written"].startswith(("Deep Space Exploration Systems", "Education and Human Resources")):
-                self.assertEqual(o["account_match"], "unmatched")
-                self.assertNotEqual(o["verification_status"], "auto-validated")
+        self.assertEqual([(n, w, got) for n, w, got, m in rows if not m], [])
+        self.assertEqual(len(rows), 72)
+
+    def test_renamed_accounts_match_through_their_former_names(self):
+        # FY2024 printed these under their names of the time
+        for label, acct in (("Deep Space Exploration Systems", "ACC-NASA-EXPLORATION"),
+                            ("Education and Human Resources", "ACC-NSF-STEM-EDUCATION")):
+            hits = [o for o in self.result["observations"] if o["account_name_as_written"].startswith(label)]
+            self.assertTrue(hits, label)
+            for o in hits:
+                self.assertEqual((o["canonical_account_id"], o["account_match"], o["account_match_via"]),
+                                 (acct, "exact", "historical_name"))
+
+
+class VisionSpend(unittest.TestCase):
+    """Every paid call is counted, whether or not it produced a usable result."""
+
+    class Msg:
+        def __init__(self, stop, text='{"orientation_ok": false}'):
+            from types import SimpleNamespace as NS
+            self.stop_reason, self.model = stop, "claude-opus-5"
+            self.stop_details = "cyber" if stop == "refusal" else None
+            self.usage = NS(input_tokens=3000, output_tokens=400)
+            self.content = [NS(type="text", text=text)]
+
+    def client(self, *msgs):
+        msgs = list(msgs)
+
+        class Stream:
+            def __enter__(s):
+                return s
+
+            def __exit__(s, *a):
+                return False
+
+            def get_final_message(s):
+                return msgs.pop(0)
+        from types import SimpleNamespace as NS
+        return NS(beta=NS(messages=NS(stream=lambda **kw: Stream())))
+
+    def test_refused_call_carries_its_usage(self):
+        with self.assertRaises(ex.VisionError) as cm:
+            ex._call_json(self.client(self.Msg("refusal")), "claude-opus-5", None, [], {}, "low", 10, False)
+        self.assertEqual((cm.exception.usage["input_tokens"], cm.exception.usage["output_tokens"]), (3000, 400))
+
+    def test_failed_second_attempt_counts_both(self):
+        import pymupdf
+        page = pymupdf.open(JES)[127]
+        with self.assertRaises(ex.VisionError) as cm:
+            ex.transcribe_page(self.client(self.Msg("end_turn"), self.Msg("max_tokens")), "claude-opus-5", page, 0, 60, False)
+        self.assertEqual((cm.exception.usage["input_tokens"], cm.exception.usage["attempts"]), (6000, 2))
+
+    def test_spend_summary_prices_failures_too(self):
+        log = [("transcribe", 1, {"input_tokens": 1_000_000, "output_tokens": 0, "model": "claude-opus-5", "outcome": "ok"}),
+               ("ocr_fallback", 2, {"input_tokens": 0, "output_tokens": 1_000_000, "model": "claude-opus-5",
+                                    "outcome": "failed", "attempts": 2}),
+               ("classify", 3, {"input_tokens": 10, "output_tokens": 10, "model": "some-future-model", "outcome": "ok"})]
+        spend = ex.vision_spend(log)
+        self.assertEqual((spend["calls"], spend["failed_calls"], spend["unpriced_calls"]), (4, 2, 1))
+        self.assertEqual(spend["estimated_usd"], 30.0)                          # $5 in + $25 out per Mtok
+        self.assertEqual(spend["by_outcome"]["failed"], {"calls": 2, "estimated_usd": 25.0})
 
 
 class ConfidenceLadder(unittest.TestCase):
