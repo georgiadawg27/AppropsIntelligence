@@ -41,13 +41,16 @@ Usage:
         --offline --cache-dir tests/fixtures/vision_cache \\
         --ground-truth tests/ground_truth/CRPT-119hrpt652_title_iii_fy2026_enacted.json
 
-Requires ANTHROPIC_API_KEY for anything that isn't already cached.
+Requires ANTHROPIC_API_KEY for anything that isn't already cached. It is read
+from the .env file next to this script (see .env.example), never from the
+shell's inherited environment.
 """
 
 import argparse
 import base64
 import hashlib
 import json
+import os
 import re
 import sys
 import uuid
@@ -55,8 +58,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import pymupdf
+from dotenv import load_dotenv
 
 import validate_approps
+
+# Keys come from the project's .env, and win over anything inherited from the
+# shell: cloud sessions don't reliably pass ANTHROPIC_API_KEY through, and
+# Claude Code reads that same name for its own auth.
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+load_dotenv(ENV_PATH, override=True)
 
 DEFAULT_MODEL = "claude-opus-5"
 PROMPT_VERSION = "2026-09-25.1"
@@ -298,7 +308,11 @@ class VisionError(RuntimeError):
 
 def _client():
     import anthropic
-    return anthropic.Anthropic()
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        raise SystemExit(f"No ANTHROPIC_API_KEY: add it to {ENV_PATH} (copy .env.example), "
+                         "or use --offline to run from cached vision results only.")
+    return anthropic.Anthropic(api_key=key)
 
 
 def _call_json(client, model, system, content, schema, effort, max_tokens, use_fallbacks):

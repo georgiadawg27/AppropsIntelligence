@@ -16,22 +16,32 @@ Requires a real api.data.gov key -- DEMO_KEY is rate-limited to a handful of
 requests per hour and is only good for testing this script, not running it
 on a schedule: https://api.data.gov/signup/
 
+The key is read from GOVINFO_API_KEY in the .env file next to this script
+(see .env.example); --api-key overrides it for a one-off run.
+
 Usage:
-    python govinfo_ingest.py --api-key YOUR_KEY --tracked-bills HR8845,S2354 --since 2026-01-01
+    python govinfo_ingest.py --tracked-bills HR8845,S2354 --since 2026-01-01
 
     # Defaults to the last 7 days if --since is omitted
-    python govinfo_ingest.py --api-key YOUR_KEY --tracked-bills HR8845
+    python govinfo_ingest.py --tracked-bills HR8845
 """
 
 import argparse
 import hashlib
 import json
+import os
 import sys
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+
+from dotenv import load_dotenv
+
+# Keys come from the project's .env, not the shell's inherited environment.
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+load_dotenv(ENV_PATH, override=True)
 
 API_BASE = "https://api.govinfo.gov"
 COLLECTIONS = ["BILLS", "CRPT", "PLAW"]
@@ -193,10 +203,13 @@ def run(api_key, tracked_bills, since):
 
 def main():
     parser = argparse.ArgumentParser(description="Detect and store new govinfo.gov documents for tracked bills.")
-    parser.add_argument("--api-key", required=True, help="api.data.gov key (get one at https://api.data.gov/signup/)")
+    parser.add_argument("--api-key", default=os.environ.get("GOVINFO_API_KEY"),
+                        help="api.data.gov key; defaults to GOVINFO_API_KEY from .env (https://api.data.gov/signup/)")
     parser.add_argument("--tracked-bills", default="", help="Comma-separated bill numbers, e.g. HR8845,S2354")
     parser.add_argument("--since", default=None, help="ISO date to check from, e.g. 2026-01-01 (default: 7 days ago)")
     args = parser.parse_args()
+    if not args.api_key:
+        parser.error(f"no govinfo key: add GOVINFO_API_KEY to {ENV_PATH} (copy .env.example) or pass --api-key")
 
     since = args.since
     if not since:
