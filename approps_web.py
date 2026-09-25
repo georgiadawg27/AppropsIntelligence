@@ -78,6 +78,9 @@ def make_handler(db):
             try:
                 if url.path in ("/", "/index.html"):
                     return self.send(HTTPStatus.OK, PAGE.read_bytes(), "text/html; charset=utf-8")
+                if url.path == "/match.js":                   # loaded by the page; used only by the static export
+                    return self.send(HTTPStatus.OK, (PAGE.parent / "match.js").read_bytes(),
+                                     "text/javascript; charset=utf-8")
                 if url.path == "/api/search":
                     qs = parse_qs(url.query)
                     q = (qs.get("q") or [""])[0].strip()
