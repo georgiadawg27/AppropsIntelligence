@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "pdf_sha256": "d655be4c0865a8ca5e401aef7113c9d86257a65b7f4c43b030e4059d2bd1a8bf",
+    "page": 169,
+    "source": "manual_transcription",
+    "note": "Hand transcription of the page image (rendered at 200 DPI, rotated upright), recorded in the same shape the Claude vision transcription returns. Lets the parsing, unit normalization, hierarchy and validation stages run offline. It is NOT a record of a Claude API response; a live run overwrites nothing here (live results go to extraction_cache/).",
+    "prompt_version": null,
+    "model": null,
+    "rotation": 90
+  },
+  "classify": {
+    "orientation": "sideways_text_reads_bottom_to_top",
+    "page_kind": "budget_authority_comparative_table",
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "title_headings": [
+      "TITLE III - SCIENCE"
+    ]
+  },
+  "transcription": {
+    "orientation_ok": true,
+    "table_title": "COMPARATIVE STATEMENT OF NEW BUDGET (OBLIGATIONAL) AUTHORITY FOR 2026 AND AMOUNTS RECOMMENDED IN THE BILL FOR 2027",
+    "units_declared": "(Amounts in thousands)",
+    "column_headers": [
+      "FY 2026 Enacted",
+      "Bill",
+      "Bill vs. Enacted"
+    ],
+    "legibility_notes": "",
+    "rows": [
+      {
+        "label": "TITLE III - SCIENCE",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "TITLE III - SCIENCE"
+      },
+      {
+        "label": "Office of Science and Technology Policy",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "7,965",
+          "7,965",
+          "---"
+        ],
+        "raw_text": "Office of Science and Technology Policy 7,965 7,965 ---"
+      },
+      {
+        "label": "National Aeronautics and Space Administration",
+        "indent": 1,
+        "is_heading": true,
+        "rule_above": "none",
+        "values": [
+          "",
+          "",
+          ""
+        ],
+        "raw_text": "National Aeronautics and Space Administration"
+      },
+      {
+        "label": "Science",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "7,250,000",
+          "6,000,000",
+          "-1,250,000"
+        ],
+        "raw_text": "Science 7,250,000 6,000,000 -1,250,000"
+      },
+      {
+        "label": "Aeronautics",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "935,000",
+          "850,000",
+          "-85,000"
+        ],
+        "raw_text": "Aeronautics 935,000 850,000 -85,000"
+      },
+      {
+        "label": "Space Technology",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "920,500",
+          "913,000",
+          "-7,500"
+        ],
+        "raw_text": "Space Technology 920,500 913,000 -7,500"
+      },
+      {
+        "label": "Exploration",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "7,783,000",
+          "8,925,600",
+          "+1,142,600"
+        ],
+        "raw_text": "Exploration 7,783,000 8,925,600 +1,142,600"
+      },
+      {
+        "label": "Space Operations",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "4,175,000",
+          "4,403,236",
+          "+228,236"
+        ],
+        "raw_text": "Space Operations 4,175,000 4,403,236 +228,236"
+      },
+      {
+        "label": "Science, Technology, Engineering, and Mathematics Engagement",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "143,000",
+          "---",
+          "-143,000"
+        ],
+        "raw_text": "Science, Technology, Engineering, and Mathematics Engagement 143,000 --- -143,000"
+      },
+      {
+        "label": "Safety, Security and Mission Services",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "3,000,000",
+          "3,100,000",
+          "+100,000"
+        ],
+        "raw_text": "Safety, Security and Mission Services 3,000,000 3,100,000 +100,000"
+      },
+      {
+        "label": "Construction and environmental compliance and restoration",
+        "indent": 0,
+        "is_heading": false,
+        "rule_above": "none",
+        "values": [
+          "185,336",
+          "200,000",
+          "+14,664"
+        ],
+        "raw_text": "Construction and environmental compliance and restoration 185,336 200,000 +14,664"
+      }
+    ]
+  }
+}
