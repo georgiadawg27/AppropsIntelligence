@@ -337,9 +337,21 @@ def data_quality_warnings(conn):
         if (o["fiscal_year"], o["stage"]) not in covered_cells(d)[0]:
             warnings.append(f"observation {o['observation_id']} (FY{o['fiscal_year']} {o['stage']}) cites "
                             f"{d['document_id']}, which neither is nor also_covers that fiscal year + stage")
-        if o["source_page"] != d["source_page"]:
+        if o["source_page"] is None:
+            warnings.append(f"observation {o['observation_id']}: source_page is blank (cites {d['document_id']})")
+        elif o["source_page"] != d["source_page"]:
             warnings.append(f"observation {o['observation_id']}: source_page {o['source_page']!r} is outside "
                             f"{d['document_id']}'s table pages {d['source_page']!r}")
+    # every source table prints amounts in thousands (CBO: millions), so a
+    # dollar amount that isn't a whole thousand was entered in the table's unit
+    for r in conn.execute("SELECT observation_id, amount FROM appropriations_observation WHERE amount % 1000 <> 0"):
+        warnings.append(f"observation {r['observation_id']}: amount {r['amount']:,} is not a whole thousand dollars "
+                        f"-- entered in thousands?")
+    for r in conn.execute("SELECT observation_id, component FROM appropriations_observation WHERE component IS NOT NULL "
+                          "UNION ALL SELECT confirmed_absence_id, component FROM confirmed_absence WHERE component IS NOT NULL"):
+        if r["component"] not in A.COMPONENTS:
+            warnings.append(f"{r[0]}: component {r['component']!r} is not in the component vocabulary "
+                            f"{sorted(A.COMPONENTS)}")
     for r in conn.execute("SELECT o.observation_id, o.chamber, o.stage FROM appropriations_observation o"):
         want = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                 "Senate Passed": "Senate"}.get(r["stage"], "N/A")

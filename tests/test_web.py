@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v14.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v16.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -134,7 +134,7 @@ class Api(WebTest):
     def test_missing_is_missing_in_the_grid(self):
         g = self.search("NASA Science")["grid"]
         fy2027 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)
-        self.assertEqual([l["missing"] for s in FOUR for l in fy2027["cells"][s]], [True] * 4)
+        self.assertTrue(all(l["state"] == "missing" for s in FOUR for l in fy2027["cells"][s]))
         # a blank request cell (v13 dropped the $0 rows) is missing, not zero
         g = self.search("NASA Space Technology")["grid"]
         fy2019 = next(r for r in g["rows"] if r["fiscal_year"] == 2019)
@@ -189,7 +189,7 @@ class Browser(WebTest):
                 const lines = [];
                 for (const line of td.querySelectorAll('.line')) {
                   const amt = line.querySelector('[data-testid=amount]');
-                  lines.push([line.dataset.series, amt ? amt.textContent : 'missing',
+                  lines.push([line.dataset.series, amt ? amt.textContent : line.dataset.state,
                               amt ? line.querySelector('.cite').textContent : null]);
                 }
                 if (!lines.length) lines.push([null, td.querySelector('[data-testid=missing]') ? 'missing' : '?', null]);
@@ -207,12 +207,12 @@ class Browser(WebTest):
         want = {}
         for o in h["observations"]:
             want.setdefault(f"{o['fiscal_year']}|{o['stage']}", []).append(
-                (money(o["amount"]), f"{o['source_document_id']} p.{o['source_page']}"))
+                (money(o["amount"]), o["source_document_id"] + (f" p.{o['source_page']}" if o["source_page"] else "")))
         for key, lines in shown.items():
-            got = sorted((a, c) for _, a, c in lines if a != "missing")
+            got = sorted((a, c) for _, a, c in lines if a not in ("missing", "not_applicable"))
             self.assertEqual(got, sorted(want.get(key, [])), key)
             if key not in want:
-                self.assertTrue(all(a == "missing" for _, a, _ in lines), key)
+                self.assertTrue(all(a in ("missing", "not_applicable") for _, a, _ in lines), key)
         self.assertTrue(set(want) <= set(shown))
         return shown
 
@@ -222,10 +222,15 @@ class Browser(WebTest):
         shown = self.assert_faithful("NASA Science")
         years = sorted({int(k.split("|")[0]) for k in shown})
         self.assertEqual(years, list(range(2017, 2028)))
-        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] != "missing"), 40)
-        self.assertEqual([v[0][1] for k, v in shown.items() if k.startswith("2027|")], ["missing"] * 4)
-        self.assertEqual(shown["2024|Senate Reported"], [["budget authority", "$7,340,920,000", "SRC-CRPT-118SRPT62 p.219-220"]])
-        self.assertEqual(shown["2026|Enacted"], [["budget authority", "$7,250,000,000", "SRC-EXPL-FY2026-PB p.128-130"]])
+        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in ("missing", "not_applicable")), 40)
+        self.assertEqual({a for k, v in shown.items() if k.startswith("2027|") for _, a, _ in v}, {"missing"})
+        # v16 gave Science a rescission series (FY2020): every other cell lists it as missing
+        self.assertEqual(shown["2024|Senate Reported"], [["budget authority", "$7,340,920,000", "SRC-CRPT-118SRPT62 p.219-220"],
+                                                          ["rescission", "missing", None]])
+        self.assertEqual(shown["2026|Enacted"], [["budget authority", "$7,250,000,000", "SRC-EXPL-FY2026-PB p.128-130"],
+                                                 ["rescission", "missing", None]])
+        self.assertEqual(shown["2020|Enacted"], [["budget authority", "$7,138,900,000", "SRC-CRPT-116HRPT455 p.187-188"],
+                                                 ["rescission", "\u2212$70,000,000", "SRC-CRPT-116HRPT455"]])
         href = self.page.get_attribute("td[data-stage='Enacted'] a >> nth=0", "href")
         self.assertTrue(href.endswith("#page=120"), href)        # FY2017 Enacted: H.Rept. 115-231, p.120
 
@@ -245,6 +250,7 @@ class Browser(WebTest):
         shown = self.assert_faithful("NASA Exploration")
         self.assertEqual(shown["2024|Enacted"],
                          [["budget authority", "$7,216,200,000", "SRC-CRPT-118HRPT582 p.247-248"],
+                          ["other \u00b7 Other Appropriations budget amendment", "missing", None],
                           ["supplemental", "$450,000,000", "SRC-CRPT-118HRPT582 p.247-248"]])
 
     def test_leo_resolves_to_space_operations(self):
@@ -278,32 +284,40 @@ class Browser(WebTest):
         self.assertEqual(self.page.locator("#candidates img").count(), 0)
         self.assertIsNone(self.page.evaluate("window.pwned"))
 
-
-if __name__ == "__main__":
-    unittest.main()
-
-
-@unittest.skipUnless(sync_playwright and chromium_path(), "playwright / chromium not available")
-class ThreeStates(Browser):
-    """A confirmed absence renders as 'not applicable' with its evidence and
-    the document checked -- distinct from missing, and never $0."""
-
-    @classmethod
-    def prepare(cls, conn):
-        conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
-        conn.execute("INSERT INTO confirmed_absence VALUES ('CA-1', 'ACC-NASA-EXPLORATION', 2017, 'Senate Reported', "
-                     "'supplemental', NULL, 'SRC-CRPT-114SRPT239', 'No Exploration (emergency) line in the table', "
-                     "'2026-09-25')")
-
+    # v16's confirmed absences render as 'not applicable' with their evidence
+    # and the document checked -- distinct from missing, and never $0.
     def test_not_applicable_missing_and_value(self):
         self.search_ui("NASA Exploration")
         lines = self.page.eval_on_selector_all(
             "tr[data-fy='2017'] td[data-stage='Senate Reported'] .line",
             "ls => ls.map(l => [l.dataset.series, l.dataset.state, l.textContent])")
-        self.assertEqual([(a, b) for a, b, _ in lines], [("budget authority", "value"), ("supplemental", "not_applicable")])
-        self.assertIn("not applicable", lines[1][2])
-        self.assertIn("SRC-CRPT-114SRPT239", lines[1][2])
-        self.assertNotIn("$0", lines[1][2])
-        self.assertEqual(self.page.get_attribute("[data-testid=not-applicable]", "title"),
-                         "No Exploration (emergency) line in the table")
-        self.assertEqual(self.page.locator("tr[data-fy='2027'] [data-testid=missing]").count(), 4)
+        states = {a: b for a, b, _ in lines}
+        self.assertEqual((states["budget authority"], states["supplemental"]), ("value", "not_applicable"))
+        text = next(t for a, _, t in lines if a == "supplemental")
+        self.assertIn("not applicable", text)
+        self.assertIn("SRC-CRPT-114SRPT239", text)
+        self.assertNotIn("$0", text)
+        conn = S.connect(self.db)
+        evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0027'").fetchone()[0]
+        conn.close()
+        self.assertEqual(self.page.get_attribute(
+            "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-applicable]", "title"), evidence)
+        self.assertEqual(self.page.locator("tr[data-fy='2027'] td.empty [data-testid=missing]").count(), 4)
+
+    def test_every_absence_renders(self):
+        conn = S.connect(self.db)
+        accts = [r[0] for r in conn.execute("SELECT DISTINCT canonical_account_id FROM confirmed_absence")]
+        conn.close()
+        n = 0
+        for acct in accts:
+            self.page.goto(self.base + "/")
+            self.page.evaluate(f"pick({acct!r}, 'test')")
+            self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+            n += self.page.locator("[data-testid=not-applicable]").count()
+            self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
+                                                            "cs => cs.filter(c => !c.title).length"), 0, acct)
+        self.assertEqual(n, 133)
+
+
+if __name__ == "__main__":
+    unittest.main()

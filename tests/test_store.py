@@ -1,6 +1,6 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v14.xlsx).
+loaded from the committed pilot workbook (reference/..._v16.xlsx).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -26,7 +26,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v14.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v16.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -64,13 +64,23 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         self.assertEqual(self.report["rows"], {
             "account": 31, "historical_name": 6, "source_document": 23, "bill_report_reference": 41,
-            "appropriations_observation": 977, "confirmed_absence": 0, "account_relationship": 2,
+            "appropriations_observation": 878, "confirmed_absence": 133, "account_relationship": 2,
             "validation_record": 89})
-        self.assertEqual(self.report["tabs_not_in_workbook"], ["Confirmed Absence"])      # v14 predates the tab
+        self.assertEqual(self.report["tabs_not_in_workbook"], [])
 
-    def test_v14_loads_clean_with_nothing_waived_and_no_warnings(self):
+    def test_v16_warnings_are_the_known_ones(self):
+        # v16 added five observations with no source_page, two of them (the
+        # FY2020 request's budget amendment) entered in thousands and with a
+        # component outside the vocabulary -- pinned so a fix shows up here
         self.assertEqual(self.report["waived"], {})
-        self.assertEqual(self.report["warnings"], [])
+        self.assertEqual(self.report["warnings"], [
+            *(f"observation {o}: source_page is blank (cites {d})" for o, d in (
+                ("OBS-0986", "SRC-CRPT-118SRPT198"), ("OBS-0987", "SRC-CRPT-116HRPT455"),
+                ("OBS-0988", "SRC-CRPT-116SRPT127"), ("OBS-0989", "SRC-CRPT-116HRPT101"),
+                ("OBS-0990", "SRC-CRPT-116HRPT101"))),
+            "observation OBS-0989: amount 1,374,700 is not a whole thousand dollars -- entered in thousands?",
+            *(f"{o}: component 'Other Appropriations budget amendment' is not in the component vocabulary "
+              f"['chimp', 'chimp_pop_up', 'defense']" for o in ("OBS-0989", "OBS-0990"))])
 
     def test_fy2027_house_links_are_the_verified_packages(self):
         # both fetched live and checked: the report is byte-identical to the
@@ -99,7 +109,7 @@ class Load(StoreTest):
 
     def test_spelling_variant_is_mapped_and_counted(self):
         self.assertEqual(self.report["value_map"],
-                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 977})
+                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 878})
 
     def test_dates_are_iso_dates(self):
         self.assertEqual(self.conn.execute("SELECT publication_date FROM source_document "
@@ -153,9 +163,12 @@ class NasaScienceAcceptance(StoreTest):
                       for o in workbook_rows("Appropriations Observation")
                       if o["canonical_account_id"] == "ACC-NASA-SCIENCE")
         self.assertEqual(got, want)
-        self.assertEqual(len(got), 40)
-        self.assertEqual({(o["fiscal_year"], o["stage"]) for o in h["observations"]},
-                         {(y, s) for y in range(2017, 2027) for s in FOUR})
+        ba = [o for o in h["observations"] if o["amount_type"] == "budget authority"]
+        self.assertEqual(len(ba), 40)
+        self.assertEqual({(o["fiscal_year"], o["stage"]) for o in ba}, {(y, s) for y in range(2017, 2027) for s in FOUR})
+        self.assertEqual({(o["fiscal_year"], o["stage"], o["amount"]) for o in h["observations"]
+                          if o["amount_type"] == "rescission"},
+                         {(2020, "Enacted", -70_000_000), (2020, "Senate Reported", -70_000_000)})
 
     def test_fy2027_is_reported_missing_not_zero(self):
         _, h = self.query("NASA Science")
@@ -204,9 +217,10 @@ class ExplorationAcceptance(StoreTest):
     def test_base_and_supplemental_split(self):
         _, h = self.query("NASA Exploration")
         obs = h["observations"]
-        self.assertEqual(len(obs), 80)
+        self.assertEqual(len(obs), 55)
+        self.assertEqual(len(h["absences"]), 26)
         by = {(o["fiscal_year"], o["stage"], o["amount_type"]): o["amount"] for o in obs}
-        self.assertEqual({t for (_, _, t) in by}, {"budget authority", "supplemental"})
+        self.assertEqual({t for (_, _, t) in by}, {"budget authority", "supplemental", "other"})
         self.assertEqual(by[(2024, "Enacted", "budget authority")], 7_216_200_000)
         self.assertEqual(by[(2024, "Enacted", "supplemental")], 450_000_000)
         self.assertEqual(by[(2025, "Senate Reported", "supplemental")], 1_212_000_000)
@@ -216,7 +230,7 @@ class ExplorationAcceptance(StoreTest):
             res, h = self.query(text)
             self.assertEqual((res["account"]["canonical_account_id"], res["match"], res["via"]),
                              ("ACC-NASA-EXPLORATION", kind, "historical_name"))
-            self.assertEqual(len(h["observations"]), 80)
+            self.assertEqual(len(h["observations"]), 55)
 
     def test_relationship_is_shown_not_merged(self):
         _, h = self.query("Exploration")
@@ -278,7 +292,7 @@ class ResolutionCascade(StoreCopyTest):
         super().setUp()
         with self.conn:
             self.conn.execute("UPDATE appropriations_observation SET verification_status = 'flagged', confidence = 0.5 "
-                              "WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+                              "WHERE canonical_account_id = 'ACC-NASA-EXPLTECH' AND amount_type = 'budget authority'")
             self.conn.execute("INSERT INTO validation_record (validation_id, observation_id, rule_applied, result, "
                               "human_review_status) VALUES ('VAL-ID', 'OBS-0522', 'account_identity', 'flag', 'pending')")
 
@@ -300,7 +314,8 @@ class ResolutionCascade(StoreCopyTest):
         self.assertEqual(s["records_created"], ["VAL-REL-0005-OBS-0523", "VAL-REL-0005-OBS-0524"])
         self.assertEqual(self.flagged("ACC-NASA-EXPLTECH"), [])
         self.assertEqual({r[0] for r in self.conn.execute(
-            "SELECT confidence FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")}, {0.95})
+            "SELECT confidence FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-EXPLTECH' "
+            "AND amount_type = 'budget authority'")}, {0.95})
         for oid in s["observations"]:
             r = self.conn.execute("SELECT human_review_status, reviewer, resolution FROM validation_record "
                                   "WHERE observation_id = ? AND rule_applied = 'account_identity'", (oid,)).fetchall()
@@ -352,8 +367,12 @@ class FactKey(StoreCopyTest):
 
     def test_components_are_the_canonical_vocabulary(self):
         import accounts
-        used = {r[0] for r in self.conn.execute("SELECT DISTINCT component FROM appropriations_observation")}
-        self.assertEqual(used, {None} | set(accounts.COMPONENTS))
+        off = [tuple(r) for r in self.conn.execute(
+            "SELECT observation_id, component FROM appropriations_observation WHERE component IS NOT NULL ORDER BY 1")
+            if r[1] not in accounts.COMPONENTS]
+        # v16's two budget-amendment rows (see Load.test_v16_warnings_are_the_known_ones)
+        self.assertEqual(off, [("OBS-0989", "Other Appropriations budget amendment"),
+                               ("OBS-0990", "Other Appropriations budget amendment")])
 
     def test_same_fact_with_other_section_text_is_refused(self):
         # a base line (component NULL): a plain UNIQUE would let this in
@@ -372,22 +391,19 @@ class FactKey(StoreCopyTest):
 
 class ConfirmedAbsenceRules(StoreCopyTest):
     """value / not applicable / missing -- a fact is observed or confirmed
-    absent, never both."""
+    absent, never both (v16's 133 Confirmed Absence rows)."""
 
     def absent(self, cid, acct, fy, stage, amount_type, component=None, doc="SRC-CRPT-114SRPT239"):
         self.conn.execute("INSERT INTO confirmed_absence VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                          (cid, acct, fy, stage, amount_type, component, doc, "no such line on pp.139-140",
-                           "2026-09-25"))
+                          (cid, acct, fy, stage, amount_type, component, doc, "test", "2026-09-25"))
 
     def test_absence_of_an_observed_fact_is_refused(self):
-        with self.assertRaises(sqlite3.IntegrityError) as cm:          # OBS-0605: FY2017 Senate Exploration supplemental $0
-            self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+        with self.assertRaises(sqlite3.IntegrityError) as cm:          # FY2024 Enacted Exploration supplemental: 450,000,000
+            self.absent("CA-X", "ACC-NASA-EXPLORATION", 2024, "Enacted", "supplemental", doc="SRC-CRPT-118HRPT582")
         self.assertIn("contradicts an observation", str(cm.exception))
 
     def test_observation_of_an_absent_fact_is_refused(self):
-        self.conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
-        self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
-        with self.assertRaises(sqlite3.IntegrityError) as cm:
+        with self.assertRaises(sqlite3.IntegrityError) as cm:          # CA-0027: FY2017 Senate Exploration supplemental
             self.conn.execute("INSERT INTO appropriations_observation (observation_id, canonical_account_id, fiscal_year, "
                               "stage, amount, amount_type, offsetting_collections, source_document_id, extraction_method, "
                               "confidence, verification_status) VALUES ('OBS-X', 'ACC-NASA-EXPLORATION', 2017, "
@@ -395,26 +411,34 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                               "'human-verified')")
         self.assertIn("contradicts a confirmed absence", str(cm.exception))
         with self.assertRaises(sqlite3.IntegrityError):                # one absence per fact
-            self.absent("CA-2", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+            self.absent("CA-X", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
+
+    def test_every_absence_is_not_applicable_with_its_evidence(self):
+        n = 0
+        for (acct,) in self.conn.execute("SELECT DISTINCT canonical_account_id FROM confirmed_absence").fetchall():
+            for row in S.history_grid(S.history(self.conn, acct))["rows"]:
+                for cells in row["cells"].values():
+                    for line in cells:
+                        if line["state"] == "not_applicable":
+                            n += 1
+                            self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
+                            self.assertEqual(line["observations"], [])
+        self.assertEqual(n, 133)
 
     def test_grid_has_three_states(self):
-        self.conn.execute("DELETE FROM appropriations_observation WHERE observation_id = 'OBS-0605'")
-        self.absent("CA-1", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
-        self.absent("CA-2", "ACC-NASA-SPACEOPS", 2017, "Senate Reported", "rescission")
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
-        fy17 = {st: [(l["amount_type"], l["state"]) for l in cells]
-                for st, cells in next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"].items()}
-        self.assertEqual(fy17["Senate Reported"], [("budget authority", "value"), ("supplemental", "not_applicable")])
-        self.assertEqual(fy17["House Reported"], [("budget authority", "value"), ("supplemental", "value")])
-        fy27 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)["cells"]["Enacted"]
-        self.assertEqual({l["state"] for l in fy27}, {"missing"})
-        # a series known only from absences still appears (and the cell isn't "missing")
-        h = S.history(self.conn, "ACC-NASA-SPACEOPS")
-        g = S.history_grid(h)
-        cell = next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"]["Senate Reported"]
-        self.assertEqual([(l["amount_type"], l["state"]) for l in cell],
-                         [("budget authority", "value"), ("rescission", "not_applicable")])
-        self.assertEqual(cell[1]["absence"]["evidence"], "no such line on pp.139-140")
+        cell = lambda fy, st: {l["amount_type"]: l for l in
+                               next(r for r in g["rows"] if r["fiscal_year"] == fy)["cells"][st]}
+        fy17 = cell(2017, "Senate Reported")
+        self.assertEqual((fy17["budget authority"]["state"], fy17["supplemental"]["state"]), ("value", "not_applicable"))
+        self.assertEqual(fy17["supplemental"]["absence"]["confirmed_absence_id"], "CA-0027")
+        self.assertEqual(cell(2024, "Enacted")["supplemental"]["state"], "value")
+        self.assertEqual({l["state"] for l in cell(2027, "Enacted").values()}, {"missing"})
+        # a series known only from absences in a cell still shows (SPACEOPS rescission)
+        g = S.history_grid(S.history(self.conn, "ACC-NASA-SPACEOPS"))
+        c17 = {l["amount_type"]: l["state"] for l in
+               next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"]["Senate Reported"]}
+        self.assertEqual(c17, {"budget authority": "value", "rescission": "not_applicable"})
 
 
 HOUSE_PDF = ROOT / "document_store" / "CRPT-119hrpt652.pdf"
@@ -454,7 +478,7 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 19, "conflicting": 0, "added": 19, "held": 0})
         self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before + 19)
         sci = {(o["fiscal_year"], o["stage"]): o for o in self.science()}
-        self.assertEqual(len(self.science()), 41)                       # 40 + FY2027 House Reported, no duplicate
+        self.assertEqual(len(self.science()), 43)                       # 42 + FY2027 House Reported, no duplicate
         self.assertEqual((sci[(2026, "Enacted")]["observation_id"], sci[(2026, "Enacted")]["amount"]),
                          ("OBS-0081", 7_250_000_000))                   # the stored row, confirmed
         rec = self.conn.execute("SELECT result, observed_result FROM validation_record WHERE observation_id = 'OBS-0081' "
