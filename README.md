@@ -20,6 +20,15 @@ python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
+Two views: **One account** (search by name, current or former) and
+**Subcommittee grid** (every account of a subcommittee side by side, for the
+fiscal years and stages you pick). Each grid row is that account's own
+history -- the same cells, the same value / not applicable / missing rules --
+from `approps_store.subcommittee_grid()`; a cell's headline is budget
+authority, and its other lines (supplemental, rescission, transfer, component
+lines) open under "+ more", never summed in. The grid's selection is in the
+URL, e.g. `?view=compare&sc=CJS&fy=2017-2026&stage=Enacted`.
+
 ## Static site (GitHub Pages)
 
 `docs/` is a static, read-only snapshot of the same UI: every account's
@@ -46,8 +55,8 @@ from a branch*, branch `main`, folder `/docs`. Pages serves the default
 branch, so the public site reflects a workbook once it is on `main`.
 
 Scope: no live backend, no write path, and no query beyond what is
-pre-exported (every account's full history; name search over current and
-former names).
+pre-exported (every account's full history; each subcommittee's grid; name
+search over current and former names).
 
 ## Tests
 

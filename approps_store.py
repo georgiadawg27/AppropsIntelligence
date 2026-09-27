@@ -852,6 +852,65 @@ def history_grid(h):
     return {"stages": stages, "series": [{"amount_type": t, "component": c} for t, c in series], "rows": rows}
 
 
+def subcommittees(conn):
+    return [r[0] for r in conn.execute("SELECT DISTINCT subcommittee FROM account ORDER BY subcommittee")]
+
+
+def subcommittee_grid(conn, subcommittee):
+    """
+    Every account of one subcommittee side by side, for comparison: each
+    row is that account's own history() / history_grid() -- the single-account
+    view's cells, unchanged -- laid out on the fiscal years and stages any
+    account of the subcommittee has.
+
+    One cell outside what history_grid() covers for an account (a fiscal year
+    before its first figure or confirmed absence, or a stage it never has)
+    holds each of the account's series as "missing": no observation, no
+    confirmed absence -- the same definition, never blank, never zero -- and
+    is marked "outside_history" so it can be told apart.
+
+    Rows are canonical accounts (former names resolve into them, as in the
+    single-account view), by agency, agency total last.
+    -> {"subcommittee", "fiscal_years", "stages", "rows": [{"account",
+        "historical_names", "relationships", "series", "fiscal_year_span",
+        "cells": {"<fiscal_year>|<stage>": {"lines": [...], "outside_history"}}}]}
+    """
+    accts = [dict(r) for r in conn.execute(
+        "SELECT canonical_account_id, canonical_name, agency, bureau, status FROM account WHERE subcommittee = ?",
+        (subcommittee,))]
+    if not accts:
+        raise LookupError(f"no subcommittee {subcommittee!r}")
+    accts.sort(key=lambda a: (a["agency"], bool(A.AGENCY_TOTAL_RE.search(a["canonical_name"])),
+                              a["canonical_name"], a["canonical_account_id"]))
+    grids = []
+    for a in accts:
+        h = history(conn, a["canonical_account_id"])
+        grids.append((a, h, history_grid(h)))
+    years = sorted({r["fiscal_year"] for _, _, g in grids for r in g["rows"]})
+    stages = [s for s in STAGE_ORDER if any(s in g["stages"] for _, _, g in grids)]
+    rows = []
+    for a, h, g in grids:
+        own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
+        cells = {}
+        for y in years:
+            for st in stages:
+                if y in own and st in own[y]:
+                    cells[f"{y}|{st}"] = {"lines": own[y][st], "outside_history": False}
+                else:
+                    cells[f"{y}|{st}"] = {"outside_history": True, "lines": [
+                        {"amount_type": s["amount_type"], "component": s["component"], "state": "missing",
+                         "missing": True, "observations": [], "absence": None} for s in g["series"]]}
+        rows.append({"account": a,
+                     "historical_names": [n["former_name"] for n in h["historical_names"]],
+                     "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
+                                                          "to_account_id", "effective_fiscal_year", "confidence",
+                                                          "human_reviewed")} for r in h["relationships"]],
+                     "series": g["series"],
+                     "fiscal_year_span": [g["rows"][0]["fiscal_year"], g["rows"][-1]["fiscal_year"]] if g["rows"] else None,
+                     "cells": cells})
+    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "rows": rows}
+
+
 def fmt_amount(v):
     return f"{v:,}"
 

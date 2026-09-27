@@ -20,6 +20,11 @@ API
       unmatched -> {"status": "unmatched", "resolved": {...}, "candidates": [...]}   (nearest, nothing chosen)
   GET /api/account/<canonical_account_id>
       a candidate the user picked -> {"status": "picked", "history": {...}, "grid": {...}}
+  GET /api/subcommittees
+      -> {"subcommittees": ["CJS", ...]}
+  GET /api/subcommittee/<name>
+      every account of the subcommittee side by side -> approps_store.subcommittee_grid()
+      (the page picks fiscal years and stages from it)
 """
 
 import argparse
@@ -59,6 +64,22 @@ def account(db, account_id):
         conn.close()
 
 
+def subcommittees(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return {"subcommittees": S.subcommittees(conn)}
+    finally:
+        conn.close()
+
+
+def subcommittee(db, name):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.subcommittee_grid(conn, name)
+    finally:
+        conn.close()
+
+
 def make_handler(db):
     class Handler(BaseHTTPRequestHandler):
         def send(self, status, body, ctype):
@@ -90,6 +111,13 @@ def make_handler(db):
                 if url.path.startswith("/api/account/"):
                     try:
                         return self.json(HTTPStatus.OK, account(db, unquote(url.path[len("/api/account/"):])))
+                    except LookupError as e:
+                        return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
+                if url.path == "/api/subcommittees":
+                    return self.json(HTTPStatus.OK, subcommittees(db))
+                if url.path.startswith("/api/subcommittee/"):
+                    try:
+                        return self.json(HTTPStatus.OK, subcommittee(db, unquote(url.path[len("/api/subcommittee/"):])))
                     except LookupError as e:
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
                 return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
