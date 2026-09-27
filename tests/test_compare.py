@@ -277,6 +277,42 @@ class GridData(CompareTest):
             "ACC-DOJ-VAWA": ("Title II", "transfer or rescission only"),
             "ACC-DOJ-WCF": ("Title V", "transfer or rescission only")})
 
+    def test_printed_title_iii_totals_reconcile(self):
+        # every printed "Total, title III, Science" is the title's own lines
+        # (budget authority + Title III emergency lines) plus exactly the
+        # rescissions / budget amendments / supplemental acts that document
+        # prints inside Title III -- figures kept as printed, nothing adjusted
+        spec = importlib.util.spec_from_file_location("title_totals", ROOT / "reference" / "review" / "title_totals.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with open(ROOT / "reference" / "review" / "title_iii_printed.csv", newline="") as f:
+            printed = list(csv.DictReader(f))
+        conn = S.connect(self.db, readonly=True)
+        try:
+            got = mod.reconcile(conn, printed)
+        finally:
+            conn.close()
+        with open(ROOT / "reference" / "review" / "title_iii_totals.csv", newline="") as f:
+            self.assertEqual([{k: str(v) for k, v in r.items()} for r in got], list(csv.DictReader(f)))
+        by = {(int(r["fiscal_year"]), r["stage"], r["source_document_id"]): r for r in got}
+        self.assertEqual(len(printed), 49)
+        self.assertEqual({k for k, r in by.items() if r["reconciles"] == "no store figures"},
+                         {(2016, "Enacted", "SRC-CRPT-114HRPT605"), (2016, "Enacted", "SRC-CRPT-114SRPT239")})
+        self.assertEqual([k for k, r in by.items() if r["reconciles"] == "no"], [])
+        # through the rollups, v26's one miss: OBS-0889 was edited off the printed
+        # NASA total (v27 restores it) -- its accounts reconcile, the rollup doesn't
+        self.assertEqual([(k, r["through_rollups_differs_by_thousands"]) for k, r in by.items()
+                          if r["reconciles_through_rollups"] == "no"],
+                         [((2025, "Senate Reported", "SRC-CRPT-118SRPT198"), 1000)])
+        # the same FY2020 request, printed two ways: the Senate folds the May 2019
+        # budget amendments into its estimates, the House lists them apart
+        amendments = "OBS-0989 (ACC-NASA-EXPLORATION budget_amendment 1,374,700); OBS-0990 (ACC-NASA-SPACETECH " \
+                     "budget_amendment 132,000); OBS-0995 (ACC-NASA-SCIENCE budget_amendment 90,000)"
+        self.assertEqual(by[(2020, "President's Budget", "SRC-CRPT-116SRPT127")]["printed_total_includes"], amendments)
+        self.assertEqual(by[(2020, "President's Budget", "SRC-CRPT-116HRPT101")]["printed_total_leaves_out"], amendments)
+        # a separate supplemental act is never in a title's total
+        self.assertFalse(any("supplemental_act" in r["printed_total_includes"] for r in got))
+
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
         other = Path(self.tmp.name) / "two.db"
