@@ -425,26 +425,43 @@
      ],
      "President's Budget": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
-        "component": null,
-        "confirmed_absence_id": "CA-0150",
-        "confirmed_date": "2026-09-25",
-        "document_type": "committee_report",
-        "evidence": "S.Rept. 115-275 p.157 prints the FY2019 budget estimate column blank for this account (already cited as HN-0006's evidence for the 'STEM Opportunities formerly Education' name).",
-        "fiscal_year": 2019,
-        "publication_date": "2018-06-14",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-115SRPT275",
-        "stage": "President's Budget",
-        "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
-       },
+       "absence": null,
        "amount_type": "budget authority",
        "component": null,
        "missing": false,
-       "observations": [],
-       "state": "not_applicable"
+       "observations": [
+        {
+         "amount": 0,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2019/APP",
+         "bill_report_reference_id": "BR-CJS-FY2019-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+         "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
+         "chamber": "N/A",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2019,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2019,
+         "observation_id": "OBS-0996",
+         "offsetting_collections": 0,
+         "publication_date": "2018-06-14",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115SRPT275",
+         "source_page": "157",
+         "source_table_or_section": "Real $0 request, not a non-itemized line: the FY2019 President's Budget explicitly states 'The Budget proposes the termination of the Office of Education and its portfolio of programs and projects.' The dash printed in the committee report reflects this explicit termination proposal, not an unrecorded/non-itemized line.",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -1703,28 +1720,13 @@
   ]
  },
  "history": {
-  "absences": [
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
-    "component": null,
-    "confirmed_absence_id": "CA-0150",
-    "confirmed_date": "2026-09-25",
-    "document_type": "committee_report",
-    "evidence": "S.Rept. 115-275 p.157 prints the FY2019 budget estimate column blank for this account (already cited as HN-0006's evidence for the 'STEM Opportunities formerly Education' name).",
-    "fiscal_year": 2019,
-    "publication_date": "2018-06-14",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-115SRPT275",
-    "stage": "President's Budget",
-    "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
-   }
-  ],
+  "absences": [],
   "account": {
    "agency": "National Aeronautics and Space Administration",
    "bureau": "STEM Engagement",
    "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
    "canonical_name": "Science, Technology, Engineering, and Mathematics Engagement",
+   "display_order": 9,
    "effective_end": null,
    "effective_start": "2016-10-01",
    "fund_type": "general",
@@ -1733,6 +1735,7 @@
    "notes": null,
    "status": "active",
    "subcommittee": "CJS",
+   "title": "Title III",
    "treasury_account_symbol": null
   },
   "historical_names": [
@@ -2015,6 +2018,36 @@
     "stage": "Enacted",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 0,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2019/APP",
+    "bill_report_reference_id": "BR-CJS-FY2019-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+    "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
+    "chamber": "N/A",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2019,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2019,
+    "observation_id": "OBS-0996",
+    "offsetting_collections": 0,
+    "publication_date": "2018-06-14",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT275",
+    "source_page": "157",
+    "source_table_or_section": "Real $0 request, not a non-itemized line: the FY2019 President's Budget explicitly states 'The Budget proposes the termination of the Office of Education and its portfolio of programs and projects.' The dash printed in the committee report reflects this explicit termination proposal, not an unrecorded/non-itemized line.",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf",
     "validation": [],
     "verification_status": "human-verified"
    },

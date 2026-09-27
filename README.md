@@ -16,7 +16,7 @@ history with a source citation for every figure.
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx
+python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v26.xlsx
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
@@ -29,8 +29,13 @@ authority, and its other lines (supplemental, rescission, transfer, component
 lines) open under "+ more", never summed in. A dashed outline marks a year
 before an account's first record or after its `effective_end`; a supplemental
 act line shows only at Enacted and a budget amendment only at President's
-Budget, where they can exist. Agency-total rows the workbook notes as
-"Derived rollup" carry a badge -- they already sum the accounts above. The
+Budget, where they can exist. Rows are grouped by
+bill title (Account `title`) in bill order and ordered by `display_order`;
+accounts not yet placed in a title come last. A rollup the workbook notes as
+"Derived rollup" heads the accounts it totals (its title's accounts of its
+agency), which fold away under it. Title and bill totals are shown only from
+a sourced row -- a rollup noted "title total" / "bill total" -- and never by
+summing the accounts loaded. Citations open on a click ("source"). The
 grid's selection is in the URL, e.g.
 `?view=compare&sc=CJS&fy=2017-2026&stage=Enacted`.
 

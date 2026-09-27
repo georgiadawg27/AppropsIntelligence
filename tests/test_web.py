@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v26.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -274,7 +274,7 @@ class Browser(WebTest):
         self.search_ui("NASA Education")
         shown = self.assert_faithful("NASA Education")
         self.assertEqual(shown["2020|President's Budget"], [[None, "missing", None]])
-        self.assertEqual(shown["2019|President's Budget"][0][:2], ["budget authority", "not_applicable"])  # CA-0150
+        self.assertEqual(shown["2019|President's Budget"][0][1], "$0")      # OBS-0996: the budget proposed ending it (v26)
         # no cell renders empty
         empty = self.page.eval_on_selector_all("td[data-stage]", "tds => tds.filter(t => !t.textContent.trim()).length")
         self.assertEqual(empty, 0)
@@ -316,7 +316,7 @@ class Browser(WebTest):
             n += self.page.locator("[data-testid=not-applicable]").count()
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 198)
+        self.assertEqual(n, 197)
 
 
 if __name__ == "__main__":

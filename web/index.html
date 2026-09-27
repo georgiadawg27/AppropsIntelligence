@@ -52,6 +52,11 @@
   .series { color: var(--muted); font-size: 12px; }
   .amt { font-weight: 600; }
   .cite { font-size: 12px; color: var(--muted); }
+  details.src { font-size: 12px; }
+  details.src > summary { cursor: pointer; color: var(--muted); list-style: none; display: inline; }
+  details.src > summary::-webkit-details-marker { display: none; }
+  details.src > summary::before { content: "\25B8 "; }
+  details.src[open] > summary::before { content: "\25BE "; }
   .cite a { color: var(--accent); text-decoration: none; }
   .flag { color: var(--warn-fg); font-size: 12px; }
   td.empty { background: var(--missing-bg); }
@@ -86,6 +91,12 @@
   .rollup-badge { display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 4px; font-size: 11px;
                   font-weight: 600; letter-spacing: .02em; background: var(--warn-bg); color: var(--warn-fg); cursor: help; }
   #compare-grid tr.rollup > td, #compare-grid tr.rollup > th { background: var(--warn-bg); }
+  #compare-grid tr.member > th.acct { padding-left: 22px; }
+  #compare-grid tr.title-head > * { background: var(--bg); font-weight: 700; font-size: 14px; color: var(--fg);
+                                    border-top: 2px solid var(--line); }
+  #compare-grid tr.title-head .title-meta { font-weight: 400; color: var(--muted); font-size: 12px; }
+  #compare-grid tr.total-row > * { font-weight: 600; }
+  #compare-grid td.total-none { color: var(--muted); font-style: italic; font-weight: 400; }
   tr.rollup .amt { font-style: italic; }
 </style>
 </head>
@@ -143,11 +154,12 @@
     </form>
     <div id="compare-message" role="status"></div>
     <section id="compare-result" class="panel" hidden data-testid="compare-result">
-      <div class="legend">One row per account (former names resolve into it). Each cell's headline is the account's
+      <div class="legend">Grouped by bill title, in bill order. One row per account (former names resolve into it); a rollup heads the
+        accounts it totals, which fold away under it. Totals are shown only where a printed total is on file. Each cell's headline is the account's
         budget authority for that year and stage; <strong>+ more</strong> opens every other line on file for the cell
         (supplemental, rescission, transfer, component lines) &mdash; shown, never summed in.
         <span class="na-chip">not applicable</span> and <span class="missing-chip">missing</span> mean exactly what they
-        mean for one account. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
+        mean for one account. &#9656; source shows where a figure was printed. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
       <div class="table-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
     </section>
   </div>
@@ -310,12 +322,16 @@ function showAccount(data) {
   $("#result").hidden = false;
 }
 
+// A figure's (or absence's) document and page, folded behind "source" so the
+// cells stay readable; one click shows it.
 function cite(o) {
   const first = (o.source_page || "").split("-")[0];
   const href = o.url_or_identifier && /^https?:/.test(o.url_or_identifier)
     ? o.url_or_identifier + (first ? "#page=" + first : "") : null;
   const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
-  return el("div", { class: "cite" }, href ? el("a", { href, target: "_blank", rel: "noopener", text: label }) : label);
+  return el("details", { class: "src", "data-testid": "source" },
+    el("summary", { text: "source", title: label }),
+    el("div", { class: "cite" }, href ? el("a", { href, target: "_blank", rel: "noopener", text: label }) : label));
 }
 
 function renderGrid(grid, h) {
@@ -466,41 +482,83 @@ function renderCompare(grid, years, stages) {
   for (const y of grid.fiscal_years) if (years.includes(y)) for (const st of grid.stages) if (stages.includes(st)) cols.push([y, st]);
   const shownYears = grid.fiscal_years.filter((y) => years.includes(y));
   const shownStages = grid.stages.filter((st) => stages.includes(st));
+  const first = (st) => shownStages.indexOf(st) === 0;
   t.append(el("thead", {},
     el("tr", {}, el("th", { class: "acct", rowspan: "2", text: "Account" }),
       ...shownYears.map((y) => el("th", { class: "fy-head", colspan: String(shownStages.length), text: "FY" + y }))),
-    el("tr", {}, ...cols.map(([y, st]) => el("th", { class: shownStages.indexOf(st) === 0 ? "first-stage" : "",
+    el("tr", {}, ...cols.map(([y, st]) => el("th", { class: first(st) ? "first-stage" : "",
                                                           title: st, text: STAGE_SHORT[st] || st })))));
   const body = el("tbody");
-  for (const row of grid.rows) {
-    const a = row.account;
-    const name = el("button", { type: "button", class: "linkish", title: "Open this account's full history",
-                                text: a.canonical_name });
-    name.addEventListener("click", () => openAccount(a.canonical_account_id));
-    const head = el("th", { class: "acct", scope: "row" },
-      el("div", { class: "acct-name", "data-testid": "row-name" }, name),
-      el("div", { class: "meta", text: `${a.agency} · ${a.canonical_account_id}` + (a.status !== "active" ? ` · ${a.status}` : "") }));
-    if (row.historical_names.length)
-      head.append(el("div", { class: "meta", "data-testid": "row-former",
-                              text: "also printed as " + row.historical_names.map((n) => `“${n}”`).join(", ") }));
-    for (const r of row.relationships)
-      head.append(el("div", { class: "flag", "data-testid": "row-relationship",
-        text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
-              (r.human_reviewed ? "" : " (not yet reviewed)") }));
-    // agency totals the workbook marks "Derived rollup": already the sum of
-    // the agency's accounts above (all their lines, not only the headlines)
-    // -- adding them in counts every dollar twice
-    const rollup = /derived rollup/i.test(a.notes || "");
-    if (rollup)
-      head.append(el("div", {}, el("span", { class: "rollup-badge", "data-testid": "rollup", title: a.notes,
-                                              text: "Rollup of the accounts above \u2014 don't add" })));
-    const tr = el("tr", { class: rollup ? "rollup" : "",
-                          dataset: { account: a.canonical_account_id, testid: "compare-row" } }, head);
-    for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, shownStages.indexOf(st) === 0));
-    body.append(tr);
+  const byId = new Map(grid.rows.map((r) => [r.account.canonical_account_id, r]));
+  // a sourced total (a rollup the workbook notes as a title or bill total), or
+  // a note saying there is none -- never a sum of the loaded accounts
+  const totalRow = (label, row, none, testid) => {
+    const tr = el("tr", { class: "total-row", dataset: { testid } });
+    tr.append(el("th", { class: "acct", scope: "row" }, el("div", { class: "acct-name", text: label }),
+      row ? el("div", { class: "meta", text: `printed total \u00b7 ${row.account.canonical_account_id}` }) : null));
+    if (row) for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));
+    else tr.append(el("td", { class: "total-none", colspan: String(cols.length), "data-testid": "no-total", text: none }));
+    return tr;
+  };
+  body.append(totalRow(`Bill total \u2014 ${grid.subcommittee}`, grid.bill_total,
+    "No printed bill total on file \u2014 not shown, and the accounts below are not summed into one.", "bill-total"));
+  for (const group of grid.titles) {
+    const label = group.title || "Not yet placed in a title";
+    body.append(el("tr", { class: "title-head", dataset: { testid: "title-head", title: group.title || "" } },
+      el("th", { class: "acct", scope: "rowgroup", text: label }),
+      el("td", { colspan: String(cols.length), class: "title-meta",
+                 text: `${group.rows.length} account${group.rows.length === 1 ? "" : "s"}` })));
+    body.append(totalRow(`Total, ${group.title || "unplaced accounts"}`, group.total, group.title
+      ? `No printed total on file for ${group.title} \u2014 not shown. The accounts below are not summed into one (a title may be only partly loaded).`
+      : "These accounts aren't placed in a title yet \u2014 no total.", "title-total"));
+    for (const id of group.rows) body.append(renderCompareRow(byId.get(id), cols, first));
   }
   t.append(body);
   $("#compare-result").hidden = false;
+}
+
+function renderCompareRow(row, cols, first) {
+  const a = row.account;
+  const name = el("button", { type: "button", class: "linkish", title: "Open this account's full history",
+                              text: a.canonical_name });
+  name.addEventListener("click", () => openAccount(a.canonical_account_id));
+  const head = el("th", { class: "acct", scope: "row" },
+    el("div", { class: "acct-name", "data-testid": "row-name" }, name),
+    el("div", { class: "meta", text: `${a.agency} · ${a.canonical_account_id}` + (a.status !== "active" ? ` · ${a.status}` : "") }));
+  if (row.historical_names.length)
+    head.append(el("div", { class: "meta", "data-testid": "row-former",
+                            text: "also printed as " + row.historical_names.map((n) => `“${n}”`).join(", ") }));
+  for (const r of row.relationships)
+    head.append(el("div", { class: "flag", "data-testid": "row-relationship",
+      text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
+            (r.human_reviewed ? "" : " (not yet reviewed)") }));
+  // a rollup the workbook notes "Derived rollup": already the sum of the
+  // accounts under it (all their lines, not only the headlines) -- adding it
+  // in counts every dollar twice. It heads its group; its accounts fold away.
+  const cls = [];
+  if (row.rollup) {
+    cls.push("rollup");
+    head.append(el("div", {}, el("span", { class: "rollup-badge", "data-testid": "rollup", title: a.notes,
+                                            text: "Rollup of the accounts below \u2014 don't add" })));
+    if (row.rollup_members.length) {
+      const n = row.rollup_members.length;
+      const toggle = el("button", { type: "button", class: "linkish toggle", "aria-expanded": "true",
+                                    "data-testid": "rollup-toggle", text: `\u25BE hide its ${n} accounts` });
+      toggle.addEventListener("click", () => {
+        const open = toggle.getAttribute("aria-expanded") !== "true";
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.textContent = open ? `\u25BE hide its ${n} accounts` : `\u25B8 show its ${n} accounts`;
+        for (const tr of document.querySelectorAll(`#compare-grid tr[data-member-of="${a.canonical_account_id}"]`))
+          tr.hidden = !open;
+      });
+      head.append(el("div", {}, toggle));
+    }
+  }
+  if (row.member_of) cls.push("member");
+  const tr = el("tr", { class: cls.join(" "), dataset: { account: a.canonical_account_id, testid: "compare-row",
+                                                         ...(row.member_of ? { memberOf: row.member_of } : {}) } }, head);
+  for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));
+  return tr;
 }
 
 function renderCompareCell(row, y, st, firstStage) {
