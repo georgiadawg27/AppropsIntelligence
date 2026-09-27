@@ -493,8 +493,8 @@ function renderCompare(grid, years, stages) {
   const byId = new Map(grid.rows.map((r) => [r.account.canonical_account_id, r]));
   // a sourced total (a rollup the workbook notes as a title or bill total), or
   // a note saying there is none -- never a sum of the loaded accounts
-  const totalRow = (label, row, none, testid) => {
-    const tr = el("tr", { class: "total-row", dataset: { testid } });
+  const totalRow = (label, row, none, testid, title) => {
+    const tr = el("tr", { class: "total-row", dataset: { testid, ...(title !== undefined ? { title: title || "" } : {}) } });
     tr.append(el("th", { class: "acct", scope: "row" }, el("div", { class: "acct-name", text: label }),
       row ? el("div", { class: "meta", text: `printed total \u00b7 ${row.account.canonical_account_id}` }) : null));
     if (row) for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));
@@ -511,7 +511,7 @@ function renderCompare(grid, years, stages) {
                  text: `${group.rows.length} account${group.rows.length === 1 ? "" : "s"}` })));
     body.append(totalRow(`Total, ${group.title || "unplaced accounts"}`, group.total, group.title
       ? `No printed total on file for ${group.title} \u2014 not shown. The accounts below are not summed into one (a title may be only partly loaded).`
-      : "These accounts aren't placed in a title yet \u2014 no total.", "title-total"));
+      : "These accounts aren't placed in a title yet \u2014 no total.", "title-total", group.title));
     for (const id of group.rows) body.append(renderCompareRow(byId.get(id), cols, first));
   }
   t.append(body);
