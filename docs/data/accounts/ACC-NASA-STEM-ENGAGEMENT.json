@@ -425,12 +425,26 @@
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
+        "component": null,
+        "confirmed_absence_id": "CA-0150",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "S.Rept. 115-275 p.157 prints the FY2019 budget estimate column blank for this account (already cited as HN-0006's evidence for the 'STEM Opportunities formerly Education' name).",
+        "fiscal_year": 2019,
+        "publication_date": "2018-06-14",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115SRPT275",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+       },
        "amount_type": "budget authority",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1689,7 +1703,23 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
+    "component": null,
+    "confirmed_absence_id": "CA-0150",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "S.Rept. 115-275 p.157 prints the FY2019 budget estimate column blank for this account (already cited as HN-0006's evidence for the 'STEM Opportunities formerly Education' name).",
+    "fiscal_year": 2019,
+    "publication_date": "2018-06-14",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT275",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+   }
+  ],
   "account": {
    "agency": "National Aeronautics and Space Administration",
    "bureau": "STEM Engagement",
@@ -1726,10 +1756,6 @@
    }
   ],
   "missing_cells": [
-   [
-    2019,
-    "President's Budget"
-   ],
    [
     2020,
     "President's Budget"

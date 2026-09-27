@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v21.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -246,10 +246,12 @@ class Browser(WebTest):
     def test_base_and_supplemental_are_separate_lines(self):
         self.search_ui("NASA Exploration")
         shown = self.assert_faithful("NASA Exploration")
+        # a budget amendment line exists only at President's Budget, so an
+        # Enacted cell doesn't list one (not even as missing)
         self.assertEqual(shown["2024|Enacted"],
                          [["budget authority", "$7,216,200,000", "SRC-CRPT-118HRPT582 p.247-248"],
-                          ["other \u00b7 budget_amendment", "missing", None],
                           ["supplemental", "$450,000,000", "SRC-CRPT-118HRPT582 p.247-248"]])
+        self.assertEqual(shown["2020|President's Budget"][1][:2], ["other \u00b7 budget_amendment", "$1,374,700,000"])
 
     def test_leo_resolves_to_space_operations(self):
         self.search_ui("LEO and Spaceflight Operations")
@@ -314,7 +316,7 @@ class Browser(WebTest):
             n += self.page.locator("[data-testid=not-applicable]").count()
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 149)
+        self.assertEqual(n, 150)
 
 
 if __name__ == "__main__":

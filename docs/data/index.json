@@ -206,17 +206,37 @@
  "source": {
   "rows": {
    "account": 31,
-   "account_relationship": 2,
+   "account_relationship": 1,
    "appropriations_observation": 864,
    "bill_report_reference": 41,
-   "confirmed_absence": 149,
+   "confirmed_absence": 150,
    "historical_name": 6,
    "source_document": 23,
    "validation_record": 89
   },
-  "warnings": [],
-  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx",
-  "workbook_committed": "2026-09-25T20:55:20+00:00",
-  "workbook_sha256": "4603f777bc76a716dca64e799825f63c8c7cb3e31a5f3d6df1de07c92294869b"
+  "warnings": [
+   "account ACC-NASA-AERONAUTICS: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-CONSTRUCTION: 5 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-EXPLORATION: 5 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-OIG: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-SAFETY-SECURITY: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-SCIENCE: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-SPACEOPS: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-SPACETECH: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-STEM-ENGAGEMENT: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NASA-TOTAL: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSC: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-AGENCY-OPS: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-MREFC: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-NSB: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-OIG: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-RRA: 8 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-STEM-EDUCATION: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-NSF-TOTAL: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)",
+   "account ACC-OSTP: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)"
+  ],
+  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v21.xlsx",
+  "workbook_committed": null,
+  "workbook_sha256": "edb34db572d0efcaec1190f8047cab4e8ffd3cfb3800a8cf37213495e1ed015e"
  }
 }

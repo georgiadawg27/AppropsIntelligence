@@ -101,7 +101,7 @@ class Export(StaticTest):
                          [(a["canonical_account_id"], a["canonical_name"], a["agency"], a["historical_names"])
                           for a in self.index["accounts"]])
         self.assertEqual(self.index["source"]["workbook"], WORKBOOK.name)
-        self.assertEqual(self.index["source"]["warnings"], [])
+        self.assertEqual(self.index["source"]["warnings"], S.load(WORKBOOK, Path(self.tmp.name) / "again.db")["warnings"])
 
     def test_deterministic_and_stale_files_removed(self):
         with tempfile.TemporaryDirectory() as d:

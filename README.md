@@ -16,7 +16,7 @@ history with a source citation for every figure.
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx
+python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v21.xlsx
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
@@ -26,8 +26,13 @@ fiscal years and stages you pick). Each grid row is that account's own
 history -- the same cells, the same value / not applicable / missing rules --
 from `approps_store.subcommittee_grid()`; a cell's headline is budget
 authority, and its other lines (supplemental, rescission, transfer, component
-lines) open under "+ more", never summed in. The grid's selection is in the
-URL, e.g. `?view=compare&sc=CJS&fy=2017-2026&stage=Enacted`.
+lines) open under "+ more", never summed in. A dashed outline marks a year
+before an account's first record or after its `effective_end`; a supplemental
+act line shows only at Enacted and a budget amendment only at President's
+Budget, where they can exist. Agency-total rows the workbook notes as
+"Derived rollup" carry a badge -- they already sum the accounts above. The
+grid's selection is in the URL, e.g.
+`?view=compare&sc=CJS&fy=2017-2026&stage=Enacted`.
 
 ## Static site (GitHub Pages)
 

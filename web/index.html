@@ -68,20 +68,25 @@
                      background: var(--card); color: var(--fg); }
   .linkish { background: none; border: 0; color: var(--accent); padding: 0; font-size: 13px; }
   #compare-result .table-wrap { max-height: 78vh; overflow: auto; }
-  #compare-grid { min-width: 0; width: auto; font-size: 13px; }
+  #compare-grid { min-width: 0; width: auto; font-size: 13px; border-collapse: separate; border-spacing: 0; }
   #compare-grid th, #compare-grid td { padding: 6px; min-width: 116px; }
   #compare-grid th.fy-head { text-align: center; border-left: 1px solid var(--line); color: var(--fg); }
   #compare-grid th.first-stage, #compare-grid td.first-stage { border-left: 1px solid var(--line); }
   #compare-grid .acct { position: sticky; left: 0; z-index: 1; background: var(--card); min-width: 200px; max-width: 240px; }
-  #compare-grid thead th { z-index: 2; }
-  #compare-grid thead tr:nth-child(2) th { top: 33px; }
-  #compare-grid thead .acct { z-index: 3; }
+  /* the two header rows scroll as one block, so no seam opens between them */
+  #compare-grid thead { position: sticky; top: 0; z-index: 3; background: var(--card); box-shadow: 0 1px 0 var(--line); }
+  #compare-grid thead th { position: static; }
+  #compare-grid thead th.acct { position: sticky; left: 0; z-index: 4; }
   .acct-name { font-weight: 600; text-align: left; }
   .acct-name button.linkish { font-size: inherit; font-weight: 600; text-align: left; }
   details.more { margin-top: 6px; }
   details.more summary { cursor: pointer; color: var(--accent); font-size: 12px; }
   details.more .line { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
   td.outside { outline: 1px dashed var(--line); outline-offset: -3px; }
+  .rollup-badge { display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 4px; font-size: 11px;
+                  font-weight: 600; letter-spacing: .02em; background: var(--warn-bg); color: var(--warn-fg); cursor: help; }
+  #compare-grid tr.rollup > td, #compare-grid tr.rollup > th { background: var(--warn-bg); }
+  tr.rollup .amt { font-style: italic; }
 </style>
 </head>
 <body>
@@ -142,7 +147,7 @@
         budget authority for that year and stage; <strong>+ more</strong> opens every other line on file for the cell
         (supplemental, rescission, transfer, component lines) &mdash; shown, never summed in.
         <span class="na-chip">not applicable</span> and <span class="missing-chip">missing</span> mean exactly what they
-        mean for one account. A dashed outline marks a year or stage outside anything on file for that account.</div>
+        mean for one account. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
       <div class="table-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
     </section>
   </div>
@@ -482,7 +487,15 @@ function renderCompare(grid, years, stages) {
       head.append(el("div", { class: "flag", "data-testid": "row-relationship",
         text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
               (r.human_reviewed ? "" : " (not yet reviewed)") }));
-    const tr = el("tr", { dataset: { account: a.canonical_account_id, testid: "compare-row" } }, head);
+    // agency totals the workbook marks "Derived rollup": already the sum of
+    // the agency's accounts above (all their lines, not only the headlines)
+    // -- adding them in counts every dollar twice
+    const rollup = /derived rollup/i.test(a.notes || "");
+    if (rollup)
+      head.append(el("div", {}, el("span", { class: "rollup-badge", "data-testid": "rollup", title: a.notes,
+                                              text: "Rollup of the accounts above \u2014 don't add" })));
+    const tr = el("tr", { class: rollup ? "rollup" : "",
+                          dataset: { account: a.canonical_account_id, testid: "compare-row" } }, head);
     for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, shownStages.indexOf(st) === 0));
     body.append(tr);
   }
@@ -497,9 +510,11 @@ function renderCompareCell(row, y, st, firstStage) {
   if (cell.outside_history) {
     td.classList.add("outside");
     td.dataset.outside = "true";
-    td.title = row.fiscal_year_span
-      ? `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${row.fiscal_year_span[0]}–FY${row.fiscal_year_span[1]}.`
-      : "Nothing on file for this account.";
+    const span = row.fiscal_year_span;
+    td.title = !span ? "Nothing on file for this account."
+      : y > span[1] && row.account.effective_end
+        ? `After this account's effective end (${row.account.effective_end}): its records span FY${span[0]}–FY${span[1]}.`
+        : `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${span[0]}–FY${span[1]}.`;
   }
   // the same whole-cell rule as the single-account grid
   if (!lines.length || lines.every((l) => l.state === "missing")) {

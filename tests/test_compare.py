@@ -137,6 +137,32 @@ class GridData(CompareTest):
         self.assertEqual(spans["ACC-NASA-EXPLTECH"], [2019, 2027])
         self.assertEqual(len([a for a, s in spans.items() if s == [2027, 2027]]), 11)
 
+    def test_after_effective_end_is_outside_too(self):
+        # the mirror of "before its first record": once an account has an
+        # effective_end, the years after it are outside, not missing gaps
+        ended = Path(self.tmp.name) / "ended.db"
+        shutil.copy(self.db, ended)
+        c = sqlite3.connect(ended)
+        c.execute("UPDATE account SET effective_end = '2020-09-30' WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+        c.commit()
+        c.close()
+        row = next(r for r in plain(W.subcommittee(str(ended), "CJS"))["rows"]
+                   if r["account"]["canonical_account_id"] == "ACC-NASA-EXPLTECH")
+        self.assertEqual(row["fiscal_year_span"], [2019, 2020])
+        for key, cell in row["cells"].items():
+            fy = int(key.split("|")[0])
+            self.assertEqual(cell["outside_history"], not 2019 <= fy <= 2020, key)
+            if cell["outside_history"]:
+                self.assertTrue(all(line["state"] == "missing" for line in cell["lines"]), key)
+        # before: FY2021-2027 were in its history as missing gaps
+        before = self.row("ACC-NASA-EXPLTECH")
+        self.assertFalse(before["cells"]["2023|Enacted"]["outside_history"])
+
+    def test_rollup_rows_carry_their_notes(self):
+        rollups = [r["account"]["canonical_account_id"] for r in self.grid["rows"]
+                   if "derived rollup" in (r["account"]["notes"] or "").lower()]
+        self.assertEqual(rollups, ["ACC-NASA-TOTAL", "ACC-NSF-TOTAL"])
+
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
         other = Path(self.tmp.name) / "two.db"
@@ -325,6 +351,43 @@ class CompareBrowser(CompareTest):
                 self.open(where, query)
                 got[where] = self.page.inner_html("#compare-grid")
             self.assertEqual(got["static"], got["live"], query)
+
+    def test_rollup_rows_are_marked(self):
+        self.open("static")
+        marked = [r.get_attribute("data-account") for r in self.page.locator("[data-testid=compare-row].rollup").all()]
+        self.assertEqual(marked, ["ACC-NASA-TOTAL", "ACC-NSF-TOTAL"])
+        for aid in marked:
+            badge = self.page.locator(f"tr[data-account={aid}] [data-testid=rollup]")
+            self.assertEqual(badge.inner_text(), "Rollup of the accounts above — don't add")
+            self.assertIn("Derived rollup", badge.get_attribute("title"))
+            # the last row of its agency, below the accounts it totals
+            agency = self.row(aid)["account"]["agency"]
+            order = [r["account"]["canonical_account_id"] for r in self.grid["rows"] if r["account"]["agency"] == agency]
+            self.assertEqual(order[-1], aid)
+        self.assertEqual(self.page.locator("[data-testid=rollup]").count(), 2)
+
+    def test_after_effective_end_tooltip(self):
+        ended = Path(self.tmp.name) / "ended_browser.db"
+        shutil.copy(self.db, ended)
+        c = sqlite3.connect(ended)
+        c.execute("UPDATE account SET effective_end = '2020-09-30' WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+        c.commit()
+        c.close()
+        srv = W.serve(ended, port=0, verbose=False)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2017-2026")
+            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            after, before = self.cell("ACC-NASA-EXPLTECH", 2023, "Enacted"), self.cell("ACC-NASA-EXPLTECH", 2017, "Enacted")
+            for td in (after, before):
+                self.assertEqual(td.get_attribute("data-outside"), "true")
+                self.assertIn("outside", td.get_attribute("class"))
+            self.assertTrue(after.get_attribute("title").startswith("After this account's effective end (2020-09-30)"))
+            self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017"))
+            self.assertIsNone(self.cell("ACC-NASA-EXPLTECH", 2020, "President's Budget").get_attribute("data-outside"))
+        finally:
+            srv.shutdown()
+            srv.server_close()
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")
