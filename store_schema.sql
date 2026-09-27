@@ -39,7 +39,12 @@ CREATE TABLE account (
     historical_identifiers  TEXT,
     -- not in the Data Dictionary; carried from the workbook
     subcommittee            TEXT NOT NULL,
-    notes                   TEXT
+    notes                   TEXT,
+    -- where the account prints in the bill: its title ("Title III") and its
+    -- position in the comparative table (not in the Data Dictionary; carried
+    -- from the workbook, v26). Blank until sourced from a document.
+    title                   TEXT,
+    display_order           INTEGER
 ) STRICT;
 
 CREATE TABLE historical_name (

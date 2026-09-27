@@ -10,7 +10,9 @@ Browser tests need playwright + chromium, as tests/test_web.py; each runs
 against the live server and the static export.
 """
 
+import csv
 import functools
+import importlib.util
 import http.server
 import json
 import shutil
@@ -56,6 +58,29 @@ def expected_cell(cell):
             "head": [head["state"], [money(o["amount"]) for o in head["observations"]]],
             "more": [[label(line), line["state"], [money(o["amount"]) for o in line["observations"]]]
                      for line in lines if line is not head]}
+
+
+def with_sourced_totals(src, dst):
+    """A copy of the store with a printed Title III total (FY2024 Enacted,
+    33,944,930 as H.Rept. 118-582 p.248 prints it) and a bill-total row: the
+    shape a workbook would give them -- rollups noted as title / bill totals."""
+    shutil.copy(src, dst)
+    c = sqlite3.connect(dst)
+    for aid, name, notes in (("ACC-T3-TOTAL", "Total, Title III, Science", "Derived rollup -- title total"),
+                             ("ACC-CJS-TOTAL", "Grand total", "Derived rollup -- bill total")):
+        c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, effective_start, "
+                  "subcommittee, notes, title, display_order) VALUES (?, ?, 'Commerce, Justice, Science', 'active', "
+                  "'general', '2016-10-01', 'CJS', ?, ?, ?)", (aid, name, notes, "Title III" if "T3" in aid else None,
+                                                                99 if "T3" in aid else None))
+    cols = [r[1] for r in c.execute("PRAGMA table_info(appropriations_observation)")]
+    sel = ", ".join({"observation_id": "'OBS-T3'", "canonical_account_id": "'ACC-T3-TOTAL'",
+                     "amount": "33944930000"}.get(k, k) for k in cols)
+    c.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
+              "WHERE canonical_account_id = 'ACC-NASA-TOTAL' AND fiscal_year = 2024 AND stage = 'Enacted' "
+              "AND amount_type = 'budget authority'")
+    c.commit()
+    c.close()
+    return dst
 
 
 SHOWN_JS = """() => [...document.querySelectorAll('[data-testid=compare-cell]')].map(td => {
@@ -175,6 +200,119 @@ class GridData(CompareTest):
                    if "derived rollup" in (r["account"]["notes"] or "").lower()]
         self.assertEqual(rollups, ["ACC-NASA-TOTAL", "ACC-NSF-TOTAL"])
 
+    def test_rows_follow_the_bill(self):
+        # by title, then display_order; a rollup heads the accounts it totals
+        self.assertEqual([(t["title"], t["total"]) for t in self.grid["titles"]], [("Title III", None), (None, None)])
+        self.assertIsNone(self.grid["bill_total"])
+        self.assertEqual(self.grid["titles"][0]["rows"], [
+            "ACC-OSTP", "ACC-NSC",
+            "ACC-NASA-TOTAL", "ACC-NASA-SCIENCE", "ACC-NASA-AERONAUTICS", "ACC-NASA-SPACETECH", "ACC-NASA-EXPLORATION",
+            "ACC-NASA-SPACEOPS", "ACC-NASA-STEM-ENGAGEMENT", "ACC-NASA-SAFETY-SECURITY", "ACC-NASA-CONSTRUCTION", "ACC-NASA-OIG",
+            "ACC-NSF-TOTAL", "ACC-NSF-RRA", "ACC-NSF-MREFC", "ACC-NSF-STEM-EDUCATION", "ACC-NSF-AGENCY-OPS", "ACC-NSF-NSB",
+            "ACC-NSF-OIG"])
+        self.assertEqual(len(self.grid["titles"][1]["rows"]), 11)       # not yet placed: after every title
+        self.assertEqual([r["account"]["canonical_account_id"] for r in self.grid["rows"]],
+                         self.grid["titles"][0]["rows"] + self.grid["titles"][1]["rows"])
+
+    def test_rollup_members_are_its_title_and_agency(self):
+        nasa, nsf = self.row("ACC-NASA-TOTAL"), self.row("ACC-NSF-TOTAL")
+        self.assertEqual((nasa["rollup"], len(nasa["rollup_members"]), nsf["rollup"], len(nsf["rollup_members"])),
+                         ("agency", 9, "agency", 6))                  # as their notes say: NASA's 9, NSF's 6
+        for roll in (nasa, nsf):
+            self.assertEqual(set(roll["rollup_members"]), {r["account"]["canonical_account_id"] for r in self.grid["rows"]
+                             if r["account"]["agency"] == roll["account"]["agency"] and r["account"]["title"] == "Title III"
+                             and not r["rollup"]})
+            for m in roll["rollup_members"]:
+                self.assertEqual(self.row(m)["member_of"], roll["account"]["canonical_account_id"])
+        # generic: any account the workbook notes as a rollup gathers its own agency's accounts
+        other = Path(self.tmp.name) / "rollup.db"
+        shutil.copy(self.db, other)
+        c = sqlite3.connect(other)
+        c.execute("UPDATE account SET notes = 'Derived rollup -- test' WHERE canonical_account_id = 'ACC-OSTP'")
+        c.commit()
+        c.close()
+        g = W.subcommittee(str(other), "CJS")
+        ostp = next(r for r in g["rows"] if r["account"]["canonical_account_id"] == "ACC-OSTP")
+        self.assertEqual((ostp["rollup"], ostp["rollup_members"]), ("agency", ["ACC-NSC"]))
+
+    def test_title_and_bill_totals_come_only_from_sourced_rows(self):
+        # v26 has none: no total at all, never a sum of the rows
+        self.assertEqual([t["total"] for t in self.grid["titles"]], [None, None])
+        # a sourced total -- a rollup noted as a title / bill total -- is the total, not a row
+        other = with_sourced_totals(self.db, Path(self.tmp.name) / "totals.db")
+        g = plain(W.subcommittee(str(other), "CJS"))
+        t3 = g["titles"][0]
+        self.assertEqual((t3["title"], t3["total"]["account"]["canonical_account_id"], g["bill_total"]["account"]["canonical_account_id"]),
+                         ("Title III", "ACC-T3-TOTAL", "ACC-CJS-TOTAL"))
+        self.assertNotIn("ACC-T3-TOTAL", t3["rows"])
+        self.assertNotIn("ACC-CJS-TOTAL", [r["account"]["canonical_account_id"] for r in g["rows"]])
+        self.assertEqual([o["amount"] for l in t3["total"]["cells"]["2024|Enacted"]["lines"] for o in l["observations"]],
+                         [33_944_930_000])
+
+    def test_rollup_scope_and_title_rank(self):
+        scope = lambda notes: S.rollup_scope({"notes": notes})
+        self.assertEqual([scope(None), scope("Receives a transfer"), scope("Derived rollup -- equals the sum of NASA's 9"),
+                          scope("Derived rollup -- title total"), scope("Derived rollup -- bill total (Grand total)")],
+                         [None, None, "agency", "title", "bill"])
+        self.assertEqual(sorted(["Title VII", None, "Title II", "Title III", "Title IV", "Title I", "Title V"], key=S.title_rank),
+                         ["Title I", "Title II", "Title III", "Title IV", "Title V", "Title VII", None])
+
+    def test_mechanism_title_candidates(self):
+        spec = importlib.util.spec_from_file_location("mechanism_titles", ROOT / "reference" / "review" / "mechanism_titles.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        conn = S.connect(self.db, readonly=True)
+        try:
+            got = mod.candidates(conn)
+        finally:
+            conn.close()
+        with open(ROOT / "reference" / "review" / "mechanism_titles.csv", newline="") as f:
+            self.assertEqual(got, list(csv.DictReader(f)))              # the committed list is what v26 gives
+        self.assertEqual({r["canonical_account_id"]: (r["candidate_title"], r["basis"]) for r in got}, {
+            "ACC-NOAA-ORF": ("Title I", "own line"), "ACC-NOAA-PDF": ("Title I", "transfer or rescission only"),
+            "ACC-USPTO-SE": ("Title I", "own line"), "ACC-DOJ-AFF": ("Title II", "own line"),
+            "ACC-DOJ-ANTITRUST-SE": ("Title II", "own line"), "ACC-DOJ-CVF": ("", "ambiguous"),
+            "ACC-DOJ-OIG": ("Title V", "transfer or rescission only"),
+            "ACC-DOJ-OJP-RESC": ("Title V", "transfer or rescission only"), "ACC-DOJ-USTSF": ("Title II", "own line"),
+            "ACC-DOJ-VAWA": ("Title II", "transfer or rescission only"),
+            "ACC-DOJ-WCF": ("Title V", "transfer or rescission only")})
+
+    def test_printed_title_iii_totals_reconcile(self):
+        # every printed "Total, title III, Science" is the title's own lines
+        # (budget authority + Title III emergency lines) plus exactly the
+        # rescissions / budget amendments / supplemental acts that document
+        # prints inside Title III -- figures kept as printed, nothing adjusted
+        spec = importlib.util.spec_from_file_location("title_totals", ROOT / "reference" / "review" / "title_totals.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        with open(ROOT / "reference" / "review" / "title_iii_printed.csv", newline="") as f:
+            printed = list(csv.DictReader(f))
+        conn = S.connect(self.db, readonly=True)
+        try:
+            got = mod.reconcile(conn, printed)
+        finally:
+            conn.close()
+        with open(ROOT / "reference" / "review" / "title_iii_totals.csv", newline="") as f:
+            self.assertEqual([{k: str(v) for k, v in r.items()} for r in got], list(csv.DictReader(f)))
+        by = {(int(r["fiscal_year"]), r["stage"], r["source_document_id"]): r for r in got}
+        self.assertEqual(len(printed), 49)
+        self.assertEqual({k for k, r in by.items() if r["reconciles"] == "no store figures"},
+                         {(2016, "Enacted", "SRC-CRPT-114HRPT605"), (2016, "Enacted", "SRC-CRPT-114SRPT239")})
+        self.assertEqual([k for k, r in by.items() if r["reconciles"] == "no"], [])
+        # through the rollups, v26's one miss: OBS-0889 was edited off the printed
+        # NASA total (v27 restores it) -- its accounts reconcile, the rollup doesn't
+        self.assertEqual([(k, r["through_rollups_differs_by_thousands"]) for k, r in by.items()
+                          if r["reconciles_through_rollups"] == "no"],
+                         [((2025, "Senate Reported", "SRC-CRPT-118SRPT198"), 1000)])
+        # the same FY2020 request, printed two ways: the Senate folds the May 2019
+        # budget amendments into its estimates, the House lists them apart
+        amendments = "OBS-0989 (ACC-NASA-EXPLORATION budget_amendment 1,374,700); OBS-0990 (ACC-NASA-SPACETECH " \
+                     "budget_amendment 132,000); OBS-0995 (ACC-NASA-SCIENCE budget_amendment 90,000)"
+        self.assertEqual(by[(2020, "President's Budget", "SRC-CRPT-116SRPT127")]["printed_total_includes"], amendments)
+        self.assertEqual(by[(2020, "President's Budget", "SRC-CRPT-116HRPT101")]["printed_total_leaves_out"], amendments)
+        # a separate supplemental act is never in a title's total
+        self.assertFalse(any("supplemental_act" in r["printed_total_includes"] for r in got))
+
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
         other = Path(self.tmp.name) / "two.db"
@@ -186,7 +324,7 @@ class GridData(CompareTest):
         c.close()
         self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water"]})
         ew = W.subcommittee(str(other), "Energy and Water")
-        self.assertEqual([r["account"]["canonical_account_id"] for r in ew["rows"]], ["ACC-NSC", "ACC-OSTP"])
+        self.assertEqual([r["account"]["canonical_account_id"] for r in ew["rows"]], ["ACC-OSTP", "ACC-NSC"])      # bill order (display_order)
         self.assertEqual(len(W.subcommittee(str(other), "CJS")["rows"]), 28)
         with self.assertRaises(LookupError):
             W.subcommittee(str(other), "Defense")
@@ -290,7 +428,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(td.locator(":scope > .line .amt").inner_text(), "$7,216,200,000")   # BA, not BA + supplemental
         more = td.locator("details.more")
         self.assertFalse(more.locator(".line[data-series=supplemental]").is_visible())       # folded by default
-        more.locator("summary").click()
+        more.locator(":scope > summary").click()
         self.assertEqual(more.locator(".line[data-series=supplemental] .amt").inner_text(), "$450,000,000")
         # every Exploration cell with a supplemental figure carries it behind "more"
         exp = self.row("ACC-NASA-EXPLORATION")
@@ -326,7 +464,7 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(line.get_attribute("data-state"), resc["state"], (y, st))
                 if resc["state"] == "not_applicable":
                     n += 1
-                    self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more summary").click()
+                    self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more > summary").click()
                     self.assertTrue(line.locator("[data-testid=not-applicable]").is_visible())
                     self.assertEqual(line.locator("[data-testid=not-applicable]").inner_text(), "not applicable")
                     self.assertEqual(line.locator(".amt").count(), 0)
@@ -370,13 +508,65 @@ class CompareBrowser(CompareTest):
         self.assertEqual(marked, ["ACC-NASA-TOTAL", "ACC-NSF-TOTAL"])
         for aid in marked:
             badge = self.page.locator(f"tr[data-account={aid}] [data-testid=rollup]")
-            self.assertEqual(badge.inner_text(), "Rollup of the accounts above — don't add")
+            self.assertEqual(badge.inner_text(), "Rollup of the accounts below — don't add")
             self.assertIn("Derived rollup", badge.get_attribute("title"))
-            # the last row of its agency, below the accounts it totals
-            agency = self.row(aid)["account"]["agency"]
-            order = [r["account"]["canonical_account_id"] for r in self.grid["rows"] if r["account"]["agency"] == agency]
-            self.assertEqual(order[-1], aid)
+            # it heads its group: the next rows are the accounts it totals
+            order = [r.get_attribute("data-account") for r in self.page.locator("[data-testid=compare-row]").all()]
+            members = self.row(aid)["rollup_members"]
+            self.assertEqual(order[order.index(aid) + 1: order.index(aid) + 1 + len(members)], members)
+            self.assertEqual([r.get_attribute("data-account") for r in self.page.locator(f"tr[data-member-of={aid}]").all()], members)
         self.assertEqual(self.page.locator("[data-testid=rollup]").count(), 2)
+
+    def test_rollup_folds_its_accounts_away(self):
+        self.open("static")
+        toggle = self.page.locator("tr[data-account=ACC-NASA-TOTAL] [data-testid=rollup-toggle]")
+        members = self.page.locator("tr[data-member-of=ACC-NASA-TOTAL]")
+        self.assertEqual((members.count(), toggle.inner_text()), (9, "▾ hide its 9 accounts"))
+        toggle.click()
+        self.assertEqual([m.is_hidden() for m in members.all()], [True] * 9)
+        self.assertEqual(toggle.get_attribute("aria-expanded"), "false")
+        self.assertTrue(self.page.locator("tr[data-account=ACC-NSF-RRA]").is_visible())         # NSF's group untouched
+        toggle.click()
+        self.assertEqual([m.is_visible() for m in members.all()], [True] * 9)
+
+    def test_citations_open_on_click(self):
+        self.open("static")
+        td = self.cell("ACC-NASA-SCIENCE", 2024, "Enacted")
+        src = td.locator(":scope > .line details.src")
+        self.assertFalse(src.locator(".cite").is_visible())
+        self.assertEqual(src.locator("summary").inner_text().strip(), "source")
+        src.locator("summary").click()
+        self.assertTrue(src.locator(".cite").is_visible())
+        o = next(l for l in self.row("ACC-NASA-SCIENCE")["cells"]["2024|Enacted"]["lines"]
+                 if l["amount_type"] == "budget authority")["observations"][0]
+        self.assertEqual(src.locator(".cite").inner_text(), f"{o['source_document_id']} p.{o['source_page']}")
+
+    def test_titles_head_their_groups_and_totals_are_never_summed(self):
+        self.open("static")
+        heads = self.page.locator("[data-testid=title-head]")
+        self.assertEqual([h.locator("th").inner_text() for h in heads.all()], ["Title III", "Not yet placed in a title"])
+        notes = [n.inner_text() for n in self.page.locator("[data-testid=no-total]").all()]
+        self.assertEqual(len(notes), 3)                             # the bill, Title III, the unplaced accounts
+        self.assertTrue(notes[0].startswith("No printed bill total on file"))
+        self.assertTrue(notes[1].startswith("No printed total on file for Title III"))
+        # no dollar figure anywhere in a total row
+        self.assertEqual(self.page.locator("tr.total-row [data-testid=amount]").count(), 0)
+
+    def test_a_sourced_total_renders_as_a_row(self):
+        db = with_sourced_totals(self.db, Path(self.tmp.name) / "totals_browser.db")
+        srv = W.serve(db, port=0, verbose=False)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2024&stage=Enacted")
+            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            total = self.page.locator("[data-testid=title-total]").first
+            self.assertEqual(total.locator("[data-testid=amount]").inner_text(), "$33,944,930,000")
+            self.assertIn("printed total", total.inner_text())
+            self.assertEqual(self.page.locator("[data-testid=bill-total] [data-testid=no-total]").count(), 0)
+            self.assertEqual(self.page.locator("[data-testid=compare-row][data-account=ACC-T3-TOTAL]").count(), 0)
+        finally:
+            srv.shutdown()
+            srv.server_close()
 
     def test_after_effective_end_tooltip(self):
         ended = Path(self.tmp.name) / "ended_browser.db"

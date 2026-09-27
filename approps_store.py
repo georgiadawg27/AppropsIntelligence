@@ -131,7 +131,8 @@ TABS = [
         ("bureau", to_text, False), ("treasury_account_symbol", to_text, False), ("status", to_text, True),
         ("fund_type", to_text, True), ("effective_start", to_date, True), ("effective_end", to_date, False),
         ("historical_names", to_text, False), ("historical_identifiers", to_text, False),
-        ("subcommittee", to_text, True), ("notes", to_text, False)]),
+        ("subcommittee", to_text, True), ("notes", to_text, False), ("title", to_text, False),
+        ("display_order", to_int, False)]),
     ("Historical Name", "historical_name", [
         ("historical_name_id", to_text, True), ("canonical_account_id", to_text, True), ("former_name", to_text, True),
         ("evidence", to_text, True), ("approved_date", to_date, False), ("confidence", to_real, True),
@@ -394,6 +395,14 @@ def data_quality_warnings(conn):
                             f"{'' if out[1] == out[2] else '-FY' + str(out[2])}, outside its effective dates "
                             f"{a['effective_start']} to {a['effective_end'] or 'open'} (FY{lo}-"
                             f"{'FY' + str(hi) if hi is not None else 'open'})")
+    # bill placement: a title and a position go together, and two accounts
+    # can't share a position within one title
+    for r in conn.execute("SELECT canonical_account_id, title, display_order FROM account "
+                          "WHERE (title IS NULL) <> (display_order IS NULL) ORDER BY 1"):
+        warnings.append(f"account {r[0]}: title {r[1]!r} and display_order {r[2]!r} -- set both or neither")
+    for r in conn.execute("SELECT subcommittee, title, display_order, group_concat(canonical_account_id, ', ') FROM account "
+                          "WHERE display_order IS NOT NULL GROUP BY 1, 2, 3 HAVING count(*) > 1 ORDER BY 1, 2, 3"):
+        warnings.append(f"{r[0]} {r[1]}: display_order {r[2]} is shared by {r[3]}")
     # a structural component belongs to one stage by definition
     for r in conn.execute("SELECT observation_id, component, stage FROM appropriations_observation "
                           "WHERE component IS NOT NULL UNION ALL "
@@ -894,6 +903,31 @@ def subcommittees(conn):
     return [r[0] for r in conn.execute("SELECT DISTINCT subcommittee FROM account ORDER BY subcommittee")]
 
 
+ROLLUP_RE = re.compile(r"derived rollup", re.I)
+ROLLUP_SCOPES = ((re.compile(r"bill total|grand total", re.I), "bill"), (re.compile(r"title total", re.I), "title"))
+ROMAN = {"I": 1, "V": 5, "X": 10, "L": 50}
+
+
+def rollup_scope(account):
+    """None for an account; else what the rollup totals, from the workbook's
+    own note ("Derived rollup -- ..."): "bill" (the whole bill), "title" (its
+    title), or "agency" (its agency's accounts within its title -- NASA Total,
+    NSF Total)."""
+    notes = account.get("notes") or ""
+    if not ROLLUP_RE.search(notes):
+        return None
+    return next((scope for rx, scope in ROLLUP_SCOPES if rx.search(notes)), "agency")
+
+
+def title_rank(title):
+    """'Title III' -> 3; no title (not yet placed) sorts after every title."""
+    m = re.match(r"\s*title\s+([IVXL]+)\b", title or "", re.I)
+    if not m:
+        return (1, 0, title or "")
+    vals = [ROMAN[c] for c in m.group(1).upper()]
+    return (0, sum(-v if v < n else v for v, n in zip(vals, vals[1:] + [0])), title)
+
+
 def subcommittee_grid(conn, subcommittee):
     """
     Every account of one subcommittee side by side, for comparison: each
@@ -909,27 +943,36 @@ def subcommittee_grid(conn, subcommittee):
     is marked "outside_history" so it can be told apart.
 
     Rows are canonical accounts (former names resolve into them, as in the
-    single-account view), by agency, agency total last.
-    -> {"subcommittee", "fiscal_years", "stages", "rows": [{"account",
-        "historical_names", "relationships", "series", "fiscal_year_span",
-        "cells": {"<fiscal_year>|<stage>": {"lines": [...], "outside_history"}}}]}
+    single-account view), grouped by the account's title in bill order
+    (Title I, II, III, ...; accounts not yet placed in a title last) and
+    ordered by display_order within it. A rollup (notes "Derived rollup")
+    heads its group: an agency rollup (NASA Total) is followed by the
+    accounts it totals -- the other accounts of its title and agency --
+    marked "member_of" it. A title-total or bill-total rollup is not a row:
+    it is that title's / the bill's total. A title or bill with no such
+    sourced total has none -- the loaded accounts are never summed into one.
+    -> {"subcommittee", "fiscal_years", "stages",
+        "titles": [{"title", "total": row or None, "rows": [row ids]}],
+        "bill_total": row or None,
+        "rows": [{"account", "rollup" (scope or None), "rollup_members", "member_of",
+                  "historical_names", "relationships", "series", "fiscal_year_span",
+                  "cells": {"<fiscal_year>|<stage>": {"lines": [...], "outside_history"}}}]}
     """
     accts = [dict(r) for r in conn.execute(
-        "SELECT canonical_account_id, canonical_name, agency, bureau, status, effective_start, effective_end, notes "
-        "FROM account WHERE subcommittee = ?",
+        "SELECT canonical_account_id, canonical_name, agency, bureau, status, effective_start, effective_end, notes, "
+        "title, display_order FROM account WHERE subcommittee = ?",
         (subcommittee,))]
     if not accts:
         raise LookupError(f"no subcommittee {subcommittee!r}")
-    accts.sort(key=lambda a: (a["agency"], bool(A.AGENCY_TOTAL_RE.search(a["canonical_name"])),
-                              a["canonical_name"], a["canonical_account_id"]))
-    grids = []
+    grids = {}
     for a in accts:
         h = history(conn, a["canonical_account_id"])
-        grids.append((a, h, history_grid(h)))
-    years = sorted({r["fiscal_year"] for _, _, g in grids for r in g["rows"]})
-    stages = [s for s in STAGE_ORDER if any(s in g["stages"] for _, _, g in grids)]
-    rows = []
-    for a, h, g in grids:
+        grids[a["canonical_account_id"]] = (a, h, history_grid(h))
+    years = sorted({r["fiscal_year"] for _, _, g in grids.values() for r in g["rows"]})
+    stages = [s for s in STAGE_ORDER if any(s in g["stages"] for _, _, g in grids.values())]
+
+    def row_of(a):
+        _, h, g = grids[a["canonical_account_id"]]
         own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
         cells = {}
         for y in years:
@@ -940,15 +983,49 @@ def subcommittee_grid(conn, subcommittee):
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": [
                         {"amount_type": s["amount_type"], "component": s["component"], "state": "missing",
                          "missing": True, "observations": [], "absence": None} for s in g["series"]]}
-        rows.append({"account": a,
-                     "historical_names": [n["former_name"] for n in h["historical_names"]],
-                     "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
-                                                          "to_account_id", "effective_fiscal_year", "confidence",
-                                                          "human_reviewed")} for r in h["relationships"]],
-                     "series": g["series"],
-                     "fiscal_year_span": [g["rows"][0]["fiscal_year"], g["rows"][-1]["fiscal_year"]] if g["rows"] else None,
-                     "cells": cells})
-    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "rows": rows}
+        return {"account": a, "rollup": rollup_scope(a), "rollup_members": [], "member_of": None,
+                "historical_names": [n["former_name"] for n in h["historical_names"]],
+                "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
+                                                     "to_account_id", "effective_fiscal_year", "confidence",
+                                                     "human_reviewed")} for r in h["relationships"]],
+                "series": g["series"],
+                "fiscal_year_span": [g["rows"][0]["fiscal_year"], g["rows"][-1]["fiscal_year"]] if g["rows"] else None,
+                "cells": cells}
+
+    rows = {a["canonical_account_id"]: row_of(a) for a in accts}
+    # within a title: display_order, then (for accounts not yet placed) agency and name, as before
+    within = lambda r: (r["account"]["display_order"] is None, r["account"]["display_order"] or 0, r["account"]["agency"],
+                        r["rollup"] is not None, r["account"]["canonical_name"], r["account"]["canonical_account_id"])
+    bill_total, titles = None, {}
+    for r in rows.values():
+        if r["rollup"] == "bill":
+            bill_total = r
+        else:
+            titles.setdefault(r["account"]["title"], []).append(r)
+    out_rows, out_titles = [], []
+    for title in sorted(titles, key=title_rank):
+        members = titles[title]
+        total = next((r for r in members if r["rollup"] == "title"), None)
+        body = [r for r in members if r["rollup"] != "title"]
+        for roll in (r for r in body if r["rollup"] == "agency"):
+            under = sorted((r for r in body if r["rollup"] is None and r["account"]["agency"] == roll["account"]["agency"]),
+                           key=within)
+            roll["rollup_members"] = [r["account"]["canonical_account_id"] for r in under]
+            for r in under:
+                r["member_of"] = roll["account"]["canonical_account_id"]
+        # units: a rollup with its members (placed where the first of them is), or a lone account
+        units = []
+        for r in body:
+            if r["member_of"]:
+                continue
+            group = [r] + [rows[m] for m in r["rollup_members"]]
+            units.append((min(within(x) for x in group), group))
+        units.sort(key=lambda u: u[0])
+        ordered = [r for _, group in units for r in group]
+        out_rows += ordered
+        out_titles.append({"title": title, "total": total, "rows": [r["account"]["canonical_account_id"] for r in ordered]})
+    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
+            "bill_total": bill_total, "rows": out_rows}
 
 
 def fmt_amount(v):
