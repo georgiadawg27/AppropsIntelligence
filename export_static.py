@@ -15,6 +15,9 @@ that answers the same questions as approps_web.py without a server.
     (approps_store.accounts_for_matching(): canonical names + reviewed
     former names), the matching constants from accounts.py, and which
     workbook this is (name, sha256, date it was committed).
+  - Writes docs/data/subcommittees.json (the list) and, per subcommittee,
+    docs/data/subcommittees/<name>.json: approps_web.subcommittee() --
+    approps_store.subcommittee_grid(), the live /api/subcommittee answer.
   - Copies web/index.html (marked to read data/ instead of /api) and
     web/match.js, the browser port of the matching rule.
 
@@ -61,9 +64,10 @@ def committed_date(path):
     return datetime.fromtimestamp(int(out), timezone.utc).isoformat() if out else None
 
 
-def dump(obj, path):
+def dump(obj, path, compact=False):
     path.parent.mkdir(parents=True, exist_ok=True)
-    text = json.dumps(obj, indent=1, sort_keys=True, ensure_ascii=False, default=str) + "\n"
+    fmt = {"separators": (",", ":")} if compact else {"indent": 1}
+    text = json.dumps(obj, sort_keys=True, ensure_ascii=False, default=str, **fmt) + "\n"
     if not path.exists() or path.read_text() != text:
         path.write_text(text)
 
@@ -83,10 +87,16 @@ def export(workbook, out):
         for aid in ids:
             payload = W.account(str(db), aid)
             dump({"history": payload["history"], "grid": payload["grid"]}, out / "data" / "accounts" / f"{aid}.json")
-    # an account no longer in the workbook doesn't linger
-    for stale in (out / "data" / "accounts").glob("*.json"):
-        if stale.stem not in ids:
-            stale.unlink()
+        names = W.subcommittees(str(db))["subcommittees"]
+        dump({"subcommittees": names}, out / "data" / "subcommittees.json")
+        for name in names:
+            # the whole subcommittee side by side is large; compact keeps it ~1.5 MB
+            dump(W.subcommittee(str(db), name), out / "data" / "subcommittees" / f"{name}.json", compact=True)
+    # an account or subcommittee no longer in the workbook doesn't linger
+    for folder, keep in (("accounts", ids), ("subcommittees", names)):
+        for stale in (out / "data" / folder).glob("*.json"):
+            if stale.stem not in keep:
+                stale.unlink()
     index = {
         "source": {"workbook": workbook.name,
                    "workbook_sha256": hashlib.sha256(workbook.read_bytes()).hexdigest(),

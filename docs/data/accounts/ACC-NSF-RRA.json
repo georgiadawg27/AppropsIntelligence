@@ -213,14 +213,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -323,14 +315,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -433,14 +417,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -528,12 +504,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0152",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.129) prints Research and related activities and its Defense function sub-line, no (emergency) line, and Title V has none; the table's only Research and Related Activities (emergency) line is in Other Appropriations (p.134, P.L. 115-123, 16,300), already recorded as OBS-0796 (supplemental_act); whole table pp.120-135 read by OCR of every table page; Title III pp.128-129 read from the page images",
+        "fiscal_year": 2018,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -675,14 +665,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -785,14 +767,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -895,14 +869,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1120,14 +1086,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1230,14 +1188,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1340,14 +1290,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1435,12 +1377,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0153",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.187) prints Research and related activities and its Defense function sub-line, no (emergency) line, and Title V (p.191) has none; the only Research and Related Activities (emergency) line is in Other Appropriations (p.196, CARES Act, 75,000), already recorded as OBS-0788 (supplemental_act); whole table pp.178-197 read by OCR of every table page; Title III pp.187-188, p.191 and p.196 read from the page images",
+        "fiscal_year": 2020,
+        "publication_date": "2020-07-16",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT455",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -1582,14 +1538,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1692,14 +1640,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1802,14 +1742,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2027,14 +1959,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2137,14 +2061,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2264,14 +2180,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2489,14 +2397,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2599,14 +2499,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2726,14 +2618,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2821,12 +2705,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0157",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.219) prints 'Research and related activities (emergency)' with 420,000 in the Committee recommendation column only (both comparison columns +420,000); its 2023 appropriation cell is blank. The FY2023 figure is in Other Appropriations (p.224, P.L. 117-328, 820,662), already recorded as OBS-0776 (supplemental_act); whole table pp.212-225 read by text layer",
+        "fiscal_year": 2023,
+        "publication_date": "2023-07-13",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT62",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -2968,14 +2866,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -3078,14 +2968,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3205,14 +3087,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -3447,14 +3321,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -3557,14 +3423,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3684,14 +3542,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -3909,14 +3759,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -4036,14 +3878,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -4163,14 +3997,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -4258,12 +4084,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0198",
+        "confirmed_date": "2026-09-25",
+        "document_type": "explanatory_statement",
+        "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Enacted; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-06",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-FY2026-PB",
+        "stage": "Enacted",
+        "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -4354,20 +4194,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0196",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 House Reported; read by OCR of every table page; Title III pp.256-257 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-12",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT272",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -4450,20 +4296,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0195",
+        "confirmed_date": "2026-09-25",
+        "document_type": "explanatory_statement",
+        "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 President's Budget; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-06",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-FY2026-PB",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -4546,20 +4398,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-RRA",
+        "component": null,
+        "confirmed_absence_id": "CA-0197",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.211-223: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Senate Reported; read by text layer; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+        "fiscal_year": 2026,
+        "publication_date": "2025-07-17",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119SRPT44",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -4625,14 +4483,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -4659,14 +4509,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -4690,14 +4532,6 @@
        "absence": null,
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -4793,6 +4627,21 @@
     "source_document_id": "SRC-CRPT-114SRPT239",
     "stage": "Senate Reported",
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0152",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.129) prints Research and related activities and its Defense function sub-line, no (emergency) line, and Title V has none; the table's only Research and Related Activities (emergency) line is in Other Appropriations (p.134, P.L. 115-123, 16,300), already recorded as OBS-0796 (supplemental_act); whole table pp.120-135 read by OCR of every table page; Title III pp.128-129 read from the page images",
+    "fiscal_year": 2018,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
    },
    {
     "amount_type": "supplemental",
@@ -4898,6 +4747,21 @@
     "source_document_id": "SRC-CRPT-115SRPT275",
     "stage": "Senate Reported",
     "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0153",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.187) prints Research and related activities and its Defense function sub-line, no (emergency) line, and Title V (p.191) has none; the only Research and Related Activities (emergency) line is in Other Appropriations (p.196, CARES Act, 75,000), already recorded as OBS-0788 (supplemental_act); whole table pp.178-197 read by OCR of every table page; Title III pp.187-188, p.191 and p.196 read from the page images",
+    "fiscal_year": 2020,
+    "publication_date": "2020-07-16",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
    },
    {
     "amount_type": "supplemental",
@@ -5038,6 +4902,21 @@
     "amount_type": "supplemental",
     "canonical_account_id": "ACC-NSF-RRA",
     "component": null,
+    "confirmed_absence_id": "CA-0157",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.219) prints 'Research and related activities (emergency)' with 420,000 in the Committee recommendation column only (both comparison columns +420,000); its 2023 appropriation cell is blank. The FY2023 figure is in Other Appropriations (p.224, P.L. 117-328, 820,662), already recorded as OBS-0776 (supplemental_act); whole table pp.212-225 read by text layer",
+    "fiscal_year": 2023,
+    "publication_date": "2023-07-13",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
     "confirmed_absence_id": "CA-0129",
     "confirmed_date": "2026-09-25",
     "document_type": "committee_report",
@@ -5123,6 +5002,66 @@
     "source_document_id": "SRC-CRPT-118HRPT582",
     "stage": "House Reported",
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0198",
+    "confirmed_date": "2026-09-25",
+    "document_type": "explanatory_statement",
+    "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Enacted; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-06",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "stage": "Enacted",
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0196",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 House Reported; read by OCR of every table page; Title III pp.256-257 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-12",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0195",
+    "confirmed_date": "2026-09-25",
+    "document_type": "explanatory_statement",
+    "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 President's Budget; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-06",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "component": null,
+    "confirmed_absence_id": "CA-0197",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No Research and related activities (emergency) supplemental line anywhere in the comparative table (pp.211-223: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Senate Reported; read by text layer; the NSF section prints Research and related activities and its Defense function sub-line only; the one NSF (emergency) line is Major Research Equipment and Facilities Construction's",
+    "fiscal_year": 2026,
+    "publication_date": "2025-07-17",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT44",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf"
    }
   ],
   "account": {
@@ -5131,7 +5070,7 @@
    "canonical_account_id": "ACC-NSF-RRA",
    "canonical_name": "Research and Related Activities",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,

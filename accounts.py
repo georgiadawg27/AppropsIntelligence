@@ -166,6 +166,12 @@ COMPONENTS = {
 # a table's "Other Appropriations" section. Not label-matched (no aliases), so
 # a printed row label can't fuzzy-match onto one.
 STRUCTURAL_COMPONENTS = ("supplemental_act", "budget_amendment")
+# ...and each exists at one stage by definition: a supplemental appropriations
+# act is enacted law; a budget amendment amends the President's request. The
+# store's grid shows such a line only in its stage's column (elsewhere it
+# isn't "missing" -- it can't exist), and the loader flags one recorded at
+# any other stage.
+COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President's Budget"}
 VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS)
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 

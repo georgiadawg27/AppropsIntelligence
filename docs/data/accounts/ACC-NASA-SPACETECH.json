@@ -124,6 +124,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -293,6 +301,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -387,9 +403,40 @@
        "absence": null,
        "amount_type": "budget authority",
        "component": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 900000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5952",
+         "bill_report_reference_id": "BR-CJS-FY2019-HOUSE",
+         "bill_url": "https://www.congress.gov/115/bills/hr5952/BILLS-115hr5952rh.pdf",
+         "canonical_account_id": "ACC-NASA-SPACETECH",
+         "chamber": "House",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2019,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2019,
+         "observation_id": "OBS-0523",
+         "offsetting_collections": 0,
+         "publication_date": "2018-05-24",
+         "report_id": "H.Rept.115-704",
+         "report_jes_url": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT704",
+         "source_page": "128-129",
+         "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -397,6 +444,45 @@
        "absence": null,
        "amount_type": "budget authority",
        "component": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1002700000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2019/APP",
+         "bill_report_reference_id": "BR-CJS-FY2019-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+         "canonical_account_id": "ACC-NASA-SPACETECH",
+         "chamber": "N/A",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2019,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2019,
+         "observation_id": "OBS-0524",
+         "offsetting_collections": 0,
+         "publication_date": "2018-05-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT704",
+         "source_page": "128-129",
+         "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -535,9 +621,79 @@
        "absence": null,
        "amount_type": "budget authority",
        "component": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1014300000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-CJS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-NASA-SPACETECH",
+         "chamber": "N/A",
+         "component": null,
+         "confidence": 1.0,
+         "document_fiscal_year": 2020,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2020,
+         "observation_id": "OBS-0522",
+         "offsetting_collections": 0,
+         "publication_date": "2019-06-03",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT101",
+         "source_page": "148-149",
+         "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 132000000,
+         "amount_type": "other",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-CJS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-NASA-SPACETECH",
+         "chamber": "N/A",
+         "component": "budget_amendment",
+         "confidence": 1.0,
+         "document_fiscal_year": 2020,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2020,
+         "observation_id": "OBS-0990",
+         "offsetting_collections": 0,
+         "publication_date": "2019-06-03",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT101",
+         "source_page": "152",
+         "source_table_or_section": "Other Appropriations p.152 -- same FY2020 House budget amendment, Space Technology (printed as 'Exploration Technology') portion",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -707,6 +863,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -876,6 +1040,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1045,6 +1217,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1214,6 +1394,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1383,6 +1571,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1552,6 +1748,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1628,6 +1832,14 @@
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1648,6 +1860,10 @@
    {
     "amount_type": "budget authority",
     "component": null
+   },
+   {
+    "amount_type": "other",
+    "component": "budget_amendment"
    }
   ],
   "stages": [
@@ -1665,29 +1881,36 @@
    "canonical_account_id": "ACC-NASA-SPACETECH",
    "canonical_name": "Space Technology",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
-   "historical_names": null,
+   "historical_names": "Exploration Research and Technology; Exploration Technology",
    "notes": null,
    "status": "active",
    "subcommittee": "CJS",
    "treasury_account_symbol": null
   },
-  "historical_names": [],
+  "historical_names": [
+   {
+    "approved_date": "2026-09-25",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "confidence": 1.0,
+    "evidence": "FY2019 Budget Appendix: the FY2019 budget request 'renames the Space Operations, Exploration, and Space Technology accounts as LEO and Spaceflight Operations, Deep Space Exploration Systems, and Exploration Research and Technology' -- account code 080-0131 matches Space Technology's own code. Printed for this account in H.Rept. 115-704 p.128 and S.Rept. 115-275 p.157 (FY2019).",
+    "former_name": "Exploration Research and Technology",
+    "historical_name_id": "HN-0007",
+    "human_reviewed": 1
+   },
+   {
+    "approved_date": "2026-09-25",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "confidence": 1.0,
+    "evidence": "Same FY2019 rename proposal, FY2020 printed form. H.Rept. 116-101 p.148, S.Rept. 116-127 p.191 (FY2020).",
+    "former_name": "Exploration Technology",
+    "historical_name_id": "HN-0008",
+    "human_reviewed": 1
+   }
+  ],
   "missing_cells": [
-   [
-    2019,
-    "President's Budget"
-   ],
-   [
-    2019,
-    "House Reported"
-   ],
-   [
-    2020,
-    "President's Budget"
-   ],
    [
     2027,
     "President's Budget"
@@ -1947,6 +2170,66 @@
     "verification_status": "human-verified"
    },
    {
+    "amount": 1002700000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2019/APP",
+    "bill_report_reference_id": "BR-CJS-FY2019-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "chamber": "N/A",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2019,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2019,
+    "observation_id": "OBS-0524",
+    "offsetting_collections": 0,
+    "publication_date": "2018-05-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "source_page": "128-129",
+    "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 900000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5952",
+    "bill_report_reference_id": "BR-CJS-FY2019-HOUSE",
+    "bill_url": "https://www.congress.gov/115/bills/hr5952/BILLS-115hr5952rh.pdf",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "chamber": "House",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2019,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2019,
+    "observation_id": "OBS-0523",
+    "offsetting_collections": 0,
+    "publication_date": "2018-05-24",
+    "report_id": "H.Rept.115-704",
+    "report_jes_url": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "source_page": "128-129",
+    "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
     "amount": 932800000,
     "amount_type": "budget authority",
     "bill_id": "S.3072",
@@ -2001,6 +2284,66 @@
     "source_page": "148-149",
     "source_table_or_section": "Title III, NASA, Space Technology",
     "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 1014300000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-CJS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "chamber": "N/A",
+    "component": null,
+    "confidence": 1.0,
+    "document_fiscal_year": 2020,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2020,
+    "observation_id": "OBS-0522",
+    "offsetting_collections": 0,
+    "publication_date": "2019-06-03",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "source_page": "148-149",
+    "source_table_or_section": "Title III, NASA, Space Technology (printed as 'Exploration Technology') (printed as 'Exploration Research and Technology' in FY2019)",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 132000000,
+    "amount_type": "other",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-CJS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-NASA-SPACETECH",
+    "chamber": "N/A",
+    "component": "budget_amendment",
+    "confidence": 1.0,
+    "document_fiscal_year": 2020,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2020,
+    "observation_id": "OBS-0990",
+    "offsetting_collections": 0,
+    "publication_date": "2019-06-03",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "source_page": "152",
+    "source_table_or_section": "Other Appropriations p.152 -- same FY2020 House budget amendment, Space Technology (printed as 'Exploration Technology') portion",
+    "stage": "President's Budget",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
     "validation": [],
@@ -2817,25 +3160,6 @@
     "verification_status": "human-verified"
    }
   ],
-  "relationships": [
-   {
-    "confidence": 0.2,
-    "effective_fiscal_year": 2019,
-    "evidence": "Unverified, from memory, not confirmed against primary documents. Exploration Technology's FY2019/FY2020 values don't match either candidate parent account's own figures for the same cells, and Space Technology prints blank in exactly those cells -- consistent with, but not proof of, a consolidation. Needs confirmation from a document describing the FY2019 budget request's structural changes before this can be asserted with any confidence.",
-    "from_account_id": "ACC-NASA-SPACETECH",
-    "human_reviewed": 0,
-    "other_account_id": "ACC-NASA-EXPLTECH",
-    "other_fiscal_years": [
-     2019,
-     2020
-    ],
-    "other_name": "Exploration Technology",
-    "other_observations": 4,
-    "other_status": "active",
-    "relationship_id": "REL-0005",
-    "relationship_type": "uncertain",
-    "to_account_id": "ACC-NASA-EXPLTECH"
-   }
-  ]
+  "relationships": []
  }
 }

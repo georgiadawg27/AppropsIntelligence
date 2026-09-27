@@ -42,6 +42,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -211,6 +219,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -380,6 +396,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -541,6 +565,45 @@
          "source_document_id": "SRC-CRPT-116HRPT455",
          "source_page": "187-188",
          "source_table_or_section": "Title III, NASA, Safety, Security and Mission Services",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 60000000,
+         "amount_type": "supplemental",
+         "bill_id": "P.L.116-93",
+         "bill_report_reference_id": "BR-CJS-FY2020-ENACTED",
+         "bill_url": "https://www.congress.gov/116/plaws/publ93/PLAW-116publ93.pdf",
+         "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
+         "chamber": "N/A",
+         "component": "supplemental_act",
+         "confidence": 1.0,
+         "document_fiscal_year": 2021,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2020,
+         "observation_id": "OBS-0993",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-16",
+         "report_id": "JES_CJS_P.L.116-93",
+         "report_jes_url": "https://docs.house.gov/billsthisweek/20191216/BILLS-116HR1158SA-JES-DIVISION-B.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT455",
+         "source_page": "196",
+         "source_table_or_section": "CARES Act supplemental",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf",
@@ -718,6 +781,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -887,6 +958,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1056,6 +1135,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1225,6 +1312,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1394,6 +1489,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1563,6 +1666,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1701,6 +1812,14 @@
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1741,6 +1860,10 @@
    {
     "amount_type": "budget authority",
     "component": null
+   },
+   {
+    "amount_type": "supplemental",
+    "component": "supplemental_act"
    }
   ],
   "stages": [
@@ -1758,7 +1881,7 @@
    "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
    "canonical_name": "Safety, Security and Mission Services",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -2261,6 +2384,36 @@
     "source_document_id": "SRC-CRPT-116HRPT455",
     "source_page": "187-188",
     "source_table_or_section": "Title III, NASA, Safety, Security and Mission Services",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 60000000,
+    "amount_type": "supplemental",
+    "bill_id": "P.L.116-93",
+    "bill_report_reference_id": "BR-CJS-FY2020-ENACTED",
+    "bill_url": "https://www.congress.gov/116/plaws/publ93/PLAW-116publ93.pdf",
+    "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
+    "chamber": "N/A",
+    "component": "supplemental_act",
+    "confidence": 1.0,
+    "document_fiscal_year": 2021,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2020,
+    "observation_id": "OBS-0993",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-16",
+    "report_id": "JES_CJS_P.L.116-93",
+    "report_jes_url": "https://docs.house.gov/billsthisweek/20191216/BILLS-116HR1158SA-JES-DIVISION-B.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "source_page": "196",
+    "source_table_or_section": "CARES Act supplemental",
     "stage": "Enacted",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf",

@@ -85,7 +85,7 @@ class StaticTest(unittest.TestCase):
 class Export(StaticTest):
     def test_every_account_file_is_the_live_api_payload(self):
         ids = [a["canonical_account_id"] for a in self.index["accounts"]]
-        self.assertEqual(len(ids), 31)
+        self.assertEqual(len(ids), 30)
         self.assertEqual(sorted(p.stem for p in (self.out / "data" / "accounts").glob("*.json")), sorted(ids))
         for aid in ids:
             live = json.loads(json.dumps(W.account(str(self.db), aid), default=str))
@@ -101,7 +101,7 @@ class Export(StaticTest):
                          [(a["canonical_account_id"], a["canonical_name"], a["agency"], a["historical_names"])
                           for a in self.index["accounts"]])
         self.assertEqual(self.index["source"]["workbook"], WORKBOOK.name)
-        self.assertEqual(self.index["source"]["warnings"], [])
+        self.assertEqual(self.index["source"]["warnings"], S.load(WORKBOOK, Path(self.tmp.name) / "again.db")["warnings"])
 
     def test_deterministic_and_stale_files_removed(self):
         with tempfile.TemporaryDirectory() as d:

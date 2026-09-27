@@ -381,8 +381,35 @@ def data_quality_warnings(conn):
         empty = [c for c in ("bill_id", "report_id", "bill_url", "report_jes_url") if r[c] is None]
         if empty:
             warnings.append(f"bill_report_reference {r['reference_id']}: {', '.join(empty)} blank")
+    # an observation outside its account's effective_start / effective_end
+    # (fiscal years: FY N runs 1 Oct N-1 to 30 Sep N); one line per account
+    for a in conn.execute("SELECT canonical_account_id, effective_start, effective_end FROM account "
+                          "ORDER BY canonical_account_id"):
+        lo, hi = fiscal_year_of(a["effective_start"]), fiscal_year_of(a["effective_end"]) if a["effective_end"] else None
+        out = conn.execute("SELECT count(*), min(fiscal_year), max(fiscal_year) FROM appropriations_observation "
+                           "WHERE canonical_account_id = ? AND (fiscal_year < ? OR fiscal_year > ?)",
+                           (a["canonical_account_id"], lo, hi if hi is not None else 9999)).fetchone()
+        if out[0]:
+            warnings.append(f"account {a['canonical_account_id']}: {out[0]} observation(s) in FY{out[1]}"
+                            f"{'' if out[1] == out[2] else '-FY' + str(out[2])}, outside its effective dates "
+                            f"{a['effective_start']} to {a['effective_end'] or 'open'} (FY{lo}-"
+                            f"{'FY' + str(hi) if hi is not None else 'open'})")
+    # a structural component belongs to one stage by definition
+    for r in conn.execute("SELECT observation_id, component, stage FROM appropriations_observation "
+                          "WHERE component IS NOT NULL UNION ALL "
+                          "SELECT confirmed_absence_id, component, stage FROM confirmed_absence WHERE component IS NOT NULL"):
+        stage = A.COMPONENT_STAGE.get(r["component"])
+        if stage and r["stage"] != stage:
+            warnings.append(f"{r[0]}: component {r['component']!r} at stage {r['stage']!r} -- a {r['component']} "
+                            f"line only exists at {stage}")
     warnings += stale_resolution_warnings(conn)
     return warnings
+
+
+def fiscal_year_of(date):
+    """'2016-10-01' -> 2017 (the federal fiscal year starts 1 October)."""
+    d = dt.date.fromisoformat(date)
+    return d.year + 1 if d.month >= 10 else d.year
 
 
 def stale_resolution_warnings(conn):
@@ -803,10 +830,14 @@ def history(conn, account_id):
         "FROM confirmed_absence a JOIN source_document d ON d.document_id = a.source_document_id "
         "WHERE a.canonical_account_id = ? ORDER BY a.fiscal_year, a.stage, a.amount_type", (account_id,))]
     # gaps in the four-stage series, from the account's first fiscal year to
-    # the latest one the store holds for any account -- a cell with neither an
+    # the latest one the store holds for any account -- or, when the account
+    # has an effective_end, its last fiscal year: after that it doesn't exist
+    # (the mirror of "before its first record") -- a cell with neither an
     # observation nor a confirmed absence is missing, never zero
     first = min((o["fiscal_year"] for o in obs + absences), default=None)
     last = conn.execute("SELECT max(fiscal_year) FROM appropriations_observation").fetchone()[0]
+    if acct["effective_end"]:
+        last = min(last, fiscal_year_of(acct["effective_end"]))
     have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
     missing = [(y, s) for y in range(first, last + 1) for s in STAGE_ORDER[:4]
                if (y, s) not in have] if first is not None else []
@@ -826,6 +857,11 @@ def history_grid(h):
       "missing"        -- neither: genuinely unknown. Never a zero, never
                           left out.
     Other stages (House / Senate Passed) appear only if the account has them.
+    A structural component's series (accounts.COMPONENT_STAGE: supplemental_act
+    at Enacted, budget_amendment at President's Budget) is listed only in its
+    own stage's column -- elsewhere the line can't exist, so it is neither
+    missing nor not applicable -- unless something is recorded there (which
+    the loader flags), and then it shows.
     -> {"stages", "series": [{"amount_type", "component"}], "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
     obs, absent = h["observations"], h.get("absences", [])
@@ -845,11 +881,74 @@ def history_grid(h):
             cells[st] = []
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
+                if A.COMPONENT_STAGE.get(c, st) != st and not found and not absence:
+                    continue
                 state = "value" if found else "not_applicable" if absence else "missing"
                 cells[st].append({"amount_type": t, "component": c, "state": state, "missing": state == "missing",
                                   "observations": found, "absence": absence})
         rows.append({"fiscal_year": y, "cells": cells})
     return {"stages": stages, "series": [{"amount_type": t, "component": c} for t, c in series], "rows": rows}
+
+
+def subcommittees(conn):
+    return [r[0] for r in conn.execute("SELECT DISTINCT subcommittee FROM account ORDER BY subcommittee")]
+
+
+def subcommittee_grid(conn, subcommittee):
+    """
+    Every account of one subcommittee side by side, for comparison: each
+    row is that account's own history() / history_grid() -- the single-account
+    view's cells, unchanged -- laid out on the fiscal years and stages any
+    account of the subcommittee has.
+
+    One cell outside what history_grid() covers for an account (a fiscal year
+    before its first figure or confirmed absence, after its effective_end, or
+    a stage it never has)
+    holds each of the account's series as "missing": no observation, no
+    confirmed absence -- the same definition, never blank, never zero -- and
+    is marked "outside_history" so it can be told apart.
+
+    Rows are canonical accounts (former names resolve into them, as in the
+    single-account view), by agency, agency total last.
+    -> {"subcommittee", "fiscal_years", "stages", "rows": [{"account",
+        "historical_names", "relationships", "series", "fiscal_year_span",
+        "cells": {"<fiscal_year>|<stage>": {"lines": [...], "outside_history"}}}]}
+    """
+    accts = [dict(r) for r in conn.execute(
+        "SELECT canonical_account_id, canonical_name, agency, bureau, status, effective_start, effective_end, notes "
+        "FROM account WHERE subcommittee = ?",
+        (subcommittee,))]
+    if not accts:
+        raise LookupError(f"no subcommittee {subcommittee!r}")
+    accts.sort(key=lambda a: (a["agency"], bool(A.AGENCY_TOTAL_RE.search(a["canonical_name"])),
+                              a["canonical_name"], a["canonical_account_id"]))
+    grids = []
+    for a in accts:
+        h = history(conn, a["canonical_account_id"])
+        grids.append((a, h, history_grid(h)))
+    years = sorted({r["fiscal_year"] for _, _, g in grids for r in g["rows"]})
+    stages = [s for s in STAGE_ORDER if any(s in g["stages"] for _, _, g in grids)]
+    rows = []
+    for a, h, g in grids:
+        own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
+        cells = {}
+        for y in years:
+            for st in stages:
+                if y in own and st in own[y]:
+                    cells[f"{y}|{st}"] = {"lines": own[y][st], "outside_history": False}
+                else:
+                    cells[f"{y}|{st}"] = {"outside_history": True, "lines": [
+                        {"amount_type": s["amount_type"], "component": s["component"], "state": "missing",
+                         "missing": True, "observations": [], "absence": None} for s in g["series"]]}
+        rows.append({"account": a,
+                     "historical_names": [n["former_name"] for n in h["historical_names"]],
+                     "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
+                                                          "to_account_id", "effective_fiscal_year", "confidence",
+                                                          "human_reviewed")} for r in h["relationships"]],
+                     "series": g["series"],
+                     "fiscal_year_span": [g["rows"][0]["fiscal_year"], g["rows"][-1]["fiscal_year"]] if g["rows"] else None,
+                     "cells": cells})
+    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "rows": rows}
 
 
 def fmt_amount(v):

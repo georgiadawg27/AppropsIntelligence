@@ -57,6 +57,37 @@
   .flag { color: var(--warn-fg); font-size: 12px; }
   td.empty { background: var(--missing-bg); }
   .error { color: #b3261e; }
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
+  .tabs button { background: none; color: var(--muted); border: 0; border-bottom: 2px solid transparent;
+                 border-radius: 0; padding: 8px 12px; }
+  .tabs button[aria-selected=true] { color: var(--fg); border-bottom-color: var(--accent); font-weight: 600; }
+  .controls { display: grid; gap: 12px; }
+  .controls fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+  .controls legend { font-weight: 600; font-size: 13px; color: var(--muted); padding: 0; margin-bottom: 4px; }
+  .controls label { white-space: nowrap; font-size: 14px; }
+  .controls select { font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px;
+                     background: var(--card); color: var(--fg); }
+  .linkish { background: none; border: 0; color: var(--accent); padding: 0; font-size: 13px; }
+  #compare-result .table-wrap { max-height: 78vh; overflow: auto; }
+  #compare-grid { min-width: 0; width: auto; font-size: 13px; border-collapse: separate; border-spacing: 0; }
+  #compare-grid th, #compare-grid td { padding: 6px; min-width: 116px; }
+  #compare-grid th.fy-head { text-align: center; border-left: 1px solid var(--line); color: var(--fg); }
+  #compare-grid th.first-stage, #compare-grid td.first-stage { border-left: 1px solid var(--line); }
+  #compare-grid .acct { position: sticky; left: 0; z-index: 1; background: var(--card); min-width: 200px; max-width: 240px; }
+  /* the two header rows scroll as one block, so no seam opens between them */
+  #compare-grid thead { position: sticky; top: 0; z-index: 3; background: var(--card); box-shadow: 0 1px 0 var(--line); }
+  #compare-grid thead th { position: static; }
+  #compare-grid thead th.acct { position: sticky; left: 0; z-index: 4; }
+  .acct-name { font-weight: 600; text-align: left; }
+  .acct-name button.linkish { font-size: inherit; font-weight: 600; text-align: left; }
+  details.more { margin-top: 6px; }
+  details.more summary { cursor: pointer; color: var(--accent); font-size: 12px; }
+  details.more .line { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+  td.outside { outline: 1px dashed var(--line); outline-offset: -3px; }
+  .rollup-badge { display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 4px; font-size: 11px;
+                  font-weight: 600; letter-spacing: .02em; background: var(--warn-bg); color: var(--warn-fg); cursor: help; }
+  #compare-grid tr.rollup > td, #compare-grid tr.rollup > th { background: var(--warn-bg); }
+  tr.rollup .amt { font-style: italic; }
 </style>
 </head>
 <body>
@@ -66,6 +97,12 @@
   <p class="sub" id="freshness" hidden data-testid="freshness"></p>
   <noscript><p class="error">This page needs JavaScript to search and show account histories.</p></noscript>
 
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" id="tab-account" aria-selected="true" data-view="account">One account</button>
+    <button type="button" role="tab" id="tab-compare" aria-selected="false" data-view="compare">Subcommittee grid</button>
+  </div>
+
+  <div id="account-view">
   <form id="search-form" role="search">
     <input id="q" type="search" name="q" autocomplete="off" aria-label="Account name"
            placeholder="Account name, e.g. NASA Science, Deep Space Exploration Systems, Office of Inspector General">
@@ -84,6 +121,37 @@
     </div>
     <div class="panel" id="sources"></div>
   </section>
+  </div>
+
+  <div id="compare-view" hidden data-testid="compare-view">
+    <form id="compare-form" class="panel controls">
+      <fieldset>
+        <legend>Subcommittee</legend>
+        <select id="sc" aria-label="Subcommittee" data-testid="sc"></select>
+      </fieldset>
+      <fieldset id="fy-set">
+        <legend>Fiscal years</legend>
+        <label>from <select id="fy-from" aria-label="First fiscal year"></select></label>
+        <label>to <select id="fy-to" aria-label="Last fiscal year"></select></label>
+        <span id="fy-boxes"></span>
+      </fieldset>
+      <fieldset id="stage-set">
+        <legend>Stages</legend>
+        <label><input type="checkbox" id="stage-all" checked> All stages</label>
+        <span id="stage-boxes"></span>
+      </fieldset>
+      <div><button type="submit">Show grid</button></div>
+    </form>
+    <div id="compare-message" role="status"></div>
+    <section id="compare-result" class="panel" hidden data-testid="compare-result">
+      <div class="legend">One row per account (former names resolve into it). Each cell's headline is the account's
+        budget authority for that year and stage; <strong>+ more</strong> opens every other line on file for the cell
+        (supplemental, rescission, transfer, component lines) &mdash; shown, never summed in.
+        <span class="na-chip">not applicable</span> and <span class="missing-chip">missing</span> mean exactly what they
+        mean for one account. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
+      <div class="table-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
+    </section>
+  </div>
 </main>
 
 <script src="match.js"></script>
@@ -118,6 +186,8 @@ const STATIC_BASE = (document.querySelector('meta[name="approps-data"]') || {}).
 const source = STATIC_BASE ? staticSource(STATIC_BASE) : {
   search: (q) => getJSON("/api/search?q=" + encodeURIComponent(q)),
   account: (id) => getJSON("/api/account/" + encodeURIComponent(id)),
+  subcommittees: () => getJSON("/api/subcommittees"),
+  subcommittee: (name) => getJSON("/api/subcommittee/" + encodeURIComponent(name)),
 };
 
 function staticSource(base) {
@@ -146,6 +216,8 @@ function staticSource(base) {
       const f = await file(id);
       return { status: "picked", history: f.history, grid: f.grid };
     },
+    subcommittees: () => getJSON(base + "subcommittees.json"),
+    subcommittee: (name) => getJSON(base + "subcommittees/" + encodeURIComponent(name) + ".json"),
   };
 }
 
@@ -262,28 +334,32 @@ function renderGrid(grid, h) {
         td.className = "empty";
         td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
       } else {
-        for (const l of lines) {
-          const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
-          if (multi) line.append(el("div", { class: "series", text: seriesLabel(l) }));
-          if (l.state === "missing") line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
-          if (l.state === "not_applicable") {
-            const a = l.absence;
-            line.append(el("span", { class: "na-chip", "data-testid": "not-applicable", title: a.evidence, text: "not applicable" }),
-                        cite(a));
-          }
-          for (const o of l.observations) {
-            line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }), cite(o));
-            if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")
-              line.append(el("div", { class: "flag", text: o.verification_status }));
-          }
-          td.append(line);
-        }
+        for (const l of lines) td.append(renderLine(l, multi));
       }
       tr.append(td);
     }
     body.append(tr);
   }
   t.append(body);
+}
+
+// One series in one cell -- value / not applicable / missing -- the same
+// for the single-account grid and the subcommittee grid.
+function renderLine(l, showSeries) {
+  const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
+  if (showSeries) line.append(el("div", { class: "series", text: seriesLabel(l) }));
+  if (l.state === "missing") line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+  if (l.state === "not_applicable") {
+    const a = l.absence;
+    line.append(el("span", { class: "na-chip", "data-testid": "not-applicable", title: a.evidence, text: "not applicable" }),
+                cite(a));
+  }
+  for (const o of l.observations) {
+    line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }), cite(o));
+    if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")
+      line.append(el("div", { class: "flag", text: o.verification_status }));
+  }
+  return line;
 }
 
 function renderSources(h) {
@@ -302,13 +378,233 @@ function renderSources(h) {
   box.append(ul);
 }
 
+// ---- Subcommittee grid: every account of a subcommittee side by side.
+// The cells are approps_store.subcommittee_grid() -- each account's own
+// history_grid() -- so nothing here decides a state; this only picks the
+// fiscal-year x stage columns and lays the rows out.
+
+const STAGE_SHORT = { "President's Budget": "PB", "House Reported": "House", "Senate Reported": "Senate",
+                      "Enacted": "Enacted", "House Passed": "House passed", "Senate Passed": "Senate passed" };
+const isHeadline = (l) => l.amount_type === "budget authority" && !l.component;
+const scCache = new Map();
+let scNames = null;
+
+function showView(view) {
+  const compare = view === "compare";
+  $("#account-view").hidden = compare;
+  $("#compare-view").hidden = !compare;
+  for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.view === view));
+}
+
+function compareStatus(msg, isError) {
+  $("#compare-message").textContent = msg || "";
+  $("#compare-message").className = isError ? "error" : "";
+}
+
+async function loadSubcommittee(name) {
+  if (!scCache.has(name)) scCache.set(name, source.subcommittee(name));
+  try { return await scCache.get(name); } catch (e) { scCache.delete(name); throw e; }
+}
+
+// the controls for one subcommittee's years and stages; `want` preselects
+function buildControls(grid, want) {
+  const years = grid.fiscal_years, stages = grid.stages;
+  const pickYears = want && want.years ? new Set(want.years.filter((y) => years.includes(y))) : new Set(years);
+  const opts = () => years.map((y) => el("option", { value: y, text: "FY" + y }));
+  $("#fy-from").replaceChildren(...opts()); $("#fy-to").replaceChildren(...opts());
+  const sorted = [...pickYears].sort((a, b) => a - b);
+  $("#fy-from").value = sorted.length ? sorted[0] : years[0];
+  $("#fy-to").value = sorted.length ? sorted[sorted.length - 1] : years[years.length - 1];
+  $("#fy-boxes").replaceChildren(...years.map((y) => el("label", {},
+    el("input", { type: "checkbox", value: y, "data-testid": "fy-option", ...(pickYears.has(y) ? { checked: "" } : {}) }),
+    " FY" + y)));
+  const allStages = !want || !want.stages;
+  const pickStages = allStages ? new Set(stages) : new Set(want.stages.filter((st) => stages.includes(st)));
+  $("#stage-all").checked = allStages || pickStages.size === stages.length;
+  $("#stage-boxes").replaceChildren(...stages.map((st) => el("label", {},
+    el("input", { type: "checkbox", value: st, "data-testid": "stage-option", ...(pickStages.has(st) ? { checked: "" } : {}) }),
+    " " + st)));
+}
+
+function selectedYears() {
+  return [...document.querySelectorAll("#fy-boxes input:checked")].map((i) => Number(i.value));
+}
+function selectedStages() {
+  return [...document.querySelectorAll("#stage-boxes input:checked")].map((i) => i.value);
+}
+
+function applyRange() {
+  let a = Number($("#fy-from").value), b = Number($("#fy-to").value);
+  if (a > b) [a, b] = [b, a];
+  for (const i of document.querySelectorAll("#fy-boxes input")) i.checked = Number(i.value) >= a && Number(i.value) <= b;
+}
+
+function compareURL(sc, years, stages, grid) {
+  const p = new URLSearchParams({ view: "compare", sc });
+  const all = grid.fiscal_years;
+  const contiguous = years.length && years[years.length - 1] - years[0] + 1 === years.length;
+  if (years.length !== all.length) p.set("fy", contiguous && years.length > 1 ? `${years[0]}-${years[years.length - 1]}` : years.join(","));
+  if (stages.length !== grid.stages.length) p.set("stage", stages.join(","));
+  return "?" + p.toString();
+}
+
+function parseYears(v) {
+  if (!v) return null;
+  const out = [];
+  for (const part of v.split(",")) {
+    const m = part.match(/^(\d{4})(?:-(\d{4}))?$/);
+    if (!m) continue;
+    const a = Number(m[1]), b = Number(m[2] || m[1]);
+    for (let y = Math.min(a, b); y <= Math.max(a, b); y++) out.push(y);
+  }
+  return out;
+}
+
+function renderCompare(grid, years, stages) {
+  const t = $("#compare-grid");
+  t.replaceChildren();
+  const cols = [];
+  for (const y of grid.fiscal_years) if (years.includes(y)) for (const st of grid.stages) if (stages.includes(st)) cols.push([y, st]);
+  const shownYears = grid.fiscal_years.filter((y) => years.includes(y));
+  const shownStages = grid.stages.filter((st) => stages.includes(st));
+  t.append(el("thead", {},
+    el("tr", {}, el("th", { class: "acct", rowspan: "2", text: "Account" }),
+      ...shownYears.map((y) => el("th", { class: "fy-head", colspan: String(shownStages.length), text: "FY" + y }))),
+    el("tr", {}, ...cols.map(([y, st]) => el("th", { class: shownStages.indexOf(st) === 0 ? "first-stage" : "",
+                                                          title: st, text: STAGE_SHORT[st] || st })))));
+  const body = el("tbody");
+  for (const row of grid.rows) {
+    const a = row.account;
+    const name = el("button", { type: "button", class: "linkish", title: "Open this account's full history",
+                                text: a.canonical_name });
+    name.addEventListener("click", () => openAccount(a.canonical_account_id));
+    const head = el("th", { class: "acct", scope: "row" },
+      el("div", { class: "acct-name", "data-testid": "row-name" }, name),
+      el("div", { class: "meta", text: `${a.agency} · ${a.canonical_account_id}` + (a.status !== "active" ? ` · ${a.status}` : "") }));
+    if (row.historical_names.length)
+      head.append(el("div", { class: "meta", "data-testid": "row-former",
+                              text: "also printed as " + row.historical_names.map((n) => `“${n}”`).join(", ") }));
+    for (const r of row.relationships)
+      head.append(el("div", { class: "flag", "data-testid": "row-relationship",
+        text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
+              (r.human_reviewed ? "" : " (not yet reviewed)") }));
+    // agency totals the workbook marks "Derived rollup": already the sum of
+    // the agency's accounts above (all their lines, not only the headlines)
+    // -- adding them in counts every dollar twice
+    const rollup = /derived rollup/i.test(a.notes || "");
+    if (rollup)
+      head.append(el("div", {}, el("span", { class: "rollup-badge", "data-testid": "rollup", title: a.notes,
+                                              text: "Rollup of the accounts above \u2014 don't add" })));
+    const tr = el("tr", { class: rollup ? "rollup" : "",
+                          dataset: { account: a.canonical_account_id, testid: "compare-row" } }, head);
+    for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, shownStages.indexOf(st) === 0));
+    body.append(tr);
+  }
+  t.append(body);
+  $("#compare-result").hidden = false;
+}
+
+function renderCompareCell(row, y, st, firstStage) {
+  const cell = row.cells[y + "|" + st];
+  const lines = cell.lines;
+  const td = el("td", { class: firstStage ? "first-stage" : "", dataset: { fy: y, stage: st, testid: "compare-cell" } });
+  if (cell.outside_history) {
+    td.classList.add("outside");
+    td.dataset.outside = "true";
+    const span = row.fiscal_year_span;
+    td.title = !span ? "Nothing on file for this account."
+      : y > span[1] && row.account.effective_end
+        ? `After this account's effective end (${row.account.effective_end}): its records span FY${span[0]}–FY${span[1]}.`
+        : `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${span[0]}–FY${span[1]}.`;
+  }
+  // the same whole-cell rule as the single-account grid
+  if (!lines.length || lines.every((l) => l.state === "missing")) {
+    td.classList.add("empty");
+    td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+    return td;
+  }
+  const headline = lines.find(isHeadline) ||
+    { amount_type: "budget authority", component: null, state: "missing", observations: [], absence: null };
+  td.append(renderLine(headline, false));
+  const rest = lines.filter((l) => l !== headline);
+  if (rest.length) {
+    const n = (s) => rest.filter((l) => l.state === s).length;
+    const parts = [n("value") && `${n("value")} with a figure`, n("not_applicable") && `${n("not_applicable")} not applicable`,
+                   n("missing") && `${n("missing")} missing`].filter(Boolean);
+    const more = el("details", { class: "more", "data-testid": "more" },
+      el("summary", { text: `+ ${rest.length} more line${rest.length === 1 ? "" : "s"} (${parts.join(", ")})` }));
+    for (const l of rest) more.append(renderLine(l, true));
+    td.append(more);
+  }
+  return td;
+}
+
+async function showCompare(want, push) {
+  showView("compare");
+  compareStatus("Loading…");
+  try {
+    if (!scNames) {
+      scNames = (await source.subcommittees()).subcommittees;
+      $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: n })));
+    }
+    const sc = want && want.sc && scNames.includes(want.sc) ? want.sc : $("#sc").value || scNames[0];
+    $("#sc").value = sc;
+    const grid = await loadSubcommittee(sc);
+    if (want) buildControls(grid, want);
+    const years = selectedYears(), stages = selectedStages();
+    if (!years.length || !stages.length) {
+      $("#compare-result").hidden = true;
+      return compareStatus(!years.length ? "Pick at least one fiscal year." : "Pick at least one stage.");
+    }
+    compareStatus("");
+    if (push) history.replaceState(null, "", compareURL(sc, years, stages, grid));
+    renderCompare(grid, years, stages);
+  } catch (e) { compareStatus("Error: " + e.message, true); }
+}
+
+async function openAccount(id) {
+  showView("account");
+  history.replaceState(null, "", "?account=" + encodeURIComponent(id));
+  reset("Loading…");
+  try { showAccount(await source.account(id)); } catch (e) { reset("Error: " + e.message, true); }
+}
+
+$("#fy-from").addEventListener("change", applyRange);
+$("#fy-to").addEventListener("change", applyRange);
+$("#stage-all").addEventListener("change", () => {
+  for (const i of document.querySelectorAll("#stage-boxes input")) i.checked = $("#stage-all").checked;
+});
+$("#stage-boxes").addEventListener("change", () => {
+  $("#stage-all").checked = [...document.querySelectorAll("#stage-boxes input")].every((i) => i.checked);
+});
+$("#sc").addEventListener("change", () => showCompare({ sc: $("#sc").value }, true));
+$("#compare-form").addEventListener("submit", (e) => { e.preventDefault(); showCompare(null, true); });
+for (const b of document.querySelectorAll(".tabs button")) {
+  b.addEventListener("click", () => {
+    if (b.dataset.view === "compare") {
+      if (scNames) { showView("compare"); history.replaceState(null, "", "?view=compare&sc=" + encodeURIComponent($("#sc").value)); }
+      else showCompare({}, true);
+    } else {
+      showView("account");
+      const q = $("#q").value.trim();
+      history.replaceState(null, "", q ? "?q=" + encodeURIComponent(q) : location.pathname);
+    }
+  });
+}
+
 $("#search-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const q = $("#q").value.trim();
   if (q) { history.replaceState(null, "", "?q=" + encodeURIComponent(q)); runSearch(q); }
 });
-const initial = new URLSearchParams(location.search).get("q");
-if (initial) { $("#q").value = initial; runSearch(initial); }
+const params = new URLSearchParams(location.search);
+const initial = params.get("q");
+if (params.get("view") === "compare") {
+  showCompare({ sc: params.get("sc"), years: parseYears(params.get("fy")),
+                stages: params.get("stage") ? params.get("stage").split(",") : null }, false);
+} else if (params.get("account")) {
+  openAccount(params.get("account"));
+} else if (initial) { $("#q").value = initial; runSearch(initial); }
 </script>
 </body>
 </html>

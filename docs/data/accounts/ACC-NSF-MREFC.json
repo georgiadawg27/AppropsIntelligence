@@ -135,14 +135,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -206,14 +198,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -277,14 +261,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -424,14 +400,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -495,14 +463,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -566,14 +526,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -713,14 +665,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -784,14 +728,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -855,14 +791,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1002,14 +930,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1073,14 +993,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1144,14 +1056,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1291,14 +1195,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1362,14 +1258,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1450,14 +1338,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1506,12 +1386,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NSF-MREFC",
+        "component": null,
+        "confirmed_absence_id": "CA-0155",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.220) prints Major Research Equipment and Facilities Construction as one line (FY 2022 Enacted 249,000) and Title V has none; the only MREFC (emergency) line is in Other Appropriations (p.224, P.L. 117-43 Div. B, 25,000), already recorded as OBS-0860 (supplemental_act); whole table pp.210-230 read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+        "fiscal_year": 2022,
+        "publication_date": "2022-06-30",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT395",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -1614,14 +1508,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1685,14 +1571,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1773,14 +1651,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1920,14 +1790,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1991,14 +1853,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2079,14 +1933,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2260,14 +2106,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2331,14 +2169,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2402,14 +2232,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2566,14 +2388,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2637,14 +2451,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2708,14 +2514,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2855,14 +2653,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2926,14 +2716,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2997,14 +2779,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -3054,14 +2828,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -3080,14 +2846,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3103,14 +2861,6 @@
        "absence": null,
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -3432,6 +3182,21 @@
     "amount_type": "supplemental",
     "canonical_account_id": "ACC-NSF-MREFC",
     "component": null,
+    "confirmed_absence_id": "CA-0155",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.220) prints Major Research Equipment and Facilities Construction as one line (FY 2022 Enacted 249,000) and Title V has none; the only MREFC (emergency) line is in Other Appropriations (p.224, P.L. 117-43 Div. B, 25,000), already recorded as OBS-0860 (supplemental_act); whole table pp.210-230 read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+    "fiscal_year": 2022,
+    "publication_date": "2022-06-30",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT395",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NSF-MREFC",
+    "component": null,
     "confirmed_absence_id": "CA-0100",
     "confirmed_date": "2026-09-25",
     "document_type": "committee_report",
@@ -3645,7 +3410,7 @@
    "canonical_account_id": "ACC-NSF-MREFC",
    "canonical_name": "Major Research Equipment and Facilities Construction",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,

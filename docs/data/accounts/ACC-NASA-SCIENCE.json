@@ -44,12 +44,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0164",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 Enacted; read by OCR of every table page; Title III pp.120-121 read from the page images",
+        "fiscal_year": 2017,
+        "publication_date": "2017-07-17",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT231",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -93,12 +107,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0162",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.106-118: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 House Reported; read by OCR of every table page; Title III pp.114-115 read from the page images",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-07",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-114HRPT605",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -143,11 +171,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0161",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.106-118: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 President's Budget; read by OCR of every table page; Title III pp.114-115 read from the page images",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-07",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-114HRPT605",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -191,12 +241,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0163",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.134-141: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 Senate Reported; read by text layer",
+        "fiscal_year": 2017,
+        "publication_date": "2016-04-21",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-114SRPT239",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -245,12 +309,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0168",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 Enacted; read by OCR of every table page; Title III pp.128-129 read from the page images",
+        "fiscal_year": 2018,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -294,12 +372,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0166",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 House Reported; read by OCR of every table page; Title III pp.120-121 read from the page images",
+        "fiscal_year": 2018,
+        "publication_date": "2017-07-17",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT231",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -344,11 +436,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0165",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 President's Budget; read by OCR of every table page; Title III pp.120-121 read from the page images",
+        "fiscal_year": 2018,
+        "publication_date": "2017-07-17",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT231",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -392,12 +506,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0167",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.135-143: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 Senate Reported; read by text layer",
+        "fiscal_year": 2018,
+        "publication_date": "2017-07-27",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115SRPT139",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt139/pdf/CRPT-115srpt139.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -446,12 +574,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0172",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Enacted; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-3,000, p.152, FY 2019 Enacted column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2019-06-03",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT101",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -495,12 +637,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0170",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 House Reported; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column only; the Bill column prints '---'), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -545,11 +701,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0169",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 President's Budget; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -593,12 +771,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0171",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.152-161: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Senate Reported; read by text layer; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.159), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2018-06-14",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115SRPT275",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -727,12 +919,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0174",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2020 House Reported; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images",
+        "fiscal_year": 2020,
+        "publication_date": "2019-06-03",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT101",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -777,11 +983,64 @@
       },
       {
        "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 90000000,
+         "amount_type": "other",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-CJS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-NASA-SCIENCE",
+         "chamber": "N/A",
+         "component": "budget_amendment",
+         "confidence": 1.0,
+         "document_fiscal_year": 2020,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2020,
+         "observation_id": "OBS-0995",
+         "offsetting_collections": 0,
+         "publication_date": "2019-06-03",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT101",
+         "source_page": "152",
+         "source_table_or_section": "Other Appropriations p.152 -- FY2020 House budget amendment",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0173",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2020 President's Budget; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; S.Rept. 116-127 p.193 prints 'NASA Science (rescission)' -70,000 in the Committee recommendation column only -- its Budget estimate and 2019 appropriation cells are blank (dot leaders), so the rescission was the Senate's, not the request's",
+        "fiscal_year": 2020,
+        "publication_date": "2019-06-03",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT101",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -910,12 +1169,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0177",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2021 Enacted; read by OCR of every table page; Title III pp.213-214 read from the page images",
+        "fiscal_year": 2021,
+        "publication_date": "2021-07-19",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT97",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -959,12 +1232,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0176",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "'NASA Science (rescission)' is printed in Title V (p.191) with -70,000 in the FY 2020 Enacted column; its Bill cell prints '---' (read from the page image); no other Science rescission line anywhere in the table (pp.178-197)",
+        "fiscal_year": 2021,
+        "publication_date": "2020-07-16",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT455",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -1009,11 +1296,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0175",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "'NASA Science (rescission)' is printed in Title V (p.191) with -70,000 in the FY 2020 Enacted column; its FY 2021 Request cell prints '---' (read from the page image); no other Science rescission line anywhere in the table (pp.178-197)",
+        "fiscal_year": 2021,
+        "publication_date": "2020-07-16",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT455",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1111,12 +1420,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0180",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 Enacted; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+        "fiscal_year": 2022,
+        "publication_date": "2022-06-30",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT395",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -1160,12 +1483,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0179",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 House Reported; read by OCR of every table page; Title III pp.213-214 read from the page images",
+        "fiscal_year": 2022,
+        "publication_date": "2021-07-19",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT97",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -1210,11 +1547,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0178",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 President's Budget; read by OCR of every table page; Title III pp.213-214 read from the page images",
+        "fiscal_year": 2022,
+        "publication_date": "2021-07-19",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT97",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1312,12 +1671,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0183",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 Enacted; read by text layer",
+        "fiscal_year": 2023,
+        "publication_date": "2023-07-13",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT62",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -1361,12 +1734,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0182",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 House Reported; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+        "fiscal_year": 2023,
+        "publication_date": "2022-06-30",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT395",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -1411,11 +1798,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0181",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 President's Budget; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+        "fiscal_year": 2023,
+        "publication_date": "2022-06-30",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT395",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1513,12 +1922,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0186",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 Enacted; read by OCR of every table page; Title III pp.247-248 read from the page images",
+        "fiscal_year": 2024,
+        "publication_date": "2024-07-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118HRPT582",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -1612,11 +2035,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0184",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 President's Budget; read by text layer",
+        "fiscal_year": 2024,
+        "publication_date": "2023-07-13",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT62",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1660,12 +2105,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0185",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 Senate Reported; read by text layer",
+        "fiscal_year": 2024,
+        "publication_date": "2023-07-13",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT62",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -1714,12 +2173,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0190",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 Enacted; read by OCR of every table page; Title III pp.256-257 read from the page images",
+        "fiscal_year": 2025,
+        "publication_date": "2025-09-12",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT272",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -1763,12 +2236,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0188",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 House Reported; read by OCR of every table page; Title III pp.247-248 read from the page images",
+        "fiscal_year": 2025,
+        "publication_date": "2024-07-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118HRPT582",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -1813,11 +2300,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0187",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 President's Budget; read by OCR of every table page; Title III pp.247-248 read from the page images",
+        "fiscal_year": 2025,
+        "publication_date": "2024-07-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118HRPT582",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -1861,12 +2370,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0189",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.220-231: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 Senate Reported; read by text layer",
+        "fiscal_year": 2025,
+        "publication_date": "2024-07-25",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT198",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -1915,12 +2438,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0194",
+        "confirmed_date": "2026-09-25",
+        "document_type": "explanatory_statement",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Enacted; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-06",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-FY2026-PB",
+        "stage": "Enacted",
+        "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -1964,12 +2501,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0192",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 House Reported; read by OCR of every table page; Title III pp.256-257 read from the page images",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-12",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT272",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
@@ -2014,11 +2565,33 @@
       },
       {
        "absence": null,
-       "amount_type": "rescission",
-       "component": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0191",
+        "confirmed_date": "2026-09-25",
+        "document_type": "explanatory_statement",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 President's Budget; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-06",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-FY2026-PB",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+       },
+       "amount_type": "rescission",
+       "component": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -2062,12 +2635,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SCIENCE",
+        "component": null,
+        "confirmed_absence_id": "CA-0193",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.211-223: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Senate Reported; read by text layer",
+        "fiscal_year": 2026,
+        "publication_date": "2025-07-17",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119SRPT44",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -2122,6 +2709,14 @@
       },
       {
        "absence": null,
+       "amount_type": "other",
+       "component": "budget_amendment",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      },
+      {
+       "absence": null,
        "amount_type": "rescission",
        "component": null,
        "missing": true,
@@ -2157,6 +2752,10 @@
     "component": null
    },
    {
+    "amount_type": "other",
+    "component": "budget_amendment"
+   },
+   {
     "amount_type": "rescission",
     "component": null
    }
@@ -2169,14 +2768,525 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0164",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 Enacted; read by OCR of every table page; Title III pp.120-121 read from the page images",
+    "fiscal_year": 2017,
+    "publication_date": "2017-07-17",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT231",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0162",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.106-118: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 House Reported; read by OCR of every table page; Title III pp.114-115 read from the page images",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-07",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT605",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0161",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.106-118: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 President's Budget; read by OCR of every table page; Title III pp.114-115 read from the page images",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-07",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT605",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0163",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.134-141: Title III, Title V General Provisions and any Other Appropriations sections) for FY2017 Senate Reported; read by text layer",
+    "fiscal_year": 2017,
+    "publication_date": "2016-04-21",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114SRPT239",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0168",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 Enacted; read by OCR of every table page; Title III pp.128-129 read from the page images",
+    "fiscal_year": 2018,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0166",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 House Reported; read by OCR of every table page; Title III pp.120-121 read from the page images",
+    "fiscal_year": 2018,
+    "publication_date": "2017-07-17",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT231",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0165",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.111-124: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 President's Budget; read by OCR of every table page; Title III pp.120-121 read from the page images",
+    "fiscal_year": 2018,
+    "publication_date": "2017-07-17",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT231",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0167",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.135-143: Title III, Title V General Provisions and any Other Appropriations sections) for FY2018 Senate Reported; read by text layer",
+    "fiscal_year": 2018,
+    "publication_date": "2017-07-27",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT139",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt139/pdf/CRPT-115srpt139.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0172",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Enacted; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-3,000, p.152, FY 2019 Enacted column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2019-06-03",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0170",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 House Reported; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column only; the Bill column prints '---'), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0169",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 President's Budget; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0171",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.152-161: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Senate Reported; read by text layer; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.159), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Science is 080-0120, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2018-06-14",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT275",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0174",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2020 House Reported; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images",
+    "fiscal_year": 2020,
+    "publication_date": "2019-06-03",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0173",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2020 President's Budget; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; S.Rept. 116-127 p.193 prints 'NASA Science (rescission)' -70,000 in the Committee recommendation column only -- its Budget estimate and 2019 appropriation cells are blank (dot leaders), so the rescission was the Senate's, not the request's",
+    "fiscal_year": 2020,
+    "publication_date": "2019-06-03",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0177",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2021 Enacted; read by OCR of every table page; Title III pp.213-214 read from the page images",
+    "fiscal_year": 2021,
+    "publication_date": "2021-07-19",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT97",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0176",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "'NASA Science (rescission)' is printed in Title V (p.191) with -70,000 in the FY 2020 Enacted column; its Bill cell prints '---' (read from the page image); no other Science rescission line anywhere in the table (pp.178-197)",
+    "fiscal_year": 2021,
+    "publication_date": "2020-07-16",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0175",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "'NASA Science (rescission)' is printed in Title V (p.191) with -70,000 in the FY 2020 Enacted column; its FY 2021 Request cell prints '---' (read from the page image); no other Science rescission line anywhere in the table (pp.178-197)",
+    "fiscal_year": 2021,
+    "publication_date": "2020-07-16",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt455/CRPT-116hrpt455.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0180",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 Enacted; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+    "fiscal_year": 2022,
+    "publication_date": "2022-06-30",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT395",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0179",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 House Reported; read by OCR of every table page; Title III pp.213-214 read from the page images",
+    "fiscal_year": 2022,
+    "publication_date": "2021-07-19",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT97",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0178",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.204-218: Title III, Title V General Provisions and any Other Appropriations sections) for FY2022 President's Budget; read by OCR of every table page; Title III pp.213-214 read from the page images",
+    "fiscal_year": 2022,
+    "publication_date": "2021-07-19",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT97",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0183",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 Enacted; read by text layer",
+    "fiscal_year": 2023,
+    "publication_date": "2023-07-13",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0182",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 House Reported; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+    "fiscal_year": 2023,
+    "publication_date": "2022-06-30",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT395",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0181",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.210-230: Title III, Title V General Provisions and any Other Appropriations sections) for FY2023 President's Budget; read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+    "fiscal_year": 2023,
+    "publication_date": "2022-06-30",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT395",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0186",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 Enacted; read by OCR of every table page; Title III pp.247-248 read from the page images",
+    "fiscal_year": 2024,
+    "publication_date": "2024-07-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT582",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0184",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 President's Budget; read by text layer",
+    "fiscal_year": 2024,
+    "publication_date": "2023-07-13",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0185",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.212-225: Title III, Title V General Provisions and any Other Appropriations sections) for FY2024 Senate Reported; read by text layer",
+    "fiscal_year": 2024,
+    "publication_date": "2023-07-13",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0190",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 Enacted; read by OCR of every table page; Title III pp.256-257 read from the page images",
+    "fiscal_year": 2025,
+    "publication_date": "2025-09-12",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0188",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 House Reported; read by OCR of every table page; Title III pp.247-248 read from the page images",
+    "fiscal_year": 2025,
+    "publication_date": "2024-07-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT582",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0187",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.235-251: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 President's Budget; read by OCR of every table page; Title III pp.247-248 read from the page images",
+    "fiscal_year": 2025,
+    "publication_date": "2024-07-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT582",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0189",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.220-231: Title III, Title V General Provisions and any Other Appropriations sections) for FY2025 Senate Reported; read by text layer",
+    "fiscal_year": 2025,
+    "publication_date": "2024-07-25",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT198",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0194",
+    "confirmed_date": "2026-09-25",
+    "document_type": "explanatory_statement",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Enacted; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-06",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "stage": "Enacted",
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0192",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.244-262: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 House Reported; read by OCR of every table page; Title III pp.256-257 read from the page images",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-12",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0191",
+    "confirmed_date": "2026-09-25",
+    "document_type": "explanatory_statement",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.116-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 President's Budget; read by the uploaded copy fy26_cjs_jes.pdf (same title and cited values; not byte-compared with the rules.house.gov file, which this environment can't reach): OCR of every table page; Title III pp.128-129 read from the page images",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-06",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "component": null,
+    "confirmed_absence_id": "CA-0193",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No NASA Science rescission line anywhere in the comparative table (pp.211-223: Title III, Title V General Provisions and any Other Appropriations sections) for FY2026 Senate Reported; read by text layer",
+    "fiscal_year": 2026,
+    "publication_date": "2025-07-17",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT44",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf"
+   }
+  ],
   "account": {
    "agency": "National Aeronautics and Space Administration",
    "bureau": "Science Mission Directorate",
    "canonical_account_id": "ACC-NASA-SCIENCE",
    "canonical_name": "Science",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -2589,6 +3699,36 @@
     "source_document_id": "SRC-CRPT-116HRPT101",
     "source_page": "148-149",
     "source_table_or_section": "Title III, NASA, Science",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 90000000,
+    "amount_type": "other",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-CJS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-NASA-SCIENCE",
+    "chamber": "N/A",
+    "component": "budget_amendment",
+    "confidence": 1.0,
+    "document_fiscal_year": 2020,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2020,
+    "observation_id": "OBS-0995",
+    "offsetting_collections": 0,
+    "publication_date": "2019-06-03",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "source_page": "152",
+    "source_table_or_section": "Other Appropriations p.152 -- FY2020 House budget amendment",
     "stage": "President's Budget",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf",

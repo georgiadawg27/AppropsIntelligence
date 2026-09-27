@@ -558,12 +558,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SPACEOPS",
+        "component": null,
+        "confirmed_absence_id": "CA-0160",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Enacted; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-3,000, p.152, FY 2019 Enacted column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2019-06-03",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-116HRPT101",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -670,12 +684,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SPACEOPS",
+        "component": null,
+        "confirmed_absence_id": "CA-0158",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 President's Budget; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -719,12 +747,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-NASA-SPACEOPS",
+        "component": null,
+        "confirmed_absence_id": "CA-0159",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.152-161: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Senate Reported; read by text layer; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.159), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+        "fiscal_year": 2019,
+        "publication_date": "2018-06-14",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115SRPT275",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
+       },
        "amount_type": "rescission",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ]
     },
@@ -2728,6 +2770,21 @@
     "amount_type": "rescission",
     "canonical_account_id": "ACC-NASA-SPACEOPS",
     "component": null,
+    "confirmed_absence_id": "CA-0160",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.139-152: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Enacted; read by OCR of every table page; Title III pp.148-149 and p.152 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-3,000, p.152, FY 2019 Enacted column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2019-06-03",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT101",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/116/crpt/hrpt101/CRPT-116hrpt101.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SPACEOPS",
+    "component": null,
     "confirmed_absence_id": "CA-0059",
     "confirmed_date": "2026-09-25",
     "document_type": "committee_report",
@@ -2738,6 +2795,36 @@
     "source_document_id": "SRC-CRPT-115HRPT704",
     "stage": "House Reported",
     "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SPACEOPS",
+    "component": null,
+    "confirmed_absence_id": "CA-0158",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.120-135: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 President's Budget; read by OCR of every table page; Title III pp.128-129 read from the page images; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.132, FY 2019 Request column), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-NASA-SPACEOPS",
+    "component": null,
+    "confirmed_absence_id": "CA-0159",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "No Space Operations (printed then as LEO and Spaceflight Operations) rescission line anywhere in the comparative table (pp.152-161: Title III, Title V General Provisions and any Other Appropriations sections) for FY2019 Senate Reported; read by text layer; the table's only NASA rescission line is 'NASA closeouts (rescission)' (-4,000, p.159), the cancellation of unobligated balances in the closed legacy accounts 080-0114, 080-0111, 080-0110 and 080-0112 (FY2019 Budget Appendix, NASA chapter; S. 3072 as placed on the calendar and P.L. 116-6 Div. C, Sec. 524, which then close them) -- Space Operations (LEO and Spaceflight Operations) is 080-0115, not one of them",
+    "fiscal_year": 2019,
+    "publication_date": "2018-06-14",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT275",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/srpt275/CRPT-115srpt275.pdf"
    },
    {
     "amount_type": "rescission",
@@ -3076,7 +3163,7 @@
    "canonical_account_id": "ACC-NASA-SPACEOPS",
    "canonical_name": "Space Operations",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "LEO and Spaceflight Operations",

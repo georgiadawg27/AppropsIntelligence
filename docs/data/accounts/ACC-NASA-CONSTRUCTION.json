@@ -152,14 +152,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -223,14 +215,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -294,14 +278,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -350,12 +326,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+        "component": null,
+        "confirmed_absence_id": "CA-0151",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.128) prints Construction and environmental compliance and restoration as one line (FY 2018 Enacted 562,240) with no (emergency) line, and Title V has none; the table's only Construction (emergency) line is in Other Appropriations (p.134, P.L. 115-123, 81,300), already recorded as OBS-0680 (component supplemental_act); whole table pp.120-135 read by OCR of every table page; Title III pp.128-129 read from the page images",
+        "fiscal_year": 2018,
+        "publication_date": "2018-05-24",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-115HRPT704",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -458,14 +448,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -529,14 +511,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -600,14 +574,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -747,14 +713,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -818,14 +776,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -889,14 +839,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1036,14 +978,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1107,14 +1041,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1178,14 +1104,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1325,14 +1243,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1396,14 +1306,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1484,14 +1386,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1540,12 +1434,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+        "component": null,
+        "confirmed_absence_id": "CA-0154",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.219) prints Construction and environmental compliance and restoration as one line (FY 2022 Enacted 410,300) and Title V has none; the only Construction (emergency) line is in Other Appropriations (p.224, P.L. 117-43 Div. B, 321,400), already recorded as OBS-0664 (supplemental_act); whole table pp.210-230 read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+        "fiscal_year": 2022,
+        "publication_date": "2022-06-30",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT395",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -1648,14 +1556,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1719,14 +1619,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1807,14 +1699,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -1863,12 +1747,26 @@
        "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "supplemental",
+        "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+        "component": null,
+        "confirmed_absence_id": "CA-0156",
+        "confirmed_date": "2026-09-25",
+        "document_type": "committee_report",
+        "evidence": "Title III (p.219) prints 'Construction and environmental compliance and restoration (emergency)' with 296,000 in the Committee recommendation column only (both comparison columns +296,000); its 2023 appropriation cell is blank. The FY2023 figure is in Other Appropriations (p.224, P.L. 117-328, 556,400), already recorded as OBS-0660 (supplemental_act); whole table pp.212-225 read by text layer",
+        "fiscal_year": 2023,
+        "publication_date": "2023-07-13",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT62",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
+       },
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       },
       {
        "absence": null,
@@ -1971,14 +1869,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2042,14 +1932,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2130,14 +2012,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2311,14 +2185,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2382,14 +2248,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2470,14 +2328,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2568,9 +2418,40 @@
        "absence": null,
        "amount_type": "supplemental",
        "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 740200000,
+         "amount_type": "supplemental",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-CJS-FY2025-ENACTED",
+         "bill_url": "https://www.congress.gov/119/plaws/publ4/PLAW-119publ4.pdf",
+         "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+         "chamber": "N/A",
+         "component": "supplemental_act",
+         "confidence": 1.0,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2025,
+         "observation_id": "OBS-0991",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-12",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT272",
+         "source_page": "261",
+         "source_table_or_section": "P.L. 118-158 supplemental",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -2634,14 +2515,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -2722,14 +2595,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -2793,14 +2658,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -2940,14 +2797,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -3011,14 +2860,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3082,14 +2923,6 @@
        "missing": false,
        "observations": [],
        "state": "not_applicable"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ]
     },
@@ -3139,14 +2972,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -3165,14 +2990,6 @@
        "missing": true,
        "observations": [],
        "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
-       "missing": true,
-       "observations": [],
-       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3188,14 +3005,6 @@
        "absence": null,
        "amount_type": "supplemental",
        "component": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      },
-      {
-       "absence": null,
-       "amount_type": "supplemental",
-       "component": "supplemental_act",
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -3272,6 +3081,21 @@
     "source_document_id": "SRC-CRPT-114SRPT239",
     "stage": "Senate Reported",
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+    "component": null,
+    "confirmed_absence_id": "CA-0151",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.128) prints Construction and environmental compliance and restoration as one line (FY 2018 Enacted 562,240) with no (emergency) line, and Title V has none; the table's only Construction (emergency) line is in Other Appropriations (p.134, P.L. 115-123, 81,300), already recorded as OBS-0680 (component supplemental_act); whole table pp.120-135 read by OCR of every table page; Title III pp.128-129 read from the page images",
+    "fiscal_year": 2018,
+    "publication_date": "2018-05-24",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT704",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/115/crpt/hrpt704/CRPT-115hrpt704.pdf"
    },
    {
     "amount_type": "supplemental",
@@ -3487,6 +3311,21 @@
     "amount_type": "supplemental",
     "canonical_account_id": "ACC-NASA-CONSTRUCTION",
     "component": null,
+    "confirmed_absence_id": "CA-0154",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.219) prints Construction and environmental compliance and restoration as one line (FY 2022 Enacted 410,300) and Title V has none; the only Construction (emergency) line is in Other Appropriations (p.224, P.L. 117-43 Div. B, 321,400), already recorded as OBS-0664 (supplemental_act); whole table pp.210-230 read by OCR of every table page; Title III pp.219-220 and p.224 read from the page images",
+    "fiscal_year": 2022,
+    "publication_date": "2022-06-30",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT395",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt395/CRPT-117hrpt395.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+    "component": null,
     "confirmed_absence_id": "CA-0019",
     "confirmed_date": "2026-09-25",
     "document_type": "committee_report",
@@ -3512,6 +3351,21 @@
     "source_document_id": "SRC-CRPT-117HRPT97",
     "stage": "President's Budget",
     "url_or_identifier": "https://www.congress.gov/117/crpt/hrpt97/CRPT-117hrpt97.pdf"
+   },
+   {
+    "amount_type": "supplemental",
+    "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+    "component": null,
+    "confirmed_absence_id": "CA-0156",
+    "confirmed_date": "2026-09-25",
+    "document_type": "committee_report",
+    "evidence": "Title III (p.219) prints 'Construction and environmental compliance and restoration (emergency)' with 296,000 in the Committee recommendation column only (both comparison columns +296,000); its 2023 appropriation cell is blank. The FY2023 figure is in Other Appropriations (p.224, P.L. 117-328, 556,400), already recorded as OBS-0660 (supplemental_act); whole table pp.212-225 read by text layer",
+    "fiscal_year": 2023,
+    "publication_date": "2023-07-13",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf"
    },
    {
     "amount_type": "supplemental",
@@ -3655,7 +3509,7 @@
    "canonical_account_id": "ACC-NASA-CONSTRUCTION",
    "canonical_name": "Construction and Environmental Compliance and Restoration",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -5118,6 +4972,36 @@
     "source_document_id": "SRC-CRPT-119HRPT272",
     "source_page": "256-257",
     "source_table_or_section": "Title III, NASA, Construction and Environmental Compliance and Restoration (emergency)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 740200000,
+    "amount_type": "supplemental",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-CJS-FY2025-ENACTED",
+    "bill_url": "https://www.congress.gov/119/plaws/publ4/PLAW-119publ4.pdf",
+    "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+    "chamber": "N/A",
+    "component": "supplemental_act",
+    "confidence": 1.0,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2025,
+    "observation_id": "OBS-0991",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-12",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "source_page": "261",
+    "source_table_or_section": "P.L. 118-158 supplemental",
     "stage": "Enacted",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",

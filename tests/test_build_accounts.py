@@ -92,7 +92,7 @@ class BuildAccounts(unittest.TestCase):
         self.assertIn("not in the Account tab", str(cm.exception))
 
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx"
 
 
 class CommittedReference(unittest.TestCase):
@@ -102,9 +102,10 @@ class CommittedReference(unittest.TestCase):
             "ACC-NASA-EXPLORATION": ["Deep Space Exploration Systems"],
             "ACC-NSF-STEM-EDUCATION": ["Education and Human Resources"],
             "ACC-NASA-SPACEOPS": ["LEO and Spaceflight Operations"],
-            "ACC-NASA-EXPLTECH": ["Exploration Research and Technology"],
+            "ACC-NASA-SPACETECH": ["Exploration Research and Technology", "Exploration Technology"],
             "ACC-NASA-STEM-ENGAGEMENT": ["Education", "STEM Opportunities formerly Education"]})
         self.assertNotIn("ACC-NASA-LEO", accts)
+        self.assertNotIn("ACC-NASA-EXPLTECH", accts)                 # folded into Space Technology in v24
         self.assertFalse((ROOT / "reference" / "historical_names.json").exists())
 
     @unittest.skipUnless(openpyxl, "openpyxl not installed")

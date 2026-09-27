@@ -70,14 +70,6 @@
   },
   {
    "agency": "National Aeronautics and Space Administration",
-   "canonical_account_id": "ACC-NASA-EXPLTECH",
-   "canonical_name": "Exploration Technology",
-   "historical_names": [
-    "Exploration Research and Technology"
-   ]
-  },
-  {
-   "agency": "National Aeronautics and Space Administration",
    "canonical_account_id": "ACC-NASA-OIG",
    "canonical_name": "Office of Inspector General",
    "historical_names": []
@@ -106,7 +98,10 @@
    "agency": "National Aeronautics and Space Administration",
    "canonical_account_id": "ACC-NASA-SPACETECH",
    "canonical_name": "Space Technology",
-   "historical_names": []
+   "historical_names": [
+    "Exploration Research and Technology",
+    "Exploration Technology"
+   ]
   },
   {
    "agency": "National Aeronautics and Space Administration",
@@ -205,18 +200,18 @@
  },
  "source": {
   "rows": {
-   "account": 31,
-   "account_relationship": 2,
-   "appropriations_observation": 864,
+   "account": 30,
+   "account_relationship": 0,
+   "appropriations_observation": 869,
    "bill_report_reference": 41,
-   "confirmed_absence": 149,
-   "historical_name": 6,
+   "confirmed_absence": 198,
+   "historical_name": 7,
    "source_document": 23,
    "validation_record": 89
   },
   "warnings": [],
-  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v20.xlsx",
-  "workbook_committed": "2026-09-25T20:55:20+00:00",
-  "workbook_sha256": "4603f777bc76a716dca64e799825f63c8c7cb3e31a5f3d6df1de07c92294869b"
+  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx",
+  "workbook_committed": "2026-09-27T19:49:36+00:00",
+  "workbook_sha256": "dcff558c3de59a877cc9ea67fc02a59caca6c32931abcf3e97b274f5a510bd9b"
  }
 }
