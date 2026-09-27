@@ -40,7 +40,12 @@ followed by an indented row.
 import re
 from collections import defaultdict
 
-TABLE_TITLE_RE = re.compile(r"COMPARATIVE\s+STATEMENT\s+OF\s+NEW\s+BUDGET", re.I)
+# The table's title box. Most Senate reports print "COMPARATIVE STATEMENT OF
+# NEW BUDGET (OBLIGATIONAL) AUTHORITY ..."; a report with no prior-year or
+# request column to compare against (S.Rept. 119-55, Labor-HHS FY2026) prints
+# "AMOUNTS RECOMMENDED IN THE BILL FOR FISCAL YEAR 2026" over a single column.
+TABLE_TITLE_RE = re.compile(r"COMPARATIVE\s+STATEMENT\s+OF\s+NEW\s+BUDGET|AMOUNTS\s+RECOMMENDED\s+IN\s+THE\s+BILL\s+FOR\s+FISCAL\s+YEAR",
+                            re.I)
 UNITS_RE = re.compile(r"\[\s*In\s+[a-z ]+\]|\(\s*(?:Amounts\s+)?in\s+[a-z ]+\)", re.I)
 SIGN_GLYPHS = {"∂": "+", "¥": "-"}          # ∂ -> +, ¥ -> -
 DOTS_RE = re.compile(r"^\.{2,}$")

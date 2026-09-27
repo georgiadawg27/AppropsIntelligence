@@ -134,6 +134,67 @@ class PdfLinkRouting(unittest.TestCase):
             self.assertEqual(list(store.iterdir()), [])
 
 
+class GranuleFallback(unittest.TestCase):
+    """Offline: a committee report whose one granule isn't named after the
+    package (CRPT-118hrpt585's is CRPT-118hrpt585-pt1) -- /packages/{id}/pdf
+    answers 400 and the granule's own PDF is fetched instead."""
+
+    def fake(self, granules, fail_codes=(400,)):
+        from urllib.error import HTTPError
+        asked = []
+
+        class Resp:
+            def __init__(self, body):
+                self.body = body
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+            def read(self):
+                return self.body
+
+        def urlopen(req):
+            asked.append(req.full_url.split("?")[0])
+            if "/granules/" not in req.full_url:
+                raise HTTPError(req.full_url, fail_codes[0], "Bad Request", {}, None)
+            return Resp(b"%PDF-1.4 granule")
+
+        def api_get(path, key, params=None):
+            if path.endswith("/granules"):
+                return {"granules": [{"granuleId": gid} for gid in granules]}
+            return {"collectionCode": "CRPT", "download": {}, "title": "REPORT"}
+        return asked, urlopen, api_get
+
+    def test_single_granule_report_is_fetched_from_its_granule(self):
+        asked, urlopen, api_get = self.fake(["CRPT-118hrpt585-pt1"])
+        with TempStore() as store, mock.patch.object(g, "urlopen", side_effect=urlopen), \
+                mock.patch.object(g, "api_get", side_effect=api_get):
+            res = g.fetch_and_store("CRPT-118hrpt585", "k", {})
+            self.assertEqual(res["status"], "stored")
+            self.assertEqual(asked, [f"{g.API_BASE}/packages/CRPT-118hrpt585/pdf",
+                                     f"{g.API_BASE}/packages/CRPT-118hrpt585/granules/CRPT-118hrpt585-pt1/pdf"])
+            self.assertEqual((store / "CRPT-118hrpt585.pdf").read_bytes(), b"%PDF-1.4 granule")
+
+    def test_several_granules_are_reported_not_guessed(self):
+        asked, urlopen, api_get = self.fake(["X-pt1", "X-pt2"])
+        with TempStore() as store, mock.patch.object(g, "urlopen", side_effect=urlopen), \
+                mock.patch.object(g, "api_get", side_effect=api_get):
+            res = g.fetch_and_store("CRPT-118hrpt999", "k", {})
+            self.assertEqual((res["status"], res["granules"]), ("multi_granule_report", ["X-pt1", "X-pt2"]))
+            self.assertEqual(list(store.iterdir()), [])
+
+    def test_only_committee_reports_fall_back(self):
+        from urllib.error import HTTPError
+        asked, urlopen, api_get = self.fake(["BILLS-1-pt1"])
+        with TempStore(), mock.patch.object(g, "urlopen", side_effect=urlopen), \
+                mock.patch.object(g, "api_get", return_value={"collectionCode": "BILLS", "download": {"pdfLink": "https://x/b.pdf"}}):
+            with self.assertRaises(HTTPError):
+                g.fetch_and_store("BILLS-119hr1rh", "k", {})
+
+
 class RelatedLookupRouting(unittest.TestCase):
     """Offline: committee reports / public laws are found through each
     matched bill's /related links, not by scanning CRPT / PLAW titles."""

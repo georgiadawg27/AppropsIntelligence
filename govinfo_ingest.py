@@ -148,6 +148,12 @@ def pdf_link_for(package_id, summary):
     return None
 
 
+def download(link, api_key):
+    req = Request(f"{link}?api_key={api_key}", headers={"Accept": "application/pdf"})
+    with urlopen(req) as resp:
+        return resp.read()
+
+
 def fetch_and_store(package_id, api_key, manifest):
     """
     Fetch & hash stage: pull a package's summary, download its PDF, hash it,
@@ -159,9 +165,20 @@ def fetch_and_store(package_id, api_key, manifest):
     if not pdf_link:
         return {"package_id": package_id, "status": "no_pdf_available"}
 
-    req = Request(f"{pdf_link}?api_key={api_key}", headers={"Accept": "application/pdf"})
-    with urlopen(req) as resp:
-        content = resp.read()
+    try:
+        content = download(pdf_link, api_key)
+    except HTTPError as e:
+        # a committee report whose one granule isn't named after the package
+        # (CRPT-118hrpt585's is CRPT-118hrpt585-pt1): /packages/{id}/pdf
+        # answers 400, the granule's own PDF is the report
+        if e.code not in (400, 404) or not package_id.startswith("CRPT-"):
+            raise
+        granules = api_get(f"/packages/{package_id}/granules", api_key, {"offsetMark": "*", "pageSize": 100})
+        ids = [g["granuleId"] for g in granules.get("granules", [])]
+        if len(ids) != 1:
+            return {"package_id": package_id, "status": "multi_granule_report", "granules": ids}
+        pdf_link = f"{API_BASE}/packages/{package_id}/granules/{ids[0]}/pdf"
+        content = download(pdf_link, api_key)
     if not content.startswith(b"%PDF"):
         return {"package_id": package_id, "status": "not_a_pdf", "url": pdf_link}
     content_hash = sha256_of(content)

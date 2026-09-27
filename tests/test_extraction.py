@@ -277,5 +277,16 @@ class VisionOrchestration(unittest.TestCase):
         self.assertEqual(call.call_count, 2)
 
 
+class DetectSubcommittee(unittest.TestCase):
+    def test_serial_comma_variant(self):
+        # H.Rept. 119-696's title page vs H.Rept. 118-585's
+        for head in ("DEPARTMENTS OF LABOR, HEALTH, AND HUMAN SERVICES, AND EDUCATION",
+                     "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION"):
+            self.assertEqual(ex.detect_subcommittee([head]), "Labor-HHS-Education")
+
+    def test_no_match(self):
+        self.assertIsNone(ex.detect_subcommittee(["MISCELLANEOUS TARIFF BILL"]))
+
+
 if __name__ == "__main__":
     unittest.main()

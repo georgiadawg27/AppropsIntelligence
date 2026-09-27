@@ -192,9 +192,11 @@ SUBCOMMITTEES = {
 
 def detect_subcommittee(page_texts):
     head = " ".join(page_texts[:3]).upper()
-    head = re.sub(r"\s+", " ", head)
+    # commas dropped on both sides: the FY2027 House report reads "LABOR,
+    # HEALTH, AND HUMAN SERVICES" where earlier ones read "LABOR, HEALTH AND"
+    head = re.sub(r"\s+", " ", head.replace(",", ""))
     for needle, name in SUBCOMMITTEES.items():
-        if needle in head:
+        if needle.replace(",", "") in head:
             return name
     return None
 

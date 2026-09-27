@@ -56,7 +56,7 @@ SEMANTIC_KEYWORDS = ("rescission", "chimp", "emergency", "advance appropriation"
                      "offsetting", "fee collection", "cancellation")
 
 NOT_RUN = {
-    "cross_document": "needs the bill text (BILLS-119hr8845rh) extracted too",
+    "cross_document": "needs the same bill's text (its BILLS package) extracted too",
     "historical": "needs prior-year observations for the same canonical accounts",
     "account_identity": "needs the Account table / historical_names (reconciliation pass)",
 }
