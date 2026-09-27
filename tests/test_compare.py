@@ -202,17 +202,22 @@ class GridData(CompareTest):
 
     def test_rows_follow_the_bill(self):
         # by title, then display_order; a rollup heads the accounts it totals
-        self.assertEqual([(t["title"], t["total"]) for t in self.grid["titles"]], [("Title III", None), (None, None)])
+        self.assertEqual([(t["title"], t["total"]) for t in self.grid["titles"]],
+                         [("Title I", None), ("Title II", None), ("Title III", None), ("Title V", None), (None, None)])
         self.assertIsNone(self.grid["bill_total"])
-        self.assertEqual(self.grid["titles"][0]["rows"], [
+        by = {t["title"]: t["rows"] for t in self.grid["titles"]}
+        self.assertEqual(by["Title I"], ["ACC-NOAA-ORF", "ACC-USPTO-SE", "ACC-NOAA-PDF"])
+        self.assertEqual(by["Title II"], ["ACC-DOJ-AFF", "ACC-DOJ-ANTITRUST-SE", "ACC-DOJ-USTSF", "ACC-DOJ-VAWA"])
+        self.assertEqual(by["Title V"], ["ACC-DOJ-WCF", "ACC-DOJ-OJP-RESC", "ACC-DOJ-OIG"])
+        self.assertEqual(by[None], ["ACC-DOJ-CVF"])                       # not yet placed: after every title
+        self.assertEqual(by["Title III"], [
             "ACC-OSTP", "ACC-NSC",
             "ACC-NASA-TOTAL", "ACC-NASA-SCIENCE", "ACC-NASA-AERONAUTICS", "ACC-NASA-SPACETECH", "ACC-NASA-EXPLORATION",
             "ACC-NASA-SPACEOPS", "ACC-NASA-STEM-ENGAGEMENT", "ACC-NASA-SAFETY-SECURITY", "ACC-NASA-CONSTRUCTION", "ACC-NASA-OIG",
             "ACC-NSF-TOTAL", "ACC-NSF-RRA", "ACC-NSF-MREFC", "ACC-NSF-STEM-EDUCATION", "ACC-NSF-AGENCY-OPS", "ACC-NSF-NSB",
             "ACC-NSF-OIG"])
-        self.assertEqual(len(self.grid["titles"][1]["rows"]), 11)       # not yet placed: after every title
         self.assertEqual([r["account"]["canonical_account_id"] for r in self.grid["rows"]],
-                         self.grid["titles"][0]["rows"] + self.grid["titles"][1]["rows"])
+                         [a for t in self.grid["titles"] for a in t["rows"]])
 
     def test_rollup_members_are_its_title_and_agency(self):
         nasa, nsf = self.row("ACC-NASA-TOTAL"), self.row("ACC-NSF-TOTAL")
@@ -237,11 +242,11 @@ class GridData(CompareTest):
 
     def test_title_and_bill_totals_come_only_from_sourced_rows(self):
         # v26 has none: no total at all, never a sum of the rows
-        self.assertEqual([t["total"] for t in self.grid["titles"]], [None, None])
+        self.assertEqual([t["total"] for t in self.grid["titles"]], [None] * 5)
         # a sourced total -- a rollup noted as a title / bill total -- is the total, not a row
         other = with_sourced_totals(self.db, Path(self.tmp.name) / "totals.db")
         g = plain(W.subcommittee(str(other), "CJS"))
-        t3 = g["titles"][0]
+        t3 = next(t for t in g["titles"] if t["title"] == "Title III")
         self.assertEqual((t3["title"], t3["total"]["account"]["canonical_account_id"], g["bill_total"]["account"]["canonical_account_id"]),
                          ("Title III", "ACC-T3-TOTAL", "ACC-CJS-TOTAL"))
         self.assertNotIn("ACC-T3-TOTAL", t3["rows"])
@@ -268,14 +273,9 @@ class GridData(CompareTest):
             conn.close()
         with open(ROOT / "reference" / "review" / "mechanism_titles.csv", newline="") as f:
             self.assertEqual(got, list(csv.DictReader(f)))              # the committed list is what v26 gives
-        self.assertEqual({r["canonical_account_id"]: (r["candidate_title"], r["basis"]) for r in got}, {
-            "ACC-NOAA-ORF": ("Title I", "own line"), "ACC-NOAA-PDF": ("Title I", "transfer or rescission only"),
-            "ACC-USPTO-SE": ("Title I", "own line"), "ACC-DOJ-AFF": ("Title II", "own line"),
-            "ACC-DOJ-ANTITRUST-SE": ("Title II", "own line"), "ACC-DOJ-CVF": ("", "ambiguous"),
-            "ACC-DOJ-OIG": ("Title V", "transfer or rescission only"),
-            "ACC-DOJ-OJP-RESC": ("Title V", "transfer or rescission only"), "ACC-DOJ-USTSF": ("Title II", "own line"),
-            "ACC-DOJ-VAWA": ("Title II", "transfer or rescission only"),
-            "ACC-DOJ-WCF": ("Title V", "transfer or rescission only")})
+        # v28 placed the other ten as derived; only CVF is left, with no candidate
+        self.assertEqual({r["canonical_account_id"]: (r["candidate_title"], r["basis"], r["titles_seen"]) for r in got},
+                         {"ACC-DOJ-CVF": ("", "ambiguous", "Title II; Title V; Title VII")})
 
     def test_printed_title_iii_totals_reconcile(self):
         # every printed "Total, title III, Science" is the title's own lines
@@ -298,12 +298,11 @@ class GridData(CompareTest):
         self.assertEqual(len(printed), 49)
         self.assertEqual({k for k, r in by.items() if r["reconciles"] == "no store figures"},
                          {(2016, "Enacted", "SRC-CRPT-114HRPT605"), (2016, "Enacted", "SRC-CRPT-114SRPT239")})
+        # all 47 FY2017-2026 columns, through the accounts and through the stored
+        # rollups (v26 missed FY2025 Senate by 1,000 there: OBS-0889, restored in v27)
         self.assertEqual([k for k, r in by.items() if r["reconciles"] == "no"], [])
-        # through the rollups, v26's one miss: OBS-0889 was edited off the printed
-        # NASA total (v27 restores it) -- its accounts reconcile, the rollup doesn't
-        self.assertEqual([(k, r["through_rollups_differs_by_thousands"]) for k, r in by.items()
-                          if r["reconciles_through_rollups"] == "no"],
-                         [((2025, "Senate Reported", "SRC-CRPT-118SRPT198"), 1000)])
+        self.assertEqual([k for k, r in by.items() if r["reconciles_through_rollups"] == "no"], [])
+        self.assertEqual(sum(r["reconciles"] == "yes" == r["reconciles_through_rollups"] for r in got), 47)
         # the same FY2020 request, printed two ways: the Senate folds the May 2019
         # budget amendments into its estimates, the House lists them apart
         amendments = "OBS-0989 (ACC-NASA-EXPLORATION budget_amendment 1,374,700); OBS-0990 (ACC-NASA-SPACETECH " \
@@ -544,11 +543,12 @@ class CompareBrowser(CompareTest):
     def test_titles_head_their_groups_and_totals_are_never_summed(self):
         self.open("static")
         heads = self.page.locator("[data-testid=title-head]")
-        self.assertEqual([h.locator("th").inner_text() for h in heads.all()], ["Title III", "Not yet placed in a title"])
+        self.assertEqual([h.locator("th").inner_text() for h in heads.all()],
+                         ["Title I", "Title II", "Title III", "Title V", "Not yet placed in a title"])
         notes = [n.inner_text() for n in self.page.locator("[data-testid=no-total]").all()]
-        self.assertEqual(len(notes), 3)                             # the bill, Title III, the unplaced accounts
+        self.assertEqual(len(notes), 6)                             # the bill, four titles, the unplaced account
         self.assertTrue(notes[0].startswith("No printed bill total on file"))
-        self.assertTrue(notes[1].startswith("No printed total on file for Title III"))
+        self.assertTrue(notes[3].startswith("No printed total on file for Title III"))
         # no dollar figure anywhere in a total row
         self.assertEqual(self.page.locator("tr.total-row [data-testid=amount]").count(), 0)
 
@@ -559,7 +559,7 @@ class CompareBrowser(CompareTest):
         try:
             self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2024&stage=Enacted")
             self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-            total = self.page.locator("[data-testid=title-total]").first
+            total = self.page.locator("[data-testid=title-total][data-title='Title III']")
             self.assertEqual(total.locator("[data-testid=amount]").inner_text(), "$33,944,930,000")
             self.assertIn("printed total", total.inner_text())
             self.assertEqual(self.page.locator("[data-testid=bill-total] [data-testid=no-total]").count(), 0)

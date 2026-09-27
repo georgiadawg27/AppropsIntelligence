@@ -206,26 +206,12 @@
    "bill_report_reference": 41,
    "confirmed_absence": 197,
    "historical_name": 7,
-   "source_document": 23,
+   "source_document": 24,
    "validation_record": 89
   },
-  "warnings": [
-   "observation OBS-0996 (FY2019 President's Budget) cites SRC-CRPT-115SRPT275, which neither is nor also_covers that fiscal year + stage",
-   "account ACC-DOJ-AFF: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-ANTITRUST-SE: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-CVF: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-OIG: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-OJP-RESC: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-USTSF: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-VAWA: title None and display_order 0 -- set both or neither",
-   "account ACC-DOJ-WCF: title None and display_order 0 -- set both or neither",
-   "account ACC-NOAA-ORF: title None and display_order 0 -- set both or neither",
-   "account ACC-NOAA-PDF: title None and display_order 0 -- set both or neither",
-   "account ACC-USPTO-SE: title None and display_order 0 -- set both or neither",
-   "CJS None: display_order 0 is shared by ACC-DOJ-CVF, ACC-DOJ-AFF, ACC-DOJ-WCF, ACC-USPTO-SE, ACC-DOJ-ANTITRUST-SE, ACC-DOJ-USTSF, ACC-NOAA-ORF, ACC-NOAA-PDF, ACC-DOJ-OJP-RESC, ACC-DOJ-VAWA, ACC-DOJ-OIG"
-  ],
-  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v26.xlsx",
-  "workbook_committed": "2026-09-27T21:36:22+00:00",
-  "workbook_sha256": "13fb5095bbca42f88078bf6cec1c86da565cd7f6d4045da660bdb5dcb3d43516"
+  "warnings": [],
+  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v28.xlsx",
+  "workbook_committed": null,
+  "workbook_sha256": "f829130dbd11c112625767e19ecf9ce81b4eebd91510caa147a81ccd39e8a3c4"
  }
 }

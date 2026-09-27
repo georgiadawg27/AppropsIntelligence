@@ -1731,7 +1731,7 @@
        "missing": false,
        "observations": [
         {
-         "amount": 25432700000,
+         "amount": 25433700000,
          "amount_type": "budget authority",
          "bill_id": "S.4795",
          "bill_report_reference_id": "BR-CJS-FY2025-SENATE",
@@ -1753,7 +1753,7 @@
          "source_agency": "Senate Committee on Appropriations",
          "source_document_id": "SRC-CRPT-118SRPT198",
          "source_page": "227-228",
-         "source_table_or_section": "Agency rollup -- sum of NASA's 9 program accounts, adjusted to include the $1,000,000 Space Operations rescission S.Rept. 118-198 records in Title V (outside the main Title III table) so this total matches the document's own real NASA total",
+         "source_table_or_section": "Agency rollup -- this document's own printed NASA total (S.Rept. 118-198 p.227)",
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
@@ -2037,7 +2037,7 @@
    "bureau": "(Agency Total)",
    "canonical_account_id": "ACC-NASA-TOTAL",
    "canonical_name": "National Aeronautics and Space Administration (agency total)",
-   "display_order": 3,
+   "display_order": 12,
    "effective_end": null,
    "effective_start": "2016-10-01",
    "fund_type": "general",
@@ -3328,7 +3328,7 @@
     "verification_status": "human-verified"
    },
    {
-    "amount": 25432700000,
+    "amount": 25433700000,
     "amount_type": "budget authority",
     "bill_id": "S.4795",
     "bill_report_reference_id": "BR-CJS-FY2025-SENATE",
@@ -3350,7 +3350,7 @@
     "source_agency": "Senate Committee on Appropriations",
     "source_document_id": "SRC-CRPT-118SRPT198",
     "source_page": "227-228",
-    "source_table_or_section": "Agency rollup -- sum of NASA's 9 program accounts, adjusted to include the $1,000,000 Space Operations rescission S.Rept. 118-198 records in Title V (outside the main Title III table) so this total matches the document's own real NASA total",
+    "source_table_or_section": "Agency rollup -- this document's own printed NASA total (S.Rept. 118-198 p.227)",
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
