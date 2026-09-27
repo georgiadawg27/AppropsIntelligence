@@ -97,7 +97,7 @@ class GridData(CompareTest):
         conn.close()
         got = [r["account"]["canonical_account_id"] for r in self.grid["rows"]]
         self.assertEqual(sorted(got), want)
-        self.assertEqual(len(got), 31)
+        self.assertEqual(len(got), 30)
         self.assertEqual(self.grid["stages"], FOUR)                   # no account has a Passed stage
         self.assertEqual(self.grid["fiscal_years"], list(range(2017, 2028)))
         # former names resolve into their account, never a row of their own
@@ -132,31 +132,43 @@ class GridData(CompareTest):
         spans = {r["account"]["canonical_account_id"]: r["fiscal_year_span"] for r in self.grid["rows"]}
         outside = {aid for aid, r in ((r["account"]["canonical_account_id"], r) for r in self.grid["rows"])
                    if any(c["outside_history"] for c in r["cells"].values())}
-        # FY2027-only accounts (DOJ, NOAA, USPTO) and Exploration Technology (from FY2019)
+        # the FY2027-only accounts (DOJ, NOAA, USPTO): every FY2017-2026 cell
         self.assertEqual(outside, {aid for aid, s in spans.items() if s[0] > 2017})
-        self.assertEqual(spans["ACC-NASA-EXPLTECH"], [2019, 2027])
-        self.assertEqual(len([a for a, s in spans.items() if s == [2027, 2027]]), 11)
+        self.assertEqual(len(outside), 11)
+        for aid in outside:
+            self.assertEqual(spans[aid], [2027, 2027])
+            self.assertEqual({k for k, c in self.row(aid)["cells"].items() if c["outside_history"]},
+                             {f"{y}|{st}" for y in YEARS for st in FOUR}, aid)
+        # Space Technology, with Exploration Research and Technology folded in
+        # (v24): a figure in every FY2017-2026 cell, nothing outside
+        st = self.row("ACC-NASA-SPACETECH")
+        self.assertFalse(any(c["outside_history"] for c in st["cells"].values()))
+        heads = [next(l for l in st["cells"][f"{y}|{s}"]["lines"] if l["amount_type"] == "budget authority" and not l["component"])
+                 for y in YEARS for s in FOUR]
+        self.assertEqual({l["state"] for l in heads}, {"value"})
 
     def test_after_effective_end_is_outside_too(self):
         # the mirror of "before its first record": once an account has an
-        # effective_end, the years after it are outside, not missing gaps
+        # effective_end, the years after it are outside, not missing gaps.
+        # No v24 account has one, so this sets one: OSTP ends with FY2026.
         ended = Path(self.tmp.name) / "ended.db"
         shutil.copy(self.db, ended)
         c = sqlite3.connect(ended)
-        c.execute("UPDATE account SET effective_end = '2020-09-30' WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+        c.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
         c.commit()
         c.close()
         row = next(r for r in plain(W.subcommittee(str(ended), "CJS"))["rows"]
-                   if r["account"]["canonical_account_id"] == "ACC-NASA-EXPLTECH")
-        self.assertEqual(row["fiscal_year_span"], [2019, 2020])
+                   if r["account"]["canonical_account_id"] == "ACC-OSTP")
+        self.assertEqual(row["fiscal_year_span"], [2017, 2026])
         for key, cell in row["cells"].items():
             fy = int(key.split("|")[0])
-            self.assertEqual(cell["outside_history"], not 2019 <= fy <= 2020, key)
+            self.assertEqual(cell["outside_history"], fy == 2027, key)
             if cell["outside_history"]:
                 self.assertTrue(all(line["state"] == "missing" for line in cell["lines"]), key)
-        # before: FY2021-2027 were in its history as missing gaps
-        before = self.row("ACC-NASA-EXPLTECH")
-        self.assertFalse(before["cells"]["2023|Enacted"]["outside_history"])
+        # before: FY2027 was in its history as a missing gap
+        before = self.row("ACC-OSTP")
+        self.assertEqual(before["fiscal_year_span"], [2017, 2027])
+        self.assertFalse(before["cells"]["2027|Enacted"]["outside_history"])
 
     def test_rollup_rows_carry_their_notes(self):
         rollups = [r["account"]["canonical_account_id"] for r in self.grid["rows"]
@@ -175,7 +187,7 @@ class GridData(CompareTest):
         self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water"]})
         ew = W.subcommittee(str(other), "Energy and Water")
         self.assertEqual([r["account"]["canonical_account_id"] for r in ew["rows"]], ["ACC-NSC", "ACC-OSTP"])
-        self.assertEqual(len(W.subcommittee(str(other), "CJS")["rows"]), 29)
+        self.assertEqual(len(W.subcommittee(str(other), "CJS")["rows"]), 28)
         with self.assertRaises(LookupError):
             W.subcommittee(str(other), "Defense")
 
@@ -255,13 +267,13 @@ class CompareBrowser(CompareTest):
             with self.subTest(where):
                 self.open(where)
                 shown = self.page.evaluate(SHOWN_JS)
-                self.assertEqual(len(shown), 31 * 10 * 4)
+                self.assertEqual(len(shown), 30 * 10 * 4)
                 self.assertEqual(shown, self.expected(YEARS, FOUR))
 
     def test_acceptance_accounts_are_rows_resolved_through_former_names(self):
         self.open("static")
         rows = self.page.locator("[data-testid=compare-row]")
-        self.assertEqual(rows.count(), 31)
+        self.assertEqual(rows.count(), 30)
         for aid in ("ACC-NASA-SCIENCE", "ACC-NASA-EXPLORATION", "ACC-NASA-SPACEOPS", "ACC-DOJ-OIG", "ACC-NASA-OIG",
                     "ACC-NSF-OIG", "ACC-NSF-RRA", "ACC-NASA-SPACETECH", "ACC-DOJ-CVF"):
             self.assertEqual(self.page.locator(f"tr[data-account={aid}]").count(), 1, aid)
@@ -318,7 +330,7 @@ class CompareBrowser(CompareTest):
                     self.assertTrue(line.locator("[data-testid=not-applicable]").is_visible())
                     self.assertEqual(line.locator("[data-testid=not-applicable]").inner_text(), "not applicable")
                     self.assertEqual(line.locator(".amt").count(), 0)
-        self.assertEqual(n, 31)
+        self.assertEqual(n, 34)                     # v23 added FY2019's three 'NASA closeouts' cells
 
     def test_narrow_filter_fy2026_enacted(self):
         for where in self.urls:
@@ -329,7 +341,7 @@ class CompareBrowser(CompareTest):
                 self.page.uncheck("#stage-all")
                 self.page.check("#stage-boxes input[value=Enacted]")
                 self.page.click("#compare-form button[type=submit]")
-                self.page.wait_for_function("document.querySelectorAll('[data-testid=compare-cell]').length === 31")
+                self.page.wait_for_function("document.querySelectorAll('[data-testid=compare-cell]').length === 30")
                 self.assertEqual(self.page.evaluate(SHOWN_JS), self.expected([2026], ["Enacted"]))
                 self.assertEqual(self.page.locator("#compare-grid thead").inner_text().split(), ["Account", "FY2026", "Enacted"])
                 self.assertTrue(self.page.url.endswith("?view=compare&sc=CJS&fy=2026&stage=Enacted"), self.page.url)
@@ -370,21 +382,21 @@ class CompareBrowser(CompareTest):
         ended = Path(self.tmp.name) / "ended_browser.db"
         shutil.copy(self.db, ended)
         c = sqlite3.connect(ended)
-        c.execute("UPDATE account SET effective_end = '2020-09-30' WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'")
+        c.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
         c.commit()
         c.close()
         srv = W.serve(ended, port=0, verbose=False)
         threading.Thread(target=srv.serve_forever, daemon=True).start()
         try:
-            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2017-2026")
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS")
             self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-            after, before = self.cell("ACC-NASA-EXPLTECH", 2023, "Enacted"), self.cell("ACC-NASA-EXPLTECH", 2017, "Enacted")
+            after, before = self.cell("ACC-OSTP", 2027, "Enacted"), self.cell("ACC-DOJ-CVF", 2017, "Enacted")
             for td in (after, before):
                 self.assertEqual(td.get_attribute("data-outside"), "true")
                 self.assertIn("outside", td.get_attribute("class"))
-            self.assertTrue(after.get_attribute("title").startswith("After this account's effective end (2020-09-30)"))
+            self.assertTrue(after.get_attribute("title").startswith("After this account's effective end (2026-09-30)"))
             self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017"))
-            self.assertIsNone(self.cell("ACC-NASA-EXPLTECH", 2020, "President's Budget").get_attribute("data-outside"))
+            self.assertIsNone(self.cell("ACC-OSTP", 2026, "Enacted").get_attribute("data-outside"))
         finally:
             srv.shutdown()
             srv.server_close()

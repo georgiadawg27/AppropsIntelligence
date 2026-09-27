@@ -16,7 +16,7 @@ history with a source citation for every figure.
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v21.xlsx
+python approps_store.py load reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 

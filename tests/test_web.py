@@ -36,7 +36,7 @@ try:
 except ImportError:                                  # pragma: no cover
     sync_playwright = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v21.xlsx"
+WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v24.xlsx"
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -136,9 +136,9 @@ class Api(WebTest):
         fy2027 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)
         self.assertTrue(all(l["state"] == "missing" for s in FOUR for l in fy2027["cells"][s]))
         # a blank request cell (v13 dropped the $0 rows) is missing, not zero
-        g = self.search("NASA Space Technology")["grid"]
-        fy2019 = next(r for r in g["rows"] if r["fiscal_year"] == 2019)
-        self.assertTrue(all(l["missing"] and not l["observations"] for l in fy2019["cells"]["President's Budget"]))
+        g = self.search("NASA Education")["grid"]
+        fy2020 = next(r for r in g["rows"] if r["fiscal_year"] == 2020)
+        self.assertTrue(all(l["missing"] and not l["observations"] for l in fy2020["cells"]["President's Budget"]))
 
     def test_every_series_is_listed_in_every_cell(self):
         # R&RA: base and defense budget authority, plus supplemental -- the
@@ -222,11 +222,11 @@ class Browser(WebTest):
         self.assertEqual(years, list(range(2017, 2028)))
         self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in ("missing", "not_applicable")), 40)
         self.assertEqual({a for k, v in shown.items() if k.startswith("2027|") for _, a, _ in v}, {"missing"})
-        # v16 gave Science a rescission series (FY2020): every other cell lists it as missing
-        self.assertEqual(shown["2024|Senate Reported"], [["budget authority", "$7,340,920,000", "SRC-CRPT-118SRPT62 p.219-220"],
-                                                          ["rescission", "missing", None]])
-        self.assertEqual(shown["2026|Enacted"], [["budget authority", "$7,250,000,000", "SRC-EXPL-FY2026-PB p.128-130"],
-                                                 ["rescission", "missing", None]])
+        # v16 gave Science a rescission series (FY2020); v23 confirmed its
+        # absence wherever the document could be checked -- the rest stays missing
+        self.assertEqual(shown["2024|Senate Reported"][1][:2], ["rescission", "not_applicable"])
+        self.assertEqual(shown["2026|Enacted"][1][:2], ["rescission", "not_applicable"])
+        self.assertEqual(shown["2024|House Reported"][1], ["rescission", "missing", None])      # host unreachable: unchecked
         self.assertEqual(shown["2020|Enacted"], [["budget authority", "$7,138,900,000", "SRC-CRPT-116HRPT455 p.187-188"],
                                                  ["rescission", "\u2212$70,000,000", "SRC-CRPT-116HRPT455 p.191"]])
         href = self.page.get_attribute("td[data-stage='Enacted'] a >> nth=0", "href")
@@ -271,10 +271,10 @@ class Browser(WebTest):
         self.assertIn("Picked from the matches", self.page.text_content("[data-testid=picked]"))
 
     def test_missing_is_never_zero_or_blank(self):
-        self.search_ui("NASA Space Technology")
-        shown = self.assert_faithful("NASA Space Technology")
-        for cell in ("2019|President's Budget", "2019|House Reported", "2020|President's Budget"):
-            self.assertEqual(shown[cell], [[None, "missing", None]], cell)
+        self.search_ui("NASA Education")
+        shown = self.assert_faithful("NASA Education")
+        self.assertEqual(shown["2020|President's Budget"], [[None, "missing", None]])
+        self.assertEqual(shown["2019|President's Budget"][0][:2], ["budget authority", "not_applicable"])  # CA-0150
         # no cell renders empty
         empty = self.page.eval_on_selector_all("td[data-stage]", "tds => tds.filter(t => !t.textContent.trim()).length")
         self.assertEqual(empty, 0)
@@ -316,7 +316,7 @@ class Browser(WebTest):
             n += self.page.locator("[data-testid=not-applicable]").count()
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 150)
+        self.assertEqual(n, 198)
 
 
 if __name__ == "__main__":

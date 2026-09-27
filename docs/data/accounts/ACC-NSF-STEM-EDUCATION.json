@@ -42,6 +42,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -211,6 +219,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -380,6 +396,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -549,6 +573,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -718,6 +750,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -887,6 +927,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1048,6 +1096,45 @@
          "source_document_id": "SRC-CRPT-118SRPT62",
          "source_page": "219-220",
          "source_table_or_section": "Title III, NSF, STEM Education",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
+         "validation": [],
+         "verification_status": "human-verified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 217000000,
+         "amount_type": "supplemental",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-CJS-FY2023-ENACTED",
+         "bill_url": "https://www.congress.gov/117/plaws/publ328/PLAW-117publ328.pdf",
+         "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
+         "chamber": "N/A",
+         "component": "supplemental_act",
+         "confidence": 1.0,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2023,
+         "observation_id": "OBS-0992",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-13",
+         "report_id": "JES_CJS_P.L.117-328",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CPRT-117HPRT50347/pdf/CPRT-117HPRT50347.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT62",
+         "source_page": "224",
+         "source_table_or_section": "P.L. 117-328 supplemental",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
@@ -1225,6 +1312,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1394,6 +1489,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1563,6 +1666,14 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1701,6 +1812,14 @@
        "missing": true,
        "observations": [],
        "state": "missing"
+      },
+      {
+       "absence": null,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1741,6 +1860,10 @@
    {
     "amount_type": "budget authority",
     "component": null
+   },
+   {
+    "amount_type": "supplemental",
+    "component": "supplemental_act"
    }
   ],
   "stages": [
@@ -1758,7 +1881,7 @@
    "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
    "canonical_name": "STEM Education",
    "effective_end": null,
-   "effective_start": "2017-10-01",
+   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "Education and Human Resources",
@@ -2631,6 +2754,36 @@
     "source_document_id": "SRC-CRPT-118SRPT62",
     "source_page": "219-220",
     "source_table_or_section": "Title III, NSF, STEM Education",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
+    "validation": [],
+    "verification_status": "human-verified"
+   },
+   {
+    "amount": 217000000,
+    "amount_type": "supplemental",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-CJS-FY2023-ENACTED",
+    "bill_url": "https://www.congress.gov/117/plaws/publ328/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
+    "chamber": "N/A",
+    "component": "supplemental_act",
+    "confidence": 1.0,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2023,
+    "observation_id": "OBS-0992",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-13",
+    "report_id": "JES_CJS_P.L.117-328",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CPRT-117HPRT50347/pdf/CPRT-117HPRT50347.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT62",
+    "source_page": "224",
+    "source_table_or_section": "P.L. 117-328 supplemental",
     "stage": "Enacted",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
