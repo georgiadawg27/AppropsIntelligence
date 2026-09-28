@@ -81,6 +81,10 @@ class ManualIngest(unittest.TestCase):
                 ingest(JES, stage="Final")
             with self.assertRaises(ValueError):
                 ingest(JES, doc_type="jes", advance_copy=True)       # a JES is never a govinfo package
+            with self.assertRaises(ValueError):
+                # the extractor finds a multi-division JES's division by this name:
+                # free text ("LHHS") would leave it unable to
+                ingest(JES, subcommittee="LHHS")
             not_pdf = d / "x.pdf"
             not_pdf.write_text("hello")
             with self.assertRaises(ValueError):
@@ -200,7 +204,10 @@ class AdvanceCopyReconciliation(unittest.TestCase):
             res, m = self.advance(d, SENATE.read_bytes())
             bill = {"packageId": "BILLS-119s2354rs", "title": "S. 2354"}
             with mock.patch.object(g, "fetch_new_packages", return_value=[bill]), \
-                    mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: [{"packageId": "CRPT-119srpt44"}] if c == "CRPT" else []), \
+                    mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: [{
+                        "packageId": "CRPT-119srpt44", "congress": "119",   # govinfo's own title and Congress
+                        "title": "DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, AND RELATED AGENCIES APPROPRIATIONS BILL, 2026"}]
+                        if c == "CRPT" else []), \
                     mock.patch.object(g, "fetch_and_store", side_effect=lambda pid, k, man: (
                         man.update({pid: {"hash": "x", "stored_path": "x", "ingest_method": "govinfo_api"}}) or
                         {"package_id": pid, "status": "stored"})), \

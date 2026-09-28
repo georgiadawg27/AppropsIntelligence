@@ -187,5 +187,33 @@ class NoTableAllText(unittest.TestCase):
         self.assertNotIn("ANTHROPIC_API_KEY", str(cm.exception))
 
 
+class SRpt119_55SingleColumn(unittest.TestCase):
+    """
+    S.Rept. 119-55 (Labor-HHS, FY2026) prints its table under "AMOUNTS
+    RECOMMENDED IN THE BILL FOR FISCAL YEAR 2026" with one "Committee
+    recommendation" column -- no comparative-statement title, no prior-year
+    or request columns. Before TABLE_TITLE_RE took that header the document
+    was refused ("no comparative statement found").
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        if not (STORE / "CRPT-119srpt55.pdf").exists():
+            raise unittest.SkipTest("document_store/CRPT-119srpt55.pdf not present -- fetch it with govinfo_ingest.py")
+        cls.result = run_text_only("CRPT-119srpt55", title="TITLE II")
+
+    def test_one_value_column(self):
+        cols = self.result["extraction"]["columns"]
+        self.assertEqual([(c["header"], c["kind"], c["stage"], c["fiscal_year"]) for c in cols],
+                         [("Committee recommendation", "value", "Senate Reported", 2026)])
+        self.assertEqual(self.result["extraction"]["amount_unit_declared"], "thousands")
+
+    def test_hrsa_total_as_printed(self):
+        # p. 433: "Total, Health Resources and Services Administration ... 9,133,562"
+        hits = [o for o in self.result["observations"]
+                if o["account_path"] == "PUBLIC HEALTH SERVICE / Total, Health Resources and Services Administration"]
+        self.assertEqual([(o["amount"], o["source_page"]) for o in hits], [(9_133_562_000, "433")])
+
+
 if __name__ == "__main__":
     unittest.main()

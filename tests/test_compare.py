@@ -312,6 +312,49 @@ class GridData(CompareTest):
         # a separate supplemental act is never in a title's total
         self.assertFalse(any("supplemental_act" in r["printed_total_includes"] for r in got))
 
+    def test_a_title_total_can_subtract_a_component(self):
+        # HHS Title II, S.Rept. 118-207's FY2024 column as printed (thousands):
+        # the ten agency totals + Medicare Operations (Sec. 227), with NIH's
+        # headline "with CURES Act funding" and CURES also its own component
+        # line -- the printed title total leaves CURES out, so it has to be
+        # subtracted, which the additions-only search could never find
+        spec = importlib.util.spec_from_file_location("title_totals", ROOT / "reference" / "review" / "title_totals.py")
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        db = Path(self.tmp.name) / "hhs.db"
+        shutil.copy(self.db, db)
+        c = sqlite3.connect(db)
+        c.row_factory = sqlite3.Row
+        tmpl = dict(c.execute("SELECT * FROM appropriations_observation LIMIT 1").fetchone())
+        acct = dict(c.execute("SELECT * FROM account LIMIT 1").fetchone())
+        lines = [("HRSA", 9_171_787, None), ("CDC", 7_992_946, None), ("NIH", 47_168_518, None), ("NIH", 407_000, "CURES"),
+                 ("SAMHSA", 7_300_729, None), ("AHRQ", 369_000, None), ("CMS", 1_133_847_008, None),
+                 ("ACF", 52_748_216, None), ("ACL", 2_520_342, None), ("ASPR", 3_634_606, None), ("OS", 1_761_616, None),
+                 ("MEDICARE-OPS-SEC227", 455_000, None)]
+        for name in dict.fromkeys(n for n, _, _ in lines):
+            c.execute(f"INSERT INTO account ({','.join(acct)}) VALUES ({','.join('?' * len(acct))})",
+                      list(dict(acct, canonical_account_id=f"ACC-HHS-{name}", canonical_name=name, agency=name,
+                                subcommittee="Labor-HHS-Education", title="Title II", display_order=None, notes=None).values()))
+        for i, (name, amount, component) in enumerate(lines):
+            c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
+                      list(dict(tmpl, observation_id=f"OBS-HHS-{i}", canonical_account_id=f"ACC-HHS-{name}", fiscal_year=2024,
+                                stage="Enacted", amount=amount * 1000, amount_type="budget authority",
+                                component=component).values()))
+        c.commit()
+        c.close()
+        conn = S.connect(db, readonly=True)
+        try:
+            printed = [{"fiscal_year": "2024", "stage": "Enacted", "source_document_id": "S.Rept. 118-207",
+                        "printed_total_title_iii_thousands": "1266562768"}]
+            got, = mod.reconcile(conn, printed, title="Title II", subcommittee="Labor-HHS-Education")
+        finally:
+            conn.close()
+        self.assertEqual(got["reconciles"], "yes", got)
+        self.assertEqual(got["printed_total_includes"], "")
+        self.assertEqual(got["printed_total_subtracts"], "OBS-HHS-3 (ACC-HHS-NIH CURES 407,000)")
+        # CJS's own Title II (Justice) is another subcommittee's title: not in this sum
+        self.assertEqual(got["store_base_thousands"], 1_266_969_768)
+
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
         other = Path(self.tmp.name) / "two.db"

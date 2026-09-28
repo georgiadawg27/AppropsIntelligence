@@ -285,5 +285,146 @@ class SenateTables(unittest.TestCase):
             self.assertEqual([k for k, v in Counter(o["observation_id"] for o in r["observations"]).items() if v > 1], [])
 
 
+class ParallelTotals(unittest.TestCase):
+    """
+    HHS prints one total several ways, each with its scope in the label
+    ("with CURES Act funding", "program level", "excluding ARPA-H";
+    Medicaid's "available this fiscal year" / current year / "appropriated
+    in this bill"). They are siblings -- each checked against the family's
+    previous total plus or minus rows printed with it, found by the signed
+    search -- not children summed into each other. The row shapes are H.Rept.
+    118-585's and S.Rept. 118-207's; the two columns carry different numbers
+    so a coincidence in one can't pass.
+    """
+
+    def check(self, rows):
+        nodes, obs, records, summary = run_rows(rows)
+        by_obs = {o["observation_id"]: o for o in obs}
+        out = {}
+        for r in records:
+            o = by_obs[r["observation_id"]]
+            # the sums and the parallel-total checks (not the delta column, memo
+            # breakdowns, or the model-read-indent nesting check)
+            if r["rule_applied"] in ("table_total", "structural") and \
+                    not r["expected_result"].startswith(("[", "memo breakdown", "nested under")):
+                out.setdefault(o["account_name_as_written"], []).append((r["result"], r["expected_result"]))
+        return nodes, obs, out
+
+    def test_nih_family(self):
+        nodes, obs, out = self.check([
+            row("PUBLIC HEALTH SERVICE"),
+            row("NATIONAL INSTITUTES OF HEALTH (NIH)"),
+            row("National Cancer Institute (NCI)", "7,000", "7,100"),
+            row("Office of the Director", "2,000", "2,050"),
+            row("Common Fund (non-add)", "(600)", "(610)", indent=2),
+            row("Gabriella Miller Kids First Research Act", "12", "12", indent=2),
+            row("Subtotal, Office of the Director", "2,012", "2,062"),
+            row("Buildings and Facilities", "350", "340"),
+            row("NIH Innovation Account, CURES Act", "(407)", "(127)"),
+            row("Subtotal, B&F, program level", "757", "467"),
+            row("Advanced Research Projects Agency for Health (ARPA-H)", "1,500", "---"),
+            row("Subtotal, National Institutes of Health", "10,862", "9,502"),
+            row("Total, National Institutes of Health (with CURES Act funding)", "11,269", "9,629"),
+            row("(Evaluation Funding (PHS Act Sec. 241))", "(1,412)", "(1,400)"),
+            row("Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",
+                "12,681", "11,029"),
+            row("Total, NIH, program level (excluding ARPA-H)", "11,181", "11,029"),
+            row("Total, Public Health Service with CURES Act funding", "11,269", "9,629"),
+        ])
+        for label, res in out.items():
+            self.assertEqual({r for r, _ in res}, {"pass"}, (label, res))
+        self.assertIn("+ 'NIH Innovation Account, CURES Act'",
+                      out["Total, National Institutes of Health (with CURES Act funding)"][0][1])
+        self.assertIn("- 'Advanced Research Projects Agency for Health (ARPA-H)'",
+                      out["Total, NIH, program level (excluding ARPA-H)"][0][1])
+        # the parent sums the headline, not the subtotal under it or the program level beside it
+        phs, = by_label(nodes, "Total, Public Health Service with CURES Act funding")
+        self.assertEqual([c.label for c in phs.children], ["Total, National Institutes of Health (with CURES Act funding)"])
+        comp = {o["account_name_as_written"]: o["account_component"] for o in obs if o["column_header"] == "Bill"}
+        self.assertEqual(comp["NIH Innovation Account, CURES Act"], "CURES")
+        self.assertIsNone(comp["Total, National Institutes of Health (with CURES Act funding)"])      # the headline
+        self.assertEqual(comp["Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)"],
+                         "program_level_with_cures_and_phs_evaluation_act_funding")
+        self.assertEqual(comp["Total, NIH, program level (excluding ARPA-H)"], "program_level_excluding_arpa_h")
+
+    def test_medicaid_advance_chain(self):
+        nodes, obs, out = self.check([
+            row("CENTERS FOR MEDICARE & MEDICAID SERVICES"),
+            row("Grants to States for Medicaid"),
+            row("Medicaid Current Law Benefits", "500", "520"),
+            row("State and Local Administration", "30", "32"),
+            row("Vaccines for Children", "10", "11"),
+            row("Total, Medicaid program level, available this fiscal year", "540", "563"),
+            row("Less appropriations provided in prior years", "-200", "-210"),
+            row("Total, Grants to States for Medicaid", "340", "353"),
+            row("New advance, 1st quarter, FY 2028", "210", "220"),
+            row("Total, Grants to States for Medicaid, appropriated in this bill", "550", "573"),
+            row("Health Care Fraud and Abuse Control", "9", "10"),
+            row("Total, Centers for Medicare & Medicaid Services", "559", "583"),
+        ])
+        for label, res in out.items():
+            self.assertEqual({r for r, _ in res}, {"pass"}, (label, res))
+        # CMS sums "appropriated in this bill": not the current-year total and the advance again
+        cms, = by_label(nodes, "Total, Centers for Medicare & Medicaid Services")
+        self.assertEqual([c.label for c in cms.children],
+                         ["Total, Grants to States for Medicaid, appropriated in this bill", "Health Care Fraud and Abuse Control"])
+        bill = {o["account_name_as_written"]: o for o in obs if o["column_header"] == "Bill"}
+        self.assertEqual([bill[k]["account_component"] for k in (
+            "Total, Medicaid program level, available this fiscal year", "Total, Grants to States for Medicaid",
+            "Total, Grants to States for Medicaid, appropriated in this bill")],
+            ["program_level_available_this_fiscal_year", None, "appropriated_in_this_bill"])
+        adv = bill["New advance, 1st quarter, FY 2028"]
+        self.assertEqual((adv["amount_type"], adv["fiscal_year"], adv["advance_for_fiscal_year"]), ("advance", 2027, 2028))
+        enacted = next(o for o in obs if o["account_name_as_written"] == "New advance, 1st quarter, FY 2028"
+                       and o["column_header"] == "FY 2026 Enacted")
+        self.assertEqual((enacted["fiscal_year"], enacted["advance_for_fiscal_year"]), (2026, 2027))
+
+    def test_single_line_views_leave_their_line_to_the_section(self):
+        nodes, obs, out = self.check([
+            row("Mental Health"),
+            row("Programs of Regional and National Significance", "1,068", "1,070"),
+            row("Prevention and Public Health Fund", "(12)", "(13)", indent=2),
+            row("Subtotal", "1,080", "1,083"),
+            row("Mental Health Block Grant (MHBG)", "986", "990"),
+            row("Evaluation Funding (PHS Act Sec 241)", "(21)", "(22)", indent=2),
+            row("Subtotal", "1,007", "1,012"),
+            row("Certified Community Behavioral Health Clinics", "385", "400"),
+            row("Subtotal, Mental Health", "2,439", "2,460"),
+            row("(Evaluation Funding (PHS Act Sec 241))", "(21)", "(22)"),
+            row("(Prevention and Public Health Fund)", "(12)", "(13)"),
+            row("Subtotal, Mental Health program level", "2,472", "2,495"),
+        ])
+        for label, res in out.items():
+            self.assertEqual({r for r, _ in res}, {"pass"}, (label, res))
+        mh, = by_label(nodes, "Subtotal, Mental Health")
+        self.assertEqual([c.label for c in mh.children], ["Programs of Regional and National Significance",
+                                                          "Mental Health Block Grant (MHBG)",
+                                                          "Certified Community Behavioral Health Clinics"])
+
+    def test_scope_parsing(self):
+        for label, want in (
+                ("Total, NIH program level (excluding ARPA–H)", ("NIH", "program level (excluding ARPA–H)", "view")),
+                ("Total, National Institutes of Health (NIH) with CURES Act funding",
+                 ("National Institutes of Health (NIH)", "with CURES Act funding", "headline")),
+                ("Total, Grants to States for Medicaid, appropriated in this bill",
+                 ("Grants to States for Medicaid", "appropriated in this bill", "in_bill")),
+                ("Total, Payments to States available in this bill", ("Payments to States", "available in this bill", "in_bill")),
+                ("Total, Current Year", ("", "Current Year", "view")),
+                ("Total, ACF (excluding emergencies)", ("ACF", "(excluding emergencies)", "view")),
+                ("Total, Title II, Department of Health and Human Services discretionary",
+                 ("Title II, Department of Health and Human Services", "discretionary", "view")),
+                ("Total, Health Resources and Services Administration", ("Health Resources and Services Administration", None, None)),
+                ("Subtotal", ("", None, None))):
+            self.assertEqual(ex.split_scope(label), want, label)
+
+    def test_signed_search_prefers_additions_and_needs_every_column(self):
+        cands = [("a", [5, 7]), ("b", [3, 3]), ("c", [2, 4])]
+        self.assertEqual(va.signed_explanation([5, 7], cands), [(1, "a")])
+        self.assertEqual(va.signed_explanation([2, 4], cands), [(1, "c")])       # a - b fits column 1 (5 - 3), not column 2
+        self.assertEqual(va.signed_explanation([-3, -3], cands), [(-1, "b")])
+        self.assertIsNone(va.signed_explanation([5, 8], cands, max_terms=1))
+        self.assertEqual(va.signed_explanation([0, 0], cands), [])
+
+
 if __name__ == "__main__":
     unittest.main()

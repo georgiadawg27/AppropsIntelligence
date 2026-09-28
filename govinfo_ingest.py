@@ -48,6 +48,8 @@ from urllib.request import Request, urlopen
 
 from dotenv import load_dotenv
 
+from subcommittees import SUBCOMMITTEES, subcommittees_named
+
 # Keys come from the project's .env, not the shell's inherited environment.
 ENV_PATH = Path(__file__).resolve().parent / ".env"
 load_dotenv(ENV_PATH, override=True)
@@ -131,6 +133,36 @@ def fetch_related(package_id, collection, api_key):
     return [r for r in data.get("results", []) if r.get("packageId")]
 
 
+RELATED_CONGRESS_RE = re.compile(r"^(?:CRPT|PLAW)-(\d+)")
+APPROPRIATIONS_RE = re.compile(r"APPROPRIATION", re.I)
+
+
+def related_rejection(bill_package_id, bill_title, rel):
+    """
+    Why a /related package isn't the bill's appropriations report or law,
+    or None if it is. /related follows the bill number, and a bill number
+    can carry other business: H.R. 2882 (118th) became the FY2024
+    Further Consolidated Appropriations Act, but was first the Udall
+    Foundation Reauthorization Act, and /related returns that bill's report
+    (CRPT-118hrpt364) beside P.L. 118-47. So a related package must be
+      - from the bill's Congress, and
+      - about appropriations (its title says so), and, when the bill's own
+        title names a subcommittee, name the same one.
+    """
+    parsed = parse_bill_package_id(bill_package_id)
+    m = RELATED_CONGRESS_RE.match(rel.get("packageId") or "")
+    congress = rel.get("congress") or (m.group(1) if m else None)
+    if parsed and congress and congress != parsed[0]:
+        return f"Congress {congress}, bill is Congress {parsed[0]}"
+    title = rel.get("title") or ""
+    if not APPROPRIATIONS_RE.search(title):
+        return f"title is not an appropriations title: {title!r}"
+    wanted = set(subcommittees_named(bill_title))
+    if wanted and not wanted & set(subcommittees_named(title)):
+        return f"title names {subcommittees_named(title) or 'no subcommittee'}, bill names {sorted(wanted)}: {title!r}"
+    return None
+
+
 def pdf_link_for(package_id, summary):
     """
     Where a package's PDF lives. BILLS and PLAW summaries carry a
@@ -148,6 +180,12 @@ def pdf_link_for(package_id, summary):
     return None
 
 
+def download(link, api_key):
+    req = Request(f"{link}?api_key={api_key}", headers={"Accept": "application/pdf"})
+    with urlopen(req) as resp:
+        return resp.read()
+
+
 def fetch_and_store(package_id, api_key, manifest):
     """
     Fetch & hash stage: pull a package's summary, download its PDF, hash it,
@@ -159,9 +197,20 @@ def fetch_and_store(package_id, api_key, manifest):
     if not pdf_link:
         return {"package_id": package_id, "status": "no_pdf_available"}
 
-    req = Request(f"{pdf_link}?api_key={api_key}", headers={"Accept": "application/pdf"})
-    with urlopen(req) as resp:
-        content = resp.read()
+    try:
+        content = download(pdf_link, api_key)
+    except HTTPError as e:
+        # a committee report whose one granule isn't named after the package
+        # (CRPT-118hrpt585's is CRPT-118hrpt585-pt1): /packages/{id}/pdf
+        # answers 400, the granule's own PDF is the report
+        if e.code not in (400, 404) or not package_id.startswith("CRPT-"):
+            raise
+        granules = api_get(f"/packages/{package_id}/granules", api_key, {"offsetMark": "*", "pageSize": 100})
+        ids = [g["granuleId"] for g in granules.get("granules", [])]
+        if len(ids) != 1:
+            return {"package_id": package_id, "status": "multi_granule_report", "granules": ids}
+        pdf_link = f"{API_BASE}/packages/{package_id}/granules/{ids[0]}/pdf"
+        content = download(pdf_link, api_key)
     if not content.startswith(b"%PDF"):
         return {"package_id": package_id, "status": "not_a_pdf", "url": pdf_link}
     content_hash = sha256_of(content)
@@ -214,6 +263,9 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
     JES (or anything else ingested by hand that isn't an advance copy) has no
     official counterpart to reconcile against.
     """
+    if subcommittee not in SUBCOMMITTEES.values():
+        # the extractor finds a multi-division document's division by this name
+        raise ValueError(f"subcommittee must be one of {sorted(SUBCOMMITTEES.values())}, got {subcommittee!r}")
     if stage not in STAGES:
         raise ValueError(f"stage must be one of {STAGES}, got {stage!r}")
     if doc_type not in DOC_TYPES:
@@ -407,6 +459,12 @@ def run(api_key, tracked_bills, since):
                 continue
             print(f"  {pkg['packageId']}: {len(related)} related {collection} package(s)")
             for rel in related:
+                why = related_rejection(pkg["packageId"], pkg.get("title"), rel)
+                if why:
+                    print(f"    {rel['packageId']}: not this bill's ({why})")
+                    results.append({"package_id": rel["packageId"], "status": "related_rejected",
+                                    "related_to": pkg["packageId"], "reason": why})
+                    continue
                 if rel["packageId"] not in seen:
                     seen.add(rel["packageId"])
                     store(rel["packageId"])
@@ -431,7 +489,8 @@ def main_ingest_local(argv):
     parser = argparse.ArgumentParser(prog="govinfo_ingest.py ingest-local",
                                      description="Store a document the pipeline can't fetch itself.")
     parser.add_argument("pdf")
-    parser.add_argument("--subcommittee", required=True, help="e.g. CJS")
+    parser.add_argument("--subcommittee", required=True, choices=sorted(SUBCOMMITTEES.values()),
+                        help="e.g. CJS, Labor-HHS-Education")
     parser.add_argument("--fiscal-year", type=int, required=True)
     parser.add_argument("--stage", required=True, choices=STAGES)
     parser.add_argument("--doc-type", required=True, choices=DOC_TYPES)
