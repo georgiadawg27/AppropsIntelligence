@@ -33,7 +33,12 @@ JES = ROOT / "fy26_cjs_jes.pdf"
 RECORDED = ROOT / "tests" / "fixtures" / "vision_cache_recorded"
 GT = ROOT / "tests" / "ground_truth" / "fy26_cjs_jes_title_iii.json"
 DOC_ID = "MANUAL-CJS-FY2026-Enacted-jes-398bd046"
-GATED = [117, 118, 120, 121, 122, 126, 127, 132, 135]
+# p126 left this list when rollups began to be fitted by their printed totals
+# (extract_approps.refit_by_printed_total): its OCR figures equal the recorded
+# vision reading (blank vs '---' aside), and its failure was structural -- OCR
+# merged the heading "Public safety officer benefits" into the "Death benefits"
+# line, so "Subtotal" 208,800 (= 174,000 + 34,800) had the wrong rows.
+GATED = [117, 118, 120, 121, 122, 127, 132, 135]
 JES24 = ROOT / "FY24_CJS_Conference_JES_scan_3_3_24.pdf"
 GT24 = ROOT / "tests" / "ground_truth" / "fy24_cjs_jes_title_iii.json"
 

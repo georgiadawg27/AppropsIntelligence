@@ -151,8 +151,14 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                 result, note = "flag", f"children not fully extracted ({node.match})"
             elif computed is None:
                 result, note = "fail", "a child value could not be parsed"
+            elif getattr(node, "fit_alternatives", None):
+                # the rows were found by the printed total, and another run fits too
+                result, note = "flag", ("children found by the printed total; another parse also fits, starting at "
+                                        + ", ".join(repr(x) for x in node.fit_alternatives[:3]))
             else:
                 result, note = ("pass" if computed == stated else "fail"), ""
+                if result == "pass" and "fit_by_printed_total" in (node.match or ""):
+                    note = "children found by the printed total (the headings didn't place them); the only run that fits"
                 if result == "fail" and node.children:
                     # a rollup can count memo transfers printed with its lines:
                     # "Subtotal, Chronic Disease ..., program level" is its line

@@ -620,6 +620,71 @@ class Frame:
         self.items, self.run_start = [], 0
 
 
+def _cell_amount(cell):
+    """A cell's figure for summing: printed number; a dash or a blank is zero;
+    None when it can't be read."""
+    if cell["kind"] == "number":
+        return cell["value"]
+    if cell["kind"] in ("dash", "blank"):
+        return 0
+    return None
+
+
+def sums_to(node, rows):
+    """Do these rows add up to the node's printed figures, in every column the
+    node prints a number in (value and difference columns alike)?"""
+    cols = [i for i, c in enumerate(node.cells) if c["kind"] == "number"]
+    if not cols:
+        return False
+    for i in cols:
+        vals = [_cell_amount(r.cells[i]) if i < len(r.cells) else 0 for r in rows]
+        if any(v is None for v in vals) or sum(vals) != node.cells[i]["value"]:
+            return False
+    return True
+
+
+def refit_by_printed_total(node, stack, nodes):
+    """
+    The printed rollups are constraints on the hierarchy. When the rows the
+    label rules gave a Total or Subtotal don't add up to what it prints --
+    and no memo printed with them explains the difference (the validator's
+    program-level case) -- take instead the run of rows printed directly
+    above it that does, in every printed column: the shortest such run.
+    Section headings can't tell a sibling section from a nested one
+    ("DEPARTMENTAL MANAGEMENT" under an unprinted "Office of the Secretary"),
+    the arithmetic can. More than one run that fits (other than by rows that
+    are zero throughout) is recorded on the node, and the validator flags it
+    instead of passing it.
+    """
+    import validate_approps
+    if sums_to(node, node.children):
+        return
+    if node.children:
+        first = min(c.id for c in node.children)
+        memos = [m for m in nodes if first <= m.id < node.id and m.kind == "memo"]
+        cols = [i for i, c in enumerate(node.cells) if c["kind"] == "number"]
+        kid = lambda r, i: (_cell_amount(r.cells[i]) or 0) if i < len(r.cells) else 0
+        gaps = [node.cells[i]["value"] - sum(kid(r, i) for r in node.children) for i in cols]
+        if memos and validate_approps.signed_explanation(gaps, [(m, [kid(m, i) for i in cols]) for m in memos]):
+            return
+    holder = next((f for f in reversed(stack) if f.items and f.items[-1] is node), None)
+    if holder is None:
+        return
+    pool = holder.items[:-1] + [c for c in node.children if not any(c is x for x in holder.items)]
+    fits = [k for k in range(1, len(pool) + 1) if sums_to(node, pool[-k:])]
+    if not fits:
+        return
+    k = fits[0]
+    zero = lambda r: all((_cell_amount(c) or 0) == 0 for c in r.cells)
+    node.fit_alternatives = [pool[-j].label for j in fits[1:] if not all(zero(r) for r in pool[-j:-k])]
+    node.children = pool[-k:]
+    holder.items = pool[:-k] + [node]
+    holder.run_start = len(holder.items) if node.match in ("run_since_last_subtotal", "named_section", "unmatched") \
+        else min(holder.run_start, len(holder.items))
+    node.match += "+fit_by_printed_total"
+    node.complete = True
+
+
 def build_hierarchy(rows, table_starts_with_title):
     """
     Turn the page-ordered row stream into Nodes with each rollup's children
@@ -929,6 +994,9 @@ def build_hierarchy(rows, table_starts_with_title):
                 node.children, node.match, node.complete = top.items[top.run_start:], "unmatched", False
                 top.items = top.items[:top.run_start] + [node]
                 top.run_start = len(top.items)
+
+        if kind in ("total", "subtotal") and not is_account_rollup(label) and not node.match.startswith("view_"):
+            refit_by_printed_total(node, stack, nodes)
 
         if kind in ("total", "subtotal") and not is_account_rollup(label):
             base = split_scope(label)[0]
