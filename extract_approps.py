@@ -1010,12 +1010,18 @@ def parse_units(declared):
 
 ADVANCE_RE = re.compile(r"^\s*(?:new\s+)?advances?\b|\badvance\s+appropriations?\b", re.I)
 CURES_RE = re.compile(r"\bCURES\s+Act\b", re.I)
+PRIOR_YEAR_ADVANCE_RE = re.compile(r"^\s*less\s+appropriations\s+provided\s+in\s+prior\s+years?\b", re.I)
 
 
 def amount_type_for(node):
     low = node.label.lower()
     t = {"amount_type": "budget authority", "offsetting_collections": False, "transfer_direction": None}
-    if ADVANCE_RE.search(node.label):
+    if PRIOR_YEAR_ADVANCE_RE.search(node.label):
+        # "Less appropriations provided in prior years": this fiscal year's
+        # share appropriated last year as its advance, printed negative
+        # (decision 2026-09-28: its own amount_type, stored as printed)
+        t["amount_type"] = "prior_year_advance"
+    elif ADVANCE_RE.search(node.label):
         # "New advance, 1st quarter, FY 2027": appropriated in this bill for
         # the next fiscal year (decision 2026-09-27: its own amount_type; the
         # observation's fiscal_year stays the year it was appropriated)

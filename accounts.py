@@ -192,6 +192,14 @@ PARALLEL_SCOPE_COMPONENTS = (
 )
 BREAKDOWN_COMPONENTS = frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
 VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS) | BREAKDOWN_COMPONENTS
+# The same, as the store's Component table rows (component, kind, description):
+# what the loader seeds when a workbook has no Component tab yet.
+COMPONENT_KINDS = (
+    [(c, "part", f"a line printed under the account's own line ({', '.join(COMPONENTS[c])})") for c in COMPONENTS]
+    + [("supplemental_act", "part", "a separate supplemental appropriations act (Other Appropriations)"),
+       ("budget_amendment", "part", "a budget amendment to the President's request")]
+    + [("CURES", "contained", "NIH Innovation Account (21st Century Cures Act): inside NIH's headline total")]
+    + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 
 

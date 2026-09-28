@@ -27,7 +27,9 @@ CREATE TABLE account (
     agency                  TEXT NOT NULL,
     bureau                  TEXT,
     treasury_account_symbol TEXT,
-    status                  TEXT NOT NULL CHECK (status IN ('active', 'inactive', 'superseded')),
+    -- proposed: an account only a budget request carries (the FY2026-27 requests'
+    -- Administration for a Healthy America), never enacted
+    status                  TEXT NOT NULL CHECK (status IN ('active', 'inactive', 'superseded', 'proposed')),
     fund_type               TEXT NOT NULL CHECK (fund_type IN ('general', 'trust', 'special', 'revolving',
                                                                'working_capital', 'no_year')),
     effective_start         TEXT NOT NULL CHECK (date(effective_start) IS effective_start),
@@ -93,6 +95,20 @@ CREATE TABLE bill_report_reference (
     UNIQUE (subcommittee, fiscal_year, stage)
 ) STRICT;
 
+-- What a component is to its account's own line (component NULL) in a cell:
+--   part      -- added to it: the account's lines in a cell sum (NSF's
+--                'defense' line, CHIMP, a supplemental act, a budget amendment)
+--   contained -- already inside it, shown as its own row (CURES inside NIH's
+--                headline "Total, NIH (with CURES Act funding)")
+--   view      -- the same figure counted another way (a parallel total's
+--                printed scope: 'program_level', 'appropriated_in_this_bill')
+-- Nothing ever adds a contained or view line to its headline.
+CREATE TABLE component (
+    component   TEXT PRIMARY KEY CHECK (component <> ''),
+    kind        TEXT NOT NULL CHECK (kind IN ('part', 'contained', 'view')),
+    description TEXT NOT NULL
+) STRICT;
+
 CREATE TABLE appropriations_observation (
     observation_id           TEXT PRIMARY KEY,
     canonical_account_id     TEXT NOT NULL REFERENCES account (canonical_account_id),
@@ -104,13 +120,19 @@ CREATE TABLE appropriations_observation (
     report_id                TEXT,
     amount                   INTEGER NOT NULL,
     amount_type              TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
-                                                                  'transfer', 'offsetting_collection', 'supplemental', 'advance',
+                                                                  'transfer', 'offsetting_collection', 'supplemental', 'advance', 'prior_year_advance',
                                                                   'other')),
     -- which of an account's lines this is when it prints more than one of the
     -- same amount_type in a cell (NSF R&RA base vs 'defense'); NULL for the
     -- account's own line. Never '' -- a blank is NULL, so the fact key below
     -- can't tell two spellings of "none" apart.
     component                TEXT CHECK (component IS NULL OR component <> ''),
+    -- For a component whose kind (component table) is 'contained' or 'view':
+    -- the account's headline observation (component NULL) in the same
+    -- document and cell that this line is inside of (CURES inside NIH's
+    -- "with CURES Act funding" total) or another scope of (Medicaid's
+    -- "appropriated in this bill"). NULL for a headline or a 'part'.
+    headline_observation_id  TEXT REFERENCES appropriations_observation (observation_id) DEFERRABLE INITIALLY DEFERRED,
     offsetting_collections   INTEGER NOT NULL CHECK (offsetting_collections IN (0, 1)),
     transfer_link_account_id TEXT REFERENCES account (canonical_account_id),
     source_document_id       TEXT NOT NULL REFERENCES source_document (document_id),
@@ -184,7 +206,7 @@ CREATE TABLE confirmed_absence (
     stage                TEXT NOT NULL CHECK (stage IN ('President''s Budget', 'House Reported', 'Senate Reported',
                                                         'Enacted', 'House Passed', 'Senate Passed')),
     amount_type          TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
-                                                              'transfer', 'offsetting_collection', 'supplemental', 'advance',
+                                                              'transfer', 'offsetting_collection', 'supplemental', 'advance', 'prior_year_advance',
                                                               'other')),
     component            TEXT CHECK (component IS NULL OR component <> ''),
     source_document_id   TEXT NOT NULL REFERENCES source_document (document_id),

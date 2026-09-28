@@ -355,6 +355,51 @@ class GridData(CompareTest):
         # CJS's own Title II (Justice) is another subcommittee's title: not in this sum
         self.assertEqual(got["store_base_thousands"], 1_266_969_768)
 
+    def test_prior_year_advance_is_checked_against_last_years_advance(self):
+        db = Path(self.tmp.name) / "adv.db"
+        shutil.copy(self.db, db)
+        c = sqlite3.connect(db)
+        c.row_factory = sqlite3.Row
+        tmpl = dict(c.execute("SELECT * FROM appropriations_observation LIMIT 1").fetchone())
+        for oid, fy, stage, t, amt in (("OBS-ADV-24", 2024, "Enacted", "advance", 245_580_414),
+                                       ("OBS-PYA-25", 2025, "Senate Reported", "prior_year_advance", -245_580_414),
+                                       ("OBS-PYA-25H", 2025, "House Reported", "prior_year_advance", -245_580_000)):
+            c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
+                      list(dict(tmpl, observation_id=oid, fiscal_year=fy, stage=stage, amount_type=t, component=None,
+                                amount=amt * 1000).values()))
+        c.commit()
+        got = S.prior_year_advance_warnings(c)
+        c.close()
+        self.assertEqual(len(got), 1)
+        self.assertIn("OBS-PYA-25H", got[0])
+        self.assertIn("OBS-ADV-24", got[0])
+
+    def test_contained_and_view_lines_name_their_headline(self):
+        db = Path(self.tmp.name) / "headline.db"
+        shutil.copy(self.db, db)
+        c = sqlite3.connect(db)
+        c.row_factory = sqlite3.Row
+        c.execute("PRAGMA foreign_keys = ON")
+        tmpl = dict(c.execute("SELECT * FROM appropriations_observation WHERE component IS NULL LIMIT 1").fetchone())
+        head = tmpl["observation_id"]
+        other_doc = c.execute("SELECT document_id FROM source_document WHERE document_id <> ?",
+                              (tmpl["source_document_id"],)).fetchone()[0]
+        for oid, comp, h, doc in (("OBS-C-OK", "CURES", head, tmpl["source_document_id"]),
+                                  ("OBS-C-NONE", "program_level", None, tmpl["source_document_id"]),
+                                  ("OBS-C-DOC", "appropriated_in_this_bill", head, other_doc),
+                                  ("OBS-C-PART", "defense", head, tmpl["source_document_id"])):
+            c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
+                      list(dict(tmpl, observation_id=oid, component=comp, headline_observation_id=h,
+                                source_document_id=doc).values()))
+        c.commit()
+        kinds = dict(c.execute("SELECT component, kind FROM component").fetchall())
+        got = S.headline_warnings(c, kinds)
+        c.close()
+        self.assertFalse(any("OBS-C-OK" in w for w in got))                      # a contained line inside its headline
+        self.assertTrue(any("OBS-C-NONE" in w and "a view of" in w for w in got))
+        self.assertTrue(any("OBS-C-DOC" in w and "source_document_id" in w for w in got))
+        self.assertTrue(any("OBS-C-PART" in w and "'part' line" in w for w in got))
+
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
         other = Path(self.tmp.name) / "two.db"

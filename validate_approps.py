@@ -228,6 +228,31 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                 else:
                     implicated.add(obs["observation_id"])
 
+    # --- prior-year advance: FY N's "Less appropriations provided in prior
+    #     years" cancels FY N-1's enacted advance printed beside it
+    advances = [(n, c) for n in nodes if n.kind == "line" for c in value_cols
+                if c["stage"] == "Enacted" and obs_by.get((n.id, c["index"])) is not None
+                and obs_by[(n.id, c["index"])]["amount_type"] == "advance"]
+    for node in nodes:
+        for col in value_cols:
+            o = obs_by.get((node.id, col["index"]))
+            if o is None or o["amount_type"] != "prior_year_advance" or not col["fiscal_year"]:
+                continue
+            # printed a row or two apart ("Less appropriations provided in prior
+            # years" / Total / "New advance, 1st quarter"), the advance often
+            # after its section's total has closed the section
+            same = [(n, c) for n, c in advances if abs(n.id - node.id) <= 4 and c["fiscal_year"] == col["fiscal_year"] - 1]
+            if not same:
+                continue
+            n, c = min(same, key=lambda x: abs(x[0].id - node.id))
+            before, now = _cell_value(n, c["index"]), _cell_value(node, col["index"])
+            if before is None or now is None:
+                continue
+            ok = now == -before
+            record(o, "structural", f"cancels FY{c['fiscal_year']} Enacted advance {n.label!r}: -{_fmt(before)}",
+                   f"{_fmt(now)} as printed", "pass" if ok else "fail")
+            (arithmetic_pass if ok else implicated).add(o["observation_id"])
+
     # --- nesting read from indentation ------------------------------------
     unconfirmed_nesting = set()
     by_id = {n.id: n for n in nodes}

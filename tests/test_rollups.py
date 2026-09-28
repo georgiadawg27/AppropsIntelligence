@@ -378,6 +378,28 @@ class ParallelTotals(unittest.TestCase):
         enacted = next(o for o in obs if o["account_name_as_written"] == "New advance, 1st quarter, FY 2028"
                        and o["column_header"] == "FY 2026 Enacted")
         self.assertEqual((enacted["fiscal_year"], enacted["advance_for_fiscal_year"]), (2026, 2027))
+        # "Less appropriations provided in prior years": its own type, negative as printed
+        less = bill["Less appropriations provided in prior years"]
+        self.assertEqual((less["amount_type"], less["amount"]), ("prior_year_advance", -210_000))
+
+    def test_prior_year_advance_cancels_last_years_enacted_advance(self):
+        rows = [row("Grants to States for Medicaid"),
+                row("Medicaid Current Law Benefits", "500", "520"),
+                row("Less appropriations provided in prior years", "-200", "-210"),
+                row("Total, Grants to States for Medicaid", "300", "310"),
+                row("New advance, 1st quarter, FY 2028", "210", "220"),
+                row("Total, Grants to States for Medicaid, appropriated in this bill", "510", "530")]
+        _, obs, records, _ = run_rows(rows)
+        by_obs = {o["observation_id"]: o for o in obs}
+        checks = [(by_obs[r["observation_id"]]["column_header"], r["result"]) for r in records
+                  if r["expected_result"].startswith("cancels FY")]
+        # the FY2027 bill's -210 cancels the FY2026 enacted advance of 210; the
+        # FY2026 column has no FY2025 column beside it to check against
+        self.assertEqual(checks, [("Bill", "pass")])
+        rows[2] = row("Less appropriations provided in prior years", "-200", "-211")
+        rows[3] = row("Total, Grants to States for Medicaid", "300", "309")
+        _, obs, records, _ = run_rows(rows)
+        self.assertEqual([r["result"] for r in records if r["expected_result"].startswith("cancels FY")], ["fail"])
 
     def test_single_line_views_leave_their_line_to_the_section(self):
         nodes, obs, out = self.check([
