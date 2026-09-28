@@ -76,7 +76,7 @@ class Load(StoreTest):
         self.assertEqual(self.report["rows"], {
             "account": 30, "historical_name": 7, "source_document": 24, "bill_report_reference": 41,
             "appropriations_observation": 870, "confirmed_absence": 197, "account_relationship": 0,
-            "validation_record": 89, "component": 19})
+            "validation_record": 89, "component": 20})
         # v28 predates the Component tab: its kinds come from the code, and say so
         self.assertEqual(self.report["tabs_not_in_workbook"], ["Component"])
         self.assertEqual(self.report["component_kinds_from"], "accounts.COMPONENT_KINDS (no Component rows in the workbook)")
@@ -95,6 +95,13 @@ class Load(StoreTest):
             rng = self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?", (doc,)).fetchone()[0]
             self.assertEqual(tuple(o), (page, doc))
             self.assertTrue(S.within(page, rng), (oid, page, rng))
+
+    def test_table_pages_may_be_several_ranges(self):
+        # a title's pages and a bill-level section after the grand total
+        self.assertTrue(S.within("467", "430-452; 467"))
+        self.assertTrue(S.within("440", "430-452; 467"))
+        self.assertFalse(S.within("460", "430-452; 467"))
+        self.assertFalse(S.within("451-453", "430-452; 467"))
 
     def test_fy2027_house_links_are_the_verified_packages(self):
         # both fetched live and checked: the report is byte-identical to the

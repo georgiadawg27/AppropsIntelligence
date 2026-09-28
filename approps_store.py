@@ -337,9 +337,11 @@ def page_span(pages):
 
 def within(pages, table_pages):
     """An observation's page(s) inside its document's recorded table pages
-    (a document's range may be the whole comparative table)."""
-    a, b = page_span(pages), page_span(table_pages)
-    return bool(a and b and b[0] <= a[0] <= a[1] <= b[1])
+    (a document's range may be the whole comparative table, or several
+    ranges: '430-452; 467' -- a title's pages and a bill-level section)."""
+    a = page_span(pages)
+    spans = [page_span(x) for x in re.split(r"[;,]", table_pages or "")]
+    return bool(a) and any(b and b[0] <= a[0] <= a[1] <= b[1] for b in spans)
 
 
 def data_quality_warnings(conn):

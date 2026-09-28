@@ -4,6 +4,7 @@ chimp,part,a line printed under the account's own line (CHIMP)
 chimp_pop_up,part,a line printed under the account's own line (CHIMP Pop-Up)
 supplemental_act,part,a separate supplemental appropriations act (Other Appropriations)
 budget_amendment,part,a budget amendment to the President's request
+emergency,part,"a separate line of the account designated emergency ('... (emergency)'), where the account's amount type has no emergency form: an emergency rescission"
 CURES,contained,NIH Innovation Account (21st Century Cures Act): inside NIH's headline total
 program_level,view,parallel total printed with scope 'program level'
 fiscal_year_program_level,view,parallel total printed with scope 'fiscal year program level'

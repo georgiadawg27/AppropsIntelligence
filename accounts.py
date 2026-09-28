@@ -197,7 +197,9 @@ VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS) | BREAKDOW
 COMPONENT_KINDS = (
     [(c, "part", f"a line printed under the account's own line ({', '.join(COMPONENTS[c])})") for c in COMPONENTS]
     + [("supplemental_act", "part", "a separate supplemental appropriations act (Other Appropriations)"),
-       ("budget_amendment", "part", "a budget amendment to the President's request")]
+       ("budget_amendment", "part", "a budget amendment to the President's request"),
+       ("emergency", "part", "a separate line of the account designated emergency ('... (emergency)'), where the "
+                             "account's amount type has no emergency form: an emergency rescission")]
     + [("CURES", "contained", "NIH Innovation Account (21st Century Cures Act): inside NIH's headline total")]
     + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)

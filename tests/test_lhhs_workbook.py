@@ -17,6 +17,7 @@ WB = ROOT / "reference" / "review" / "lhhs" / "workbook"
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(WB))
 
+import approps_store as S  # noqa: E402
 import merge_check  # noqa: E402
 
 
@@ -37,13 +38,32 @@ class LhhsRowsLoad(unittest.TestCase):
 
     def test_scope(self):
         accts = {a["canonical_account_id"]: a for a in rows("account")}
-        self.assertEqual(len(accts), 21)                  # 10 agency totals, the title total, 9 accounts, AHA
+        # 10 agency totals, the title total, 9 accounts, AHA, 4 General Provisions lines
+        self.assertEqual(len(accts), 25)
         self.assertEqual({a["subcommittee"] for a in accts.values()}, {"Labor-HHS-Education"})
-        self.assertEqual(sorted(int(a["display_order"]) for a in accts.values()), list(range(1, 22)))
+        self.assertEqual(sorted(int(a["display_order"]) for a in accts.values()), list(range(1, 26)))
+        gp = [a for a in accts.values() if a["bureau"] == "General Provisions"]
+        self.assertEqual(len(gp), 4)
+        self.assertTrue(all(not S.rollup_scope(a) for a in gp))       # accounts, not rollups
         aha = accts["ACC-HHS-AHA-TOTAL"]
         self.assertEqual((aha["status"], aha["effective_start"]), ("proposed", "2025-10-01"))
         self.assertEqual({o["stage"] for o in rows("observation") if o["canonical_account_id"] == "ACC-HHS-AHA-TOTAL"},
                          {"President's Budget"})
+
+    def test_title_ii_reconciles_in_the_store(self):
+        # with the General Provisions lines as accounts, every recorded Title II total is its agency
+        # totals + the General Provisions lines (a rescission signed) - CURES, from the store alone
+        cells = self.report["title_ii"]
+        self.assertEqual(len(cells), 13)
+        self.assertEqual({r["reconciles_through_rollups"] for r in cells}, {"yes"})
+
+    def test_senate_rescissions_are_bill_level(self):
+        # the Senate reports print the HHS rescissions after the grand total, outside Title II
+        nef = [o for o in rows("observation") if o["canonical_account_id"] == "ACC-HHS-GP-NEF-RESCISSION"
+               and o["stage"] == "Senate Reported"]
+        self.assertEqual({(o["fiscal_year"], o["amount"], o["component"]) for o in nef},
+                         {("2025", "-1656000000", ""), ("2025", "0", "emergency"), ("2026", "-1613000000", "")})
+        self.assertTrue(all("outside Title II" in o["source_table_or_section"] for o in nef))
 
     def test_jes_hand_reads_are_human_entered(self):
         jes = [o for o in rows("observation") if o["source_document_id"] == "SRC-EXPL-LHHS-FY2026-ENACTED"]

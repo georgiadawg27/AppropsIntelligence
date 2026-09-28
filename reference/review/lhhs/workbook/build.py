@@ -3,13 +3,18 @@ Workbook-ready rows for the Labor-HHS Title II proof, for merging into v29:
 one CSV per workbook tab, the tab's own columns (the Appropriations
 Observation tab also carries the proposed headline_observation_id, and the
 proposed Component tab is included), plus the FY2025 "Estimate" rows held
-back for a decision.
+back (lhhs_held_fy2025_estimate.csv, not a workbook tab): an operating plan
+is not a stage the schema models, so Labor-HHS FY2025 Enacted stays absent
+(decision 2026-09-28); the file is the record of why.
 
     python reference/review/lhhs/workbook/build.py        # writes the CSVs next to this file
 
 Scope (as agreed): the ten agency totals, the Title II total and nine
-accounts, plus the proposed Administration for a Healthy America; every
-fiscal year x stage the six committee reports and the FY2026 JES print.
+accounts, plus the proposed Administration for a Healthy America and the
+four Title II General Provisions lines (decision 2026-09-28: as accounts, so
+the title total reconciles in the store); every fiscal year x stage the six
+committee reports and the FY2026 JES print. The Senate reports print the HHS
+rescissions after the grand total (senate_sections).
 
 One observation per account x fiscal year x stage x amount_type x component
 (the store's fact key). A cell's headline and its components come from one
@@ -56,11 +61,11 @@ DOCS = {  # package -> Source Document fields (published dates: govinfo summarie
                            also="FY2024 President's Budget; FY2023 Enacted", url="https://www.govinfo.gov/app/details/CRPT-118srpt84",
                            bill="S.2624", report="S.Rept.118-84", bill_url="https://www.govinfo.gov/app/details/BILLS-118s2624rs"),
     "CRPT-118srpt207": dict(id="SRC-CRPT-118SRPT207", agency="Senate Committee on Appropriations", type="committee_report",
-                            cs="118-2", fy=2025, date="2024-08-01", stage="Senate Reported", pages="430-452",
+                            cs="118-2", fy=2025, date="2024-08-01", stage="Senate Reported", pages="430-452; 467",
                             also="FY2025 President's Budget; FY2024 Enacted", url="https://www.govinfo.gov/app/details/CRPT-118srpt207",
                             bill="S.4942", report="S.Rept.118-207", bill_url="https://www.govinfo.gov/app/details/BILLS-118s4942rs"),
     "CRPT-119srpt55": dict(id="SRC-CRPT-119SRPT55", agency="Senate Committee on Appropriations", type="committee_report",
-                           cs="119-1", fy=2026, date="2025-08-01", stage="Senate Reported", pages="426-442",
+                           cs="119-1", fy=2026, date="2025-08-01", stage="Senate Reported", pages="426-442; 450",
                            also="", url="https://www.govinfo.gov/app/details/CRPT-119srpt55",
                            bill="S.2587", report="S.Rept.119-55", bill_url="https://www.govinfo.gov/app/details/BILLS-119s2587rs"),
     "CRPT-118hrpt585": dict(id="SRC-CRPT-118HRPT585", agency="House Committee on Appropriations", type="committee_report",
@@ -222,12 +227,52 @@ ACCOUNTS = [
          notes=AGENCY_TOTAL_NOTE.format(a="the Office of the Secretary"),
          head=[r"^Total, Office of the Secretary$"],
          views=[r"^Total, Office of the Secretary, program level$"]),
+    # Title II's own General Provisions lines: printed after the Office of the Secretary, outside every agency
+    # total, and counted in the title total (title_ii_totals.py). Accounts in the manner of CJS's Step 6
+    # mechanism accounts: one per printed line, agency the Department (no operating division's total holds them).
+    dict(id="ACC-HHS-GP-MEDICARE-OPERATIONS", name="Medicare Operations (Title II general provision)",
+         agency="Department of Health and Human Services", bureau="General Provisions", fund="trust",
+         notes=("A Title II general-provision line, not an operating division's account: the section number varies by "
+                "bill (House Sec. 226, Senate Sec. 227; P.L. 119-75 Sec. 227). The law lets the Secretary transfer up to "
+                "$455,000,000 to 'Centers for Medicare & Medicaid Services, Program Management' from the Federal Hospital "
+                "Insurance and Federal Supplementary Medical Insurance Trust Funds for Medicare program management. The "
+                "tables print it under General Provisions, outside the CMS total, and count it in the Title II total; "
+                "recorded as printed (budget authority)."),
+         label="'Medicare Operations (Sec. nnn)'", search=r"Medicare Operations|Traditional Medicare Program",
+         head=[r"^Medicare Operations \(Sec\.? \d+\)$"]),
+    dict(id="ACC-HHS-GP-NEF-RESCISSION", name="Nonrecurring Expenses Fund, HHS (rescission)",
+         agency="Department of Health and Human Services", bureau="General Provisions", fund="general",
+         amount_type="rescission",
+         notes=("A rescission-only general-provision line (House Sec. 234/235, P.L. 119-75 Sec. 237: 'Of the unobligated "
+                "balances in the Nonrecurring Expenses Fund ... are hereby rescinded'), not a standing program account. "
+                "Recorded as printed (negative). H.Rept. 118-585 also prints a separate '(rescission) (emergency)' line: "
+                "component 'emergency'. The Senate reports print no such line."),
+         label="'Nonrecurring expenses fund, HHS (rescission) (Sec. nnn)'", search=r"Nonrecurring expenses fund(, HHS)? \(rescission",
+         head=[r"^Nonrecurring expenses fund, HHS \(rescission\)( \(Sec\.? \d+\))?$"],
+         parts=[(r"^Nonrecurring expenses fund, HHS \(rescission\) \(emergency\)$", "emergency")]),
+    dict(id="ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", name="Adoption Incentives (rescission)",
+         agency="Department of Health and Human Services", bureau="General Provisions", fund="general",
+         amount_type="rescission",
+         notes=("A rescission-only line printed only by H.Rept. 118-585, under Title II General Provisions and outside the "
+                "ACF total, though Adoption Incentives is an ACF program. Recorded as printed (negative)."),
+         label="'Adoption Incentives (rescission)'", search=r"Adoption Incentives \(rescission",
+         head=[r"^Adoption Incentives \(rescission\)$"]),
+    dict(id="ACC-HHS-GP-MEDICARE-LIMITATION", name="Limitation for Title XVIII of the Social Security Act",
+         agency="Department of Health and Human Services", bureau="General Provisions", fund="general",
+         notes=("A general-provision line printed only for FY2026 Enacted (the JES and H.Rept. 119-696 p.392, 2,000; "
+                "'---' in the FY2027 columns). The provision of P.L. 119-75 it reflects is not identified here -- the "
+                "Title II general provisions carry no section naming title XVIII with that figure; to be confirmed. "
+                "Vision read H.Rept. 119-696's label as 'mitation ...' (the page image prints 'Limitation ...')."),
+         label="'Limitation for Title XVIII of the Social Security Act'", search=r"Title XVIII",
+         head=[r"^(Li)?mitation for Title XVIII of the Social Security Act$"]),
     dict(id="ACC-HHS-TITLE-II-TOTAL", name="Title II, Department of Health and Human Services (title total)",
          agency="Department of Health and Human Services", bureau="(Title Total)", fund="general", rollup=True,
          notes=("Derived rollup -- the Title II title total as printed. Reconciles as the ten agency totals (eleven in the "
                 "FY2026-27 requests, with AHA) + General Provisions lines (signed) - the CURES Act line, in all 16 printed "
-                "columns (reference/review/lhhs/title_ii_totals.py). The House and Senate reports scope FY2024's general "
-                "provisions differently, so their FY2024 figures differ by 1,320,000 as printed."),
+                "columns (reference/review/lhhs/title_ii_totals.py); in the store, through the agency-total rollups and the "
+                "four General Provisions accounts, in all 13 recorded cells. The House counts the HHS rescissions (NEF, "
+                "Adoption Incentives) in Title II's general provisions; the Senate prints them after the grand total, "
+                "outside Title II -- so the two FY2024 figures differ by 1,320,000 as printed."),
          head=[r"^Total, Title II, Department of Health and Human Services$"],
          views=[r"^Total, Title II, Department of Health and Human Services,? discretionary$"]),
 ]
@@ -263,23 +308,114 @@ def jes_figures():
     figs = []
     with open(HERE.parent / "hand_checks.csv", newline="") as f:
         for i, h in enumerate(csv.DictReader(f)):
-            if h["document"] != JES or not re.fullmatch(r"\(?-?\d+\)?", h["hand_read_thousands"] or ""):
+            if h["document"] != JES:
                 continue
-            label = re.sub(r"\s*\(LIHEAP; no LIHEAP total is printed\)", "", h["label_as_printed"])
-            v = int(h["hand_read_thousands"].strip("()"))
-            memo = h["hand_read_thousands"].startswith("(")
-            t = "advance" if re.match(r"^New advance", label) else \
-                "prior_year_advance" if re.match(r"^Less appropriations provided in prior years", label) else "budget authority"
-            comp = None
-            if re.search(r"CURES Act", label) and not re.search(r"with CURES", label):
-                comp = "CURES"
-            figs.append(dict(observation_id=f"JES-{i}", account_name_as_written=label, amount=v * 1000, amount_as_printed=
-                             h["hand_read_thousands"], fiscal_year=2026, stage="Enacted", column_header="FINAL BILL",
-                             source_page=f"{h['pdf_page']} ({h['printed_page']})", is_memo=memo, row_kind="line",
-                             amount_type=t, account_component=comp, extraction_method="human_entered",
-                             extraction_confidence=0.95, node_id=int(h["pdf_page"]) * 100, _records=[], _pkg=JES,
-                             advance_for_fiscal_year=2027 if t == "advance" else None))
+            # one row reads several lines ("a; b; c" with "x; y; z"): the General Provisions
+            labels, values = h["label_as_printed"].split("; "), (h["hand_read_thousands"] or "").split("; ")
+            if len(labels) == len(values) > 1:
+                for j, (lab, val) in enumerate(zip(labels, values)):
+                    figs.append(jes_figure(dict(h, label_as_printed=lab, hand_read_thousands=val), f"{i}.{j}", j))
+            elif re.fullmatch(r"\(?-?\d+\)?", h["hand_read_thousands"] or ""):
+                figs.append(jes_figure(h, i, 0))
     return figs
+
+
+def jes_figure(h, key, offset):
+    """One hand-read JES line as an observation-like dict."""
+    label = re.sub(r"\s*\(LIHEAP; no LIHEAP total is printed\)", "", h["label_as_printed"])
+    v = int(h["hand_read_thousands"].strip("()"))
+    memo = h["hand_read_thousands"].startswith("(")
+    t = "advance" if re.match(r"^New advance", label) else \
+        "prior_year_advance" if re.match(r"^Less appropriations provided in prior years", label) else \
+        "rescission" if re.search(r"\(rescission\)", label) else "budget authority"
+    comp = None
+    if re.search(r"CURES Act", label) and not re.search(r"with CURES", label):
+        comp = "CURES"
+    return dict(observation_id=f"JES-{key}", account_name_as_written=label, amount=v * 1000, amount_as_printed=
+                h["hand_read_thousands"], fiscal_year=2026, stage="Enacted", column_header="FINAL BILL",
+                source_page=f"{h['pdf_page']} ({h['printed_page']})", is_memo=memo, row_kind="line",
+                amount_type=t, account_component=comp, extraction_method="human_entered",
+                extraction_confidence=0.95, node_id=int(h["pdf_page"]) * 100 + offset, _records=[], _pkg=JES,
+                advance_for_fiscal_year=2027 if t == "advance" else None)
+
+
+# The Senate reports print the HHS rescissions outside Title II, in a bill-level section after the grand
+# total; its lines are read from the text layer here (the Title II extraction stops at the title).
+SENATE_SECTIONS = {"CRPT-118srpt207": ("DISCRETIONARY RESCISSIONS", "Total, Discretionary Rescissions"),
+                   "CRPT-119srpt55": ("DISCRETIONARY RESCISSIONS", "Total, Discretionary Rescissions")}
+# Not S.Rept. 118-84: its bill-level lines sit in "Discretionary Adjustments" (p.406), a scorekeeping section whose
+# lines don't sum to its printed total as read, and whose labels differ ("Nonrecurring expenses fund (rescission)",
+# no "HHS"; "Traditional Medicare Program" 455,000) -- not attributed to these accounts; left for review.
+LEADER = re.compile(r"^([^.\s].*?)\s*\.{4,}\s*$")
+FIGURE = re.compile(r"^\(?([¥∂]?)([\d,]+)\s*\)?$")
+
+
+def senate_sections():
+    """-> {pkg: [fig]}: every line of the section, each value column, with a
+    structural record: the section's lines sum to its printed total in each
+    column, and each line's delta columns equal their differences."""
+    out = {}
+    for pkg, (heading, total_label) in SENATE_SECTIONS.items():
+        d = json.load(open(ROOT / "extractions" / f"{pkg}.title-ii.json"))
+        cols = d["extraction"]["columns"]
+        # the heading's page and the next two: a section's last figures can run onto the next page, after
+        # that page's number (its first line, never a figure) and running head
+        pages = [r for r in map(json.loads, open(ROOT / "extractions" / f"{pkg}.text-pages.jsonl"))]
+        start = next(i for i, r in enumerate(pages) if heading in r["text"])
+        lines = []
+        for k, rec in enumerate(pages[start:start + 3]):
+            text = rec["text"][rec["text"].index(heading) + len(heading):] if k == 0 else rec["text"].split("\n", 1)[1]
+            lines += [(rec["page"], x.strip()) for x in text.split("\n") if x.strip()]
+        rows, cur = [], None
+        for pg, x in lines:
+            m = LEADER.match(x)
+            if m:
+                cur = dict(label=m.group(1), page=pg, values=[])
+                rows.append(cur)
+                continue
+            if cur is None or len(cur["values"]) == len(cols):
+                if cur is not None and cur["label"] == total_label:
+                    break
+                continue
+            if re.fullmatch(r"\.{4,}", x):
+                cur["values"].append(None)
+            elif FIGURE.match(x):
+                sign, digits = FIGURE.match(x).groups()
+                cur["values"].append((-1 if sign == "¥" else 1) * int(digits.replace(",", "")) * 1000)
+        total = next(r for r in rows if r["label"] == total_label)
+        items = rows[:rows.index(total)]
+        bad = [r["label"] for r in items + [total] if len(r["values"]) != len(cols)]
+        if bad:
+            raise ValueError(f"{pkg} {heading}: lines without {len(cols)} figures: {bad}")
+        figs = []
+        for ci, c in enumerate(cols):
+            if c["kind"] != "value":
+                continue
+            got = sum(r["values"][ci] or 0 for r in items)
+            want = total["values"][ci] or 0
+            for n, r in enumerate(items):
+                v = r["values"][ci]
+                recs = [{"rule_applied": "table_total", "result": "pass" if got == want else "fail",
+                         "expected_result": f"the {len(items)} lines of '{heading.title()}' sum to its printed "
+                                            f"'{total_label}' {want // 1000:,} [{c['header']}]",
+                         "observed_result": f"{got // 1000:,} (text layer)"}]
+                deltas = [(cj, cols[cj]["header"]) for cj in range(len(cols)) if cols[cj]["kind"] == "delta"]
+                if deltas and cols[ci]["stage"] != "Senate Reported":
+                    committee = next(k for k, cc in enumerate(cols) if cc["stage"] == "Senate Reported")
+                    cj, head = next((cj, h) for cj, h in deltas if c["header"] in h)
+                    diff = (r["values"][committee] or 0) - (v or 0)
+                    recs.append({"rule_applied": "structural", "result": "pass" if diff == (r["values"][cj] or 0) else "fail",
+                                 "expected_result": f"'{head}' = committee recommendation - {c['header']}",
+                                 "observed_result": f"{(r['values'][cj] or 0) // 1000:,} printed, {diff // 1000:,} computed"})
+                figs.append(dict(observation_id=f"{pkg}-{heading}-{n}-{ci}", account_name_as_written=r["label"],
+                                 amount=v or 0, amount_as_printed="---" if v is None else f"{v // 1000:,}",
+                                 fiscal_year=c["fiscal_year"], stage=c["stage"], column_header=c["header"],
+                                 source_page=r["page"], is_memo=False, row_kind="line",
+                                 amount_type="rescission" if "(rescission)" in r["label"] else "budget authority",
+                                 account_component=None, extraction_method="text-extracted", extraction_confidence=0.95,
+                                 node_id=100000 + n, _records=recs, _pkg=pkg, _section=heading.title()))
+        out[pkg] = figs
+    return out
 
 
 def matches(rx_list, label):
@@ -311,6 +447,10 @@ def account_facts(figs_by_doc):
                     for f in rows:
                         if matches([rx], f["account_name_as_written"]) and f is not head:
                             out[(a["id"], fy, stage)][pkg].append((f, "budget authority", view_component(f), "view"))
+                for rx, comp in a.get("parts", []):
+                    for f in rows:
+                        if matches([rx], f["account_name_as_written"]) and not f["is_memo"]:
+                            out[(a["id"], fy, stage)][pkg].append((f, f["amount_type"], comp, "part"))
                 for rx in a.get("contained", []):
                     for f in rows:
                         if matches([rx], f["account_name_as_written"]):
@@ -356,6 +496,8 @@ def choose(docs, cell):
 def main():
     figs = extracted()
     figs[JES] = jes_figures()
+    for pkg, extra in senate_sections().items():
+        figs[pkg] = figs[pkg] + extra
     facts = account_facts(figs)
     law = defaultdict(list)
     with open(HERE.parent / "law_text.csv", newline="") as f:
@@ -397,6 +539,8 @@ def main():
             failed = any(r["result"] == "fail" for r in recs) or bool(disagree)
             status = "flagged" if failed else ("auto-validated" if passed else "unverified")
             label = f["account_name_as_written"]
+            if label.startswith("mitation for Title XVIII"):
+                label = "Limitation" + label[len("mitation"):] + " (vision read 'mitation'; the page image prints 'Limitation')"
             obs_rows.append({
                 "observation_id": oid, "canonical_account_id": acct, "fiscal_year": fy, "stage": stage,
                 "chamber": {"House Reported": "House", "Senate Reported": "Senate"}.get(stage, "N/A"),
@@ -404,7 +548,8 @@ def main():
                 "component": component, "headline_observation_id": head_id if role in ("view", "contained") else None,
                 "offsetting_collections": "FALSE", "transfer_link_account_id": None,
                 "source_document_id": d["id"], "source_page": str(f["source_page"]).split(" ")[0],
-                "source_table_or_section": f"Title II, {a['agency']} -- printed as {label!r} [{f['column_header']}]"
+                "source_table_or_section": (f"{f['_section']} (after the grand total, outside Title II)" if f.get("_section")
+                                            else f"Title II, {a['agency']}") + f" -- printed as {label!r} [{f['column_header']}]"
                                            + (f"; advance for FY{fy + 1}" if amount_type == "advance" else ""),
                 "extraction_method": method, "confidence": f.get("extraction_confidence") or 0.95,
                 "verification_status": status, "bill_url": bill_url, "report_jes_url": report_url,
@@ -509,9 +654,26 @@ def main():
         for c in cells:
             covered[c].add(pkg)
     have = {(o["canonical_account_id"], o["fiscal_year"], o["stage"]) for o in obs_rows if o["component"] is None
-            and o["amount_type"] == "budget authority"}
+            and o["amount_type"] == BY_ID[o["canonical_account_id"]].get("amount_type", "budget authority")}
+    text = {pkg: "\n".join(json.loads(x)["text"] for x in open(ROOT / "extractions" / f"{pkg}.text-pages.jsonl"))
+            for pkg in DOCS if pkg.startswith("CRPT-") and "srpt" in pkg}
     for a in ACCOUNTS:
         if a.get("status") == "proposed":
+            continue
+        if a["bureau"] == "General Provisions":
+            # only where the whole document can be searched (a Senate report's text layer): the House reports'
+            # and the JES's tables were read for Title II only, and a general provision's line can print elsewhere
+            for pkg in sorted(text):
+                for cell in sorted(c for c, ps in covered.items() if pkg in ps):
+                    if (a["id"], *cell) in have or any(o["canonical_account_id"] == a["id"] and (o["fiscal_year"], o["stage"])
+                                                       == cell for o in obs_rows):
+                        continue
+                    if re.search(a["search"], text[pkg], re.I):
+                        continue                   # printed somewhere under another label or section: not absent
+                    add_ca(a["id"], *cell, a.get("amount_type", "budget authority"), pkg,
+                           f"No {a['label']} line anywhere in {DOCS[pkg]['report']} (whole text layer searched for "
+                           f"/{a['search']}/, the Title II table pp. {DOCS[pkg]['pages']} and the bill-level sections after "
+                           f"the grand total included) for FY{cell[0]} {cell[1]}.")
             continue
         for (fy, stage), pkgs in sorted(covered.items()):
             if (a["id"], fy, stage) in have:
@@ -520,8 +682,8 @@ def main():
             printed = sorted({f"{f['account_name_as_written']!r} {f['amount_as_printed']} (p.{f['source_page']})"
                               for p in docs_ for f in figs.get(p, []) if f["fiscal_year"] == fy and f["stage"] == stage
                               and matches(a.get("views", []), f["account_name_as_written"])})
-            add_ca(a["id"], fy, stage, "budget authority", docs_[0],
-                   f"No row for this account's headline figure ({' or '.join(repr(fold(x.strip('^$'))) for x in a['head'])}) in "
+            add_ca(a["id"], fy, stage, a.get("amount_type", "budget authority"), docs_[0],
+                   f"No row for this account's headline figure ({a.get('label') or ' or '.join(repr(fold(x.strip('^$'))) for x in a['head'])}) in "
                    + "; ".join(f"{DOCS[p]['report']} Title II table pp. {DOCS[p]['pages']}" for p in docs_)
                    + f" for FY{fy} {stage}."
                    + (" The document prints only " + "; ".join(printed) + " -- not recorded: each is another scope "

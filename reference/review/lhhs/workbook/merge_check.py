@@ -70,12 +70,35 @@ def main(argv=None):
         wb = Path(tmp) / "v29_candidate.xlsx"
         merged(workbook, wb)
         report = S.load(wb, Path(tmp) / "approps.db")
+        conn = S.connect(Path(tmp) / "approps.db", readonly=True)
+        report["title_ii"] = title_ii_in_store(conn)
+        conn.close()
         print("rows:", report["rows"])
         print("tabs not in workbook:", report["tabs_not_in_workbook"], "| value map:", report["value_map"])
         print(f"{len(report['warnings'])} warnings")
         for w in report["warnings"]:
             print("  ", w)
+        ok = sum(r["reconciles_through_rollups"] == "yes" for r in report["title_ii"])
+        print(f"Title II total reconciles through the stored rollups in {ok} of {len(report['title_ii'])} cells")
+        for r in report["title_ii"]:
+            print(f"   FY{r['fiscal_year']} {r['stage']}: {r['reconciles_through_rollups']}"
+                  + (f" (differs by {r['through_rollups_differs_by_thousands']})" if r["reconciles_through_rollups"] != "yes" else ""))
         return report
+
+
+def title_ii_in_store(conn):
+    """Each recorded Title II total, reconciled from the store alone
+    (title_totals.reconcile, through the rollups: the agency totals, AHA in the
+    requests, the General Provisions accounts; CURES and the rescissions as
+    signed candidates)."""
+    sys.path.insert(0, str(ROOT / "reference" / "review"))
+    import title_totals as T
+    printed = [{"fiscal_year": r["fiscal_year"], "stage": r["stage"],
+                "printed_total_title_iii_thousands": r["amount"] // 1000}
+               for r in conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE "
+                                     "canonical_account_id = 'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL "
+                                     "ORDER BY fiscal_year, stage")]
+    return T.reconcile(conn, printed, title="Title II", subcommittee="Labor-HHS-Education")
 
 
 if __name__ == "__main__":
