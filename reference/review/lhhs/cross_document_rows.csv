@@ -53,6 +53,21 @@ Head Start,account,2025,House Reported,CRPT-118hrpt585,Bill,328,Head Start,12296
 ACF total,agency_total,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,330,"Total, Administration for Children and Families.",52748216,AI-extracted
 ACF total,agency_total,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,330,"Total, Administration for Children and Families.",55039423,AI-extracted
 ACF total,agency_total,2025,House Reported,CRPT-118hrpt585,Bill,330,"Total, Administration for Children and Families.",48219801,AI-extracted
+ACL total,agency_total,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,333,"Total, Administration for Community Living",2520342,AI-extracted
+ACL total,agency_total,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,333,"Total, Administration for Community Living",2606343,AI-extracted
+ACL total,agency_total,2025,House Reported,CRPT-118hrpt585,Bill,333,"Total, Administration for Community Living",2470409,AI-extracted
+ASPR total,agency_total,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,335,"Total, Administration for Strategic Preparedness and Response",3634606,AI-extracted
+ASPR total,agency_total,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,335,"Total, Administration for Strategic Preparedness and Response",3768088,AI-extracted
+ASPR total,agency_total,2025,House Reported,CRPT-118hrpt585,Bill,335,"Total, Administration for Strategic Preparedness and Response",3630597,AI-extracted
+OS total,agency_total,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,338,"Total, Office of the Secretary",1761616,AI-extracted
+OS total,agency_total,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,338,"Total, Office of the Secretary",1964409,AI-extracted
+OS total,agency_total,2025,House Reported,CRPT-118hrpt585,Bill,338,"Total, Office of the Secretary",1636729,AI-extracted
+Title II total,title_total,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,339,"Total, Title II, Department of Health and Human Services",1265242768,AI-extracted
+Title II total,title_total,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,339,"Total, Title II, Department of Health and Human Services",1307132770,AI-extracted
+Title II total,title_total,2025,House Reported,CRPT-118hrpt585,Bill,339,"Total, Title II, Department of Health and Human Services",1293225058,AI-extracted
+Title II discretionary,title_total_variant,2024,Enacted,CRPT-118hrpt585,FY 2024 Enacted,339,"Total, Title II, Department of Health and Human Services discretionary",116122958,AI-extracted
+Title II discretionary,title_total_variant,2025,President's Budget,CRPT-118hrpt585,FY 2025 Request,339,"Total, Title II, Department of Health and Human Services discretionary",121548671,AI-extracted
+Title II discretionary,title_total_variant,2025,House Reported,CRPT-118hrpt585,Bill,339,"Total, Title II, Department of Health and Human Services discretionary",107640959,AI-extracted
 Health Centers,account,2024,Enacted,CRPT-118srpt207,2024 appropriation,430,Health Centers,1857772,text-extracted
 Health Centers,account,2025,President's Budget,CRPT-118srpt207,Budget estimate,430,Health Centers,1857772,text-extracted
 Health Centers,account,2025,Senate Reported,CRPT-118srpt207,Committee recommendation,430,Health Centers,1857772,text-extracted
@@ -185,6 +200,141 @@ OS total,agency_total,2024,Senate Reported,CRPT-118srpt84,Committee recommendati
 Title II total,title_total,2023,Enacted,CRPT-118srpt84,2023 appropriation,392,"Total, Title II, Department of Health and Human Services",1250732063,text-extracted
 Title II total,title_total,2024,President's Budget,CRPT-118srpt84,Budget estimate,392,"Total, Title II, Department of Health and Human Services",1278339772,text-extracted
 Title II total,title_total,2024,Senate Reported,CRPT-118srpt84,Committee recommendation,392,"Total, Title II, Department of Health and Human Services",1266744593,text-extracted
+Administration for a Healthy America (proposed),agency_total_proposed,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,334,"Total, Administration for a Healthy America",0,AI-extracted
+Administration for a Healthy America (proposed),agency_total_proposed,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,334,"Total, Administration for a Healthy America",574803,AI-extracted
+Administration for a Healthy America (proposed),agency_total_proposed,2026,House Reported,CRPT-119hrpt271,Bill,334,"Total, Administration for a Healthy America",0,AI-extracted
+Health Centers,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,334,Health Centers,1857772,AI-extracted
+Health Centers,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,334,Health Centers,1857772,AI-extracted
+Health Centers,account,2026,House Reported,CRPT-119hrpt271,Bill,334,Health Centers,1857772,AI-extracted
+Primary Health Care,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,334,"Total, Primary Health Care",1858772,AI-extracted
+Primary Health Care,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,334,"Total, Primary Health Care",1858772,AI-extracted
+Primary Health Care,account,2026,House Reported,CRPT-119hrpt271,Bill,334,"Total, Primary Health Care",1858772,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,340,"Total, Vaccine Injury Compensation Trust Fund",281927,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,340,"Total, Vaccine Injury Compensation Trust Fund",287262,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2026,House Reported,CRPT-119hrpt271,Bill,340,"Total, Vaccine Injury Compensation Trust Fund",287262,AI-extracted
+HRSA total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,340,"Total, Health Resources and Services Administration",8286229,AI-extracted
+HRSA total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,340,"Total, Health Resources and Services Administration",6371802,AI-extracted
+HRSA total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,340,"Total, Health Resources and Services Administration",7405460,AI-extracted
+CDC total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,342,"Total, Centers for Disease Control and Prevention",7992946,AI-extracted
+CDC total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,342,"Total, Centers for Disease Control and Prevention",5094944,AI-extracted
+CDC total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,342,"Total, Centers for Disease Control and Prevention",6082505,AI-extracted
+National Cancer Institute,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,343,National Cancer Institute (NCI),7224159,AI-extracted
+National Cancer Institute,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,343,National Cancer Institute (NCI),4530833,AI-extracted
+National Cancer Institute,account,2026,House Reported,CRPT-119hrpt271,Bill,343,National Cancer Institute (NCI),7272159,AI-extracted
+NIH total (with CURES Act funding),agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,345,"Total, National Institutes of Health (with CURES Act funding)",46888518,AI-extracted
+NIH total (with CURES Act funding),agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,345,"Total, National Institutes of Health (with CURES Act funding)",29045186,AI-extracted
+NIH total (with CURES Act funding),agency_total,2026,House Reported,CRPT-119hrpt271,Bill,345,"Total, National Institutes of Health (with CURES Act funding)",46479998,AI-extracted
+NIH program level,agency_total_variant,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,345,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",48301000,AI-extracted
+NIH program level,agency_total_variant,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,345,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",29295186,AI-extracted
+NIH program level,agency_total_variant,2026,House Reported,CRPT-119hrpt271,Bill,345,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",47845000,AI-extracted
+SAMHSA total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,348,"Total, SAMHSA",7228639,AI-extracted
+SAMHSA total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,348,"Total, SAMHSA",5562611,AI-extracted
+SAMHSA total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,348,"Total, SAMHSA",6932188,AI-extracted
+AHRQ total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,349,"Total, AHRQ",369000,AI-extracted
+AHRQ total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,349,"Total, AHRQ",0,AI-extracted
+AHRQ total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,349,"Total, AHRQ",0,AI-extracted
+Grants to States for Medicaid,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,350,"Total, Grants to States for Medicaid",383609399,AI-extracted
+Grants to States for Medicaid,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,350,"Total, Grants to States for Medicaid",508148791,AI-extracted
+Grants to States for Medicaid,account,2026,House Reported,CRPT-119hrpt271,Bill,350,"Total, Grants to States for Medicaid",508148791,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,350,"Total, Grants to States for Medicaid, appropriated in this bill",644673219,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,350,"Total, Grants to States for Medicaid, appropriated in this bill",824663516,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2026,House Reported,CRPT-119hrpt271,Bill,350,"Total, Grants to States for Medicaid, appropriated in this bill",824663516,AI-extracted
+Payments to the Health Care Trust Funds,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,350,"Total, Payments to Health Care Trust Funds",521757000,AI-extracted
+Payments to the Health Care Trust Funds,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,350,"Total, Payments to Health Care Trust Funds",593817000,AI-extracted
+Payments to the Health Care Trust Funds,account,2026,House Reported,CRPT-119hrpt271,Bill,350,"Total, Payments to Health Care Trust Funds",593817000,AI-extracted
+CMS Program Management,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,351,"Total, Program Management",3669744,AI-extracted
+CMS Program Management,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,351,"Total, Program Management",3464391,AI-extracted
+CMS Program Management,account,2026,House Reported,CRPT-119hrpt271,Bill,351,"Total, Program Management",3474391,AI-extracted
+CMS total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,351,"Total, Centers for Medicare & Medicaid Services",1171040963,AI-extracted
+CMS total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,351,"Total, Centers for Medicare & Medicaid Services",1422885907,AI-extracted
+CMS total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,351,"Total, Centers for Medicare & Medicaid Services",1422895907,AI-extracted
+Head Start,account,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,354,Head Start,12271820,AI-extracted
+Head Start,account,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,354,Head Start,12271820,AI-extracted
+Head Start,account,2026,House Reported,CRPT-119hrpt271,Bill,354,Head Start,12271820,AI-extracted
+ACF total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,356,"Total, Administration for Children and Families",51897205,AI-extracted
+ACF total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,356,"Total, Administration for Children and Families",45469350,AI-extracted
+ACF total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,356,"Total, Administration for Children and Families",50326744,AI-extracted
+ACL total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,360,"Total, Administration for Community Living",2491074,AI-extracted
+ACL total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,360,"Total, Administration for Community Living",2443100,AI-extracted
+ACL total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,360,"Total, Administration for Community Living",2480432,AI-extracted
+ASPR total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,361,"Total, Administration for Strategic Preparedness and Response",3634606,AI-extracted
+ASPR total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,361,"Total, Administration for Strategic Preparedness and Response",2825880,AI-extracted
+ASPR total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,361,"Total, Administration for Strategic Preparedness and Response",3509606,AI-extracted
+OS total,agency_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,365,"Total, Office of the Secretary",1863720,AI-extracted
+OS total,agency_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,365,"Total, Office of the Secretary",2235195,AI-extracted
+OS total,agency_total,2026,House Reported,CRPT-119hrpt271,Bill,365,"Total, Office of the Secretary",1803141,AI-extracted
+Title II total,title_total,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,365,"Total, Title II, Department of Health and Human Services",1300549900,AI-extracted
+Title II total,title_total,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,365,"Total, Title II, Department of Health and Human Services",1521532778,AI-extracted
+Title II total,title_total,2026,House Reported,CRPT-119hrpt271,Bill,365,"Total, Title II, Department of Health and Human Services",1546531981,AI-extracted
+Title II discretionary,title_total_variant,2025,(no stage: FY 2025 Estimate),CRPT-119hrpt271,FY 2025 Estimate,366,"Total, Title II, Department of Health and Human Services discretionary",114965801,AI-extracted
+Title II discretionary,title_total_variant,2026,President's Budget,CRPT-119hrpt271,FY 2026 Request,366,"Total, Title II, Department of Health and Human Services discretionary",83067660,AI-extracted
+Title II discretionary,title_total_variant,2026,House Reported,CRPT-119hrpt271,Bill,366,"Total, Title II, Department of Health and Human Services discretionary",108066863,AI-extracted
+Health Centers,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,365,Health Centers,1857772,AI-extracted
+Health Centers,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,365,Health Centers,1876772,AI-extracted
+Health Centers,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,365,Health Centers,1857772,AI-extracted
+Primary Health Care,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,365,"Total, Primary Health Care",1858772,AI-extracted
+Primary Health Care,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,365,"Total, Primary Health Care",1877772,AI-extracted
+Primary Health Care,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,365,"Total, Primary Health Care",1858772,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,371,"Total, Vaccine Injury Compensation Trust Fund",287262,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,371,"Total, Vaccine Injury Compensation Trust Fund",291878,AI-extracted
+Vaccine Injury Compensation Program Trust Fund,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,371,"Total, Vaccine Injury Compensation Trust Fund",291878,AI-extracted
+HRSA total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,371,"Total, Health Resources and Services Administration",9220107,AI-extracted
+HRSA total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,371,"Total, Health Resources and Services Administration",6485001,AI-extracted
+HRSA total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,371,"Total, Health Resources and Services Administration",8346949,AI-extracted
+CDC total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,373,"Total, Centers for Disease Control and Prevention",7761672,AI-extracted
+CDC total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,373,"Total, Centers for Disease Control and Prevention",6140461,AI-extracted
+CDC total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,373,"Total, Centers for Disease Control and Prevention",6723092,AI-extracted
+National Cancer Institute,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,374,National Cancer Institute (NCI),7352159,AI-extracted
+National Cancer Institute,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,374,National Cancer Institute (NCI),7353000,AI-extracted
+National Cancer Institute,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,374,National Cancer Institute (NCI),7462159,AI-extracted
+NIH total (with CURES Act funding),agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,376,"Total, National Institutes of Health (with CURES Act funding)",47288518,AI-extracted
+NIH total (with CURES Act funding),agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,376,"Total, National Institutes of Health (with CURES Act funding)",42707953,AI-extracted
+NIH total (with CURES Act funding),agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,376,"Total, National Institutes of Health (with CURES Act funding)",47388518,AI-extracted
+NIH program level,agency_total_variant,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,376,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",48716000,AI-extracted
+NIH program level,agency_total_variant,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,376,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",42967953,AI-extracted
+NIH program level,agency_total_variant,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,376,"Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)",48816000,AI-extracted
+SAMHSA total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,379,"Total, SAMHSA",7293950,AI-extracted
+SAMHSA total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,379,"Total, SAMHSA",6552543,AI-extracted
+SAMHSA total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,379,"Total, SAMHSA",7148608,AI-extracted
+AHRQ total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,380,"Total, AHRQ",345380,AI-extracted
+AHRQ total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,380,"Total, AHRQ",0,AI-extracted
+AHRQ total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,380,"Total, AHRQ",0,AI-extracted
+Grants to States for Medicaid,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,381,"Total, Grants to States for Medicaid",508148791,AI-extracted
+Grants to States for Medicaid,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,381,"Total, Grants to States for Medicaid",468678021,AI-extracted
+Grants to States for Medicaid,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,381,"Total, Grants to States for Medicaid",468678021,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,381,"Total, Grants to States for Medicaid, appropriated in this bill",824663516,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,381,"Total, Grants to States for Medicaid, appropriated in this bill",789883296,AI-extracted
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,381,"Total, Grants to States for Medicaid, appropriated in this bill",789883296,AI-extracted
+Payments to the Health Care Trust Funds,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,381,"Total, Payments to Health Care Trust Funds",593817000,AI-extracted
+Payments to the Health Care Trust Funds,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,381,"Total, Payments to Health Care Trust Funds",686855000,AI-extracted
+Payments to the Health Care Trust Funds,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,381,"Total, Payments to Health Care Trust Funds",686855000,AI-extracted
+CMS Program Management,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,381,"Total, Program Management",3669744,AI-extracted
+CMS Program Management,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,381,"Total, Program Management",3700493,AI-extracted
+CMS Program Management,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,381,"Total, Program Management",3669744,AI-extracted
+CMS total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,382,"Total, Centers for Medicare & Medicaid Services",1423091260,AI-extracted
+CMS total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,382,"Total, Centers for Medicare & Medicaid Services",1481414789,AI-extracted
+CMS total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,382,"Total, Centers for Medicare & Medicaid Services",1481377040,AI-extracted
+Head Start,account,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,385,Head Start,12356820,AI-extracted
+Head Start,account,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,385,Head Start,12356820,AI-extracted
+Head Start,account,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,385,Head Start,12366820,AI-extracted
+ACF total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,387,"Total, Administration for Children and Families.",51736248,AI-extracted
+ACF total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,387,"Total, Administration for Children and Families.",43454579,AI-extracted
+ACF total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,387,"Total, Administration for Children and Families.",48352223,AI-extracted
+ACL total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,390,"Total, Administration for Community Living",2508979,AI-extracted
+ACL total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,390,"Total, Administration for Community Living",2454100,AI-extracted
+ACL total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,390,"Total, Administration for Community Living",2495011,AI-extracted
+ASPR total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,392,"Total, Administration for Strategic Preparedness and Response",3692597,AI-extracted
+ASPR total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,392,"Total, Administration for Strategic Preparedness and Response",3337069,AI-extracted
+ASPR total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,392,"Total, Administration for Strategic Preparedness and Response",3648597,AI-extracted
+OS total,agency_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,395,"Total, Office of the Secretary",1918646,AI-extracted
+OS total,agency_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,395,"Total, Office of the Secretary",2070687,AI-extracted
+OS total,agency_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,395,"Total, Office of the Secretary",1717767,AI-extracted
+Title II total,title_total,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,396,"Total, Title II, Department of Health and Human Services",1553262357,AI-extracted
+Title II total,title_total,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,396,"Total, Title II, Department of Health and Human Services",1593868985,AI-extracted
+Title II total,title_total,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,396,"Total, Title II, Department of Health and Human Services",1606033805,AI-extracted
+Title II discretionary,title_total_variant,2026,Enacted,CRPT-119hrpt696,FY 2026 Enacted,396,"Total, Title II, Department of Health and Human Services discretionary",114797239,AI-extracted
+Title II discretionary,title_total_variant,2027,President's Budget,CRPT-119hrpt696,FY 2027 Request*,396,"Total, Title II, Department of Health and Human Services discretionary",98602461,AI-extracted
+Title II discretionary,title_total_variant,2027,House Reported,CRPT-119hrpt696,Committee Recommendation,396,"Total, Title II, Department of Health and Human Services discretionary",110767281,AI-extracted
 Health Centers,account,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,431,Health Centers,1857772,text-extracted
 Primary Health Care,account,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,431,"Total, Primary Health Care",1858772,text-extracted
 Vaccine Injury Compensation Program Trust Fund,account,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,433,"Total, Vaccine Injury Compensation Trust Fund",287262,text-extracted
@@ -208,3 +358,23 @@ ASPR total,agency_total,2026,Senate Reported,CRPT-119srpt55,Committee recommenda
 OS total,agency_total,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,442,"Total, Office of the Secretary",1883116,text-extracted
 Title II total,title_total,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,442,"Total, Title II, Department of Health and Human Services",1555322508,text-extracted
 Title II discretionary,title_total_variant,2026,Senate Reported,CRPT-119srpt55,Committee recommendation,442,"Total, Title II, Department of Health and Human Services discretionary",116857390,text-extracted
+Primary Health Care,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,281 (H1633),"Total, Primary Health Care",1858772,hand-read
+Health Centers,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,281 (H1633),Health Centers,1857772,hand-read
+Vaccine Injury Compensation Program Trust Fund,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,284 (H1636),"Total, Vaccine Injury Compensation Trust Fund",287262,hand-read
+HRSA total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,284 (H1636),"Total, Health Resources and Services Administration",9220107,hand-read
+CDC total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,285 (H1637),"Total, Centers for Disease Control and Prevention",7761672,hand-read
+National Cancer Institute,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,285 (H1637),National Cancer Institute (NCI),7352159,hand-read
+NIH total (with CURES Act funding),agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,287 (H1639),"Total, National Institutes of Health (with CURES Act funding)",47288518,hand-read
+SAMHSA total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,288 (H1640),"Total, SAMHSA",7293950,hand-read
+AHRQ total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,288 (H1640),"Total, AHRQ",345380,hand-read
+Grants to States for Medicaid,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,289 (H1641),"Total, Grants to States for Medicaid",508148791,hand-read
+"Grants to States for Medicaid, appropriated in this bill",account_variant,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,289 (H1641),"Total, Grants to States for Medicaid, appropriated in this bill",824663516,hand-read
+Payments to the Health Care Trust Funds,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,289 (H1641),"Total, Payments to Health Care Trust Funds",593817000,hand-read
+CMS Program Management,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,289 (H1641),"Total, Program Management",3669744,hand-read
+CMS total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,290 (H1642),"Total, Centers for Medicare & Medicaid Services",1423091260,hand-read
+Head Start,account,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,291 (H1643),Head Start,12356820,hand-read
+ACF total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,292 (H1644),"Total, Administration for Children and Families",51736248,hand-read
+ACL total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,294 (H1646),"Total, Administration for Community Living",2508979,hand-read
+ASPR total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,294 (H1646),"Total, Administration for Strategic Preparedness and Response",3692597,hand-read
+OS total,agency_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,296 (H1648),"Total, Office of the Secretary",1918646,hand-read
+Title II total,title_total,2026,Enacted,FY2026 JES (CREC H1353ff),FINAL BILL,296 (H1648),"Total, Title II, Department of Health and Human Services",1553262357,hand-read

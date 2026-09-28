@@ -18,7 +18,9 @@ FY2026 JES by hand) rather than assumed:
      Nonrecurring Expenses Fund rescission, Sec. 237) belong to no agency
      total and count toward the title;
   -- where a Public Health Service rollup is printed it equals HRSA + CDC +
-     NIH (with CURES) + SAMHSA + AHRQ, checked here too; S.Rept. 119-55 prints none.
+     NIH (with CURES) + SAMHSA + AHRQ, checked here too; S.Rept. 119-55 prints none;
+  -- the FY2026 and FY2027 requests propose an Administration for a Healthy
+     America, inside Public Health Service; it exists only in those columns.
 
 A CJS-style check ("the title total is the sum of its agency totals, plus
 some of the other lines") cannot find this: one term is subtracted.
@@ -37,7 +39,11 @@ PHS_AGENCIES = [("HRSA", r"^Total, Health Resources and Services Administration$
                 ("CDC", r"^Total, Centers for Disease Control and Prevention$"),
                 ("NIH", r"^Total, National Institutes of Health (\(NIH\) with CURES Act funding|\(with CURES Act funding\))$"),
                 ("SAMHSA", r"^Total, (SAMHSA|Substance Abuse and Mental Health Services Administration)$"),
-                ("AHRQ", r"^Total, (AHRQ|Agency for Healthcare Research and Quality)$")]
+                ("AHRQ", r"^Total, (AHRQ|Agency for Healthcare Research and Quality)$"),
+                # proposed in the FY2026 and FY2027 requests only (never enacted): printed in
+                # a request column, else absent; H.Rept. 119-696 prints its line, no plain total
+                ("AHA", (r"^Total, Administration for a Healthy America$", r"^Administration for a Healthy America, Discretionary$"))]
+OPTIONAL = {"AHA"}
 OTHER_AGENCIES = [("CMS", r"^Total, Centers for Medicare (and|&) Medicaid Services$"),
                   ("ACF", r"^Total, Administration for Children and Families$"),
                   ("ACL", r"^Total, Administration for Community Living$"),
@@ -48,6 +54,14 @@ TITLE = r"^Total, Title II, Department of Health and Human Services$"
 CURES = r"^\(?CURES Act\)?$"
 
 
+def fold(label):
+    """As printed, less what differs between readings of one label: the text
+    layer's en dash vs vision's hyphen, and a vision label's trailing leader
+    period ("Total, Administration for Children and Families.")."""
+    label = re.sub(r"\s+", " ", re.sub(r"[\u2010-\u2015\u2212]", "-", label)).strip().rstrip(".")
+    return re.sub(r"(\s+\d+/)+$", "", label)          # a footnote reference: "..., Discretionary 1/"
+
+
 def reconcile(path):
     d = json.load(open(path))
     pkg = d["source_document"]["package_id"]
@@ -56,15 +70,20 @@ def reconcile(path):
         rows = [o for o in d["observations"] if o["column_header"] == col["header"] and o["amount"] is not None]
 
         def one(rx, memo=False):
-            hits = [o for o in rows if re.match(rx, o["account_name_as_written"].strip()) and bool(o["is_memo"]) == memo]
-            return hits[0]["amount"] if len(hits) == 1 else (None if not hits else "ambiguous")
+            """The one row the pattern names; a tuple of patterns is tried in order
+            (AHA's total, else -- where none is printed -- its one line)."""
+            for alt in (rx if isinstance(rx, tuple) else (rx,)):
+                hits = [o for o in rows if re.match(alt, fold(o["account_name_as_written"])) and bool(o["is_memo"]) == memo]
+                if hits:
+                    return hits[0]["amount"] if len(hits) == 1 else "ambiguous"
+            return None
         title = one(TITLE)
         if title is None:
             continue
         parts = {k: one(rx) for k, rx in PHS_AGENCIES + OTHER_AGENCIES}
         gp = [o for o in rows if o["account_path"].startswith("GENERAL PROVISIONS") and not o["is_memo"]]
         cures = one(CURES, memo=True)
-        missing = [k for k, v in parts.items() if not isinstance(v, int)]
+        missing = [k for k, v in parts.items() if not isinstance(v, int) and not (k in OPTIONAL and v is None)]
         phs_printed = one(PHS)
         phs_sum = sum(parts[k] for k, _ in PHS_AGENCIES if isinstance(parts[k], int))
         total = sum(v for v in parts.values() if isinstance(v, int)) + sum(o["amount"] for o in gp) - (cures or 0)

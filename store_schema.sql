@@ -104,7 +104,7 @@ CREATE TABLE appropriations_observation (
     report_id                TEXT,
     amount                   INTEGER NOT NULL,
     amount_type              TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
-                                                                  'transfer', 'offsetting_collection', 'supplemental',
+                                                                  'transfer', 'offsetting_collection', 'supplemental', 'advance',
                                                                   'other')),
     -- which of an account's lines this is when it prints more than one of the
     -- same amount_type in a cell (NSF R&RA base vs 'defense'); NULL for the
@@ -184,7 +184,7 @@ CREATE TABLE confirmed_absence (
     stage                TEXT NOT NULL CHECK (stage IN ('President''s Budget', 'House Reported', 'Senate Reported',
                                                         'Enacted', 'House Passed', 'Senate Passed')),
     amount_type          TEXT NOT NULL CHECK (amount_type IN ('budget authority', 'obligation', 'outlay', 'rescission',
-                                                              'transfer', 'offsetting_collection', 'supplemental',
+                                                              'transfer', 'offsetting_collection', 'supplemental', 'advance',
                                                               'other')),
     component            TEXT CHECK (component IS NULL OR component <> ''),
     source_document_id   TEXT NOT NULL REFERENCES source_document (document_id),

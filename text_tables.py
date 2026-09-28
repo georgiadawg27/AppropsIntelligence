@@ -30,11 +30,13 @@ Everything is read from the page's own geometry:
     content is a run of dots is a printed blank ("leader blank") -- not zero
     (that's "---") and not missing (no cell at all).
 
-Not handled: a line-item label that wraps onto a second printed line. Neither
-Senate table checked so far has one (their only two-line labels are centered
-headings, e.g. an act name over its public law number, which really are two
-headings). A wrap would surface as a heading with no leader immediately
-followed by an indented row.
+  - Wrapped labels: a label too long for its column continues on the next
+    printed line, and only the last line carries the leader and the values
+    (S.Rept. 119-55: "Subtotal, Substance Use Prevention, Treatment, and
+    Recovery Services Block Grant, program" / "level .... 2,028,079"). The
+    continuation starts with a lower-case word, which no line item or
+    heading does, so the two are joined; a valueless row followed by a
+    capitalized one (a heading over its first line) is left alone.
 """
 
 import re
@@ -303,7 +305,26 @@ def read_rows(geo, seps, body_top):
             "raw_text": " ".join([label] + [v for v in values if v]),
             "text_as_extracted": " | ".join(l["text"].strip() for l in sorted(strip, key=lambda l: l["u0"])),
         })
-    return rows
+    return join_wrapped_labels(rows)
+
+
+def join_wrapped_labels(rows):
+    """A valueless, leaderless row whose next row's label starts lower-case
+    is the first printed line of that row's label (see the module notes)."""
+    out = []
+    for r in rows:
+        prev = out[-1] if out else None
+        if (prev is not None and prev["is_heading"] and not prev["has_leader"] and r["label"][:1].islower()
+                and not prev["label"].rstrip().endswith(":")):
+            head = prev["label"].rstrip()
+            # "... at the South-" / "ern Border Act, 2019": a hyphenated break joins without the hyphen
+            label = head[:-1] + r["label"] if head.endswith("-") else f"{head} {r['label']}"
+            out[-1] = dict(r, label=label, u_start=prev["u_start"], rule_above_printed=prev["rule_above_printed"],
+                           raw_text=" ".join([label] + [v for v in r["values"] if v]),
+                           text_as_extracted=f"{prev['text_as_extracted']} / {r['text_as_extracted']}")
+            continue
+        out.append(r)
+    return out
 
 
 # ---------------------------------------------------------------------------

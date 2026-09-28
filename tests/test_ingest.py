@@ -207,8 +207,9 @@ class RelatedLookupRouting(unittest.TestCase):
         bills = [{"packageId": "BILLS-119s2354rs", "title": "S. 2354 (RS)"},
                  {"packageId": "BILLS-119s2354is", "title": "S. 2354 (IS)"},
                  {"packageId": "BILLS-119hr9999ih", "title": "H.R. 9999 (IH)"}]
-        related = {("BILLS-119s2354rs", "CRPT"): [{"packageId": "CRPT-119srpt44"}],
-                   ("BILLS-119s2354is", "CRPT"): [{"packageId": "CRPT-119srpt44"}]}
+        report = {"packageId": "CRPT-119srpt44", "congress": "119",
+                  "title": "DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, AND RELATED AGENCIES APPROPRIATIONS BILL, 2026"}
+        related = {("BILLS-119s2354rs", "CRPT"): [report], ("BILLS-119s2354is", "CRPT"): [report]}
         stored = []
         with TempStore(), \
                 mock.patch.object(g, "fetch_new_packages", return_value=bills) as poll, \
@@ -223,6 +224,59 @@ class RelatedLookupRouting(unittest.TestCase):
         err = g.HTTPError("u", 404, "Not Found", {}, None)
         with mock.patch.object(g, "api_get", side_effect=err):
             self.assertEqual(g.fetch_related("BILLS-119s2354rs", "PLAW", "k"), [])
+
+
+class RelatedFalsePositives(unittest.TestCase):
+    """Offline: /related follows a bill number, and a bill number can carry
+    other business -- H.R. 2882 (118th) was the Udall Foundation
+    Reauthorization Act before it became the FY2024 Further Consolidated
+    Appropriations Act, and /related returns both bills' documents. Titles
+    and Congress numbers below are govinfo's own."""
+
+    LHHS_BILL = "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2025, and for other purposes."
+    OMNIBUS = "An Act Making further consolidated appropriations for the fiscal year ending September 30, 2024, and for other purposes."
+    UDALL = {"packageId": "CRPT-118hrpt364", "congress": "118", "title": "UDALL FOUNDATION REAUTHORIZATION ACT OF 2023"}
+    PL_118_47 = {"packageId": "PLAW-118publ47", "title": "Further Consolidated Appropriations Act, 2024"}
+    H_RPT_585 = {"packageId": "CRPT-118hrpt585", "congress": "118",
+                 "title": "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION, AND RELATED AGENCIES APPROPRIATIONS BILL, 2025"}
+    H_RPT_696 = {"packageId": "CRPT-119hrpt696", "congress": "119",
+                 "title": "DEPARTMENTS OF LABOR, HEALTH, AND HUMAN SERVICES, AND EDUCATION, AND RELATED AGENCIES APPROPRIATIONS BILL, 2027"}
+
+    def test_non_appropriations_report_on_the_same_bill_number_is_rejected(self):
+        self.assertIn("not an appropriations title", g.related_rejection("BILLS-118hr2882enr", self.OMNIBUS, self.UDALL))
+
+    def test_the_law_it_became_is_kept(self):
+        self.assertIsNone(g.related_rejection("BILLS-118hr2882enr", self.OMNIBUS, self.PL_118_47))
+
+    def test_same_subcommittee_report_is_kept(self):
+        self.assertIsNone(g.related_rejection("BILLS-118hr9029rh", self.LHHS_BILL, self.H_RPT_585))
+
+    def test_other_congress_is_rejected(self):
+        # the same subject a Congress later is another bill's report
+        self.assertIn("Congress 119", g.related_rejection("BILLS-118hr9029rh", self.LHHS_BILL, self.H_RPT_696))
+
+    def test_other_subcommittee_is_rejected(self):
+        cjs = {"packageId": "CRPT-118hrpt5", "congress": "118",
+               "title": "COMMERCE, JUSTICE, SCIENCE, AND RELATED AGENCIES APPROPRIATIONS BILL, 2025"}
+        self.assertIn("bill names", g.related_rejection("BILLS-118hr9029rh", self.LHHS_BILL, cjs))
+
+    def test_public_law_congress_comes_from_its_package_id(self):
+        pl = {"packageId": "PLAW-117publ328", "title": "Consolidated Appropriations Act, 2023"}
+        self.assertIn("Congress 117", g.related_rejection("BILLS-118hr2882enr", self.OMNIBUS, pl))
+
+    def test_run_records_the_rejection_and_does_not_fetch_it(self):
+        bill = [{"packageId": "BILLS-118hr2882enr", "title": self.OMNIBUS}]
+        related = {("BILLS-118hr2882enr", "CRPT"): [self.UDALL], ("BILLS-118hr2882enr", "PLAW"): [self.PL_118_47]}
+        stored = []
+        with TempStore(), mock.patch.object(g, "fetch_new_packages", return_value=bill), \
+                mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: related.get((pid, c), [])), \
+                mock.patch.object(g, "fetch_and_store",
+                                  side_effect=lambda pid, k, m: stored.append(pid) or {"package_id": pid, "status": "stored"}), \
+                mock.patch("sys.stdout"):
+            results = g.run("k", ["118HR2882"], "2024-01-01T00:00:00Z")
+        self.assertEqual(stored, ["BILLS-118hr2882enr", "PLAW-118publ47"])
+        self.assertIn({"package_id": "CRPT-118hrpt364", "status": "related_rejected", "related_to": "BILLS-118hr2882enr",
+                       "reason": "title is not an appropriations title: 'UDALL FOUNDATION REAUTHORIZATION ACT OF 2023'"}, results)
 
 
 class FetchFailuresAreVisible(unittest.TestCase):

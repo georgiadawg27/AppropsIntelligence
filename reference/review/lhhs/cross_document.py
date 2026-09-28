@@ -53,6 +53,8 @@ CONCEPTS = [
     ("ACL total", "agency_total", r"^Total, Administration for Community Living$"),
     ("ASPR total", "agency_total", r"^Total, (Administration|Office of the Assistant Secretary) for (Strategic )?Preparedness and Response$"),
     ("OS total", "agency_total", r"^Total, Office of the Secretary$"),
+    ("Administration for a Healthy America (proposed)", "agency_total_proposed",
+     r"^Total, Administration for a Healthy America$"),
     ("Title II total", "title_total", r"^Total, Title II, Department of Health and Human Services$"),
     ("Title II discretionary", "title_total_variant", r"^Total, Title II, Department of Health and Human Services,? discretionary$"),
 ]
@@ -60,7 +62,8 @@ DASHES = re.compile(r"[‐-―−]")
 
 
 def fold(label):
-    return re.sub(r"\s+", " ", DASHES.sub("-", label)).strip().rstrip(".")
+    label = re.sub(r"\s+", " ", DASHES.sub("-", label)).strip().rstrip(".")
+    return re.sub(r"(\s+\d+/)+$", "", label)          # a footnote reference: "..., Discretionary 1/"
 
 
 def collect(paths):
@@ -74,10 +77,30 @@ def collect(paths):
             label = fold(o["account_name_as_written"])
             for concept, kind, rx in CONCEPTS:
                 if re.match(DASHES.sub("-", rx), label, re.I):
-                    rows.append({"concept": concept, "kind": kind, "fiscal_year": o["fiscal_year"], "stage": o["stage"],
+                    rows.append({"concept": concept, "kind": kind, "fiscal_year": o["fiscal_year"],
+                                 # H.Rept. 119-271's "FY 2025 Estimate" (a full-year CR) states no stage
+                                 "stage": o["stage"] or f"(no stage: {o['column_header']})",
                                  "document": pkg, "column_header": o["column_header"], "page": o["source_page"],
                                  "label_as_printed": o["account_name_as_written"], "amount_thousands": o["amount"] // 1000,
                                  "extraction_method": o["extraction_method"]})
+    return rows
+
+
+def hand_read(path=OUT / "hand_checks.csv"):
+    """The FY2026 JES figures read by hand from its page images (the Record
+    prints the table as images with no OCR layer), as further 'documents'."""
+    rows = []
+    with open(path, newline="") as f:
+        for h in csv.DictReader(f):
+            if not h["document"].startswith("MANUAL-") or not re.fullmatch(r"-?\d+", h["hand_read_thousands"] or ""):
+                continue
+            label = fold(h["label_as_printed"])
+            for concept, kind, rx in CONCEPTS:
+                if re.match(DASHES.sub("-", rx), label, re.I):
+                    rows.append({"concept": concept, "kind": kind, "fiscal_year": 2026, "stage": "Enacted",
+                                 "document": "FY2026 JES (CREC H1353ff)", "column_header": h["column"],
+                                 "page": f"{h['pdf_page']} ({h['printed_page']})", "label_as_printed": h["label_as_printed"],
+                                 "amount_thousands": int(h["hand_read_thousands"]), "extraction_method": "hand-read"})
     return rows
 
 
@@ -103,7 +126,7 @@ def write(path, rows):
 
 
 def main():
-    rows = collect(sorted(glob.glob(str(ROOT / "extractions" / "*.title-ii.json"))))
+    rows = collect(sorted(glob.glob(str(ROOT / "extractions" / "*.title-ii.json")))) + hand_read()
     write(OUT / "cross_document_rows.csv", rows)
     agree = agreement(rows)
     write(OUT / "cross_document.csv", agree)

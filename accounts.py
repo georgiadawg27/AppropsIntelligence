@@ -172,7 +172,26 @@ STRUCTURAL_COMPONENTS = ("supplemental_act", "budget_amendment")
 # isn't "missing" -- it can't exist), and the loader flags one recorded at
 # any other stage.
 COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President's Budget"}
-VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS)
+# The components above are parts: an account's lines in a cell add up. These
+# are not -- each is already inside, or another view of, the account's own
+# line, so nothing ever adds it to that line:
+#   CURES -- the NIH Innovation Account (21st Century Cures Act) line, kept
+#            as its own row while NIH's headline is "Total, NIH (with CURES
+#            Act funding)", which already counts it (decision 2026-09-27)
+#   parallel scopes -- a total printed again with its scope in the label
+#            (extract_approps.SCOPE_RES), stored under that printed scope:
+#            Medicaid's three totals are "program_level_available_this_fiscal_year",
+#            the plain current-year total (no component), and "appropriated_in_this_bill"
+INCLUDED_COMPONENTS = ("CURES",)
+PARALLEL_SCOPE_COMPONENTS = (
+    "program_level", "fiscal_year_program_level",
+    "program_level_with_cures_and_phs_evaluation_act_funding", "program_level_excluding_arpa_h",
+    "program_level_available_this_fiscal_year", "program_level_including_emergencies", "available_this_fiscal_year",
+    "current_year", "appropriated_in_this_bill", "available_in_this_bill",
+    "excluding_emergencies", "including_phs_eval_tap", "discretionary",
+)
+BREAKDOWN_COMPONENTS = frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
+VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS) | BREAKDOWN_COMPONENTS
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 
 

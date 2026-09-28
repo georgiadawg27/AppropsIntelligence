@@ -32,6 +32,7 @@ All arithmetic is exact integer arithmetic in the document's own unit, so a
 table stated in thousands is checked in thousands -- no rounding tolerance.
 """
 
+import itertools
 import re
 import uuid
 from collections import Counter, defaultdict
@@ -75,6 +76,32 @@ def _fmt(v):
     return "None" if v is None else f"{v:,}"
 
 
+SIGNED_SEARCH_LIMIT = 400_000        # combinations tried per search, at most
+
+
+def signed_explanation(gaps, candidates, max_terms=3):
+    """
+    The smallest set of candidates that, each added or subtracted, closes
+    every gap at once -> [(sign, item)], [] when the gaps are already zero,
+    or None. gaps: one integer per column; candidates: [(item, [value per
+    column])]. The same signed set has to explain every column: a
+    coincidence in one column rarely repeats in the others. All-additions
+    are tried before any subtraction at each size, so a total that only
+    ever adds (CJS's title totals) is explained the way it always was.
+    """
+    if not any(gaps):
+        return []
+    for n in range(1, max_terms + 1):
+        if sum(1 for _ in itertools.islice(itertools.combinations(range(len(candidates)), n), SIGNED_SEARCH_LIMIT + 1)) \
+                * 2 ** n > SIGNED_SEARCH_LIMIT:
+            break
+        for signs in itertools.product((1, -1), repeat=n):
+            for combo in itertools.combinations(range(len(candidates)), n):
+                if all(sum(sg * candidates[i][1][c] for sg, i in zip(signs, combo)) == g for c, g in enumerate(gaps)):
+                    return [(sg, candidates[i][0]) for sg, i in zip(signs, combo)]
+    return None
+
+
 def validate(nodes, cols, observations, page_meta, unit, source_document=None):
     obs_by = {(o["node_id"], o["column_index"]): o for o in observations}
     records = []
@@ -104,10 +131,14 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
 
     # --- rollups: table_total / structural -------------------------------
     rollup_results = defaultdict(list)          # node id -> results over value columns
+    by_order = sorted(nodes, key=lambda n: n.id)
     for node in nodes:
         if node.kind not in ("subtotal", "total", "grand_total"):
             continue
         rule = "structural" if node.kind == "subtotal" else "table_total"
+        if getattr(node, "sibling_of", None) is not None:
+            _check_parallel(node, by_order, value_cols, obs_by, record, arithmetic_pass, rule_lines=rollup_lines, unit=unit)
+            continue
         for col in value_cols + delta_cols:
             stated = _cell_value(node, col["index"])
             if stated is None:
@@ -122,6 +153,18 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                 result, note = "fail", "a child value could not be parsed"
             else:
                 result, note = ("pass" if computed == stated else "fail"), ""
+                if result == "fail" and node.children:
+                    # a rollup can count memo transfers printed with its lines:
+                    # "Subtotal, Chronic Disease ..., program level" is its line
+                    # plus "(Prevention and Public Health Fund)" -- found by the
+                    # same signed search, over the memos inside its own rows only
+                    first = min(ch.id for ch in node.children)
+                    memos = [n for n in by_order if first <= n.id < node.id and n.kind == "memo"]
+                    found = signed_explanation([stated - computed], [(m, [_cell_value(m, col["index"]) or 0]) for m in memos])
+                    if found:
+                        result = "pass"
+                        note = "with " + " ".join(f"{'+' if sg > 0 else '-'} {m.label!r}" for sg, m in found) + \
+                               (f" (its scope: {node.scope})" if getattr(node, "scope", None) else "")
             tag = {"pass": "PASS", "fail": "FAIL", "flag": "FLAG"}[result]
             rollup_lines.append(
                 f"{tag} p{node.page} {node.label!r} [{col['header']}]: stated {_fmt(stated)}, "
@@ -263,7 +306,8 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
         low = o["account_name_as_written"].lower()
         if o["amount_type"] not in ("budget authority", "supplemental") or any(k in low for k in SEMANTIC_KEYWORDS):
             record(o, "semantic", f"amount_type fits the row label ({o['amount_type']})",
-                   f"label {o['account_name_as_written']!r}; memo={o['is_memo']}", "flag")
+                   f"label {o['account_name_as_written']!r}; memo={o['is_memo']}"
+                   + (f"; {o['advance_evidence']}" if o.get("advance_evidence") else ""), "flag")
 
     # --- confidence and verification_status -------------------------------
     advance = bool(source_document and source_document.get("advance_copy")
@@ -314,6 +358,55 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
         "verification_status_counts": dict(Counter(o["verification_status"] for o in observations)),
     }
     return records, summary
+
+
+def _check_parallel(node, by_order, value_cols, obs_by, record, arithmetic_pass, rule_lines, unit):
+    """
+    A parallel total (extract_approps.SCOPE_RES) is its family's previous
+    total plus or minus rows printed with the family: "program level" adds
+    the PHS evaluation transfer memo, "excluding ARPA-H" subtracts the ARPA-H
+    line, "Current Year" takes off the prior-year advance, "appropriated in
+    this bill" adds the new advance, "with CURES" adds the CURES line.
+    Which rows is found, not assumed (signed_explanation, the same search
+    title totals use). Found -> pass, naming them; not found -> flag, never
+    fail: a scope can count rows printed outside the family's section.
+    """
+    pred = node.sibling_of
+    family = set()
+    x = node
+    while x is not None:
+        family.add(x.id)
+        x = getattr(x, "sibling_of", None)
+    cols = [c for c in value_cols if _cell_value(node, c["index"]) is not None and _cell_value(pred, c["index"]) is not None]
+    if not cols:
+        return
+    gaps = [_cell_value(node, c["index"]) - _cell_value(pred, c["index"]) for c in cols]
+    start = node.window_start or pred.id
+    pool = [n for n in by_order if start <= n.id < node.id and n.id not in family and n.kind in ("line", "memo")]
+    cands = [(n, [_cell_value(n, c["index"]) or 0 for c in cols]) for n in pool]
+    found = signed_explanation(gaps, cands, max_terms=3 if len(cands) <= 40 else 2)
+    how = ("" if not found else " " + " ".join(f"{'+' if sg > 0 else '-'} {n.label!r}" for sg, n in found))
+    for c, g in zip(cols, gaps):
+        stated, before = _cell_value(node, c["index"]), _cell_value(pred, c["index"])
+        result = "pass" if found is not None else "flag"
+        rule_lines.append(f"{result.upper()} p{node.page} {node.label!r} [{c['header']}]: parallel total of "
+                          f"{pred.label!r} ({node.scope or 'unscoped'}): {_fmt(before)}{how or ' (same)' if found is not None else ''}"
+                          + ("" if found is not None else f" -- differs by {_fmt(g)}; no one set of rows explains every column"))
+        obs = obs_by.get((node.id, c["index"]))
+        if obs is None:
+            continue
+        record(obs, "table_total",
+               f"parallel total ({node.scope or 'unscoped'}) of {pred.label!r} {_fmt(before)}"
+               + (how if found else (" (same figure)" if found == [] else
+                   "; differs by " + ", ".join(f"{_fmt(x)} [{cc['header']}]" for x, cc in zip(gaps, cols))
+                   + " -- no one set of rows printed with the family explains every column")),
+               f"{_fmt(stated)} ({unit}) as printed", result)
+        if found is not None:
+            arithmetic_pass.add(obs["observation_id"])
+            for _, n in found:
+                o = obs_by.get((n.id, c["index"]))
+                if o:
+                    arithmetic_pass.add(o["observation_id"])
 
 
 def _mult(unit):

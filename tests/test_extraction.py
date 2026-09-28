@@ -284,8 +284,110 @@ class DetectSubcommittee(unittest.TestCase):
                      "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION"):
             self.assertEqual(ex.detect_subcommittee([head]), "Labor-HHS-Education")
 
+    def test_senate_cjs_title_wording(self):
+        # S.Rept. 119-44: "COMMERCE AND JUSTICE, SCIENCE"; the bill: "COMMERCE, JUSTICE, SCIENCE"
+        self.assertEqual(ex.detect_subcommittee(["DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, AND RELATED AGENCIES"]), "CJS")
+
     def test_no_match(self):
         self.assertIsNone(ex.detect_subcommittee(["MISCELLANEOUS TARIFF BILL"]))
+
+
+class Divisions(unittest.TestCase):
+    """A multi-division document is narrowed to the requested subcommittee's
+    division before any title heading is looked for: in the FY2026 JES
+    (Congressional Record) the first "TITLE II" is Defense's (Division A),
+    HHS's is Division B's."""
+
+    def test_record_heading_broken_across_lines(self):
+        pages = ["DIVISION A\u2014DEPARTMENT OF DEFENSE APPROPRIATIONS ACT, 2026 The following is",
+                 "TITLE II\u2014OPERATION AND MAINTENANCE",
+                 "DIVISION B\u2014DEPARTMENTS OF LABOR, \nHEALTH AND HUMAN SERVICES, AND \nEDUCATION, AND RELATED AGENCIES \n"
+                 "APPROPRIATIONS ACT, 2026 \nThe explanatory statement",
+                 "TITLE II\u2014DEPARTMENT OF HEALTH AND HUMAN SERVICES",
+                 "DIVISION \nC\u2014DEPARTMENT \nOF \nHOME-\nLAND SECURITY APPROPRIATIONS ACT, \n2026 \nThe following"]
+        divs = ex.division_ranges(pages)
+        self.assertEqual([(d[0], d[2], d[3]) for d in divs], [("A", 1, 2), ("B", 3, 4), ("C", 5, 5)])
+        self.assertEqual(divs[2][1], "DEPARTMENT OF HOMELAND SECURITY APPROPRIATIONS ACT, 2026")
+        self.assertEqual(ex.resolve_division(divs, "Labor-HHS-Education")[0], "B")
+
+    def test_table_of_contents_is_not_a_heading(self):
+        toc = "DIVISION A\u2014DEFENSE X DIVISION B\u2014LABOR, HEALTH AND HUMAN SERVICES Y DIVISION C\u2014HOMELAND SECURITY"
+        pages = [toc, "DIVISION A\u2014DEPARTMENT OF DEFENSE APPROPRIATIONS ACT", "text",
+                 "DIVISION B\u2014DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES Sec. 1"]
+        self.assertEqual([(d[0], d[2], d[3]) for d in ex.division_ranges(pages)], [("A", 2, 3), ("B", 4, 4)])
+
+    def test_quoted_statute_out_of_order_is_not_a_division(self):
+        # S.Rept. 118-207 reprints Divisions H, C ... of other acts
+        pages = ["COMPARATIVE STATEMENT", "DIVISION H\u2014DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES",
+                 "DIVISION C\u2014DEPARTMENT OF HOMELAND SECURITY"]
+        self.assertEqual(ex.division_ranges(pages), [])
+        # S.Rept. 119-55: two cited divisions on one page, J printed before B
+        self.assertEqual(ex.division_ranges(["x", "DIVISION J\u2014APPROPRIATIONS DEPARTMENT OF HEALTH AND HUMAN SERVICES "
+                                                  "Low DIVISION B\u2014APPROPRIATIONS DEPARTMENT OF HEALTH AND HUMAN SERVICES"]), [])
+
+    def test_two_divisions_starting_on_one_page_share_it(self):
+        pages = ["DIVISION F\u2014NATIONAL SECURITY, DEPARTMENT OF STATE Sec", "x",
+                 "DIVISION G\u2014OTHER MATTERS Sec. 101 DIVISION H\u2014FURTHER CONTINUING APPROPRIATIONS Sec", "y"]
+        self.assertEqual([(d[0], d[2], d[3]) for d in ex.division_ranges(pages)], [("F", 1, 2), ("G", 3, 3), ("H", 3, 4)])
+
+    def test_no_guessing_which_division(self):
+        divs = [("A", "DEPARTMENT OF DEFENSE APPROPRIATIONS ACT", 1, 2), ("B", "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES", 3, 4)]
+        with self.assertRaises(SystemExit):
+            ex.resolve_division(divs, None)
+        with self.assertRaises(SystemExit):
+            ex.resolve_division(divs, "CJS")
+
+    JES = ROOT / "document_store" / "MANUAL-LHHS-FY2026-Enacted-jes-e44f7662.pdf"
+    PL = ROOT / "document_store" / "PLAW-118publ47.pdf"
+
+    @unittest.skipUnless(JES.exists() and PL.exists(), "LHHS JES / P.L. 118-47 not in document_store")
+    def test_real_documents(self):
+        import pymupdf
+        pages = lambda f: [p.get_text() for p in pymupdf.open(f)]
+        jes = ex.division_ranges(pages(self.JES))
+        self.assertEqual([(d[0], d[2], d[3]) for d in jes], [("A", 1, 237), ("B", 238, 308), ("C", 309, 381), ("D", 382, 557)])
+        self.assertEqual(ex.resolve_division(ex.division_ranges(pages(self.PL)), "Labor-HHS-Education")[::2], ("D", 170))
+
+    @unittest.skipUnless(JES.exists(), "LHHS JES not in document_store")
+    def test_run_refuses_a_multi_division_document_without_a_subcommittee(self):
+        with tempfile.TemporaryDirectory() as out, self.assertRaises(SystemExit) as cm:
+            ex.run(self.JES, title="TITLE II", offline=True, out_dir=out, verbose=False,
+                   manifest_path=Path(out) / "no-manifest.json")
+        self.assertIn("multi-division", str(cm.exception))
+
+
+class MisclassifiedOrientation(unittest.TestCase):
+    """The low-res classify pass can call a sideways page upright (H.Rept.
+    119-271 pp. 347 and 358, between pages it read as sideways): when neither
+    the classified rotation nor its flip reads upright, the perpendicular
+    ones are tried before giving up."""
+
+    def run_with(self, upright_at):
+        calls = []
+
+        def call_json(client, model, system, content, schema, **kw):
+            rot = calls[-1]
+            return {"orientation_ok": rot == upright_at, "rows": []}, {"input_tokens": 1, "output_tokens": 1,
+                                                                        "seconds": 0.0, "model": model}
+
+        def render(page, dpi, rotation=0, **kw):
+            calls.append(rotation)
+            return b"png", dpi
+        with mock.patch.object(ex, "_call_json", side_effect=call_json), mock.patch.object(ex, "render_png", side_effect=render):
+            try:
+                _, usage, rot, _ = ex.transcribe_page(None, "m", mock.Mock(number=346), 0, 200, False)
+                return calls, rot, usage["attempts"]
+            except ex.VisionError as e:
+                return calls, None, e.usage["attempts"]
+
+    def test_perpendicular_rotation_is_tried_after_the_flip(self):
+        self.assertEqual(self.run_with(90), ([0, 180, 90], 90, 3))
+
+    def test_classified_rotation_still_first_and_cheapest(self):
+        self.assertEqual(self.run_with(0), ([0], 0, 1))
+
+    def test_gives_up_after_all_four(self):
+        self.assertEqual(self.run_with(None), ([0, 180, 90, 270], None, 4))
 
 
 if __name__ == "__main__":

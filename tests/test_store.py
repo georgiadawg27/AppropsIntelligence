@@ -428,7 +428,10 @@ class FactKey(StoreCopyTest):
     def test_components_are_the_canonical_vocabulary(self):
         import accounts
         used = {r[0] for r in self.conn.execute("SELECT DISTINCT component FROM appropriations_observation")}
-        self.assertEqual(used, {None} | set(accounts.VOCABULARY))
+        # CJS uses every part component; the breakdowns (CURES, parallel
+        # scopes) are Labor-HHS's
+        self.assertEqual(used, {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        self.assertFalse(accounts.BREAKDOWN_COMPONENTS & (set(accounts.COMPONENTS) | set(accounts.STRUCTURAL_COMPONENTS)))
         # structural components are never reached from a printed label
         for c in accounts.STRUCTURAL_COMPONENTS:
             self.assertEqual(accounts.match_component(c.replace("_", " "))[1], "unmatched")

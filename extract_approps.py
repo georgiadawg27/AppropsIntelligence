@@ -77,6 +77,7 @@ from dotenv import load_dotenv
 import accounts
 import ocr_tables
 import text_tables
+from subcommittees import subcommittee_of, subcommittees_named
 import validate_approps
 
 # Keys come from the project's .env, and win over anything inherited from the
@@ -173,32 +174,8 @@ def describe_package(package_id, manifest_entry=None):
     return info
 
 
-SUBCOMMITTEES = {
-    "COMMERCE, JUSTICE, SCIENCE": "CJS",
-    "AGRICULTURE, RURAL DEVELOPMENT": "Agriculture-FDA",
-    "ENERGY AND WATER": "Energy-Water",
-    "FINANCIAL SERVICES AND GENERAL GOVERNMENT": "FSGG",
-    "HOMELAND SECURITY": "Homeland Security",
-    "INTERIOR, ENVIRONMENT": "Interior-Environment",
-    "LABOR, HEALTH AND HUMAN SERVICES": "Labor-HHS-Education",
-    "LEGISLATIVE BRANCH": "Legislative Branch",
-    "MILITARY CONSTRUCTION, VETERANS AFFAIRS": "MilCon-VA",
-    "NATIONAL SECURITY, DEPARTMENT OF STATE": "NSRP",
-    "STATE, FOREIGN OPERATIONS": "SFOPS",
-    "TRANSPORTATION, HOUSING AND URBAN DEVELOPMENT": "THUD",
-    "DEPARTMENT OF DEFENSE APPROPRIATIONS": "Defense",
-}
-
-
 def detect_subcommittee(page_texts):
-    head = " ".join(page_texts[:3]).upper()
-    # commas dropped on both sides: the FY2027 House report reads "LABOR,
-    # HEALTH, AND HUMAN SERVICES" where earlier ones read "LABOR, HEALTH AND"
-    head = re.sub(r"\s+", " ", head.replace(",", ""))
-    for needle, name in SUBCOMMITTEES.items():
-        if needle.replace(",", "") in head:
-            return name
-    return None
+    return subcommittee_of(" ".join(page_texts[:3]))
 
 
 # ---------------------------------------------------------------------------
@@ -410,7 +387,10 @@ def classify_page(client, model, page, use_fallbacks):
 def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
     tried = []
     total = {"input_tokens": 0, "output_tokens": 0, "seconds": 0.0}
-    for rot in (rotation, (rotation + 180) % 360):
+    # The classified rotation, then its flip; then -- the low-res classify
+    # pass can call a sideways page "upright" (H.Rept. 119-271 pp. 347, 358
+    # between pages it read as sideways) -- the two perpendicular ones.
+    for rot in (rotation, (rotation + 180) % 360, (rotation + 90) % 360, (rotation + 270) % 360):
         png, used_dpi = render_png(page, dpi=dpi, rotation=rot)
         try:
             result, usage = _call_json(
@@ -489,7 +469,64 @@ def names_line(named, label):
     allows for OCR noise (a misspelt "enviromental" still belongs to
     "Subtotal, Construction and environmental ...")."""
     head = squash(label)[:len(named)]
-    return head == named or accounts.distance(head, named) <= accounts.allowed_distance(named)
+    if head == named or accounts.distance(head, named) <= accounts.allowed_distance(named):
+        return True
+    # "Subtotal, NCI, program level" names "National Cancer Institute (NCI)"
+    acronym = ACRONYM_RE.match(label.strip())
+    return bool(acronym) and squash(acronym.group(2)) == named
+
+
+ACRONYM_RE = re.compile(r"^(.*?)\s*\(([A-Za-z&\u2013\u2014-]{2,12})\)\s*[.:]?\s*$")
+
+# Parallel totals. HHS prints several totals for one thing, each with its
+# scope in the label: "Total, NIH (with CURES Act funding)", "Total, NIH,
+# program level (with CURES and PHS Evaluation Act Funding)", "Total, NIH
+# program level (excluding ARPA-H)"; Medicaid's "program level, available
+# this fiscal year" / "Total, Grants to States for Medicaid" / "..., appropriated
+# in this bill". They are siblings of one family (same name once the scope is
+# taken off), not children of each other to be summed. Roles:
+#   view     -- another way of counting the same thing (program level adds
+#               transfers that aren't this bill's budget authority; excluding,
+#               discretionary, available this fiscal year): printed beside the
+#               family's total, never summed into anything
+#   in_bill  -- what the bill itself appropriates, advance included: replaces
+#               the family's total in what its parent sums (CMS's total adds
+#               Medicaid's "appropriated in this bill", not its current-year total)
+#   headline -- "with CURES Act funding": the NIH / Public Health Service
+#               figure the next level up sums (decision 2026-09-27: the
+#               headline, with CURES also kept as its own component row)
+SCOPE_RES = [
+    (re.compile(r"[\s,]*\(?\s*with\s+CURES\s+Act\s+funding\s*\)?\s*$", re.I), "headline"),
+    (re.compile(r"[\s,]*(?:appropriated|available)\s+in\s+this\s+bill\s*$", re.I), "in_bill"),
+    (re.compile(r"[\s,]*(?:fiscal\s+year\s+)?program\s+level\b.*$", re.I), "view"),
+    (re.compile(r"[\s,]*available\s+this\s+fiscal\s+year\s*$", re.I), "view"),
+    (re.compile(r"[\s,]*\(?\s*excluding\b[^)]*\)?\s*$", re.I), "view"),
+    (re.compile(r"[\s,]*including\b.*$", re.I), "view"),
+    (re.compile(r"[\s,]*discretionary\s*$", re.I), "view"),
+]
+ROLLUP_PREFIX_RE = re.compile(r"^\s*(?:sub)?total\s*[,.:]?\s*", re.I)
+
+
+def split_scope(label):
+    """ "Total, NIH program level (excluding ARPA-H)" -> ("NIH", "program level (excluding ARPA-H)", "view");
+    "Total, Current Year" -> ("", "Current Year", "view") (its family is the one printed just above);
+    an unscoped label -> (name, None, None)."""
+    name = ROLLUP_PREFIX_RE.sub("", label).strip().rstrip(".")
+    if re.fullmatch(r"current\s+year", name, re.I):
+        return "", "Current Year", "view"
+    for rx, role in SCOPE_RES:
+        m = rx.search(name)
+        if m and m.start() > 0:
+            return name[:m.start()].strip(" ,"), name[m.start():].strip(" ,"), role
+    return name, None, None
+
+
+def scope_component(scope, role):
+    """The component a scoped total is stored under: its printed scope,
+    lower-cased with punctuation as underscores. The headline scope has none."""
+    if not scope or role == "headline":
+        return None
+    return re.sub(r"[^a-z0-9]+", "_", scope.lower().replace("\u2013", "-")).strip("_") or None
 
 
 def title_key(label):
@@ -567,6 +604,10 @@ class Node:
         self.frames = []           # enclosing agency/bureau heading names, outermost first
         self.match = None          # how a rollup found its children
         self.complete = True       # False when its children may not all be extracted
+        self.scope = self.scope_role = None     # parallel totals: see SCOPE_RES
+        self.sibling_of = None     # the family member this parallel total is printed beside
+        self.window_start = None   # first node id whose rows can explain it
+        self.absorbed = []         # rows an in_bill / headline total took the place of
 
     @property
     def label(self):
@@ -599,6 +640,91 @@ def build_hierarchy(rows, table_starts_with_title):
     stack = [root]
     current_title = None
     last = None
+    aliases = {}            # squashed acronym -> squashed name, from "NATIONAL INSTITUTES OF HEALTH (NIH)"
+    families = {}           # parallel totals, by family name (split_scope)
+    last_family = None
+
+    def family_key(base):
+        m = ACRONYM_RE.match(base)
+        if m and m.group(1).strip():
+            aliases[squash(m.group(2))] = squash(m.group(1))
+            base = m.group(1)
+        k = squash(base)
+        return aliases.get(k, k)
+
+    def first_id(n):
+        todo, ids = [n], []
+        while todo:
+            x = todo.pop()
+            ids.append(x.id)
+            todo.extend(x.children)
+        return min(ids)
+
+    def frame_index(base, strict=False):
+        """The open frame a total named `base` closes, or None. strict: the
+        heading's own name (its "(NIH)" taken off), not a prefix of it --
+        "Payments to States" must not close "Payments to States for Child
+        Support Enforcement ..."."""
+        target = squash(base)
+        targets = {t for t in (target, aliases.get(target)) if t}
+        tkey = title_key(base)
+        for i in range(len(stack) - 1, 0, -1):
+            f = stack[i]
+            if f.kind == "title" and tkey and title_key(f.name) == tkey:
+                return i
+            fn = squash(f.name)
+            if strict:
+                m = ACRONYM_RE.match(f.name)
+                fn = squash(m.group(1)) if m and m.group(1).strip() else fn
+                if f.kind == "heading" and fn in targets:
+                    return i
+            elif f.kind == "heading" and fn and any(fn == t or t.startswith(fn) or fn.startswith(t) for t in targets):
+                return i
+        return None
+
+    def cut_from(first):
+        """Remove `first` and everything after it from whichever open frame
+        holds it -> the removed rows ([] if no frame holds it)."""
+        for f in reversed(stack):
+            for i, x in enumerate(f.items):
+                if x is first:
+                    cut, f.items = f.items[i:], f.items[:i]
+                    f.run_start = min(f.run_start, len(f.items))
+                    return cut
+        return []
+
+    def named_rows(named, run):
+        """The rows a "Subtotal, <named>" covers at the end of the run: the
+        lines named for it (and lines nested under them); else, when a line
+        it doesn't name was printed after its named line ("Gabriella Miller
+        Kids First Research Act" after "Office of the Director"), everything
+        from the nearest named line down."""
+        def is_named(x):
+            return x.kind == "line" and (names_line(named, x.label) or
+                                         (x.parent_line is not None and names_line(named, x.parent_line.label)))
+        n = 0
+        while n < len(run) and is_named(run[-1 - n]):
+            n += 1
+        if n:
+            return run[len(run) - n:], "named_run"
+        j = next((i for i in range(len(run) - 1, -1, -1) if run[i].kind == "line" and names_line(named, run[i].label)), None)
+        return (run[j:], "named_from_line") if j is not None else ([], None)
+
+    def view_children(label, top):
+        """A view rollup's own rows, left where they are: the lines it names
+        (and lines nested under them), else -- a name that is an abbreviation
+        ("Subtotal, B&F, program level" for "Buildings and Facilities") --
+        the last line and its nested lines; a view total takes the run."""
+        run = top.items[top.run_start:]
+        if ROLLUP_PREFIX_RE.match(label) and label.lower().startswith("sub"):
+            rows, how = named_rows(squash(split_scope(label)[0]), run)
+            if rows:
+                return rows, how
+            n = 0
+            while n < len(run) and run[-1 - n].kind == "line" and run[-1 - n].parent_line is not None:
+                n += 1
+            return (run[len(run) - n - 1:], "last_line") if n < len(run) and run[-1 - n].kind == "line" else ([], "none")
+        return run, "run_since_last_subtotal"
 
     def frame_path():
         return [f.name for f in stack if f.kind == "heading"]
@@ -616,12 +742,15 @@ def build_hierarchy(rows, table_starts_with_title):
         if kind == "title_heading":
             while len(stack) > 1:
                 fold_into_parent()
+            families.clear()
+            last_family = None
             current_title = label
             stack.append(Frame(label, "title"))
             last = None
             continue
 
         if kind == "heading":
+            family_key(label.rstrip(":").strip())      # registers "(NIH)" -> "NATIONAL INSTITUTES OF HEALTH"
             top = stack[-1]
             if top.kind == "heading" and top.items:
                 fold_into_parent()
@@ -641,6 +770,50 @@ def build_hierarchy(rows, table_starts_with_title):
         node = Node(row, kind, cells, page, frame_path() + [label], current_title)
         node.frames = frame_path()
         top = stack[-1]
+
+        if kind in ("total", "subtotal") and not is_account_rollup(label):
+            base, scope, role = split_scope(label)
+            node.scope, node.scope_role = scope, role
+            key = family_key(base) if base else last_family
+            fam = families.get(key) if key else None
+            if role and fam:
+                # a parallel total of a family already printed: a sibling, not a sum
+                node.sibling_of, node.window_start = fam["members"][-1], fam["window_start"]
+                node.match = "parallel_" + role
+                if role != "view":
+                    # in_bill / headline: what the parent sums from here on,
+                    # in place of the family's total (or, when that total is a
+                    # side view, its rows) and every row printed since
+                    rep = fam["rep"]
+                    anchors = [rep] + ([rep.children[0]] if rep.children else [])
+                    node.absorbed = next((c for c in (cut_from(a) for a in anchors) if c), [])
+                    idx = frame_index(base, strict=True) if kind == "total" else None
+                    if idx is not None:
+                        node.frames = [f.name for f in stack[:idx + 1] if f.kind == "heading"]
+                        node.path = node.frames + [label]
+                        while len(stack) - 1 > idx:
+                            fold_into_parent()
+                        stack.pop()           # its rows are the family's, now represented by this total
+                    stack[-1].items.append(node)
+                    fam["rep"] = node
+                fam["members"].append(node)
+                last_family = key
+                last = node
+                nodes.append(node)
+                continue
+            if role == "view":
+                # first of its family ("Subtotal, NCI, program level"; "Total,
+                # Medicaid program level, available this fiscal year"): a side
+                # rollup -- checked against its rows, which stay where they are
+                # for the next rollup to sum; closes no frame
+                node.children, how = view_children(label, top)
+                node.match, node.complete = "view_" + how, top.complete and bool(node.children)
+                families[key] = {"members": [node], "rep": node,
+                                 "window_start": first_id(node) if node.children else node.id}
+                last_family = key
+                last = node
+                nodes.append(node)
+                continue
 
         if kind == "line":
             prev = top.items[-1] if top.items else None
@@ -689,24 +862,34 @@ def build_hierarchy(rows, table_starts_with_title):
             # (emergency)"), and doesn't close the run: a later unnamed
             # "Subtotal" still includes it. A bare "Subtotal" (House) sums
             # everything since the previous bare subtotal.
-            m = re.match(r"subtotal\s*[,.]\s*(.+)", label, flags=re.I)
-            named = squash(m.group(1)) if m else None
-            n = 0
-            if named:
-                run = top.items[top.run_start:]
-                while n < len(run) and run[-1 - n].kind == "line" and names_line(named, run[-1 - n].label):
-                    n += 1
-            if n:
-                node.children = top.items[len(top.items) - n:]
-                node.match = "named_run"
-                node.complete = top.complete
-                top.items = top.items[:len(top.items) - n] + [node]
+            m = re.match(r"subtotal\s*[,.:]\s*(.+)", label, flags=re.I)
+            named = squash(split_scope(label)[0]) if m else None
+            run = top.items[top.run_start:]
+            heading = ACRONYM_RE.match(top.name)
+            if named and top.kind == "heading" and named in {squash(top.name), squash(heading.group(1)) if heading else None}:
+                # "Subtotal, Mental Health" under the heading "Mental Health":
+                # the whole section, whatever subtotals ran inside it
+                children, how = top.items, "named_section"
             else:
-                node.children = top.items[top.run_start:]
-                node.match = "run_since_last_subtotal"
-                node.complete = top.complete
-                top.items = top.items[:top.run_start] + [node]
+                children, how = named_rows(named, run) if named else ([], None)
+                if not children:
+                    children, how = run, "run_since_last_subtotal"
+            node.children, node.match, node.complete = children, how, top.complete
+            if len(children) == 1 and children[0].kind == "line" and \
+                    [c.get("value") for c in node.cells] != [c.get("value") for c in children[0].cells]:
+                # a view of one line, not its rollup: its figures differ from
+                # the line's ("Subtotal" = "Programs of Regional and National
+                # Significance" + its "(Prevention and Public Health Fund)"
+                # memo), so the line stays in the run for the next rollup to
+                # sum. One printing the line's own figures (the CJS JES's
+                # "Subtotal. Operations, research and Facilities") is its
+                # rollup and takes its place, as any rollup does.
                 top.run_start = len(top.items)
+            else:
+                keep = len(top.items) - len(children)
+                top.items = top.items[:keep] + [node]
+                if how in ("run_since_last_subtotal", "named_section"):
+                    top.run_start = len(top.items)
 
         elif kind == "grand_total":
             while len(stack) > 1:
@@ -726,18 +909,7 @@ def build_hierarchy(rows, table_starts_with_title):
             root.items.append(node)
 
         elif kind == "total":
-            target = squash(re.sub(r"^total\s*[,.]?\s*", "", label, flags=re.I))
-            tkey = title_key(re.sub(r"^total\s*[,.]?\s*", "", label, flags=re.I))
-            idx = None
-            for i in range(len(stack) - 1, 0, -1):
-                f = stack[i]
-                if f.kind == "title" and tkey and title_key(f.name) == tkey:
-                    idx = i
-                    break
-                fn = squash(f.name)
-                if f.kind == "heading" and fn and (fn == target or target.startswith(fn) or fn.startswith(target)):
-                    idx = i
-                    break
+            idx = frame_index(split_scope(label)[0])
             if idx is not None:
                 node.frames = [f.name for f in stack[:idx + 1] if f.kind == "heading"]
                 node.path = node.frames + [label]
@@ -758,6 +930,12 @@ def build_hierarchy(rows, table_starts_with_title):
                 top.items = top.items[:top.run_start] + [node]
                 top.run_start = len(top.items)
 
+        if kind in ("total", "subtotal") and not is_account_rollup(label):
+            base = split_scope(label)[0]
+            if base:        # a bare "Subtotal" names no family
+                key = family_key(base)
+                families[key] = {"members": [node], "rep": node, "window_start": first_id(node)}
+                last_family = key
         last = node
         nodes.append(node)
 
@@ -810,7 +988,8 @@ def _match_col(cols, name):
         if c["kind"] != "value":
             continue
         h = c["header"].lower()
-        if h == n or h.endswith(n) or n.endswith(h) or (n == "enacted" and "enacted" in h) \
+        # "Committee vs. Enacted" names "Committee Recommendation" (H.Rept. 119-696)
+        if h == n or h.endswith(n) or n.endswith(h) or h.startswith(n + " ") or (n == "enacted" and "enacted" in h) \
                 or (n == "request" and "request" in h):
             return c["index"]
     return None
@@ -829,10 +1008,19 @@ def parse_units(declared):
     return None
 
 
+ADVANCE_RE = re.compile(r"^\s*(?:new\s+)?advances?\b|\badvance\s+appropriations?\b", re.I)
+CURES_RE = re.compile(r"\bCURES\s+Act\b", re.I)
+
+
 def amount_type_for(node):
     low = node.label.lower()
     t = {"amount_type": "budget authority", "offsetting_collections": False, "transfer_direction": None}
-    if "transfer" in low:
+    if ADVANCE_RE.search(node.label):
+        # "New advance, 1st quarter, FY 2027": appropriated in this bill for
+        # the next fiscal year (decision 2026-09-27: its own amount_type; the
+        # observation's fiscal_year stays the year it was appropriated)
+        t["amount_type"] = "advance"
+    elif "transfer" in low:
         t["amount_type"] = "transfer"
         t["transfer_direction"] = "out" if "transfer out" in low or "transfers out" in low else "in"
     elif "rescission" in low:
@@ -882,6 +1070,15 @@ def build_observations(nodes, cols, unit, page_meta, doc, table_title):
                 key += f"|#{seen_keys[key]}"
             src = page_meta[node.page]
             t = amount_type_for(node)
+            if t["amount_type"] == "advance":
+                # a first-quarter advance is for the fiscal year after the one it is appropriated in
+                named = re.search(r"\bFY\s*(\d{4})", node.label)
+                t["advance_for_fiscal_year"] = col["fiscal_year"] + 1 if col["fiscal_year"] else None
+                t["advance_evidence"] = (f"appropriated in FY{col['fiscal_year']} ({col['header']}), available FY"
+                                         f"{t['advance_for_fiscal_year']}; label: {node.label!r}"
+                                         + (f" (names FY{named.group(1)}, the bill year's advance)" if named else ""))
+            component = scope_component(node.scope, node.scope_role) or \
+                ("CURES" if node.scope is None and CURES_RE.search(node.label) else None)
             heading_frames = node.frames
             obs.append({
                 "observation_id": str(uuid.uuid5(OBS_NAMESPACE, key)),
@@ -909,6 +1106,8 @@ def build_observations(nodes, cols, unit, page_meta, doc, table_title):
                 "amount_unit": unit,
                 "amount_is_dash_zero": cell["kind"] == "dash",
                 **t,
+                # a parallel total's printed scope; the CURES Act line (see SCOPE_RES)
+                "account_component": component,
                 "transfer_counterpart_name_as_written": None,
                 "fund_type_hint": fund_type_hint(node.label),
                 "source_page": str(node.page),
@@ -940,6 +1139,60 @@ def select_table_pages(entries, target_key):
         elif start is not None and any(k and k != target_key for k in keys):
             return table[start:i + 1]
     return table[start:] if start is not None else table
+
+
+DIVISION_RE = re.compile(r"\bDIVISION ([A-Z])\s*[\u2014\u2013]\s*")
+
+
+def division_ranges(page_texts):
+    """
+    The divisions of a multi-division document (an omnibus act, a
+    Congressional Record explanatory statement covering several bills), as
+    [(letter, name, first_page, last_page)] in page order; [] for a
+    one-subcommittee document. A division starts at its own uppercase
+    heading ("DIVISION B—DEPARTMENTS OF LABOR, HEALTH AND ...", which the
+    Record may break across lines and hyphenate: "HOME-\nLAND") and runs to
+    the page before the next one (two starting on one page share it). A
+    page naming three or more divisions is a table of contents, not a
+    heading.
+    """
+    starts = {}
+    for i, raw in enumerate(page_texts):
+        text = re.sub(r"\s+", " ", re.sub(r"-\s*\n\s*", "", raw or ""))
+        hits = [(m.group(1), m.start(), text[m.end():m.end() + 250]) for m in DIVISION_RE.finditer(text)]
+        if len({letter for letter, _, _ in hits}) >= 3:
+            continue
+        for letter, pos, after in hits:
+            # the name runs up to the first mixed-case word ("... ACT, 2026 The explanatory ...")
+            name = re.split(r"\s(?=[A-Z][a-z])", after, maxsplit=1)[0].strip()
+            starts.setdefault(letter, (i + 1, name, pos))
+    order = sorted(((letter, (first, name)) for letter, (first, name, pos) in starts.items()),
+                   key=lambda kv: (kv[1][0], starts[kv[0]][2]))
+    letters = [letter for letter, _ in order]
+    # A document's own divisions run A, B, C ... through its pages (a letter
+    # may be skipped: P.L. 119-75 has no Division C). Headings quoted out of
+    # that order are statute text a report reprints ("changes in existing
+    # law": S.Rept. 118-207 quotes Divisions H, C, J, B; S.Rept. 119-55's
+    # "Other Appropriations" rows cite P.L. 117-58 Division J, then P.L.
+    # 117-159 Division B, on one page), not its divisions.
+    if len(order) < 2 or letters != sorted(set(letters)):
+        return []
+    return [(letter, name, first, max(first, order[k + 1][1][0] - 1) if k + 1 < len(order) else len(page_texts))
+            for k, (letter, (first, name)) in enumerate(order)]
+
+
+def resolve_division(divisions, subcommittee):
+    """The one division whose heading names the subcommittee, or SystemExit:
+    a multi-division document is never read from its first matching title
+    heading (Division A's Title II is Defense's, not HHS's)."""
+    if not subcommittee:
+        raise SystemExit("multi-division document (" + ", ".join(f"{d[0]}: {d[1][:40]}" for d in divisions) +
+                         ") -- say which subcommittee's division to read (--subcommittee, or the manifest's subcommittee)")
+    hits = [d for d in divisions if subcommittee in subcommittees_named(d[1])]
+    if len(hits) != 1:
+        raise SystemExit(f"{len(hits)} divisions name {subcommittee!r}: " +
+                         "; ".join(f"{d[0]}: {d[1][:60]}" for d in divisions))
+    return hits[0]
 
 
 def title_filter_ok(node, target_key):
@@ -976,7 +1229,8 @@ def source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
 
 
 def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=False,
-        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False, manifest_path=None):
+        dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False, manifest_path=None,
+        subcommittee=None):
     pdf_path = Path(pdf_path)
     data = pdf_path.read_bytes()
     pdf_sha = hashlib.sha256(data).hexdigest()
@@ -993,11 +1247,20 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
 
     log = print if verbose else (lambda *a, **k: None)
 
-    # 1. Route every page.
+    # 1. Route every page. A multi-division document is narrowed to the
+    #    requested subcommittee's division first; its title is looked for
+    #    only there.
     routes = [route_page(doc_pdf[i]) for i in range(len(doc_pdf))]
-    vision_pages = [r["page"] for r in routes if r["route"] == "vision"]
-    text_table_pages = text_tables.find_table_pages(doc_pdf, [r["page"] for r in routes if r["route"] == "text"])
-    ocr_page_list = [r["page"] for r in routes if r["route"] == "ocr"]
+    division = None
+    divisions = division_ranges([r["text"] for r in routes])
+    if divisions:
+        division = resolve_division(divisions, subcommittee or (manifest_entry or {}).get("subcommittee"))
+        log(f"  {len(divisions)} divisions; reading Division {division[0]} ({division[1][:70]}), pp. {division[2]}-{division[3]}")
+    in_scope = (lambda p: division[2] <= p <= division[3]) if division else (lambda p: True)
+    vision_pages = [r["page"] for r in routes if r["route"] == "vision" and in_scope(r["page"])]
+    text_table_pages = text_tables.find_table_pages(doc_pdf, [r["page"] for r in routes
+                                                              if r["route"] == "text" and in_scope(r["page"])])
+    ocr_page_list = [r["page"] for r in routes if r["route"] == "ocr" and in_scope(r["page"])]
     ocr_table_pages = ocr_tables.find_table_pages(doc_pdf, ocr_page_list) if ocr_page_list else []
     log(f"{package_id}: {len(routes)} pages, {len(routes) - len(vision_pages) - len(ocr_page_list)} text, "
         f"{len(ocr_page_list)} scanned with an OCR layer, {len(vision_pages)} image-only -> vision")
@@ -1159,6 +1422,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     # 4-5. Rows -> hierarchy -> observations -> validation.
     page_texts = [r["text"] for r in routes]
     source_document = source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
+    if division:
+        source_document["subcommittee"] = subcommittee_of(division[1]) or source_document["subcommittee"]
 
     def assemble():
         page_meta, rows, units_by_page, headers, table_title = {}, [], {}, None, ""
@@ -1204,6 +1469,14 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
         m = re.search(r"BILL\s+FOR\s+(?:FISCAL\s+YEAR\s+)?(\d{4})|\bACT\s*,\s*(\d{4})", table_title, re.I)
         bill_fy = int(m.group(1) or m.group(2)) if m else (manifest_entry or {}).get("fiscal_year")
         cols = classify_columns(headers, bill_fy, doc["stage"])
+        for c in cols:
+            # never guessed: H.Rept. 119-271 heads FY2025 (a full-year continuing
+            # resolution) "FY 2025 Estimate" -- neither Enacted nor a request
+            if c["kind"] == "value" and (c["stage"] is None or c["fiscal_year"] is None):
+                log(f"  WARNING: value column {c['header']!r} has no stage/fiscal year the header states "
+                    f"(stage {c['stage']!r}, FY {c['fiscal_year']!r}) -- its figures are extracted, not assigned")
+            if c["kind"] == "delta" and (c.get("minuend_index") is None or c.get("subtrahend_index") is None):
+                log(f"  WARNING: difference column {c['header']!r} doesn't name two value columns -- not checked")
 
         declared_units = {parse_units(u) for u in units_by_page.values()}
         unit = next(iter(declared_units)) if len(declared_units) == 1 else None
@@ -1228,7 +1501,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             mt = matches.get(o["node_id"])
             if mt is not None:
                 o.update(canonical_account_id=mt["canonical_account_id"], canonical_name=mt["canonical_name"],
-                         account_component=mt["component"], account_match=mt["match"],
+                         account_component=mt["component"] or o.get("account_component"), account_match=mt["match"],
                          account_match_distance=mt["distance"], account_match_via=mt.get("via"),
                          account_matched_name=mt.get("matched_name"))
         for n in selected:
@@ -1236,7 +1509,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             if mt and mt["canonical_account_id"]:
                 account_rows.append({"account_path": " / ".join(n.path), "source_page": n.page, "title": n.title,
                                      "canonical_account_id": mt["canonical_account_id"],
-                                     "account_component": mt["component"],
+                                     "account_component": mt["component"] or scope_component(n.scope, n.scope_role),
                                      "blank_columns": [c["header"] for c in cols if c["kind"] == "value"
                                                        and (c["index"] >= len(n.cells) or n.cells[c["index"]]["kind"] == "blank")]})
         records, summary = validate_approps.validate(selected, cols, observations, page_meta, unit,
@@ -1294,6 +1567,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             "mode": "live" if live else ("offline" if offline else "cached"),
             "prompt_version": PROMPT_VERSION,
             "title_filter": title,
+            "division": ({"letter": division[0], "name": division[1], "pages": [division[2], division[3]]}
+                         if division else None),
             "table_title": table_title,
             "amount_unit_declared": unit,
             "columns": cols,
@@ -1508,12 +1783,14 @@ def main():
     mode.add_argument("--live", action="store_true",
                       help="Ignore cached vision results and call the API for every image-only page")
     ap.add_argument("--no-fallbacks", action="store_true", help="Don't send the server-side refusal fallback beta")
+    ap.add_argument("--subcommittee", help="In a multi-division document, whose division to read, e.g. Labor-HHS-Education "
+                                           "(defaults to the manifest's subcommittee)")
     ap.add_argument("--ground-truth", help="JSON of expected dollar figures to diff against")
     args = ap.parse_args()
 
     result = run(args.pdf, title=args.title, model=args.model, cache_dir=args.cache_dir,
                  offline=args.offline, dpi=args.dpi, out_dir=args.out_dir,
-                 use_fallbacks=not args.no_fallbacks, live=args.live)
+                 use_fallbacks=not args.no_fallbacks, live=args.live, subcommittee=args.subcommittee)
     gt_ok, gt_rows = (True, None)
     if args.ground_truth:
         gt_ok, gt_rows = compare_ground_truth(result, args.ground_truth)
