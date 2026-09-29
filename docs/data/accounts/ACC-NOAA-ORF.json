@@ -6,24 +6,33 @@
      "Enacted": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -32,8 +41,11 @@
      "House Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -45,6 +57,8 @@
          "canonical_account_id": "ACC-NOAA-ORF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -72,8 +86,11 @@
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -85,6 +102,8 @@
          "canonical_account_id": "ACC-NOAA-ORF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -112,8 +131,11 @@
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -125,6 +147,8 @@
          "canonical_account_id": "ACC-NOAA-ORF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -161,24 +185,33 @@
      "President's Budget": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -187,24 +220,33 @@
      "Senate Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -217,15 +259,21 @@
   "series": [
    {
     "amount_type": "budget authority",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    },
    {
     "amount_type": "rescission",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    },
    {
     "amount_type": "transfer",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    }
   ],
   "stages": [
@@ -279,6 +327,8 @@
     "canonical_account_id": "ACC-NOAA-ORF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
@@ -310,6 +360,8 @@
     "canonical_account_id": "ACC-NOAA-ORF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
@@ -341,6 +393,8 @@
     "canonical_account_id": "ACC-NOAA-ORF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",

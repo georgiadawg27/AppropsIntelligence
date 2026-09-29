@@ -70,7 +70,7 @@ def cell_lines(conn, title, fy, stage, subcommittee="CJS"):
     its accounts' base lines). A title is a subcommittee's: CJS's Title II
     is Justice, Labor-HHS's is HHS."""
     BREAKDOWN.clear()
-    BREAKDOWN.update(r[0] for r in conn.execute("SELECT component FROM component WHERE kind IN ('contained', 'view')"))
+    BREAKDOWN.update(c for c, k in S.component_kinds(conn).items() if k in ("contained", "view"))
     accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, notes FROM account "
                                            "WHERE title = ? AND subcommittee = ?", (title, subcommittee))]
     plain = [a for a in accts if not S.rollup_scope(a)]
@@ -120,7 +120,7 @@ def reconcile(conn, printed, title="Title III", subcommittee="CJS"):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    workbook = Path(argv[0]) if argv else next((ROOT / "reference").glob("*.xlsx"))
+    workbook = Path(argv[0]) if argv else S.reference_workbook()
     with open(PRINTED, newline="") as f:
         printed = list(csv.DictReader(f))
     with tempfile.TemporaryDirectory() as tmp:

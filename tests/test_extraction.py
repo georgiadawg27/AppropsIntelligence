@@ -282,7 +282,7 @@ class DetectSubcommittee(unittest.TestCase):
         # H.Rept. 119-696's title page vs H.Rept. 118-585's
         for head in ("DEPARTMENTS OF LABOR, HEALTH, AND HUMAN SERVICES, AND EDUCATION",
                      "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION"):
-            self.assertEqual(ex.detect_subcommittee([head]), "Labor-HHS-Education")
+            self.assertEqual(ex.detect_subcommittee([head]), "LHHS")
 
     def test_senate_cjs_title_wording(self):
         # S.Rept. 119-44: "COMMERCE AND JUSTICE, SCIENCE"; the bill: "COMMERCE, JUSTICE, SCIENCE"
@@ -308,7 +308,7 @@ class Divisions(unittest.TestCase):
         divs = ex.division_ranges(pages)
         self.assertEqual([(d[0], d[2], d[3]) for d in divs], [("A", 1, 2), ("B", 3, 4), ("C", 5, 5)])
         self.assertEqual(divs[2][1], "DEPARTMENT OF HOMELAND SECURITY APPROPRIATIONS ACT, 2026")
-        self.assertEqual(ex.resolve_division(divs, "Labor-HHS-Education")[0], "B")
+        self.assertEqual(ex.resolve_division(divs, "LHHS")[0], "B")
 
     def test_table_of_contents_is_not_a_heading(self):
         toc = "DIVISION A\u2014DEFENSE X DIVISION B\u2014LABOR, HEALTH AND HUMAN SERVICES Y DIVISION C\u2014HOMELAND SECURITY"
@@ -346,7 +346,7 @@ class Divisions(unittest.TestCase):
         pages = lambda f: [p.get_text() for p in pymupdf.open(f)]
         jes = ex.division_ranges(pages(self.JES))
         self.assertEqual([(d[0], d[2], d[3]) for d in jes], [("A", 1, 237), ("B", 238, 308), ("C", 309, 381), ("D", 382, 557)])
-        self.assertEqual(ex.resolve_division(ex.division_ranges(pages(self.PL)), "Labor-HHS-Education")[::2], ("D", 170))
+        self.assertEqual(ex.resolve_division(ex.division_ranges(pages(self.PL)), "LHHS")[::2], ("D", 170))
 
     @unittest.skipUnless(JES.exists(), "LHHS JES not in document_store")
     def test_run_refuses_a_multi_division_document_without_a_subcommittee(self):

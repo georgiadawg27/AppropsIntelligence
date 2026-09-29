@@ -6,7 +6,9 @@ that answers the same questions as approps_web.py without a server.
 
     python export_static.py [--workbook reference/X.xlsx] [--out docs]
 
-  - Loads the committed reference workbook (the one .xlsx in reference/)
+  - Loads the committed reference workbook (approps_store.reference_workbook():
+    Approps_Pilot_Schema_Loaded_vNN.xlsx, or the older CJS_Title_III_...
+    name, the highest vNN in reference/)
     into a throwaway store with approps_store.load().
   - Writes, for every account, exactly what the live API returns for it:
     approps_web.account() -- history() + history_grid() -- to
@@ -46,10 +48,11 @@ DATA_META = '<meta name="approps-data" content="data/">'
 
 
 def reference_workbook():
-    found = sorted((ROOT / "reference").glob("*.xlsx"))
-    if len(found) != 1:
-        raise SystemExit(f"expected exactly one reference workbook in reference/, found {[f.name for f in found]}")
-    return found[0]
+    """approps_store.reference_workbook(): either file-name pattern, the highest vNN."""
+    try:
+        return S.reference_workbook(ROOT / "reference")
+    except S.LoadError as e:
+        raise SystemExit(str(e)) from None
 
 
 def committed_date(path):
@@ -87,8 +90,9 @@ def export(workbook, out):
         for aid in ids:
             payload = W.account(str(db), aid)
             dump({"history": payload["history"], "grid": payload["grid"]}, out / "data" / "accounts" / f"{aid}.json")
-        names = W.subcommittees(str(db))["subcommittees"]
-        dump({"subcommittees": names}, out / "data" / "subcommittees.json")
+        listing = W.subcommittees(str(db))
+        names = listing["subcommittees"]
+        dump(listing, out / "data" / "subcommittees.json")
         for name in names:
             # the whole subcommittee side by side is large; compact keeps it ~1.5 MB
             dump(W.subcommittee(str(db), name), out / "data" / "subcommittees" / f"{name}.json", compact=True)
@@ -121,7 +125,7 @@ def export(workbook, out):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1])
-    p.add_argument("--workbook", help="default: the one .xlsx in reference/")
+    p.add_argument("--workbook", help="default: the reference workbook in reference/ (highest vNN)")
     p.add_argument("--out", default=str(ROOT / "docs"))
     args = p.parse_args(argv)
     r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out)

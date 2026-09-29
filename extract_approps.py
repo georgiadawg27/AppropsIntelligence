@@ -1857,7 +1857,7 @@ def main():
     mode.add_argument("--live", action="store_true",
                       help="Ignore cached vision results and call the API for every image-only page")
     ap.add_argument("--no-fallbacks", action="store_true", help="Don't send the server-side refusal fallback beta")
-    ap.add_argument("--subcommittee", help="In a multi-division document, whose division to read, e.g. Labor-HHS-Education "
+    ap.add_argument("--subcommittee", help="In a multi-division document, whose division to read, e.g. LHHS "
                                            "(defaults to the manifest's subcommittee)")
     ap.add_argument("--ground-truth", help="JSON of expected dollar figures to diff against")
     args = ap.parse_args()

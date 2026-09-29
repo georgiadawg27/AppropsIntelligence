@@ -27,7 +27,8 @@ Which document, when several print the cell:
 Every other document printing the same fact becomes a cross_document
 validation record on the chosen observation. The FY2026 JES figures were read
 by hand from the Congressional Record's page images (hand_checks.csv):
-extraction_method human_entered, as asked -- read by Claude, not a person.
+extraction_method human-entered (the Data Dictionary's spelling), as asked --
+read by Claude, not a person.
 
 Reads extractions/*.title-ii.json (gitignored: rerun extract_approps.py
 --title "TITLE II" --offline) and ../hand_checks.csv, ../law_text.csv.
@@ -47,7 +48,7 @@ sys.path.insert(0, str(ROOT))
 
 import accounts as A  # noqa: E402
 
-SUB = "Labor-HHS-Education"
+SUB = "LHHS"                 # the stored subcommittee code (subcommittees.SUBCOMMITTEES); lookup_key LHHS-<FY>-<Stage>
 TODAY = "2026-09-28"
 JES = "MANUAL-LHHS-FY2026-Enacted-jes-e44f7662"
 
@@ -334,7 +335,7 @@ def jes_figure(h, key, offset):
     return dict(observation_id=f"JES-{key}", account_name_as_written=label, amount=v * 1000, amount_as_printed=
                 h["hand_read_thousands"], fiscal_year=2026, stage="Enacted", column_header="FINAL BILL",
                 source_page=f"{h['pdf_page']} ({h['printed_page']})", is_memo=memo, row_kind="line",
-                amount_type=t, account_component=comp, extraction_method="human_entered",
+                amount_type=t, account_component=comp, extraction_method="human-entered",
                 extraction_confidence=0.95, node_id=int(h["pdf_page"]) * 100 + offset, _records=[], _pkg=JES,
                 advance_for_fiscal_year=2027 if t == "advance" else None)
 
@@ -486,7 +487,7 @@ def choose(docs, cell):
     """Which document supplies a cell (see the module notes)."""
     def rank(pkg):
         own = 0 if OWN_CELL[pkg] == cell else 1
-        method = 0 if docs[pkg][0][0].get("extraction_method") in ("text-extracted", "human_entered") else 1
+        method = 0 if docs[pkg][0][0].get("extraction_method") in ("text-extracted", "human-entered") else 1
         return (own, method, -int(DOCS[pkg]["date"].replace("-", "")))
     return sorted(docs, key=rank)[0]
 
@@ -723,7 +724,8 @@ def main():
         brr_rows.append({"reference_id": f"BR-LHHS-FY{fy}-{BRR_ID[stage]}", "subcommittee": SUB, "fiscal_year": fy,
                          "stage": stage, "bill_id": bill, "report_id": report, "bill_url": bu, "report_jes_url": ru,
                          "lookup_key": f"{SUB}-{fy}-{stage}"})
-    comp_rows = [{"component": c, "kind": k, "description": d} for c, k, d in A.COMPONENT_KINDS]
+    comp_rows = [{"component_id": c, "label": A.COMPONENT_LABELS[c][0], "kind": k, "description": d}
+                 for c, k, d in A.COMPONENT_KINDS]
 
     # --- Held back: H.Rept. 119-271's "FY 2025 Estimate" column (decision 1's condition not met)
     held = []

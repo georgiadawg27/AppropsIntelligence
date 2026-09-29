@@ -1,6 +1,7 @@
 """
 The relational store and its query (approps_store.py, store_schema.sql),
-loaded from the committed pilot workbook (reference/..._v28.xlsx).
+loaded from the committed pilot workbook (reference/, v28 --
+approps_store.reference_workbook()).
 
 Run:  python -m unittest tests.test_store -v
 
@@ -28,7 +29,7 @@ try:
 except ImportError:                                  # pragma: no cover
     openpyxl = None
 
-WORKBOOK = ROOT / "reference" / "CJS_Title_III_Science_Pilot_Schema_Loaded_v28.xlsx"
+WORKBOOK = S.reference_workbook()        # either file-name pattern (approps_store.WORKBOOK_PATTERNS)
 FOUR = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
 
 
@@ -80,9 +81,14 @@ class Load(StoreTest):
         # v28 predates the Component tab: its kinds come from the code, and say so
         self.assertEqual(self.report["tabs_not_in_workbook"], ["Component"])
         self.assertEqual(self.report["component_kinds_from"], "accounts.COMPONENT_KINDS (no Component rows in the workbook)")
-        kinds = dict(self.conn.execute("SELECT component, kind FROM component").fetchall())
+        kinds = S.component_kinds(self.conn)
         self.assertEqual((kinds["defense"], kinds["supplemental_act"], kinds["CURES"], kinds["appropriated_in_this_bill"]),
                          ("part", "part", "contained", "view"))
+        # every component carries a label from a document's own text (accounts.COMPONENT_LABELS)
+        labels = dict(self.conn.execute("SELECT component_id, label FROM component").fetchall())
+        self.assertEqual((labels["CURES"], labels["program_level_excluding_arpa_h"], labels["defense"]),
+                         ("CURES Act", "program level (excluding ARPA-H)", "Defense function"))
+        self.assertNotIn(None, labels.values())
 
     def test_v28_loads_with_no_warnings(self):
         self.assertEqual((self.report["waived"], self.report["warnings"]), ({}, []))
@@ -95,6 +101,23 @@ class Load(StoreTest):
             rng = self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?", (doc,)).fetchone()[0]
             self.assertEqual(tuple(o), (page, doc))
             self.assertTrue(S.within(page, rng), (oid, page, rng))
+
+    def test_reference_workbook_accepts_both_file_names(self):
+        # v30 on: Approps_Pilot_Schema_Loaded_vNN; through v29: CJS_Title_III_Science_Pilot_Schema_Loaded_vNN
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            with self.assertRaises(S.LoadError):
+                S.reference_workbook(d)
+            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v29.xlsx").touch()
+            (d / "notes.xlsx").touch()                                    # not a reference workbook
+            self.assertEqual(S.reference_workbook(d).name, "CJS_Title_III_Science_Pilot_Schema_Loaded_v29.xlsx")
+            (d / "Approps_Pilot_Schema_Loaded_v30.xlsx").touch()
+            self.assertEqual(S.reference_workbook(d).name, "Approps_Pilot_Schema_Loaded_v30.xlsx")   # the higher vNN
+            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v31.xlsx").touch()
+            self.assertEqual(S.reference_workbook(d).name, "CJS_Title_III_Science_Pilot_Schema_Loaded_v31.xlsx")
+            (d / "Approps_Pilot_Schema_Loaded_v31.xlsx").touch()
+            with self.assertRaises(S.LoadError):                         # two v31s: which?
+                S.reference_workbook(d)
 
     def test_table_pages_may_be_several_ranges(self):
         # a title's pages and a bill-level section after the grand total

@@ -1,21 +1,21 @@
-component,kind,description
-defense,part,a line printed under the account's own line (Defense function)
-chimp,part,a line printed under the account's own line (CHIMP)
-chimp_pop_up,part,a line printed under the account's own line (CHIMP Pop-Up)
-supplemental_act,part,a separate supplemental appropriations act (Other Appropriations)
-budget_amendment,part,a budget amendment to the President's request
-emergency,part,"a separate line of the account designated emergency ('... (emergency)'), where the account's amount type has no emergency form: an emergency rescission"
-CURES,contained,NIH Innovation Account (21st Century Cures Act): inside NIH's headline total
-program_level,view,parallel total printed with scope 'program level'
-fiscal_year_program_level,view,parallel total printed with scope 'fiscal year program level'
-program_level_with_cures_and_phs_evaluation_act_funding,view,parallel total printed with scope 'program level with cures and phs evaluation act funding'
-program_level_excluding_arpa_h,view,parallel total printed with scope 'program level excluding arpa h'
-program_level_available_this_fiscal_year,view,parallel total printed with scope 'program level available this fiscal year'
-program_level_including_emergencies,view,parallel total printed with scope 'program level including emergencies'
-available_this_fiscal_year,view,parallel total printed with scope 'available this fiscal year'
-current_year,view,parallel total printed with scope 'current year'
-appropriated_in_this_bill,view,parallel total printed with scope 'appropriated in this bill'
-available_in_this_bill,view,parallel total printed with scope 'available in this bill'
-excluding_emergencies,view,parallel total printed with scope 'excluding emergencies'
-including_phs_eval_tap,view,parallel total printed with scope 'including phs eval tap'
-discretionary,view,parallel total printed with scope 'discretionary'
+component_id,label,kind,description
+defense,Defense function,part,a line printed under the account's own line (Defense function)
+chimp,FY27 CHIMP,part,a line printed under the account's own line (CHIMP)
+chimp_pop_up,FY27 CHIMP Pop-Up,part,a line printed under the account's own line (CHIMP Pop-Up)
+supplemental_act,OTHER APPROPRIATIONS,part,a separate supplemental appropriations act (Other Appropriations)
+budget_amendment,OTHER APPROPRIATIONS,part,a budget amendment to the President's request
+emergency,(emergency),part,"a separate line of the account designated emergency ('... (emergency)'), where the account's amount type has no emergency form: an emergency rescission"
+CURES,CURES Act,contained,NIH Innovation Account (21st Century Cures Act): inside NIH's headline total
+program_level,program level,view,parallel total printed with scope 'program level'
+fiscal_year_program_level,fiscal year program level,view,parallel total printed with scope 'fiscal year program level'
+program_level_with_cures_and_phs_evaluation_act_funding,program level (with CURES and PHS Evaluation Act Funding),view,parallel total printed with scope 'program level with cures and phs evaluation act funding'
+program_level_excluding_arpa_h,program level (excluding ARPA-H),view,parallel total printed with scope 'program level excluding arpa h'
+program_level_available_this_fiscal_year,"program level, available this fiscal year",view,parallel total printed with scope 'program level available this fiscal year'
+program_level_including_emergencies,"program level, including emergencies",view,parallel total printed with scope 'program level including emergencies'
+available_this_fiscal_year,available this fiscal year,view,parallel total printed with scope 'available this fiscal year'
+current_year,Current Year,view,parallel total printed with scope 'current year'
+appropriated_in_this_bill,appropriated in this bill,view,parallel total printed with scope 'appropriated in this bill'
+available_in_this_bill,available in this bill,view,parallel total printed with scope 'available in this bill'
+excluding_emergencies,excluding emergencies,view,parallel total printed with scope 'excluding emergencies'
+including_phs_eval_tap,including PHS Eval Tap,view,parallel total printed with scope 'including phs eval tap'
+discretionary,discretionary,view,parallel total printed with scope 'discretionary'

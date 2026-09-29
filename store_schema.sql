@@ -103,10 +103,15 @@ CREATE TABLE bill_report_reference (
 --   view      -- the same figure counted another way (a parallel total's
 --                printed scope: 'program_level', 'appropriated_in_this_bill')
 -- Nothing ever adds a contained or view line to its headline.
+-- component_id is the tag observations carry (appropriations_observation.
+-- component); label is the name as a source document prints it ("CURES Act",
+-- "program level (excluding ARPA-H)"), or the heading / line text it was taken
+-- from where no name is printed.
 CREATE TABLE component (
-    component   TEXT PRIMARY KEY CHECK (component <> ''),
-    kind        TEXT NOT NULL CHECK (kind IN ('part', 'contained', 'view')),
-    description TEXT NOT NULL
+    component_id TEXT PRIMARY KEY CHECK (component_id <> ''),
+    label        TEXT CHECK (label IS NULL OR label <> ''),
+    kind         TEXT NOT NULL CHECK (kind IN ('part', 'contained', 'view')),
+    description  TEXT NOT NULL
 ) STRICT;
 
 CREATE TABLE appropriations_observation (

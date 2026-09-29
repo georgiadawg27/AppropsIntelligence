@@ -65,7 +65,7 @@ def convert(v):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    workbook = Path(argv[0]) if argv else next((ROOT / "reference").glob("*.xlsx"))
+    workbook = Path(argv[0]) if argv else S.reference_workbook()
     with tempfile.TemporaryDirectory() as tmp:
         wb = Path(tmp) / "v29_candidate.xlsx"
         merged(workbook, wb)
@@ -98,7 +98,7 @@ def title_ii_in_store(conn):
                for r in conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE "
                                      "canonical_account_id = 'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL "
                                      "ORDER BY fiscal_year, stage")]
-    return T.reconcile(conn, printed, title="Title II", subcommittee="Labor-HHS-Education")
+    return T.reconcile(conn, printed, title="Title II", subcommittee="LHHS")
 
 
 if __name__ == "__main__":

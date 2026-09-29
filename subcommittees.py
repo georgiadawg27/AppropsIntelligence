@@ -20,7 +20,7 @@ SUBCOMMITTEES = {
     "FINANCIAL SERVICES AND GENERAL GOVERNMENT": "FSGG",
     "HOMELAND SECURITY": "Homeland Security",
     "INTERIOR, ENVIRONMENT": "Interior-Environment",
-    "LABOR, HEALTH AND HUMAN SERVICES": "Labor-HHS-Education",
+    "LABOR, HEALTH AND HUMAN SERVICES": "LHHS",
     "LEGISLATIVE BRANCH": "Legislative Branch",
     "MILITARY CONSTRUCTION, VETERANS AFFAIRS": "MilCon-VA",
     "NATIONAL SECURITY, DEPARTMENT OF STATE": "NSRP",
@@ -28,6 +28,15 @@ SUBCOMMITTEES = {
     "TRANSPORTATION, HOUSING AND URBAN DEVELOPMENT": "THUD",
     "DEPARTMENT OF DEFENSE APPROPRIATIONS": "Defense",
 }
+# The values above are the stored subcommittee codes (Account.subcommittee,
+# Bill Report Reference.subcommittee and lookup_key, the manifest): the short
+# form, matching the ID prefixes (BR-LHHS-..., OBS-LHHS-...). A name for people
+# to read is a display mapping, never stored; a code not listed displays as itself.
+DISPLAY_NAMES = {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}
+
+
+def display_name(code):
+    return DISPLAY_NAMES.get(code, code)
 
 
 def normalize(text):

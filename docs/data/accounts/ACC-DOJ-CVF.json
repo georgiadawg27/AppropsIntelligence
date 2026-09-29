@@ -6,24 +6,33 @@
      "Enacted": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp_pop_up",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP Pop-Up",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -32,8 +41,11 @@
      "House Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP",
        "missing": false,
        "observations": [
         {
@@ -45,6 +57,8 @@
          "canonical_account_id": "ACC-DOJ-CVF",
          "chamber": "House",
          "component": "chimp",
+         "component_kind": "part",
+         "component_label": "FY27 CHIMP",
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -79,8 +93,11 @@
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp_pop_up",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP Pop-Up",
        "missing": false,
        "observations": [
         {
@@ -92,6 +109,8 @@
          "canonical_account_id": "ACC-DOJ-CVF",
          "chamber": "House",
          "component": "chimp_pop_up",
+         "component_kind": "part",
+         "component_label": "FY27 CHIMP Pop-Up",
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -119,8 +138,11 @@
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -132,6 +154,8 @@
          "canonical_account_id": "ACC-DOJ-CVF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -163,6 +187,8 @@
          "canonical_account_id": "ACC-DOJ-CVF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
@@ -192,24 +218,33 @@
      "President's Budget": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp_pop_up",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP Pop-Up",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -218,24 +253,33 @@
      "Senate Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "chimp_pop_up",
+       "component_kind": "part",
+       "component_label": "FY27 CHIMP Pop-Up",
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "transfer",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -248,15 +292,21 @@
   "series": [
    {
     "amount_type": "rescission",
-    "component": "chimp"
+    "component": "chimp",
+    "component_kind": "part",
+    "component_label": "FY27 CHIMP"
    },
    {
     "amount_type": "rescission",
-    "component": "chimp_pop_up"
+    "component": "chimp_pop_up",
+    "component_kind": "part",
+    "component_label": "FY27 CHIMP Pop-Up"
    },
    {
     "amount_type": "transfer",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    }
   ],
   "stages": [
@@ -310,6 +360,8 @@
     "canonical_account_id": "ACC-DOJ-CVF",
     "chamber": "House",
     "component": "chimp",
+    "component_kind": "part",
+    "component_label": "FY27 CHIMP",
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
@@ -348,6 +400,8 @@
     "canonical_account_id": "ACC-DOJ-CVF",
     "chamber": "House",
     "component": "chimp_pop_up",
+    "component_kind": "part",
+    "component_label": "FY27 CHIMP Pop-Up",
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
@@ -379,6 +433,8 @@
     "canonical_account_id": "ACC-DOJ-CVF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
@@ -410,6 +466,8 @@
     "canonical_account_id": "ACC-DOJ-CVF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
