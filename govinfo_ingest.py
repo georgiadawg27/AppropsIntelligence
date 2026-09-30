@@ -490,7 +490,7 @@ def main_ingest_local(argv):
                                      description="Store a document the pipeline can't fetch itself.")
     parser.add_argument("pdf")
     parser.add_argument("--subcommittee", required=True, choices=sorted(SUBCOMMITTEES.values()),
-                        help="e.g. CJS, Labor-HHS-Education")
+                        help="e.g. CJS, LHHS")
     parser.add_argument("--fiscal-year", type=int, required=True)
     parser.add_argument("--stage", required=True, choices=STAGES)
     parser.add_argument("--doc-type", required=True, choices=DOC_TYPES)

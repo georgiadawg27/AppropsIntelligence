@@ -83,8 +83,9 @@ class ManualIngest(unittest.TestCase):
                 ingest(JES, doc_type="jes", advance_copy=True)       # a JES is never a govinfo package
             with self.assertRaises(ValueError):
                 # the extractor finds a multi-division JES's division by this name:
-                # free text ("LHHS") would leave it unable to
-                ingest(JES, subcommittee="LHHS")
+                # free text (the display name "Labor-HHS-Education", not the code
+                # LHHS) would leave it unable to
+                ingest(JES, subcommittee="Labor-HHS-Education")
             not_pdf = d / "x.pdf"
             not_pdf.write_text("hello")
             with self.assertRaises(ValueError):

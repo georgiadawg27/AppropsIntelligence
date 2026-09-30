@@ -192,6 +192,64 @@ PARALLEL_SCOPE_COMPONENTS = (
 )
 BREAKDOWN_COMPONENTS = frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
 VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS) | BREAKDOWN_COMPONENTS
+# The same, as the store's Component table rows (component, kind, description):
+# what the loader seeds when a workbook has no Component tab yet.
+COMPONENT_KINDS = (
+    [(c, "part", f"a line printed under the account's own line ({', '.join(COMPONENTS[c])})") for c in COMPONENTS]
+    + [("supplemental_act", "part", "a separate supplemental appropriations act (Other Appropriations)"),
+       ("budget_amendment", "part", "a budget amendment to the President's request"),
+       ("emergency", "part", "a separate line of the account designated emergency ('... (emergency)'), where the "
+                             "account's amount type has no emergency form: an emergency rescission")]
+    + [("CURES", "contained", "NIH Innovation Account (21st Century Cures Act): inside NIH's headline total")]
+    + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
+# Each component's label (Component.label): the name as a source document
+# prints it, taken from the document's text, never made up from the
+# description -- (label, basis, where it is printed). basis "printed name":
+# the document prints the component's own name (a parallel total's scope is
+# the text after the account's name). basis "heading or line text": no name
+# is printed for the component itself, so the label is the heading or line
+# the tag was taken from.
+COMPONENT_LABELS = {
+    "defense": ("Defense function", "heading or line text",
+                "the NSF Research and Related Activities sub-line: S.Rept. 118-62 p.220 'Defense function'"),
+    # not in any document in document_store (H.R. 8845 / CBO): the text of v28's own
+    # source_table_or_section for the two Crime Victims Fund rows ('Title VII, FY27 CHIMP')
+    "chimp": ("FY27 CHIMP", "heading or line text",
+              "v28 OBS-0966 source_table_or_section 'Title VII, FY27 CHIMP' (H.R. 8845 / CBO; not in document_store)"),
+    "chimp_pop_up": ("FY27 CHIMP Pop-Up", "heading or line text",
+                     "v28 OBS-0967 source_table_or_section 'Title VII, FY27 CHIMP Pop-Up' (not in document_store)"),
+    "supplemental_act": ("OTHER APPROPRIATIONS", "heading or line text",
+                         "the CJS tables' section heading the supplemental acts print under (H.Rept. 117-395 p.223)"),
+    "budget_amendment": ("OTHER APPROPRIATIONS", "heading or line text",
+                         "the section heading the FY2020 budget amendment prints under (H.Rept. 116-101 p.152)"),
+    "emergency": ("(emergency)", "printed name",
+                  "H.Rept. 118-585 p.339 / S.Rept. 118-207 p.467: 'Nonrecurring expenses fund, HHS (rescission) (emergency)'"),
+    "CURES": ("CURES Act", "printed name", "the Labor-HHS Title II tables, under the title total: 'CURES Act'"),
+    "program_level": ("program level", "printed name", "e.g. 'Total, SAMHSA, program level' (Labor-HHS Title II tables)"),
+    "fiscal_year_program_level": ("fiscal year program level", "printed name",
+                                  "'Total, General Departmental Management fiscal year program level' (Labor-HHS)"),
+    "program_level_with_cures_and_phs_evaluation_act_funding": (
+        "program level (with CURES and PHS Evaluation Act Funding)", "printed name",
+        "'Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)'"),
+    "program_level_excluding_arpa_h": ("program level (excluding ARPA-H)", "printed name",
+                                       "'Total, NIH, program level (excluding ARPA-H)'"),
+    "program_level_available_this_fiscal_year": ("program level, available this fiscal year", "printed name",
+                                                 "'Total, Medicaid, program level, available this fiscal year'"),
+    "program_level_including_emergencies": ("program level, including emergencies", "printed name",
+                                            "'Total, SAMHSA, program level, including emergencies'"),
+    "available_this_fiscal_year": ("available this fiscal year", "printed name",
+                                   "'Total, Payments to States available this fiscal year'"),
+    "current_year": ("Current Year", "printed name", "'Total, Current Year'"),
+    "appropriated_in_this_bill": ("appropriated in this bill", "printed name",
+                                  "'Total, Grants to States for Medicaid, appropriated in this bill'"),
+    "available_in_this_bill": ("available in this bill", "printed name",
+                               "'Total, Payments to States available in this bill'"),
+    "excluding_emergencies": ("excluding emergencies", "printed name", "'Total, ACF (excluding emergencies)'"),
+    "including_phs_eval_tap": ("including PHS Eval Tap", "printed name",
+                               "'Subtotal, Mental Health, including PHS Eval Tap.' (H.Rept. 119-271)"),
+    "discretionary": ("discretionary", "printed name",
+                      "'Total, Title II, Department of Health and Human Services discretionary'"),
+}
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 
 

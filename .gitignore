@@ -1,9 +1,26 @@
 __pycache__/
-# Secrets
+# Secrets: .env and any variant (.env.local, ...); only the empty template is tracked
 .env
+.env.*
+!.env.example
+# Credential files
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+*service-account*.json
 # Raw source PDFs, per-page vision cache and extraction outputs are data, not code
 document_store/
 extraction_cache/
 extractions/
-approps.db
-approps.db.building
+# Local SQLite stores (approps.db and any other)
+*.db
+*.db.building
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+# Logs
+*.log

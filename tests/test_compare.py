@@ -334,7 +334,7 @@ class GridData(CompareTest):
         for name in dict.fromkeys(n for n, _, _ in lines):
             c.execute(f"INSERT INTO account ({','.join(acct)}) VALUES ({','.join('?' * len(acct))})",
                       list(dict(acct, canonical_account_id=f"ACC-HHS-{name}", canonical_name=name, agency=name,
-                                subcommittee="Labor-HHS-Education", title="Title II", display_order=None, notes=None).values()))
+                                subcommittee="LHHS", title="Title II", display_order=None, notes=None).values()))
         for i, (name, amount, component) in enumerate(lines):
             c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
                       list(dict(tmpl, observation_id=f"OBS-HHS-{i}", canonical_account_id=f"ACC-HHS-{name}", fiscal_year=2024,
@@ -346,7 +346,7 @@ class GridData(CompareTest):
         try:
             printed = [{"fiscal_year": "2024", "stage": "Enacted", "source_document_id": "S.Rept. 118-207",
                         "printed_total_title_iii_thousands": "1266562768"}]
-            got, = mod.reconcile(conn, printed, title="Title II", subcommittee="Labor-HHS-Education")
+            got, = mod.reconcile(conn, printed, title="Title II", subcommittee="LHHS")
         finally:
             conn.close()
         self.assertEqual(got["reconciles"], "yes", got)
@@ -354,6 +354,51 @@ class GridData(CompareTest):
         self.assertEqual(got["printed_total_subtracts"], "OBS-HHS-3 (ACC-HHS-NIH CURES 407,000)")
         # CJS's own Title II (Justice) is another subcommittee's title: not in this sum
         self.assertEqual(got["store_base_thousands"], 1_266_969_768)
+
+    def test_prior_year_advance_is_checked_against_last_years_advance(self):
+        db = Path(self.tmp.name) / "adv.db"
+        shutil.copy(self.db, db)
+        c = sqlite3.connect(db)
+        c.row_factory = sqlite3.Row
+        tmpl = dict(c.execute("SELECT * FROM appropriations_observation LIMIT 1").fetchone())
+        for oid, fy, stage, t, amt in (("OBS-ADV-24", 2024, "Enacted", "advance", 245_580_414),
+                                       ("OBS-PYA-25", 2025, "Senate Reported", "prior_year_advance", -245_580_414),
+                                       ("OBS-PYA-25H", 2025, "House Reported", "prior_year_advance", -245_580_000)):
+            c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
+                      list(dict(tmpl, observation_id=oid, fiscal_year=fy, stage=stage, amount_type=t, component=None,
+                                amount=amt * 1000).values()))
+        c.commit()
+        got = S.prior_year_advance_warnings(c)
+        c.close()
+        self.assertEqual(len(got), 1)
+        self.assertIn("OBS-PYA-25H", got[0])
+        self.assertIn("OBS-ADV-24", got[0])
+
+    def test_contained_and_view_lines_name_their_headline(self):
+        db = Path(self.tmp.name) / "headline.db"
+        shutil.copy(self.db, db)
+        c = sqlite3.connect(db)
+        c.row_factory = sqlite3.Row
+        c.execute("PRAGMA foreign_keys = ON")
+        tmpl = dict(c.execute("SELECT * FROM appropriations_observation WHERE component IS NULL LIMIT 1").fetchone())
+        head = tmpl["observation_id"]
+        other_doc = c.execute("SELECT document_id FROM source_document WHERE document_id <> ?",
+                              (tmpl["source_document_id"],)).fetchone()[0]
+        for oid, comp, h, doc in (("OBS-C-OK", "CURES", head, tmpl["source_document_id"]),
+                                  ("OBS-C-NONE", "program_level", None, tmpl["source_document_id"]),
+                                  ("OBS-C-DOC", "appropriated_in_this_bill", head, other_doc),
+                                  ("OBS-C-PART", "defense", head, tmpl["source_document_id"])):
+            c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
+                      list(dict(tmpl, observation_id=oid, component=comp, headline_observation_id=h,
+                                source_document_id=doc).values()))
+        c.commit()
+        kinds = S.component_kinds(c)
+        got = S.headline_warnings(c, kinds)
+        c.close()
+        self.assertFalse(any("OBS-C-OK" in w for w in got))                      # a contained line inside its headline
+        self.assertTrue(any("OBS-C-NONE" in w and "a view of" in w for w in got))
+        self.assertTrue(any("OBS-C-DOC" in w and "source_document_id" in w for w in got))
+        self.assertTrue(any("OBS-C-PART" in w and "'part' line" in w for w in got))
 
     def test_a_second_subcommittee_is_its_own_grid(self):
         # nothing is CJS-specific: move two accounts to another subcommittee
@@ -364,7 +409,9 @@ class GridData(CompareTest):
                   "WHERE canonical_account_id IN ('ACC-OSTP', 'ACC-NSC')")
         c.commit()
         c.close()
-        self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water"]})
+        self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water"],
+                                                       "names": {"CJS": "Commerce, Justice, Science",
+                                                                 "Energy and Water": "Energy and Water"}})
         ew = W.subcommittee(str(other), "Energy and Water")
         self.assertEqual([r["account"]["canonical_account_id"] for r in ew["rows"]], ["ACC-OSTP", "ACC-NSC"])      # bill order (display_order)
         self.assertEqual(len(W.subcommittee(str(other), "CJS")["rows"]), 28)
@@ -377,7 +424,7 @@ class GridData(CompareTest):
         base = f"http://127.0.0.1:{srv.server_address[1]}"
         try:
             with urllib.request.urlopen(base + "/api/subcommittees") as r:
-                self.assertEqual(json.load(r), {"subcommittees": ["CJS"]})
+                self.assertEqual(json.load(r), {"subcommittees": ["CJS"], "names": {"CJS": "Commerce, Justice, Science"}})
             with urllib.request.urlopen(base + "/api/subcommittee/CJS") as r:
                 self.assertEqual(json.load(r), self.grid)
             with self.assertRaises(urllib.error.HTTPError) as e:
@@ -388,7 +435,8 @@ class GridData(CompareTest):
             srv.server_close()
         out = Path(self.tmp.name) / "docs"
         E.export(WORKBOOK, out)
-        self.assertEqual(json.loads((out / "data" / "subcommittees.json").read_text()), {"subcommittees": ["CJS"]})
+        self.assertEqual(json.loads((out / "data" / "subcommittees.json").read_text()),
+                         {"subcommittees": ["CJS"], "names": {"CJS": "Commerce, Justice, Science"}})
         self.assertEqual(json.loads((out / "data" / "subcommittees" / "CJS.json").read_text()), self.grid)
 
 

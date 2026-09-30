@@ -51,6 +51,8 @@
   td.fy { font-weight: 600; white-space: nowrap; }
   .line + .line { margin-top: 6px; }
   .series { color: var(--muted); font-size: 12px; }
+  .line.not-added { padding-left: 8px; border-left: 2px solid var(--line); }
+  .line.not-added .amt { color: var(--muted); }
   .amt { font-weight: 600; }
   .cite { font-size: 12px; color: var(--muted); }
   details.src { font-size: 12px; }
@@ -181,6 +183,10 @@ const el = (tag, props = {}, ...kids) => {
 };
 const money = (v) => (v < 0 ? "−$" : "$") + Math.abs(v).toLocaleString("en-US");
 const seriesLabel = (s) => s.amount_type + (s.component ? " · " + s.component : "");
+// a contained / view line (never added to anything): its printed label and why it isn't added
+const notAdded = (s) => s.adds_to_headline === false;
+const seriesText = (s) => !notAdded(s) ? seriesLabel(s)
+  : `${s.component_label || s.component} — ${s.component_kind === "contained" ? "inside the figure above" : "the figure above, scoped another way"}; not added`;
 
 async function getJSON(url) {
   const r = await fetch(url);
@@ -363,7 +369,8 @@ function renderGrid(grid, h) {
 // for the single-account grid and the subcommittee grid.
 function renderLine(l, showSeries) {
   const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
-  if (showSeries) line.append(el("div", { class: "series", text: seriesLabel(l) }));
+  if (notAdded(l)) line.classList.add("not-added");
+  if (showSeries) line.append(el("div", { class: "series", text: seriesText(l) }));
   if (l.state === "missing") line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
   if (l.state === "not_applicable") {
     const a = l.absence;
@@ -404,6 +411,7 @@ const STAGE_SHORT = { "President's Budget": "PB", "House Reported": "House", "Se
 const isHeadline = (l) => l.amount_type === "budget authority" && !l.component;
 const scCache = new Map();
 let scNames = null;
+let scLabels = {};
 
 function showView(view) {
   const compare = view === "compare";
@@ -501,7 +509,7 @@ function renderCompare(grid, years, stages) {
     else tr.append(el("td", { class: "total-none", colspan: String(cols.length), "data-testid": "no-total", text: none }));
     return tr;
   };
-  body.append(totalRow(`Bill total \u2014 ${grid.subcommittee}`, grid.bill_total,
+  body.append(totalRow(`Bill total \u2014 ${scLabels[grid.subcommittee] || grid.subcommittee}`, grid.bill_total,
     "No printed bill total on file \u2014 not shown, and the accounts below are not summed into one.", "bill-total"));
   for (const group of grid.titles) {
     const label = group.title || "Not yet placed in a title";
@@ -584,7 +592,10 @@ function renderCompareCell(row, y, st, firstStage) {
   const headline = lines.find(isHeadline) ||
     { amount_type: "budget authority", component: null, state: "missing", observations: [], absence: null };
   td.append(renderLine(headline, false));
-  const rest = lines.filter((l) => l !== headline);
+  // contained / view lines of the headline show right under it, labelled as not added
+  const alongside = lines.filter((l) => l !== headline && notAdded(l) && l.state === "value");
+  for (const l of alongside) td.append(renderLine(l, true));
+  const rest = lines.filter((l) => l !== headline && !alongside.includes(l));
   if (rest.length) {
     const n = (s) => rest.filter((l) => l.state === s).length;
     const parts = [n("value") && `${n("value")} with a figure`, n("not_applicable") && `${n("not_applicable")} not applicable`,
@@ -602,8 +613,10 @@ async function showCompare(want, push) {
   compareStatus("Loading…");
   try {
     if (!scNames) {
-      scNames = (await source.subcommittees()).subcommittees;
-      $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: n })));
+      const list = await source.subcommittees();
+      scNames = list.subcommittees;                 // stored codes (CJS, LHHS); the option shows the display name
+      scLabels = list.names || {};
+      $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
     }
     const sc = want && want.sc && scNames.includes(want.sc) ? want.sc : $("#sc").value || scNames[0];
     $("#sc").value = sc;

@@ -37,7 +37,6 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 import approps_store as S  # noqa: E402
-from accounts import BREAKDOWN_COMPONENTS  # noqa: E402
 from validate_approps import signed_explanation  # noqa: E402
 
 PRINTED = ROOT / "reference" / "review" / "title_iii_printed.csv"
@@ -49,10 +48,15 @@ def lines(conn, accts, fy, stage):
                         % ",".join("?" * len(accts)), (fy, stage, *accts)).fetchall()
 
 
+BREAKDOWN = set()     # the store's 'contained' and 'view' components, read per connection (cell_lines)
+via_others = []       # candidates for the through-the-rollups reading, set by cell_lines
+
+
 def is_breakdown(r):
     """A line already inside (or another view of) its account's own line --
-    accounts.BREAKDOWN_COMPONENTS: never part of the base, only a candidate."""
-    return r["component"] in BREAKDOWN_COMPONENTS
+    the store's component table, kind 'contained' or 'view': never part of
+    the base, only a candidate."""
+    return r["component"] in BREAKDOWN
 
 
 def is_base(r):
@@ -65,6 +69,8 @@ def cell_lines(conn, title, fy, stage, subcommittee="CJS"):
     through the rollups: each agency rollup's budget authority in place of
     its accounts' base lines). A title is a subcommittee's: CJS's Title II
     is Justice, Labor-HHS's is HHS."""
+    BREAKDOWN.clear()
+    BREAKDOWN.update(c for c, k in S.component_kinds(conn).items() if k in ("contained", "view"))
     accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, notes FROM account "
                                            "WHERE title = ? AND subcommittee = ?", (title, subcommittee))]
     plain = [a for a in accts if not S.rollup_scope(a)]
@@ -75,7 +81,11 @@ def cell_lines(conn, title, fy, stage, subcommittee="CJS"):
     # a title total can add or subtract it
     others = [r for r in rows if not is_base(r)]
     rolled = {a["agency"] for a in rollups}
-    via = [r for r in lines(conn, [a["canonical_account_id"] for a in rollups], fy, stage) if r["amount_type"] == "budget authority"]
+    rollup_rows = lines(conn, [a["canonical_account_id"] for a in rollups], fy, stage)
+    # a rollup's own figure, not its views or contained lines (NIH's CURES, CMS's
+    # "program level"): those are candidates, as for the accounts
+    via = [r for r in rollup_rows if r["amount_type"] == "budget authority" and not is_breakdown(r)]
+    via_others[:] = others + [r for r in rollup_rows if is_breakdown(r)]
     via += [r for r in base if next(a["agency"] for a in plain if a["canonical_account_id"] == r["canonical_account_id"]) not in rolled]
     return base, others, via
 
@@ -85,13 +95,14 @@ def reconcile(conn, printed, title="Title III", subcommittee="CJS"):
     for p in printed:
         fy, stage, want = int(p["fiscal_year"]), p["stage"], int(p["printed_total_title_iii_thousands"]) * 1000
         base, others, via = cell_lines(conn, title, fy, stage, subcommittee)
+        through = list(via_others)
         b = sum(r["amount"] for r in base)
         label = lambda r: f"{r['observation_id']} ({r['canonical_account_id']} {r['component'] or r['amount_type']} {r['amount'] // 1000:,})"
 
-        def explain(total):
-            return signed_explanation([want - total], [(r, [r["amount"]]) for r in others], max_terms=max(len(others), 1))
-        found = explain(b) if base else None
-        via_found = explain(sum(r["amount"] for r in via)) if via else None
+        def explain(total, cands):
+            return signed_explanation([want - total], [(r, [r["amount"]]) for r in cands], max_terms=max(len(cands), 1))
+        found = explain(b, others) if base else None
+        via_found = explain(sum(r["amount"] for r in via), through) if via else None
         used = [r for _, r in found or ()]
         out.append({**p, "store_base_thousands": b // 1000 if base else "",
                     "reconciles": "yes" if found is not None else ("no store figures" if not base else "no"),
@@ -109,7 +120,7 @@ def reconcile(conn, printed, title="Title III", subcommittee="CJS"):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    workbook = Path(argv[0]) if argv else next((ROOT / "reference").glob("*.xlsx"))
+    workbook = Path(argv[0]) if argv else S.reference_workbook()
     with open(PRINTED, newline="") as f:
         printed = list(csv.DictReader(f))
     with tempfile.TemporaryDirectory() as tmp:

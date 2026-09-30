@@ -61,7 +61,7 @@ def candidates(conn):
 
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
-    workbook = Path(argv[0]) if argv else next((ROOT / "reference").glob("*.xlsx"))
+    workbook = Path(argv[0]) if argv else S.reference_workbook()
     with tempfile.TemporaryDirectory() as tmp:
         db = Path(tmp) / "approps.db"
         S.load(workbook, db)

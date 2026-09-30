@@ -4,7 +4,7 @@ approps_store.py
 The relational store (SQLite, schema in store_schema.sql) and the thinnest
 query surface on it.
 
-    python approps_store.py load path/to/CJS_Title_III_Science_Pilot_Schema_Loaded_v10.xlsx [--db approps.db]
+    python approps_store.py load path/to/Approps_Pilot_Schema_Loaded_vNN.xlsx [--db approps.db]
     python approps_store.py history "NASA Science" [--db approps.db] [--json]
     python approps_store.py resolve-relationship REL-0001 --reviewer NAME --resolution TEXT [--db approps.db]
 
@@ -46,11 +46,38 @@ STAGE_ORDER = ["President's Budget", "House Reported", "Senate Reported", "Enact
 
 # (column, workbook value) -> stored value. Only unambiguous spelling variants
 # of a Data Dictionary enum value; each use is counted in the load report.
+# The store itself only ever holds the Dictionary's spelling (store_schema.sql
+# CHECKs it), and it is rebuilt from the workbook on every load, so there is
+# no stored old value to migrate: a workbook with either spelling (v28/v29's
+# "human_entered", v30's "human-entered") loads the same.
 VALUE_MAP = {("extraction_method", "human_entered"): "human-entered"}
 
 
 class LoadError(Exception):
     pass
+
+
+# The reference workbook's file name, in reference/: v30 on is
+# Approps_Pilot_Schema_Loaded_vNN.xlsx (it holds more than CJS); through v29 it
+# was CJS_Title_III_Science_Pilot_Schema_Loaded_vNN.xlsx. Both are accepted
+# while the old name is still around; the highest vNN wins, whichever name.
+WORKBOOK_PATTERNS = ("Approps_Pilot_Schema_Loaded_v*.xlsx", "CJS_Title_III_Science_Pilot_Schema_Loaded_v*.xlsx")
+WORKBOOK_VERSION_RE = re.compile(r"_v(\d+)\.xlsx$")
+
+
+def reference_workbook(folder=None):
+    """The reference workbook in reference/ (see WORKBOOK_PATTERNS)."""
+    folder = Path(folder) if folder else ROOT / "reference"
+    found = sorted({p for pat in WORKBOOK_PATTERNS for p in folder.glob(pat)})
+    if not found:
+        raise LoadError(f"no reference workbook in {folder} (looked for {' or '.join(WORKBOOK_PATTERNS)}; "
+                        f"found {sorted(p.name for p in folder.glob('*.xlsx'))})")
+    version = lambda p: int(WORKBOOK_VERSION_RE.search(p.name).group(1))
+    top = max(version(p) for p in found)
+    newest = [p for p in found if version(p) == top]
+    if len(newest) > 1:
+        raise LoadError(f"two reference workbooks at v{top}: {[p.name for p in newest]}")
+    return newest[0]
 
 
 # ---------------------------------------------------------------------------
@@ -146,11 +173,14 @@ TABS = [
         ("reference_id", to_text, True), ("subcommittee", to_text, True), ("fiscal_year", to_int, True),
         ("stage", to_text, True), ("bill_id", to_text, False), ("report_id", to_text, False),
         ("bill_url", to_text, False), ("report_jes_url", to_text, False), ("lookup_key", to_text, True)]),
+    ("Component", "component", [
+        ("component_id", to_text, True), ("label", to_text, False), ("kind", to_text, True),
+        ("description", to_text, True)]),
     ("Appropriations Observation", "appropriations_observation", [
         ("observation_id", to_text, True), ("canonical_account_id", to_text, True), ("fiscal_year", to_int, True),
         ("stage", to_text, True), ("chamber", to_text, False), ("bill_id", to_text, False),
         ("report_id", to_text, False), ("amount", to_int, True), ("amount_type", to_text, True),
-        ("component", to_text, False),
+        ("component", to_text, False), ("headline_observation_id", to_text, False),
         ("offsetting_collections", to_bool, True), ("transfer_link_account_id", to_text, False),
         ("source_document_id", to_text, True), ("source_page", to_text, False),
         ("source_table_or_section", to_text, False), ("extraction_method", to_text, True),
@@ -171,7 +201,10 @@ TABS = [
 ]
 
 # Tabs a workbook may not have yet (loaded as empty; the load report says so).
-OPTIONAL_TABS = {"Confirmed Absence"}
+# A workbook without a Component tab gets accounts.COMPONENT_KINDS.
+OPTIONAL_TABS = {"Confirmed Absence", "Component"}
+# Columns a workbook may not have yet (loaded as NULL; the load report says so).
+OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"}}
 
 # Workbook columns that exist only as lookups into Bill Report Reference; they
 # are checked against it (check_bill_report_lookups), not stored twice.
@@ -209,7 +242,7 @@ def read_tabs(workbook):
         rows = list(wb[tab].iter_rows(values_only=True))
         head = [h.strip() if isinstance(h, str) else h for h in rows[0]]
         expected = {c for c, _, _ in cols} | DERIVED_COLUMNS.get(tab, set())
-        missing, extra = expected - set(head), {h for h in head if h is not None} - expected
+        missing, extra = expected - set(head) - OPTIONAL_COLUMNS.get(tab, set()), {h for h in head if h is not None} - expected
         if missing or extra:
             raise LoadError(f"{tab}: columns differ from the schema -- missing {sorted(missing)}, "
                             f"unexpected {sorted(extra)}")
@@ -332,9 +365,11 @@ def page_span(pages):
 
 def within(pages, table_pages):
     """An observation's page(s) inside its document's recorded table pages
-    (a document's range may be the whole comparative table)."""
-    a, b = page_span(pages), page_span(table_pages)
-    return bool(a and b and b[0] <= a[0] <= a[1] <= b[1])
+    (a document's range may be the whole comparative table, or several
+    ranges: '430-452; 467' -- a title's pages and a bill-level section)."""
+    a = page_span(pages)
+    spans = [page_span(x) for x in re.split(r"[;,]", table_pages or "")]
+    return bool(a) and any(b and b[0] <= a[0] <= a[1] <= b[1] for b in spans)
 
 
 def data_quality_warnings(conn):
@@ -361,11 +396,13 @@ def data_quality_warnings(conn):
     for r in conn.execute("SELECT observation_id, amount FROM appropriations_observation WHERE amount % 1000 <> 0"):
         warnings.append(f"observation {r['observation_id']}: amount {r['amount']:,} is not a whole thousand dollars "
                         f"-- entered in thousands?")
+    kinds = component_kinds(conn)
     for r in conn.execute("SELECT observation_id, component FROM appropriations_observation WHERE component IS NOT NULL "
                           "UNION ALL SELECT confirmed_absence_id, component FROM confirmed_absence WHERE component IS NOT NULL"):
-        if r["component"] not in A.VOCABULARY:
+        if r["component"] not in kinds:
             warnings.append(f"{r[0]}: component {r['component']!r} is not in the component vocabulary "
-                            f"{sorted(A.VOCABULARY)}")
+                            f"{sorted(kinds)}")
+    warnings += headline_warnings(conn, kinds)
     for r in conn.execute("SELECT o.observation_id, o.chamber, o.stage FROM appropriations_observation o"):
         want = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                 "Senate Passed": "Senate"}.get(r["stage"], "N/A")
@@ -411,8 +448,61 @@ def data_quality_warnings(conn):
         if stage and r["stage"] != stage:
             warnings.append(f"{r[0]}: component {r['component']!r} at stage {r['stage']!r} -- a {r['component']} "
                             f"line only exists at {stage}")
+    warnings += prior_year_advance_warnings(conn)
     warnings += stale_resolution_warnings(conn)
     return warnings
+
+
+def component_kinds(conn):
+    """{component_id: kind} from the store's component table."""
+    return {r["component_id"]: r["kind"] for r in conn.execute("SELECT component_id, kind FROM component")}
+
+
+def headline_warnings(conn, kinds):
+    """A contained or view line names the headline it is inside of / a view
+    of (headline_observation_id): same account, fiscal year, stage and
+    document, and itself a headline (no component). A part names none."""
+    out = []
+    obs = {r["observation_id"]: r for r in conn.execute(
+        "SELECT observation_id, canonical_account_id, fiscal_year, stage, source_document_id, component, "
+        "headline_observation_id FROM appropriations_observation")}
+    for o in obs.values():
+        kind, h = kinds.get(o["component"]), o["headline_observation_id"]
+        if kind in ("contained", "view") and h is None:
+            out.append(f"observation {o['observation_id']}: component {o['component']!r} is {kind}, but names no "
+                       f"headline_observation_id -- what is it {'inside of' if kind == 'contained' else 'a view of'}?")
+        elif h is not None and kind not in ("contained", "view"):
+            out.append(f"observation {o['observation_id']}: headline_observation_id set on a "
+                       f"{'headline' if o['component'] is None else repr(kind) + ' line'}")
+        elif h is not None:
+            t = obs.get(h)
+            if t is None:
+                continue                                  # the foreign-key check reports it
+            diff = [k for k in ("canonical_account_id", "fiscal_year", "stage", "source_document_id") if t[k] != o[k]]
+            if diff or t["component"] is not None:
+                out.append(f"observation {o['observation_id']}: its headline {h} differs in "
+                           f"{diff + (['component'] if t['component'] is not None else [])}")
+    return out
+
+
+def prior_year_advance_warnings(conn):
+    """FY N's "Less appropriations provided in prior years" (prior_year_advance,
+    stored negative as printed) is FY N-1's enacted first-quarter advance for
+    FY N: the two must cancel wherever both are on file for the account (and
+    component)."""
+    out = []
+    advances = {}
+    for r in conn.execute("SELECT observation_id, canonical_account_id, component, fiscal_year, amount "
+                          "FROM appropriations_observation WHERE amount_type = 'advance' AND stage = 'Enacted'"):
+        advances.setdefault((r["canonical_account_id"], r["component"], r["fiscal_year"]), []).append(r)
+    for r in conn.execute("SELECT observation_id, canonical_account_id, component, fiscal_year, stage, amount "
+                          "FROM appropriations_observation WHERE amount_type = 'prior_year_advance'"):
+        for a in advances.get((r["canonical_account_id"], r["component"], r["fiscal_year"] - 1), []):
+            if r["amount"] != -a["amount"]:
+                out.append(f"observation {r['observation_id']}: FY{r['fiscal_year']} {r['stage']} prior-year advance "
+                           f"{r['amount']:,} doesn't cancel FY{r['fiscal_year'] - 1} Enacted advance "
+                           f"{a['observation_id']} {a['amount']:,}")
+    return out
 
 
 def fiscal_year_of(date):
@@ -685,6 +775,11 @@ def load(workbook, db_path, waive=()):
     report["tabs_not_in_workbook"] = sorted(t for t in OPTIONAL_TABS if tabs[t] is None)
     tabs = {t: v or [] for t, v in tabs.items()}
     rows = convert_rows(tabs, report)
+    if not rows["Component"]:
+        # no Component tab (or an empty one): the kinds the code defines
+        rows["Component"] = [{"component_id": c, "label": A.COMPONENT_LABELS[c][0], "kind": k, "description": d}
+                             for c, k, d in A.COMPONENT_KINDS]
+        report["component_kinds_from"] = "accounts.COMPONENT_KINDS (no Component rows in the workbook)"
     problems = check_bill_report_lookups(tabs, rows)
     for name, check in WAIVABLE.items():
         found = check(rows)
@@ -822,10 +917,11 @@ def history(conn, account_id):
     for r in conn.execute(
             "SELECT o.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date, "
             "       d.fiscal_year AS document_fiscal_year, d.stage AS document_stage, "
-            "       b.bill_url, b.report_jes_url "
+            "       b.bill_url, b.report_jes_url, c.kind AS component_kind, c.label AS component_label "
             "FROM appropriations_observation o "
             "JOIN source_document d ON d.document_id = o.source_document_id "
             "LEFT JOIN bill_report_reference b ON b.reference_id = o.bill_report_reference_id "
+            "LEFT JOIN component c ON c.component_id = o.component "
             "WHERE o.canonical_account_id = ?", (account_id,)):
         rec = dict(r)
         rec["validation"] = [dict(v) for v in conn.execute(
@@ -871,9 +967,16 @@ def history_grid(h):
     own stage's column -- elsewhere the line can't exist, so it is neither
     missing nor not applicable -- unless something is recorded there (which
     the loader flags), and then it shows.
-    -> {"stages", "series": [{"amount_type", "component"}], "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
+    A contained or view line (component kind: CURES inside NIH's headline, a
+    parallel total's printed scope) is listed only where recorded, next to
+    the headline it names (headline_observation_id), and marked
+    adds_to_headline False: it is never added to anything (additive_lines).
+    Where a document prints no such scope there is nothing missing.
+    -> {"stages", "series": [{"amount_type", "component", "component_kind", "component_label"}],
+        "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
     obs, absent = h["observations"], h.get("absences", [])
+    kind = {o["component"]: (o.get("component_kind"), o.get("component_label")) for o in obs if o["component"]}
     series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
                     key=lambda k: (k[0] != "budget authority", k[0], k[1] is not None, k[1] or ""))
     stages = STAGE_ORDER[:4] + [s for s in STAGE_ORDER[4:] if any(o["stage"] == s for o in obs + absent)]
@@ -890,13 +993,45 @@ def history_grid(h):
             cells[st] = []
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
-                if A.COMPONENT_STAGE.get(c, st) != st and not found and not absence:
+                k, label = kind.get(c, (None, None))
+                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED) and not found and not absence:
                     continue
                 state = "value" if found else "not_applicable" if absence else "missing"
-                cells[st].append({"amount_type": t, "component": c, "state": state, "missing": state == "missing",
+                cells[st].append({"amount_type": t, "component": c, "component_kind": k, "component_label": label,
+                                  "adds_to_headline": k not in NOT_ADDED, "state": state, "missing": state == "missing",
                                   "observations": found, "absence": absence})
         rows.append({"fiscal_year": y, "cells": cells})
-    return {"stages": stages, "series": [{"amount_type": t, "component": c} for t, c in series], "rows": rows}
+    return {"stages": stages, "series": [{"amount_type": t, "component": c, "component_kind": kind.get(c, (None, None))[0],
+                                          "component_label": kind.get(c, (None, None))[1]} for t, c in series],
+            "rows": rows}
+
+
+# Component kinds whose lines are never added to anything: already inside
+# their headline (contained) or the headline counted another way (view).
+NOT_ADDED = ("contained", "view")
+
+
+def additive_lines(lines):
+    """The lines of a cell that add up: an account's own line (no component)
+    and its 'part' lines (NSF's defense line, CHIMP, a supplemental act). A
+    contained or view line -- by its store kind (component_kind, as history()
+    carries it) -- never enters a sum."""
+    return [o for o in lines if o.get("component_kind") not in NOT_ADDED]
+
+
+def cell_total(conn, account_id, fiscal_year, stage, amount_type="budget authority"):
+    """An account's figure in one cell, as the store adds it: its own line
+    plus its part lines, never a contained or view line (so NIH's total is its
+    'with CURES Act funding' headline, not headline + CURES). None when the
+    cell has no own line."""
+    lines = [dict(r) for r in conn.execute(
+        "SELECT o.amount, o.component, c.kind AS component_kind FROM appropriations_observation o "
+        "LEFT JOIN component c ON c.component_id = o.component "
+        "WHERE o.canonical_account_id = ? AND o.fiscal_year = ? AND o.stage = ? AND o.amount_type = ?",
+        (account_id, fiscal_year, stage, amount_type))]
+    if not any(o["component"] is None for o in lines):
+        return None
+    return sum(o["amount"] for o in additive_lines(lines))
 
 
 def subcommittees(conn):

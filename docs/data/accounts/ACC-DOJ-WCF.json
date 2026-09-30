@@ -6,16 +6,22 @@
      "Enacted": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -24,8 +30,11 @@
      "House Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -37,12 +46,15 @@
          "canonical_account_id": "ACC-DOJ-WCF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
          "document_type": "cbo_cost_estimate",
          "extraction_method": "human-entered",
          "fiscal_year": 2027,
+         "headline_observation_id": null,
          "observation_id": "OBS-0970",
          "offsetting_collections": 0,
          "publication_date": "2026-05-26",
@@ -63,8 +75,11 @@
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -76,12 +91,15 @@
          "canonical_account_id": "ACC-DOJ-WCF",
          "chamber": "House",
          "component": null,
+         "component_kind": null,
+         "component_label": null,
          "confidence": 1.0,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
          "document_type": "cbo_cost_estimate",
          "extraction_method": "human-entered",
          "fiscal_year": 2027,
+         "headline_observation_id": null,
          "observation_id": "OBS-0969",
          "offsetting_collections": 0,
          "publication_date": "2026-05-26",
@@ -111,16 +129,22 @@
      "President's Budget": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -129,16 +153,22 @@
      "Senate Reported": [
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
       },
       {
        "absence": null,
+       "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -151,11 +181,15 @@
   "series": [
    {
     "amount_type": "budget authority",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    },
    {
     "amount_type": "rescission",
-    "component": null
+    "component": null,
+    "component_kind": null,
+    "component_label": null
    }
   ],
   "stages": [
@@ -209,12 +243,15 @@
     "canonical_account_id": "ACC-DOJ-WCF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
     "document_type": "cbo_cost_estimate",
     "extraction_method": "human-entered",
     "fiscal_year": 2027,
+    "headline_observation_id": null,
     "observation_id": "OBS-0970",
     "offsetting_collections": 0,
     "publication_date": "2026-05-26",
@@ -239,12 +276,15 @@
     "canonical_account_id": "ACC-DOJ-WCF",
     "chamber": "House",
     "component": null,
+    "component_kind": null,
+    "component_label": null,
     "confidence": 1.0,
     "document_fiscal_year": 2027,
     "document_stage": "House Reported",
     "document_type": "cbo_cost_estimate",
     "extraction_method": "human-entered",
     "fiscal_year": 2027,
+    "headline_observation_id": null,
     "observation_id": "OBS-0969",
     "offsetting_collections": 0,
     "publication_date": "2026-05-26",

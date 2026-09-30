@@ -21,7 +21,8 @@ API
   GET /api/account/<canonical_account_id>
       a candidate the user picked -> {"status": "picked", "history": {...}, "grid": {...}}
   GET /api/subcommittees
-      -> {"subcommittees": ["CJS", ...]}
+      -> {"subcommittees": ["CJS", "LHHS", ...], "names": {"LHHS": "Labor-HHS-Education", ...}}
+         (the stored codes, and each one's display name)
   GET /api/subcommittee/<name>
       every account of the subcommittee side by side -> approps_store.subcommittee_grid()
       (the page picks fiscal years and stages from it)
@@ -36,6 +37,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 import approps_store as S
+from subcommittees import display_name
 
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
@@ -67,7 +69,9 @@ def account(db, account_id):
 def subcommittees(db):
     conn = S.connect(db, readonly=True)
     try:
-        return {"subcommittees": S.subcommittees(conn)}
+        codes = S.subcommittees(conn)
+        # the stored codes, and the name the page shows for each (a display mapping, never stored)
+        return {"subcommittees": codes, "names": {c: display_name(c) for c in codes}}
     finally:
         conn.close()
 

@@ -7,8 +7,13 @@ name: Export static site
 on:
   push:
     paths:
-      - "reference/*.xlsx"
+      # the reference workbook: Approps_Pilot_Schema_Loaded_vNN.xlsx from v30,
+      # CJS_Title_III_Science_Pilot_Schema_Loaded_vNN.xlsx through v29 (both
+      # accepted during the transition; approps_store.WORKBOOK_PATTERNS)
+      - "reference/Approps_Pilot_Schema_Loaded_v*.xlsx"
+      - "reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v*.xlsx"
       - "approps_store.py"
+      - "subcommittees.py"
       - "approps_web.py"
       - "accounts.py"
       - "store_schema.sql"
@@ -47,6 +52,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Regenerate static export (docs/) from $(basename reference/*.xlsx)" \
+          git commit -m "Regenerate static export (docs/) from $(python -c 'import approps_store as S; print(S.reference_workbook().name)')" \
                      -m "Automated by .github/workflows/export-static.yml for ${GITHUB_SHA::7}."
           git push origin "HEAD:${GITHUB_REF_NAME}"

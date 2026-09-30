@@ -378,6 +378,28 @@ class ParallelTotals(unittest.TestCase):
         enacted = next(o for o in obs if o["account_name_as_written"] == "New advance, 1st quarter, FY 2028"
                        and o["column_header"] == "FY 2026 Enacted")
         self.assertEqual((enacted["fiscal_year"], enacted["advance_for_fiscal_year"]), (2026, 2027))
+        # "Less appropriations provided in prior years": its own type, negative as printed
+        less = bill["Less appropriations provided in prior years"]
+        self.assertEqual((less["amount_type"], less["amount"]), ("prior_year_advance", -210_000))
+
+    def test_prior_year_advance_cancels_last_years_enacted_advance(self):
+        rows = [row("Grants to States for Medicaid"),
+                row("Medicaid Current Law Benefits", "500", "520"),
+                row("Less appropriations provided in prior years", "-200", "-210"),
+                row("Total, Grants to States for Medicaid", "300", "310"),
+                row("New advance, 1st quarter, FY 2028", "210", "220"),
+                row("Total, Grants to States for Medicaid, appropriated in this bill", "510", "530")]
+        _, obs, records, _ = run_rows(rows)
+        by_obs = {o["observation_id"]: o for o in obs}
+        checks = [(by_obs[r["observation_id"]]["column_header"], r["result"]) for r in records
+                  if r["expected_result"].startswith("cancels FY")]
+        # the FY2027 bill's -210 cancels the FY2026 enacted advance of 210; the
+        # FY2026 column has no FY2025 column beside it to check against
+        self.assertEqual(checks, [("Bill", "pass")])
+        rows[2] = row("Less appropriations provided in prior years", "-200", "-211")
+        rows[3] = row("Total, Grants to States for Medicaid", "300", "309")
+        _, obs, records, _ = run_rows(rows)
+        self.assertEqual([r["result"] for r in records if r["expected_result"].startswith("cancels FY")], ["fail"])
 
     def test_single_line_views_leave_their_line_to_the_section(self):
         nodes, obs, out = self.check([
@@ -416,6 +438,54 @@ class ParallelTotals(unittest.TestCase):
                 ("Total, Health Resources and Services Administration", ("Health Resources and Services Administration", None, None)),
                 ("Subtotal", ("", None, None))):
             self.assertEqual(ex.split_scope(label), want, label)
+
+    def test_a_total_whose_section_the_headings_lose_is_fitted_by_its_printed_figure(self):
+        # S.Rept. 118-207: "Total, Office of the Secretary" closes no printed heading
+        # (its sections print as "DEPARTMENTAL MANAGEMENT" etc.), and the label rules
+        # gave it every row above; the printed figure picks the one run that adds up
+        nodes, obs, out = self.check([
+            row("ADMINISTRATION FOR STRATEGIC PREPAREDNESS AND RESPONSE"),
+            row("Project BioShield", "825", "850"),
+            row("Total, Administration for Strategic Preparedness and Response", "825", "850"),
+            row("DEPARTMENTAL MANAGEMENT"),
+            row("General Departmental Management", "646", "663"),
+            row("Office of Inspector General"),
+            row("Office of Inspector General", "87", "87"),
+            row("Retirement Pay"),
+            row("Retirement Payments", "657", "700"),
+            row("Total, Office of the Secretary", "1,390", "1,450"),
+        ])
+        os_, = by_label(nodes, "Total, Office of the Secretary")
+        self.assertEqual([c.label for c in os_.children],
+                         ["General Departmental Management", "Office of Inspector General", "Retirement Payments"])
+        self.assertEqual({r for r, _ in out["Total, Office of the Secretary"]}, {"pass"})
+
+    def test_a_parse_the_arithmetic_cannot_decide_is_flagged(self):
+        # two different runs add up to the printed figure in every column
+        # (D alone, and B + C + D: B and C cancel without being zero rows)
+        nodes, obs, out = self.check([
+            row("SECTION"),
+            row("A", "5", "7"),
+            row("B", "-2", "-4"),
+            row("C", "2", "4"),
+            row("D", "5", "7"),
+            row("Total, Unprinted Section", "5", "7"),
+        ])
+        res = out["Total, Unprinted Section"]
+        self.assertEqual({r for r, _ in res}, {"flag"})
+        tot, = by_label(nodes, "Total, Unprinted Section")
+        self.assertEqual([c.label for c in tot.children], ["D"])              # the shortest run...
+        self.assertEqual(tot.fit_alternatives, ["B"])                          # ...and the other that fits
+
+    def test_a_parse_that_already_adds_up_is_left_alone(self):
+        nodes, obs, out = self.check([
+            row("Science"),
+            row("Earth Science", "100", "110"),
+            row("Planetary Science", "50", "55"),
+            row("Total, Science", "150", "165"),
+        ])
+        sci, = by_label(nodes, "Total, Science")
+        self.assertEqual(sci.match, "named_frame")
 
     def test_signed_search_prefers_additions_and_needs_every_column(self):
         cands = [("a", [5, 7]), ("b", [3, 3]), ("c", [2, 4])]

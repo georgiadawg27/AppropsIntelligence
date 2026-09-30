@@ -151,8 +151,14 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                 result, note = "flag", f"children not fully extracted ({node.match})"
             elif computed is None:
                 result, note = "fail", "a child value could not be parsed"
+            elif getattr(node, "fit_alternatives", None):
+                # the rows were found by the printed total, and another run fits too
+                result, note = "flag", ("children found by the printed total; another parse also fits, starting at "
+                                        + ", ".join(repr(x) for x in node.fit_alternatives[:3]))
             else:
                 result, note = ("pass" if computed == stated else "fail"), ""
+                if result == "pass" and "fit_by_printed_total" in (node.match or ""):
+                    note = "children found by the printed total (the headings didn't place them); the only run that fits"
                 if result == "fail" and node.children:
                     # a rollup can count memo transfers printed with its lines:
                     # "Subtotal, Chronic Disease ..., program level" is its line
@@ -227,6 +233,31 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
                     arithmetic_pass.add(obs["observation_id"])
                 else:
                     implicated.add(obs["observation_id"])
+
+    # --- prior-year advance: FY N's "Less appropriations provided in prior
+    #     years" cancels FY N-1's enacted advance printed beside it
+    advances = [(n, c) for n in nodes if n.kind == "line" for c in value_cols
+                if c["stage"] == "Enacted" and obs_by.get((n.id, c["index"])) is not None
+                and obs_by[(n.id, c["index"])]["amount_type"] == "advance"]
+    for node in nodes:
+        for col in value_cols:
+            o = obs_by.get((node.id, col["index"]))
+            if o is None or o["amount_type"] != "prior_year_advance" or not col["fiscal_year"]:
+                continue
+            # printed a row or two apart ("Less appropriations provided in prior
+            # years" / Total / "New advance, 1st quarter"), the advance often
+            # after its section's total has closed the section
+            same = [(n, c) for n, c in advances if abs(n.id - node.id) <= 4 and c["fiscal_year"] == col["fiscal_year"] - 1]
+            if not same:
+                continue
+            n, c = min(same, key=lambda x: abs(x[0].id - node.id))
+            before, now = _cell_value(n, c["index"]), _cell_value(node, col["index"])
+            if before is None or now is None:
+                continue
+            ok = now == -before
+            record(o, "structural", f"cancels FY{c['fiscal_year']} Enacted advance {n.label!r}: -{_fmt(before)}",
+                   f"{_fmt(now)} as printed", "pass" if ok else "fail")
+            (arithmetic_pass if ok else implicated).add(o["observation_id"])
 
     # --- nesting read from indentation ------------------------------------
     unconfirmed_nesting = set()
