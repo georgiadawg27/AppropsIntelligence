@@ -85,7 +85,7 @@ class StaticTest(unittest.TestCase):
 class Export(StaticTest):
     def test_every_account_file_is_the_live_api_payload(self):
         ids = [a["canonical_account_id"] for a in self.index["accounts"]]
-        self.assertEqual(len(ids), 30)
+        self.assertEqual(len(ids), 55)                   # v30: 30 CJS + 25 Labor-HHS
         self.assertEqual(sorted(p.stem for p in (self.out / "data" / "accounts").glob("*.json")), sorted(ids))
         for aid in ids:
             live = json.loads(json.dumps(W.account(str(self.db), aid), default=str))

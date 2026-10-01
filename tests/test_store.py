@@ -669,7 +669,15 @@ class EffectiveDates(StoreCopyTest):
         self.assertEqual(got, effective_dates())
 
     def test_workbook_carries_the_computed_dates(self):
-        rows = {r["canonical_account_id"]: r for r in effective_dates()}
+        every = {r["canonical_account_id"]: r for r in effective_dates()}
+        self.assertEqual(len(every), 55)
+        # Labor-HHS: one end date the workbook doesn't carry yet -- a proposal for the owner, not applied
+        lhhs = {a: r for a, r in every.items() if a.startswith("ACC-HHS-")}
+        self.assertEqual(len(lhhs), 25)
+        self.assertEqual({a: r["computed_effective_end"] for a, r in lhhs.items() if r["change"] != "none"},
+                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION": "2025-09-30"})
+        # CJS: as in v28
+        rows = {a: r for a, r in every.items() if a not in lhhs}
         self.assertEqual(len(rows), 30)
         self.assertEqual({r["change"] for r in rows.values()}, {"none"})
         starts = sorted(r["workbook_effective_start"] for r in rows.values())
