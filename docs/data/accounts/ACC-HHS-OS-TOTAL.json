@@ -1,0 +1,3370 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1708161000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0386",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "392",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01590"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01591"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01592"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01593"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01594"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1761616000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0387",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01595"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01596"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01597"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01598"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01599"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01600"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1895682000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0387",
+         "observation_id": "OBS-LHHS-0388",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01601"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01602"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01603"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01604"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01605"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2096130000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0389",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "392",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01606"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01607"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01608"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01609"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01610"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1768625000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0390",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "392",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01611"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01612"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01613"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01614"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01615"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01616"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1636729000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0391",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "338",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01617"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01618"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01619"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01620"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01621"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01622"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1753995000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0391",
+         "observation_id": "OBS-LHHS-0392",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "338",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01623"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01624"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01625"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01626"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01627"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1964409000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0393",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01628"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01629"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01630"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01631"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01632"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01633"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2124903000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0393",
+         "observation_id": "OBS-LHHS-0394",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01634"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01635"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01636"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01637"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01638"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1880729000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0395",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01639"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01640"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01641"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01642"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01643"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01644"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2014795000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0395",
+         "observation_id": "OBS-LHHS-0396",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "452",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01645"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01646"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01647"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01648"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01649"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1918646000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0397",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "296",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01650"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2019337000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0397",
+         "observation_id": "OBS-LHHS-0398",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "296",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01651"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1803141000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0399",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01652"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01653"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01654"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01655"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01656"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01657"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1920407000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0399",
+         "observation_id": "OBS-LHHS-0400",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01658"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01659"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01660"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01661"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01662"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2235195000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0401",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01663"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01664"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01665"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01666"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01667"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2288338000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0401",
+         "observation_id": "OBS-LHHS-0402",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01668"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01669"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01670"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01671"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1883116000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0403",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "442",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01672"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01673"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01674"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01675"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2017182000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0403",
+         "observation_id": "OBS-LHHS-0404",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "442",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01676"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01677"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01678"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1717767000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0405",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "395",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01679"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01680"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01681"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01682"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01683"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01684"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1811658000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0405",
+         "observation_id": "OBS-LHHS-0406",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "395",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01685"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01686"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01687"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01688"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01689"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2070687000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0407",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "395",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01690"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01691"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01692"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01693"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01694"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2173830000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0407",
+         "observation_id": "OBS-LHHS-0408",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "395",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01695"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01696"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01697"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01698"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level"
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Office of the Secretary",
+   "bureau": "(Agency Total)",
+   "canonical_account_id": "ACC-HHS-OS-TOTAL",
+   "canonical_name": "Office of the Secretary (agency total)",
+   "display_order": 20,
+   "effective_end": null,
+   "effective_start": "2022-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Derived rollup -- the Office of the Secretary's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 1708161000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0386",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "392",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01590"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01591"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01592"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01593"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01594"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2096130000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0389",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "392",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01606"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01607"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01608"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01609"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01610"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1768625000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0390",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "392",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01611"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01612"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01613"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01614"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01615"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01616"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1761616000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0387",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01595"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01596"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01597"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01598"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01599"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01600"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1895682000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0387",
+    "observation_id": "OBS-LHHS-0388",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01601"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01602"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01603"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01604"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01605"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1964409000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0393",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01628"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01629"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01630"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01631"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01632"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01633"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2124903000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0393",
+    "observation_id": "OBS-LHHS-0394",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01634"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01635"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01636"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01637"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01638"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1636729000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0391",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "338",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01617"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01618"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01619"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01620"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01621"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01622"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1753995000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0391",
+    "observation_id": "OBS-LHHS-0392",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "338",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01623"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01624"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01625"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01626"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01627"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1880729000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0395",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01639"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01640"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01641"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01642"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01643"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01644"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2014795000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0395",
+    "observation_id": "OBS-LHHS-0396",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "452",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01645"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01646"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01647"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01648"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01649"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2235195000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0401",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01663"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01664"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01665"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01666"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01667"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2288338000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0401",
+    "observation_id": "OBS-LHHS-0402",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01668"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01669"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01670"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01671"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1803141000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0399",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01652"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01653"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01654"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01655"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01656"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01657"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1920407000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0399",
+    "observation_id": "OBS-LHHS-0400",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01658"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01659"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01660"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01661"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01662"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1883116000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0403",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "442",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01672"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01673"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01674"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01675"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 2017182000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0403",
+    "observation_id": "OBS-LHHS-0404",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "442",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01676"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01677"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01678"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1918646000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0397",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "296",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01650"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2019337000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0397",
+    "observation_id": "OBS-LHHS-0398",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "296",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01651"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2070687000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0407",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "395",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01690"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01691"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01692"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01693"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01694"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2173830000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0407",
+    "observation_id": "OBS-LHHS-0408",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "395",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01695"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01696"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01697"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01698"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1717767000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0405",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "395",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01679"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01680"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01681"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01682"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01683"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01684"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1811658000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0405",
+    "observation_id": "OBS-LHHS-0406",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "395",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary, program level' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01685"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01686"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01687"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01688"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01689"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": []
+ }
+}

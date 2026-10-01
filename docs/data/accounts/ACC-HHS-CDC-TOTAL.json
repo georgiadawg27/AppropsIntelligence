@@ -1,0 +1,3641 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 8314290000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0124",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "377",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00530"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00531"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00532"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00533"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00534"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9217590000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0124",
+         "observation_id": "OBS-LHHS-0125",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "378",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00535"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00536"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00537"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7992946000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0126",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00538"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00539"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00540"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00541"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00542"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00543"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9222090000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0126",
+         "observation_id": "OBS-LHHS-0127",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00544"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00545"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00546"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00547"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 10272669000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0128",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "377",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00548"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00549"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00550"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00551"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00552"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 11636211000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0128",
+         "observation_id": "OBS-LHHS-0129",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "378",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00553"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00554"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00555"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7767060000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0130",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "377",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00556"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00557"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00558"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00559"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00560"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00561"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9197590000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0130",
+         "observation_id": "OBS-LHHS-0131",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "378",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00562"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00563"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00564"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00565"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6259858000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0132",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "316",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00566"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00567"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00568"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00569"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00570"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00571"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7446058000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0132",
+         "observation_id": "OBS-LHHS-0133",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "316",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00572"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00573"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00574"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00575"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 8452490000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0134",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00576"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00577"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00578"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00579"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00580"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00581"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9738690000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0134",
+         "observation_id": "OBS-LHHS-0135",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00582"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00583"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00584"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00585"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 8098857000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0136",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00586"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00587"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00588"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00589"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00590"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00591"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9395090000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0136",
+         "observation_id": "OBS-LHHS-0137",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00592"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00593"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00594"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00595"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7761672000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0138",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "285",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00596"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9202991000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0138",
+         "observation_id": "OBS-LHHS-0139",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "285",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00597"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6082505000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0140",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "342",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00598"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00599"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00600"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00601"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00602"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00603"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7480880000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0140",
+         "observation_id": "OBS-LHHS-0141",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "343",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00604"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00605"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00606"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00607"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 5094944000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0142",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "342",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00608"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00609"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00610"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00611"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00612"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 5475241000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0142",
+         "observation_id": "OBS-LHHS-0143",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "343",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00613"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00614"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00615"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7710771000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0144",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "434",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00616"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00617"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00618"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00619"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 9152090000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0144",
+         "observation_id": "OBS-LHHS-0145",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "434",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00620"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00621"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6723092000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0146",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "373",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00622"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00623"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00624"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00625"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00626"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00627"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 8164411000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0146",
+         "observation_id": "OBS-LHHS-0147",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "374",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00628"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00629"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00630"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00631"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6140461000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0148",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "373",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00632"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00633"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00634"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00635"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00636"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6345461000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0148",
+         "observation_id": "OBS-LHHS-0149",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "374",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00637"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00638"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00639"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level"
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Centers for Disease Control and Prevention",
+   "bureau": "(Agency Total)",
+   "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+   "canonical_name": "Centers for Disease Control and Prevention (agency total)",
+   "display_order": 6,
+   "effective_end": null,
+   "effective_start": "2022-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Derived rollup -- CDC's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 8314290000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0124",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "377",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00530"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00531"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00532"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00533"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00534"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 9217590000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0124",
+    "observation_id": "OBS-LHHS-0125",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "378",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00535"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00536"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00537"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 10272669000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0128",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "377",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00548"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00549"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00550"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00551"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00552"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 11636211000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0128",
+    "observation_id": "OBS-LHHS-0129",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "378",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00553"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00554"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00555"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7767060000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0130",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "377",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00556"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00557"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00558"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00559"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00560"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00561"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 9197590000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0130",
+    "observation_id": "OBS-LHHS-0131",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "378",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00562"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00563"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00564"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00565"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7992946000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0126",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00538"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00539"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00540"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00541"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00542"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00543"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 9222090000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0126",
+    "observation_id": "OBS-LHHS-0127",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00544"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00545"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00546"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00547"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 8452490000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0134",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00576"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00577"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00578"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00579"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00580"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00581"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 9738690000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0134",
+    "observation_id": "OBS-LHHS-0135",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00582"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00583"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00584"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00585"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6259858000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0132",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "316",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00566"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00567"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00568"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00569"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00570"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00571"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7446058000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0132",
+    "observation_id": "OBS-LHHS-0133",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "316",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00572"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00573"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00574"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00575"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 8098857000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0136",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00586"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00587"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00588"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00589"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00590"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00591"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 9395090000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0136",
+    "observation_id": "OBS-LHHS-0137",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00592"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00593"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00594"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00595"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 5094944000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0142",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "342",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00608"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00609"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00610"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00611"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00612"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 5475241000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0142",
+    "observation_id": "OBS-LHHS-0143",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "343",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00613"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00614"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00615"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6082505000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0140",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "342",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00598"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00599"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00600"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00601"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00602"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00603"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7480880000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0140",
+    "observation_id": "OBS-LHHS-0141",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "343",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00604"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00605"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00606"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00607"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7710771000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0144",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "434",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00616"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00617"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00618"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00619"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 9152090000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0144",
+    "observation_id": "OBS-LHHS-0145",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "434",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00620"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00621"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 7761672000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0138",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "285",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00596"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 9202991000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0138",
+    "observation_id": "OBS-LHHS-0139",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "285",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00597"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6140461000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0148",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "373",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00632"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00633"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00634"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00635"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00636"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6345461000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0148",
+    "observation_id": "OBS-LHHS-0149",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "374",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00637"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00638"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00639"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6723092000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0146",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "373",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00622"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00623"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00624"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00625"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00626"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00627"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 8164411000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0146",
+    "observation_id": "OBS-LHHS-0147",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "374",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control, program level' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00628"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00629"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00630"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00631"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": [
+   {
+    "confidence": 0.4,
+    "effective_fiscal_year": 2026,
+    "evidence": "Part of CDC only: FY2026 Budget Appendix p.337, World Trade Center Health Program: 'This account is moving to the Administration for a Healthy America, in alignment with the HHS reorganization.' Not a consolidation of the CDC total.",
+    "from_account_id": "ACC-HHS-CDC-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0004",
+    "relationship_type": "uncertain",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ]
+ }
+}

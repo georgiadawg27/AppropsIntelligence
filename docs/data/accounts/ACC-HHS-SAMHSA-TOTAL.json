@@ -1,0 +1,3389 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7370416000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0409",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "381",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01699"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01700"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01701"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01702"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01703"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7300729000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0410",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01704"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01705"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01706"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01707"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01708"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01709"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7446396000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0410",
+         "observation_id": "OBS-LHHS-0411",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01710"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01711"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01712"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01713"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01714"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 10274808000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0412",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "381",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01715"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01716"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01717"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01718"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01719"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7404601000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0413",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "381",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01720"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01721"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01722"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01723"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01724"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01725"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7398400000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0414",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "322",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01726"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01727"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01728"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01729"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01730"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01731"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7542067000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0414",
+         "observation_id": "OBS-LHHS-0415",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "322",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01732"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01733"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01734"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01735"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01736"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7569889000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0416",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01737"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01738"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01739"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01740"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01741"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01742"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7715556000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0416",
+         "observation_id": "OBS-LHHS-0417",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01743"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01744"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01745"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01746"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01747"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7471976000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0418",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01748"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01749"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01750"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01751"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01752"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01753"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7617643000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0418",
+         "observation_id": "OBS-LHHS-0419",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "441",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01754"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01755"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01756"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01757"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01758"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7293950000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0420",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "288",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01759"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7439617000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0420",
+         "observation_id": "OBS-LHHS-0421",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "288",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01760"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6932188000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0422",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01761"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01762"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01763"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01764"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01765"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01766"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7075855000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0422",
+         "observation_id": "OBS-LHHS-0423",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01767"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01768"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01769"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01770"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01771"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 5562611000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0424",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01772"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01773"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01774"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01775"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01776"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 5693278000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0424",
+         "observation_id": "OBS-LHHS-0425",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01777"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01778"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01779"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01780"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7283250000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0426",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01781"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01782"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01783"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01784"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7428917000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0426",
+         "observation_id": "OBS-LHHS-0427",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "436",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01785"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01786"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01787"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7148608000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0428",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "379",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01788"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01789"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01790"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01791"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01792"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01793"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7294275000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0428",
+         "observation_id": "OBS-LHHS-0429",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "379",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01794"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01795"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01796"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01797"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01798"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6552543000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0430",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "379",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01799"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01800"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01801"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01802"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01803"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 6685210000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0430",
+         "observation_id": "OBS-LHHS-0431",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "379",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01804"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01805"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01806"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01807"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level"
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "bureau": "(Agency Total)",
+   "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+   "canonical_name": "Substance Abuse and Mental Health Services Administration (agency total)",
+   "display_order": 9,
+   "effective_end": null,
+   "effective_start": "2022-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Derived rollup -- SAMHSA's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 7370416000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0409",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "381",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01699"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01700"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01701"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01702"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01703"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 10274808000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0412",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "381",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01715"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01716"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01717"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01718"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01719"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7404601000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0413",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "381",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01720"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01721"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01722"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01723"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01724"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01725"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7300729000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0410",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01704"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01705"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01706"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01707"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01708"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01709"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7446396000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0410",
+    "observation_id": "OBS-LHHS-0411",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01710"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01711"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01712"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01713"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01714"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7569889000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0416",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01737"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01738"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01739"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01740"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01741"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01742"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7715556000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0416",
+    "observation_id": "OBS-LHHS-0417",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01743"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01744"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01745"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01746"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01747"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7398400000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0414",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "322",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01726"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01727"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01728"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01729"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01730"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01731"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7542067000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0414",
+    "observation_id": "OBS-LHHS-0415",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "322",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01732"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01733"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01734"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01735"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01736"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7471976000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0418",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01748"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01749"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01750"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01751"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01752"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01753"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7617643000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0418",
+    "observation_id": "OBS-LHHS-0419",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "441",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01754"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01755"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01756"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01757"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01758"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 5562611000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0424",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01772"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01773"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01774"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01775"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01776"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 5693278000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0424",
+    "observation_id": "OBS-LHHS-0425",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01777"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01778"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01779"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01780"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6932188000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0422",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01761"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01762"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01763"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01764"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01765"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01766"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7075855000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0422",
+    "observation_id": "OBS-LHHS-0423",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01767"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01768"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01769"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01770"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01771"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7283250000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0426",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01781"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01782"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01783"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01784"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7428917000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0426",
+    "observation_id": "OBS-LHHS-0427",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "436",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01785"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01786"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01787"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7293950000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0420",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "288",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01759"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7439617000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0420",
+    "observation_id": "OBS-LHHS-0421",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "288",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01760"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6552543000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0430",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "379",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01799"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01800"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01801"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01802"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01803"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 6685210000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0430",
+    "observation_id": "OBS-LHHS-0431",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "379",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01804"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01805"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01806"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01807"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7148608000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0428",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "379",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01788"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01789"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01790"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01791"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01792"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01793"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7294275000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0428",
+    "observation_id": "OBS-LHHS-0429",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "379",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA, program level' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01794"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01795"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01796"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01797"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01798"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": [
+   {
+    "confidence": 0.9,
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix p.360: 'In 2026 SAMHSA will be reorganized into the Agency for a Healthy America to improve coordination of health resources for Americans.' FY2027 Appendix p.464 repeats it for 2027. P.L. 119-75 keeps SAMHSA.",
+    "from_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0002",
+    "relationship_type": "consolidated",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ]
+ }
+}

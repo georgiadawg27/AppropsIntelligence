@@ -1,0 +1,916 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0008",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2023 Enacted.",
+        "fiscal_year": 2023,
+        "publication_date": "2023-07-27",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT84",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -70000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0239",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "467",
+         "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01025"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01026"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01027"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0009",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 President's Budget.",
+        "fiscal_year": 2024,
+        "publication_date": "2023-07-27",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT84",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0010",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 Senate Reported.",
+        "fiscal_year": 2024,
+        "publication_date": "2023-07-27",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-118SRPT84",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 0,
+         "amount_type": "rescission",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0240",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "339",
+         "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Adoption Incentives (rescission)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01028"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01029"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-01030"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-01031"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-01032"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -71000000,
+         "amount_type": "rescission",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0241",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "467",
+         "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01033"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-01034"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01035"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 0,
+         "amount_type": "rescission",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0242",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "467",
+         "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-01036"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0011",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.119-55 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 426-442; 450 and the bill-level sections after the grand total included) for FY2026 Senate Reported.",
+        "fiscal_year": 2026,
+        "publication_date": "2025-08-01",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119SRPT55",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "rescission",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0008",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2023 Enacted.",
+    "fiscal_year": 2023,
+    "publication_date": "2023-07-27",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0009",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 President's Budget.",
+    "fiscal_year": 2024,
+    "publication_date": "2023-07-27",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0010",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.118-84 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 Senate Reported.",
+    "fiscal_year": 2024,
+    "publication_date": "2023-07-27",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0011",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "No 'Adoption Incentives (rescission)' line anywhere in S.Rept.119-55 (whole text layer searched for /Adoption Incentives \\(rescission/, the Title II table pp. 426-442; 450 and the bill-level sections after the grand total included) for FY2026 Senate Reported.",
+    "fiscal_year": 2026,
+    "publication_date": "2025-08-01",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55"
+   }
+  ],
+  "account": {
+   "agency": "Department of Health and Human Services",
+   "bureau": "General Provisions",
+   "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+   "canonical_name": "Adoption Incentives (rescission)",
+   "display_order": 23,
+   "effective_end": null,
+   "effective_start": "2023-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "A rescission-only line printed only by H.Rept. 118-585, under Title II General Provisions and outside the ACF total, though Adoption Incentives is an ACF program. Recorded as printed (negative).",
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": -70000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0239",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "467",
+    "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01025"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01026"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01027"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -71000000,
+    "amount_type": "rescission",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0241",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "467",
+    "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01033"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01034"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01035"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 0,
+    "amount_type": "rescission",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0240",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "339",
+    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Adoption Incentives (rescission)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01028"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-01029"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-01030"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-01031"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-01032"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 0,
+    "amount_type": "rescission",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0242",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "467",
+    "source_table_or_section": "Discretionary Rescissions (after the grand total, outside Title II) -- printed as 'Adoption Incentives (rescission)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-01036"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": []
+ }
+}

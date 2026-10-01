@@ -1,0 +1,4584 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 52962553000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0027",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00095"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00096"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00097"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00098"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00099"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 35928553000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0027",
+         "observation_id": "OBS-LHHS-0029",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00104"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00105"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00106"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 47687553000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0027",
+         "observation_id": "OBS-LHHS-0028",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00100"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00101"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00102"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00103"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 52748216000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0030",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "446",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00107"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00108"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00109"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00110"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00111"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00112"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34000216000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0030",
+         "observation_id": "OBS-LHHS-0032",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00118"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00119"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00120"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00121"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 52748216000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0030",
+         "observation_id": "OBS-LHHS-0031",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00113"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00114"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00115"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00116"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00117"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 55363420000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0033",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00122"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00123"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00124"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00125"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00126"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 36615420000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0033",
+         "observation_id": "OBS-LHHS-0035",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00131"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00132"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00133"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 55363420000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0033",
+         "observation_id": "OBS-LHHS-0034",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00127"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00128"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00129"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00130"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 52845216000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0036",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00134"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00135"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00136"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00137"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00138"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00139"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34097216000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0036",
+         "observation_id": "OBS-LHHS-0038",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00145"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00146"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00147"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00148"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 49995216000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-0036",
+         "observation_id": "OBS-LHHS-0037",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00140"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00141"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00142"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00143"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00144"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 48219801000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0039",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "330",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00149"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00150"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00151"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00152"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00153"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00154"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 30282801000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0039",
+         "observation_id": "OBS-LHHS-0041",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "330",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00160"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00161"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00162"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00163"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 48219801000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0039",
+         "observation_id": "OBS-LHHS-0040",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118HRPT585",
+         "source_page": "330",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00155"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00156"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00157"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00158"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00159"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 55039423000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0042",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "446",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00164"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00165"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00166"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00167"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00168"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00169"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 37102423000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0042",
+         "observation_id": "OBS-LHHS-0044",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00175"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00176"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00177"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00178"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 49550244000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2025/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0042",
+         "observation_id": "OBS-LHHS-0043",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00170"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00171"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00172"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00173"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00174"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 54481055000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0045",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "446",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00179"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00180"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00181"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00182"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00183"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00184"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 36444055000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0045",
+         "observation_id": "OBS-LHHS-0047",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00190"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00191"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00192"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00193"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "excluding_emergencies",
+       "component_kind": "view",
+       "component_label": "excluding emergencies",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 50781055000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "excluding_emergencies",
+         "component_kind": "view",
+         "component_label": "excluding emergencies",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0045",
+         "observation_id": "OBS-LHHS-0046",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "447",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00185"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00186"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00187"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00188"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00189"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 51736248000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0048",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "292",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00194"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33026248000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "human-entered",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0048",
+         "observation_id": "OBS-LHHS-0049",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-22",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "source_agency": "House Committee on Appropriations (Congressional Record)",
+         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+         "source_page": "292",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FINAL BILL]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-00195"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 50326744000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0050",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00196"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00197"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00198"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00199"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00200"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00201"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 31616744000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5304",
+         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0050",
+         "observation_id": "OBS-LHHS-0051",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "H.Rept.119-271",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00202"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00203"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00204"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00205"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 45469350000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0052",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00206"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00207"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00208"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00209"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00210"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 26759350000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0052",
+         "observation_id": "OBS-LHHS-0053",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00211"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00212"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00213"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 52240075000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0054",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "439",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00214"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00215"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00216"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00217"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33530075000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0054",
+         "observation_id": "OBS-LHHS-0055",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "439",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00218"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00219"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 48352223000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0056",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00220"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00221"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00222"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00223"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00224"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00225"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 31123223000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0056",
+         "observation_id": "OBS-LHHS-0057",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00226"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00227"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00228"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00229"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 43454579000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0058",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00230"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00231"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00232"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00233"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00234"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 26225579000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0058",
+         "observation_id": "OBS-LHHS-0059",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "387",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00235"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00236"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00237"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary"
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies"
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Administration for Children and Families",
+   "bureau": "(Agency Total)",
+   "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+   "canonical_name": "Administration for Children and Families (agency total)",
+   "display_order": 17,
+   "effective_end": null,
+   "effective_start": "2022-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Derived rollup -- ACF's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 52962553000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0027",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00095"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00096"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00097"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00098"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00099"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 35928553000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0027",
+    "observation_id": "OBS-LHHS-0029",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00104"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00105"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00106"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 47687553000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0027",
+    "observation_id": "OBS-LHHS-0028",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00100"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00101"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00102"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00103"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 55363420000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0033",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00122"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00123"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00124"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00125"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00126"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 36615420000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0033",
+    "observation_id": "OBS-LHHS-0035",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00131"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00132"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00133"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 55363420000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0033",
+    "observation_id": "OBS-LHHS-0034",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00127"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00128"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00129"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00130"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 52845216000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0036",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00134"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00135"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00136"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00137"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00138"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00139"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 34097216000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0036",
+    "observation_id": "OBS-LHHS-0038",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00145"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00146"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00147"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00148"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 49995216000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0036",
+    "observation_id": "OBS-LHHS-0037",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00140"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00141"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00142"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00143"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00144"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 52748216000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0030",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "446",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00107"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00108"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00109"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00110"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00111"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00112"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 34000216000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0030",
+    "observation_id": "OBS-LHHS-0032",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00118"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00119"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00120"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00121"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 52748216000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-0030",
+    "observation_id": "OBS-LHHS-0031",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00113"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00114"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00115"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00116"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00117"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 55039423000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0042",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "446",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00164"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00165"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00166"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00167"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00168"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00169"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 37102423000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0042",
+    "observation_id": "OBS-LHHS-0044",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00175"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00176"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00177"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00178"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 49550244000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2025/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0042",
+    "observation_id": "OBS-LHHS-0043",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00170"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00171"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00172"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00173"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00174"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 48219801000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0039",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "330",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00149"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00150"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00151"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00152"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00153"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00154"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 30282801000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0039",
+    "observation_id": "OBS-LHHS-0041",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "330",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00160"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00161"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00162"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00163"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 48219801000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0039",
+    "observation_id": "OBS-LHHS-0040",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118HRPT585",
+    "source_page": "330",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00155"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00156"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00157"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00158"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00159"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 54481055000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0045",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "446",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00179"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00180"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00181"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00182"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00183"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00184"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 36444055000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0045",
+    "observation_id": "OBS-LHHS-0047",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00190"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00191"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00192"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00193"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 50781055000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "excluding_emergencies",
+    "component_kind": "view",
+    "component_label": "excluding emergencies",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0045",
+    "observation_id": "OBS-LHHS-0046",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "447",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF (excluding emergencies)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00185"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00186"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00187"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00188"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00189"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 45469350000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0052",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00206"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00207"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00208"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00209"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00210"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 26759350000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0052",
+    "observation_id": "OBS-LHHS-0053",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00211"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00212"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00213"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 50326744000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0050",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00196"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00197"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00198"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00199"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00200"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00201"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 31616744000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5304",
+    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0050",
+    "observation_id": "OBS-LHHS-0051",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "H.Rept.119-271",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00202"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00203"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00204"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00205"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 52240075000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0054",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "439",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00214"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00215"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00216"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00217"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 33530075000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0054",
+    "observation_id": "OBS-LHHS-0055",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "439",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, discretionary' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00218"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00219"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 51736248000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0048",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "292",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00194"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 33026248000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "human-entered",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0048",
+    "observation_id": "OBS-LHHS-0049",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-22",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "source_page": "292",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FINAL BILL]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-00195"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 43454579000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0058",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00230"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00231"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00232"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00233"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00234"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 26225579000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0058",
+    "observation_id": "OBS-LHHS-0059",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00235"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00236"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00237"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 48352223000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0056",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families.' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00220"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00221"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00222"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00223"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00224"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00225"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 31123223000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0056",
+    "observation_id": "OBS-LHHS-0057",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "387",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Families, Discretionary' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00226"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00227"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00228"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00229"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": []
+ }
+}
