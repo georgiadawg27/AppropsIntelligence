@@ -150,6 +150,12 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
         self.assertFalse([l for r in grid["rows"] for ls in r["cells"].values() for l in ls
                           if l["component_kind"] in ("contained", "view") and l["state"] == "missing"])
 
+    def test_the_title_ii_total_is_the_titles_total_not_a_bill_total(self):
+        grid = S.subcommittee_grid(self.conn, "LHHS")
+        self.assertIsNone(grid["bill_total"])                         # no Labor-HHS bill total is on file
+        self.assertEqual([(t["title"], t["total"]["account"]["canonical_account_id"]) for t in grid["titles"]],
+                         [("Title II", "ACC-HHS-TITLE-II-TOTAL")])
+
     def test_a_part_still_adds(self):
         # NSF Research and Related Activities: its defense line is a part of the account's figure
         row = self.conn.execute("SELECT canonical_account_id, fiscal_year, stage FROM appropriations_observation "
