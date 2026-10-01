@@ -57,11 +57,10 @@ class LoadError(Exception):
     pass
 
 
-# The reference workbook's file name, in reference/: v30 on is
-# Approps_Pilot_Schema_Loaded_vNN.xlsx (it holds more than CJS); through v29 it
-# was CJS_Title_III_Science_Pilot_Schema_Loaded_vNN.xlsx. Both are accepted
-# while the old name is still around; the highest vNN wins, whichever name.
-WORKBOOK_PATTERNS = ("Approps_Pilot_Schema_Loaded_v*.xlsx", "CJS_Title_III_Science_Pilot_Schema_Loaded_v*.xlsx")
+# The reference workbook's file name, in reference/: Approps_Pilot_Schema_
+# Loaded_vNN.xlsx (from v30; it holds more than CJS -- the CJS_Title_III_...
+# name of v29 and earlier is no longer accepted). The highest vNN wins.
+WORKBOOK_PATTERNS = ("Approps_Pilot_Schema_Loaded_v*.xlsx",)
 WORKBOOK_VERSION_RE = re.compile(r"_v(\d+)\.xlsx$")
 
 

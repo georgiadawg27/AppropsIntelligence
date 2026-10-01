@@ -316,7 +316,7 @@ class Browser(WebTest):
             n += self.page.locator("[data-testid=not-applicable]").count()
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 197)
+        self.assertEqual(n, 215)                         # v30: CJS's 197 + Labor-HHS's 18
 
 
 if __name__ == "__main__":

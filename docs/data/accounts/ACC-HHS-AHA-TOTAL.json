@@ -1,0 +1,842 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0003",
+        "confirmed_date": "2026-09-28",
+        "document_type": "explanatory_statement",
+        "evidence": "The FY2026 JES Division B table (Congressional Record H1633, p.281, read by hand from the page image) opens Title II with HRSA's Health Centers and prints no Administration for a Healthy America row; H.Rept. 119-696 p.365 prints '---' for AHA in its FY 2026 Enacted column; P.L. 119-75 contains no 'Healthy America' heading or text.",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-22",
+        "source_agency": "House Committee on Appropriations (Congressional Record)",
+        "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0001",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-271 p.334 prints the Administration for a Healthy America rows (a proposal of the FY2026 request, footnote 1/: funding 'not displayed under other HHS accounts below') with '---' in the Bill column for 'Administration for a Healthy America, Discretionary 1/', 'Total, Administration for a Healthy America' and its program-level total; the Bill vs. Request column prints -574,803. Read by vision and by hand from the page image.",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT271",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 574803000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0086",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "334",
+         "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00360"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00361"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00362"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00363"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 579688000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-0086",
+         "observation_id": "OBS-LHHS-0087",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "334",
+         "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America, program level' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00364"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00365"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00366"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00367"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0002",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "S.Rept. 119-55's Title II table (pp. 426-442, text layer) prints no Administration for a Healthy America row: Title II opens with HRSA's Health Centers; no 'Healthy America' text anywhere in the table.",
+        "fiscal_year": 2026,
+        "publication_date": "2025-08-01",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119SRPT55",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0004",
+        "confirmed_date": "2026-09-28",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-696 p.365 prints 'Administration for a Healthy America, Discretionary 1/' and its program-level total with '---' in the Committee Recommendation column (FY 2027 Request 427,803). Read by vision; the row verified by hand against the page image.",
+        "fiscal_year": 2027,
+        "publication_date": "2026-06-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT696",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_applicable"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 427803000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0088",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Administration for a Healthy America, Discretionary 1/' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00368"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00369"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00370"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 432688000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-0088",
+         "observation_id": "OBS-LHHS-0089",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "365",
+         "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America, program level' [FY 2027 Request*]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-00371"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-00372"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-00373"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-00374"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level"
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0003",
+    "confirmed_date": "2026-09-28",
+    "document_type": "explanatory_statement",
+    "evidence": "The FY2026 JES Division B table (Congressional Record H1633, p.281, read by hand from the page image) opens Title II with HRSA's Health Centers and prints no Administration for a Healthy America row; H.Rept. 119-696 p.365 prints '---' for AHA in its FY 2026 Enacted column; P.L. 119-75 contains no 'Healthy America' heading or text.",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-22",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0001",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-271 p.334 prints the Administration for a Healthy America rows (a proposal of the FY2026 request, footnote 1/: funding 'not displayed under other HHS accounts below') with '---' in the Bill column for 'Administration for a Healthy America, Discretionary 1/', 'Total, Administration for a Healthy America' and its program-level total; the Bill vs. Request column prints -574,803. Read by vision and by hand from the page image.",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0002",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "S.Rept. 119-55's Title II table (pp. 426-442, text layer) prints no Administration for a Healthy America row: Title II opens with HRSA's Health Centers; no 'Healthy America' text anywhere in the table.",
+    "fiscal_year": 2026,
+    "publication_date": "2025-08-01",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0004",
+    "confirmed_date": "2026-09-28",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-696 p.365 prints 'Administration for a Healthy America, Discretionary 1/' and its program-level total with '---' in the Committee Recommendation column (FY 2027 Request 427,803). Read by vision; the row verified by hand against the page image.",
+    "fiscal_year": 2027,
+    "publication_date": "2026-06-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
+   }
+  ],
+  "account": {
+   "agency": "Administration for a Healthy America",
+   "bureau": "(Agency Total)",
+   "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+   "canonical_name": "Administration for a Healthy America (agency total)",
+   "display_order": 1,
+   "effective_end": null,
+   "effective_start": "2025-10-01",
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Proposed in the FY2026 and FY2027 budget requests only; never reported by a committee or enacted (P.L. 119-75 has no such heading). The committee tables print it only in the request column, as the request's funding 'not displayed under other HHS accounts below' (H.Rept. 119-271 p.334 footnote 1/): the tables show most of the proposed AHA under HRSA, SAMHSA and the other legacy lines. Derived rollup (agency). H.Rept. 119-696 prints no plain total, only 'Administration for a Healthy America, Discretionary 1/', recorded as the headline there.",
+   "status": "proposed",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 574803000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0086",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "334",
+    "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00360"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00361"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00362"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00363"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 579688000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-0086",
+    "observation_id": "OBS-LHHS-0087",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "334",
+    "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America, program level' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00364"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00365"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00366"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00367"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 427803000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0088",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Administration for a Healthy America, Discretionary 1/' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00368"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00369"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00370"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 432688000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-0088",
+    "observation_id": "OBS-LHHS-0089",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "365",
+    "source_table_or_section": "Title II, Administration for a Healthy America -- printed as 'Total, Administration for a Healthy America, program level' [FY 2027 Request*]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-00371"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-00372"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-00373"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-00374"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "relationships": [
+   {
+    "confidence": 0.9,
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA.",
+    "from_account_id": "ACC-HHS-HRSA-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-HRSA-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Health Resources and Services Administration (agency total)",
+    "other_observations": 13,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0001",
+    "relationship_type": "consolidated",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "confidence": 0.9,
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix p.360: 'In 2026 SAMHSA will be reorganized into the Agency for a Healthy America to improve coordination of health resources for Americans.' FY2027 Appendix p.464 repeats it for 2027. P.L. 119-75 keeps SAMHSA.",
+    "from_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Substance Abuse and Mental Health Services Administration (agency total)",
+    "other_observations": 23,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0002",
+    "relationship_type": "consolidated",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "confidence": 0.5,
+    "effective_fiscal_year": 2026,
+    "evidence": "Part of NIH only, and only in the FY2026 request: FY2026 Budget Appendix p.357: 'relocate the National Institute of Environmental Health Sciences into the new Administration for a Healthy America'. The FY2027 Appendix p.461 instead proposes relocating NIEHS into CDC. Not a consolidation of the NIH total.",
+    "from_account_id": "ACC-HHS-NIH-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-NIH-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "National Institutes of Health (agency total)",
+    "other_observations": 51,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0003",
+    "relationship_type": "uncertain",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "confidence": 0.4,
+    "effective_fiscal_year": 2026,
+    "evidence": "Part of CDC only: FY2026 Budget Appendix p.337, World Trade Center Health Program: 'This account is moving to the Administration for a Healthy America, in alignment with the HHS reorganization.' Not a consolidation of the CDC total.",
+    "from_account_id": "ACC-HHS-CDC-TOTAL",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-CDC-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Centers for Disease Control and Prevention (agency total)",
+    "other_observations": 26,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0004",
+    "relationship_type": "uncertain",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ]
+ }
+}

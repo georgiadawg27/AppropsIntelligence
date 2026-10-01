@@ -49,6 +49,156 @@
    "historical_names": []
   },
   {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-HEAD-START",
+   "canonical_name": "Head Start",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-LIHEAP",
+   "canonical_name": "Low Income Home Energy Assistance",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+   "canonical_name": "Administration for Children and Families (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Community Living",
+   "canonical_account_id": "ACC-HHS-ACL-TOTAL",
+   "canonical_name": "Administration for Community Living (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for a Healthy America",
+   "canonical_account_id": "ACC-HHS-AHA-TOTAL",
+   "canonical_name": "Administration for a Healthy America (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Agency for Healthcare Research and Quality",
+   "canonical_account_id": "ACC-HHS-AHRQ-TOTAL",
+   "canonical_name": "Agency for Healthcare Research and Quality (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Strategic Preparedness and Response",
+   "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+   "canonical_name": "Administration for Strategic Preparedness and Response (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+   "canonical_name": "Centers for Disease Control and Prevention (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Medicare & Medicaid Services",
+   "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+   "canonical_name": "Grants to States for Medicaid",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Medicare & Medicaid Services",
+   "canonical_account_id": "ACC-HHS-CMS-PROGRAM-MANAGEMENT",
+   "canonical_name": "Program Management",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Medicare & Medicaid Services",
+   "canonical_account_id": "ACC-HHS-CMS-TOTAL",
+   "canonical_name": "Centers for Medicare & Medicaid Services (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Medicare & Medicaid Services",
+   "canonical_account_id": "ACC-HHS-CMS-TRUST-FUND-PAYMENTS",
+   "canonical_name": "Payments to the Health Care Trust Funds",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Health and Human Services",
+   "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+   "canonical_name": "Adoption Incentives (rescission)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Health and Human Services",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+   "canonical_name": "Limitation for Title XVIII of the Social Security Act",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Health and Human Services",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+   "canonical_name": "Medicare Operations (Title II general provision)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Health and Human Services",
+   "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+   "canonical_name": "Nonrecurring Expenses Fund, HHS (rescission)",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-HEALTH-CENTERS",
+   "canonical_name": "Health Centers",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-PRIMARY-CARE",
+   "canonical_name": "Primary Health Care",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-TOTAL",
+   "canonical_name": "Health Resources and Services Administration (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-VICTF",
+   "canonical_name": "Vaccine Injury Compensation Program Trust Fund",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NCI",
+   "canonical_name": "National Cancer Institute",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+   "canonical_name": "National Institutes of Health (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-TOTAL",
+   "canonical_name": "Office of the Secretary (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+   "canonical_name": "Substance Abuse and Mental Health Services Administration (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Health and Human Services",
+   "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+   "canonical_name": "Title II, Department of Health and Human Services (title total)",
+   "historical_names": []
+  },
+  {
    "agency": "National Aeronautics and Space Administration",
    "canonical_account_id": "ACC-NASA-AERONAUTICS",
    "canonical_name": "Aeronautics",
@@ -200,19 +350,19 @@
  },
  "source": {
   "rows": {
-   "account": 30,
-   "account_relationship": 0,
-   "appropriations_observation": 870,
-   "bill_report_reference": 41,
+   "account": 55,
+   "account_relationship": 4,
+   "appropriations_observation": 1324,
+   "bill_report_reference": 54,
    "component": 20,
-   "confirmed_absence": 197,
+   "confirmed_absence": 215,
    "historical_name": 7,
-   "source_document": 24,
-   "validation_record": 89
+   "source_document": 31,
+   "validation_record": 2009
   },
   "warnings": [],
-  "workbook": "CJS_Title_III_Science_Pilot_Schema_Loaded_v28.xlsx",
-  "workbook_committed": "2026-09-27T22:00:52+00:00",
-  "workbook_sha256": "f829130dbd11c112625767e19ecf9ce81b4eebd91510caa147a81ccd39e8a3c4"
+  "workbook": "Approps_Pilot_Schema_Loaded_v30.xlsx",
+  "workbook_committed": "2026-10-01T18:00:38+00:00",
+  "workbook_sha256": "02cc0a7bdfc4d92b6a413edbcde138d195b965944d5884923a4db6f4b0857ec2"
  }
 }

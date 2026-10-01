@@ -334,7 +334,7 @@ class GridData(CompareTest):
         for name in dict.fromkeys(n for n, _, _ in lines):
             c.execute(f"INSERT INTO account ({','.join(acct)}) VALUES ({','.join('?' * len(acct))})",
                       list(dict(acct, canonical_account_id=f"ACC-HHS-{name}", canonical_name=name, agency=name,
-                                subcommittee="LHHS", title="Title II", display_order=None, notes=None).values()))
+                                subcommittee="TEST-HHS", title="Title II", display_order=None, notes=None).values()))
         for i, (name, amount, component) in enumerate(lines):
             c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
                       list(dict(tmpl, observation_id=f"OBS-HHS-{i}", canonical_account_id=f"ACC-HHS-{name}", fiscal_year=2024,
@@ -346,7 +346,8 @@ class GridData(CompareTest):
         try:
             printed = [{"fiscal_year": "2024", "stage": "Enacted", "source_document_id": "S.Rept. 118-207",
                         "printed_total_title_iii_thousands": "1266562768"}]
-            got, = mod.reconcile(conn, printed, title="Title II", subcommittee="LHHS")
+            # a made-up subcommittee code: v30's real LHHS accounts are not part of this sum
+            got, = mod.reconcile(conn, printed, title="Title II", subcommittee="TEST-HHS")
         finally:
             conn.close()
         self.assertEqual(got["reconciles"], "yes", got)
@@ -409,9 +410,10 @@ class GridData(CompareTest):
                   "WHERE canonical_account_id IN ('ACC-OSTP', 'ACC-NSC')")
         c.commit()
         c.close()
-        self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water"],
+        self.assertEqual(W.subcommittees(str(other)), {"subcommittees": ["CJS", "Energy and Water", "LHHS"],
                                                        "names": {"CJS": "Commerce, Justice, Science",
-                                                                 "Energy and Water": "Energy and Water"}})
+                                                                 "Energy and Water": "Energy and Water",
+                                                                 "LHHS": "Labor-HHS-Education"}})
         ew = W.subcommittee(str(other), "Energy and Water")
         self.assertEqual([r["account"]["canonical_account_id"] for r in ew["rows"]], ["ACC-OSTP", "ACC-NSC"])      # bill order (display_order)
         self.assertEqual(len(W.subcommittee(str(other), "CJS")["rows"]), 28)
@@ -424,7 +426,8 @@ class GridData(CompareTest):
         base = f"http://127.0.0.1:{srv.server_address[1]}"
         try:
             with urllib.request.urlopen(base + "/api/subcommittees") as r:
-                self.assertEqual(json.load(r), {"subcommittees": ["CJS"], "names": {"CJS": "Commerce, Justice, Science"}})
+                self.assertEqual(json.load(r), {"subcommittees": ["CJS", "LHHS"],
+                                            "names": {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}})
             with urllib.request.urlopen(base + "/api/subcommittee/CJS") as r:
                 self.assertEqual(json.load(r), self.grid)
             with self.assertRaises(urllib.error.HTTPError) as e:
@@ -436,7 +439,8 @@ class GridData(CompareTest):
         out = Path(self.tmp.name) / "docs"
         E.export(WORKBOOK, out)
         self.assertEqual(json.loads((out / "data" / "subcommittees.json").read_text()),
-                         {"subcommittees": ["CJS"], "names": {"CJS": "Commerce, Justice, Science"}})
+                         {"subcommittees": ["CJS", "LHHS"],
+                          "names": {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}})
         self.assertEqual(json.loads((out / "data" / "subcommittees" / "CJS.json").read_text()), self.grid)
 
 
