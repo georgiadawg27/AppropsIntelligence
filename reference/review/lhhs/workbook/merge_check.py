@@ -1,9 +1,10 @@
 """
-Load-test the Labor-HHS CSVs the way they would reach v29: a copy of the
-reference workbook with each lhhs_*.csv appended to its tab (the proposed
-Component tab added, and the Appropriations Observation tab given the
-proposed headline_observation_id column), loaded by approps_store.load into
-a scratch database. Prints the load report and the store's own warnings.
+Load-test the Labor-HHS CSVs the way they reach the workbook: a copy of the
+reference workbook with each lhhs_*.csv merged into its tab -- a row whose ID
+is already there (v30 on carries them) replaced, any other appended; the
+Component tab and the headline_observation_id column added if missing --
+loaded by approps_store.load into a scratch database. Prints the load report,
+the store's own warnings and the in-store Title II reconciliation.
 
     python reference/review/lhhs/workbook/merge_check.py [workbook]
 
@@ -47,6 +48,12 @@ def merged(workbook, out):
         # an empty template row (v28's Account Relationship tab has one) would be read as data
         if ws.max_row == 2 and all(c.value is None for c in ws[2]):
             ws.delete_rows(2)
+        # a row already in the workbook under the same ID (column A) is replaced, not
+        # duplicated: v30 on already carries these rows, v28 didn't
+        ids = {r[head[0]] for r in rows}
+        for i in range(ws.max_row, 1, -1):
+            if str(ws.cell(row=i, column=1).value) in ids:
+                ws.delete_rows(i)
         for r in rows:
             ws.append([convert(r.get(h)) for h in head])
     wb.save(out)

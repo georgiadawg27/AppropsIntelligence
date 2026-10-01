@@ -9,14 +9,14 @@ history with a source citation for every figure.
 | `govinfo_ingest.py` | Finds and stores bills, committee reports and public laws |
 | `extract_approps.py` | Extracts comparative tables (text layer, OCR, or vision) into observations |
 | `validate_approps.py` | Arithmetic, structural, unit and account-identity checks |
-| `approps_store.py` | SQLite store built from the reference workbook (`reference/Approps_Pilot_Schema_Loaded_vNN.xlsx`; through v29 `CJS_Title_III_Science_Pilot_Schema_Loaded_vNN.xlsx` -- both accepted, highest vNN wins); account matching and history queries (CLI) |
+| `approps_store.py` | SQLite store built from the reference workbook (`reference/Approps_Pilot_Schema_Loaded_vNN.xlsx`, highest vNN); account matching and history queries (CLI) |
 | `approps_web.py` + `web/` | Read-only local web UI over the store |
 | `export_static.py` → `docs/` | Static copy of the UI for GitHub Pages |
 
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/Approps_Pilot_Schema_Loaded_vNN.xlsx   # or the CJS_Title_III_... name through v29
+python approps_store.py load reference/Approps_Pilot_Schema_Loaded_v30.xlsx
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 

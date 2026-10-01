@@ -74,13 +74,20 @@ class StoreTest(unittest.TestCase):
 
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
+        # v30: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
+        # + Labor-HHS Title II (25, 454, 18, 1,920)
         self.assertEqual(self.report["rows"], {
-            "account": 30, "historical_name": 7, "source_document": 24, "bill_report_reference": 41,
-            "appropriations_observation": 870, "confirmed_absence": 197, "account_relationship": 0,
-            "validation_record": 89, "component": 20})
-        # v28 predates the Component tab: its kinds come from the code, and say so
-        self.assertEqual(self.report["tabs_not_in_workbook"], ["Component"])
-        self.assertEqual(self.report["component_kinds_from"], "accounts.COMPONENT_KINDS (no Component rows in the workbook)")
+            "account": 55, "historical_name": 7, "source_document": 31, "bill_report_reference": 54,
+            "appropriations_observation": 1324, "confirmed_absence": 215, "account_relationship": 4,
+            "validation_record": 2009, "component": 20})
+        cjs = lambda table, key: self.conn.execute(
+            f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
+            "WHERE a.subcommittee = 'CJS'").fetchone()[0]
+        self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
+                          cjs("confirmed_absence", "canonical_account_id")), (870, 197))
+        # v30 has the Component tab: its kinds and labels come from the workbook, not the code
+        self.assertEqual(self.report["tabs_not_in_workbook"], [])
+        self.assertNotIn("component_kinds_from", self.report)
         kinds = S.component_kinds(self.conn)
         self.assertEqual((kinds["defense"], kinds["supplemental_act"], kinds["CURES"], kinds["appropriated_in_this_bill"]),
                          ("part", "part", "contained", "view"))
@@ -90,7 +97,7 @@ class Load(StoreTest):
                          ("CURES Act", "program level (excluding ARPA-H)", "Defense function"))
         self.assertNotIn(None, labels.values())
 
-    def test_v28_loads_with_no_warnings(self):
+    def test_reference_workbook_loads_with_no_warnings(self):
         self.assertEqual((self.report["waived"], self.report["warnings"]), ({}, []))
     def test_new_observations_cite_pages_inside_their_documents(self):
         for oid, page, doc in (("OBS-0986", "229", "SRC-CRPT-118SRPT198"), ("OBS-0987", "191", "SRC-CRPT-116HRPT455"),
@@ -102,22 +109,20 @@ class Load(StoreTest):
             self.assertEqual(tuple(o), (page, doc))
             self.assertTrue(S.within(page, rng), (oid, page, rng))
 
-    def test_reference_workbook_accepts_both_file_names(self):
-        # v30 on: Approps_Pilot_Schema_Loaded_vNN; through v29: CJS_Title_III_Science_Pilot_Schema_Loaded_vNN
+    def test_reference_workbook_file_name(self):
+        # Approps_Pilot_Schema_Loaded_vNN only (v30 on); the old CJS_Title_III_... name is not a reference workbook
         with tempfile.TemporaryDirectory() as d:
             d = Path(d)
+            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v29.xlsx").touch()
+            (d / "notes.xlsx").touch()
             with self.assertRaises(S.LoadError):
                 S.reference_workbook(d)
-            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v29.xlsx").touch()
-            (d / "notes.xlsx").touch()                                    # not a reference workbook
-            self.assertEqual(S.reference_workbook(d).name, "CJS_Title_III_Science_Pilot_Schema_Loaded_v29.xlsx")
             (d / "Approps_Pilot_Schema_Loaded_v30.xlsx").touch()
-            self.assertEqual(S.reference_workbook(d).name, "Approps_Pilot_Schema_Loaded_v30.xlsx")   # the higher vNN
-            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v31.xlsx").touch()
-            self.assertEqual(S.reference_workbook(d).name, "CJS_Title_III_Science_Pilot_Schema_Loaded_v31.xlsx")
+            self.assertEqual(S.reference_workbook(d).name, "Approps_Pilot_Schema_Loaded_v30.xlsx")
+            (d / "CJS_Title_III_Science_Pilot_Schema_Loaded_v31.xlsx").touch()            # ignored, whatever its vNN
+            self.assertEqual(S.reference_workbook(d).name, "Approps_Pilot_Schema_Loaded_v30.xlsx")
             (d / "Approps_Pilot_Schema_Loaded_v31.xlsx").touch()
-            with self.assertRaises(S.LoadError):                         # two v31s: which?
-                S.reference_workbook(d)
+            self.assertEqual(S.reference_workbook(d).name, "Approps_Pilot_Schema_Loaded_v31.xlsx")   # the higher vNN
 
     def test_table_pages_may_be_several_ranges(self):
         # a title's pages and a bill-level section after the grand total
@@ -152,8 +157,19 @@ class Load(StoreTest):
             self.conn.execute("UPDATE appropriations_observation SET offsetting_collections = 'TRUE'")
 
     def test_spelling_variant_is_mapped_and_counted(self):
-        self.assertEqual(self.report["value_map"],
-                         {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 870})
+        # v30 spells extraction_method as the Data Dictionary does: nothing to map
+        self.assertEqual(self.report["value_map"], {})
+        # an older workbook's "human_entered" still loads as "human-entered", counted
+        tabs = {t: [] for t, _, _ in S.TABS}
+        tabs["Appropriations Observation"] = [(2, {"observation_id": "OBS-X", "canonical_account_id": "ACC-X", "fiscal_year": 2024,
+                                                   "stage": "Enacted", "amount": 1000, "amount_type": "budget authority",
+                                                   "offsetting_collections": False, "source_document_id": "SRC-X",
+                                                   "extraction_method": "human_entered", "confidence": 1,
+                                                   "verification_status": "human-verified"})]
+        report = {"value_map": {}}
+        rows = S.convert_rows(tabs, report)
+        self.assertEqual(rows["Appropriations Observation"][0]["extraction_method"], "human-entered")
+        self.assertEqual(report["value_map"], {"Appropriations Observation.extraction_method: 'human_entered' -> 'human-entered'": 1})
 
     def test_dates_are_iso_dates(self):
         self.assertEqual(self.conn.execute("SELECT publication_date FROM source_document "
@@ -295,7 +311,10 @@ class ExplorationAcceptance(StoreTest):
         # v24: REL-0005 resolved by folding the line in (FY2019 Budget
         # Appendix: the request renamed Space Technology "Exploration Research
         # and Technology"); no relationship is left open
-        self.assertEqual(self.conn.execute("SELECT count(*) FROM account_relationship").fetchone()[0], 0)
+        # (v30's four relationships are Labor-HHS's, all to the proposed AHA account)
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM account_relationship r JOIN account a ON "
+                                           "a.canonical_account_id IN (r.from_account_id, r.to_account_id) "
+                                           "WHERE a.subcommittee = 'CJS'").fetchone()[0], 0)
         self.assertIsNone(self.conn.execute("SELECT 1 FROM account WHERE canonical_account_id = 'ACC-NASA-EXPLTECH'").fetchone())
         for text in ("Exploration Research and Technology", "Exploration Technology"):
             res, h = self.query(text)
@@ -462,10 +481,13 @@ class FactKey(StoreCopyTest):
 
     def test_components_are_the_canonical_vocabulary(self):
         import accounts
-        used = {r[0] for r in self.conn.execute("SELECT DISTINCT component FROM appropriations_observation")}
-        # CJS uses every part component; the breakdowns (CURES, parallel
-        # scopes) are Labor-HHS's
-        self.assertEqual(used, {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        used = lambda sub: {r[0] for r in self.conn.execute(
+            "SELECT DISTINCT o.component FROM appropriations_observation o JOIN account a USING (canonical_account_id) "
+            "WHERE a.subcommittee = ?", (sub,))}
+        # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's
+        self.assertEqual(used("CJS"), {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"})
+        self.assertIn("CURES", used("LHHS"))
         self.assertFalse(accounts.BREAKDOWN_COMPONENTS & (set(accounts.COMPONENTS) | set(accounts.STRUCTURAL_COMPONENTS)))
         # structural components are never reached from a printed label
         for c in accounts.STRUCTURAL_COMPONENTS:
@@ -520,7 +542,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 197)
+        self.assertEqual(n, 215)                         # v30: CJS's 197 + Labor-HHS's 18
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))

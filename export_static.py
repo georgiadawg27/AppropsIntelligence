@@ -7,8 +7,7 @@ that answers the same questions as approps_web.py without a server.
     python export_static.py [--workbook reference/X.xlsx] [--out docs]
 
   - Loads the committed reference workbook (approps_store.reference_workbook():
-    Approps_Pilot_Schema_Loaded_vNN.xlsx, or the older CJS_Title_III_...
-    name, the highest vNN in reference/)
+    Approps_Pilot_Schema_Loaded_vNN.xlsx, the highest vNN in reference/)
     into a throwaway store with approps_store.load().
   - Writes, for every account, exactly what the live API returns for it:
     approps_web.account() -- history() + history_grid() -- to

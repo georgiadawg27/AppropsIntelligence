@@ -7,11 +7,8 @@ name: Export static site
 on:
   push:
     paths:
-      # the reference workbook: Approps_Pilot_Schema_Loaded_vNN.xlsx from v30,
-      # CJS_Title_III_Science_Pilot_Schema_Loaded_vNN.xlsx through v29 (both
-      # accepted during the transition; approps_store.WORKBOOK_PATTERNS)
+      # the reference workbook (approps_store.WORKBOOK_PATTERNS)
       - "reference/Approps_Pilot_Schema_Loaded_v*.xlsx"
-      - "reference/CJS_Title_III_Science_Pilot_Schema_Loaded_v*.xlsx"
       - "approps_store.py"
       - "subcommittees.py"
       - "approps_web.py"
