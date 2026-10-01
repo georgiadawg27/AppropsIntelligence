@@ -259,6 +259,10 @@ class GridData(CompareTest):
         self.assertEqual([scope(None), scope("Receives a transfer"), scope("Derived rollup -- equals the sum of NASA's 9"),
                           scope("Derived rollup -- title total"), scope("Derived rollup -- bill total (Grand total)")],
                          [None, None, "agency", "title", "bill"])
+        # only the declaring sentence counts: v30's Labor-HHS Title II total mentions the Senate's
+        # "grand total" further on, and is still its title's total
+        self.assertEqual(scope("Derived rollup -- the Title II title total as printed. The Senate prints them "
+                               "after the grand total, outside Title II."), "title")
         self.assertEqual(sorted(["Title VII", None, "Title II", "Title III", "Title IV", "Title I", "Title V"], key=S.title_rank),
                          ["Title I", "Title II", "Title III", "Title IV", "Title V", "Title VII", None])
 

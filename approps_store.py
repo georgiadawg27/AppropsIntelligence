@@ -1046,11 +1046,15 @@ def rollup_scope(account):
     """None for an account; else what the rollup totals, from the workbook's
     own note ("Derived rollup -- ..."): "bill" (the whole bill), "title" (its
     title), or "agency" (its agency's accounts within its title -- NASA Total,
-    NSF Total)."""
+    NSF Total). The scope is read from the sentence that declares the rollup
+    only: later sentences may mention other totals ("... the Senate prints
+    them after the grand total") without saying what this row totals."""
     notes = account.get("notes") or ""
-    if not ROLLUP_RE.search(notes):
+    m = ROLLUP_RE.search(notes)
+    if not m:
         return None
-    return next((scope for rx, scope in ROLLUP_SCOPES if rx.search(notes)), "agency")
+    declared = re.split(r"\.(?:\s|$)", notes[m.end():], maxsplit=1)[0]
+    return next((scope for rx, scope in ROLLUP_SCOPES if rx.search(declared)), "agency")
 
 
 def title_rank(title):
