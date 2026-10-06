@@ -1,0 +1,53 @@
+# The full test suite, on every pull request and every push to main.
+# export-static.yml also calls it (workflow_call) and commits docs/ only when
+# it passes on that same commit.
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # the static export reads the workbook's commit date
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-node@v4     # tests/test_static.py: match.js parity under node
+        with:
+          node-version: "22"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Install Chromium for the browser tests
+        run: |
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD= python -m playwright install --with-deps chromium
+          python - >> "$GITHUB_ENV" <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              print(f"PLAYWRIGHT_CHROMIUM={p.chromium.executable_path}")
+          PY
+      - name: Fetch the source documents the tests read
+        # document_store/ is gitignored; these are public govinfo PDFs (no key).
+        # A failed fetch leaves its tests skipped with that reason, not failed.
+        run: |
+          mkdir -p document_store
+          for p in CRPT-119hrpt652 CRPT-119srpt44 CRPT-118srpt62 CRPT-119srpt55 PLAW-118publ47; do
+            curl -fsSL --retry 3 -o "document_store/$p.pdf" "https://www.govinfo.gov/content/pkg/$p/pdf/$p.pdf" \
+              || { echo "::warning::could not fetch $p -- its tests will skip"; rm -f "document_store/$p.pdf"; }
+          done
+      - name: Run the test suite
+        run: python -m unittest discover -s tests -v

@@ -671,15 +671,21 @@ class EffectiveDates(StoreCopyTest):
     def test_workbook_carries_the_computed_dates(self):
         every = {r["canonical_account_id"]: r for r in effective_dates()}
         self.assertEqual(len(every), 55)
-        # Labor-HHS: one end date the workbook doesn't carry yet -- a proposal for the owner, not applied
+        # Labor-HHS: no end proposed. Adoption Incentives' last figure is FY2025, but later cells its
+        # subcommittee's documents cover have neither a figure nor a confirmed absence for it -- unchecked,
+        # not empty -- so the end is held back and those cells listed
         lhhs = {a: r for a, r in every.items() if a.startswith("ACC-HHS-")}
         self.assertEqual(len(lhhs), 25)
-        self.assertEqual({a: r["computed_effective_end"] for a, r in lhhs.items() if r["change"] != "none"},
-                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION": "2025-09-30"})
+        self.assertEqual({r["change"] for r in lhhs.values()}, {"none"})
+        self.assertEqual({a: r["check_before_ending"] for a, r in lhhs.items() if r["check_before_ending"]},
+                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION":
+                          "FY2026 President's Budget; FY2026 House Reported; FY2026 Enacted; "
+                          "FY2027 President's Budget; FY2027 House Reported"})
         # CJS: as in v28
         rows = {a: r for a, r in every.items() if a not in lhhs}
         self.assertEqual(len(rows), 30)
         self.assertEqual({r["change"] for r in rows.values()}, {"none"})
+        self.assertEqual({r["check_before_ending"] for r in rows.values()}, {""})
         starts = sorted(r["workbook_effective_start"] for r in rows.values())
         self.assertEqual((starts.count("2016-10-01"), starts.count("2026-10-01")), (19, 11))
         self.assertTrue(all(a.startswith(("ACC-DOJ", "ACC-NOAA", "ACC-USPTO"))

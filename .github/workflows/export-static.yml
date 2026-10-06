@@ -17,6 +17,7 @@ on:
       - "export_static.py"
       - "web/**"
       - ".github/workflows/export-static.yml"
+      - ".github/workflows/tests.yml"
   workflow_dispatch:
 
 permissions:
@@ -27,7 +28,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # the full suite on this same commit; nothing is exported or committed unless it passes
+  tests:
+    uses: ./.github/workflows/tests.yml
+
   export:
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
