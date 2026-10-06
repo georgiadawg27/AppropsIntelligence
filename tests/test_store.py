@@ -74,12 +74,13 @@ class StoreTest(unittest.TestCase):
 
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
-        # v31: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
-        # + Labor-HHS Title II (25, 454, 24, 1,920) + P.L. 119-4 and its FY2025 Enacted reference
+        # v32: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
+        # + Labor-HHS Title II (25, 489, 25, 1,955: v31's + the FY2025 Enacted rows) + P.L. 119-4
+        # and its FY2025 Enacted reference
         self.assertEqual(self.report["rows"], {
             "account": 55, "historical_name": 7, "source_document": 32, "bill_report_reference": 55,
-            "appropriations_observation": 1324, "confirmed_absence": 221, "account_relationship": 4,
-            "validation_record": 2009, "component": 20})
+            "appropriations_observation": 1359, "confirmed_absence": 222, "account_relationship": 4,
+            "validation_record": 2044, "component": 20})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 41, "agency": 13, "title": 1})
@@ -552,7 +553,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 221)                         # v31: CJS's 197 + Labor-HHS's 24
+        self.assertEqual(n, 222)                         # v32: CJS's 197 + Labor-HHS's 25
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
@@ -598,8 +599,12 @@ class GridStates(StoreTest):
         self.assertTrue(line["absence"]["evidence"])
 
     def test_covered_but_unrecorded_is_missing(self):
-        # v31: FY2025 Enacted is covered for Labor-HHS (P.L. 119-4, cited by CA-LHHS-0024) but NIH has no figure yet
-        self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "missing")
+        # FY2025 Enacted is covered for Labor-HHS (H.Rept. 119-271 also_covers it); v32 recorded NIH's figure
+        # there, and the Medicare limitation general provision has none yet
+        self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "value")
+        line = S.headline_state(next(r for r in S.history_grid(S.history(self.conn, "ACC-HHS-GP-MEDICARE-LIMITATION"))["rows"]
+                                     if r["fiscal_year"] == 2025)["cells"]["Enacted"])
+        self.assertEqual(line, "missing")
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
         # no Labor-HHS document on file covers FY2023 House Reported (only S.Rept. 118-84's FY2023 Enacted column)

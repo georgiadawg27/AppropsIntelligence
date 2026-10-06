@@ -473,9 +473,102 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1300549900000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0488",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, ACC-HHS-TITLE-II-TOTAL -- printed as 'Total, Title II, Department of Health and Human Services' 1,300,549,900 [FY 2025 Estimate], PDF p.365 (printed p.361). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate. Parts the law does set: P.L. 119-4 sec. 1908(2), 139 Stat. 33: HRSA-Wide Activities and Program Support, '\"$0\" for \"$890,788,000\"' (with $219,588,000 for $1,110,376,000); P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'; P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'; P.L. 119-4 sec. 1908(5), 139 Stat. 33: ACL Aging and Disability Services Programs, '\"$0\" for \"$29,268,000\"'; P.L. 119-4 sec. 1902(b), 139 Stat. 31: HCFAC level '$941,000,000' (+24,000 +1,000 +1,000 over Div. D); P.L. 119-4 sec. 1101(a)(8), 139 Stat. 11: Div. D sec. 240 continued 'by substituting \"$1,471,000,000\" for \"$1,250,000,000\"'; P.L. 119-4 sec. 1109(b)(2), 139 Stat. 13: Medicaid advance for 1st quarter FY2026 '$261,063,820,000'. H.Rept. 119-271 counts the HHS rescissions (Nonrecurring Expenses Fund) inside Title II (House scope), unlike the FY2024 figures recorded from S.Rept. 118-207.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-01954"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 114965801000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0488",
+         "observation_id": "OBS-LHHS-0489",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "366",
+         "source_table_or_section": "Title II, ACC-HHS-TITLE-II-TOTAL -- printed as 'Total, Title II, Department of Health and Human Services discretionary' 114,965,801 [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level in the House scope: Scope only: B - A = -1,471,000 is exactly the FY2025 NEF rescission, which H.Rept. 119-271 counts inside Title II (House scope) and the S.Rept. 118-207 FY2024 baseline leaves out (Senate scope). In the House scope (FY2024 116,122,958) A = 116,122,958 - 1,006,157 - 221,000 (NEF increase) + 70,000 (Adoption Incentives excluded) = 114,965,801 = B. CURES is outside the Title II totals. H.Rept. 119-271 counts the HHS rescissions (Nonrecurring Expenses Fund) inside Title II (House scope), unlike the FY2024 figures recorded from S.Rept. 118-207.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01955"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -1982,12 +2075,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 1250732063000,
@@ -2719,6 +2807,86 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01860"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1300549900000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0488",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, ACC-HHS-TITLE-II-TOTAL -- printed as 'Total, Title II, Department of Health and Human Services' 1,300,549,900 [FY 2025 Estimate], PDF p.365 (printed p.361). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate. Parts the law does set: P.L. 119-4 sec. 1908(2), 139 Stat. 33: HRSA-Wide Activities and Program Support, '\"$0\" for \"$890,788,000\"' (with $219,588,000 for $1,110,376,000); P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'; P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'; P.L. 119-4 sec. 1908(5), 139 Stat. 33: ACL Aging and Disability Services Programs, '\"$0\" for \"$29,268,000\"'; P.L. 119-4 sec. 1902(b), 139 Stat. 31: HCFAC level '$941,000,000' (+24,000 +1,000 +1,000 over Div. D); P.L. 119-4 sec. 1101(a)(8), 139 Stat. 11: Div. D sec. 240 continued 'by substituting \"$1,471,000,000\" for \"$1,250,000,000\"'; P.L. 119-4 sec. 1109(b)(2), 139 Stat. 13: Medicaid advance for 1st quarter FY2026 '$261,063,820,000'. H.Rept. 119-271 counts the HHS rescissions (Nonrecurring Expenses Fund) inside Title II (House scope), unlike the FY2024 figures recorded from S.Rept. 118-207.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-01954"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 114965801000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0488",
+    "observation_id": "OBS-LHHS-0489",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "366",
+    "source_table_or_section": "Title II, ACC-HHS-TITLE-II-TOTAL -- printed as 'Total, Title II, Department of Health and Human Services discretionary' 114,965,801 [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level in the House scope: Scope only: B - A = -1,471,000 is exactly the FY2025 NEF rescission, which H.Rept. 119-271 counts inside Title II (House scope) and the S.Rept. 118-207 FY2024 baseline leaves out (Senate scope). In the House scope (FY2024 116,122,958) A = 116,122,958 - 1,006,157 - 221,000 (NEF increase) + 70,000 (Adoption Incentives excluded) = 114,965,801 = B. CURES is outside the Title II totals. H.Rept. 119-271 counts the HHS rescissions (Nonrecurring Expenses Fund) inside Title II (House scope), unlike the FY2024 figures recorded from S.Rept. 118-207.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01955"
      }
     ],
     "verification_status": "auto-validated"
@@ -3466,10 +3634,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

@@ -218,20 +218,75 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": -1471000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0474",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "365",
+         "source_table_or_section": "Title II, ACC-HHS-GP-NEF-RESCISSION -- printed as 'Nonrecurring expenses fund, HHS (rescission) (Sec. 234)' -1,471,000 [FY 2025 Estimate], PDF p.365 (printed p.361). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1101(a)(8), 139 Stat. 11: Div. D sec. 240 continued 'by substituting \"$1,471,000,000\" for \"$1,250,000,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01940"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0025",
+        "confirmed_date": "2026-10-07",
+        "document_type": "committee_report",
+        "evidence": "No 'Nonrecurring expenses fund, HHS (rescission) (emergency)' line in H.Rept. 119-271's FY 2025 Estimate column. Searched: the whole Title II comparative table, PDF pp. 334-366 (printed pp. 330-362); the table pages have no text layer and were read from the page images (every row transcribed by vision). Title II General Provisions, PDF p. 365 (printed p. 361), FY 2025 Estimate column: Medicare Operations (Sec. 226) 455,000 and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -1,471,000, with 'Total, Title II General Provisions' -1,016,000 equal to those two lines. P.L. 119-4 sec. 1101(a)(8) continues Div. D sec. 240 except for 'amounts that were previously designated by the Congress as being for an emergency requirement'. The column is the report's 'FY 2025 Operating Plans and other available information' (pp.319-320); FY2025 was a full-year CR (P.L. 119-4).",
+        "fiscal_year": 2025,
+        "publication_date": "2025-09-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT271",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": "emergency",
        "component_kind": "part",
        "component_label": "(emergency)",
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "House Reported": [
@@ -1182,7 +1237,23 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0025",
+    "confirmed_date": "2026-10-07",
+    "document_type": "committee_report",
+    "evidence": "No 'Nonrecurring expenses fund, HHS (rescission) (emergency)' line in H.Rept. 119-271's FY 2025 Estimate column. Searched: the whole Title II comparative table, PDF pp. 334-366 (printed pp. 330-362); the table pages have no text layer and were read from the page images (every row transcribed by vision). Title II General Provisions, PDF p. 365 (printed p. 361), FY 2025 Estimate column: Medicare Operations (Sec. 226) 455,000 and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -1,471,000, with 'Total, Title II General Provisions' -1,016,000 equal to those two lines. P.L. 119-4 sec. 1101(a)(8) continues Div. D sec. 240 except for 'amounts that were previously designated by the Congress as being for an emergency requirement'. The column is the report's 'FY 2025 Operating Plans and other available information' (pp.319-320); FY2025 was a full-year CR (P.L. 119-4).",
+    "fiscal_year": 2025,
+    "publication_date": "2025-09-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+   }
+  ],
   "account": {
    "agency": "Department of Health and Human Services",
    "bureau": "General Provisions",
@@ -1270,10 +1341,6 @@
    [
     2024,
     "Senate Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ]
   ],
   "observations": [
@@ -1694,6 +1761,46 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": -1471000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0474",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "365",
+    "source_table_or_section": "Title II, ACC-HHS-GP-NEF-RESCISSION -- printed as 'Nonrecurring expenses fund, HHS (rescission) (Sec. 234)' -1,471,000 [FY 2025 Estimate], PDF p.365 (printed p.361). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1101(a)(8), 139 Stat. 11: Div. D sec. 240 continued 'by substituting \"$1,471,000,000\" for \"$1,250,000,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01940"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
     "amount": -750000000,
     "amount_type": "rescission",
     "bill_id": "PREX 2.8:2026/APP",
@@ -2030,10 +2137,6 @@
    [
     2024,
     "Senate Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

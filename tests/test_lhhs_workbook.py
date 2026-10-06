@@ -34,7 +34,8 @@ class LhhsRowsLoad(unittest.TestCase):
     def test_loads_with_no_warnings(self):
         self.assertEqual(self.report["warnings"], [])
         self.assertEqual(self.report["rows"]["account"], 30 + len(rows("account")))
-        self.assertEqual(self.report["rows"]["appropriations_observation"], 870 + len(rows("observation")))
+        # v32: + the 35 FY2025 Enacted rows (H.Rept. 119-271's "FY 2025 Estimate" column), sent outside these CSVs
+        self.assertEqual(self.report["rows"]["appropriations_observation"], 870 + len(rows("observation")) + 35)
 
     def test_scope(self):
         accts = {a["canonical_account_id"]: a for a in rows("account")}
@@ -54,7 +55,7 @@ class LhhsRowsLoad(unittest.TestCase):
         # with the General Provisions lines as accounts, every recorded Title II total is its agency
         # totals + the General Provisions lines (a rescission signed) - CURES, from the store alone
         cells = self.report["title_ii"]
-        self.assertEqual(len(cells), 13)
+        self.assertEqual(len(cells), 14)                              # v32: FY2025 Enacted
         self.assertEqual({r["reconciles_through_rollups"] for r in cells}, {"yes"})
 
     def test_senate_rescissions_are_bill_level(self):
