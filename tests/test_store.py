@@ -74,12 +74,15 @@ class StoreTest(unittest.TestCase):
 
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
-        # v30: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
-        # + Labor-HHS Title II (25, 454, 18, 1,920)
+        # v31: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
+        # + Labor-HHS Title II (25, 454, 24, 1,920) + P.L. 119-4 and its FY2025 Enacted reference
         self.assertEqual(self.report["rows"], {
-            "account": 55, "historical_name": 7, "source_document": 31, "bill_report_reference": 54,
-            "appropriations_observation": 1324, "confirmed_absence": 215, "account_relationship": 4,
+            "account": 55, "historical_name": 7, "source_document": 32, "bill_report_reference": 55,
+            "appropriations_observation": 1324, "confirmed_absence": 221, "account_relationship": 4,
             "validation_record": 2009, "component": 20})
+        # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
+        self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
+                                                "GROUP BY 1").fetchall()), {"-": 41, "agency": 13, "title": 1})
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
@@ -542,7 +545,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 215)                         # v30: CJS's 197 + Labor-HHS's 18
+        self.assertEqual(n, 221)                         # v31: CJS's 197 + Labor-HHS's 24
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
@@ -671,17 +674,14 @@ class EffectiveDates(StoreCopyTest):
     def test_workbook_carries_the_computed_dates(self):
         every = {r["canonical_account_id"]: r for r in effective_dates()}
         self.assertEqual(len(every), 55)
-        # Labor-HHS: no end proposed. Adoption Incentives' last figure is FY2025, but FY2025 Enacted (a stage
-        # of that final year, covered by no document on file) and later cells its subcommittee's documents
-        # cover have neither a figure nor a confirmed absence for it -- unchecked, not empty -- so the end
-        # is held back and those cells listed
+        # Labor-HHS: one end proposed, for the owner (not applied). v31's six Adoption Incentives confirmed
+        # absences (FY2025 Enacted, FY2026 PB / House / Enacted, FY2027 PB / House) leave no unchecked cell in
+        # or after its last figure's year, so the FY2025 end is no longer held back
         lhhs = {a: r for a, r in every.items() if a.startswith("ACC-HHS-")}
         self.assertEqual(len(lhhs), 25)
-        self.assertEqual({r["change"] for r in lhhs.values()}, {"none"})
-        self.assertEqual({a: r["check_before_ending"] for a, r in lhhs.items() if r["check_before_ending"]},
-                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION":
-                          "FY2025 Enacted; FY2026 President's Budget; FY2026 House Reported; FY2026 Enacted; "
-                          "FY2027 President's Budget; FY2027 House Reported"})
+        self.assertEqual({a: (r["change"], r["computed_effective_end"]) for a, r in lhhs.items() if r["change"] != "none"},
+                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION": ("end", "2025-09-30")})
+        self.assertEqual({r["check_before_ending"] for r in lhhs.values()}, {""})
         # CJS: as in v28
         rows = {a: r for a, r in every.items() if a not in lhhs}
         self.assertEqual(len(rows), 30)
@@ -840,6 +840,10 @@ class LoadRefuses(unittest.TestCase):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
                                                         "verification_status"), "value", "human_verified"))
         self.refuse(path, "CHECK constraint failed")
+
+    def test_unknown_total_scope(self):
+        path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-TOTAL", "total_scope"), "value", "grand"))
+        self.refuse(path, "not a total scope")
 
     def test_dangling_reference(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",

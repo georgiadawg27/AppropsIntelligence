@@ -150,6 +150,17 @@ def to_text(v):
     return str(v).strip() if isinstance(v, str) else str(v)
 
 
+TOTAL_SCOPES = ("agency", "title", "bill")
+
+
+def to_total_scope(v):
+    """Account.total_scope: agency / title / bill (blank: not a total)."""
+    s = to_text(v)
+    if s not in TOTAL_SCOPES:
+        raise ValueError(f"not a total scope: {s!r} (one of {', '.join(TOTAL_SCOPES)}, or blank)")
+    return s
+
+
 # tab -> table, [(column, converter, required)]
 TABS = [
     ("Account", "account", [
@@ -158,7 +169,7 @@ TABS = [
         ("fund_type", to_text, True), ("effective_start", to_date, True), ("effective_end", to_date, False),
         ("historical_names", to_text, False), ("historical_identifiers", to_text, False),
         ("subcommittee", to_text, True), ("notes", to_text, False), ("title", to_text, False),
-        ("display_order", to_int, False)]),
+        ("display_order", to_int, False), ("total_scope", to_total_scope, False)]),
     ("Historical Name", "historical_name", [
         ("historical_name_id", to_text, True), ("canonical_account_id", to_text, True), ("former_name", to_text, True),
         ("evidence", to_text, True), ("approved_date", to_date, False), ("confidence", to_real, True),
@@ -203,7 +214,8 @@ TABS = [
 # A workbook without a Component tab gets accounts.COMPONENT_KINDS.
 OPTIONAL_TABS = {"Confirmed Absence", "Component"}
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
-OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"}}
+OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"},
+                    "Account": {"total_scope"}}            # before v31: no account is a total
 
 # Workbook columns that exist only as lookups into Bill Report Reference; they
 # are checked against it (check_bill_report_lookups), not stored twice.
@@ -900,6 +912,9 @@ def history(conn, account_id):
     if row is None:
         raise LookupError(f"no account {account_id!r}")
     acct = dict(row)
+    # total_scope is the grid's business (subcommittee_grid's "rollup"); one
+    # account's history is the same whatever its scope
+    acct.pop("total_scope", None)
     former = [dict(r) for r in conn.execute(
         "SELECT * FROM historical_name WHERE canonical_account_id = ? ORDER BY historical_name_id", (account_id,))]
     rels = []
@@ -1037,24 +1052,15 @@ def subcommittees(conn):
     return [r[0] for r in conn.execute("SELECT DISTINCT subcommittee FROM account ORDER BY subcommittee")]
 
 
-ROLLUP_RE = re.compile(r"derived rollup", re.I)
-ROLLUP_SCOPES = ((re.compile(r"bill total|grand total", re.I), "bill"), (re.compile(r"title total", re.I), "title"))
 ROMAN = {"I": 1, "V": 5, "X": 10, "L": 50}
 
 
 def rollup_scope(account):
-    """None for an account; else what the rollup totals, from the workbook's
-    own note ("Derived rollup -- ..."): "bill" (the whole bill), "title" (its
-    title), or "agency" (its agency's accounts within its title -- NASA Total,
-    NSF Total). The scope is read from the sentence that declares the rollup
-    only: later sentences may mention other totals ("... the Senate prints
-    them after the grand total") without saying what this row totals."""
-    notes = account.get("notes") or ""
-    m = ROLLUP_RE.search(notes)
-    if not m:
-        return None
-    declared = re.split(r"\.(?:\s|$)", notes[m.end():], maxsplit=1)[0]
-    return next((scope for rx, scope in ROLLUP_SCOPES if rx.search(declared)), "agency")
+    """None for an account; else what the total row totals -- the workbook's
+    Account.total_scope (v31): "bill" (the whole bill), "title" (its title), or
+    "agency" (its agency's accounts within its title -- NASA Total, NSF Total).
+    Notes are never read for it, whatever they say."""
+    return account.get("total_scope") or None
 
 
 def title_rank(title):
@@ -1083,7 +1089,7 @@ def subcommittee_grid(conn, subcommittee):
     Rows are canonical accounts (former names resolve into them, as in the
     single-account view), grouped by the account's title in bill order
     (Title I, II, III, ...; accounts not yet placed in a title last) and
-    ordered by display_order within it. A rollup (notes "Derived rollup")
+    ordered by display_order within it. A total (Account.total_scope)
     heads its group: an agency rollup (NASA Total) is followed by the
     accounts it totals -- the other accounts of its title and agency --
     marked "member_of" it. A title-total or bill-total rollup is not a row:
@@ -1098,8 +1104,12 @@ def subcommittee_grid(conn, subcommittee):
     """
     accts = [dict(r) for r in conn.execute(
         "SELECT canonical_account_id, canonical_name, agency, bureau, status, effective_start, effective_end, notes, "
-        "title, display_order FROM account WHERE subcommittee = ?",
+        "title, display_order, total_scope FROM account WHERE subcommittee = ?",
         (subcommittee,))]
+    # each row's scope, read once from Account.total_scope; the row carries it as "rollup"
+    scope = {a["canonical_account_id"]: rollup_scope(a) for a in accts}
+    for a in accts:
+        del a["total_scope"]
     if not accts:
         raise LookupError(f"no subcommittee {subcommittee!r}")
     grids = {}
@@ -1121,7 +1131,7 @@ def subcommittee_grid(conn, subcommittee):
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": [
                         {"amount_type": s["amount_type"], "component": s["component"], "state": "missing",
                          "missing": True, "observations": [], "absence": None} for s in g["series"]]}
-        return {"account": a, "rollup": rollup_scope(a), "rollup_members": [], "member_of": None,
+        return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
                                                      "to_account_id", "effective_fiscal_year", "confidence",
