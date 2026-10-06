@@ -274,7 +274,13 @@ class GridData(CompareTest):
                   "WHERE canonical_account_id = 'ACC-OSTP'")
         c.commit()
         c.close()
-        self.assertEqual(plain(W.subcommittee(str(other), "CJS")), self.grid)
+        g = plain(W.subcommittee(str(other), "CJS"))
+        shape = lambda grid: ([(r["account"]["canonical_account_id"], r["rollup"], r["rollup_members"], r["member_of"])
+                               for r in grid["rows"]],
+                              [(t["title"], t["total"]) for t in grid["titles"]], grid["bill_total"])
+        self.assertEqual(shape(g), shape(self.grid))                  # every scope, total and grouping as before
+        ostp = next(r for r in g["rows"] if r["account"]["canonical_account_id"] == "ACC-OSTP")
+        self.assertIsNone(ostp["rollup"])
 
     def test_mechanism_title_candidates(self):
         spec = importlib.util.spec_from_file_location("mechanism_titles", ROOT / "reference" / "review" / "mechanism_titles.py")
