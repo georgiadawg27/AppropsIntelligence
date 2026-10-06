@@ -2173,12 +2173,11 @@
    "canonical_account_id": "ACC-NASA-SPACETECH",
    "canonical_name": "Space Technology",
    "display_order": 5,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "Exploration Research and Technology; Exploration Technology",
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -3752,6 +3751,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

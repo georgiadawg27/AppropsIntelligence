@@ -1780,12 +1780,11 @@
    "canonical_account_id": "ACC-HHS-AHRQ-TOTAL",
    "canonical_name": "Agency for Healthcare Research and Quality (agency total)",
    "display_order": 10,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Derived rollup -- AHRQ's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -3236,6 +3235,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": "agency"
  }
 }

@@ -207,12 +207,11 @@
    "canonical_account_id": "ACC-DOJ-USTSF",
    "canonical_name": "United States Trustee System Fund",
    "display_order": 25,
-   "effective_end": null,
-   "effective_start": "2026-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Offsetting fee collections exceed the account's own direct appropriation.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title II",
@@ -478,6 +477,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

@@ -47,7 +47,8 @@ class LhhsRowsLoad(unittest.TestCase):
         self.assertEqual(len(gp), 4)
         self.assertTrue(all(not S.rollup_scope(a) for a in gp))       # accounts, not rollups
         aha = accts["ACC-HHS-AHA-TOTAL"]
-        self.assertEqual((aha["status"], aha["effective_start"]), ("proposed", "2025-10-01"))
+        self.assertEqual(aha["status"], "proposed")
+        self.assertNotIn("effective_start", aha)                   # removed in v33
         self.assertEqual({o["stage"] for o in rows("observation") if o["canonical_account_id"] == "ACC-HHS-AHA-TOTAL"},
                          {"President's Budget"})
 
@@ -183,6 +184,44 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
         lines = self.cell(*row)
         self.assertEqual(S.cell_total(self.conn, *row), sum(o["amount"] for o in lines))
         self.assertEqual(len(lines), 2)
+
+
+
+
+class CuresAsItsOwnAccount(unittest.TestCase):
+    """v33 re-homes the CURES Act lines from an NIH-total component to their own
+    account (law heading 'NIH Innovation Account, CURES Act'), same observation
+    IDs: the Title II totals -- which leave CURES out from FY2024, keep it in
+    some FY2023 tables -- still reconcile through the rollups."""
+
+    def test_title_ii_still_reconciles(self):
+        import sqlite3, tempfile
+        sys.path.insert(0, str(ROOT / "reference" / "review"))
+        import title_totals as T
+        with tempfile.TemporaryDirectory() as d:
+            db = Path(d) / "approps.db"
+            with redirect_stdout(io.StringIO()):
+                S.load(S.reference_workbook(), db)
+            c = sqlite3.connect(db)
+            c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, bureau, status, fund_type, "
+                      "subcommittee, title, display_order) VALUES ('ACC-HHS-NIH-CURES', 'NIH Innovation Account, CURES Act', "
+                      "'National Institutes of Health', 'NIH Innovation Account, CURES Act', 'active', 'general', 'LHHS', "
+                      "'Title II', 26)")
+            n = c.execute("UPDATE appropriations_observation SET canonical_account_id = 'ACC-HHS-NIH-CURES', component = NULL, "
+                          "headline_observation_id = NULL WHERE component = 'CURES'").rowcount
+            c.execute("DELETE FROM component WHERE component_id = 'CURES'")
+            c.commit()
+            c.close()
+            self.assertEqual(n, 14)
+            conn = S.connect(db, readonly=True)
+            cells = conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE canonical_account_id = "
+                                 "'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL").fetchall()
+            got = {(fy, st): T.reconcile(conn, [{"fiscal_year": fy, "stage": st, "printed_total_title_iii_thousands": a // 1000}],
+                                         title="Title II", subcommittee="LHHS")[0]["reconciles_through_rollups"]
+                   for fy, st, a in cells}
+            conn.close()
+        self.assertEqual(len(got), 14)
+        self.assertEqual(set(got.values()), {"yes"}, got)
 
 
 if __name__ == "__main__":

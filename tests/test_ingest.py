@@ -22,8 +22,16 @@ sys.path.insert(0, str(ROOT))
 
 import govinfo_ingest as g  # noqa: E402
 
-KEY = os.environ.get("GOVINFO_API_KEY")
+KEY = g.clean_key(os.environ.get("GOVINFO_API_KEY"))
 needs_key = unittest.skipUnless(KEY, "GOVINFO_API_KEY not set (.env locally; a repository secret in CI) -- live govinfo API test")
+
+
+class KeyCleaning(unittest.TestCase):
+    def test_a_pasted_key_is_cleaned(self):
+        for raw in ("abc123", " abc123\n", '"abc123"', "GOVINFO_API_KEY=abc123", "export GOVINFO_API_KEY='abc123'\n"):
+            self.assertEqual(g.clean_key(raw), "abc123", raw)
+        self.assertIsNone(g.clean_key("  "))
+        self.assertIsNone(g.clean_key(None))
 
 
 class TempStore:

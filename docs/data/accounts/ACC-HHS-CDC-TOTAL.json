@@ -2122,12 +2122,11 @@
    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
    "canonical_name": "Centers for Disease Control and Prevention (agency total)",
    "display_order": 6,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Derived rollup -- CDC's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -3867,6 +3866,7 @@
     "relationship_type": "uncertain",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
-  ]
+  ],
+  "total_scope": "agency"
  }
 }

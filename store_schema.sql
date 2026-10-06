@@ -32,8 +32,6 @@ CREATE TABLE account (
     status                  TEXT NOT NULL CHECK (status IN ('active', 'inactive', 'superseded', 'proposed')),
     fund_type               TEXT NOT NULL CHECK (fund_type IN ('general', 'trust', 'special', 'revolving',
                                                                'working_capital', 'no_year')),
-    effective_start         TEXT NOT NULL CHECK (date(effective_start) IS effective_start),
-    effective_end           TEXT CHECK (effective_end IS NULL OR date(effective_end) IS effective_end),
     -- Dictionary: array<string>. Stored as the workbook's ';'-separated display
     -- list; the loader checks it equals the historical_name rows, which are the
     -- source of truth (and the only thing matching reads).
@@ -51,7 +49,11 @@ CREATE TABLE account (
     -- (NASA Total, NIH's agency total), its title, or the whole bill. NULL for
     -- every account that is not a total. The only source of a total's scope:
     -- notes are never parsed for it.
-    total_scope             TEXT CHECK (total_scope IS NULL OR total_scope IN ('agency', 'title', 'bill'))
+    total_scope             TEXT CHECK (total_scope IS NULL OR total_scope IN ('agency', 'title', 'bill')),
+    -- v33: the heading account a program line sits under (Health Centers -> Primary Health
+    -- Care); NULL for every other account. Agency reconciliation leaves a child out.
+    parent_account_id       TEXT REFERENCES account (canonical_account_id) DEFERRABLE INITIALLY DEFERRED,
+    CHECK (parent_account_id IS NULL OR parent_account_id <> canonical_account_id)
 ) STRICT;
 
 CREATE TABLE historical_name (

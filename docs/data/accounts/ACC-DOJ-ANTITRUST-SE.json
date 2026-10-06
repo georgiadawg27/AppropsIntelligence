@@ -207,12 +207,11 @@
    "canonical_account_id": "ACC-DOJ-ANTITRUST-SE",
    "canonical_name": "Salaries and Expenses, Antitrust Division",
    "display_order": 24,
-   "effective_end": null,
-   "effective_start": "2026-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Offset by Hart-Scott-Rodino fee collections, netting to $0 in FY2027 House Reported.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title II",
@@ -478,6 +477,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

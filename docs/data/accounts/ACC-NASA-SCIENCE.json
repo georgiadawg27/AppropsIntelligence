@@ -3718,12 +3718,11 @@
    "canonical_account_id": "ACC-NASA-SCIENCE",
    "canonical_name": "Science",
    "display_order": 3,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -5344,6 +5343,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

@@ -48,7 +48,7 @@ def chromium_path():
     return str(found[-1]) if found else None
 
 
-NONFIG = ("missing", "not_funded", "not_collected", "not_enacted")
+NONFIG = ("missing", "not_funded", "no_printed_total", "not_collected", "not_enacted")
 
 
 def money(v):
@@ -155,7 +155,9 @@ class Api(WebTest):
 
 
 @unittest.skipUnless(sync_playwright and chromium_path(), "playwright / chromium not available")
-class Browser(WebTest):
+class BrowserBase(WebTest):
+    """A browser on the served store; no tests of its own."""
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -226,6 +228,8 @@ class Browser(WebTest):
         self.assertTrue(set(want) <= set(shown))
         return shown
 
+
+class Browser(BrowserBase):
     def test_nasa_science_full_history(self):
         self.search_ui("NASA Science")
         self.assertEqual(self.page.text_content("[data-testid=account-name]"), "Science")
@@ -337,11 +341,57 @@ class Browser(WebTest):
             self.page.evaluate(f"pick({acct!r}, 'test')")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
             # a confirmed absence's chip carries its evidence; a printed zero's says so instead
-            n += self.page.eval_on_selector_all("[data-testid=not-funded]",
+            n += self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
-            self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded]",
+            self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
         self.assertEqual(n, 222)                         # v32: CJS's 197 + Labor-HHS's 25
+
+
+
+class NoPrintedTotalAndCoverage(BrowserBase):
+    @classmethod
+    def prepare(cls, conn):
+        cols = [r[1] for r in conn.execute("PRAGMA table_info(appropriations_observation)")]
+        sel = ", ".join({"observation_id": "'OBS-T-ADV'", "fiscal_year": "2023", "stage": "'Enacted'",
+                         "source_document_id": "'SRC-CRPT-118SRPT84'", "headline_observation_id": "NULL"}.get(c, c) for c in cols)
+        conn.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
+                     "WHERE canonical_account_id = 'ACC-HHS-CMS-MEDICAID' AND fiscal_year = 2024 AND stage = 'Enacted' "
+                     "AND amount_type = 'advance' LIMIT 1")
+        conn.execute("INSERT INTO confirmed_absence VALUES ('CA-T-ASPR', 'ACC-HHS-ASPR-TOTAL', 2023, 'House Reported', "
+                     "'budget authority', NULL, 'SRC-CRPT-118SRPT84', 'no ASPR total printed', '2026-10-06')")
+
+    def open_account(self, acct):
+        self.page.goto(self.base + "/")
+        self.page.evaluate(f"pick({acct!r}, 'test')")
+        self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+
+    def chip(self, fy, stage, series="budget authority"):
+        return self.page.locator(f"#grid tr[data-fy='{fy}'] td[data-stage=\"{stage}\"] .line[data-series='{series}']").first
+
+    def test_no_printed_total(self):
+        self.open_account("ACC-HHS-CMS-MEDICAID")
+        line = self.chip(2023, "Enacted")
+        self.assertEqual(line.get_attribute("data-state"), "no_printed_total")
+        self.assertEqual(line.locator("[data-testid=no-printed-total]").inner_text(), "No printed total")
+        self.assertIn("Total, Grants to States for Medicaid", line.locator("[data-testid=no-printed-total]").get_attribute("title"))
+        self.open_account("ACC-HHS-ASPR-TOTAL")
+        self.assertEqual(self.chip(2023, "House Reported").get_attribute("data-state"), "no_printed_total")
+        # a rescission line with nothing else of its account in the cell: still "None"
+        self.open_account("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION")
+        line = self.chip(2026, "House Reported", "rescission")
+        self.assertEqual(line.locator("[data-testid=not-funded]").inner_text(), "None")
+
+    def test_figures_on_file_from_observations_alone(self):
+        # Health Centers has figures and no confirmed absence: the line comes from its observations
+        conn = S.connect(self.db)
+        h = S.history(conn, "ACC-HHS-HRSA-HEALTH-CENTERS")
+        conn.close()
+        self.assertFalse(h["absences"])
+        ys = [o["fiscal_year"] for o in h["observations"]]
+        self.open_account("ACC-HHS-HRSA-HEALTH-CENTERS")
+        self.assertEqual(self.page.text_content("[data-testid=figures-on-file]"), f"Figures on file: FY{min(ys)}\u2013FY{max(ys)}")
+        self.assertNotIn("effective", self.page.inner_text("#account-panel").lower())
 
 
 if __name__ == "__main__":

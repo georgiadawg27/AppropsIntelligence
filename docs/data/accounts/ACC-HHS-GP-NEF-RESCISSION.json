@@ -1260,12 +1260,11 @@
    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
    "canonical_name": "Nonrecurring Expenses Fund, HHS (rescission)",
    "display_order": 22,
-   "effective_end": null,
-   "effective_start": "2023-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "A rescission-only general-provision line (House Sec. 234/235, P.L. 119-75 Sec. 237: 'Of the unobligated balances in the Nonrecurring Expenses Fund ... are hereby rescinded'), not a standing program account. Recorded as printed (negative). H.Rept. 118-585 also prints a separate '(rescission) (emergency)' line: component 'emergency'. The Senate reports print no such line.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -2147,6 +2146,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

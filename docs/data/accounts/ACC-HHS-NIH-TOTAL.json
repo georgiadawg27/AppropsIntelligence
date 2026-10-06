@@ -4036,12 +4036,11 @@
    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
    "canonical_name": "National Institutes of Health (agency total)",
    "display_order": 8,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Derived rollup -- NIH's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision. Headline: 'Total, National Institutes of Health (with CURES Act funding)' (decision 2026-09-27). The CURES Act line is its own observation, component CURES (kind 'contained': inside this headline, never added to it); the Title II total subtracts it.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -7353,6 +7352,7 @@
     "relationship_type": "uncertain",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
-  ]
+  ],
+  "total_scope": "agency"
  }
 }

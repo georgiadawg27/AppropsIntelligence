@@ -5777,12 +5777,11 @@
    "canonical_account_id": "ACC-NSF-RRA",
    "canonical_name": "Research and Related Activities",
    "display_order": 13,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -8954,6 +8953,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

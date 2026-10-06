@@ -2648,12 +2648,11 @@
    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
    "canonical_name": "Administration for Children and Families (agency total)",
    "display_order": 17,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Derived rollup -- ACF's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -4810,6 +4809,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": "agency"
  }
 }

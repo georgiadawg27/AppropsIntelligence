@@ -1124,12 +1124,11 @@
    "canonical_account_id": "ACC-HHS-ACF-LIHEAP",
    "canonical_name": "Low Income Home Energy Assistance",
    "display_order": 15,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "No stable total row: 'Total, LIHEAP' where printed; S.Rept. 118-207 and H.Rept. 118-585 print only 'Total, LIHEAP, program level' (recorded as the headline there); the FY2026 JES prints only 'Formula Grants'.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -2026,6 +2025,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

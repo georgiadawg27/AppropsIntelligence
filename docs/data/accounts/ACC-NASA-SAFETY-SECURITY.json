@@ -2173,12 +2173,11 @@
    "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
    "canonical_name": "Safety, Security and Mission Services",
    "display_order": 9,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -3733,6 +3732,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

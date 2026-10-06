@@ -52,11 +52,18 @@ BREAKDOWN = set()     # the store's 'contained' and 'view' components, read per 
 via_others = []       # candidates for the through-the-rollups reading, set by cell_lines
 
 
+# Accounts whose money is inside their agency's printed total but which a title
+# total may leave out: the NIH Innovation Account (CURES Act) -- a component of
+# the NIH total through v32 (kind 'contained'), its own account from v33. Like a
+# breakdown line: never part of the base, only a candidate.
+OUTSIDE_TITLE_CANDIDATES = ("ACC-HHS-NIH-CURES",)
+
+
 def is_breakdown(r):
     """A line already inside (or another view of) its account's own line --
-    the store's component table, kind 'contained' or 'view': never part of
-    the base, only a candidate."""
-    return r["component"] in BREAKDOWN
+    the store's component table, kind 'contained' or 'view' -- or a line of an
+    OUTSIDE_TITLE_CANDIDATES account: never part of the base, only a candidate."""
+    return r["component"] in BREAKDOWN or r["canonical_account_id"] in OUTSIDE_TITLE_CANDIDATES
 
 
 def is_base(r):

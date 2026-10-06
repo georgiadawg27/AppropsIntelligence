@@ -2173,12 +2173,11 @@
    "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
    "canonical_name": "STEM Education",
    "display_order": 15,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "Education and Human Resources",
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -3743,6 +3742,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

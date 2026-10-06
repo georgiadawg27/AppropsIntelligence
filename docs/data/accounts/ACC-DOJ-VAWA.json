@@ -123,12 +123,11 @@
    "canonical_account_id": "ACC-DOJ-VAWA",
    "canonical_name": "Violence Against Women Prevention and Prosecution Programs",
    "display_order": 26,
-   "effective_end": null,
-   "effective_start": "2026-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Receives a transfer from the Crime Victims Fund. Title placement (Title II) is tentative -- derived only from a transfer or rescission line, not the account's own budget-authority line. A general provision can touch an account whose own appropriation sits in a different title.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title II",
@@ -361,6 +360,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

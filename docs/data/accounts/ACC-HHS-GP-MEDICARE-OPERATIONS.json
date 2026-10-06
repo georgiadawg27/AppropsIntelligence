@@ -836,12 +836,11 @@
    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
    "canonical_name": "Medicare Operations (Title II general provision)",
    "display_order": 21,
-   "effective_end": null,
-   "effective_start": "2023-10-01",
    "fund_type": "trust",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "A Title II general-provision line, not an operating division's account: the section number varies by bill (House Sec. 226, Senate Sec. 227; P.L. 119-75 Sec. 227). The law lets the Secretary transfer up to $455,000,000 to 'Centers for Medicare & Medicaid Services, Program Management' from the Federal Hospital Insurance and Federal Supplementary Medical Insurance Trust Funds for Medicare program management. The tables print it under General Provisions, outside the CMS total, and count it in the Title II total; recorded as printed (budget authority).",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -1515,6 +1514,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

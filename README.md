@@ -33,7 +33,8 @@ it names (`headline_observation_id`), marked "not added", and only where a
 document prints it; `approps_store.additive_lines()` / `cell_total()` leave
 it out of every sum, while `part` lines (defense, CHIMP, a supplemental act)
 add. A dashed outline marks a year
-before an account's first record or after its `effective_end`; a supplemental
+before an account's first record (accounts carry no effective dates since
+v33: what their figures cover is computed, `reference/review/coverage.py`); a supplemental
 act line shows only at Enacted and a budget amendment only at President's
 Budget, where they can exist. Rows are grouped by
 bill title (Account `title`) in bill order and ordered by `display_order`;

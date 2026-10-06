@@ -3557,12 +3557,11 @@
    "canonical_account_id": "ACC-NASA-SPACEOPS",
    "canonical_name": "Space Operations",
    "display_order": 7,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "LEO and Spaceflight Operations",
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -5160,6 +5159,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

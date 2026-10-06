@@ -1978,12 +1978,11 @@
    "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
    "canonical_name": "Science, Technology, Engineering, and Mathematics Engagement",
    "display_order": 8,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": "Education; STEM Opportunities formerly Education",
    "notes": null,
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": "Title III",
@@ -3499,6 +3498,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

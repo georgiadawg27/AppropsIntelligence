@@ -324,12 +324,11 @@
    "canonical_account_id": "ACC-DOJ-CVF",
    "canonical_name": "Crime Victims Fund",
    "display_order": null,
-   "effective_end": null,
-   "effective_start": "2026-10-01",
    "fund_type": "trust",
    "historical_identifiers": null,
    "historical_names": null,
    "notes": "Appears across multiple bill titles as a transfer-out source (to OVW, to OIG) and carries the FY27 CHIMP / CHIMP Pop-Up mandatory-program adjustment.",
+   "parent_account_id": null,
    "status": "active",
    "subcommittee": "CJS",
    "title": null,
@@ -661,6 +660,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }
