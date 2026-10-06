@@ -60,10 +60,18 @@ STORE_DIR = Path("./document_store")
 MANIFEST_PATH = STORE_DIR / "manifest.json"
 
 
+def clean_key(key):
+    """An api.data.gov key as pasted into a secret or .env: surrounding whitespace,
+    quotes and a leading 'GOVINFO_API_KEY=' (the whole .env line) dropped."""
+    k = (key or "").strip()
+    k = re.sub(r"^(export\s+)?GOVINFO_API_KEY\s*=\s*", "", k)
+    return k.strip().strip("'\"").strip() or None
+
+
 def api_get(path, api_key, params=None, retries=3, backoff=5):
     """GET against the govinfo API with basic retry/backoff on 429/5xx."""
     params = dict(params or {})
-    params["api_key"] = api_key
+    params["api_key"] = clean_key(api_key)
     query = "&".join(f"{k}={v}" for k, v in params.items())
     url = f"{API_BASE}{path}?{query}"
     for attempt in range(retries):
