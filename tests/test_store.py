@@ -937,6 +937,32 @@ class LoadRefuses(unittest.TestCase):
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()
 
+    def test_parent_account_id_loads(self):
+        # v33 adds Account.parent_account_id: a program line's heading account
+        def add(wb):
+            ws = wb["Account"]
+            head = [c.value for c in ws[1]]
+            ws.cell(row=1, column=len(head) + 1, value="parent_account_id")
+            for i in range(2, ws.max_row + 1):
+                if ws.cell(row=i, column=1).value == "ACC-HHS-HRSA-HEALTH-CENTERS":
+                    ws.cell(row=i, column=len(head) + 1, value="ACC-HHS-HRSA-PRIMARY-CARE")
+        db = Path(self.tmp.name) / "parent.db"
+        with contextlib.redirect_stdout(io.StringIO()):
+            S.load(self.mutate(add), db)
+        conn = S.connect(db, readonly=True)
+        self.assertEqual(dict(conn.execute("SELECT canonical_account_id, parent_account_id FROM account "
+                                           "WHERE parent_account_id IS NOT NULL").fetchall()),
+                         {"ACC-HHS-HRSA-HEALTH-CENTERS": "ACC-HHS-HRSA-PRIMARY-CARE"})
+        conn.close()
+
+    def test_a_parent_that_is_not_an_account_is_refused(self):
+        def add(wb):
+            ws = wb["Account"]
+            head = [c.value for c in ws[1]]
+            ws.cell(row=1, column=len(head) + 1, value="parent_account_id")
+            ws.cell(row=2, column=len(head) + 1, value="ACC-NOT-THERE")
+        self.refuse(self.mutate(add), "FOREIGN KEY constraint failed")
+
     def test_a_workbook_without_total_scope_is_refused(self):
         # without the column every total would load as a plain account, silently
         def drop(wb):

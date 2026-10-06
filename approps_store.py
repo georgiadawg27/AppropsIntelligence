@@ -168,7 +168,8 @@ TABS = [
         ("bureau", to_text, False), ("treasury_account_symbol", to_text, False), ("status", to_text, True),
         ("fund_type", to_text, True), ("historical_names", to_text, False), ("historical_identifiers", to_text, False),
         ("subcommittee", to_text, True), ("notes", to_text, False), ("title", to_text, False),
-        ("display_order", to_int, False), ("total_scope", to_total_scope, False)]),
+        ("display_order", to_int, False), ("total_scope", to_total_scope, False),
+        ("parent_account_id", to_text, False)]),
     ("Historical Name", "historical_name", [
         ("historical_name_id", to_text, True), ("canonical_account_id", to_text, True), ("former_name", to_text, True),
         ("evidence", to_text, True), ("approved_date", to_date, False), ("confidence", to_real, True),
@@ -213,7 +214,10 @@ TABS = [
 # A workbook without a Component tab gets accounts.COMPONENT_KINDS.
 OPTIONAL_TABS = {"Confirmed Absence", "Component"}
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
-OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"}}
+OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"},
+                    # v33: a program line's heading account (Health Centers -> Primary Health Care); agency
+                    # reconciliation leaves such an account out (its figure is inside its parent's)
+                    "Account": {"parent_account_id"}}
 # Columns a workbook may still carry but the store no longer has: read past,
 # never loaded. Account.effective_start / effective_end (removed in v33): each
 # value was the first year of data on file, not a real start or end date --
@@ -799,14 +803,18 @@ def load(workbook, db_path, waive=()):
         conn.executescript(SCHEMA.read_text())
         subcommittee = {a["canonical_account_id"]: a["subcommittee"] for a in rows["Account"]}
         brr_id = {b["lookup_key"]: b["reference_id"] for b in rows["Bill Report Reference"]}
-        with conn:
-            for tab, table, _ in TABS:
-                extra = None
-                if table == "appropriations_observation":
-                    extra = lambda o: {"bill_report_reference_id": brr_id.get(bill_report_key(
-                        subcommittee.get(o["canonical_account_id"]), o["fiscal_year"], o["stage"]))}
-                insert(conn, table, rows[tab], extra)
-                report["rows"][table] = len(rows[tab])
+        try:
+            with conn:
+                for tab, table, _ in TABS:
+                    extra = None
+                    if table == "appropriations_observation":
+                        extra = lambda o: {"bill_report_reference_id": brr_id.get(bill_report_key(
+                            subcommittee.get(o["canonical_account_id"]), o["fiscal_year"], o["stage"]))}
+                    insert(conn, table, rows[tab], extra)
+                    report["rows"][table] = len(rows[tab])
+        except sqlite3.IntegrityError as e:
+            # a deferred reference (Account.parent_account_id) is checked at commit
+            raise LoadError(f"account: {e} (a parent_account_id that is no account)") from None
         fk = conn.execute("PRAGMA foreign_key_check").fetchall()
         if fk:
             raise LoadError(f"foreign key violations: {[tuple(r) for r in fk]}")
