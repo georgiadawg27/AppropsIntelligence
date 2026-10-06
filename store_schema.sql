@@ -46,7 +46,12 @@ CREATE TABLE account (
     -- position in the comparative table (not in the Data Dictionary; carried
     -- from the workbook, v26). Blank until sourced from a document.
     title                   TEXT,
-    display_order           INTEGER
+    display_order           INTEGER,
+    -- what a total row totals (v31): its agency's accounts within its title
+    -- (NASA Total, NIH's agency total), its title, or the whole bill. NULL for
+    -- every account that is not a total. The only source of a total's scope:
+    -- notes are never parsed for it.
+    total_scope             TEXT CHECK (total_scope IS NULL OR total_scope IN ('agency', 'title', 'bill'))
 ) STRICT;
 
 CREATE TABLE historical_name (

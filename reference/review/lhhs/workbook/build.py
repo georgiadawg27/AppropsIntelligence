@@ -619,7 +619,11 @@ def main():
                   "treasury_account_symbol": None, "status": a.get("status", "active"),
                   "effective_start": a.get("start") or f"{first_fy[a['id']] - 1}-10-01", "effective_end": None,
                   "historical_names": None, "historical_identifiers": None, "fund_type": a["fund"], "subcommittee": SUB,
-                  "notes": a["notes"], "title": "Title II", "display_order": order[a["id"]]} for a in ACCOUNTS]
+                  "notes": a["notes"], "title": "Title II", "display_order": order[a["id"]],
+                  # v31's Account.total_scope: the agency totals (AHA included) and the title total
+                  "total_scope": "title" if a["id"] == "ACC-HHS-TITLE-II-TOTAL" else
+                                 "agency" if a.get("rollup") or a["id"] == "ACC-HHS-AHA-TOTAL" else None}
+                 for a in ACCOUNTS]
 
     # --- Confirmed Absences: AHA (proposed) at its non-request cells; any headline no document prints
     ca = []

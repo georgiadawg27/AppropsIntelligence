@@ -71,7 +71,7 @@ def cell_lines(conn, title, fy, stage, subcommittee="CJS"):
     is Justice, Labor-HHS's is HHS."""
     BREAKDOWN.clear()
     BREAKDOWN.update(c for c, k in S.component_kinds(conn).items() if k in ("contained", "view"))
-    accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, notes FROM account "
+    accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, total_scope FROM account "
                                            "WHERE title = ? AND subcommittee = ?", (title, subcommittee))]
     plain = [a for a in accts if not S.rollup_scope(a)]
     rollups = [a for a in accts if S.rollup_scope(a) == "agency"]

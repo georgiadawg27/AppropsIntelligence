@@ -63,15 +63,15 @@ def expected_cell(cell):
 def with_sourced_totals(src, dst):
     """A copy of the store with a printed Title III total (FY2024 Enacted,
     33,944,930 as H.Rept. 118-582 p.248 prints it) and a bill-total row: the
-    shape a workbook would give them -- rollups noted as title / bill totals."""
+    shape a workbook would give them -- total_scope title / bill."""
     shutil.copy(src, dst)
     c = sqlite3.connect(dst)
-    for aid, name, notes in (("ACC-T3-TOTAL", "Total, Title III, Science", "Derived rollup -- title total"),
-                             ("ACC-CJS-TOTAL", "Grand total", "Derived rollup -- bill total")):
+    for aid, name, scope in (("ACC-T3-TOTAL", "Total, Title III, Science", "title"),
+                             ("ACC-CJS-TOTAL", "Grand total", "bill")):
         c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, effective_start, "
-                  "subcommittee, notes, title, display_order) VALUES (?, ?, 'Commerce, Justice, Science', 'active', "
-                  "'general', '2016-10-01', 'CJS', ?, ?, ?)", (aid, name, notes, "Title III" if "T3" in aid else None,
-                                                                99 if "T3" in aid else None))
+                  "subcommittee, notes, title, display_order, total_scope) VALUES (?, ?, 'Commerce, Justice, Science', "
+                  "'active', 'general', '2016-10-01', 'CJS', NULL, ?, ?, ?)",
+                  (aid, name, "Title III" if "T3" in aid else None, 99 if "T3" in aid else None, scope))
     cols = [r[1] for r in c.execute("PRAGMA table_info(appropriations_observation)")]
     sel = ", ".join({"observation_id": "'OBS-T3'", "canonical_account_id": "'ACC-T3-TOTAL'",
                      "amount": "33944930000"}.get(k, k) for k in cols)
@@ -229,11 +229,11 @@ class GridData(CompareTest):
                              and not r["rollup"]})
             for m in roll["rollup_members"]:
                 self.assertEqual(self.row(m)["member_of"], roll["account"]["canonical_account_id"])
-        # generic: any account the workbook notes as a rollup gathers its own agency's accounts
+        # generic: any account whose total_scope is agency gathers its own agency's accounts
         other = Path(self.tmp.name) / "rollup.db"
         shutil.copy(self.db, other)
         c = sqlite3.connect(other)
-        c.execute("UPDATE account SET notes = 'Derived rollup -- test' WHERE canonical_account_id = 'ACC-OSTP'")
+        c.execute("UPDATE account SET total_scope = 'agency' WHERE canonical_account_id = 'ACC-OSTP'")
         c.commit()
         c.close()
         g = W.subcommittee(str(other), "CJS")
@@ -255,16 +255,26 @@ class GridData(CompareTest):
                          [33_944_930_000])
 
     def test_rollup_scope_and_title_rank(self):
-        scope = lambda notes: S.rollup_scope({"notes": notes})
-        self.assertEqual([scope(None), scope("Receives a transfer"), scope("Derived rollup -- equals the sum of NASA's 9"),
-                          scope("Derived rollup -- title total"), scope("Derived rollup -- bill total (Grand total)")],
+        # the scope is Account.total_scope, and only that: notes are never read for it
+        scope = lambda total_scope, notes=None: S.rollup_scope({"total_scope": total_scope, "notes": notes})
+        self.assertEqual([scope(None), scope(""), scope("agency"), scope("title"), scope("bill")],
                          [None, None, "agency", "title", "bill"])
-        # only the declaring sentence counts: v30's Labor-HHS Title II total mentions the Senate's
-        # "grand total" further on, and is still its title's total
-        self.assertEqual(scope("Derived rollup -- the Title II title total as printed. The Senate prints them "
-                               "after the grand total, outside Title II."), "title")
+        self.assertEqual([scope(None, "Derived rollup -- bill total (Grand total)"),
+                          scope("title", "Derived rollup -- ... after the grand total")], [None, "title"])
+        self.assertEqual(scope("agency", "Derived rollup -- title total"), "agency")
+        self.assertEqual(S.rollup_scope({"notes": "Derived rollup -- title total"}), None)   # no column: not a total
         self.assertEqual(sorted(["Title VII", None, "Title II", "Title III", "Title IV", "Title I", "Title V"], key=S.title_rank),
                          ["Title I", "Title II", "Title III", "Title IV", "Title V", "Title VII", None])
+
+    def test_a_grand_total_note_on_a_non_total_changes_nothing(self):
+        other = Path(self.tmp.name) / "grandnote.db"
+        shutil.copy(self.db, other)
+        c = sqlite3.connect(other)
+        c.execute("UPDATE account SET notes = 'Derived rollup -- bill total; the grand total; title total' "
+                  "WHERE canonical_account_id = 'ACC-OSTP'")
+        c.commit()
+        c.close()
+        self.assertEqual(plain(W.subcommittee(str(other), "CJS")), self.grid)
 
     def test_mechanism_title_candidates(self):
         spec = importlib.util.spec_from_file_location("mechanism_titles", ROOT / "reference" / "review" / "mechanism_titles.py")
