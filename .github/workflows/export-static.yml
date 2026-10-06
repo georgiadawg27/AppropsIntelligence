@@ -31,6 +31,7 @@ jobs:
   # the full suite on this same commit; nothing is exported or committed unless it passes
   tests:
     uses: ./.github/workflows/tests.yml
+    secrets: inherit
 
   export:
     needs: tests

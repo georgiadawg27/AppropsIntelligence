@@ -49,5 +49,16 @@ jobs:
             curl -fsSL --retry 3 -o "document_store/$p.pdf" "https://www.govinfo.gov/content/pkg/$p/pdf/$p.pdf" \
               || { echo "::warning::could not fetch $p -- its tests will skip"; rm -f "document_store/$p.pdf"; }
           done
+          # the Labor-HHS FY2026 JES: the Congressional Record granule it was ingested from
+          # (document_store/manifest.json source_url), kept only if its bytes are the ingested ones
+          jes=document_store/MANUAL-LHHS-FY2026-Enacted-jes-e44f7662.pdf
+          if curl -fsSL --retry 3 -o "$jes" \
+               "https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf" \
+             && echo "e44f766294e2f7fc9d38c86ac307a27b4f3405d2654085e03b2b71eed90b9f75  $jes" | sha256sum -c --quiet; then :
+          else echo "::warning::Labor-HHS JES not fetched or not the ingested bytes -- its tests will skip"; rm -f "$jes"; fi
       - name: Run the test suite
+        # the four live govinfo API tests (tests/test_ingest.py Live*) run only when the
+        # repository has a GOVINFO_API_KEY secret; without it they skip, saying so
+        env:
+          GOVINFO_API_KEY: ${{ secrets.GOVINFO_API_KEY }}
         run: python -m unittest discover -s tests -v
