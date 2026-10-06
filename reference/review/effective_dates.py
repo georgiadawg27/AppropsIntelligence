@@ -17,8 +17,12 @@ file, for review before they go into the workbook's Account tab.
                     subcommittee has documents on file for has a cell (a
                     fiscal year x stage those documents cover) with neither a
                     figure nor a confirmed absence for the account: that cell
-                    is unchecked, not empty. The end is then held back and
-                    those cells are listed as check_before_ending.
+                    is unchecked, not empty. Nor while any of the four core
+                    stages of the final fiscal year itself (the year of the
+                    last figure) has neither a figure nor a confirmed absence,
+                    whether or not a document on file covers it. The end is
+                    then held back and those cells are listed as
+                    check_before_ending.
 
 Observations only (confirmed absences say a line wasn't printed, not that the
 account existed). Both dates describe what is on file, which for the
@@ -52,12 +56,16 @@ def subcommittee_cells(conn):
 
 
 def unchecked_after(conn, account, fiscal_year, cells):
-    """The cells after fiscal_year the subcommittee's documents cover where the
-    account has neither a figure (any amount type) nor a confirmed absence."""
+    """The cells where the account has neither a figure (any amount type) nor
+    a confirmed absence: each of the four core stages of fiscal_year (its last
+    figure's year) -- covered by a document on file or not -- and every later
+    cell the subcommittee's documents cover."""
     seen = {tuple(r) for r in conn.execute(
         "SELECT fiscal_year, stage FROM appropriations_observation WHERE canonical_account_id = ? UNION "
         "SELECT fiscal_year, stage FROM confirmed_absence WHERE canonical_account_id = ?", (account, account))}
-    return sorted((c for c in cells if c[0] > fiscal_year and c not in seen), key=lambda c: (c[0], STAGE_RANK[c[1]]))
+    final = {(fiscal_year, st) for st in S.STAGE_ORDER[:4]}
+    return sorted((c for c in final | {c for c in cells if c[0] > fiscal_year} if c not in seen),
+                  key=lambda c: (c[0], STAGE_RANK[c[1]]))
 
 
 def spans(conn):
@@ -89,7 +97,7 @@ def spans(conn):
             "first_observation": cite(first), "last_observation": cite(last),
             "agency_last_observed_fy": agency_last[a["agency"]],
             "check_before_ending": "; ".join(f"FY{y} {st}" for y, st in unchecked),
-            "basis": ("end FY%d held back: %d later cell(s) on file are unchecked (neither a figure nor a confirmed "
+            "basis": ("end FY%d held back: %d cell(s) in or after that year are unchecked (neither a figure nor a confirmed "
                       "absence) -- check before ending" % (last["fiscal_year"], len(unchecked)) if unchecked else
                       "last figure FY%d; the agency's figures continue to FY%d" % (last["fiscal_year"], agency_last[a["agency"]])
                       if ended else "open: last figure is the agency's last collected fiscal year")
