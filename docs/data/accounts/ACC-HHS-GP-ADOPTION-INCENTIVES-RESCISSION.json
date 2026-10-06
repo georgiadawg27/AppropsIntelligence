@@ -214,15 +214,29 @@
     "cells": {
      "Enacted": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0024",
+        "confirmed_date": "2026-10-06",
+        "document_type": "public_law",
+        "evidence": "P.L. 119-4 (Full-Year Continuing Appropriations Act, 2025, division A) provides no Adoption Incentives rescission for FY2025. Deciding text, sec. 1101(a)(8) (139 Stat. 11; PDF p. 3; text layer): it continues 'The Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2024 (division D of Public Law 118-47), except section 240 shall be applied by substituting \"$1,471,000,000\" for \"$1,250,000,000\" ..., except sections 241 and 310, ...'. Section 241 of that division (P.L. 118-47, 138 Stat. 681) is the FY2024 rescission of $70,000,000 of P.L. 117-328 Children and Families Services Programs funds 'for grants to States for incentive payments, as defined by section 473A of the Social Security Act' -- the line the FY2024 tables print as 'Adoption Incentives (rescission)' -70,000. Sec. 1105 continues the referenced Acts' provisions only 'Except as otherwise expressly provided in this division'. The Labor-HHS title of the CR (title IX, secs. 1901-1912, 139 Stat. 31-33) adds no such rescission, and the whole law's text layer has no 'adoption', '473A' or 'incentive payments'. No committee table covers FY2025 Enacted (H.Rept. 119-271's 'FY 2025 Estimate' column is operating plans, held back).",
+        "fiscal_year": 2025,
+        "publication_date": "2025-03-15",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-119PUBL4",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/PLAW-119publ4"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
@@ -430,41 +444,83 @@
     "cells": {
      "Enacted": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0021",
+        "confirmed_date": "2026-10-06",
+        "document_type": "explanatory_statement",
+        "evidence": "The FY2026 JES for P.L. 119-75 (Congressional Record, Jan. 22, 2026, Division B table), Title II, PDF pp. 281-296 (H1633-H1648), searched in full for an Adoption Incentives (rescission) line: none. The table pages have no text layer (scanned images; ~260-character header text layer per page), so they were read by hand from the page images (reference/review/lhhs/hand_checks.csv). Title II General Provisions, PDF p. 296 (H1648), FINAL BILL column, lists three lines -- Medicare Operations (Sec. 227) 455,000; Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,826,000; Limitation for Title XVIII of the Social Security Act 2,000 -- and prints 'Total, Title II General Provisions' -1,369,000, which equals those three lines. Also checked: H.Rept. 119-696's FY 2026 Enacted column (PDF pp. 395-396) prints the same three lines and total; P.L. 119-75's Title II rescinds only the Nonrecurring Expenses Fund (Sec. 237, $1,826,000,000; text layer).",
+        "fiscal_year": 2026,
+        "publication_date": "2026-01-22",
+        "source_agency": "House Committee on Appropriations (Congressional Record)",
+        "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0020",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-271's Title II comparative table, PDF pp. 334-366 (printed pp. 330-362), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt271.title-ii.json) and the General Provisions page re-read by hand from the image. The table's only adoption rows are appropriations, not rescissions ('Adoption Opportunities' and 'Adoption and Legal Guardianship Incentive Payments', PDF pp. 354-355). Title II General Provisions, PDF p. 365 (printed p. 361), lists two lines in the Bill column -- Medicare Operations (Sec. 226) 455,000 and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -1,613,000 -- and prints 'Total, Title II General Provisions' -1,158,000, which equals those two lines, so no other line sits in the section. The report's list of every rescission in the accompanying bill ('Rescissions of Funds', clause 3(f)(2) of rule XIII; text layer, PDF pp. 423-424, printed pp. 419-420) names one HHS rescission, the Nonrecurring Expenses Fund (sec. 234), 1,613,000,000; no Adoption Incentives rescission.",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT271",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0019",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-271's Title II comparative table, PDF pp. 334-366 (printed pp. 330-362), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt271.title-ii.json) and the General Provisions page re-read by hand from the image. The table's only adoption rows are appropriations, not rescissions ('Adoption Opportunities' and 'Adoption and Legal Guardianship Incentive Payments', PDF pp. 354-355). Title II General Provisions, PDF p. 365 (printed p. 361), lists two lines in the FY 2026 Request column -- Medicare Operations (Sec. 226) --- (none) and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -750,000 -- and prints 'Total, Title II General Provisions' -750,000, which equals those two lines, so no other line sits in the section. The report's list of every rescission in the accompanying bill ('Rescissions of Funds', clause 3(f)(2) of rule XIII; text layer, PDF pp. 423-424, printed pp. 419-420) names one HHS rescission, the Nonrecurring Expenses Fund (sec. 234), 1,613,000,000; no Adoption Incentives rescission.",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT271",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -514,28 +570,56 @@
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0023",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-696's Title II comparative table, PDF pp. 365-397 (printed pp. 361-393), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt696.title-ii.json) and the General Provisions page re-read by hand from the image. Title II General Provisions, PDF pp. 395-396 (printed pp. 391-392), lists three lines in the Committee Recommendation column -- Medicare Operations (Sec. 226) 455,000, Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,619,000 and Limitation for Title XVIII of the Social Security Act --- (none) -- and prints 'Total, Title II General Provisions' -1,164,000, which equals those three lines, so no other line sits in the section. The report prints no bill-wide rescissions list for this account to check against.",
+        "fiscal_year": 2027,
+        "publication_date": "2026-06-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT696",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0022",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "H.Rept. 119-696's Title II comparative table, PDF pp. 365-397 (printed pp. 361-393), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt696.title-ii.json) and the General Provisions page re-read by hand from the image. Title II General Provisions, PDF pp. 395-396 (printed pp. 391-392), lists three lines in the FY 2027 Request* column -- Medicare Operations (Sec. 226) --- (none), Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,176,000 and Limitation for Title XVIII of the Social Security Act --- (none) -- and prints 'Total, Title II General Provisions' -1,176,000, which equals those three lines, so no other line sits in the section. The report prints no bill-wide rescissions list for this account to check against.",
+        "fiscal_year": 2027,
+        "publication_date": "2026-06-11",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-119HRPT696",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
+       },
        "adds_to_headline": true,
        "amount_type": "rescission",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_applicable"
       }
      ],
      "Senate Reported": [
@@ -621,6 +705,66 @@
     "amount_type": "rescission",
     "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0024",
+    "confirmed_date": "2026-10-06",
+    "document_type": "public_law",
+    "evidence": "P.L. 119-4 (Full-Year Continuing Appropriations Act, 2025, division A) provides no Adoption Incentives rescission for FY2025. Deciding text, sec. 1101(a)(8) (139 Stat. 11; PDF p. 3; text layer): it continues 'The Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2024 (division D of Public Law 118-47), except section 240 shall be applied by substituting \"$1,471,000,000\" for \"$1,250,000,000\" ..., except sections 241 and 310, ...'. Section 241 of that division (P.L. 118-47, 138 Stat. 681) is the FY2024 rescission of $70,000,000 of P.L. 117-328 Children and Families Services Programs funds 'for grants to States for incentive payments, as defined by section 473A of the Social Security Act' -- the line the FY2024 tables print as 'Adoption Incentives (rescission)' -70,000. Sec. 1105 continues the referenced Acts' provisions only 'Except as otherwise expressly provided in this division'. The Labor-HHS title of the CR (title IX, secs. 1901-1912, 139 Stat. 31-33) adds no such rescission, and the whole law's text layer has no 'adoption', '473A' or 'incentive payments'. No committee table covers FY2025 Enacted (H.Rept. 119-271's 'FY 2025 Estimate' column is operating plans, held back).",
+    "fiscal_year": 2025,
+    "publication_date": "2025-03-15",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-119PUBL4",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/PLAW-119publ4"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0021",
+    "confirmed_date": "2026-10-06",
+    "document_type": "explanatory_statement",
+    "evidence": "The FY2026 JES for P.L. 119-75 (Congressional Record, Jan. 22, 2026, Division B table), Title II, PDF pp. 281-296 (H1633-H1648), searched in full for an Adoption Incentives (rescission) line: none. The table pages have no text layer (scanned images; ~260-character header text layer per page), so they were read by hand from the page images (reference/review/lhhs/hand_checks.csv). Title II General Provisions, PDF p. 296 (H1648), FINAL BILL column, lists three lines -- Medicare Operations (Sec. 227) 455,000; Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,826,000; Limitation for Title XVIII of the Social Security Act 2,000 -- and prints 'Total, Title II General Provisions' -1,369,000, which equals those three lines. Also checked: H.Rept. 119-696's FY 2026 Enacted column (PDF pp. 395-396) prints the same three lines and total; P.L. 119-75's Title II rescinds only the Nonrecurring Expenses Fund (Sec. 237, $1,826,000,000; text layer).",
+    "fiscal_year": 2026,
+    "publication_date": "2026-01-22",
+    "source_agency": "House Committee on Appropriations (Congressional Record)",
+    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0020",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-271's Title II comparative table, PDF pp. 334-366 (printed pp. 330-362), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt271.title-ii.json) and the General Provisions page re-read by hand from the image. The table's only adoption rows are appropriations, not rescissions ('Adoption Opportunities' and 'Adoption and Legal Guardianship Incentive Payments', PDF pp. 354-355). Title II General Provisions, PDF p. 365 (printed p. 361), lists two lines in the Bill column -- Medicare Operations (Sec. 226) 455,000 and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -1,613,000 -- and prints 'Total, Title II General Provisions' -1,158,000, which equals those two lines, so no other line sits in the section. The report's list of every rescission in the accompanying bill ('Rescissions of Funds', clause 3(f)(2) of rule XIII; text layer, PDF pp. 423-424, printed pp. 419-420) names one HHS rescission, the Nonrecurring Expenses Fund (sec. 234), 1,613,000,000; no Adoption Incentives rescission.",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0019",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-271's Title II comparative table, PDF pp. 334-366 (printed pp. 330-362), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt271.title-ii.json) and the General Provisions page re-read by hand from the image. The table's only adoption rows are appropriations, not rescissions ('Adoption Opportunities' and 'Adoption and Legal Guardianship Incentive Payments', PDF pp. 354-355). Title II General Provisions, PDF p. 365 (printed p. 361), lists two lines in the FY 2026 Request column -- Medicare Operations (Sec. 226) --- (none) and Nonrecurring expenses fund, HHS (rescission) (Sec. 234) -750,000 -- and prints 'Total, Title II General Provisions' -750,000, which equals those two lines, so no other line sits in the section. The report's list of every rescission in the accompanying bill ('Rescissions of Funds', clause 3(f)(2) of rule XIII; text layer, PDF pp. 423-424, printed pp. 419-420) names one HHS rescission, the Nonrecurring Expenses Fund (sec. 234), 1,613,000,000; no Adoption Incentives rescission.",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0011",
     "confirmed_date": "2026-09-28",
     "document_type": "committee_report",
@@ -631,6 +775,36 @@
     "source_document_id": "SRC-CRPT-119SRPT55",
     "stage": "Senate Reported",
     "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0023",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-696's Title II comparative table, PDF pp. 365-397 (printed pp. 361-393), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt696.title-ii.json) and the General Provisions page re-read by hand from the image. Title II General Provisions, PDF pp. 395-396 (printed pp. 391-392), lists three lines in the Committee Recommendation column -- Medicare Operations (Sec. 226) 455,000, Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,619,000 and Limitation for Title XVIII of the Social Security Act --- (none) -- and prints 'Total, Title II General Provisions' -1,164,000, which equals those three lines, so no other line sits in the section. The report prints no bill-wide rescissions list for this account to check against.",
+    "fiscal_year": 2027,
+    "publication_date": "2026-06-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0022",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "H.Rept. 119-696's Title II comparative table, PDF pp. 365-397 (printed pp. 361-393), searched in full for an Adoption Incentives (rescission) line in every column: none. The table pages have no text layer (each page is a scanned image with a ~200-character page-header text layer), so they were read from the page images: every row of every page transcribed by vision (extractions/CRPT-119hrpt696.title-ii.json) and the General Provisions page re-read by hand from the image. Title II General Provisions, PDF pp. 395-396 (printed pp. 391-392), lists three lines in the FY 2027 Request* column -- Medicare Operations (Sec. 226) --- (none), Nonrecurring expenses fund, HHS (rescission) (Sec. 237) -1,176,000 and Limitation for Title XVIII of the Social Security Act --- (none) -- and prints 'Total, Title II General Provisions' -1,176,000, which equals those three lines, so no other line sits in the section. The report prints no bill-wide rescissions list for this account to check against.",
+    "fiscal_year": 2027,
+    "publication_date": "2026-06-11",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696"
    }
   ],
   "account": {
@@ -666,30 +840,6 @@
    ],
    [
     2024,
-    "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
-   ],
-   [
-    2026,
-    "President's Budget"
-   ],
-   [
-    2026,
-    "House Reported"
-   ],
-   [
-    2026,
-    "Enacted"
-   ],
-   [
-    2027,
-    "President's Budget"
-   ],
-   [
-    2027,
     "House Reported"
    ],
    [

@@ -541,7 +541,7 @@ function renderCompareRow(row, cols, first) {
     head.append(el("div", { class: "flag", "data-testid": "row-relationship",
       text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
             (r.human_reviewed ? "" : " (not yet reviewed)") }));
-  // a rollup the workbook notes "Derived rollup": already the sum of the
+  // a total row (Account.total_scope "agency"): already the sum of the
   // accounts under it (all their lines, not only the headlines) -- adding it
   // in counts every dollar twice. It heads its group; its accounts fold away.
   const cls = [];
