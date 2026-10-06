@@ -250,7 +250,12 @@ class NasaScienceAcceptance(StoreTest):
 
     def test_fy2027_is_reported_missing_not_zero(self):
         _, h = self.query("NASA Science")
-        self.assertEqual(h["missing_cells"], [(2027, s) for s in FOUR])
+        # only FY2027 House Reported is covered by a document on file (H.Rept. 119-652)
+        self.assertEqual(h["missing_cells"], [(2027, "House Reported")])
+        g = S.history_grid(h)
+        fy27 = {st: [l["state"] for l in c] for st, c in next(r for r in g["rows"] if r["fiscal_year"] == 2027)["cells"].items()}
+        self.assertEqual({st: v[0] for st, v in fy27.items()}, {"President's Budget": "not_collected", "House Reported": "missing",
+                                                                  "Senate Reported": "not_collected", "Enacted": "not_enacted"})
 
     def test_values_match_the_printed_documents(self):
         # read off the documents themselves, not the workbook: text layer
@@ -337,12 +342,13 @@ class ExplorationAcceptance(StoreTest):
 
     def test_stem_fy2019_request_is_a_real_zero(self):
         # v26: CA-0150 became OBS-0996 -- the FY2019 budget proposed ending the
-        # Office of Education, so the request is a deliberate $0
+        # Office of Education, so the request is a deliberate $0: a printed zero is
+        # "not funded" (cell_state), with its citation
         g = S.history_grid(S.history(self.conn, "ACC-NASA-STEM-ENGAGEMENT"))
         row = next(r for r in g["rows"] if r["fiscal_year"] == 2019)
         line = row["cells"]["President's Budget"][0]
         self.assertEqual((line["state"], [(o["observation_id"], o["amount"]) for o in line["observations"]], line["absence"]),
-                         ("value", [("OBS-0996", 0)], None))
+                         ("not_funded", [("OBS-0996", 0)], None))
         self.assertIsNone(self.conn.execute("SELECT 1 FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0150'").fetchone())
         # cited to the page that prints it (v28): the FY2019 Budget Appendix p.1084, account 080-0128
         self.assertEqual(tuple(self.conn.execute("SELECT source_document_id, source_page FROM appropriations_observation "
@@ -541,7 +547,8 @@ class ConfirmedAbsenceRules(StoreCopyTest):
             for row in S.history_grid(S.history(self.conn, acct))["rows"]:
                 for cells in row["cells"].values():
                     for line in cells:
-                        if line["state"] == "not_applicable":
+                        if line["absence"]:
+                            self.assertEqual(line["state"], "not_funded")
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
@@ -552,15 +559,73 @@ class ConfirmedAbsenceRules(StoreCopyTest):
         cell = lambda fy, st: {l["amount_type"]: l for l in
                                next(r for r in g["rows"] if r["fiscal_year"] == fy)["cells"][st]}
         fy17 = cell(2017, "Senate Reported")
-        self.assertEqual((fy17["budget authority"]["state"], fy17["supplemental"]["state"]), ("value", "not_applicable"))
+        self.assertEqual((fy17["budget authority"]["state"], fy17["supplemental"]["state"]), ("value", "not_funded"))
         self.assertEqual(fy17["supplemental"]["absence"]["confirmed_absence_id"], "CA-0027")
         self.assertEqual(cell(2024, "Enacted")["supplemental"]["state"], "value")
-        self.assertEqual({l["state"] for l in cell(2027, "Enacted").values()}, {"missing"})
+        # FY2027: House Reported is covered (H.Rept. 119-652) but has no supplemental line -> missing; no
+        # enacted law yet; no FY2027 request or Senate document on file
+        self.assertEqual({l["state"] for l in cell(2027, "Enacted").values()}, {"not_enacted"})
+        self.assertEqual(cell(2027, "House Reported")["supplemental"]["state"], "missing")
+        self.assertEqual({l["state"] for l in cell(2027, "Senate Reported").values()}, {"not_collected"})
         # a series known only from absences in a cell still shows (SPACEOPS rescission)
         g = S.history_grid(S.history(self.conn, "ACC-NASA-SPACEOPS"))
         c17 = {l["amount_type"]: l["state"] for l in
                next(r for r in g["rows"] if r["fiscal_year"] == 2017)["cells"]["Senate Reported"]}
-        self.assertEqual(c17, {"budget authority": "value", "rescission": "not_applicable"})
+        self.assertEqual(c17, {"budget authority": "value", "rescission": "not_funded"})
+
+
+class GridStates(StoreTest):
+    """Every cell is in exactly one of five states (approps_store.CELL_STATES),
+    computed from what is on file, never stored."""
+
+    def state(self, account, fy, stage, amount_type="budget authority", component=None):
+        g = S.history_grid(S.history(self.conn, account))
+        row = next(r for r in g["rows"] if r["fiscal_year"] == fy)
+        return next(l for l in row["cells"][stage] if l["amount_type"] == amount_type and l["component"] == component)
+
+    def test_a_figure(self):
+        line = self.state("ACC-HHS-AHRQ-TOTAL", 2024, "Enacted")
+        self.assertEqual((line["state"], line["observations"][0]["amount"]), ("value", 369_000_000))
+
+    def test_a_dash_printed_zero_is_not_funded(self):
+        # H.Rept. 118-585 prints AHRQ's FY2025 House line as '---', recorded as an observation of 0
+        line = self.state("ACC-HHS-AHRQ-TOTAL", 2025, "House Reported")
+        self.assertEqual((line["state"], [o["observation_id"] for o in line["observations"]]), ("not_funded", ["OBS-LHHS-0098"]))
+
+    def test_a_confirmed_absence_is_not_funded_with_its_evidence(self):
+        line = self.state("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", 2026, "Senate Reported", "rescission")
+        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("not_funded", "CA-LHHS-0011"))
+        self.assertTrue(line["absence"]["evidence"])
+
+    def test_covered_but_unrecorded_is_missing(self):
+        # v31: FY2025 Enacted is covered for Labor-HHS (P.L. 119-4, cited by CA-LHHS-0024) but NIH has no figure yet
+        self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "missing")
+
+    def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
+        # no Labor-HHS document on file covers FY2023 House Reported (only S.Rept. 118-84's FY2023 Enacted column)
+        line = self.state("ACC-HHS-NIH-TOTAL", 2023, "House Reported")
+        self.assertEqual(line["state"], "not_collected")
+        self.assertNotIn((2023, "House Reported"), S.history(self.conn, "ACC-HHS-NIH-TOTAL")["missing_cells"])
+
+    def test_no_enacted_law_yet(self):
+        self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2027, "Enacted")["state"], "not_enacted")
+        self.assertEqual(self.state("ACC-NASA-SCIENCE", 2027, "Enacted")["state"], "not_enacted")
+
+    def test_every_line_has_exactly_one_state(self):
+        for (acct,) in self.conn.execute("SELECT canonical_account_id FROM account").fetchall():
+            for row in S.history_grid(S.history(self.conn, acct))["rows"]:
+                for lines in row["cells"].values():
+                    for l in lines:
+                        self.assertIn(l["state"], S.CELL_STATES, acct)
+
+    def test_state_counts_per_subcommittee(self):
+        for sub in ("CJS", "LHHS"):
+            g = S.subcommittee_grid(self.conn, sub)
+            counts = g["state_counts"]
+            self.assertEqual(set(counts), set(S.CELL_STATES))
+            n_rows = self.conn.execute("SELECT count(*) FROM account WHERE subcommittee = ?", (sub,)).fetchone()[0]
+            self.assertEqual(sum(counts.values()), n_rows * len(g["fiscal_years"]) * len(g["stages"]))
+            self.assertTrue(all(counts[st] > 0 for st in ("value", "not_funded", "missing", "not_collected", "not_enacted")))
 
 
 HOUSE_PDF = ROOT / "document_store" / "CRPT-119hrpt652.pdf"
@@ -713,7 +778,10 @@ class AfterLastRecord(StoreCopyTest):
 
     def test_missing_cells_stop_at_effective_end(self):
         before = S.history(self.conn, "ACC-OSTP")
-        self.assertEqual(sorted(y for y, _ in before["missing_cells"]), [2027] * 4)
+        # FY2027: only House Reported is covered by a CJS document on file (H.Rept. 119-652) -- the
+        # request, Senate and enacted cells are not yet collected / not yet enacted, not missing
+        self.assertEqual(before["missing_cells"], [(2027, "House Reported")])
+        self.assertEqual(sorted(before["open_cells"]), [(2027, s) for s in sorted(FOUR)])
         self.conn.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
         h = S.history(self.conn, "ACC-OSTP")
         self.assertEqual(h["missing_cells"], [])
@@ -840,6 +908,13 @@ class LoadRefuses(unittest.TestCase):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
                                                         "verification_status"), "value", "human_verified"))
         self.refuse(path, "CHECK constraint failed")
+
+    def test_a_workbook_without_total_scope_is_refused(self):
+        # without the column every total would load as a plain account, silently
+        def drop(wb):
+            ws = wb["Account"]
+            ws.delete_cols([c.value for c in ws[1]].index("total_scope") + 1)
+        self.refuse(self.mutate(drop), "missing ['total_scope']")
 
     def test_unknown_total_scope(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-TOTAL", "total_scope"), "value", "grand"))

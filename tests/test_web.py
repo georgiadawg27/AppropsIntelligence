@@ -48,6 +48,9 @@ def chromium_path():
     return str(found[-1]) if found else None
 
 
+NONFIG = ("missing", "not_funded", "not_collected", "not_enacted")
+
+
 def money(v):
     return ("−$" if v < 0 else "$") + f"{abs(v):,}"
 
@@ -134,7 +137,9 @@ class Api(WebTest):
     def test_missing_is_missing_in_the_grid(self):
         g = self.search("NASA Science")["grid"]
         fy2027 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)
-        self.assertTrue(all(l["state"] == "missing" for s in FOUR for l in fy2027["cells"][s]))
+        self.assertEqual({s: {l["state"] for l in fy2027["cells"][s]} for s in FOUR},
+                         {"President's Budget": {"not_collected"}, "House Reported": {"missing"},
+                          "Senate Reported": {"not_collected"}, "Enacted": {"not_enacted"}})
         # a blank request cell (v13 dropped the $0 rows) is missing, not zero
         g = self.search("NASA Education")["grid"]
         fy2020 = next(r for r in g["rows"] if r["fiscal_year"] == 2020)
@@ -190,7 +195,7 @@ class Browser(WebTest):
                   lines.push([line.dataset.series, amt ? amt.textContent : line.dataset.state,
                               amt ? line.querySelector('.cite').textContent : null]);
                 }
-                if (!lines.length) lines.push([null, td.querySelector('[data-testid=missing]') ? 'missing' : '?', null]);
+                if (!lines.length) lines.push([null, td.dataset.state || '?', null]);
                 out[tr.dataset.fy + '|' + td.dataset.stage] = lines;
               }
             }
@@ -198,19 +203,26 @@ class Browser(WebTest):
           }""")
 
     def assert_faithful(self, q):
-        """Every figure the page shows is the query layer's, with its
-        citation; every other year/stage cell says missing."""
+        """Every nonzero figure the page shows is the query layer's, with its
+        citation; a printed zero shows as not funded; every other year/stage
+        cell shows one of the other states."""
         _, h = self.cli(q)
         shown = self.rendered()
-        want = {}
+        want, zeros = {}, set()
         for o in h["observations"]:
-            want.setdefault(f"{o['fiscal_year']}|{o['stage']}", []).append(
-                (money(o["amount"]), o["source_document_id"] + (f" p.{o['source_page']}" if o["source_page"] else "")))
+            key = f"{o['fiscal_year']}|{o['stage']}"
+            if o["amount"]:
+                want.setdefault(key, []).append(
+                    (money(o["amount"]), o["source_document_id"] + (f" p.{o['source_page']}" if o["source_page"] else "")))
+            else:
+                zeros.add(key)
         for key, lines in shown.items():
-            got = sorted((a, c) for _, a, c in lines if a not in ("missing", "not_applicable"))
+            got = sorted((a, c) for _, a, c in lines if a not in NONFIG)
             self.assertEqual(got, sorted(want.get(key, [])), key)
             if key not in want:
-                self.assertTrue(all(a in ("missing", "not_applicable") for _, a, _ in lines), key)
+                self.assertTrue(all(a in NONFIG for _, a, _ in lines), key)
+            if key in zeros:
+                self.assertIn("not_funded", [a for _, a, _ in lines], key)
         self.assertTrue(set(want) <= set(shown))
         return shown
 
@@ -220,12 +232,15 @@ class Browser(WebTest):
         shown = self.assert_faithful("NASA Science")
         years = sorted({int(k.split("|")[0]) for k in shown})
         self.assertEqual(years, list(range(2017, 2028)))
-        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in ("missing", "not_applicable")), 40)
-        self.assertEqual({a for k, v in shown.items() if k.startswith("2027|") for _, a, _ in v}, {"missing"})
+        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in NONFIG), 40)
+        # FY2027: only the House report is on file; no FY2027 request or Senate document; no enacted law yet
+        self.assertEqual({k.split("|")[1]: v[0][1] for k, v in shown.items() if k.startswith("2027|")},
+                         {"President's Budget": "not_collected", "House Reported": "missing",
+                          "Senate Reported": "not_collected", "Enacted": "not_enacted"})
         # v16 gave Science a rescission series (FY2020); v23 confirmed its
         # absence wherever the document could be checked -- the rest stays missing
-        self.assertEqual(shown["2024|Senate Reported"][1][:2], ["rescission", "not_applicable"])
-        self.assertEqual(shown["2026|Enacted"][1][:2], ["rescission", "not_applicable"])
+        self.assertEqual(shown["2024|Senate Reported"][1][:2], ["rescission", "not_funded"])
+        self.assertEqual(shown["2026|Enacted"][1][:2], ["rescission", "not_funded"])
         self.assertEqual(shown["2024|House Reported"][1], ["rescission", "missing", None])      # host unreachable: unchecked
         self.assertEqual(shown["2020|Enacted"], [["budget authority", "$7,138,900,000", "SRC-CRPT-116HRPT455 p.187-188"],
                                                  ["rescission", "\u2212$70,000,000", "SRC-CRPT-116HRPT455 p.191"]])
@@ -274,7 +289,11 @@ class Browser(WebTest):
         self.search_ui("NASA Education")
         shown = self.assert_faithful("NASA Education")
         self.assertEqual(shown["2020|President's Budget"], [[None, "missing", None]])
-        self.assertEqual(shown["2019|President's Budget"][0][1], "$0")      # OBS-0996: the budget proposed ending it (v26)
+        # OBS-0996: the budget proposed ending it (v26) -- a printed $0 is "Not funded", with its citation on hover
+        self.assertEqual(shown["2019|President's Budget"][0][1], "not_funded")
+        chip = "tr[data-fy='2019'] td[data-stage=\"President's Budget\"] [data-testid=not-funded]"
+        self.assertEqual(self.page.text_content(chip), "Not funded")
+        self.assertIn("SRC-BUDGET-APP-FY2019 p.1084", self.page.get_attribute(chip, "title"))
         # no cell renders empty
         empty = self.page.eval_on_selector_all("td[data-stage]", "tds => tds.filter(t => !t.textContent.trim()).length")
         self.assertEqual(empty, 0)
@@ -292,17 +311,21 @@ class Browser(WebTest):
             "tr[data-fy='2017'] td[data-stage='Senate Reported'] .line",
             "ls => ls.map(l => [l.dataset.series, l.dataset.state, l.textContent])")
         states = {a: b for a, b, _ in lines}
-        self.assertEqual((states["budget authority"], states["supplemental"]), ("value", "not_applicable"))
+        self.assertEqual((states["budget authority"], states["supplemental"]), ("value", "not_funded"))
         text = next(t for a, _, t in lines if a == "supplemental")
-        self.assertIn("not applicable", text)
+        self.assertIn("Not funded", text)
         self.assertIn("SRC-CRPT-114SRPT239", text)
         self.assertNotIn("$0", text)
         conn = S.connect(self.db)
         evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0027'").fetchone()[0]
         conn.close()
         self.assertEqual(self.page.get_attribute(
-            "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-applicable]", "title"), evidence)
-        self.assertEqual(self.page.locator("tr[data-fy='2027'] td.empty [data-testid=missing]").count(), 4)
+            "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-funded]", "title"), evidence)
+        # FY2027, one state per cell: House Reported is covered and unrecorded; the rest have no document or no law yet
+        for stage, testid in (("House Reported", "missing"), ("President's Budget", "not-collected"),
+                              ("Senate Reported", "not-collected"), ("Enacted", "not-enacted")):
+            self.assertEqual(self.page.locator(f"tr[data-fy='2027'] td.empty[data-stage=\"{stage}\"] [data-testid={testid}]").count(),
+                             1, stage)
 
     def test_every_absence_renders(self):
         conn = S.connect(self.db)
@@ -313,8 +336,10 @@ class Browser(WebTest):
             self.page.goto(self.base + "/")
             self.page.evaluate(f"pick({acct!r}, 'test')")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
-            n += self.page.locator("[data-testid=not-applicable]").count()
-            self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-applicable]",
+            # a confirmed absence's chip carries its evidence; a printed zero's says so instead
+            n += self.page.eval_on_selector_all("[data-testid=not-funded]",
+                                                "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
+            self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
         self.assertEqual(n, 221)                         # v31: CJS's 197 + Labor-HHS's 24
 

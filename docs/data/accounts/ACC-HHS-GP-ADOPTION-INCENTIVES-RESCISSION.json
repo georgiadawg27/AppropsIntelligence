@@ -27,7 +27,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "House Reported": [
@@ -38,9 +38,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_collected"
       }
      ],
      "President's Budget": [
@@ -51,9 +51,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_collected"
       }
      ],
      "Senate Reported": [
@@ -64,9 +64,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_collected"
       }
      ]
     },
@@ -148,9 +148,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_collected"
       }
      ],
      "President's Budget": [
@@ -177,7 +177,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "Senate Reported": [
@@ -204,7 +204,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ]
     },
@@ -236,7 +236,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "House Reported": [
@@ -314,7 +314,7 @@
          "verification_status": "auto-validated"
         }
        ],
-       "state": "value"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -434,7 +434,7 @@
          "verification_status": "auto-validated"
         }
        ],
-       "state": "value"
+       "state": "not_funded"
       }
      ]
     },
@@ -466,7 +466,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "House Reported": [
@@ -493,7 +493,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -520,7 +520,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "Senate Reported": [
@@ -547,7 +547,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ]
     },
@@ -563,9 +563,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_enacted"
       }
      ],
      "House Reported": [
@@ -592,7 +592,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -619,7 +619,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_applicable"
+       "state": "not_funded"
       }
      ],
      "Senate Reported": [
@@ -630,9 +630,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_collected"
       }
      ]
     },
@@ -824,33 +824,69 @@
    "title": "Title II",
    "treasury_account_symbol": null
   },
+  "coverage": {
+   "cells": [
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ],
+    [
+     2027,
+     "President's Budget"
+    ]
+   ],
+   "enacted_through": 2026
+  },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ],
-   [
-    2024,
-    "House Reported"
-   ],
-   [
-    2027,
-    "Senate Reported"
-   ],
-   [
-    2027,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": -70000000,
@@ -1060,6 +1096,32 @@
     ],
     "verification_status": "auto-validated"
    }
+  ],
+  "open_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
   ],
   "relationships": []
  }

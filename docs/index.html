@@ -127,9 +127,12 @@
   <section id="result" hidden data-testid="result">
     <div class="panel" id="account-panel"></div>
     <div class="panel">
-      <div class="legend">Amounts in dollars. <span class="na-chip">not applicable</span> = the cited document was
-        checked and prints no such figure. <span class="missing-chip">missing</span> = unknown: no figure on file and
-        no confirmed absence &mdash; not zero. A $0 shown is a zero printed in the document.</div>
+      <div class="legend">Amounts in dollars. Each cell is in one of five states: a <strong>$ figure</strong>;
+        <span class="na-chip">Not funded</span> (<span class="na-chip">None</span> on a rescission line) = printed as a dash or
+        zero, or checked and confirmed absent &mdash; hover for why; <span class="missing-chip">Missing</span> = a document on
+        file covers this year and stage but no figure or absence is recorded yet; <span class="missing-chip">Not yet
+        collected</span> = no document on file covers it; <span class="missing-chip">Not yet enacted</span> = no enacted law
+        for that year yet.</div>
       <div class="table-wrap"><table id="grid" data-testid="grid"></table></div>
     </div>
     <div class="panel" id="sources"></div>
@@ -161,8 +164,9 @@
         accounts it totals, which fold away under it. Totals are shown only where a printed total is on file. Each cell's headline is the account's
         budget authority for that year and stage; <strong>+ more</strong> opens every other line on file for the cell
         (supplemental, rescission, transfer, component lines) &mdash; shown, never summed in.
-        <span class="na-chip">not applicable</span> and <span class="missing-chip">missing</span> mean exactly what they
-        mean for one account. &#9656; source shows where a figure was printed. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
+        The five cell states (Not funded / None, Missing, Not yet collected, Not yet enacted, or a figure) mean exactly what
+        they mean for one account; the count of each is shown above the grid. &#9656; source shows where a figure was printed. A dashed outline marks a year or stage outside the account's records &mdash; before its first, or after its effective end.</div>
+      <div class="legend" id="state-counts" data-testid="state-counts"></div>
       <div class="table-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
     </section>
   </div>
@@ -352,9 +356,11 @@ function renderGrid(grid, h) {
     for (const stage of grid.stages) {
       const lines = row.cells[stage];
       const td = el("td", { dataset: { stage, testid: "cell" } });
-      if (lines.every((l) => l.state === "missing")) {
+      const only = emptyState(lines);
+      if (only) {
         td.className = "empty";
-        td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+        td.dataset.state = only;
+        td.append(stateChip(only));
       } else {
         for (const l of lines) td.append(renderLine(l, multi));
       }
@@ -365,25 +371,43 @@ function renderGrid(grid, h) {
   t.append(body);
 }
 
-// One series in one cell -- value / not applicable / missing -- the same
-// for the single-account grid and the subcommittee grid.
+// The five cell states (approps_store.CELL_STATES), computed by the store, never here.
+const STATE_TEXT = { missing: "Missing", not_collected: "Not yet collected", not_enacted: "Not yet enacted" };
+const STATE_TITLE = {
+  missing: "A document on file covers this year and stage, but no figure or confirmed absence is recorded yet.",
+  not_collected: "No document on file covers this year and stage.",
+  not_enacted: "No enacted law for this fiscal year yet.",
+};
+const testid = (state) => state.replace(/_/g, "-");
+function stateChip(state, l) {
+  if (state === "not_funded") {
+    const zero = l && l.observations && l.observations[0];
+    const why = l && l.absence ? l.absence.evidence
+      : zero ? `Printed as a dash or zero (${zero.source_document_id}${zero.source_page ? " p." + zero.source_page : ""}).` : "";
+    return el("span", { class: "na-chip", "data-testid": "not-funded", title: why,
+                        text: l && l.amount_type === "rescission" ? "None" : "Not funded" });
+  }
+  return el("span", { class: "missing-chip", "data-testid": testid(state), title: STATE_TITLE[state], text: STATE_TEXT[state] });
+}
+
+// One series in one cell -- the same for the single-account grid and the subcommittee grid.
 function renderLine(l, showSeries) {
   const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
   if (notAdded(l)) line.classList.add("not-added");
   if (showSeries) line.append(el("div", { class: "series", text: seriesText(l) }));
-  if (l.state === "missing") line.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
-  if (l.state === "not_applicable") {
-    const a = l.absence;
-    line.append(el("span", { class: "na-chip", "data-testid": "not-applicable", title: a.evidence, text: "not applicable" }),
-                cite(a));
-  }
+  if (l.state !== "value") line.append(stateChip(l.state, l));
+  if (l.absence) line.append(cite(l.absence));
   for (const o of l.observations) {
-    line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }), cite(o));
+    if (l.state === "value") line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }));
+    line.append(cite(o));
     if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")
       line.append(el("div", { class: "flag", text: o.verification_status }));
   }
   return line;
 }
+// a cell with nothing on file (no figure, no absence) in one state: shown once, as that state
+const emptyState = (lines) => lines.length && lines.every((l) => !l.observations.length && !l.absence && l.state === lines[0].state)
+  ? lines[0].state : null;
 
 function renderSources(h) {
   const seen = new Map();
@@ -487,6 +511,10 @@ function parseYears(v) {
 function renderCompare(grid, years, stages) {
   const t = $("#compare-grid");
   t.replaceChildren();
+  const c = grid.state_counts || {};
+  $("#state-counts").textContent = `Cells in ${scLabels[grid.subcommittee] || grid.subcommittee} (every account, every year and stage on file): ` +
+    `${c.value || 0} with a figure \u00b7 ${c.not_funded || 0} not funded \u00b7 ${c.missing || 0} missing \u00b7 ` +
+    `${c.not_collected || 0} not yet collected \u00b7 ${c.not_enacted || 0} not yet enacted`;
   const cols = [];
   for (const y of grid.fiscal_years) if (years.includes(y)) for (const st of grid.stages) if (stages.includes(st)) cols.push([y, st]);
   const shownYears = grid.fiscal_years.filter((y) => years.includes(y));
@@ -584,13 +612,16 @@ function renderCompareCell(row, y, st, firstStage) {
         : `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${span[0]}–FY${span[1]}.`;
   }
   // the same whole-cell rule as the single-account grid
-  if (!lines.length || lines.every((l) => l.state === "missing")) {
+  const only = emptyState(lines);
+  if (only) {
     td.classList.add("empty");
-    td.append(el("span", { class: "missing-chip", "data-testid": "missing", text: "missing" }));
+    td.dataset.state = only;
+    td.append(stateChip(only));
     return td;
   }
-  const headline = lines.find(isHeadline) ||
-    { amount_type: "budget authority", component: null, state: "missing", observations: [], absence: null };
+  if (!lines.length) return td;                      // nothing that can exist in this cell
+  // the headline, as approps_store.headline_state(): the budget-authority line, else the cell's first line
+  const headline = lines.find(isHeadline) || lines[0];
   td.append(renderLine(headline, false));
   // contained / view lines of the headline show right under it, labelled as not added
   const alongside = lines.filter((l) => l !== headline && notAdded(l) && l.state === "value");
@@ -598,8 +629,9 @@ function renderCompareCell(row, y, st, firstStage) {
   const rest = lines.filter((l) => l !== headline && !alongside.includes(l));
   if (rest.length) {
     const n = (s) => rest.filter((l) => l.state === s).length;
-    const parts = [n("value") && `${n("value")} with a figure`, n("not_applicable") && `${n("not_applicable")} not applicable`,
-                   n("missing") && `${n("missing")} missing`].filter(Boolean);
+    const parts = [n("value") && `${n("value")} with a figure`, n("not_funded") && `${n("not_funded")} not funded`,
+                   n("missing") && `${n("missing")} missing`, n("not_collected") && `${n("not_collected")} not yet collected`,
+                   n("not_enacted") && `${n("not_enacted")} not yet enacted`].filter(Boolean);
     const more = el("details", { class: "more", "data-testid": "more" },
       el("summary", { text: `+ ${rest.length} more line${rest.length === 1 ? "" : "s"} (${parts.join(", ")})` }));
     for (const l of rest) more.append(renderLine(l, true));
