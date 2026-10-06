@@ -667,8 +667,6 @@
    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
    "canonical_name": "Limitation for Title XVIII of the Social Security Act",
    "display_order": 24,
-   "effective_end": null,
-   "effective_start": "2025-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -952,6 +950,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }

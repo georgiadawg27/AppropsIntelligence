@@ -1978,8 +1978,6 @@
    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
    "canonical_name": "Substance Abuse and Mental Health Services Administration (agency total)",
    "display_order": 9,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -3615,6 +3613,7 @@
     "relationship_type": "consolidated",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
-  ]
+  ],
+  "total_scope": "agency"
  }
 }

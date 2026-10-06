@@ -38,8 +38,6 @@ def review_csv(name):
         return list(csv.DictReader(f))
 
 
-def effective_dates():
-    return review_csv("effective_dates.csv")
 
 
 def workbook_rows(tab):
@@ -549,7 +547,9 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                 for cells in row["cells"].values():
                     for line in cells:
                         if line["absence"]:
-                            self.assertEqual(line["state"], "not_funded")
+                            # "no printed total": an absent headline the document still prints the account for --
+                            # in v32, only AHA's four (a total, total_scope 'agency')
+                            self.assertEqual(line["state"], "no_printed_total" if acct == "ACC-HHS-AHA-TOTAL" else "not_funded")
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
@@ -576,7 +576,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
 
 
 class GridStates(StoreTest):
-    """Every cell is in exactly one of five states (approps_store.CELL_STATES),
+    """Every cell is in exactly one of six states (approps_store.CELL_STATES),
     computed from what is on file, never stored."""
 
     def state(self, account, fy, stage, amount_type="budget authority", component=None):
@@ -727,50 +727,32 @@ class PipelineToStore(StoreCopyTest):
 
 
 @unittest.skipUnless(openpyxl, "openpyxl not installed")
-class EffectiveDates(StoreCopyTest):
-    """effective_start / effective_end: computed from the observations on file
-    (reference/review/effective_dates.py) and, since v24, the workbook's own."""
+class Coverage(StoreCopyTest):
+    """What each account's records cover, computed (reference/review/coverage.py) --
+    Account.effective_start / effective_end were removed in v33; nothing proposes a date."""
 
-    def spans(self):
-        spec = importlib.util.spec_from_file_location("effective_dates", ROOT / "reference" / "review" / "effective_dates.py")
+    def rows(self):
+        spec = importlib.util.spec_from_file_location("coverage", ROOT / "reference" / "review" / "coverage.py")
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
-        return mod.spans(self.conn)
+        return mod.coverage(self.conn)
 
-    def test_committed_list_is_what_the_committed_workbook_gives(self):
-        got = [{k: str(v) for k, v in r.items()} for r in self.spans()]
-        self.assertEqual(got, effective_dates())
+    def test_committed_report_is_what_the_committed_workbook_gives(self):
+        self.assertEqual([{k: str(v) for k, v in r.items()} for r in self.rows()], review_csv("coverage.csv"))
 
-    def test_workbook_carries_the_computed_dates(self):
-        every = {r["canonical_account_id"]: r for r in effective_dates()}
-        self.assertEqual(len(every), 55)
-        # Labor-HHS: one end proposed, for the owner (not applied). v31's six Adoption Incentives confirmed
-        # absences (FY2025 Enacted, FY2026 PB / House / Enacted, FY2027 PB / House) leave no unchecked cell in
-        # or after its last figure's year, so the FY2025 end is no longer held back
-        lhhs = {a: r for a, r in every.items() if a.startswith("ACC-HHS-")}
-        self.assertEqual(len(lhhs), 25)
-        self.assertEqual({a: (r["change"], r["computed_effective_end"]) for a, r in lhhs.items() if r["change"] != "none"},
-                         {"ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION": ("end", "2025-09-30")})
-        self.assertEqual({r["check_before_ending"] for r in lhhs.values()}, {""})
-        # CJS: as in v28
-        rows = {a: r for a, r in every.items() if a not in lhhs}
-        self.assertEqual(len(rows), 30)
-        self.assertEqual({r["change"] for r in rows.values()}, {"none"})
-        self.assertEqual({r["check_before_ending"] for r in rows.values()}, {""})
-        starts = sorted(r["workbook_effective_start"] for r in rows.values())
-        self.assertEqual((starts.count("2016-10-01"), starts.count("2026-10-01")), (19, 11))
-        self.assertTrue(all(a.startswith(("ACC-DOJ", "ACC-NOAA", "ACC-USPTO"))
-                            for a, r in rows.items() if r["workbook_effective_start"] == "2026-10-01"))
-        self.assertEqual([a for a, r in rows.items() if r["workbook_effective_end"]], [])
-        self.assertEqual([w for w in S.data_quality_warnings(self.conn) if "effective dates" in w], [])
-
-    def test_a_figure_outside_the_dates_is_flagged(self):
-        self.conn.execute("UPDATE account SET effective_start = '2017-10-01' WHERE canonical_account_id = 'ACC-OSTP'")
-        self.conn.execute("UPDATE account SET effective_end = '2024-09-30' WHERE canonical_account_id = 'ACC-NSC'")
-        self.assertEqual([w for w in S.data_quality_warnings(self.conn) if "effective dates" in w], [
-            "account ACC-NSC: 8 observation(s) in FY2025-FY2026, outside its effective dates 2016-10-01 to 2024-09-30 "
-            "(FY2017-FY2024)",
-            "account ACC-OSTP: 4 observation(s) in FY2017, outside its effective dates 2017-10-01 to open (FY2018-open)"])
+    def test_first_and_last_observed_years_and_unchecked_cells(self):
+        rows = {r["canonical_account_id"]: r for r in self.rows()}
+        self.assertEqual(len(rows), 55)
+        self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
+        # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
+        self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
+        self.assertIn("FY2017 Enacted", rows["ACC-DOJ-CVF"]["unchecked"])
+        # a cell with a figure or a confirmed absence is never unchecked
+        seen = {(r[0], r[1]) for r in self.conn.execute(
+            "SELECT fiscal_year, stage FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-SCIENCE' "
+            "UNION SELECT fiscal_year, stage FROM confirmed_absence WHERE canonical_account_id = 'ACC-NASA-SCIENCE'")}
+        self.assertFalse([c for c in seen if f"FY{c[0]} {c[1]}" in rows["ACC-NASA-SCIENCE"]["unchecked"].split("; ")])
+        self.assertNotIn("effective", " ".join(next(iter(rows.values()))))
 
     def test_fiscal_year_of(self):
         self.assertEqual([S.fiscal_year_of(d) for d in ("2016-10-01", "2017-09-30", "2020-09-30", "2026-10-01")],
@@ -778,28 +760,54 @@ class EffectiveDates(StoreCopyTest):
 
 
 class AfterLastRecord(StoreCopyTest):
-    """An effective_end ends the missing-cell range the way the account's
-    first record starts it. (No account in v24 has one; each test sets one.)"""
-
-    def test_missing_cells_stop_at_effective_end(self):
-        before = S.history(self.conn, "ACC-OSTP")
-        # FY2027: only House Reported is covered by a CJS document on file (H.Rept. 119-652) -- the
-        # request, Senate and enacted cells are not yet collected / not yet enacted, not missing
-        self.assertEqual(before["missing_cells"], [(2027, "House Reported")])
-        self.assertEqual(sorted(before["open_cells"]), [(2027, s) for s in sorted(FOUR)])
-        self.conn.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
-        h = S.history(self.conn, "ACC-OSTP")
-        self.assertEqual(h["missing_cells"], [])
-        self.assertEqual([r["fiscal_year"] for r in S.history_grid(h)["rows"]], list(range(2017, 2027)))
-        # figures are never cut off by it
-        self.conn.execute("UPDATE account SET effective_end = '2020-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
-        h = S.history(self.conn, "ACC-OSTP")
-        self.assertEqual(len(h["observations"]), len(before["observations"]))
-        self.assertEqual(h["missing_cells"], [])
+    """An account's cells run from its first record to the last fiscal year on
+    file for any account: no stored end date cuts them off (v33 has none)."""
 
     def test_open_accounts_are_unchanged(self):
         h = S.history(self.conn, "ACC-NASA-SPACETECH")
         self.assertEqual(max(y for y, _ in h["missing_cells"]), 2027)
+
+
+class NoPrintedTotal(StoreCopyTest):
+    """A confirmed absence where the document still prints the account -- the
+    account is a total (total_scope), or the same cell holds another of its
+    lines -- is "no printed total", not "not funded"."""
+
+    def add_fy2023(self):
+        # as the FY2023 bundle sends them: Medicaid's new advance printed beside its missing headline
+        # (S.Rept. 118-84, FY2023 Enacted), and the ASPR total the FY2023 House report doesn't print
+        cols = [r[1] for r in self.conn.execute("PRAGMA table_info(appropriations_observation)")]
+        sel = ", ".join({"observation_id": "'OBS-T-ADV'", "fiscal_year": "2023", "stage": "'Enacted'",
+                         "source_document_id": "'SRC-CRPT-118SRPT84'", "headline_observation_id": "NULL"}.get(c, c) for c in cols)
+        self.conn.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
+                          "WHERE canonical_account_id = 'ACC-HHS-CMS-MEDICAID' AND fiscal_year = 2024 AND stage = 'Enacted' "
+                          "AND amount_type = 'advance' LIMIT 1")
+        self.conn.execute("INSERT INTO confirmed_absence VALUES ('CA-T-ASPR', 'ACC-HHS-ASPR-TOTAL', 2023, 'House Reported', "
+                          "'budget authority', NULL, 'SRC-CRPT-118SRPT84', 'no ASPR total printed', '2026-10-06')")
+
+    def head(self, account, fy, stage, amount_type="budget authority"):
+        g = S.history_grid(S.history(self.conn, account))
+        row = next(r for r in g["rows"] if r["fiscal_year"] == fy)
+        return next(l for l in row["cells"][stage] if l["amount_type"] == amount_type and l["component"] is None)
+
+    def test_fy2023_medicaid_headline_and_aspr_total(self):
+        # v32 alone: CA-LHHS-0005's cell holds nothing else of Medicaid's
+        self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted")["state"], "not_funded")
+        self.add_fy2023()
+        line = self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted")
+        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0005"))
+        self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted", "advance")["state"], "value")
+        self.assertEqual(self.head("ACC-HHS-ASPR-TOTAL", 2023, "House Reported")["state"], "no_printed_total")
+
+    def test_a_rescission_line_with_nothing_beside_it_is_still_none(self):
+        line = self.head("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", 2026, "House Reported", "rescission")
+        self.assertEqual((line["state"], bool(line["absence"])), ("not_funded", True))
+
+    def test_counted_apart(self):
+        self.add_fy2023()
+        counts = S.subcommittee_grid(self.conn, "LHHS")["state_counts"]
+        self.assertEqual(list(counts), list(S.CELL_STATES))
+        self.assertGreaterEqual(counts["no_printed_total"], 2)
 
 
 class ComponentStage(StoreCopyTest):
@@ -913,6 +921,21 @@ class LoadRefuses(unittest.TestCase):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Appropriations Observation", "OBS-0082",
                                                         "verification_status"), "value", "human_verified"))
         self.refuse(path, "CHECK constraint failed")
+
+    def test_a_workbook_without_effective_dates_loads(self):
+        # v33 drops Account.effective_start / effective_end: the loader neither needs nor stores them
+        def drop(wb):
+            ws = wb["Account"]
+            for col in ("effective_start", "effective_end"):
+                ws.delete_cols([c.value for c in ws[1]].index(col) + 1)
+        path = self.mutate(drop)
+        db = Path(self.tmp.name) / "v33.db"
+        with contextlib.redirect_stdout(io.StringIO()):
+            report = S.load(path, db)
+        self.assertEqual(report["rows"]["account"], 55)
+        conn = S.connect(db, readonly=True)
+        self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
+        conn.close()
 
     def test_a_workbook_without_total_scope_is_refused(self):
         # without the column every total would load as a plain account, silently

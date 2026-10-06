@@ -128,7 +128,8 @@ BILL_VERSION_STAGES = {
 }
 
 
-MANUAL_DOC_TYPES = {"jes": "explanatory_statement", "committee_report": "committee_report",
+MANUAL_DOC_TYPES = {"jes": "explanatory_statement", "explanatory_statement": "explanatory_statement",
+                    "committee_report": "committee_report",
                     "bill": "bill", "public_law": "public_law", "other": "other"}
 STAGE_CHAMBER = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                  "Senate Passed": "Senate", "Enacted": "N/A", "President's Budget": "N/A"}

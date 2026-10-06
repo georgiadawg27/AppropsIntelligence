@@ -119,7 +119,6 @@ AGENCY_TOTAL_NOTE = ("Derived rollup -- {a}'s agency total as the Title II table
 ACCOUNTS = [
     dict(id="ACC-HHS-AHA-TOTAL", name="Administration for a Healthy America (agency total)",
          agency="Administration for a Healthy America", bureau="(Agency Total)", fund="general", status="proposed",
-         start="2025-10-01",
          notes=("Proposed in the FY2026 and FY2027 budget requests only; never reported by a committee or enacted "
                 "(P.L. 119-75 has no such heading). The committee tables print it only in the request column, as the "
                 "request's funding 'not displayed under other HHS accounts below' (H.Rept. 119-271 p.334 footnote 1/): "
@@ -512,7 +511,6 @@ def main():
 
     obs_rows, val_rows, used_cells = [], [], set()
     n_obs = n_val = 0
-    first_fy = defaultdict(lambda: 9999)
     for (acct, fy, stage), docs in sorted(facts.items(), key=lambda kv: (BY_ID[kv[0][0]]["id"], kv[0][1], kv[0][2])):
         a = BY_ID[acct]
         if a.get("status") == "proposed" and stage != "President's Budget":
@@ -522,7 +520,6 @@ def main():
         d = DOCS[pkg]
         bill, report, bill_url, report_url = BRR[cell]
         used_cells.add(cell)
-        first_fy[acct] = min(first_fy[acct], fy)
         head_id = None
         for f, amount_type, component, role in docs[pkg]:
             n_obs += 1
@@ -617,7 +614,7 @@ def main():
     order = {a["id"]: i + 1 for i, a in enumerate(ACCOUNTS)}
     acct_rows = [{"canonical_account_id": a["id"], "canonical_name": a["name"], "agency": a["agency"], "bureau": a["bureau"],
                   "treasury_account_symbol": None, "status": a.get("status", "active"),
-                  "effective_start": a.get("start") or f"{first_fy[a['id']] - 1}-10-01", "effective_end": None,
+                  # no effective_start / effective_end: removed in v33 (coverage is computed from the figures)
                   "historical_names": None, "historical_identifiers": None, "fund_type": a["fund"], "subcommittee": SUB,
                   "notes": a["notes"], "title": "Title II", "display_order": order[a["id"]],
                   # v31's Account.total_scope: the agency totals (AHA included) and the title total

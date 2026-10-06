@@ -75,6 +75,23 @@ class ManualIngest(unittest.TestCase):
             again, _ = ingest(JES)
             self.assertEqual(again["status"], "unchanged")
 
+    def test_a_draft_explanatory_statement(self):
+        # a committee's draft posted with an unreported bill (FY2023 Labor-HHS Senate): its own document
+        # type, never an advance copy, its release date recorded
+        with TempStore():
+            res, m = ingest(JES, subcommittee="LHHS", fiscal_year=2023, stage="Senate Reported",
+                            doc_type="explanatory_statement", bill_id="S.4659", report_id="N/A",
+                            publication_date="2022-07-28")
+            e = m[res["package_id"]]
+            self.assertTrue(res["package_id"].startswith("MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-"))
+            self.assertEqual((e["doc_type"], e["publication_date"], e["confirmation_status"]),
+                             ("explanatory_statement", "2022-07-28", "no_official_counterpart"))
+            self.assertEqual(ex.describe_package(res["package_id"], e)["document_type"], "explanatory_statement")
+            with self.assertRaises(ValueError):
+                ingest(JES, doc_type="explanatory_statement", advance_copy=True)
+            with self.assertRaises(ValueError):
+                ingest(JES, doc_type="explanatory_statement", publication_date="28 July 2022")
+
     def test_rejects(self):
         with TempStore() as d:
             with self.assertRaises(ValueError):

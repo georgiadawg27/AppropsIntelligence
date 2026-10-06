@@ -247,7 +247,10 @@ def fetch_and_store(package_id, api_key, manifest):
 # ---------------------------------------------------------------------------
 
 STAGES = ("President's Budget", "House Reported", "Senate Reported", "House Passed", "Senate Passed", "Enacted")
-DOC_TYPES = ("committee_report", "jes", "bill", "public_law", "other")
+# explanatory_statement: a committee's own explanatory statement that is no
+# report and no JES -- e.g. a Senate chair's draft posted with an unreported
+# bill (FY2023 Labor-HHS: S. 4659 introduced, never reported)
+DOC_TYPES = ("committee_report", "jes", "explanatory_statement", "bill", "public_law", "other")
 
 
 def manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash):
@@ -256,7 +259,8 @@ def manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash)
 
 
 def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_type, advance_copy,
-                 source_url=None, source_agency=None, bill_id=None, report_id=None, ingested_by=None):
+                 source_url=None, source_agency=None, bill_id=None, report_id=None, ingested_by=None,
+                 publication_date=None):
     """
     Store a local PDF into document_store/ and the manifest. An advance copy
     starts "unconfirmed" until reconciled against GPO's official version; a
@@ -270,8 +274,10 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
         raise ValueError(f"stage must be one of {STAGES}, got {stage!r}")
     if doc_type not in DOC_TYPES:
         raise ValueError(f"doc_type must be one of {DOC_TYPES}, got {doc_type!r}")
-    if advance_copy and doc_type == "jes":
-        raise ValueError("a JES is never a govinfo package, so it can't be an advance copy of one")
+    if advance_copy and doc_type in ("jes", "explanatory_statement"):
+        raise ValueError(f"a {doc_type} is never a govinfo package, so it can't be an advance copy of one")
+    if publication_date:
+        datetime.strptime(publication_date, "%Y-%m-%d")       # reject a malformed date up front
     content = Path(pdf_path).read_bytes()
     if not content.startswith(b"%PDF"):
         raise ValueError(f"{pdf_path} is not a PDF")
@@ -301,6 +307,7 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
         "doc_type": doc_type,
         "bill_id": bill_id,
         "report_id": report_id,
+        "publication_date": publication_date,
         "advance_copy": bool(advance_copy),
         "confirmation_status": "unconfirmed" if advance_copy else "no_official_counterpart",
         "reconciled_with_document_id": None,
@@ -501,13 +508,15 @@ def main_ingest_local(argv):
     parser.add_argument("--bill-id", help="e.g. S2354 -- lets reconciliation find the official report via /related")
     parser.add_argument("--report-id", help="e.g. S.Rept.119-44, if known")
     parser.add_argument("--ingested-by", help="who found the file")
+    parser.add_argument("--publication-date", help="YYYY-MM-DD the publisher released it, if known")
     args = parser.parse_args(argv)
     manifest = load_manifest()
     try:
         res = ingest_local(args.pdf, manifest, subcommittee=args.subcommittee, fiscal_year=args.fiscal_year,
                            stage=args.stage, doc_type=args.doc_type, advance_copy=args.advance_copy,
                            source_url=args.source_url, source_agency=args.source_agency, bill_id=args.bill_id,
-                           report_id=args.report_id, ingested_by=args.ingested_by)
+                           report_id=args.report_id, ingested_by=args.ingested_by,
+                           publication_date=args.publication_date)
     except ValueError as e:
         parser.error(str(e))
     save_manifest(manifest)

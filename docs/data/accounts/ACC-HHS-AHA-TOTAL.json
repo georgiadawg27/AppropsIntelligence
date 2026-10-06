@@ -27,7 +27,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       }
      ],
      "House Reported": [
@@ -54,7 +54,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       }
      ],
      "President's Budget": [
@@ -223,7 +223,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       }
      ]
     },
@@ -268,7 +268,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       }
      ],
      "President's Budget": [
@@ -514,8 +514,6 @@
    "canonical_account_id": "ACC-HHS-AHA-TOTAL",
    "canonical_name": "Administration for a Healthy America (agency total)",
    "display_order": 1,
-   "effective_end": null,
-   "effective_start": "2025-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -899,6 +897,7 @@
     "relationship_type": "uncertain",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
-  ]
+  ],
+  "total_scope": "agency"
  }
 }

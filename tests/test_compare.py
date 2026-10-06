@@ -69,9 +69,9 @@ def with_sourced_totals(src, dst):
     c = sqlite3.connect(dst)
     for aid, name, scope in (("ACC-T3-TOTAL", "Total, Title III, Science", "title"),
                              ("ACC-CJS-TOTAL", "Grand total", "bill")):
-        c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, effective_start, "
+        c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, "
                   "subcommittee, notes, title, display_order, total_scope) VALUES (?, ?, 'Commerce, Justice, Science', "
-                  "'active', 'general', '2016-10-01', 'CJS', NULL, ?, ?, ?)",
+                  "'active', 'general', 'CJS', NULL, ?, ?, ?)",
                   (aid, name, "Title III" if "T3" in aid else None, 99 if "T3" in aid else None, scope))
     cols = [r[1] for r in c.execute("PRAGMA table_info(appropriations_observation)")]
     sel = ", ".join({"observation_id": "'OBS-T3'", "canonical_account_id": "'ACC-T3-TOTAL'",
@@ -176,31 +176,14 @@ class GridData(CompareTest):
                  for y in YEARS for s in FOUR]
         self.assertEqual({l["state"] for l in heads}, {"value"})
 
-    def test_after_effective_end_is_outside_too(self):
-        # the mirror of "before its first record": once an account has an
-        # effective_end, the years after it are outside, not missing gaps.
-        # No v24 account has one, so this sets one: OSTP ends with FY2026.
-        ended = Path(self.tmp.name) / "ended.db"
-        shutil.copy(self.db, ended)
-        c = sqlite3.connect(ended)
-        c.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
-        c.commit()
-        c.close()
-        row = next(r for r in plain(W.subcommittee(str(ended), "CJS"))["rows"]
-                   if r["account"]["canonical_account_id"] == "ACC-OSTP")
-        self.assertEqual(row["fiscal_year_span"], [2017, 2026])
-        for key, cell in row["cells"].items():
-            fy = int(key.split("|")[0])
-            self.assertEqual(cell["outside_history"], fy == 2027, key)
-            if cell["outside_history"]:
-                # no figure or absence: FY2027's computed states (only the House report covers it; nothing enacted)
-                st = key.split("|")[1]
-                self.assertEqual({line["state"] for line in cell["lines"]},
-                                 {"House Reported": {"missing"}, "Enacted": {"not_enacted"}}.get(st, {"not_collected"}), key)
-        # before: FY2027 was in its history as a missing gap
-        before = self.row("ACC-OSTP")
-        self.assertEqual(before["fiscal_year_span"], [2017, 2027])
-        self.assertFalse(before["cells"]["2027|Enacted"]["outside_history"])
+    def test_no_stored_end_date_cuts_a_row_off(self):
+        # v33 has no effective dates: OSTP's cells run to the last fiscal year on file (FY2027), in their
+        # computed states, never outside its history
+        row = self.row("ACC-OSTP")
+        self.assertEqual(row["fiscal_year_span"], [2017, 2027])
+        self.assertFalse(row["cells"]["2027|Enacted"]["outside_history"])
+        self.assertNotIn("effective_start", row["account"])
+        self.assertNotIn("effective_end", row["account"])
 
     def test_rollup_rows_carry_their_notes(self):
         rollups = [r["account"]["canonical_account_id"] for r in self.grid["rows"]
@@ -697,28 +680,16 @@ class CompareBrowser(CompareTest):
             srv.shutdown()
             srv.server_close()
 
-    def test_after_effective_end_tooltip(self):
-        ended = Path(self.tmp.name) / "ended_browser.db"
-        shutil.copy(self.db, ended)
-        c = sqlite3.connect(ended)
-        c.execute("UPDATE account SET effective_end = '2026-09-30' WHERE canonical_account_id = 'ACC-OSTP'")
-        c.commit()
-        c.close()
-        srv = W.serve(ended, port=0, verbose=False)
-        threading.Thread(target=srv.serve_forever, daemon=True).start()
-        try:
-            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS")
-            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-            after, before = self.cell("ACC-OSTP", 2027, "Enacted"), self.cell("ACC-DOJ-CVF", 2017, "Enacted")
-            for td in (after, before):
-                self.assertEqual(td.get_attribute("data-outside"), "true")
-                self.assertIn("outside", td.get_attribute("class"))
-            self.assertTrue(after.get_attribute("title").startswith("After this account's effective end (2026-09-30)"))
-            self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017"))
-            self.assertIsNone(self.cell("ACC-OSTP", 2026, "Enacted").get_attribute("data-outside"))
-        finally:
-            srv.shutdown()
-            srv.server_close()
+    def test_outside_tooltip_and_figures_on_file(self):
+        self.open("static")
+        before = self.cell("ACC-DOJ-CVF", 2017, "Enacted")
+        self.assertEqual(before.get_attribute("data-outside"), "true")
+        self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017 Enacted"))
+        cells = self.row("ACC-NASA-SCIENCE")["cells"]
+        ys = [int(k.split("|")[0]) for k, c in cells.items()
+              if any(l["observations"] or l.get("absence") for l in c["lines"])]
+        self.assertEqual(self.page.locator("tr[data-account=ACC-NASA-SCIENCE] [data-testid=row-figures-on-file]").inner_text(),
+                         f"Figures on file: FY{min(ys)}\u2013FY{max(ys)}")
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")

@@ -47,7 +47,8 @@ class LhhsRowsLoad(unittest.TestCase):
         self.assertEqual(len(gp), 4)
         self.assertTrue(all(not S.rollup_scope(a) for a in gp))       # accounts, not rollups
         aha = accts["ACC-HHS-AHA-TOTAL"]
-        self.assertEqual((aha["status"], aha["effective_start"]), ("proposed", "2025-10-01"))
+        self.assertEqual(aha["status"], "proposed")
+        self.assertNotIn("effective_start", aha)                   # removed in v33
         self.assertEqual({o["stage"] for o in rows("observation") if o["canonical_account_id"] == "ACC-HHS-AHA-TOTAL"},
                          {"President's Budget"})
 

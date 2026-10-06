@@ -2002,8 +2002,6 @@
    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
    "canonical_name": "Title II, Department of Health and Human Services (title total)",
    "display_order": 25,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -3644,6 +3642,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": "title"
  }
 }

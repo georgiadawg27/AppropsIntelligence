@@ -2292,8 +2292,6 @@
    "canonical_account_id": "ACC-NSF-TOTAL",
    "canonical_name": "National Science Foundation (agency total)",
    "display_order": 19,
-   "effective_end": null,
-   "effective_start": "2016-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -4099,6 +4097,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": "agency"
  }
 }

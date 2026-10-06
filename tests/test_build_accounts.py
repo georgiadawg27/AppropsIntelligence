@@ -24,7 +24,7 @@ except ImportError:                                  # pragma: no cover
     openpyxl = None
 
 ACCOUNT_HEAD = ["canonical_account_id", "canonical_name", "agency", "bureau", "treasury_account_symbol", "status",
-                "effective_start", "effective_end", "historical_names", "historical_identifiers", "fund_type",
+                "historical_names", "historical_identifiers", "fund_type",
                 "subcommittee", "notes"]
 HN_HEAD = ["historical_name_id", "canonical_account_id", "former_name", "evidence", "approved_date", "confidence",
            "human_reviewed"]

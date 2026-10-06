@@ -1124,8 +1124,6 @@
    "canonical_account_id": "ACC-HHS-CMS-TRUST-FUND-PAYMENTS",
    "canonical_name": "Payments to the Health Care Trust Funds",
    "display_order": 12,
-   "effective_end": null,
-   "effective_start": "2022-10-01",
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
@@ -2026,6 +2024,7 @@
     "Enacted"
    ]
   ],
-  "relationships": []
+  "relationships": [],
+  "total_scope": null
  }
 }
