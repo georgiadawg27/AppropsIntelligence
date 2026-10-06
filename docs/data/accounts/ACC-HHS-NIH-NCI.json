@@ -355,9 +355,50 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7224159000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-NIH-NCI",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0479",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "343",
+         "source_table_or_section": "Title II, ACC-HHS-NIH-NCI -- printed as 'National Cancer Institute (NCI)' 7,224,159 [FY 2025 Estimate], PDF p.343 (printed p.339). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: continued at the FY2024 level by P.L. 119-4 sec. 1101(a)(8) (division D of P.L. 118-47); no exception names it.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01945"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -1108,12 +1149,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 7104159000,
@@ -1516,6 +1552,46 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 7224159000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-NIH-NCI",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0479",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "343",
+    "source_table_or_section": "Title II, ACC-HHS-NIH-NCI -- printed as 'National Cancer Institute (NCI)' 7,224,159 [FY 2025 Estimate], PDF p.343 (printed p.339). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: continued at the FY2024 level by P.L. 119-4 sec. 1101(a)(8) (division D of P.L. 118-47); no exception names it.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01945"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
     "amount": 4530833000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2026/APP",
@@ -1844,10 +1920,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

@@ -1255,9 +1255,206 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 46888518000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0480",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "345",
+         "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, National Institutes of Health (with CURES Act funding)' 46,888,518 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01946"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "CURES",
+       "component_kind": "contained",
+       "component_label": "CURES Act",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 127000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "CURES",
+         "component_kind": "contained",
+         "component_label": "CURES Act",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0480",
+         "observation_id": "OBS-LHHS-0483",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "366",
+         "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'CURES Act' (127,000) [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01949"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level_excluding_arpa_h",
+       "component_kind": "view",
+       "component_label": "program level (excluding ARPA-H)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 46801000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level_excluding_arpa_h",
+         "component_kind": "view",
+         "component_label": "program level (excluding ARPA-H)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0480",
+         "observation_id": "OBS-LHHS-0482",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "345",
+         "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, NIH, program level (excluding ARPA-H)' 46,801,000 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01948"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level_with_cures_and_phs_evaluation_act_funding",
+       "component_kind": "view",
+       "component_label": "program level (with CURES and PHS Evaluation Act Funding)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 48301000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level_with_cures_and_phs_evaluation_act_funding",
+         "component_kind": "view",
+         "component_label": "program level (with CURES and PHS Evaluation Act Funding)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0480",
+         "observation_id": "OBS-LHHS-0481",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "345",
+         "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)' 48,301,000 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01947"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -3912,12 +4109,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 47546518000,
@@ -5658,6 +5850,166 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 46888518000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0480",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "345",
+    "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, National Institutes of Health (with CURES Act funding)' 46,888,518 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01946"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 127000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "CURES",
+    "component_kind": "contained",
+    "component_label": "CURES Act",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0480",
+    "observation_id": "OBS-LHHS-0483",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "366",
+    "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'CURES Act' (127,000) [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01949"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 46801000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level_excluding_arpa_h",
+    "component_kind": "view",
+    "component_label": "program level (excluding ARPA-H)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0480",
+    "observation_id": "OBS-LHHS-0482",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "345",
+    "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, NIH, program level (excluding ARPA-H)' 46,801,000 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01948"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 48301000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level_with_cures_and_phs_evaluation_act_funding",
+    "component_kind": "view",
+    "component_label": "program level (with CURES and PHS Evaluation Act Funding)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0480",
+    "observation_id": "OBS-LHHS-0481",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "345",
+    "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'Total, National Institutes of Health, program level (with CURES and PHS Evaluation Act Funding)' 48,301,000 [FY 2025 Estimate], PDF p.345 (printed p.341). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01947"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
     "amount": 29045186000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2026/APP",
@@ -6972,10 +7324,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

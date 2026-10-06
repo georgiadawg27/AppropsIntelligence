@@ -473,9 +473,102 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7228639000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0486",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, ACC-HHS-SAMHSA-TOTAL -- printed as 'Total, SAMHSA' 7,228,639 [FY 2025 Estimate], PDF p.348 (printed p.344). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01952"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 7374306000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0486",
+         "observation_id": "OBS-LHHS-0487",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, ACC-HHS-SAMHSA-TOTAL -- printed as 'Total, SAMHSA, program level' 7,374,306 [FY 2025 Estimate], PDF p.348 (printed p.344). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01953"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -1958,12 +2051,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 7370416000,
@@ -2700,6 +2788,86 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 7228639000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0486",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, ACC-HHS-SAMHSA-TOTAL -- printed as 'Total, SAMHSA' 7,228,639 [FY 2025 Estimate], PDF p.348 (printed p.344). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01952"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 7374306000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0486",
+    "observation_id": "OBS-LHHS-0487",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, ACC-HHS-SAMHSA-TOTAL -- printed as 'Total, SAMHSA, program level' 7,374,306 [FY 2025 Estimate], PDF p.348 (printed p.344). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(3), 139 Stat. 33: SAMHSA Health Surveillance and Program Support, '\"$0\" for \"$72,090,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01953"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
     "amount": 5562611000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2026/APP",
@@ -3418,10 +3586,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

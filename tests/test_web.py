@@ -341,7 +341,7 @@ class Browser(WebTest):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 221)                         # v31: CJS's 197 + Labor-HHS's 24
+        self.assertEqual(n, 222)                         # v32: CJS's 197 + Labor-HHS's 25
 
 
 if __name__ == "__main__":

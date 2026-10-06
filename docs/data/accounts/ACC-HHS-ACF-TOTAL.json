@@ -957,9 +957,102 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 51897205000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0457",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, ACC-HHS-ACF-TOTAL -- printed as 'Total, Administration for Children and Families' 51,897,205 [FY 2025 Estimate], PDF p.356 (printed p.352). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate. Parts the law does set: P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-01923"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "discretionary",
+       "component_kind": "view",
+       "component_label": "discretionary",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33960205000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "discretionary",
+         "component_kind": "view",
+         "component_label": "discretionary",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-0457",
+         "observation_id": "OBS-LHHS-0458",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "356",
+         "source_table_or_section": "Title II, ACC-HHS-ACF-TOTAL -- printed as 'Total, Administration for Children and Families, Discretionary' (33,960,205) [FY 2025 Estimate], PDF p.356 (printed p.352). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-01924"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -2628,12 +2721,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 52962553000,
@@ -3944,6 +4032,86 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 51897205000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0457",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, ACC-HHS-ACF-TOTAL -- printed as 'Total, Administration for Children and Families' 51,897,205 [FY 2025 Estimate], PDF p.356 (printed p.352). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate. Parts the law does set: P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-01923"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 33960205000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "discretionary",
+    "component_kind": "view",
+    "component_label": "discretionary",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-0457",
+    "observation_id": "OBS-LHHS-0458",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "356",
+    "source_table_or_section": "Title II, ACC-HHS-ACF-TOTAL -- printed as 'Total, Administration for Children and Families, Discretionary' (33,960,205) [FY 2025 Estimate], PDF p.356 (printed p.352). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1908(4), 139 Stat. 33: ACF Children and Families Services Programs, '\"$0\" for \"$40,011,000\"'.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-01924"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
     "amount": 45469350000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2026/APP",
@@ -4632,10 +4800,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,

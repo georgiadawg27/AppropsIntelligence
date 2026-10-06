@@ -367,9 +367,50 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 521757000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+         "canonical_account_id": "ACC-HHS-CMS-TRUST-FUND-PAYMENTS",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0472",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "350",
+         "source_table_or_section": "Title II, ACC-HHS-CMS-TRUST-FUND-PAYMENTS -- printed as 'Total, Payments to Health Care Trust Funds' 521,757,000 [FY 2025 Estimate], PDF p.350 (printed p.346). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate.",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-01938"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -1156,12 +1197,7 @@
    "enacted_through": 2026
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2025,
-    "Enacted"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 548130000000,
@@ -1582,6 +1618,46 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 521757000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
+    "canonical_account_id": "ACC-HHS-CMS-TRUST-FUND-PAYMENTS",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0472",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "350",
+    "source_table_or_section": "Title II, ACC-HHS-CMS-TRUST-FUND-PAYMENTS -- printed as 'Total, Payments to Health Care Trust Funds' 521,757,000 [FY 2025 Estimate], PDF p.350 (printed p.346). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). P.L. 119-4 sec. 1109(a): amounts necessary to maintain program levels -- no dollar level in law; this is the report's estimate.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-01938"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
     "amount": 593817000000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2026/APP",
@@ -1940,10 +2016,6 @@
    [
     2024,
     "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
    ],
    [
     2027,
