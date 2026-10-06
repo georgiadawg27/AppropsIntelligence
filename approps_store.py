@@ -214,8 +214,9 @@ TABS = [
 # A workbook without a Component tab gets accounts.COMPONENT_KINDS.
 OPTIONAL_TABS = {"Confirmed Absence", "Component"}
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
-OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"},
-                    "Account": {"total_scope"}}            # before v31: no account is a total
+OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"}}
+# Account.total_scope (v31) is required: a workbook without it would load with
+# no totals at all, silently -- it is refused instead.
 
 # Workbook columns that exist only as lookups into Bill Report Reference; they
 # are checked against it (check_bill_report_lookups), not stored twice.
@@ -958,10 +959,63 @@ def history(conn, account_id):
     if acct["effective_end"]:
         last = min(last, fiscal_year_of(acct["effective_end"]))
     have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
-    missing = [(y, s) for y in range(first, last + 1) for s in STAGE_ORDER[:4]
-               if (y, s) not in have] if first is not None else []
+    cov = coverage(conn, acct["subcommittee"])
+    # the cells the grid spans (first record to the last fiscal year on file) with
+    # neither a figure nor a confirmed absence: each is missing, not yet collected
+    # or not yet enacted (cell_state), never a zero
+    open_cells = [(y, s) for y in range(first, last + 1) for s in STAGE_ORDER[:4]
+                  if (y, s) not in have] if first is not None else []
     return {"account": acct, "historical_names": former, "relationships": rels, "observations": obs,
-            "absences": absences, "missing_cells": missing}
+            "absences": absences, "coverage": cov, "open_cells": open_cells,
+            "missing_cells": [c for c in open_cells if cell_state([], None, *c, cov) == "missing"]}
+
+
+# Every grid cell is in exactly one of five states, computed here and never stored:
+#   value          -- an observation with a nonzero figure
+#   not_funded     -- a printed dash / zero (an observation of 0) or a confirmed
+#                     absence (its evidence says why); on a rescission line, "None"
+#   missing        -- a source document on file for the subcommittee covers this
+#                     fiscal year + stage, but there is no observation and no
+#                     confirmed absence: real remaining work
+#   not_collected  -- no source document on file covers this fiscal year + stage
+#   not_enacted    -- the Enacted stage of a fiscal year after the last one with an
+#                     enacted document on file: no enacted law yet
+CELL_STATES = ("value", "not_funded", "missing", "not_collected", "not_enacted")
+
+
+def coverage(conn, subcommittee):
+    """What the subcommittee's documents on file cover: every (fiscal_year, stage)
+    a document its observations or confirmed absences cite is or also_covers, and
+    the last fiscal year with an Enacted one. -> {"cells": [[fy, stage]], "enacted_through"}"""
+    cells = set()
+    for d in conn.execute(
+            "SELECT DISTINCT d.* FROM source_document d WHERE d.document_id IN ("
+            " SELECT o.source_document_id FROM appropriations_observation o JOIN account a USING (canonical_account_id)"
+            " WHERE a.subcommittee = ? UNION SELECT c.source_document_id FROM confirmed_absence c"
+            " JOIN account a USING (canonical_account_id) WHERE a.subcommittee = ?)", (subcommittee, subcommittee)):
+        cells |= covered_cells(dict(d))[0]
+    enacted = [y for y, st in cells if st == "Enacted"]
+    return {"cells": sorted([y, st] for y, st in cells), "enacted_through": max(enacted) if enacted else None}
+
+
+def cell_state(found, absence, fiscal_year, stage, cov):
+    """One line's state in one cell (CELL_STATES)."""
+    if found:
+        return "value" if any(o["amount"] for o in found) else "not_funded"
+    if absence:
+        return "not_funded"
+    if [fiscal_year, stage] in cov["cells"] or (fiscal_year, stage) in {tuple(c) for c in cov["cells"]}:
+        return "missing"
+    if stage == "Enacted" and (cov["enacted_through"] is None or fiscal_year > cov["enacted_through"]):
+        return "not_enacted"
+    return "not_collected"
+
+
+def headline_state(lines):
+    """A cell's one state: its headline line's (budget authority, no component), else its first line's."""
+    head = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), None) or \
+        (lines[0] if lines else None)
+    return head["state"] if head else None
 
 
 def history_grid(h):
@@ -969,12 +1023,9 @@ def history_grid(h):
     history() laid out as fiscal year x the four core stages. An account can
     have more than one series (amount_type + component: Exploration's budget
     authority and supplemental, R&RA's base and defense lines); each cell
-    lists every series in one of three states:
-      "value"          -- observation(s), with their citations
-      "not_applicable" -- a confirmed absence: the cited document was checked
-                          and prints no such figure (evidence attached)
-      "missing"        -- neither: genuinely unknown. Never a zero, never
-                          left out.
+    lists every series in one of the five CELL_STATES (cell_state): value,
+    not_funded (a printed zero, or a confirmed absence with its evidence),
+    missing, not_collected, not_enacted. Never a blank, never an invented zero.
     Other stages (House / Senate Passed) appear only if the account has them.
     A structural component's series (accounts.COMPONENT_STAGE: supplemental_act
     at Enacted, budget_amendment at President's Budget) is listed only in its
@@ -994,7 +1045,7 @@ def history_grid(h):
     series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
                     key=lambda k: (k[0] != "budget authority", k[0], k[1] is not None, k[1] or ""))
     stages = STAGE_ORDER[:4] + [s for s in STAGE_ORDER[4:] if any(o["stage"] == s for o in obs + absent)]
-    years = sorted({o["fiscal_year"] for o in obs + absent} | {y for y, _ in h["missing_cells"]})
+    years = sorted({o["fiscal_year"] for o in obs + absent} | {y for y, _ in h["open_cells"]})
     by, gone = {}, {}
     for o in obs:
         by.setdefault((o["fiscal_year"], o["stage"], o["amount_type"], o["component"]), []).append(o)
@@ -1010,7 +1061,7 @@ def history_grid(h):
                 k, label = kind.get(c, (None, None))
                 if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED) and not found and not absence:
                     continue
-                state = "value" if found else "not_applicable" if absence else "missing"
+                state = cell_state(found, absence, y, st, h["coverage"])
                 cells[st].append({"amount_type": t, "component": c, "component_kind": k, "component_label": label,
                                   "adds_to_headline": k not in NOT_ADDED, "state": state, "missing": state == "missing",
                                   "observations": found, "absence": absence})
@@ -1081,10 +1132,11 @@ def subcommittee_grid(conn, subcommittee):
 
     One cell outside what history_grid() covers for an account (a fiscal year
     before its first figure or confirmed absence, after its effective_end, or
-    a stage it never has)
-    holds each of the account's series as "missing": no observation, no
-    confirmed absence -- the same definition, never blank, never zero -- and
-    is marked "outside_history" so it can be told apart.
+    a stage it never has) holds each of the account's series in its computed
+    state (cell_state: missing / not collected / not enacted -- there is no
+    figure or absence there) and is marked "outside_history".
+    Each cell's one state is its headline's (headline_state); "state_counts"
+    counts the cells of every row in each state.
 
     Rows are canonical accounts (former names resolve into them, as in the
     single-account view), grouped by the account's title in bill order
@@ -1097,7 +1149,7 @@ def subcommittee_grid(conn, subcommittee):
     sourced total has none -- the loaded accounts are never summed into one.
     -> {"subcommittee", "fiscal_years", "stages",
         "titles": [{"title", "total": row or None, "rows": [row ids]}],
-        "bill_total": row or None,
+        "bill_total": row or None, "state_counts": {state: cells},
         "rows": [{"account", "rollup" (scope or None), "rollup_members", "member_of",
                   "historical_names", "relationships", "series", "fiscal_year_span",
                   "cells": {"<fiscal_year>|<stage>": {"lines": [...], "outside_history"}}}]}
@@ -1128,9 +1180,16 @@ def subcommittee_grid(conn, subcommittee):
                 if y in own and st in own[y]:
                     cells[f"{y}|{st}"] = {"lines": own[y][st], "outside_history": False}
                 else:
-                    cells[f"{y}|{st}"] = {"outside_history": True, "lines": [
-                        {"amount_type": s["amount_type"], "component": s["component"], "state": "missing",
-                         "missing": True, "observations": [], "absence": None} for s in g["series"]]}
+                    lines = []
+                    for s in g["series"]:
+                        if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st:
+                            continue                     # as in history_grid: only where it can exist / is recorded
+                        state = cell_state([], None, y, st, h["coverage"])
+                        lines.append({"amount_type": s["amount_type"], "component": s["component"],
+                                      "component_kind": s["component_kind"], "component_label": s["component_label"],
+                                      "adds_to_headline": True, "state": state, "missing": state == "missing",
+                                      "observations": [], "absence": None})
+                    cells[f"{y}|{st}"] = {"outside_history": True, "lines": lines}
         return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
@@ -1172,8 +1231,15 @@ def subcommittee_grid(conn, subcommittee):
         ordered = [r for _, group in units for r in group]
         out_rows += ordered
         out_titles.append({"title": title, "total": total, "rows": [r["account"]["canonical_account_id"] for r in ordered]})
+    # every account's cells (totals included), by each cell's one state
+    state_counts = {st: 0 for st in CELL_STATES}
+    for r in rows.values():
+        for c in r["cells"].values():
+            st = headline_state(c["lines"])
+            if st:
+                state_counts[st] += 1
     return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
-            "bill_total": bill_total, "rows": out_rows}
+            "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts}
 
 
 def fmt_amount(v):

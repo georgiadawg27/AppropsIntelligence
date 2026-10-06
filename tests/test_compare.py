@@ -47,17 +47,18 @@ def label(line):
 
 def expected_cell(cell):
     """What the page must show for one cell, from the Python grid: the
-    whole-cell missing rule, the budget-authority headline, and every other
-    line behind "more"."""
+    whole-cell rule (nothing on file and one state: shown once, as that
+    state), the budget-authority headline (else the cell's first line), and
+    every other line behind "more". Only a figure shows an amount."""
     lines = cell["lines"]
-    if not lines or all(line["state"] == "missing" for line in lines):
+    if lines and all(not line["observations"] and not line.get("absence") and line["state"] == lines[0]["state"]
+                     for line in lines):
         return {"empty": True, "outside": cell["outside_history"]}
-    head = next((line for line in lines if line["amount_type"] == "budget authority" and not line["component"]),
-                {"amount_type": "budget authority", "component": None, "state": "missing", "observations": []})
+    head = next((line for line in lines if line["amount_type"] == "budget authority" and not line["component"]), lines[0])
+    shown = lambda line: [money(o["amount"]) for o in line["observations"]] if line["state"] == "value" else []
     return {"empty": False, "outside": cell["outside_history"],
-            "head": [head["state"], [money(o["amount"]) for o in head["observations"]]],
-            "more": [[label(line), line["state"], [money(o["amount"]) for o in line["observations"]]]
-                     for line in lines if line is not head]}
+            "head": [head["state"], shown(head)],
+            "more": [[label(line), line["state"], shown(line)] for line in lines if line is not head]}
 
 
 def with_sourced_totals(src, dst):
@@ -147,9 +148,12 @@ class GridData(CompareTest):
                             self.assertEqual(cell, {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
                             self.assertTrue(cell["outside_history"], (aid, y, st))
+                            # each series in its computed state: no figure or absence is there
+                            cov = S.history(conn, aid)["coverage"]
                             self.assertEqual([(line["amount_type"], line["component"], line["state"], line["observations"])
                                               for line in cell["lines"]],
-                                             [(s["amount_type"], s["component"], "missing", []) for s in own["series"]])
+                                             [(s["amount_type"], s["component"], S.cell_state([], None, y, st, cov), [])
+                                              for s in own["series"]])
         finally:
             conn.close()
 
@@ -189,7 +193,10 @@ class GridData(CompareTest):
             fy = int(key.split("|")[0])
             self.assertEqual(cell["outside_history"], fy == 2027, key)
             if cell["outside_history"]:
-                self.assertTrue(all(line["state"] == "missing" for line in cell["lines"]), key)
+                # no figure or absence: FY2027's computed states (only the House report covers it; nothing enacted)
+                st = key.split("|")[1]
+                self.assertEqual({line["state"] for line in cell["lines"]},
+                                 {"House Reported": {"missing"}, "Enacted": {"not_enacted"}}.get(st, {"not_collected"}), key)
         # before: FY2027 was in its history as a missing gap
         before = self.row("ACC-OSTP")
         self.assertEqual(before["fiscal_year_span"], [2017, 2027])
@@ -555,7 +562,7 @@ class CompareBrowser(CompareTest):
                         self.assertEqual(self.cell("ACC-NASA-EXPLORATION", y, st)
                                          .locator("details.more .line[data-series=supplemental] .amt").all_text_contents(),
                                          [money(o["amount"]) for o in line["observations"]])
-        self.assertEqual(n, 9)
+        self.assertEqual(n, 4)          # the other five supplemental lines print a zero: not funded, no figure
 
     def test_rra_expands_to_the_defense_function_line(self):
         self.open("static")
@@ -567,22 +574,29 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(got.get_attribute("data-state"), "value")
                 self.assertEqual(got.locator(".amt").all_text_contents(), [money(o["amount"]) for o in defense["observations"]])
 
-    def test_confirmed_absence_is_not_applicable_never_blank_or_zero(self):
+    def test_confirmed_absence_is_not_funded_never_blank_or_zero(self):
         self.open("static")
         spaceops = self.row("ACC-NASA-SPACEOPS")
-        n = 0
+        n = absences = 0
         for y in YEARS:
             for st in FOUR:
                 resc = next(line for line in spaceops["cells"][f"{y}|{st}"]["lines"] if line["amount_type"] == "rescission")
                 line = self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more .line[data-series=rescission]")
                 self.assertEqual(line.get_attribute("data-state"), resc["state"], (y, st))
-                if resc["state"] == "not_applicable":
+                if resc["state"] == "not_funded":
                     n += 1
+                    absences += bool(resc["absence"])
                     self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more > summary").click()
-                    self.assertTrue(line.locator("[data-testid=not-applicable]").is_visible())
-                    self.assertEqual(line.locator("[data-testid=not-applicable]").inner_text(), "not applicable")
+                    chip = line.locator("[data-testid=not-funded]")
+                    self.assertTrue(chip.is_visible())
+                    self.assertEqual(chip.inner_text(), "None")              # a rescission line: "None"
+                    # hover shows the evidence: the absence's, or the printed dash / zero's page
+                    self.assertEqual(chip.get_attribute("title"), resc["absence"]["evidence"] if resc["absence"] else
+                                     "Printed as a dash or zero (%s%s)." % (resc["observations"][0]["source_document_id"],
+                                     f" p.{resc['observations'][0]['source_page']}" if resc["observations"][0]["source_page"] else ""))
                     self.assertEqual(line.locator(".amt").count(), 0)
-        self.assertEqual(n, 34)                     # v23 added FY2019's three 'NASA closeouts' cells
+        self.assertEqual(absences, 34)              # v23 added FY2019's three 'NASA closeouts' cells
+        self.assertGreaterEqual(n, absences)
 
     def test_narrow_filter_fy2026_enacted(self):
         for where in self.urls:
