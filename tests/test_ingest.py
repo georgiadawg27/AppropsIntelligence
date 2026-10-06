@@ -23,7 +23,7 @@ sys.path.insert(0, str(ROOT))
 import govinfo_ingest as g  # noqa: E402
 
 KEY = os.environ.get("GOVINFO_API_KEY")
-needs_key = unittest.skipUnless(KEY, "GOVINFO_API_KEY not set in .env")
+needs_key = unittest.skipUnless(KEY, "GOVINFO_API_KEY not set (.env locally; a repository secret in CI) -- live govinfo API test")
 
 
 class TempStore:
