@@ -11,6 +11,8 @@ tests need playwright + chromium, as tests/test_web.py.
 import functools
 import http.server
 import json
+import multiprocessing
+import os
 import shutil
 import subprocess
 import sys
@@ -34,6 +36,15 @@ NODE = shutil.which("node")
 
 def fresh_export(out):
     return E.export(WORKBOOK, out)
+
+
+def python_answers(db, queries):
+    """approps_store.resolve()'s answers for a slice of the queries (one worker's share)."""
+    conn = S.connect(db, readonly=True)
+    try:
+        return [python_answer(S.resolve(conn, q)) for q in queries]
+    finally:
+        conn.close()
 
 
 def names_and_variants(pool):
@@ -147,9 +158,6 @@ class MatcherParity(StaticTest):
     def test_same_answers_as_python(self):
         queries = names_and_variants(self.index["accounts"])
         self.assertGreater(len(queries), 2000)
-        conn = S.connect(self.db, readonly=True)
-        want = [python_answer(S.resolve(conn, q)) for q in queries]
-        conn.close()
         script = f"""
             const m = require({json.dumps(str(ROOT / "web" / "match.js"))});
             const idx = require({json.dumps(str(self.out / "data" / "index.json"))});
@@ -163,8 +171,18 @@ class MatcherParity(StaticTest):
             }});
             process.stdout.write(JSON.stringify(out));
         """
-        got = json.loads(subprocess.run([NODE, "-e", script], input=json.dumps(queries), capture_output=True,
-                                        text=True, check=True).stdout)
+        # node answers while Python's answers are worked out across the CPUs (same queries, same order)
+        node = subprocess.Popen([NODE, "-e", script], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        n = max(1, min(os.cpu_count() or 1, 8))
+        chunks = [queries[i::n] for i in range(n)]
+        with multiprocessing.get_context("spawn").Pool(n) as pool:
+            parts = pool.starmap(python_answers, [(str(self.db), c) for c in chunks])
+        want = [None] * len(queries)
+        for i, part in enumerate(parts):
+            want[i::n] = part
+        out, err = node.communicate(json.dumps(queries))
+        self.assertEqual(node.returncode, 0, err)
+        got = json.loads(out)
         diffs = [(q, w, g) for q, w, g in zip(queries, want, got) if w != g]
         self.assertEqual(diffs[:3], [])
         kinds = {w["match"] for w in want}
