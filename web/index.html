@@ -94,6 +94,10 @@
                   font-weight: 600; letter-spacing: .02em; background: var(--warn-bg); color: var(--warn-fg); cursor: help; }
   #compare-grid tr.rollup > td, #compare-grid tr.rollup > th { background: var(--warn-bg); }
   #compare-grid tr.member > th.acct { padding-left: 22px; }
+  #compare-grid tr.child > th.acct { padding-left: 40px; }
+  .child-of { font-style: italic; }
+  .stage-note-mark { color: var(--accent); cursor: help; font-weight: 600; }
+  .stage-notes { font-size: 13px; color: var(--muted); margin: 8px 0 0; padding-left: 18px; }
   #compare-grid tr.title-head > * { background: var(--bg); font-weight: 700; font-size: 14px; color: var(--fg);
                                     border-top: 2px solid var(--line); }
   #compare-grid tr.title-head .title-meta { font-weight: 400; color: var(--muted); font-size: 12px; }
@@ -105,7 +109,7 @@
 <body>
 <main>
   <h1>Appropriations history</h1>
-  <p class="sub">CJS Title III pilot &middot; read-only &middot; every figure cites the document and page it came from</p>
+  <p class="sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
   <p class="sub" id="freshness" hidden data-testid="freshness"></p>
   <noscript><p class="error">This page needs JavaScript to search and show account histories.</p></noscript>
 
@@ -343,7 +347,8 @@ function cite(o) {
   const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
   return el("details", { class: "src", "data-testid": "source" },
     el("summary", { text: "source", title: label }),
-    el("div", { class: "cite" }, href ? el("a", { href, target: "_blank", rel: "noopener", text: label }) : label));
+    el("div", { class: "cite" }, href ? el("a", { href, target: "_blank", rel: "noopener", text: label }) : label),
+    o.document_notes ? el("div", { class: "cite", "data-testid": "document-note", text: o.document_notes }) : null);
 }
 
 function renderGrid(grid, h) {
@@ -357,6 +362,8 @@ function renderGrid(grid, h) {
     for (const stage of grid.stages) {
       const lines = row.cells[stage];
       const td = el("td", { dataset: { stage, testid: "cell" } });
+      const note = (h.stage_notes || {})[row.fiscal_year + "|" + stage];
+      if (note) td.append(noteMark(note));
       const only = emptyState(lines);
       if (only) {
         td.className = "empty";
@@ -370,6 +377,24 @@ function renderGrid(grid, h) {
     body.append(tr);
   }
   t.append(body);
+  t.parentNode.querySelector(".stage-notes")?.remove();
+  const notes = stageNoteList(h.stage_notes, grid.rows.map((r) => r.fiscal_year), grid.stages);
+  if (notes) t.parentNode.append(notes);
+}
+
+// A Bill Report Reference note on a fiscal year + stage (v33: e.g. FY2023 Labor-HHS Senate Reported is
+// a committee draft, never reported): a marker in the cell or column, and the note itself under the grid.
+function noteMark(note) {
+  return el("span", { class: "stage-note-mark", title: note, "data-testid": "stage-note-mark", text: "\u2020 " });
+}
+function stageNoteList(notes, years, stages) {
+  const items = Object.entries(notes || {}).filter(([k]) => {
+    const [y, st] = k.split("|");
+    return years.includes(Number(y)) && stages.includes(st);
+  });
+  if (!items.length) return null;
+  return el("ul", { class: "stage-notes", "data-testid": "stage-notes" },
+    ...items.map(([k, n]) => { const [y, st] = k.split("|"); return el("li", { text: `\u2020 FY${y} ${st}: ${n}` }); }));
 }
 
 // What an account's records cover: the fiscal years of its figures and confirmed absences --
@@ -535,10 +560,14 @@ function renderCompare(grid, years, stages) {
   t.append(el("thead", {},
     el("tr", {}, el("th", { class: "acct", rowspan: "2", text: "Account" }),
       ...shownYears.map((y) => el("th", { class: "fy-head", colspan: String(shownStages.length), text: "FY" + y }))),
-    el("tr", {}, ...cols.map(([y, st]) => el("th", { class: first(st) ? "first-stage" : "",
-                                                          title: st, text: STAGE_SHORT[st] || st })))));
+    el("tr", {}, ...cols.map(([y, st]) => {
+      const note = (grid.stage_notes || {})[y + "|" + st];
+      return el("th", { class: first(st) ? "first-stage" : "", title: note ? `${st} \u2014 ${note}` : st },
+        note ? noteMark(note) : null, STAGE_SHORT[st] || st);
+    }))));
   const body = el("tbody");
   const byId = new Map(grid.rows.map((r) => [r.account.canonical_account_id, r]));
+  for (const r of grid.rows) NAME_OF.set(r.account.canonical_account_id, r.account.canonical_name);
   // a sourced total (a rollup the workbook notes as a title or bill total), or
   // a note saying there is none -- never a sum of the loaded accounts
   const totalRow = (label, row, none, testid, title) => {
@@ -563,8 +592,14 @@ function renderCompare(grid, years, stages) {
     for (const id of group.rows) body.append(renderCompareRow(byId.get(id), cols, first));
   }
   t.append(body);
+  t.parentNode.querySelector(".stage-notes")?.remove();
+  const notes = stageNoteList(grid.stage_notes, shownYears, shownStages);
+  if (notes) t.parentNode.append(notes);
+  NAME_OF.clear();
   $("#compare-result").hidden = false;
 }
+
+const NAME_OF = new Map();      // account id -> name, for the rows being rendered
 
 function renderCompareRow(row, cols, first) {
   const a = row.account;
@@ -607,6 +642,12 @@ function renderCompareRow(row, cols, first) {
     }
   }
   if (row.member_of) cls.push("member");
+  // an account inside another account's figure (Account.parent_account_id): indented under it, never added
+  if (a.parent_account_id) {
+    cls.push("child");
+    head.append(el("div", { class: "meta child-of", "data-testid": "row-child-of",
+      text: `within ${NAME_OF.get(a.parent_account_id) || a.parent_account_id} \u2014 inside its figure, not added` }));
+  }
   const tr = el("tr", { class: cls.join(" "), dataset: { account: a.canonical_account_id, testid: "compare-row",
                                                          ...(row.member_of ? { memberOf: row.member_of } : {}) } }, head);
   for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));

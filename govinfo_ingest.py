@@ -189,7 +189,8 @@ def pdf_link_for(package_id, summary):
 
 
 def download(link, api_key):
-    req = Request(f"{link}?api_key={api_key}", headers={"Accept": "application/pdf"})
+    # the same cleaned key as api_get: a key pasted with whitespace or quotes works for both
+    req = Request(f"{link}?api_key={clean_key(api_key)}", headers={"Accept": "application/pdf"})
     with urlopen(req) as resp:
         return resp.read()
 
@@ -258,7 +259,10 @@ STAGES = ("President's Budget", "House Reported", "Senate Reported", "House Pass
 # explanatory_statement: a committee's own explanatory statement that is no
 # report and no JES -- e.g. a Senate chair's draft posted with an unreported
 # bill (FY2023 Labor-HHS: S. 4659 introduced, never reported)
-DOC_TYPES = ("committee_report", "jes", "explanatory_statement", "bill", "public_law", "other")
+# congressional_budget_justification: an agency's budget justification to the
+# Appropriations Committees (e.g. the FY2026 Administration for a Healthy America CJ)
+DOC_TYPES = ("committee_report", "jes", "explanatory_statement", "bill", "public_law",
+             "congressional_budget_justification", "other")
 
 
 def manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash):
@@ -282,7 +286,7 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
         raise ValueError(f"stage must be one of {STAGES}, got {stage!r}")
     if doc_type not in DOC_TYPES:
         raise ValueError(f"doc_type must be one of {DOC_TYPES}, got {doc_type!r}")
-    if advance_copy and doc_type in ("jes", "explanatory_statement"):
+    if advance_copy and doc_type in ("jes", "explanatory_statement", "congressional_budget_justification"):
         raise ValueError(f"a {doc_type} is never a govinfo package, so it can't be an advance copy of one")
     if publication_date:
         datetime.strptime(publication_date, "%Y-%m-%d")       # reject a malformed date up front

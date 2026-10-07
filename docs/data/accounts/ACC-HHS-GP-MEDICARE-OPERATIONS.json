@@ -11,6 +11,78 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0034",
+        "confirmed_date": "2026-10-06",
+        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+        "document_type": "explanatory_statement",
+        "evidence": "No 'Medicare Operations (Sec. nnn)' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Medicare Operations|Traditional Medicare Program/; the Title II table pp. 399-419 and the table's end p.437 included).",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-28",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": false,
        "observations": [
         {
@@ -829,7 +901,24 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0034",
+    "confirmed_date": "2026-10-06",
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_type": "explanatory_statement",
+    "evidence": "No 'Medicare Operations (Sec. nnn)' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Medicare Operations|Traditional Medicare Program/; the Title II table pp. 399-419 and the table's end p.437 included).",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-28",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+   }
+  ],
   "account": {
    "agency": "Department of Health and Human Services",
    "bureau": "General Provisions",
@@ -851,6 +940,18 @@
     [
      2023,
      "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
     ],
     [
      2024,
@@ -909,6 +1010,18 @@
   },
   "historical_names": [],
   "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
    [
     2024,
     "President's Budget"
@@ -1494,6 +1607,18 @@
   ],
   "open_cells": [
    [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
     2024,
     "President's Budget"
    ],
@@ -1515,6 +1640,9 @@
    ]
   ],
   "relationships": [],
+  "stage_notes": {
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
   "total_scope": null
  }
 }

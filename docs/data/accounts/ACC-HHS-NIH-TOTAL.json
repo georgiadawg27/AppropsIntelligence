@@ -84,76 +84,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 1085000000,
-         "amount_type": "budget authority",
-         "bill_id": "P.L.117-328",
-         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
-         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2024,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-0335",
-         "observation_id": "OBS-LHHS-0338",
-         "offsetting_collections": 0,
-         "publication_date": "2023-07-27",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT84",
-         "source_page": "392",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [2023 appropriation]",
-         "stage": "Enacted",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01386"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01387"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01388"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01389"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level",
        "component_kind": "view",
        "component_label": "program level",
@@ -300,8 +230,155 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 46038300000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0522",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "816",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Bill] Scope as printed in H.Rept. 117-403: includes the four 'NIH Innovation Account, CURES Act' lines; ARPA-H is printed under NIH in the request column (5,000,000) and '---' in the Bill column, where the committee places it under the Office of the Secretary (p.836).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02102"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02103"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02104"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02105"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02106"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02107"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 47459000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0522",
+         "observation_id": "OBS-LHHS-0523",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "816",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02108"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02109"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02110"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02111"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02112"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -313,8 +390,155 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 48961713000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2023/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0525",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "816",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2023 Request] Scope as printed in H.Rept. 117-403: includes the four 'NIH Innovation Account, CURES Act' lines; ARPA-H is printed under NIH in the request column (5,000,000) and '---' in the Bill column, where the committee places it under the Office of the Secretary (p.836).",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02118"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02119"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02120"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02121"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02122"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-02317"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 50233218000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2023/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0525",
+         "observation_id": "OBS-LHHS-0526",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "816",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2023 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02123"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02124"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02125"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02126"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-02318"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -326,8 +550,157 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 46529687000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0560",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+         "source_page": "407",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Committee recommendation] Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02261"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02262"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02263"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02264"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02265"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02266"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 47959000000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-0560",
+         "observation_id": "OBS-LHHS-0561",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+         "source_page": "407",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-02267"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02268"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02269"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02270"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02271"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -405,82 +778,6 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-01394"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 407000000,
-         "amount_type": "budget authority",
-         "bill_id": "P.L.118-47",
-         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
-         "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2025,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2024,
-         "headline_observation_id": "OBS-LHHS-0339",
-         "observation_id": "OBS-LHHS-0342",
-         "offsetting_collections": 0,
-         "publication_date": "2024-08-01",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT207",
-         "source_page": "452",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [2024 appropriation]",
-         "stage": "Enacted",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01405"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01406"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01407"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-01408"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01409"
           }
          ],
          "verification_status": "auto-validated"
@@ -735,70 +1032,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 407000000,
-         "amount_type": "budget authority",
-         "bill_id": "PREX 2.8:2024/APP",
-         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
-         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2024,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2024,
-         "headline_observation_id": "OBS-LHHS-0343",
-         "observation_id": "OBS-LHHS-0346",
-         "offsetting_collections": 0,
-         "publication_date": "2023-07-27",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT84",
-         "source_page": "392",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Budget estimate]",
-         "stage": "President's Budget",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01423"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01424"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01425"
-          }
-         ],
-         "verification_status": "unverified"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level",
        "component_kind": "view",
        "component_label": "program level",
@@ -1023,76 +1256,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 407000000,
-         "amount_type": "budget authority",
-         "bill_id": "S.2624",
-         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "Senate",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2024,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2024,
-         "headline_observation_id": "OBS-LHHS-0347",
-         "observation_id": "OBS-LHHS-0350",
-         "offsetting_collections": 0,
-         "publication_date": "2023-07-27",
-         "report_id": "S.Rept.118-84",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT84",
-         "source_page": "392",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-         "stage": "Senate Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01442"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01443"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01444"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01445"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level",
        "component_kind": "view",
        "component_label": "program level",
@@ -1304,58 +1467,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 127000000,
-         "amount_type": "budget authority",
-         "bill_id": "P.L.119-4",
-         "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
-         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2026,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2025,
-         "headline_observation_id": "OBS-LHHS-0480",
-         "observation_id": "OBS-LHHS-0483",
-         "offsetting_collections": 0,
-         "publication_date": "2025-09-11",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT271",
-         "source_page": "366",
-         "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'CURES Act' (127,000) [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
-         "stage": "Enacted",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-01949"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -1527,82 +1638,6 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01450"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 127000000,
-         "amount_type": "budget authority",
-         "bill_id": "H.R.9029",
-         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "House",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2025,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2025,
-         "headline_observation_id": "OBS-LHHS-0351",
-         "observation_id": "OBS-LHHS-0354",
-         "offsetting_collections": 0,
-         "publication_date": "2024-07-12",
-         "report_id": "H.Rept.118-585",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118HRPT585",
-         "source_page": "339",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Bill]",
-         "stage": "House Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01461"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01462"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01463"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01464"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01465"
           }
          ],
          "verification_status": "auto-validated"
@@ -1844,76 +1879,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 127000000,
-         "amount_type": "budget authority",
-         "bill_id": "PREX 2.8:2025/APP",
-         "bill_report_reference_id": "BR-LHHS-FY2025-PB",
-         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2025,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2025,
-         "headline_observation_id": "OBS-LHHS-0355",
-         "observation_id": "OBS-LHHS-0358",
-         "offsetting_collections": 0,
-         "publication_date": "2024-08-01",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT207",
-         "source_page": "452",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Budget estimate]",
-         "stage": "President's Budget",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01481"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01482"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-01483"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01484"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -2144,76 +2109,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 127000000,
-         "amount_type": "budget authority",
-         "bill_id": "S.4942",
-         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "Senate",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2025,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2025,
-         "headline_observation_id": "OBS-LHHS-0359",
-         "observation_id": "OBS-LHHS-0362",
-         "offsetting_collections": 0,
-         "publication_date": "2024-08-01",
-         "report_id": "S.Rept.118-207",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT207",
-         "source_page": "452",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-         "stage": "Senate Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01500"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01501"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01502"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01503"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -2425,64 +2320,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 226000000,
-         "amount_type": "budget authority",
-         "bill_id": "P.L.119-75",
-         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
-         "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2026,
-         "document_stage": "Enacted",
-         "document_type": "explanatory_statement",
-         "extraction_method": "human-entered",
-         "fiscal_year": 2026,
-         "headline_observation_id": "OBS-LHHS-0363",
-         "observation_id": "OBS-LHHS-0366",
-         "offsetting_collections": 0,
-         "publication_date": "2026-01-22",
-         "report_id": "JES_LHHS_P.L.119-75",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
-         "source_agency": "House Committee on Appropriations (Congressional Record)",
-         "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
-         "source_page": "296",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act (under the title total)' [FINAL BILL]",
-         "stage": "Enacted",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-01507"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01508"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -2654,82 +2491,6 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01513"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 226000000,
-         "amount_type": "budget authority",
-         "bill_id": "H.R.5304",
-         "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "House",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2026,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2026,
-         "headline_observation_id": "OBS-LHHS-0367",
-         "observation_id": "OBS-LHHS-0370",
-         "offsetting_collections": 0,
-         "publication_date": "2025-09-11",
-         "report_id": "H.Rept.119-271",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT271",
-         "source_page": "366",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Bill]",
-         "stage": "House Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01524"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01525"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01526"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01527"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01528"
           }
          ],
          "verification_status": "auto-validated"
@@ -2965,76 +2726,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 226000000,
-         "amount_type": "budget authority",
-         "bill_id": "PREX 2.8:2026/APP",
-         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
-         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2026,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2026,
-         "headline_observation_id": "OBS-LHHS-0371",
-         "observation_id": "OBS-LHHS-0374",
-         "offsetting_collections": 0,
-         "publication_date": "2025-09-11",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT271",
-         "source_page": "366",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [FY 2026 Request]",
-         "stage": "President's Budget",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01541"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01542"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01543"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01544"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -3241,70 +2932,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 226000000,
-         "amount_type": "budget authority",
-         "bill_id": "S.2587",
-         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "Senate",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2026,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2026,
-         "headline_observation_id": "OBS-LHHS-0375",
-         "observation_id": "OBS-LHHS-0377",
-         "offsetting_collections": 0,
-         "publication_date": "2025-08-01",
-         "report_id": "S.Rept.119-55",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119SRPT55",
-         "source_page": "442",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-         "stage": "Senate Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01551"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01552"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01553"
-          }
-         ],
-         "verification_status": "unverified"
-        }
-       ],
-       "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_with_cures_and_phs_evaluation_act_funding",
        "component_kind": "view",
        "component_label": "program level (with CURES and PHS Evaluation Act Funding)",
@@ -3460,82 +3087,6 @@
         }
        ],
        "state": "value"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 0,
-         "amount_type": "budget authority",
-         "bill_id": "H.R.9260",
-         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
-         "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "House",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2027,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2027,
-         "headline_observation_id": "OBS-LHHS-0378",
-         "observation_id": "OBS-LHHS-0381",
-         "offsetting_collections": 0,
-         "publication_date": "2026-06-11",
-         "report_id": "H.Rept.119-696",
-         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT696",
-         "source_page": "396",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee Recommendation]",
-         "stage": "House Reported",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01569"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01570"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01571"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01572"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01573"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "not_funded"
       },
       {
        "absence": null,
@@ -3765,76 +3316,6 @@
        "absence": null,
        "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "CURES",
-       "component_kind": "contained",
-       "component_label": "CURES Act",
-       "missing": false,
-       "observations": [
-        {
-         "amount": 0,
-         "amount_type": "budget authority",
-         "bill_id": "PREX 2.8:2027/APP",
-         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
-         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
-         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-         "chamber": "N/A",
-         "component": "CURES",
-         "component_kind": "contained",
-         "component_label": "CURES Act",
-         "confidence": 0.95,
-         "document_fiscal_year": 2027,
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
-         "fiscal_year": 2027,
-         "headline_observation_id": "OBS-LHHS-0382",
-         "observation_id": "OBS-LHHS-0385",
-         "offsetting_collections": 0,
-         "publication_date": "2026-06-11",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT696",
-         "source_page": "396",
-         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [FY 2027 Request*]",
-         "stage": "President's Budget",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01586"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01587"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01588"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01589"
-          }
-         ],
-         "verification_status": "auto-validated"
-        }
-       ],
-       "state": "not_funded"
-      },
-      {
-       "absence": null,
-       "adds_to_headline": false,
-       "amount_type": "budget authority",
        "component": "program_level_excluding_arpa_h",
        "component_kind": "view",
        "component_label": "program level (excluding ARPA-H)",
@@ -3998,12 +3479,6 @@
    },
    {
     "amount_type": "budget authority",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act"
-   },
-   {
-    "amount_type": "budget authority",
     "component": "program_level",
     "component_kind": "view",
     "component_label": "program level"
@@ -4051,6 +3526,18 @@
     [
      2023,
      "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
     ],
     [
      2024,
@@ -4110,6 +3597,410 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 48961713000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2023/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0525",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "816",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2023 Request] Scope as printed in H.Rept. 117-403: includes the four 'NIH Innovation Account, CURES Act' lines; ARPA-H is printed under NIH in the request column (5,000,000) and '---' in the Bill column, where the committee places it under the Office of the Secretary (p.836).",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02118"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02119"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02120"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02121"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02122"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-02317"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 50233218000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2023/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0525",
+    "observation_id": "OBS-LHHS-0526",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "816",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2023 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02123"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02124"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02125"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02126"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-02318"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 46038300000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0522",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "816",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Bill] Scope as printed in H.Rept. 117-403: includes the four 'NIH Innovation Account, CURES Act' lines; ARPA-H is printed under NIH in the request column (5,000,000) and '---' in the Bill column, where the committee places it under the Office of the Secretary (p.836).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02102"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02103"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02104"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02105"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02106"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02107"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 47459000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0522",
+    "observation_id": "OBS-LHHS-0523",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "816",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02108"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02109"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02110"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02111"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02112"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 46529687000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0560",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "source_page": "407",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Committee recommendation] Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02261"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02262"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02263"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02264"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02265"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02266"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 47959000000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-0560",
+    "observation_id": "OBS-LHHS-0561",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "source_page": "407",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-02267"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02268"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02269"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02270"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02271"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 47546518000,
     "amount_type": "budget authority",
@@ -4173,64 +4064,6 @@
      }
     ],
     "verification_status": "flagged"
-   },
-   {
-    "amount": 1085000000,
-    "amount_type": "budget authority",
-    "bill_id": "P.L.117-328",
-    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
-    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2024,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-0335",
-    "observation_id": "OBS-LHHS-0338",
-    "offsetting_collections": 0,
-    "publication_date": "2023-07-27",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "source_page": "392",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [2023 appropriation]",
-    "stage": "Enacted",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01386"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01387"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01388"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01389"
-     }
-    ],
-    "verification_status": "auto-validated"
    },
    {
     "amount": 48959000000,
@@ -4411,58 +4244,6 @@
      }
     ],
     "verification_status": "auto-validated"
-   },
-   {
-    "amount": 407000000,
-    "amount_type": "budget authority",
-    "bill_id": "PREX 2.8:2024/APP",
-    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
-    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2024,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2024,
-    "headline_observation_id": "OBS-LHHS-0343",
-    "observation_id": "OBS-LHHS-0346",
-    "offsetting_collections": 0,
-    "publication_date": "2023-07-27",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "source_page": "392",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Budget estimate]",
-    "stage": "President's Budget",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01423"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01424"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01425"
-     }
-    ],
-    "verification_status": "unverified"
    },
    {
     "amount": 50770089000,
@@ -4649,64 +4430,6 @@
      }
     ],
     "verification_status": "flagged"
-   },
-   {
-    "amount": 407000000,
-    "amount_type": "budget authority",
-    "bill_id": "S.2624",
-    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "Senate",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2024,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2024,
-    "headline_observation_id": "OBS-LHHS-0347",
-    "observation_id": "OBS-LHHS-0350",
-    "offsetting_collections": 0,
-    "publication_date": "2023-07-27",
-    "report_id": "S.Rept.118-84",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "source_page": "392",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-    "stage": "Senate Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01442"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01443"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01444"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01445"
-     }
-    ],
-    "verification_status": "auto-validated"
    },
    {
     "amount": 49224000000,
@@ -4896,70 +4619,6 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-01394"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": 407000000,
-    "amount_type": "budget authority",
-    "bill_id": "P.L.118-47",
-    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
-    "bill_url": "https://www.govinfo.gov/app/details/PLAW-118publ47",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2025,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2024,
-    "headline_observation_id": "OBS-LHHS-0339",
-    "observation_id": "OBS-LHHS-0342",
-    "offsetting_collections": 0,
-    "publication_date": "2024-08-01",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "source_page": "452",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [2024 appropriation]",
-    "stage": "Enacted",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01405"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01406"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01407"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-01408"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01409"
      }
     ],
     "verification_status": "auto-validated"
@@ -5157,64 +4816,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 127000000,
-    "amount_type": "budget authority",
-    "bill_id": "PREX 2.8:2025/APP",
-    "bill_report_reference_id": "BR-LHHS-FY2025-PB",
-    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP.pdf",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2025,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2025,
-    "headline_observation_id": "OBS-LHHS-0355",
-    "observation_id": "OBS-LHHS-0358",
-    "offsetting_collections": 0,
-    "publication_date": "2024-08-01",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "source_page": "452",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Budget estimate]",
-    "stage": "President's Budget",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01481"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01482"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-01483"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01484"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
     "amount": 48330482000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2025/APP",
@@ -5402,70 +5003,6 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01450"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": 127000000,
-    "amount_type": "budget authority",
-    "bill_id": "H.R.9029",
-    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118hr9029rh",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "House",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2025,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2025,
-    "headline_observation_id": "OBS-LHHS-0351",
-    "observation_id": "OBS-LHHS-0354",
-    "offsetting_collections": 0,
-    "publication_date": "2024-07-12",
-    "report_id": "H.Rept.118-585",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118HRPT585",
-    "source_page": "339",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Bill]",
-    "stage": "House Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118hrpt585",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01461"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01462"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01463"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01464"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01465"
      }
     ],
     "verification_status": "auto-validated"
@@ -5663,64 +5200,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 127000000,
-    "amount_type": "budget authority",
-    "bill_id": "S.4942",
-    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s4942rs",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "Senate",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2025,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2025,
-    "headline_observation_id": "OBS-LHHS-0359",
-    "observation_id": "OBS-LHHS-0362",
-    "offsetting_collections": 0,
-    "publication_date": "2024-08-01",
-    "report_id": "S.Rept.118-207",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "source_page": "452",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-    "stage": "Senate Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt207",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01500"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01501"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01502"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01503"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
     "amount": 48851000000,
     "amount_type": "budget authority",
     "bill_id": "S.4942",
@@ -5889,46 +5368,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 127000000,
-    "amount_type": "budget authority",
-    "bill_id": "P.L.119-4",
-    "bill_report_reference_id": "BR-LHHS-FY2025-ENACTED",
-    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ4",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2026,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2025,
-    "headline_observation_id": "OBS-LHHS-0480",
-    "observation_id": "OBS-LHHS-0483",
-    "offsetting_collections": 0,
-    "publication_date": "2025-09-11",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119HRPT271",
-    "source_page": "366",
-    "source_table_or_section": "Title II, ACC-HHS-NIH-TOTAL -- printed as 'CURES Act' (127,000) [FY 2025 Estimate], PDF p.366 (printed p.362). Source: H.Rept. 119-271's 'FY 2025 Estimate' column, which the report defines (pp.319-320) as 'FY 2025 Operating Plans and other available information'; FY2025 was a full-year continuing resolution (P.L. 119-4, Full-Year Continuing Appropriations Act, 2025, division A). Equals the P.L. 119-4 level: P.L. 119-4 sec. 1905, 139 Stat. 32: NIH Innovation Account, CURES Act 'substituting \"$127,000,000\" for \"$407,000,000\"'.",
-    "stage": "Enacted",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-01949"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
     "amount": 46801000000,
     "amount_type": "budget authority",
     "bill_id": "P.L.119-4",
@@ -6062,64 +5501,6 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01532"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": 226000000,
-    "amount_type": "budget authority",
-    "bill_id": "PREX 2.8:2026/APP",
-    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
-    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2026,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2026,
-    "headline_observation_id": "OBS-LHHS-0371",
-    "observation_id": "OBS-LHHS-0374",
-    "offsetting_collections": 0,
-    "publication_date": "2025-09-11",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119HRPT271",
-    "source_page": "366",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [FY 2026 Request]",
-    "stage": "President's Budget",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01541"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01542"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01543"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01544"
      }
     ],
     "verification_status": "auto-validated"
@@ -6305,70 +5686,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 226000000,
-    "amount_type": "budget authority",
-    "bill_id": "H.R.5304",
-    "bill_report_reference_id": "BR-LHHS-FY2026-HOUSE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr5304rh",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "House",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2026,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2026,
-    "headline_observation_id": "OBS-LHHS-0367",
-    "observation_id": "OBS-LHHS-0370",
-    "offsetting_collections": 0,
-    "publication_date": "2025-09-11",
-    "report_id": "H.Rept.119-271",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119HRPT271",
-    "source_page": "366",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Bill]",
-    "stage": "House Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt271",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01524"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01525"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01526"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01527"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01528"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
     "amount": 46900000000,
     "amount_type": "budget authority",
     "bill_id": "H.R.5304",
@@ -6549,58 +5866,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 226000000,
-    "amount_type": "budget authority",
-    "bill_id": "S.2587",
-    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119s2587rs",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "Senate",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2026,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2026,
-    "headline_observation_id": "OBS-LHHS-0375",
-    "observation_id": "OBS-LHHS-0377",
-    "offsetting_collections": 0,
-    "publication_date": "2025-08-01",
-    "report_id": "S.Rept.119-55",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119SRPT55",
-    "source_page": "442",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee recommendation]",
-    "stage": "Senate Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119srpt55",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01551"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01552"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01553"
-     }
-    ],
-    "verification_status": "unverified"
-   },
-   {
     "amount": 48701000000,
     "amount_type": "budget authority",
     "bill_id": "S.2587",
@@ -6688,52 +5953,6 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-01504"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": 226000000,
-    "amount_type": "budget authority",
-    "bill_id": "P.L.119-75",
-    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
-    "bill_url": "https://www.govinfo.gov/app/details/PLAW-119publ75",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2026,
-    "document_stage": "Enacted",
-    "document_type": "explanatory_statement",
-    "extraction_method": "human-entered",
-    "fiscal_year": 2026,
-    "headline_observation_id": "OBS-LHHS-0363",
-    "observation_id": "OBS-LHHS-0366",
-    "offsetting_collections": 0,
-    "publication_date": "2026-01-22",
-    "report_id": "JES_LHHS_P.L.119-75",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
-    "source_agency": "House Committee on Appropriations (Congressional Record)",
-    "source_document_id": "SRC-EXPL-LHHS-FY2026-ENACTED",
-    "source_page": "296",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act (under the title total)' [FINAL BILL]",
-    "stage": "Enacted",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CREC-2026-01-22/CREC-2026-01-22-pt2-PgH1353-2",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-01507"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01508"
      }
     ],
     "verification_status": "auto-validated"
@@ -6872,64 +6091,6 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01577"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": 0,
-    "amount_type": "budget authority",
-    "bill_id": "PREX 2.8:2027/APP",
-    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
-    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "N/A",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2027,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2027,
-    "headline_observation_id": "OBS-LHHS-0382",
-    "observation_id": "OBS-LHHS-0385",
-    "offsetting_collections": 0,
-    "publication_date": "2026-06-11",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119HRPT696",
-    "source_page": "396",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [FY 2027 Request*]",
-    "stage": "President's Budget",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01586"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01587"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01588"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01589"
      }
     ],
     "verification_status": "auto-validated"
@@ -7115,70 +6276,6 @@
     "verification_status": "auto-validated"
    },
    {
-    "amount": 0,
-    "amount_type": "budget authority",
-    "bill_id": "H.R.9260",
-    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
-    "bill_url": "https://www.govinfo.gov/app/details/BILLS-119hr9260rh",
-    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
-    "chamber": "House",
-    "component": "CURES",
-    "component_kind": "contained",
-    "component_label": "CURES Act",
-    "confidence": 0.95,
-    "document_fiscal_year": 2027,
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2027,
-    "headline_observation_id": "OBS-LHHS-0378",
-    "observation_id": "OBS-LHHS-0381",
-    "offsetting_collections": 0,
-    "publication_date": "2026-06-11",
-    "report_id": "H.Rept.119-696",
-    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119HRPT696",
-    "source_page": "396",
-    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'CURES Act' [Committee Recommendation]",
-    "stage": "House Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-119hrpt696",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01569"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01570"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-01571"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-01572"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-01573"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
     "amount": 47316000000,
     "amount_type": "budget authority",
     "bill_id": "H.R.9260",
@@ -7309,18 +6406,6 @@
   ],
   "open_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ],
-   [
     2024,
     "House Reported"
    ],
@@ -7353,6 +6438,9 @@
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
   ],
+  "stage_notes": {
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
   "total_scope": "agency"
  }
 }

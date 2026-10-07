@@ -71,9 +71,11 @@ CREATE TABLE source_document (
     document_id         TEXT PRIMARY KEY,
     source_agency       TEXT NOT NULL,
     url_or_identifier   TEXT NOT NULL,
+    -- every Data Dictionary document type
     document_type       TEXT NOT NULL CHECK (document_type IN ('bill', 'committee_report', 'explanatory_statement',
                                                                'public_law', 'presidents_budget', 'budget_appendix',
-                                                               'other', 'cbo_cost_estimate')),
+                                                               'congressional_budget_justification', 'cbo_cost_estimate',
+                                                               'crs_report', 'omb_public_budget_database', 'other')),
     congress_session    TEXT,
     fiscal_year         INTEGER NOT NULL,
     publication_date    TEXT CHECK (publication_date IS NULL OR date(publication_date) IS publication_date),
@@ -83,7 +85,8 @@ CREATE TABLE source_document (
     retrieval_timestamp TEXT CHECK (retrieval_timestamp IS NULL OR date(retrieval_timestamp) IS substr(retrieval_timestamp, 1, 10)),
     -- not in the Data Dictionary; carried from the workbook
     source_page         TEXT,
-    also_covers         TEXT
+    also_covers         TEXT,
+    notes               TEXT
 ) STRICT;
 
 -- The bill / report for one subcommittee x fiscal year x stage (the
@@ -99,6 +102,8 @@ CREATE TABLE bill_report_reference (
     bill_url       TEXT,
     report_jes_url TEXT,
     lookup_key     TEXT NOT NULL UNIQUE CHECK (lookup_key = subcommittee || '-' || fiscal_year || '-' || stage),
+    -- v33: what a person needs to know about this stage's documents (e.g. no bill reported)
+    notes          TEXT,
     UNIQUE (subcommittee, fiscal_year, stage)
 ) STRICT;
 
@@ -162,7 +167,12 @@ CREATE TABLE appropriations_observation (
     -- looking up (account.subcommittee, fiscal_year, stage) in Bill Report
     -- Reference. Stored as a real key; the loader checks bill_id / report_id
     -- agree with the row it points at.
-    bill_report_reference_id TEXT REFERENCES bill_report_reference (reference_id)
+    bill_report_reference_id TEXT REFERENCES bill_report_reference (reference_id),
+    -- the observation that replaced this one's value (a later official document, reconcile.py):
+    -- set exactly when verification_status is 'superseded'; both rows stay queryable
+    superseded_by_observation_id TEXT REFERENCES appropriations_observation (observation_id) DEFERRABLE INITIALLY DEFERRED,
+    CHECK ((superseded_by_observation_id IS NULL) = (verification_status <> 'superseded')),
+    CHECK (superseded_by_observation_id IS NULL OR superseded_by_observation_id <> observation_id)
 ) STRICT;
 
 -- A fact's identity: one account's one amount type in one fiscal year and
@@ -170,10 +180,12 @@ CREATE TABLE appropriations_observation (
 -- has more than one. Section text is description, not identity. An
 -- expression index, not UNIQUE(...): SQLite treats NULLs as distinct in a
 -- UNIQUE constraint, so two base-line rows (component NULL) would never
--- collide.
+-- collide. A superseded observation keeps its row beside the one that replaced
+-- it, so only current (not superseded) observations are unique per fact.
 CREATE UNIQUE INDEX observation_fact ON appropriations_observation (
     canonical_account_id, fiscal_year, stage, amount_type,
-    ifnull(component, ''), ifnull(transfer_link_account_id, ''));
+    ifnull(component, ''), ifnull(transfer_link_account_id, ''))
+    WHERE verification_status <> 'superseded';
 
 CREATE INDEX observation_by_account ON appropriations_observation (canonical_account_id, fiscal_year, stage);
 CREATE INDEX observation_by_document ON appropriations_observation (source_document_id);
@@ -195,7 +207,9 @@ CREATE TABLE validation_record (
     validation_id       TEXT PRIMARY KEY,
     observation_id      TEXT NOT NULL REFERENCES appropriations_observation (observation_id),
     rule_applied        TEXT NOT NULL CHECK (rule_applied IN ('source_text', 'structural', 'table_total', 'cross_document',
-                                                              'historical', 'account_identity', 'unit', 'semantic')),
+                                                              'historical', 'account_identity', 'unit', 'semantic',
+                                                              -- reconcile.py: an advance copy against GPO's official version
+                                                              'advance_copy_reconciliation')),
     expected_result     TEXT,
     observed_result     TEXT,
     result              TEXT NOT NULL CHECK (result IN ('pass', 'fail', 'flag')),

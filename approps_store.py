@@ -178,11 +178,12 @@ TABS = [
         ("document_id", to_text, True), ("source_agency", to_text, True), ("url_or_identifier", to_text, True),
         ("document_type", to_text, True), ("congress_session", to_text, False), ("fiscal_year", to_int, True),
         ("publication_date", to_date, False), ("stage", to_text, True), ("retrieval_timestamp", to_timestamp, False),
-        ("source_page", to_text, False), ("also_covers", to_text, False)]),
+        ("source_page", to_text, False), ("also_covers", to_text, False), ("notes", to_text, False)]),
     ("Bill Report Reference", "bill_report_reference", [
         ("reference_id", to_text, True), ("subcommittee", to_text, True), ("fiscal_year", to_int, True),
         ("stage", to_text, True), ("bill_id", to_text, False), ("report_id", to_text, False),
-        ("bill_url", to_text, False), ("report_jes_url", to_text, False), ("lookup_key", to_text, True)]),
+        ("bill_url", to_text, False), ("report_jes_url", to_text, False), ("lookup_key", to_text, True),
+        ("notes", to_text, False)]),
     ("Component", "component", [
         ("component_id", to_text, True), ("label", to_text, False), ("kind", to_text, True),
         ("description", to_text, True)]),
@@ -194,7 +195,8 @@ TABS = [
         ("offsetting_collections", to_bool, True), ("transfer_link_account_id", to_text, False),
         ("source_document_id", to_text, True), ("source_page", to_text, False),
         ("source_table_or_section", to_text, False), ("extraction_method", to_text, True),
-        ("confidence", to_real, True), ("verification_status", to_text, True)]),
+        ("confidence", to_real, True), ("verification_status", to_text, True),
+        ("superseded_by_observation_id", to_text, False)]),
     ("Confirmed Absence", "confirmed_absence", [
         ("confirmed_absence_id", to_text, True), ("canonical_account_id", to_text, True),
         ("fiscal_year", to_int, True), ("stage", to_text, True), ("amount_type", to_text, True),
@@ -214,10 +216,15 @@ TABS = [
 # A workbook without a Component tab gets accounts.COMPONENT_KINDS.
 OPTIONAL_TABS = {"Confirmed Absence", "Component"}
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
-OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id"},
+OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
+                                                   # the Dictionary's; no workbook carries it yet (v33)
+                                                   "superseded_by_observation_id"},
                     # v33: a program line's heading account (Health Centers -> Primary Health Care); agency
                     # reconciliation leaves such an account out (its figure is inside its parent's)
-                    "Account": {"parent_account_id"}}
+                    "Account": {"parent_account_id"},
+                    # v33: a document's / a stage's note (the FY2023 Senate draft: "committee draft
+                    # released 2022-07-28; S. 4659 introduced and referred, never reported")
+                    "Source Document": {"notes"}, "Bill Report Reference": {"notes"}}
 # Columns a workbook may still carry but the store no longer has: read past,
 # never loaded. Account.effective_start / effective_end (removed in v33): each
 # value was the first year of data on file, not a real start or end date --
@@ -375,6 +382,7 @@ DOCUMENT_TYPE_STAGES = {
     "public_law": ("Enacted",),
     "presidents_budget": ("President's Budget",),
     "budget_appendix": ("President's Budget",),
+    "congressional_budget_justification": ("President's Budget",),
 }
 
 
@@ -423,7 +431,6 @@ def data_quality_warnings(conn):
         if r["component"] not in kinds:
             warnings.append(f"{r[0]}: component {r['component']!r} is not in the component vocabulary "
                             f"{sorted(kinds)}")
-    warnings += headline_warnings(conn, kinds)
     for r in conn.execute("SELECT o.observation_id, o.chamber, o.stage FROM appropriations_observation o"):
         want = {"House Reported": "House", "House Passed": "House", "Senate Reported": "Senate",
                 "Senate Passed": "Senate"}.get(r["stage"], "N/A")
@@ -466,10 +473,13 @@ def component_kinds(conn):
     return {r["component_id"]: r["kind"] for r in conn.execute("SELECT component_id, kind FROM component")}
 
 
-def headline_warnings(conn, kinds):
+def headline_errors(conn, kinds):
     """A contained or view line names the headline it is inside of / a view
     of (headline_observation_id): same account, fiscal year, stage and
-    document, and itself a headline (no component). A part names none."""
+    document, and itself a headline (no component). A part names none.
+    A load error, not a warning: a line pointed at a headline from another
+    document (or at no headline) would be summed or shown against the wrong
+    figure."""
     out = []
     obs = {r["observation_id"]: r for r in conn.execute(
         "SELECT observation_id, canonical_account_id, fiscal_year, stage, source_document_id, component, "
@@ -490,6 +500,26 @@ def headline_warnings(conn, kinds):
             if diff or t["component"] is not None:
                 out.append(f"observation {o['observation_id']}: its headline {h} differs in "
                            f"{diff + (['component'] if t['component'] is not None else [])}")
+    return out
+
+
+def superseded_errors(conn):
+    """A superseded observation names the observation that replaced it: the
+    same fact (account, fiscal year, stage, amount type, component), itself
+    current. (That it is set exactly when verification_status is
+    'superseded' is a CHECK in the schema.)"""
+    out = []
+    key = ("canonical_account_id", "fiscal_year", "stage", "amount_type", "component")
+    for o in conn.execute("SELECT * FROM appropriations_observation WHERE superseded_by_observation_id IS NOT NULL"):
+        t = conn.execute("SELECT * FROM appropriations_observation WHERE observation_id = ?",
+                         (o["superseded_by_observation_id"],)).fetchone()
+        if t is None:
+            continue                                      # the foreign-key check reports it
+        diff = [k for k in key if t[k] != o[k]]
+        if diff:
+            out.append(f"observation {o['observation_id']}: superseded by {t['observation_id']}, which differs in {diff}")
+        elif t["verification_status"] == "superseded":
+            out.append(f"observation {o['observation_id']}: superseded by {t['observation_id']}, itself superseded")
     return out
 
 
@@ -585,7 +615,8 @@ def observation_row(o, source_document_id):
             "transfer_link_account_id": o.get("transfer_link_account_id"),
             "source_document_id": source_document_id, "source_page": o["source_page"],
             "source_table_or_section": o["source_table_or_section"], "extraction_method": o["extraction_method"],
-            "confidence": o["extraction_confidence"], "verification_status": o["verification_status"]}
+            "confidence": o["extraction_confidence"], "verification_status": o["verification_status"],
+            "superseded_by_observation_id": o.get("superseded_by_observation_id")}
 
 
 def fact_key(o):
@@ -622,7 +653,8 @@ def add_observations(conn, rows):
     dup = [k for k, n in Counter(fact_key(r) for r in rows).items() if n > 1]
     if dup:
         raise ValueError(f"incoming rows repeat a fact: {dup[:5]}")
-    existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation")]
+    existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation "
+                                              "WHERE verification_status <> 'superseded'")]
     pairs, diffs, new_only, _ = compare(rows, existing, key=fact_key)
     differing = {id(n) for n, _ in diffs}
     vocabulary = {}
@@ -818,6 +850,10 @@ def load(workbook, db_path, waive=()):
         fk = conn.execute("PRAGMA foreign_key_check").fetchall()
         if fk:
             raise LoadError(f"foreign key violations: {[tuple(r) for r in fk]}")
+        errors = headline_errors(conn, component_kinds(conn)) + superseded_errors(conn)
+        if errors:
+            raise LoadError("observations contradict each other:\n  " + "\n  ".join(errors[:20])
+                            + (f"\n  ... {len(errors) - 20} more" if len(errors) > 20 else ""))
         report["warnings"] = data_quality_warnings(conn)
     finally:
         conn.close()
@@ -932,7 +968,7 @@ def history(conn, account_id):
     obs = []
     for r in conn.execute(
             "SELECT o.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date, "
-            "       d.fiscal_year AS document_fiscal_year, d.stage AS document_stage, "
+            "       d.fiscal_year AS document_fiscal_year, d.stage AS document_stage, d.notes AS document_notes, "
             "       b.bill_url, b.report_jes_url, c.kind AS component_kind, c.label AS component_label "
             "FROM appropriations_observation o "
             "JOIN source_document d ON d.document_id = o.source_document_id "
@@ -940,6 +976,10 @@ def history(conn, account_id):
             "LEFT JOIN component c ON c.component_id = o.component "
             "WHERE o.canonical_account_id = ?", (account_id,)):
         rec = dict(r)
+        # v33 columns, carried only when they say something (an export of earlier data stays as it was)
+        for k in ("document_notes", "superseded_by_observation_id"):
+            if rec[k] is None:
+                del rec[k]
         rec["validation"] = [dict(v) for v in conn.execute(
             "SELECT validation_id, rule_applied, result, human_review_status FROM validation_record "
             "WHERE observation_id = ? ORDER BY validation_id", (r["observation_id"],))]
@@ -947,9 +987,12 @@ def history(conn, account_id):
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     absences = [dict(r) for r in conn.execute(
-        "SELECT a.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date "
-        "FROM confirmed_absence a JOIN source_document d ON d.document_id = a.source_document_id "
+        "SELECT a.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date, "
+        "d.notes AS document_notes FROM confirmed_absence a JOIN source_document d ON d.document_id = a.source_document_id "
         "WHERE a.canonical_account_id = ? ORDER BY a.fiscal_year, a.stage, a.amount_type", (account_id,))]
+    for a in absences:
+        if a["document_notes"] is None:
+            del a["document_notes"]
     # gaps in the four-stage series, from the account's first fiscal year to
     # the latest one the store holds for any account -- a cell with neither an
     # observation nor a confirmed absence is missing, never zero
@@ -962,8 +1005,9 @@ def history(conn, account_id):
     # or not yet enacted (cell_state), never a zero
     open_cells = [(y, s) for y in range(first, last + 1) for s in STAGE_ORDER[:4]
                   if (y, s) not in have] if first is not None else []
+    notes = stage_notes(conn, acct["subcommittee"])
     return {"account": acct, "total_scope": scope, "historical_names": former, "relationships": rels, "observations": obs,
-            "absences": absences, "coverage": cov, "open_cells": open_cells,
+            "absences": absences, "coverage": cov, "open_cells": open_cells, **({"stage_notes": notes} if notes else {}),
             "missing_cells": [c for c in open_cells if cell_state([], None, *c, cov) == "missing"]}
 
 
@@ -984,6 +1028,14 @@ def history(conn, account_id):
 #   not_enacted    -- the Enacted stage of a fiscal year after the last one with an
 #                     enacted document on file: no enacted law yet
 CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted")
+
+
+def stage_notes(conn, subcommittee):
+    """Bill Report Reference notes (v33) for a subcommittee, keyed "<fiscal_year>|<stage>":
+    what to know about a stage's documents (the FY2023 Labor-HHS Senate draft)."""
+    return {f"{r['fiscal_year']}|{r['stage']}": r["notes"] for r in conn.execute(
+        "SELECT fiscal_year, stage, notes FROM bill_report_reference WHERE subcommittee = ? AND notes IS NOT NULL "
+        "ORDER BY fiscal_year, stage", (subcommittee,))}
 
 
 def coverage(conn, subcommittee):
@@ -1045,7 +1097,10 @@ def history_grid(h):
     -> {"stages", "series": [{"amount_type", "component", "component_kind", "component_label"}],
         "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
-    obs, absent = h["observations"], h.get("absences", [])
+    # a superseded observation stays in history() (queryable, citing what replaced it); a cell shows
+    # only the current one
+    obs = [o for o in h["observations"] if o["verification_status"] != "superseded"]
+    absent = h.get("absences", [])
     kind = {o["component"]: (o.get("component_kind"), o.get("component_label")) for o in obs if o["component"]}
     series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
                     key=lambda k: (k[0] != "budget authority", k[0], k[1] is not None, k[1] or ""))
@@ -1103,11 +1158,40 @@ def cell_total(conn, account_id, fiscal_year, stage, amount_type="budget authori
     lines = [dict(r) for r in conn.execute(
         "SELECT o.amount, o.component, c.kind AS component_kind FROM appropriations_observation o "
         "LEFT JOIN component c ON c.component_id = o.component "
-        "WHERE o.canonical_account_id = ? AND o.fiscal_year = ? AND o.stage = ? AND o.amount_type = ?",
+        "WHERE o.canonical_account_id = ? AND o.fiscal_year = ? AND o.stage = ? AND o.amount_type = ? "
+        "AND o.verification_status <> 'superseded'",
         (account_id, fiscal_year, stage, amount_type))]
     if not any(o["component"] is None for o in lines):
         return None
     return sum(o["amount"] for o in additive_lines(lines))
+
+
+def agency_members(conn, rollup_id):
+    """The accounts an agency total (total_scope 'agency') adds up: its
+    subcommittee's accounts of the same agency and title that are not
+    themselves totals and have no parent account -- a child's figure
+    (Health Centers) is already inside its parent's (Primary Health Care)."""
+    r = conn.execute("SELECT * FROM account WHERE canonical_account_id = ?", (rollup_id,)).fetchone()
+    if r is None or r["total_scope"] != "agency":
+        raise LookupError(f"{rollup_id!r} is not an agency total")
+    return [a[0] for a in conn.execute(
+        "SELECT canonical_account_id FROM account WHERE subcommittee = ? AND agency = ? AND title IS ? "
+        "AND total_scope IS NULL AND parent_account_id IS NULL ORDER BY display_order, canonical_account_id",
+        (r["subcommittee"], r["agency"], r["title"]))]
+
+
+def agency_sum(conn, rollup_id, fiscal_year, stage):
+    """The sum of an agency total's members (agency_members) in one cell, each
+    as cell_total() adds it. -> (sum, [members with a figure], [members without])."""
+    total, have, lack = 0, [], []
+    for aid in agency_members(conn, rollup_id):
+        v = cell_total(conn, aid, fiscal_year, stage)
+        if v is None:
+            lack.append(aid)
+        else:
+            total += v
+            have.append(aid)
+    return total, have, lack
 
 
 def subcommittees(conn):
@@ -1166,12 +1250,14 @@ def subcommittee_grid(conn, subcommittee):
     """
     accts = [dict(r) for r in conn.execute(
         "SELECT canonical_account_id, canonical_name, agency, bureau, status, notes, "
-        "title, display_order, total_scope FROM account WHERE subcommittee = ?",
+        "title, display_order, total_scope, parent_account_id FROM account WHERE subcommittee = ?",
         (subcommittee,))]
     # each row's scope, read once from Account.total_scope; the row carries it as "rollup"
     scope = {a["canonical_account_id"]: rollup_scope(a) for a in accts}
     for a in accts:
         del a["total_scope"]
+        if a["parent_account_id"] is None:
+            del a["parent_account_id"]          # carried only where there is one
     if not accts:
         raise LookupError(f"no subcommittee {subcommittee!r}")
     grids = {}
@@ -1239,6 +1325,25 @@ def subcommittee_grid(conn, subcommittee):
             units.append((min(within(x) for x in group), group))
         units.sort(key=lambda u: u[0])
         ordered = [r for _, group in units for r in group]
+        # an account with a parent (Account.parent_account_id: Health Centers under Primary Health
+        # Care) sits right under it, indented -- its figure is inside the parent's, never added
+        kids, here = {}, {r["account"]["canonical_account_id"] for r in ordered}
+        for r in ordered:
+            p = r["account"].get("parent_account_id")
+            if p in here:
+                kids.setdefault(p, []).append(r)
+        if kids:
+            placed, out = {id(r) for k in kids.values() for r in k}, []
+
+            def put(r):
+                out.append(r)
+                for k in kids.get(r["account"]["canonical_account_id"], []):
+                    r.setdefault("children", []).append(k["account"]["canonical_account_id"])
+                    put(k)
+            for r in ordered:
+                if id(r) not in placed:
+                    put(r)
+            ordered = out
         out_rows += ordered
         out_titles.append({"title": title, "total": total, "rows": [r["account"]["canonical_account_id"] for r in ordered]})
     # every account's cells (totals included), by each cell's one state
@@ -1249,7 +1354,8 @@ def subcommittee_grid(conn, subcommittee):
             if st:
                 state_counts[st] += 1
     return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
-            "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts}
+            "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts,
+            **({"stage_notes": notes} if (notes := stage_notes(conn, subcommittee)) else {})}
 
 
 def fmt_amount(v):

@@ -33,9 +33,15 @@ class LhhsRowsLoad(unittest.TestCase):
 
     def test_loads_with_no_warnings(self):
         self.assertEqual(self.report["warnings"], [])
-        self.assertEqual(self.report["rows"]["account"], 30 + len(rows("account")))
-        # v32: + the 35 FY2025 Enacted rows (H.Rept. 119-271's "FY 2025 Estimate" column), sent outside these CSVs
-        self.assertEqual(self.report["rows"]["appropriations_observation"], 870 + len(rows("observation")) + 35)
+        # v33 carries every row of these CSVs (the account list and the FY2023 rows came after them, outside
+        # these files): merging them adds no observation or account the workbook doesn't already have
+        self.assertEqual(self.report["rows"]["account"], 130)
+        self.assertEqual(self.report["rows"]["appropriations_observation"], 2601)
+        ids = {o["observation_id"] for o in rows("observation")}
+        import openpyxl
+        wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
+        have = {r[0] for r in wb["Appropriations Observation"].iter_rows(min_row=2, values_only=True)}
+        self.assertLessEqual(ids, have)
 
     def test_scope(self):
         accts = {a["canonical_account_id"]: a for a in rows("account")}
@@ -56,8 +62,12 @@ class LhhsRowsLoad(unittest.TestCase):
         # with the General Provisions lines as accounts, every recorded Title II total is its agency
         # totals + the General Provisions lines (a rescission signed) - CURES, from the store alone
         cells = self.report["title_ii"]
-        self.assertEqual(len(cells), 14)                              # v32: FY2025 Enacted
-        self.assertEqual({r["reconciles_through_rollups"] for r in cells}, {"yes"})
+        self.assertEqual(len(cells), 17)                              # v33: + FY2023 PB, House, Senate
+        off = [r for r in cells if r["reconciles_through_rollups"] != "yes"]
+        # the one known exception: ACL's FY2023 request total includes (Evaluation Tap Funding) 27,503
+        # (FY2023 Senate draft p.416), a line no agency total outside ACL's carries
+        self.assertEqual([(r["fiscal_year"], r["stage"], r["through_rollups_differs_by_thousands"]) for r in off],
+                         [(2023, "President's Budget", -27_503)])
 
     def test_senate_rescissions_are_bill_level(self):
         # the Senate reports print the HHS rescissions after the grand total, outside Title II
@@ -117,19 +127,18 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
             "AND stage = ? AND amount_type = 'budget authority'", (account, fy, stage))]
 
     def test_nih_total_is_its_headline_not_headline_plus_cures(self):
+        # v33: CURES is its own account (one of the NIH accounts NIH's total adds up), no longer a line of the total
         lines = self.cell("ACC-HHS-NIH-TOTAL", 2024, "Senate Reported")
-        head = next(o for o in lines if o["component"] is None)
-        cures = next(o for o in lines if o["component"] == "CURES")
-        self.assertEqual((head["amount"], cures["amount"]), (47_811_518_000, 407_000_000))   # S.Rept. 118-84, as printed
-        self.assertEqual(cures["headline_observation_id"], head["observation_id"])
-        self.assertEqual(S.cell_total(self.conn, "ACC-HHS-NIH-TOTAL", 2024, "Senate Reported"), head["amount"])
-        self.assertNotIn(cures, S.additive_lines(lines))
-        # and as the grid shows it: next to the headline, marked not added
-        grid = S.history_grid(S.history(self.conn, "ACC-HHS-NIH-TOTAL"))
+        self.assertEqual([(o["component"], o["amount"]) for o in lines if o["component"] is None],
+                         [(None, 47_811_518_000)])                                # S.Rept. 118-84, as printed
+        self.assertFalse([o for o in lines if o["component"] == "CURES"])
+        self.assertEqual(S.cell_total(self.conn, "ACC-HHS-NIH-TOTAL", 2024, "Senate Reported"), 47_811_518_000)
+        cures = self.cell("ACC-HHS-NIH-CURES", 2024, "Senate Reported")
+        self.assertEqual([(o["component"], o["amount"]) for o in cures], [(None, 407_000_000)])
+        # and as the grid shows it: its own row's headline, a figure of its own
+        grid = S.history_grid(S.history(self.conn, "ACC-HHS-NIH-CURES"))
         row = next(r for r in grid["rows"] if r["fiscal_year"] == 2024)
-        line = next(l for l in row["cells"]["Senate Reported"] if l["component"] == "CURES")
-        self.assertEqual((line["component_kind"], line["component_label"], line["adds_to_headline"]),
-                         ("contained", "CURES Act", False))
+        self.assertEqual([l["state"] for l in row["cells"]["Senate Reported"]], ["value"])
 
     def test_a_view_never_enters_any_sum(self):
         views = [dict(r) for r in self.conn.execute(
@@ -195,34 +204,27 @@ class CuresAsItsOwnAccount(unittest.TestCase):
     some FY2023 tables -- still reconcile through the rollups."""
 
     def test_title_ii_still_reconciles(self):
-        import sqlite3, tempfile
         sys.path.insert(0, str(ROOT / "reference" / "review"))
         import title_totals as T
+        import tempfile
         with tempfile.TemporaryDirectory() as d:
             db = Path(d) / "approps.db"
             with redirect_stdout(io.StringIO()):
                 S.load(S.reference_workbook(), db)
-            c = sqlite3.connect(db)
-            c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, bureau, status, fund_type, "
-                      "subcommittee, title, display_order) VALUES ('ACC-HHS-NIH-CURES', 'NIH Innovation Account, CURES Act', "
-                      "'National Institutes of Health', 'NIH Innovation Account, CURES Act', 'active', 'general', 'LHHS', "
-                      "'Title II', 26)")
-            n = c.execute("UPDATE appropriations_observation SET canonical_account_id = 'ACC-HHS-NIH-CURES', component = NULL, "
-                          "headline_observation_id = NULL WHERE component = 'CURES'").rowcount
-            c.execute("DELETE FROM component WHERE component_id = 'CURES'")
-            c.commit()
-            c.close()
-            self.assertEqual(n, 14)
             conn = S.connect(db, readonly=True)
+            # the re-homed rows: the CURES account's, no CURES component left anywhere
+            self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = 'CURES'").fetchone()[0], 0)
+            self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation "
+                                          "WHERE canonical_account_id = 'ACC-HHS-NIH-CURES'").fetchone()[0], 17)
             cells = conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE canonical_account_id = "
                                  "'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL").fetchall()
             got = {(fy, st): T.reconcile(conn, [{"fiscal_year": fy, "stage": st, "printed_total_title_iii_thousands": a // 1000}],
                                          title="Title II", subcommittee="LHHS")[0]["reconciles_through_rollups"]
                    for fy, st, a in cells}
             conn.close()
-        self.assertEqual(len(got), 14)
-        self.assertEqual(set(got.values()), {"yes"}, got)
-
+        self.assertEqual(len(got), 17)
+        # every cell but FY2023 President's Budget (ACL's Evaluation Tap Funding, 27,503: see LhhsRowsLoad)
+        self.assertEqual({k for k, v in got.items() if v != "yes"}, {(2023, "President's Budget")})
 
 if __name__ == "__main__":
     unittest.main()

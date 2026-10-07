@@ -38,9 +38,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_collected"
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -51,14 +51,29 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_collected"
+       "state": "missing"
       }
      ],
      "Senate Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0036",
+        "confirmed_date": "2026-10-06",
+        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+        "document_type": "explanatory_statement",
+        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Title XVIII/; the Title II table pp. 399-419 and the table's end p.437 included).",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-28",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -66,7 +81,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "not_funded"
       }
      ]
     },
@@ -574,6 +589,22 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0036",
+    "confirmed_date": "2026-10-06",
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_type": "explanatory_statement",
+    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Title XVIII/; the Title II table pp. 399-419 and the table's end p.437 included).",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-28",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0012",
     "confirmed_date": "2026-09-28",
     "document_type": "committee_report",
@@ -684,6 +715,18 @@
      "Enacted"
     ],
     [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
      2024,
      "Enacted"
     ],
@@ -740,6 +783,14 @@
   },
   "historical_names": [],
   "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
    [
     2025,
     "House Reported"
@@ -919,10 +970,6 @@
     "House Reported"
    ],
    [
-    2023,
-    "Senate Reported"
-   ],
-   [
     2024,
     "House Reported"
    ],
@@ -952,6 +999,9 @@
    ]
   ],
   "relationships": [],
+  "stage_notes": {
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
   "total_scope": null
  }
 }

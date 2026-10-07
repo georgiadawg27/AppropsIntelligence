@@ -50,6 +50,30 @@
   },
   {
    "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-CCDBG",
+   "canonical_name": "Payments to States for the Child Care and Development Block Grant",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-CFSP",
+   "canonical_name": "Children and Families Services Programs",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-CHILD-SUPPORT",
+   "canonical_name": "Payments to States for Child Support Enforcement and Family Support Programs",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-FOSTER-CARE",
+   "canonical_name": "Payments for Foster Care and Permanency",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
    "canonical_account_id": "ACC-HHS-ACF-HEAD-START",
    "canonical_name": "Head Start",
    "historical_names": []
@@ -58,6 +82,24 @@
    "agency": "Administration for Children and Families",
    "canonical_account_id": "ACC-HHS-ACF-LIHEAP",
    "canonical_name": "Low Income Home Energy Assistance",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-PSSF",
+   "canonical_name": "Promoting Safe and Stable Families",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-REFUGEE",
+   "canonical_name": "Refugee and Entrant Assistance",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Children and Families",
+   "canonical_account_id": "ACC-HHS-ACF-SSBG",
+   "canonical_name": "Social Services Block Grant",
    "historical_names": []
   },
   {
@@ -86,14 +128,116 @@
   },
   {
    "agency": "Administration for Strategic Preparedness and Response",
+   "canonical_account_id": "ACC-HHS-ASPR-OPER",
+   "canonical_name": "Operations, Preparedness, and Emergency Response",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Strategic Preparedness and Response",
+   "canonical_account_id": "ACC-HHS-ASPR-RDP",
+   "canonical_name": "Research, Development, and Procurement",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Strategic Preparedness and Response",
    "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
    "canonical_name": "Administration for Strategic Preparedness and Response (agency total)",
    "historical_names": []
   },
   {
    "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-BIRTH-DEFECTS",
+   "canonical_name": "Birth Defects, Developmental Disabilities, Disabilities and Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-BUILDINGS-FACILITIES",
+   "canonical_name": "Buildings and Facilities",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-CHRONIC-DISEASE",
+   "canonical_name": "Chronic Disease Prevention and Health Promotion",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-EEOICP",
+   "canonical_name": "Energy Employees Occupational Illness Compensation Program",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-EMERGING-ZOONOTIC",
+   "canonical_name": "Emerging and Zoonotic Infectious Diseases",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-ENVIRONMENTAL-HEALTH",
+   "canonical_name": "Environmental Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-GLOBAL-HEALTH",
+   "canonical_name": "Global Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-HIV-HEPATITIS-STD-TB",
+   "canonical_name": "HIV/AIDS, Viral Hepatitis, Sexually Transmitted Diseases, and Tuberculosis Prevention",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+   "canonical_name": "Immunization and Respiratory Diseases",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-INJURY-PREVENTION",
+   "canonical_name": "Injury Prevention and Control",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-NIOSH",
+   "canonical_name": "National Institute for Occupational Safety and Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+   "canonical_name": "Public Health Preparedness and Response",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+   "canonical_name": "CDC-Wide Activities and Program Support",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
+   "canonical_account_id": "ACC-HHS-CDC-SCIENTIFIC-SERVICES",
+   "canonical_name": "Public Health Scientific Services",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Disease Control and Prevention",
    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
    "canonical_name": "Centers for Disease Control and Prevention (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Centers for Medicare & Medicaid Services",
+   "canonical_account_id": "ACC-HHS-CMS-HCFAC",
+   "canonical_name": "Health Care Fraud and Abuse Control Account",
    "historical_names": []
   },
   {
@@ -146,14 +290,62 @@
   },
   {
    "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+   "canonical_name": "Covered Countermeasures Process Fund",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-FAMILY-PLANNING",
+   "canonical_name": "Family Planning",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
    "canonical_account_id": "ACC-HHS-HRSA-HEALTH-CENTERS",
    "canonical_name": "Health Centers",
    "historical_names": []
   },
   {
    "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-HEALTH-SYSTEMS",
+   "canonical_name": "Health Systems",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-HEALTH-WORKFORCE",
+   "canonical_name": "Health Workforce",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-MCH",
+   "canonical_name": "Maternal and Child Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
    "canonical_account_id": "ACC-HHS-HRSA-PRIMARY-CARE",
    "canonical_name": "Primary Health Care",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+   "canonical_name": "HRSA-Wide Activities and Program Support",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-RURAL-HEALTH",
+   "canonical_name": "Rural Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Health Resources and Services Administration",
+   "canonical_account_id": "ACC-HHS-HRSA-RYAN-WHITE",
+   "canonical_name": "Ryan White HIV/AIDS Program",
    "historical_names": []
   },
   {
@@ -170,8 +362,200 @@
   },
   {
    "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-ARPA-H",
+   "canonical_name": "Advanced Research Projects Agency for Health",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-BEHAVIORAL-HEALTH",
+   "canonical_name": "National Institute of Behavioral Health",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+   "canonical_name": "National Institute on Body Systems Research",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+   "canonical_name": "Buildings and Facilities",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-CHILD-WOMEN-SENSORY",
+   "canonical_name": "National Institute for Child and Women's Health, Sensory Disorders and Communication",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-CURES",
+   "canonical_name": "NIH Innovation Account, CURES Act",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-FIC",
+   "canonical_name": "John E. Fogarty International Center",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NCATS",
+   "canonical_name": "National Center for Advancing Translational Sciences",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NCCIH",
+   "canonical_name": "National Center for Complementary and Integrative Health",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
    "canonical_account_id": "ACC-HHS-NIH-NCI",
    "canonical_name": "National Cancer Institute",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NEI",
+   "canonical_name": "National Eye Institute",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NEUROSCIENCE",
+   "canonical_name": "National Institute on Neuroscience and Brain Research",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NHGRI",
+   "canonical_name": "National Human Genome Research Institute",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NHLBI",
+   "canonical_name": "National Heart, Lung, and Blood Institute",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIA",
+   "canonical_name": "National Institute on Aging",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIAAA",
+   "canonical_name": "National Institute on Alcohol Abuse and Alcoholism",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIAID",
+   "canonical_name": "National Institute of Allergy and Infectious Diseases",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIAMS",
+   "canonical_name": "National Institute of Arthritis and Musculoskeletal and Skin Diseases",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIBIB",
+   "canonical_name": "National Institute of Biomedical Imaging and Bioengineering",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NICHD",
+   "canonical_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIDA",
+   "canonical_name": "National Institute on Drug Abuse",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIDCD",
+   "canonical_name": "National Institute on Deafness and Other Communication Disorders",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIDCR",
+   "canonical_name": "National Institute of Dental and Craniofacial Research",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIDDK",
+   "canonical_name": "National Institute of Diabetes and Digestive and Kidney Diseases",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIEHS",
+   "canonical_name": "National Institute of Environmental Health Sciences",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIGMS",
+   "canonical_name": "National Institute of General Medical Sciences",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIMH",
+   "canonical_name": "National Institute of Mental Health",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NIMHD",
+   "canonical_name": "National Institute on Minority Health and Health Disparities",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NINDS",
+   "canonical_name": "National Institute of Neurological Disorders and Stroke",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NINR",
+   "canonical_name": "National Institute of Nursing Research",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-NLM",
+   "canonical_name": "National Library of Medicine",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-OD",
+   "canonical_name": "Office of the Director",
+   "historical_names": []
+  },
+  {
+   "agency": "National Institutes of Health",
+   "canonical_account_id": "ACC-HHS-NIH-SUBSTANCE-USE",
+   "canonical_name": "National Institute of Substance Use and Addiction Research",
    "historical_names": []
   },
   {
@@ -182,14 +566,80 @@
   },
   {
    "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-COMMISSIONED-OFFICERS",
+   "canonical_name": "Retirement Pay and Medical Benefits for Commissioned Officers",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-GDM",
+   "canonical_name": "General Departmental Management",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-OCR",
+   "canonical_name": "Office for Civil Rights",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-OIG",
+   "canonical_name": "Office of Inspector General",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-OMHA",
+   "canonical_name": "Medicare Hearings and Appeals",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "canonical_name": "Office of the National Coordinator for Health Information Technology",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+   "canonical_name": "Public Health and Social Services Emergency Fund",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
    "canonical_account_id": "ACC-HHS-OS-TOTAL",
    "canonical_name": "Office of the Secretary (agency total)",
    "historical_names": []
   },
   {
    "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-MENTAL-HEALTH",
+   "canonical_name": "Mental Health",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-PREVENTION",
+   "canonical_name": "Substance Abuse Prevention",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-PROGRAM-SUPPORT",
+   "canonical_name": "Health Surveillance and Program Support",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
    "canonical_account_id": "ACC-HHS-SAMHSA-TOTAL",
    "canonical_name": "Substance Abuse and Mental Health Services Administration (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-TREATMENT",
+   "canonical_name": "Substance Abuse Treatment",
    "historical_names": []
   },
   {
@@ -350,19 +800,19 @@
  },
  "source": {
   "rows": {
-   "account": 55,
-   "account_relationship": 4,
-   "appropriations_observation": 1359,
-   "bill_report_reference": 55,
-   "component": 20,
-   "confirmed_absence": 222,
-   "historical_name": 7,
-   "source_document": 32,
-   "validation_record": 2044
+   "account": 130,
+   "account_relationship": 8,
+   "appropriations_observation": 2601,
+   "bill_report_reference": 58,
+   "component": 19,
+   "confirmed_absence": 234,
+   "historical_name": 11,
+   "source_document": 34,
+   "validation_record": 6791
   },
   "warnings": [],
-  "workbook": "Approps_Pilot_Schema_Loaded_v32.xlsx",
-  "workbook_committed": "2026-10-06T18:41:41+00:00",
-  "workbook_sha256": "e1710aeafe71c37d3c1dd835e1b6263d3ff5b7e80135a6d8a2454a4f4dd18707"
+  "workbook": "Approps_Pilot_Schema_Loaded_v33.xlsx",
+  "workbook_committed": null,
+  "workbook_sha256": "0e65dca6446bcb28a6dc49ed1383930f3e94fdea3c540de29edcdf904cf673d7"
  }
 }

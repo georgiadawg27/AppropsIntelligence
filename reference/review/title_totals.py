@@ -78,9 +78,10 @@ def cell_lines(conn, title, fy, stage, subcommittee="CJS"):
     is Justice, Labor-HHS's is HHS."""
     BREAKDOWN.clear()
     BREAKDOWN.update(c for c, k in S.component_kinds(conn).items() if k in ("contained", "view"))
-    accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, total_scope FROM account "
+    accts = [dict(a) for a in conn.execute("SELECT canonical_account_id, agency, total_scope, parent_account_id FROM account "
                                            "WHERE title = ? AND subcommittee = ?", (title, subcommittee))]
-    plain = [a for a in accts if not S.rollup_scope(a)]
+    # a child account (parent_account_id) is inside its parent's figure: never a base line of its own
+    plain = [a for a in accts if not S.rollup_scope(a) and not a.get("parent_account_id")]
     rollups = [a for a in accts if S.rollup_scope(a) == "agency"]
     rows = lines(conn, [a["canonical_account_id"] for a in plain], fy, stage)
     base = [r for r in rows if is_base(r)]

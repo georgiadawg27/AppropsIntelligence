@@ -27,7 +27,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -36,9 +36,68 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 197580474000,
+         "amount_type": "advance",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0574",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [2023 appropriation]; advance for FY2024 (the row is labelled 'FY 2025' after the report's bill column; in the 2023 appropriation column the figure is FY2023's advance for the 1st quarter of FY2024)",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02363"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02364"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02365"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02366"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -47,14 +106,87 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": -165722018000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0575",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02367"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02368"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02369"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02370"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0029",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 House Reported. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.821); 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.821) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-05",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT403",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -62,7 +194,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -72,8 +204,79 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 197580474000,
+         "amount_type": "advance",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0570",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "821",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2024' [Bill]; advance for FY2024",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02340"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02341"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02342"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02343"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02344"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02345"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -83,13 +286,104 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": -165722018000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0571",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "821",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02346"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02347"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02348"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02349"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02350"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02351"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02352"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0028",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 President's Budget. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.821); 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.821) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-05",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT403",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -97,7 +391,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -107,8 +401,79 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 197580474000,
+         "amount_type": "advance",
+         "bill_id": "PREX 2.8:2023/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0568",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "821",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2024' [FY 2023 Request]; advance for FY2024",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02327"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02328"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02329"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02330"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02331"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-02332"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -118,13 +483,105 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": -165722018000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "PREX 2.8:2023/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0569",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "821",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [FY 2023 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02333"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02334"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02335"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02336"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02337"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02338"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-02339"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0032",
+        "confirmed_date": "2026-10-06",
+        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+        "document_type": "explanatory_statement",
+        "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in the Senate draft explanatory statement's Title II table pp. 399-419 (text layer) for FY2023 Senate Reported. The document prints only 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.409); 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.409) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-28",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -132,7 +589,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -142,8 +599,68 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 197580474000,
+         "amount_type": "advance",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0572",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+         "source_page": "409",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, fiscal year 2024' [Committee recommendation]; advance for FY2024 Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02353"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02354"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02355"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02356"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -153,8 +670,80 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": -165722018000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0573",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+         "source_page": "409",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Committee recommendation] Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02357"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02358"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02359"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02360"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02361"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02362"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -609,7 +1198,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -618,9 +1207,62 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 245580414000,
+         "amount_type": "advance",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0576",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Budget estimate]; advance for FY2025",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02371"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02372"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02373"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -629,9 +1271,74 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": -197580474000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0577",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02374"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02375"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02376"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02377"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02378"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -658,7 +1365,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_funded"
+       "state": "no_printed_total"
       },
       {
        "absence": null,
@@ -667,9 +1374,68 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 245580414000,
+         "amount_type": "advance",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0578",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Committee recommendation]; advance for FY2025",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02379"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02380"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02381"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02382"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -678,9 +1444,80 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": -197580474000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-0579",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02383"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02384"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-02385"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-02386"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-02387"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-02388"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -4298,6 +5135,52 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0029",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 House Reported. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.821); 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.821) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-05",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0028",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 President's Budget. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.821); 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.821) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-05",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0032",
+    "confirmed_date": "2026-10-06",
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_type": "explanatory_statement",
+    "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in the Senate draft explanatory statement's Title II table pp. 399-419 (text layer) for FY2023 Senate Reported. The document prints only 'Total, Medicaid Program Level, available this fiscal year' 533,079,108 (p.409); 'Total, Grants to States for Medicaid, appropriated in this bill' 564,937,564 (p.409) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-28",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0006",
     "confirmed_date": "2026-09-28",
     "document_type": "committee_report",
@@ -4346,6 +5229,18 @@
     [
      2023,
      "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
     ],
     [
      2024,
@@ -4405,6 +5300,788 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 197580474000,
+    "amount_type": "advance",
+    "bill_id": "PREX 2.8:2023/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0568",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "821",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2024' [FY 2023 Request]; advance for FY2024",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02327"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02328"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02329"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02330"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02331"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-02332"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -165722018000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "PREX 2.8:2023/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2023-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0569",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "821",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [FY 2023 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02333"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02334"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02335"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02336"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02337"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02338"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-02339"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 197580474000,
+    "amount_type": "advance",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0570",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "821",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2024' [Bill]; advance for FY2024",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02340"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02341"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02342"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02343"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02344"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02345"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -165722018000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117hr8295rh",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0571",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "821",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02346"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02347"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02348"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02349"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02350"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02351"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02352"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 197580474000,
+    "amount_type": "advance",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0572",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "source_page": "409",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, fiscal year 2024' [Committee recommendation]; advance for FY2024 Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02353"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02354"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02355"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02356"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -165722018000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-117s4659is",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0573",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "source_page": "409",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Committee recommendation] Source: the Senate Committee on Appropriations' draft explanatory statement for FY2023 (posted 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported -- CRS R47233), not a committee report.",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02357"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02358"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02359"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02360"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02361"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02362"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 197580474000,
+    "amount_type": "advance",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0574",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [2023 appropriation]; advance for FY2024 (the row is labelled 'FY 2025' after the report's bill column; in the 2023 appropriation column the figure is FY2023's advance for the 1st quarter of FY2024)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02363"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02364"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02365"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02366"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -165722018000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/app/details/PLAW-117publ328",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0575",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02367"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02368"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02369"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02370"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 245580414000,
+    "amount_type": "advance",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0576",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Budget estimate]; advance for FY2025",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02371"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02372"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02373"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": -197580474000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0577",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02374"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02375"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02376"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02377"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02378"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 245580414000,
+    "amount_type": "advance",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0578",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Committee recommendation]; advance for FY2025",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02379"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02380"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02381"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02382"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -197580474000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/app/details/BILLS-118s2624rs",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-0579",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-118srpt84",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02383"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02384"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-02385"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-02386"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-02387"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-02388"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 406956850000,
     "amount_type": "budget authority",
@@ -7580,18 +9257,6 @@
   ],
   "open_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ],
-   [
     2024,
     "House Reported"
    ],
@@ -7605,6 +9270,9 @@
    ]
   ],
   "relationships": [],
+  "stage_notes": {
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
   "total_scope": null
  }
 }
