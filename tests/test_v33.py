@@ -59,11 +59,11 @@ class V33Store(unittest.TestCase):
         return S.connect(path)
 
     def test_counts(self):
-        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v33.xlsx")
+        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v34.xlsx")
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 34, "bill_report_reference": 58,
+            "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
             "component": 19, "appropriations_observation": 2601, "confirmed_absence": 234,
-            "account_relationship": 8, "validation_record": 6791})
+            "account_relationship": 11, "validation_record": 6791})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -92,6 +92,62 @@ class V33Store(unittest.TestCase):
         self.assertNotIn("stage_notes", S.subcommittee_grid(self.conn, "CJS"))
         o = next(o for o in h["observations"] if o["source_document_id"] == "SRC-EXPL-LHHS-FY2023-SENATE")
         self.assertIn("committee draft", o["document_notes"])
+
+    # ---- v34: statuses and relationships ------------------------------------------------
+
+    FLAGGED_FOR_REVIEW = ["OBS-LHHS-0434", "OBS-LHHS-0440", "OBS-LHHS-0457", "OBS-LHHS-0465", "OBS-LHHS-0466",
+                          "OBS-LHHS-0467", "OBS-LHHS-0468", "OBS-LHHS-0471", "OBS-LHHS-0472", "OBS-LHHS-0477",
+                          "OBS-LHHS-0478", "OBS-LHHS-0484", "OBS-LHHS-0485", "OBS-LHHS-0488"]
+
+    def checks(self, oid):
+        return [tuple(r) for r in self.conn.execute(
+            "SELECT rule_applied, result, expected_result FROM validation_record WHERE observation_id = ?", (oid,))]
+
+    def test_the_status_rule_reproduces_every_status(self):
+        n = 0
+        for oid, conf, status in self.conn.execute(
+                "SELECT observation_id, confidence, verification_status FROM appropriations_observation "
+                "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
+            self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
+            n += 1
+        self.assertEqual(n, 1731)
+
+    def test_the_fourteen_deliberate_flags_stay_flagged(self):
+        got = dict(self.conn.execute("SELECT observation_id, verification_status FROM appropriations_observation "
+                                     "WHERE observation_id IN (%s)" % ",".join("?" * 14), self.FLAGGED_FOR_REVIEW).fetchall())
+        self.assertEqual(got, dict.fromkeys(self.FLAGGED_FOR_REVIEW, "flagged"))
+        for oid in self.FLAGGED_FOR_REVIEW:
+            # none has a failed check: each is flagged by a review flag (a scope question or a disagreeing document)
+            self.assertNotIn("fail", [r for _, r, _ in self.checks(oid)])
+            self.assertTrue(any(V.review_flag(*c) for c in self.checks(oid)), oid)
+            self.assertEqual(V.verification_status(0.95, self.checks(oid)), "flagged", oid)
+
+    def test_a_routine_semantic_flag_is_not_a_review_flag(self):
+        self.assertFalse(V.review_flag("semantic", "flag", "amount_type fits the row label (advance)"))
+        self.assertTrue(V.review_flag("semantic", "flag", "a dollar level set in law; P.L. 119-4 sec. 1101"))
+        self.assertTrue(V.review_flag("cross_document", "flag"))
+        self.assertFalse(V.review_flag("structural", "flag", "anything"))
+        self.assertEqual(V.verification_status(0.95, [("table_total", "pass"), ("semantic", "flag",
+                                                       "amount_type fits the row label (advance)")]), "unverified")
+
+    def test_the_cj_is_a_source_document(self):
+        self.assertEqual(self.conn.execute("SELECT document_type, stage FROM source_document WHERE document_id = "
+                                           "'SRC-CJ-AHA-FY2026'").fetchone()[:], ("congressional_budget_justification",
+                                                                                  "President's Budget"))
+
+    def test_a_relationship_shows_on_both_accounts_with_its_cj_pages(self):
+        from_side = {r["relationship_id"]: r for r in S.history(self.conn, "ACC-HHS-NIH-NIEHS")["relationships"]}
+        to_side = {r["relationship_id"]: r for r in S.history(self.conn, "ACC-HHS-AHA-TOTAL")["relationships"]}
+        r = from_side["REL-LHHS-0011"]
+        self.assertEqual((r["direction"], r["relationship_type"], r["other_account_id"]),
+                         ("from", "moved_reclassified", "ACC-HHS-AHA-TOTAL"))
+        self.assertEqual(r["cites"], [{"document_id": "SRC-CJ-AHA-FY2026",
+                                       "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf",
+                                       "pages": ["p.11", "p.13"]}])
+        self.assertEqual((to_side["REL-LHHS-0011"]["direction"], to_side["REL-LHHS-0011"]["other_account_id"]),
+                         ("to", "ACC-HHS-NIH-NIEHS"))
+        self.assertEqual(set(to_side), {"REL-LHHS-0001", "REL-LHHS-0002", "REL-LHHS-0011", "REL-LHHS-0012",
+                                        "REL-LHHS-0013", "REL-LHHS-0014", "REL-LHHS-0015"})   # 0003 / 0004 retired
 
     # ---- parent_account_id -----------------------------------------------------------
 

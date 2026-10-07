@@ -72,11 +72,11 @@ class StoreTest(unittest.TestCase):
 
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
-        # v33: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
+        # v34: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 34, "bill_report_reference": 58,
-            "appropriations_observation": 2601, "confirmed_absence": 234, "account_relationship": 8,
+            "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
+            "appropriations_observation": 2601, "confirmed_absence": 234, "account_relationship": 11,
             "validation_record": 6791, "component": 19})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "

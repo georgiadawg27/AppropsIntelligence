@@ -68,28 +68,51 @@ NOT_RUN = {
 CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic")
 
 
+# The routine semantic flag validate() puts on every line that isn't plain budget authority (an
+# advance, a rescission, a transfer ...): its expected_result always starts with this. Any other
+# semantic flag is a question a person wrote on the row for review (the FY2025 Enacted estimates of
+# open-ended appropriations: "a dollar level set in law; P.L. 119-4 ...").
+ROUTINE_SEMANTIC_EXPECTED = "amount_type fits the row label"
+
+
+def review_flag(rule, result, expected=None):
+    """A flag that puts the row in front of a person: another document prints a
+    different figure (cross_document), or a semantic or scope question written for
+    review -- not the routine semantic flag."""
+    if result != "flag":
+        return False
+    if rule == "cross_document":
+        return True
+    return rule == "semantic" and expected is not None and not expected.startswith(ROUTINE_SEMANTIC_EXPECTED)
+
+
 def verification_status(confidence, checks):
     """
     The one rule for an observation's verification_status, wherever the
     pipeline sets it (validate() below; the workbook-row builders):
-      flagged         -- any check failed
+      flagged         -- a check failed, or the row carries a flag for review
+                         (review_flag: a cross-document disagreement, or a
+                         deliberate semantic / scope question)
       auto-validated  -- confidence >= AUTO_PUBLISH_CONFIDENCE, every check
                          passed, and at least one of them confirms the figure
                          (CONFIRMING_RULES: a printed sum or difference, or
                          another document) -- source_text and unit alone
                          don't say the number is right
-      unverified      -- otherwise: a flag (semantic, an unconfirmed nesting, a
-                         cross-document disagreement), nothing confirming, or a
-                         confidence below the threshold
-    checks: the observation's (rule_applied, result) pairs.
+      unverified      -- otherwise: nothing confirms it yet (a routine flag --
+                         the semantic one on every non-budget-authority line,
+                         an unconfirmed nesting, a sum that doesn't close --
+                         no confirming check, or a confidence below the
+                         threshold)
+    checks: the observation's (rule_applied, result) or (rule_applied, result,
+    expected_result) tuples.
     Human-verified, provisional and superseded are set by their own steps,
     never by this rule.
     """
-    checks = list(checks)
-    results = [r for _, r in checks]
-    if "fail" in results:
+    checks = [tuple(c) + (None,) * (3 - len(c)) for c in checks]
+    results = [r for _, r, _ in checks]
+    if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"
-    if all(r == "pass" for r in results) and any(rule in CONFIRMING_RULES for rule, _ in checks) \
+    if all(r == "pass" for r in results) and any(rule in CONFIRMING_RULES for rule, _, _ in checks) \
             and confidence >= AUTO_PUBLISH_CONFIDENCE:
         return "auto-validated"
     return "unverified"
@@ -370,7 +393,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
 
         low = o["account_name_as_written"].lower()
         if o["amount_type"] not in ("budget authority", "supplemental") or any(k in low for k in SEMANTIC_KEYWORDS):
-            record(o, "semantic", f"amount_type fits the row label ({o['amount_type']})",
+            record(o, "semantic", f"{ROUTINE_SEMANTIC_EXPECTED} ({o['amount_type']})",
                    f"label {o['account_name_as_written']!r}; memo={o['is_memo']}"
                    + (f"; {o['advance_evidence']}" if o.get("advance_evidence") else ""), "flag")
 
@@ -384,7 +407,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
         reasons = []
         # feeding a failed sum is a failure of this row too; a row no sum or delta confirms has
         # an open check (nothing arithmetic vouches for it)
-        checks = [(r["rule_applied"], r["result"]) for r in records_by_obs[oid]]
+        checks = [(r["rule_applied"], r["result"], r["expected_result"]) for r in records_by_obs[oid]]
         if oid in implicated:
             checks.append(("table_total", "fail"))
         # confirmed by a sum: its own rollup record, or (a child) the record of the rollup it adds into
