@@ -885,7 +885,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.page.inner_text("#grid-title"), "Labor-HHS-Education · Title II, Department of Health and Human Services")
         self.assertEqual(self.page.inner_text("#grid-subline"),
                          "Budget authority in $ thousands (as printed in the committee tables) · every figure links to the page "
-                         "it was printed on · data as of v35")
+                         "it was printed on · data as of v36")
         self.assertIn("sha256", self.page.inner_text("#grid-provenance"))
         self.assertTrue(self.page.is_hidden("#freshness"))
         self.assertTrue(self.page.is_visible(".tabs"))

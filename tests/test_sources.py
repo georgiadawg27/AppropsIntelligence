@@ -80,10 +80,20 @@ class PageLinks(Store):
 
     def test_the_nine_v35_sources_open_at_a_page(self):
         urls = dict(self.conn.execute("SELECT document_id, url_or_identifier FROM source_document"))
-        for doc_id in ("SRC-CRPT-118SRPT84", "SRC-CRPT-118SRPT207", "SRC-CRPT-119SRPT55", "SRC-CRPT-118HRPT585",
+        for doc_id in ("SRC-CRPT-118SRPT84", "SRC-CRPT-118SRPT207", "SRC-CRPT-119SRPT55",
                        "SRC-CRPT-119HRPT271", "SRC-CRPT-119HRPT696", "SRC-CRPT-117HRPT403",
                        "SRC-EXPL-LHHS-FY2026-ENACTED", "SRC-PLAW-119PUBL4"):
             self.assertRegex(urls[doc_id], r"^https://www\.govinfo\.gov/content/pkg/[^/]+/pdf/[^/]+\.pdf$", doc_id)
+        # v36: the file govinfo serves at the package URL is not this report (its PDF hangs off the
+        # -pt1 granule); Congress.gov's part-1 PDF is the one whose sha256 matches what was ingested
+        self.assertEqual(urls["SRC-CRPT-118HRPT585"], "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf")
+
+    def test_no_bill_report_reference_link_is_a_landing_page(self):
+        # v36: the eight Labor-HHS report/JES links point at PDFs, not govinfo's app/details pages
+        # (bill_url isn't cited at a page; twelve Labor-HHS bill_url values are still landing pages)
+        rows = self.conn.execute("SELECT reference_id, report_jes_url FROM bill_report_reference").fetchall()
+        self.assertEqual(len(rows), 58)
+        self.assertEqual([r[0] for r in rows if "govinfo.gov/app/details" in (r[1] or "")], [])
 
 
 class NoApiKey(Store):
