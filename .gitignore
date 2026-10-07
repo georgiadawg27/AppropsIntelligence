@@ -24,3 +24,5 @@ extractions/
 *.sqlite3
 # Logs
 *.log
+# The workbook is built from data/staged.json (scripts/build_workbook.py), never committed
+build/
