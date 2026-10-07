@@ -1,4 +1,4 @@
-# Federal Appropriations Intelligence — CJS Title III pilot
+# Federal Appropriations Intelligence
 
 Ingests appropriations documents (govinfo), extracts their comparative tables,
 validates them, and serves each account's multi-year, multi-stage funding
@@ -16,7 +16,7 @@ history with a source citation for every figure.
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/Approps_Pilot_Schema_Loaded_v30.xlsx
+python approps_store.py load reference/Approps_Pilot_Schema_Loaded_v33.xlsx
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
@@ -38,7 +38,12 @@ v33: what their figures cover is computed, `reference/review/coverage.py`); a su
 act line shows only at Enacted and a budget amendment only at President's
 Budget, where they can exist. Rows are grouped by
 bill title (Account `title`) in bill order and ordered by `display_order`;
-accounts not yet placed in a title come last. A rollup the workbook notes as
+accounts not yet placed in a title come last. An account whose figure is inside another's
+(Account `parent_account_id`, v33: Health Centers under Primary Health Care, Head Start under
+Children and Families Services Programs) sits indented under it and is never added again --
+`approps_store.agency_members()` / `agency_sum()` leave it out of an agency total's sum. A stage's
+Bill Report Reference note (e.g. FY2023 Labor-HHS Senate Reported: a committee draft, never reported)
+is marked (†) on its column and listed under the grid; a document's own note shows with its citation. A rollup the workbook notes as
 "Derived rollup" heads the accounts it totals (its title's accounts of its
 agency), which fold away under it. Title and bill totals are shown only from
 a sourced row -- a rollup noted "title total" / "bill total" -- and never by

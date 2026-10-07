@@ -337,6 +337,9 @@ class GridData(CompareTest):
         c.row_factory = sqlite3.Row
         tmpl = dict(c.execute("SELECT * FROM appropriations_observation LIMIT 1").fetchone())
         acct = dict(c.execute("SELECT * FROM account LIMIT 1").fetchone())
+        # the v32 model (CURES a 'contained' component of NIH; v33 makes it an account and drops the
+        # component): the mechanism under test is a component line the title total subtracts
+        c.execute("INSERT OR IGNORE INTO component VALUES ('CURES', 'CURES Act', 'contained', 'inside NIH (test)')")
         lines = [("HRSA", 9_171_787, None), ("CDC", 7_992_946, None), ("NIH", 47_168_518, None), ("NIH", 407_000, "CURES"),
                  ("SAMHSA", 7_300_729, None), ("AHRQ", 369_000, None), ("CMS", 1_133_847_008, None),
                  ("ACF", 52_748_216, None), ("ACL", 2_520_342, None), ("ASPR", 3_634_606, None), ("OS", 1_761_616, None),
@@ -402,9 +405,10 @@ class GridData(CompareTest):
             c.execute(f"INSERT INTO appropriations_observation ({','.join(tmpl)}) VALUES ({','.join('?' * len(tmpl))})",
                       list(dict(tmpl, observation_id=oid, component=comp, headline_observation_id=h,
                                 source_document_id=doc).values()))
+        c.execute("INSERT OR IGNORE INTO component VALUES ('CURES', 'CURES Act', 'contained', 'inside NIH (test)')")
         c.commit()
         kinds = S.component_kinds(c)
-        got = S.headline_warnings(c, kinds)
+        got = S.headline_errors(c, kinds)          # load errors since v33 (were warnings)
         c.close()
         self.assertFalse(any("OBS-C-OK" in w for w in got))                      # a contained line inside its headline
         self.assertTrue(any("OBS-C-NONE" in w and "a view of" in w for w in got))

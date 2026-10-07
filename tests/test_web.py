@@ -118,7 +118,7 @@ class Api(WebTest):
         d = self.search("Office of Inspector General")
         self.assertEqual(d["status"], "ambiguous")
         self.assertNotIn("history", d)
-        self.assertEqual([c["canonical_account_id"] for c in d["candidates"]], ["ACC-DOJ-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual([c["canonical_account_id"] for c in d["candidates"]], ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
 
     def test_picked_candidate_and_unknown_id(self):
         status, d = self.get("/api/account/ACC-NSF-OIG")
@@ -283,7 +283,7 @@ class Browser(BrowserBase):
         self.search_ui("Office of Inspector General")
         self.assertFalse(self.page.is_visible("[data-testid=result]"))
         ids = self.page.eval_on_selector_all("[data-testid=candidate]", "bs => bs.map(b => b.dataset.id)")
-        self.assertEqual(ids, ["ACC-DOJ-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual(ids, ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
         self.page.click("[data-testid=candidate][data-id=ACC-NSF-OIG]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
         self.assertIn("National Science Foundation", self.page.text_content("#account-panel .meta"))
@@ -345,21 +345,13 @@ class Browser(BrowserBase):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 222)                         # v32: CJS's 197 + Labor-HHS's 25
+        self.assertEqual(n, 234)                         # v33: CJS's 197 + Labor-HHS's 37
 
 
 
 class NoPrintedTotalAndCoverage(BrowserBase):
-    @classmethod
-    def prepare(cls, conn):
-        cols = [r[1] for r in conn.execute("PRAGMA table_info(appropriations_observation)")]
-        sel = ", ".join({"observation_id": "'OBS-T-ADV'", "fiscal_year": "2023", "stage": "'Enacted'",
-                         "source_document_id": "'SRC-CRPT-118SRPT84'", "headline_observation_id": "NULL"}.get(c, c) for c in cols)
-        conn.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
-                     "WHERE canonical_account_id = 'ACC-HHS-CMS-MEDICAID' AND fiscal_year = 2024 AND stage = 'Enacted' "
-                     "AND amount_type = 'advance' LIMIT 1")
-        conn.execute("INSERT INTO confirmed_absence VALUES ('CA-T-ASPR', 'ACC-HHS-ASPR-TOTAL', 2023, 'House Reported', "
-                     "'budget authority', NULL, 'SRC-CRPT-118SRPT84', 'no ASPR total printed', '2026-10-06')")
+    # v33 carries the FY2023 rows these need (Medicaid's advance beside its absent headline,
+    # the ASPR total the FY2023 House report doesn't print): nothing to add
 
     def open_account(self, acct):
         self.page.goto(self.base + "/")
@@ -392,6 +384,47 @@ class NoPrintedTotalAndCoverage(BrowserBase):
         self.open_account("ACC-HHS-HRSA-HEALTH-CENTERS")
         self.assertEqual(self.page.text_content("[data-testid=figures-on-file]"), f"Figures on file: FY{min(ys)}\u2013FY{max(ys)}")
         self.assertNotIn("effective", self.page.inner_text("#account-panel").lower())
+
+
+
+class V33Page(BrowserBase):
+    """v33 on the page: no pilot label, a child account under its parent, the stage note."""
+
+    def compare(self, url):
+        self.page.goto(self.base + url)
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+
+    def test_header_names_no_pilot(self):
+        self.page.goto(self.base + "/")
+        self.assertNotIn("CJS Title III pilot", self.page.inner_text("main"))
+
+    def test_health_centers_indented_under_primary_care(self):
+        self.compare("/?view=compare&sc=LHHS&fy=2024-2024&stage=Senate+Reported")
+        ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
+        i = ids.index("ACC-HHS-HRSA-PRIMARY-CARE")
+        self.assertEqual(ids[i + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
+        row = self.page.locator("#compare-grid tr[data-account='ACC-HHS-HRSA-HEALTH-CENTERS']")
+        self.assertIn("child", row.get_attribute("class"))
+        self.assertIn("within Primary Health Care", row.locator("[data-testid=row-child-of]").inner_text())
+
+    def test_fy2023_senate_note_with_the_stage(self):
+        self.compare("/?view=compare&sc=LHHS&fy=2023-2023&stage=Senate+Reported")
+        mark = self.page.locator("#compare-grid thead [data-testid=stage-note-mark]")
+        self.assertEqual(mark.count(), 1)
+        self.assertIn("never reported", mark.get_attribute("title"))
+        self.assertIn("FY2023 Senate Reported: committee draft released 2022-07-28",
+                      self.page.inner_text("[data-testid=stage-notes]"))
+        # not shown when the column isn't
+        self.compare("/?view=compare&sc=LHHS&fy=2024-2024&stage=Senate+Reported")
+        self.assertEqual(self.page.locator("[data-testid=stage-notes]").count(), 0)
+
+    def test_note_on_the_account_grid(self):
+        self.page.goto(self.base + "/")
+        self.page.evaluate("pick('ACC-HHS-NIH-TOTAL', 'test')")
+        self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        cell = self.page.locator("#grid tr[data-fy='2023'] td[data-stage='Senate Reported']")
+        self.assertIn("never reported", cell.locator("[data-testid=stage-note-mark]").get_attribute("title"))
+        self.assertIn("FY2023 Senate Reported", self.page.inner_text("#result [data-testid=stage-notes]"))
 
 
 if __name__ == "__main__":

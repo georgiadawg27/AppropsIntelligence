@@ -77,7 +77,21 @@
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0031",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 House Reported. The report has no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund, whose total also holds non-ASPR lines (Cybersecurity, Office of National Security, OASH): 'Total, PHSSEF' 3,699,356 (p.836) -- a different scope, not recorded.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-05",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT403",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -85,12 +99,26 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       }
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0030",
+        "confirmed_date": "2026-10-06",
+        "document_type": "committee_report",
+        "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 President's Budget. The report has no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund, whose total also holds non-ASPR lines (Cybersecurity, Office of National Security, OASH): 'Total, PHSSEF' 3,814,610 (p.836) -- a different scope, not recorded.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-05",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-CRPT-117HRPT403",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -98,12 +126,27 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       }
      ],
      "Senate Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0033",
+        "confirmed_date": "2026-10-06",
+        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+        "document_type": "explanatory_statement",
+        "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in the Senate draft explanatory statement's Title II table pp. 399-419 (text layer) for FY2023 Senate Reported. The document prints only no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund ('Total, PHSSEF' 3,639,479, p.419), whose total also holds non-ASPR lines -- a different scope, not recorded.",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-28",
+        "source_agency": "Senate Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -111,7 +154,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "no_printed_total"
       }
      ]
     },
@@ -1129,7 +1172,54 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0031",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 House Reported. The report has no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund, whose total also holds non-ASPR lines (Cybersecurity, Office of National Security, OASH): 'Total, PHSSEF' 3,699,356 (p.836) -- a different scope, not recorded.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-05",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0030",
+    "confirmed_date": "2026-10-06",
+    "document_type": "committee_report",
+    "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in H.Rept.117-403 Title II table pp. 802-838 (PDF; printed pp. 798-834, read by vision) for FY2023 President's Budget. The report has no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund, whose total also holds non-ASPR lines (Cybersecurity, Office of National Security, OASH): 'Total, PHSSEF' 3,814,610 (p.836) -- a different scope, not recorded.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-05",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/app/details/CRPT-117hrpt403"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-ASPR-TOTAL",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0033",
+    "confirmed_date": "2026-10-06",
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_type": "explanatory_statement",
+    "evidence": "No row for this account's headline figure ('Total, Administration for Strategic Preparedness and Response') in the Senate draft explanatory statement's Title II table pp. 399-419 (text layer) for FY2023 Senate Reported. The document prints only no ASPR operating division: the preparedness programs (BARDA, Strategic National Stockpile, Project BioShield, Pandemic Influenza) print under the Office of the Secretary's Public Health and Social Services Emergency Fund ('Total, PHSSEF' 3,639,479, p.419), whose total also holds non-ASPR lines -- a different scope, not recorded.",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-28",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/download/lhhsfy23rept&download=1"
+   }
+  ],
   "account": {
    "agency": "Administration for Strategic Preparedness and Response",
    "bureau": "(Agency Total)",
@@ -1151,6 +1241,18 @@
     [
      2023,
      "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
     ],
     [
      2024,
@@ -2025,18 +2127,6 @@
   ],
   "open_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ],
-   [
     2024,
     "House Reported"
    ],
@@ -2050,6 +2140,9 @@
    ]
   ],
   "relationships": [],
+  "stage_notes": {
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
   "total_scope": "agency"
  }
 }

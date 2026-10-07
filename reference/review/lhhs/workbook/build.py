@@ -47,6 +47,7 @@ ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 
 import accounts as A  # noqa: E402
+import validate_approps  # noqa: E402
 
 SUB = "LHHS"                 # the stored subcommittee code (subcommittees.SUBCOMMITTEES); lookup_key LHHS-<FY>-<Stage>
 TODAY = "2026-09-28"
@@ -533,9 +534,12 @@ def main():
                 for x, *_ in xs:
                     (agree if x["amount"] == f["amount"] else disagree).append((p, x))
             method = f.get("extraction_method")
-            passed = any(r["result"] == "pass" and r["rule_applied"] in ("table_total", "structural") for r in recs) or bool(agree)
-            failed = any(r["result"] == "fail" for r in recs) or bool(disagree)
-            status = "flagged" if failed else ("auto-validated" if passed else "unverified")
+            # validate_approps.verification_status: auto-validated only at confidence >= 0.90 with every
+            # check passing (each other document printing the fact is a cross_document check)
+            status = validate_approps.verification_status(
+                f.get("extraction_confidence") or 0.95,
+                [(r["rule_applied"], r["result"]) for r in recs]
+                + [("cross_document", "pass")] * len(agree) + [("cross_document", "flag")] * len(disagree))
             label = f["account_name_as_written"]
             if label.startswith("mitation for Title XVIII"):
                 label = "Limitation" + label[len("mitation"):] + " (vision read 'mitation'; the page image prints 'Limitation')"

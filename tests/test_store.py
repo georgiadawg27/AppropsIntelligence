@@ -72,16 +72,15 @@ class StoreTest(unittest.TestCase):
 
 class Load(StoreTest):
     def test_all_seven_tabs_load(self):
-        # v32: CJS (30 accounts, 870 observations, 197 absences, 89 validation records -- as in v28)
-        # + Labor-HHS Title II (25, 489, 25, 1,955: v31's + the FY2025 Enacted rows) + P.L. 119-4
-        # and its FY2025 Enacted reference
+        # v33: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
+        # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         self.assertEqual(self.report["rows"], {
-            "account": 55, "historical_name": 7, "source_document": 32, "bill_report_reference": 55,
-            "appropriations_observation": 1359, "confirmed_absence": 222, "account_relationship": 4,
-            "validation_record": 2044, "component": 20})
+            "account": 130, "historical_name": 11, "source_document": 34, "bill_report_reference": 58,
+            "appropriations_observation": 2601, "confirmed_absence": 234, "account_relationship": 8,
+            "validation_record": 6791, "component": 19})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
-                                                "GROUP BY 1").fetchall()), {"-": 41, "agency": 13, "title": 1})
+                                                "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
@@ -91,12 +90,13 @@ class Load(StoreTest):
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
         kinds = S.component_kinds(self.conn)
-        self.assertEqual((kinds["defense"], kinds["supplemental_act"], kinds["CURES"], kinds["appropriated_in_this_bill"]),
-                         ("part", "part", "contained", "view"))
+        self.assertEqual((kinds["defense"], kinds["supplemental_act"], kinds["appropriated_in_this_bill"]),
+                         ("part", "part", "view"))
+        self.assertNotIn("CURES", kinds)                 # v33: an account of its own, no longer a component
         # every component carries a label from a document's own text (accounts.COMPONENT_LABELS)
         labels = dict(self.conn.execute("SELECT component_id, label FROM component").fetchall())
-        self.assertEqual((labels["CURES"], labels["program_level_excluding_arpa_h"], labels["defense"]),
-                         ("CURES Act", "program level (excluding ARPA-H)", "Defense function"))
+        self.assertEqual((labels["program_level_excluding_arpa_h"], labels["defense"]),
+                         ("program level (excluding ARPA-H)", "Defense function"))
         self.assertNotIn(None, labels.values())
 
     def test_reference_workbook_loads_with_no_warnings(self):
@@ -365,8 +365,8 @@ class Resolve(StoreTest):
     def test_same_name_in_two_agencies_is_not_guessed(self):
         res, _ = self.query("Office of Inspector General")
         self.assertEqual((res["match"], res["account"]), ("ambiguous", None))
-        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:3],
-                         ["ACC-DOJ-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:4],
+                         ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])      # v33: HHS's too
         self.assertEqual(self.query("NSF Office of Inspector General")[0]["account"]["canonical_account_id"], "ACC-NSF-OIG")
         self.assertEqual(self.query("Office of Inspector General", agency="NASA")[0]["account"]["canonical_account_id"],
                          "ACC-NASA-OIG")
@@ -495,7 +495,9 @@ class FactKey(StoreCopyTest):
         # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's
         self.assertEqual(used("CJS"), {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
         self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"})
-        self.assertIn("CURES", used("LHHS"))
+        # v33: the CURES Act money is its own account, no longer a component of NIH's total
+        self.assertNotIn("CURES", used("LHHS"))
+        self.assertIn("program_level_excluding_arpa_h", used("LHHS"))
         self.assertFalse(accounts.BREAKDOWN_COMPONENTS & (set(accounts.COMPONENTS) | set(accounts.STRUCTURAL_COMPONENTS)))
         # structural components are never reached from a printed label
         for c in accounts.STRUCTURAL_COMPONENTS:
@@ -541,19 +543,25 @@ class ConfirmedAbsenceRules(StoreCopyTest):
             self.absent("CA-X", "ACC-NASA-EXPLORATION", 2017, "Senate Reported", "supplemental")
 
     def test_every_absence_is_not_applicable_with_its_evidence(self):
-        n = 0
+        n = npt = 0
+        totals = {r[0] for r in self.conn.execute("SELECT canonical_account_id FROM account WHERE total_scope IS NOT NULL")}
         for (acct,) in self.conn.execute("SELECT DISTINCT canonical_account_id FROM confirmed_absence").fetchall():
             for row in S.history_grid(S.history(self.conn, acct))["rows"]:
                 for cells in row["cells"].values():
                     for line in cells:
                         if line["absence"]:
-                            # "no printed total": an absent headline the document still prints the account for --
-                            # in v32, only AHA's four (a total, total_scope 'agency')
-                            self.assertEqual(line["state"], "no_printed_total" if acct == "ACC-HHS-AHA-TOTAL" else "not_funded")
+                            # "no printed total": an absent headline (budget authority, no component) the document
+                            # still prints the account for -- a total, or a cell with another of its lines
+                            headline = line["amount_type"] == "budget authority" and line["component"] is None
+                            beside = any(l["observations"] for l in cells)
+                            printed = headline and (acct in totals or beside)
+                            self.assertEqual(line["state"], "no_printed_total" if printed else "not_funded", (acct, row["fiscal_year"]))
+                            npt += printed
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 222)                         # v32: CJS's 197 + Labor-HHS's 25
+        self.assertEqual(n, 234)                         # v33: CJS's 197 + Labor-HHS's 37
+        self.assertEqual(npt, 13)
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
@@ -607,10 +615,10 @@ class GridStates(StoreTest):
         self.assertEqual(line, "missing")
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
-        # no Labor-HHS document on file covers FY2023 House Reported (only S.Rept. 118-84's FY2023 Enacted column)
-        line = self.state("ACC-HHS-NIH-TOTAL", 2023, "House Reported")
+        # no Labor-HHS document on file covers FY2024 House Reported (the FY2024 House bill was never reported)
+        line = self.state("ACC-HHS-NIH-TOTAL", 2024, "House Reported")
         self.assertEqual(line["state"], "not_collected")
-        self.assertNotIn((2023, "House Reported"), S.history(self.conn, "ACC-HHS-NIH-TOTAL")["missing_cells"])
+        self.assertNotIn((2024, "House Reported"), S.history(self.conn, "ACC-HHS-NIH-TOTAL")["missing_cells"])
 
     def test_no_enacted_law_yet(self):
         self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2027, "Enacted")["state"], "not_enacted")
@@ -742,7 +750,7 @@ class Coverage(StoreCopyTest):
 
     def test_first_and_last_observed_years_and_unchecked_cells(self):
         rows = {r["canonical_account_id"]: r for r in self.rows()}
-        self.assertEqual(len(rows), 55)
+        self.assertEqual(len(rows), 130)
         self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
         # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
         self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
@@ -773,41 +781,29 @@ class NoPrintedTotal(StoreCopyTest):
     account is a total (total_scope), or the same cell holds another of its
     lines -- is "no printed total", not "not funded"."""
 
-    def add_fy2023(self):
-        # as the FY2023 bundle sends them: Medicaid's new advance printed beside its missing headline
-        # (S.Rept. 118-84, FY2023 Enacted), and the ASPR total the FY2023 House report doesn't print
-        cols = [r[1] for r in self.conn.execute("PRAGMA table_info(appropriations_observation)")]
-        sel = ", ".join({"observation_id": "'OBS-T-ADV'", "fiscal_year": "2023", "stage": "'Enacted'",
-                         "source_document_id": "'SRC-CRPT-118SRPT84'", "headline_observation_id": "NULL"}.get(c, c) for c in cols)
-        self.conn.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
-                          "WHERE canonical_account_id = 'ACC-HHS-CMS-MEDICAID' AND fiscal_year = 2024 AND stage = 'Enacted' "
-                          "AND amount_type = 'advance' LIMIT 1")
-        self.conn.execute("INSERT INTO confirmed_absence VALUES ('CA-T-ASPR', 'ACC-HHS-ASPR-TOTAL', 2023, 'House Reported', "
-                          "'budget authority', NULL, 'SRC-CRPT-118SRPT84', 'no ASPR total printed', '2026-10-06')")
-
     def head(self, account, fy, stage, amount_type="budget authority"):
         g = S.history_grid(S.history(self.conn, account))
         row = next(r for r in g["rows"] if r["fiscal_year"] == fy)
         return next(l for l in row["cells"][stage] if l["amount_type"] == amount_type and l["component"] is None)
 
     def test_fy2023_medicaid_headline_and_aspr_total(self):
-        # v32 alone: CA-LHHS-0005's cell holds nothing else of Medicaid's
-        self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted")["state"], "not_funded")
-        self.add_fy2023()
+        # v33's FY2023 rows: Medicaid's new advance printed beside its missing headline (S.Rept. 118-84,
+        # FY2023 Enacted), and the ASPR total the FY2023 House report doesn't print
         line = self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted")
         self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0005"))
         self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted", "advance")["state"], "value")
-        self.assertEqual(self.head("ACC-HHS-ASPR-TOTAL", 2023, "House Reported")["state"], "no_printed_total")
+        line = self.head("ACC-HHS-ASPR-TOTAL", 2023, "House Reported")
+        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0031"))
 
     def test_a_rescission_line_with_nothing_beside_it_is_still_none(self):
         line = self.head("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", 2026, "House Reported", "rescission")
         self.assertEqual((line["state"], bool(line["absence"])), ("not_funded", True))
 
     def test_counted_apart(self):
-        self.add_fy2023()
         counts = S.subcommittee_grid(self.conn, "LHHS")["state_counts"]
         self.assertEqual(list(counts), list(S.CELL_STATES))
-        self.assertGreaterEqual(counts["no_printed_total"], 2)
+        self.assertEqual(counts, {"value": 1452, "not_funded": 102, "no_printed_total": 13, "missing": 133,
+                                  "not_collected": 200, "not_enacted": 100})
 
 
 class ComponentStage(StoreCopyTest):
@@ -923,45 +919,44 @@ class LoadRefuses(unittest.TestCase):
         self.refuse(path, "CHECK constraint failed")
 
     def test_a_workbook_without_effective_dates_loads(self):
-        # v33 drops Account.effective_start / effective_end: the loader neither needs nor stores them
-        def drop(wb):
+        # v33 drops Account.effective_start / effective_end; a workbook still carrying them loads the same
+        head = [c.value for c in openpyxl.load_workbook(WORKBOOK, read_only=True)["Account"][1]]
+        self.assertNotIn("effective_start", head)
+
+        def add(wb):
             ws = wb["Account"]
-            for col in ("effective_start", "effective_end"):
-                ws.delete_cols([c.value for c in ws[1]].index(col) + 1)
-        path = self.mutate(drop)
-        db = Path(self.tmp.name) / "v33.db"
+            n = len([c.value for c in ws[1]])
+            for i, col in enumerate(("effective_start", "effective_end"), start=1):
+                ws.cell(row=1, column=n + i, value=col)
+                ws.cell(row=2, column=n + i, value="2016-10-01" if i == 1 else None)
+        db = Path(self.tmp.name) / "dates.db"
         with contextlib.redirect_stdout(io.StringIO()):
-            report = S.load(path, db)
-        self.assertEqual(report["rows"]["account"], 55)
+            report = S.load(self.mutate(add), db)
+        self.assertEqual(report["rows"]["account"], 130)
         conn = S.connect(db, readonly=True)
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()
 
     def test_parent_account_id_loads(self):
-        # v33 adds Account.parent_account_id: a program line's heading account
-        def add(wb):
-            ws = wb["Account"]
-            head = [c.value for c in ws[1]]
-            ws.cell(row=1, column=len(head) + 1, value="parent_account_id")
-            for i in range(2, ws.max_row + 1):
-                if ws.cell(row=i, column=1).value == "ACC-HHS-HRSA-HEALTH-CENTERS":
-                    ws.cell(row=i, column=len(head) + 1, value="ACC-HHS-HRSA-PRIMARY-CARE")
+        # v33 carries Account.parent_account_id: a program line's heading account
+        self.assertEqual(dict(self.conn_of(S.load, WORKBOOK)), {
+            "ACC-HHS-HRSA-HEALTH-CENTERS": "ACC-HHS-HRSA-PRIMARY-CARE", "ACC-HHS-ACF-HEAD-START": "ACC-HHS-ACF-CFSP"})
+
+    def conn_of(self, load, path):
         db = Path(self.tmp.name) / "parent.db"
         with contextlib.redirect_stdout(io.StringIO()):
-            S.load(self.mutate(add), db)
+            load(path, db)
         conn = S.connect(db, readonly=True)
-        self.assertEqual(dict(conn.execute("SELECT canonical_account_id, parent_account_id FROM account "
-                                           "WHERE parent_account_id IS NOT NULL").fetchall()),
-                         {"ACC-HHS-HRSA-HEALTH-CENTERS": "ACC-HHS-HRSA-PRIMARY-CARE"})
-        conn.close()
+        try:
+            return conn.execute("SELECT canonical_account_id, parent_account_id FROM account "
+                                "WHERE parent_account_id IS NOT NULL").fetchall()
+        finally:
+            conn.close()
 
     def test_a_parent_that_is_not_an_account_is_refused(self):
-        def add(wb):
-            ws = wb["Account"]
-            head = [c.value for c in ws[1]]
-            ws.cell(row=1, column=len(head) + 1, value="parent_account_id")
-            ws.cell(row=2, column=len(head) + 1, value="ACC-NOT-THERE")
-        self.refuse(self.mutate(add), "FOREIGN KEY constraint failed")
+        path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-SCIENCE", "parent_account_id"),
+                                              "value", "ACC-NOT-THERE"))
+        self.refuse(path, "FOREIGN KEY constraint failed")
 
     def test_a_workbook_without_total_scope_is_refused(self):
         # without the column every total would load as a plain account, silently

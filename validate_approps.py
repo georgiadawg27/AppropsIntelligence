@@ -63,6 +63,38 @@ NOT_RUN = {
 }
 
 
+# checks that confirm the figure itself: a sum or difference it is part of, or another document
+# ("arithmetic": validate()'s own note that some printed sum confirmed the row, its own or a parent's)
+CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic")
+
+
+def verification_status(confidence, checks):
+    """
+    The one rule for an observation's verification_status, wherever the
+    pipeline sets it (validate() below; the workbook-row builders):
+      flagged         -- any check failed
+      auto-validated  -- confidence >= AUTO_PUBLISH_CONFIDENCE, every check
+                         passed, and at least one of them confirms the figure
+                         (CONFIRMING_RULES: a printed sum or difference, or
+                         another document) -- source_text and unit alone
+                         don't say the number is right
+      unverified      -- otherwise: a flag (semantic, an unconfirmed nesting, a
+                         cross-document disagreement), nothing confirming, or a
+                         confidence below the threshold
+    checks: the observation's (rule_applied, result) pairs.
+    Human-verified, provisional and superseded are set by their own steps,
+    never by this rule.
+    """
+    checks = list(checks)
+    results = [r for _, r in checks]
+    if "fail" in results:
+        return "flagged"
+    if all(r == "pass" for r in results) and any(rule in CONFIRMING_RULES for rule, _ in checks) \
+            and confidence >= AUTO_PUBLISH_CONFIDENCE:
+        return "auto-validated"
+    return "unverified"
+
+
 def _cell_value(node, col_index):
     if col_index is None or col_index >= len(node.cells):
         return None
@@ -106,6 +138,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
     obs_by = {(o["node_id"], o["column_index"]): o for o in observations}
     records = []
     results_by_obs = defaultdict(list)
+    records_by_obs = defaultdict(list)
     arithmetic_pass = set()         # observation ids confirmed by some sum
     implicated = set()              # observation ids feeding a failed sum
     rollup_lines = []
@@ -124,6 +157,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
         }
         records.append(rec)
         results_by_obs[obs["observation_id"]].append(result)
+        records_by_obs[obs["observation_id"]].append(rec)
         return rec
 
     value_cols = [c for c in cols if c["kind"] == "value"]
@@ -348,19 +382,21 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
         oid = o["observation_id"]
         o["verification_reason"] = None
         reasons = []
-        if "fail" in res or oid in implicated:
+        # feeding a failed sum is a failure of this row too; a row no sum or delta confirms has
+        # an open check (nothing arithmetic vouches for it)
+        checks = [(r["rule_applied"], r["result"]) for r in records_by_obs[oid]]
+        if oid in implicated:
+            checks.append(("table_total", "fail"))
+        # confirmed by a sum: its own rollup record, or (a child) the record of the rollup it adds into
+        checks.append(("arithmetic", "pass" if oid in arithmetic_pass else "flag"))
+        if any(r == "fail" for _, r in checks):
             o["extraction_confidence"] = min(o["extraction_confidence"], FAILED_CONFIDENCE)
-            o["verification_status"] = "flagged"
-        elif "flag" in res or oid not in arithmetic_pass:
-            o["verification_status"] = "unverified"
+        o["verification_status"] = verification_status(o["extraction_confidence"], checks)
+        if o["verification_status"] == "unverified":
             if oid in unconfirmed_nesting:
                 reasons.append(MODEL_INDENT_REASON)
             if o.get("account_match") not in (None, "exact", "ocr_corrected"):
                 reasons.append(ACCOUNT_MATCH_REASON)
-        elif o["extraction_confidence"] >= AUTO_PUBLISH_CONFIDENCE:
-            o["verification_status"] = "auto-validated"
-        else:
-            o["verification_status"] = "unverified"
 
         # An OCR-read value that no sum or delta confirms has nothing that
         # could catch a misread digit: better parsing can't fix that.
