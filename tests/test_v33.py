@@ -59,7 +59,7 @@ class V33Store(unittest.TestCase):
         return S.connect(path)
 
     def test_counts(self):
-        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v34.xlsx")
+        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v35.xlsx")
         self.assertEqual(self.report["rows"], {
             "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
             "component": 19, "appropriations_observation": 2601, "confirmed_absence": 234,
