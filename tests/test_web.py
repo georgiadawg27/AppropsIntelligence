@@ -400,6 +400,7 @@ class V33Page(BrowserBase):
 
     def test_health_centers_indented_under_primary_care(self):
         self.compare("/?view=compare&sc=LHHS&grid=stages&fy=2024")
+        self.page.click("#expand-all")
         ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
         i = ids.index("ACC-HHS-HRSA-PRIMARY-CARE")
         self.assertEqual(ids[i + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
