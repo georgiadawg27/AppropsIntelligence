@@ -135,13 +135,13 @@ class Load(StoreTest):
 
     def test_fy2027_house_links_are_the_verified_packages(self):
         # both fetched live and checked: the report is byte-identical to the
-        # CRPT-119hrpt652 govinfo_ingest stored; the bill's first page is
-        # H.R. 8845 as reported, May 15, 2026
+        # CRPT-119hrpt652 govinfo_ingest stored (v37: its Congress.gov PDF, sha256-matched);
+        # the bill's first page is H.R. 8845 as reported, May 15, 2026
         r = self.conn.execute("SELECT bill_id, report_id, bill_url, report_jes_url FROM bill_report_reference "
                               "WHERE reference_id = 'BR-CJS-FY2027-HOUSE'").fetchone()
         self.assertEqual(tuple(r), ("H.R.8845", "H.Rept.119-652",
                                     "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
-                                    "https://www.govinfo.gov/content/pkg/CRPT-119hrpt652/pdf/CRPT-119hrpt652.pdf"))
+                                    "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf"))
 
     def test_foreign_keys_are_enforced_not_just_declared(self):
         # SQLite ignores REFERENCES unless the connection turns them on

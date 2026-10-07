@@ -1033,16 +1033,33 @@ function renderCompare(grid) {
   const groups = layout(grid), cols = flatCols(groups);
   const note = (c) => c.fig ? (grid.stage_notes || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`] : null;
   const r1 = el("tr", {}, el("th", { class: "acct", scope: "col", rowspan: "2", text: "Account" }));
+  // a year funded by a full-year continuing resolution (Bill Report Reference funding_type, v37):
+  // its Enacted column says so -- "FY2025 (CR)" where the header names the year, "Enacted (CR)" where
+  // the year's other stages sit beside it -- with the law and date in the title
+  const cr = (c) => {
+    const e = c.fig && c.fig[1] === 3 && (grid.enactments || {})[String(c.fig[0])];
+    return e && e.funding_type === "full_year_cr"
+      ? { fy: c.fig[0], title: `Funded by a full-year continuing resolution (${(e.bill_id || "").replace(/^P\.L\.\s*/, "P.L. ")}`
+          + `${e.enactment_date ? ", enacted " + e.enactment_date : ""})` } : null;
+  };
+  const crAttrs = (k) => k ? { title: k.title, "data-cr": String(k.fy), "data-testid": "cr-label" } : {};
+  const crInGroup = new Set();      // years labeled on their group header (a group of just that Enacted column)
   for (const g of groups) {
     const change = g.cls === "delta";
     if (change) r1.append(el("th", { class: "gap", rowspan: "2", "aria-hidden": "true" }));
+    const k = g.cols.length === 1 && g.label === `FY${g.cols[0].fig && g.cols[0].fig[0]}` ? cr(g.cols[0]) : null;
     r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""}${change ? "" : " gs"}`,
-                         text: change && !/^Change\b/.test(g.label) ? `Change · ${g.label}` : g.label }));
+                         text: k ? `${g.label} (CR)` : change && !/^Change\b/.test(g.label) ? `Change · ${g.label}` : g.label,
+                         ...crAttrs(k) }));
+    if (k) crInGroup.add(k.fy);
   }
   const r2 = el("tr", {}, ...cols.map((c) => {
     const n = note(c);
-    return el("th", { scope: "col", class: c.cls, title: n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}` },
-      n ? noteMark(n) : null, c.label);
+    const k = c.fig && crInGroup.has(c.fig[0]) ? null : cr(c);
+    const label = k ? `${c.label} (CR)` : c.label;
+    return el("th", { scope: "col", class: c.cls, title: n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}`,
+                      ...crAttrs(k) },
+      n ? noteMark(n) : null, label);
   }));
   current = { grid, cols };
   $("#compare-grid").replaceChildren(el("thead", {}, r1, r2), el("tbody"));
