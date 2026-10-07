@@ -92,7 +92,8 @@
   .grid th.grp { text-align: center; font-weight: 700; color: #16181D; border-bottom: 1px solid #E3E4E0; padding: 11px 14px 6px; height: 20px; }
   .grid thead tr + tr th { top: var(--head1, 38px); }   /* --head1: the first row's measured height (pinHeader) */
   .grid th.acct { text-align: left; left: 0; z-index: 3; vertical-align: bottom; }
-  .grid th.delta { background: #F1F4F9; }
+  .grid th.delta { background: #FFFFFF; }
+  .grid th.delta.grp { color: #4A515E; }
   .grid th.yb { background: #F8F9FC; }
   .grid th, .grid td { border-left: 1px solid #E6E6E1; }
   .grid th.acct, .grid td.acct { border-left: 0; border-right: 1px solid #D3D5CE; }
@@ -102,17 +103,32 @@
   .grid td.acct { position: sticky; left: 0; z-index: 1; background: #FFFFFF; text-align: left; white-space: normal;
                   width: 360px; min-width: 360px; max-width: 360px; }
   .grid th.acct { width: 360px; min-width: 360px; max-width: 360px; }
-  .grid td.delta { background: #F6F8FB; }
+  .grid td.delta { font-size: 13px; }
   .grid td.yb { background: #FBFBFD; }
-  .grid tbody tr.child:nth-child(even) td { background: #F7F7F4; }
-  .grid tbody tr.child:nth-child(even) td.delta { background: #F0F3F8; }
-  .grid tr.title td { background: #EAF0F8; font-weight: 700; border-bottom: 1px solid #C4CFE0; }
-  .grid tr.agency td { font-weight: 600; background: #F3F3EF; border-top: 1px solid #DCDDD6; }
-  .grid tr.agency td.acct { background: #F3F3EF; }
+  .grid tbody tr.child:nth-child(even) td { background-color: #F7F7F4; }
+  .grid tr.title td { background-color: #E6E7E1; font-weight: 700; border-bottom: 2px solid #9A9F94; }
+  .grid tr.agency td { font-weight: 600; background-color: #EFF0EA; border-top: 1px solid #B9BCB2; }
+  .grid tr.agency td.acct { background-color: #EFF0EA; }
   .grid tr.group td { background: #F3F3EF; font-weight: 600; text-align: left; color: #3D4350; }
   .grid tr.note td { color: #3D4350; font-size: 13px; text-align: left; border-bottom: 1px dashed #E3E4E0; white-space: normal; }
-  .grid tbody tr:hover > td { background: #E3ECF8 !important; }
-  .grid tbody tr.agency:hover > td, .grid tbody tr.title:hover > td, .grid tbody tr.group:hover > td { background: #D6E3F5 !important; }
+  .grid tbody tr:hover > td { background-color: #E3ECF8 !important; }
+  .grid tbody tr.agency:hover > td, .grid tbody tr.title:hover > td, .grid tbody tr.group:hover > td { background-color: #D6E3F5 !important; }
+  /* design reference v2: rollups, the change block set apart, notes as a corner mark */
+  .grid tr.agency .namebox, .grid tr.title .namebox { padding-right: 54px; }
+  .grid tr.agency .tag.total, .grid tr.title .tag.total { position: absolute; right: 10px; top: 11px; margin: 0; }
+  .tag.total { background: transparent; color: #5D6472; border: 1px solid #C9CBC4; text-transform: uppercase; font-size: 10px;
+               letter-spacing: .07em; font-weight: 600; padding: 0 5px; }
+  .grid tr.child td.acct.lvl1, .grid tr.child td.acct.lvl2, .grid tr.note td.acct {
+    background-image: linear-gradient(#C4C6BE, #C4C6BE); background-size: 2px 100%; background-position: 27px 0; background-repeat: no-repeat; }
+  .grid tr.last td { border-bottom: 1px solid #B9BCB2; }
+  .grid th.gap, .grid td.gap, .grid tbody tr:hover > td.gap, .grid tbody tr.child:nth-child(even) > td.gap { background: #F6F6F3 !important; border-top: 0; border-bottom: 0 !important; border-left: 1px solid #C9CBC4 !important;
+                               width: 14px; min-width: 14px; max-width: 14px; padding: 0; }
+  .grid th.gap + th, .grid td.gap + td { border-left: 1px solid #C9CBC4; }
+  td.num { position: relative; }
+  button.nm { position: absolute; top: 0; right: 0; appearance: none; padding: 0; margin: 0; background: none; border: 0; border-radius: 0;
+              border-top: 9px solid #8A93A3; border-left: 9px solid transparent; width: 0; height: 0; min-height: 0; cursor: pointer; }
+  button.nm:hover, button.nm:focus-visible { border-top-color: #1F4E8C; outline: none; }
+  .nm-legend { display: inline-block; width: 0; height: 0; border-top: 9px solid #8A93A3; border-left: 9px solid transparent; vertical-align: 2px; margin-right: 4px; }
   .namecell { display: flex; align-items: flex-start; gap: 6px; }
   .namebox { flex: 1; min-width: 0; line-height: 1.35; }
   .namebox .linkish { font: inherit; color: inherit !important; text-decoration: none; cursor: pointer; }
@@ -174,8 +190,6 @@
   .gfooter { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 12px; color: #4A515E; padding: 4px 2px; }
   .gfooter.small { font-size: 11px; color: #6A7180; }
   .stage-note-mark { color: #1F4E8C; cursor: help; font-weight: 600; }
-  .more, .num a.more { margin-left: 4px; font-size: 11px; color: #5D6472 !important; text-decoration: none; cursor: pointer; }
-  .num a.more:hover { color: #1F4E8C !important; text-decoration: underline; border-bottom-color: transparent; }
   @media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } body.wide main { padding: 12px 16px 0; } }
   @media (max-width: 600px) { .tiles { grid-template-columns: minmax(0, 1fr); } .tile .v { font-size: clamp(18px, 6vw, 24px); } }
 </style>
@@ -254,9 +268,9 @@
         <span><span class="tok">n/c</span> not yet collected</span>
         <span><span class="tok miss">?</span> document on file, figure not yet extracted</span>
         <span><span class="tok">n/e</span> not yet enacted</span>
-        <span><span class="up">+</span> / <span class="down">&minus;</span> change, with % of the earlier figure</span>
-        <span><span class="more" style="cursor:default">+2</span> other lines on file for this cell (hover to list, click to open the account)</span>
-        <span>Agency rows are the printed agency totals; accounts beneath are not re-added</span>
+        <span><span class="up">+</span> / <span class="down">&minus;</span> change, with % of the earlier figure (shown apart from the figures)</span>
+        <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
+        <span><span class="tag total" style="margin-left:0">total</span> printed total of the accounts indented below it, not added again</span>
         <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document</span>
       </footer>
       <footer class="gfooter" id="grid-counts" data-testid="state-counts"></footer>
@@ -732,17 +746,17 @@ function figureCell(row, y, st, cls) {
 }
 
 // the cell's other lines with a figure (program level, advance, supplemental, ...): never added,
-// listed in the marker's tooltip; the marker opens the account at this year and stage
+// listed in the tooltip of a corner mark in the cell; the mark opens the account at this year and stage
 function otherLines(row, y, st, lines, h) {
   const rest = lines.filter((l) => l !== h && l.state === "value" && l.observations.length);
   if (!rest.length) return null;
   const id = row.account.canonical_account_id;
   const list = rest.map((l) => `${seriesText(l)}: ${GridMath.number(l.observations[0].amount, G.units)}`);
   const what = `${rest.length} other line${rest.length === 1 ? "" : "s"} on file, ${G.units === "m" ? "$ millions" : "$ thousands"}`;
-  const a = el("a", { class: "more", "data-testid": "more", href: `?account=${encodeURIComponent(id)}&fy=${y}&stage=${encodeURIComponent(st)}`,
-                      title: `${what}:\n${list.join("\n")}`, "aria-label": `${what}: ${list.join("; ")}`, text: `+${rest.length}` });
-  a.addEventListener("click", (e) => { e.preventDefault(); openAccount(id, { fy: y, stage: st }); });
-  return a;
+  const b = el("button", { type: "button", class: "nm", "data-testid": "more", dataset: { lines: String(rest.length) },
+                           title: `${what}:\n${list.join("\n")}`, "aria-label": `${what}: ${list.join("; ")}` });
+  b.addEventListener("click", () => openAccount(id, { fy: y, stage: st }));
+  return b;
 }
 
 // the later figure against the earlier one: $ change over % of the earlier figure
@@ -800,11 +814,18 @@ function layout(grid) {
   ];
 }
 function flatCols(groups) {
-  return groups.flatMap((g) => g.cols.map((c, i) => ({ ...c, cls: [g.cls || "", i === 0 ? "gs" : ""].join(" ").trim() })));
+  return groups.flatMap((g) => g.cols.map((c, i) => ({ ...c, cls: [g.cls || "", i === 0 && g.cls !== "delta" ? "gs" : ""].join(" ").trim() })));
 }
+const gapCell = () => el("td", { class: "gap", "aria-hidden": "true" });
+const spanOf = (cols) => cols.length + (cols.some((c) => c.chg) ? 1 : 0);      // with the gap column
 function cellsFor(row, cols) {
-  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c.cls)
-    : changeCell(figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]]), c.what, c.cls));
+  const out = [];
+  cols.forEach((c, i) => {
+    if (c.chg && !(cols[i - 1] && cols[i - 1].chg)) out.push(gapCell());       // the change block, set apart
+    out.push(c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c.cls)
+      : changeCell(figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]]), c.what, c.cls));
+  });
+  return out;
 }
 
 // ---- rows: the printed title total first, then each agency total (its accounts beneath when open),
@@ -819,7 +840,7 @@ function nameCell(o) {
     box.append(b);
   } else box.append(o.name);
   if (o.abbr) box.append(el("span", { class: "abbr", text: o.abbr }));
-  for (const t of o.tags || []) box.append(el("span", { class: "tag " + t.cls, "data-testid": "tag", text: t.text, ...(t.title ? { title: t.title } : {}) }));
+  for (const t of o.tags || []) box.append(el("span", { class: "tag " + t.cls, "data-testid": t.testid || "tag", text: t.text, ...(t.title ? { title: t.title } : {}) }));
   if (o.move) box.append(el("span", { class: "move", "data-testid": "move-note", text: o.move }));
   let lead = null;
   if (o.chev) {
@@ -866,12 +887,13 @@ function emptyRow(cls, name, ncols, testidName) {
 
 function buildRows(grid, cols) {
   const out = [];
-  const ncols = cols.length;
+  const ncols = spanOf(cols);
+  const TOTAL = { cls: "total", text: "total", testid: "total", title: "printed total of the accounts indented below it, not added again" };
   for (const group of grid.titles) {
     const ids = group.rows.map((id) => ROW_OF.get(id));
     if (group.total) {
       out.push(el("tr", { class: "title", dataset: { account: group.total.account.canonical_account_id, testid: "compare-row" } },
-        nameCell({ name: `Total, ${group.title} (printed)`, spacer: true }), ...cellsFor(group.total, cols)));
+        nameCell({ name: `Total, ${group.title} (printed)`, spacer: true, tags: [TOTAL] }), ...cellsFor(group.total, cols)));
     } else {
       out.push(emptyRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
     }
@@ -882,13 +904,17 @@ function buildRows(grid, cols) {
       const members = ids.filter((m) => m.member_of === id);
       const incoming = a.status === "proposed" ? r.relationships.filter((x) => x.to_account_id === id) : [];
       const kids = members.length + incoming.length > 0, isOpen = kids && open.has(id);
-      const tags = a.status === "proposed" ? [{ cls: "prop", text: "proposed agency · not enacted", title: a.notes || "" }] : [];
+      // TOTAL marks a row that sums the accounts indented beneath it; a proposed agency's rows beneath
+      // are relationship notes, not accounts
+      const tags = a.status === "proposed" ? [{ cls: "prop", text: "proposed agency · not enacted", title: a.notes || "" }] : [TOTAL];
       out.push(el("tr", { class: "agency", dataset: { account: id, testid: "compare-row" } },
         nameCell({ id, name: plainName(a.canonical_name), title: accountTitle(r), abbr, chev: kids, spacer: !kids, open: isOpen, tags }),
         ...cellsFor(r, cols)));
       if (!isOpen) continue;
-      for (const m of members) out.push(accountRow(m, cols, "child", m.account.parent_account_id ? "lvl2" : "lvl1"));
-      for (const rel of incoming) out.push(relNote(rel, ncols, abbr));
+      const inside = members.map((m) => accountRow(m, cols, "child", m.account.parent_account_id ? "lvl2" : "lvl1"))
+        .concat(incoming.map((rel) => relNote(rel, ncols, abbr)));
+      inside[inside.length - 1].classList.add("last");                             // the group's closing rule
+      out.push(...inside);
     }
     // accounts outside an agency: a heading where two or more share a bureau, else a row of their own
     const loose = ids.filter((r) => !r.rollup && !r.member_of);
@@ -1008,7 +1034,12 @@ function renderCompare(grid) {
   const groups = layout(grid), cols = flatCols(groups);
   const note = (c) => c.fig ? (grid.stage_notes || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`] : null;
   const r1 = el("tr", {}, el("th", { class: "acct", scope: "col", rowspan: "2", text: "Account" }));
-  for (const g of groups) r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""} gs`, text: g.label }));
+  for (const g of groups) {
+    const change = g.cls === "delta";
+    if (change) r1.append(el("th", { class: "gap", rowspan: "2", "aria-hidden": "true" }));
+    r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""}${change ? "" : " gs"}`,
+                         text: change && !/^Change\b/.test(g.label) ? `Change · ${g.label}` : g.label }));
+  }
   const r2 = el("tr", {}, ...cols.map((c) => {
     const n = note(c);
     return el("th", { scope: "col", class: c.cls, title: n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}` },

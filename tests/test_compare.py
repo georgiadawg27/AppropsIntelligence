@@ -611,7 +611,7 @@ class CompareBrowser(CompareTest):
         kids = [r["account"] for r in rows[nih + 1:nih + 34]]
         self.assertEqual(kids, [r["account"]["canonical_account_id"] for r in self.lhhs["rows"]
                                 if r["member_of"] == "ACC-HHS-NIH-TOTAL"])
-        self.assertEqual({r["cls"] for r in rows[nih + 1:nih + 34]}, {"child"})
+        self.assertEqual({r["cls"] for r in rows[nih + 1:nih + 34]}, {"child", "child last"})
         # general provisions under their own heading, after the agencies
         gp = next(i for i, r in enumerate(rows) if r["cls"] == "group")
         self.assertEqual(rows[gp]["name"], "General provisions (Title II)")
@@ -723,7 +723,7 @@ class CompareBrowser(CompareTest):
             tiles = [t.inner_text() for t in self.page.locator("[data-testid=tile]").all()]
             self.assertTrue(tiles[0].startswith("Title III enacted, FY2024\n$33,944,930"), tiles)
             row = self.page.locator("tr.title[data-account=ACC-T3-TOTAL]")
-            self.assertEqual(row.locator("td.acct").inner_text(), "Total, Title III (printed)")
+            self.assertEqual(row.locator("td.acct .namebox").evaluate("e => e.firstChild.textContent"), "Total, Title III (printed)")
         finally:
             srv.shutdown()
             srv.server_close()
@@ -779,19 +779,19 @@ class CompareBrowser(CompareTest):
         # no prior-year figure, no change value: AHA has no FY2025 Enacted
         self.assertEqual(self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL] [data-testid=change-cell]").first.inner_text(), "")
         heads = self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
-        self.assertEqual(heads, [["Account", "FY2025", "FY2026", "FY2026 enacted vs"],
+        self.assertEqual(heads, [["Account", "FY2025", "FY2026", "", "Change · FY2026 enacted vs"],
                                  ["Enacted", "Request", "House", "Senate", "Enacted", "FY2025 enacted", "Request"]])
 
     def test_two_years_and_history_columns(self):
         self.open("static", "?view=compare&sc=LHHS&grid=years")
         heads = lambda: self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
-        self.assertEqual(heads(), [["Account", "FY2024", "FY2026", "FY2026 vs FY2024"],
+        self.assertEqual(heads(), [["Account", "FY2024", "FY2026", "", "Change · FY2026 vs FY2024"],
                                    ["Request", "House", "Senate", "Enacted"] * 2 + ["Enacted"]])
         self.assertEqual(self.page.locator("#compare-grid thead th.yb").count(), 5)
         self.page.select_option("#basis", "0")
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
-        self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "Change"],
+        self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
                                    ["FY2023", "FY2024", "FY2025", "FY2026", "Request", "House", "FY23 → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
@@ -903,13 +903,116 @@ class CompareBrowser(CompareTest):
         self.page.mouse.move(0, 0)
         plain_row = self.page.locator("tr[data-account=ACC-HHS-NIH-NCI]")
         plain_row.hover()
-        self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in plain_row.locator("> *").all()},
+        self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in plain_row.locator("> :not(.gap)").all()},
                          {"rgb(227, 236, 248)"})
+        # hover doesn't paint the gap column, and keeps the guide line in the account column
+        self.assertEqual(plain_row.locator("> td.gap").evaluate("e => getComputedStyle(e).backgroundColor"), "rgb(246, 246, 243)")
+        self.assertIn("linear-gradient", plain_row.locator("> td.acct").evaluate("e => getComputedStyle(e).backgroundImage"))
         for sel in ("tr[data-account=ACC-HHS-NIH-TOTAL]", "tr.title"):
             row = self.page.locator(sel)
             row.hover()
-            self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in row.locator("> *").all()},
+            self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in row.locator("> :not(.gap)").all()},
                              {"rgb(214, 227, 245)"}, sel)
+
+    # ---- design reference v2: rollups, the change block set apart, notes as a corner mark ---
+
+    def test_total_label_on_every_rollup_row_and_nowhere_else(self):
+        for sc, grid in (("LHHS", self.lhhs), ("CJS", self.grid)):
+            with self.subTest(sc=sc):
+                self.open("static", f"?view=compare&sc={sc}")
+                self.page.click("#expand-all")
+                labelled = self.page.eval_on_selector_all("[data-testid=total]", "ts => ts.map(t => t.closest('tr').dataset.account)")
+                # every rollup row except a proposed agency (its rows beneath are relationship notes, not accounts)
+                rollups = [r["account"]["canonical_account_id"] for r in grid["rows"]
+                           if r["rollup"] and r["account"]["status"] != "proposed"] + \
+                          [t["total"]["account"]["canonical_account_id"] for t in grid["titles"] if t["total"]]
+                self.assertEqual(sorted(labelled), sorted(rollups))
+                for r in grid["rows"]:
+                    if r["rollup"] and r["account"]["status"] == "proposed":
+                        tags = self.page.locator(f"tr[data-account={r['account']['canonical_account_id']}] .tag")
+                        self.assertEqual([t.inner_text() for t in tags.all()], ["proposed agency · not enacted"])
+                self.assertEqual(self.page.locator("tr.child [data-testid=total], tr.group [data-testid=total]").count(), 0)
+                # pinned to the name cell's top-right, never on a line of its own
+                for t in self.page.locator("[data-testid=total]").all():
+                    m = t.evaluate("""e => { const r = e.getBoundingClientRect(), td = e.closest('td').getBoundingClientRect(),
+                        name = e.closest('.namebox').firstChild, nr = document.createRange(); nr.selectNodeContents(name);
+                        const n = nr.getBoundingClientRect();
+                        const bw = parseFloat(getComputedStyle(e.closest('td')).borderRightWidth);
+                        return [getComputedStyle(e).position, e.innerText, Math.round(td.right - bw - r.right), r.left >= n.right]; }""")
+                    self.assertEqual(m, ["absolute", "TOTAL", 10, True])
+        self.assertIn("printed total of the accounts indented below it, not added again", self.page.inner_text("[data-testid=legend]"))
+        self.assertNotIn("Agency rows are the printed agency totals", self.page.inner_text("[data-testid=legend]"))
+
+    def test_rollup_rows_and_their_groups(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        bg = lambda sel: self.page.locator(sel).first.evaluate("e => [getComputedStyle(e).backgroundColor, getComputedStyle(e).fontWeight]")
+        self.page.mouse.move(0, 0)
+        self.assertEqual(bg("tr.agency > td.num"), ["rgb(239, 240, 234)", "600"])
+        self.assertEqual(bg("tr.title > td.num"), ["rgb(230, 231, 225)", "700"])
+        self.assertEqual(self.page.locator("tr.title > td.num").first.evaluate(
+            "e => getComputedStyle(e).borderBottomWidth + ' ' + getComputedStyle(e).borderBottomColor"), "2px rgb(154, 159, 148)")
+        self.assertEqual(self.page.locator("tr.agency > td.num").first.evaluate(
+            "e => getComputedStyle(e).borderTopWidth + ' ' + getComputedStyle(e).borderTopColor"), "1px rgb(185, 188, 178)")
+        # every row inside an open total: the guide line; the group's last row: the closing rule
+        nih = [r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if r["member_of"] == "ACC-HHS-NIH-TOTAL"]
+        guides = self.page.eval_on_selector_all("tr[data-member-of=ACC-HHS-NIH-TOTAL] > td.acct", "ts => ts.map(t => getComputedStyle(t).backgroundImage)")
+        self.assertEqual(len(guides), len(nih))
+        self.assertTrue(all("linear-gradient(rgb(196, 198, 190)" in g for g in guides), set(guides))
+        last = self.page.locator("tr.last")
+        self.assertEqual(last.count(), 1)
+        self.assertEqual(last.get_attribute("data-account"), nih[-1])
+        self.assertEqual(last.locator("> td.num").first.evaluate(
+            "e => getComputedStyle(e).borderBottomWidth + ' ' + getComputedStyle(e).borderBottomColor"), "1px rgb(185, 188, 178)")
+        # AHA's group closes on its last relationship note
+        self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL] [data-testid=chevron]").click()
+        self.assertEqual(self.page.locator("tr.last").count(), 2)
+        self.assertEqual(self.page.locator("tr[data-testid=rel-note]").last.get_attribute("class"), "note last")
+
+    def test_change_block_is_set_apart_in_every_view(self):
+        for q in ("stages", "years", "history"):
+            with self.subTest(view=q):
+                self.open("static", f"?view=compare&sc=LHHS&grid={q}")
+                self.page.click("#expand-all")
+                self.page.mouse.move(0, 0)
+                gap = self.page.locator("#compare-grid thead th.gap")
+                self.assertEqual(gap.count(), 1)
+                self.assertEqual(gap.evaluate("""e => { const s = getComputedStyle(e);
+                    return [e.getBoundingClientRect().width, s.backgroundColor, s.borderLeftColor, s.borderTopWidth]; }"""),
+                                 [14, "rgb(246, 246, 243)", "rgb(201, 203, 196)", "0px"])
+                head = self.page.locator("#compare-grid thead th.grp.delta").inner_text()
+                self.assertTrue(head.startswith("Change"), head)
+                self.assertNotIn("Change · Change", self.page.inner_text("#compare-grid thead"))
+                # every figure row: one gap cell, right before its first change cell, unpainted by stripes
+                bad = self.page.eval_on_selector_all("#compare-grid tbody tr[data-testid=compare-row]", """trs => trs.filter(tr => {
+                    const gaps = tr.querySelectorAll(':scope > td.gap'), first = tr.querySelector(':scope > [data-testid=change-cell]');
+                    return gaps.length !== 1 || gaps[0].nextElementSibling !== first
+                        || getComputedStyle(gaps[0]).backgroundColor !== 'rgb(246, 246, 243)'; }).map(tr => tr.dataset.account)""")
+                self.assertEqual(bad, [])
+                # no tint on change cells or headers: the same white / zebra / rollup grey as the figures
+                allowed = {"rgba(0, 0, 0, 0)", "rgb(255, 255, 255)", "rgb(247, 247, 244)", "rgb(239, 240, 234)", "rgb(230, 231, 225)"}
+                seen = set(self.page.eval_on_selector_all("#compare-grid td.delta, #compare-grid th.delta",
+                                                          "es => es.map(e => getComputedStyle(e).backgroundColor)"))
+                self.assertEqual(seen - allowed, set())
+                same = self.page.eval_on_selector_all("#compare-grid tbody tr[data-testid=compare-row]", """trs => trs.filter(tr => {
+                    const f = tr.querySelector(':scope > td.num:not(.delta):not(.yb)'), d = tr.querySelector(':scope > td.delta');
+                    return f && d && getComputedStyle(f).backgroundColor !== getComputedStyle(d).backgroundColor; }).length""")
+                self.assertEqual(same, 0)
+                self.assertEqual(self.page.locator("#compare-grid td.delta").first.evaluate("e => getComputedStyle(e).fontSize"), "13px")
+
+    def test_notes_are_corner_marks_208_in_all(self):
+        # the cells with other lines on file, both subcommittees (title totals included)
+        total = sum(1 for g in (self.lhhs, self.grid) for r in g["rows"] + [t["total"] for t in g["titles"] if t["total"]]
+                    for k in r["cells"] if other_lines(r, *k.split("|")))
+        self.assertEqual(total, 208)
+        for sc in ("LHHS", "CJS"):
+            self.open("static", f"?view=compare&sc={sc}&grid=history")
+            self.page.click("#expand-all")
+            marks = self.page.locator("#compare-grid [data-testid=more]")
+            self.assertGreater(marks.count(), 0)
+            self.assertEqual(set(marks.evaluate_all("ms => ms.map(m => m.tagName + ':' + m.className + ':' + m.innerText)")), {"BUTTON:nm:"})
+            # no "+N" text anywhere in the grid
+            self.assertEqual(self.page.eval_on_selector_all("#compare-grid td", "ts => ts.filter(t => /\\+\\d+$/.test(t.innerText.trim())"
+                                                            " && !t.querySelector('[data-testid=change]')).length"), 0)
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")
@@ -930,7 +1033,7 @@ class CompareBrowser(CompareTest):
 
     def markers(self):
         return {(m.evaluate("e => e.closest('tr').dataset.account"), int(m.evaluate("e => e.closest('td').dataset.fy")),
-                 m.evaluate("e => e.closest('td').dataset.stage")): (m.inner_text(), m.get_attribute("title"))
+                 m.evaluate("e => e.closest('td').dataset.stage")): (m.get_attribute("data-lines"), m.get_attribute("title"))
                 for m in self.page.locator("[data-testid=more]").all()}
 
     def test_other_lines_marker_on_every_cell_that_has_them(self):
@@ -950,7 +1053,7 @@ class CompareBrowser(CompareTest):
                         rest = other_lines(r, y, st)
                         if rest:
                             want[(r["account"]["canonical_account_id"], y, st)] = (
-                                f"+{len(rest)}", f"{len(rest)} other line{'' if len(rest) == 1 else 's'} on file, $ thousands:\n"
+                                str(len(rest)), f"{len(rest)} other line{'' if len(rest) == 1 else 's'} on file, $ thousands:\n"
                                 + "\n".join(f"{series_text(l)}: {thousands(l['observations'][0]['amount'])}" for l in rest))
                 self.assertGreater(len(want), 0)
                 self.assertEqual(self.markers(), want)
@@ -958,18 +1061,30 @@ class CompareBrowser(CompareTest):
     def test_other_lines_examples(self):
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
         m = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").locator("[data-testid=more]")
-        self.assertEqual((m.inner_text(), m.get_attribute("title")),
-                         ("+1", "1 other line on file, $ thousands:\n"
-                                "program level \u2014 the figure above, scoped another way; not added: 579,688"))
-        self.assertEqual(m.evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).color]"), ["11px", "rgb(93, 100, 114)"])
+        self.assertEqual((m.get_attribute("data-lines"), m.get_attribute("title")),
+                         ("1", "1 other line on file, $ thousands:\n"
+                               "program level \u2014 the figure above, scoped another way; not added: 579,688"))
         self.assertIn("program level", m.get_attribute("aria-label"))
-        self.assertIn("+2 other lines on file for this cell (hover to list, click to open the account)",
-                      self.page.inner_text("[data-testid=legend]"))
+        # a corner triangle in the cell's top-right, no text; darker on hover
+        style = "e => { const s = getComputedStyle(e), c = e.getBoundingClientRect(), td = e.closest('td').getBoundingClientRect(); " \
+                "return [e.tagName, e.innerText, s.borderTopWidth, s.borderTopColor, s.borderLeftWidth, s.borderLeftColor, " \
+                "Math.round(td.right - c.right - parseFloat(getComputedStyle(e.closest('td')).borderRightWidth)), " \
+                "Math.round(c.top - td.top - parseFloat(getComputedStyle(e.closest('td')).borderTopWidth))]; }"
+        self.assertEqual(m.evaluate(style), ["BUTTON", "", "9px", "rgb(138, 147, 163)", "9px", "rgba(0, 0, 0, 0)", 0, 0])
+        m.hover()
+        self.assertEqual(m.evaluate("e => getComputedStyle(e).borderTopColor"), "rgb(31, 78, 140)")
+        # the figure's own source tooltip is on the number, not the cell
+        cell = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget")
+        self.assertIsNone(cell.get_attribute("title"))
+        self.assertTrue(cell.locator("[data-testid=amount]").get_attribute("title"))
+        legend = self.page.inner_text("[data-testid=legend]")
+        self.assertIn("note on this figure: hover to read, click to open the account", legend)
+        self.assertNotIn("other lines on file for this cell", legend)
         self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024")
         self.page.click("#expand-all")
         cell = self.cell("ACC-NASA-EXPLORATION", 2024, "Enacted")
         m = cell.locator("[data-testid=more]")
-        self.assertEqual((m.inner_text(), m.get_attribute("title")), ("+1", "1 other line on file, $ thousands:\nsupplemental: 450,000"))
+        self.assertEqual((m.get_attribute("data-lines"), m.get_attribute("title")), ("1", "1 other line on file, $ thousands:\nsupplemental: 450,000"))
         # the headline number still links to its source; the marker opens the account at this year and stage
         self.assertTrue(cell.locator("[data-testid=amount]").get_attribute("href").startswith("http"))
         m.click()
