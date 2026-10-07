@@ -274,7 +274,7 @@
            "validation_id": "VAL-LHHS-05534"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -490,7 +490,7 @@
            "validation_id": "VAL-LHHS-05543"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1245,7 +1245,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "FY2026 request: 'relocate the National Institute of Environmental Health Sciences into the new Administration for a Healthy America'; FY2027 request: '... into the Centers for Disease Control and Prevention' (relationships below). Not enacted. Requested moves, not enacted: the FY2026 request relocates it into the Administration for a Healthy America, the FY2027 request into CDC (Budget Appendix) -- recorded as a placement note on its request observations, not a relationship (an agency total is not a relationship target).",
+   "notes": "FY2026 request moves it to the Administration for a Healthy America (REL-LHHS-0011: FY2026 AHA Congressional Justification p.13, 'National Institute of Environmental Health Sciences (NIEHS): $594.1 million' = H.Rept. 119-271 p.344 FY 2026 Request 594,086; with its Superfund-related activities, $51.8M, p.14). FY2027 request moves it to CDC (FY2027 Budget Appendix) -- a placement note only: no specific receiving account. Neither move enacted; P.L. 119-75 keeps NIEHS under NIH.",
    "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
@@ -1501,7 +1501,7 @@
       "validation_id": "VAL-LHHS-05534"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 913979000,
@@ -1651,7 +1651,7 @@
       "validation_id": "VAL-LHHS-05543"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 913979000,
@@ -2258,7 +2258,37 @@
     "Enacted"
    ]
   ],
-  "relationships": [],
+  "relationships": [
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.13"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "from",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.13 (PDF p.3), Environmental Health: 'National Institute of Environmental Health Sciences (NIEHS): $594.1 million'. Amount match: H.Rept. 119-271 p.344 FY 2026 Request, NIEHS 594,086 (thousands) = $594.1M rounded. The FY2027 request instead proposes moving NIEHS into CDC (a placement note on the account, not a relationship). P.L. 119-75 keeps NIEHS under NIH.",
+    "from_account_id": "ACC-HHS-NIH-NIEHS",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0011",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

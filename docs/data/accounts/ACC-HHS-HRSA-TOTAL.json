@@ -147,7 +147,7 @@
            "validation_id": "VAL-LHHS-02080"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -225,7 +225,7 @@
            "validation_id": "VAL-LHHS-02314"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1160,7 +1160,7 @@
            "validation_id": "VAL-LHHS-01261"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1534,7 +1534,7 @@
       "validation_id": "VAL-LHHS-02314"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9574521000,
@@ -1598,7 +1598,7 @@
       "validation_id": "VAL-LHHS-02080"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9672190000,
@@ -2355,7 +2355,7 @@
       "validation_id": "VAL-LHHS-01261"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9220107000,
@@ -2548,9 +2548,19 @@
   ],
   "relationships": [
    {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
     "confidence": 0.9,
+    "direction": "from",
     "effective_fiscal_year": 2026,
-    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA.",
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA. Also FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)' -- names HRSA.",
     "from_account_id": "ACC-HHS-HRSA-TOTAL",
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-AHA-TOTAL",

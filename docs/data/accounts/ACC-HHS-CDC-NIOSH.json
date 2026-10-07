@@ -274,7 +274,7 @@
            "validation_id": "VAL-LHHS-03604"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1501,7 +1501,7 @@
       "validation_id": "VAL-LHHS-03604"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 362800000,
@@ -2258,7 +2258,37 @@
     "Enacted"
    ]
   ],
-  "relationships": [],
+  "relationships": [
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.13"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "from",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.13 (PDF p.3), Environmental Health: 'Occupational Safety and Health: $73.2 million ... in discretionary funding to support select programs in worker safety and health, including the National Mesothelioma Registry and Tissue Bank, National Firefighter Registry for Cancer, and Mining Research'. Amount match: H.Rept. 119-271 p.342 FY 2026 Request, National Institute for Occupational Safety and Health 73,200 (thousands) = $73.2M: the whole NIOSH request. P.L. 119-75 keeps NIOSH under CDC.",
+    "from_account_id": "ACC-HHS-CDC-NIOSH",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0014",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

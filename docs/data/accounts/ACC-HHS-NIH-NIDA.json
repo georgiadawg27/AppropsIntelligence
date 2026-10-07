@@ -63,7 +63,7 @@
            "validation_id": "VAL-LHHS-05296"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -508,7 +508,7 @@
            "validation_id": "VAL-LHHS-05319"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1587,7 +1587,7 @@
       "validation_id": "VAL-LHHS-05296"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 1663365000,
@@ -1697,7 +1697,7 @@
       "validation_id": "VAL-LHHS-05319"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 1662695000,
@@ -2319,6 +2319,7 @@
   "relationships": [
    {
     "confidence": 0.9,
+    "direction": "from",
     "effective_fiscal_year": 2027,
     "evidence": "Proposed, not enacted. FY2027 Budget Appendix (BUDGET-2027-APP, HHS chapter granule PDF p.29): 'The 2027 Budget proposes to ... consolidate the National Institute on Drug Abuse and the National Institute on Alcohol Abuse and Alcoholism into the National Institute of Substance Use and Addiction Research.'",
     "from_account_id": "ACC-HHS-NIH-NIDA",

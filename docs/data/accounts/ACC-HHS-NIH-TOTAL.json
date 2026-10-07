@@ -299,7 +299,7 @@
            "validation_id": "VAL-LHHS-02107"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -459,7 +459,7 @@
            "validation_id": "VAL-LHHS-02317"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -620,7 +620,7 @@
            "validation_id": "VAL-LHHS-02266"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1023,7 +1023,7 @@
            "validation_id": "VAL-LHHS-01414"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2923,7 +2923,7 @@
            "validation_id": "VAL-LHHS-01547"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -3514,7 +3514,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "Derived rollup -- NIH's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision. Headline: 'Total, National Institutes of Health (with CURES Act funding)' (decision 2026-09-27). The CURES Act line is its own observation, component CURES (kind 'contained': inside this headline, never added to it); the Title II total subtracts it.",
+   "notes": "Derived rollup (agency) -- NIH's agency total as the Title II table prints it: 'Total, National Institutes of Health (with CURES Act funding)' (decision 2026-09-27); kept as a reference row, not an independent funding decision. Since v33 the CURES Act money is its own account (ACC-HHS-NIH-CURES), one of the NIH accounts this total adds up; the Title II total subtracts the CURES line (inside NIH's total, outside the title's).",
    "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
@@ -3665,7 +3665,7 @@
       "validation_id": "VAL-LHHS-02317"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 50233218000,
@@ -3799,7 +3799,7 @@
       "validation_id": "VAL-LHHS-02107"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 47459000000,
@@ -3934,7 +3934,7 @@
       "validation_id": "VAL-LHHS-02266"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 47959000000,
@@ -4243,7 +4243,7 @@
       "validation_id": "VAL-LHHS-01414"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 50770089000,
@@ -5863,7 +5863,7 @@
       "validation_id": "VAL-LHHS-01547"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 48701000000,
@@ -6418,26 +6418,7 @@
     "Enacted"
    ]
   ],
-  "relationships": [
-   {
-    "confidence": 0.5,
-    "effective_fiscal_year": 2026,
-    "evidence": "Part of NIH only, and only in the FY2026 request: FY2026 Budget Appendix p.357: 'relocate the National Institute of Environmental Health Sciences into the new Administration for a Healthy America'. The FY2027 Appendix p.461 instead proposes relocating NIEHS into CDC. Not a consolidation of the NIH total.",
-    "from_account_id": "ACC-HHS-NIH-TOTAL",
-    "human_reviewed": 0,
-    "other_account_id": "ACC-HHS-AHA-TOTAL",
-    "other_fiscal_years": [
-     2026,
-     2027
-    ],
-    "other_name": "Administration for a Healthy America (agency total)",
-    "other_observations": 4,
-    "other_status": "proposed",
-    "relationship_id": "REL-LHHS-0003",
-    "relationship_type": "uncertain",
-    "to_account_id": "ACC-HHS-AHA-TOTAL"
-   }
-  ],
+  "relationships": [],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

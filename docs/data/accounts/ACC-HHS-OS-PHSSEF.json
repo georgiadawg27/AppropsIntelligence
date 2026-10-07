@@ -718,7 +718,7 @@
            "validation_id": "VAL-LHHS-06402"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -881,7 +881,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "FY2023 law only (P.L. 117-328 p.419). From FY2024 the preparedness headings are ASPR's own (Research, Development, and Procurement; Operations, Preparedness, and Emergency Response). Relationship below. Heading in P.L. 117-328 (FY2023) only: from FY2024 ASPR's programs have their own headings. The FY2024+ tables still print a 'Total, PHSSEF' grouping (cybersecurity, national security, OASH lines) -- recorded as printed. Relationships REL-LHHS-0009/0010 (uncertain).",
+   "notes": "Heading in P.L. 117-328 (FY2023, p.419) only: from FY2024 ASPR's programs have their own headings (Research, Development, and Procurement; Operations, Preparedness, and Emergency Response). The FY2024+ tables still print a 'Total, PHSSEF' grouping (cybersecurity, national security, OASH lines) -- recorded as printed. Relationships REL-LHHS-0009/0010 (uncertain).",
    "parent_account_id": null,
    "status": "inactive",
    "subcommittee": "LHHS",
@@ -1490,7 +1490,7 @@
       "validation_id": "VAL-LHHS-06402"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 0,
@@ -1606,6 +1606,7 @@
   "relationships": [
    {
     "confidence": 0.5,
+    "direction": "to",
     "effective_fiscal_year": 2024,
     "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
     "from_account_id": "ACC-HHS-ASPR-RDP",
@@ -1624,6 +1625,7 @@
    },
    {
     "confidence": 0.5,
+    "direction": "to",
     "effective_fiscal_year": 2024,
     "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
     "from_account_id": "ACC-HHS-ASPR-OPER",

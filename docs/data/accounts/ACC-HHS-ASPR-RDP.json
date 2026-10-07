@@ -2149,6 +2149,7 @@
   "relationships": [
    {
     "confidence": 0.5,
+    "direction": "from",
     "effective_fiscal_year": 2024,
     "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
     "from_account_id": "ACC-HHS-ASPR-RDP",
