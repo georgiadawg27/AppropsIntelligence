@@ -5,6 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Appropriations History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
   :root {
     --bg: #fbfbfa; --fg: #1d1d1b; --muted: #6b6b66; --line: #e2e1dc; --card: #ffffff;
@@ -20,7 +23,7 @@
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--fg);
-         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+         font: 14px/1.45 "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
   main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
   h1 { font-size: 20px; margin: 0 0 4px; }
   .sub { color: var(--muted); margin: 0 0 20px; }
@@ -75,42 +78,105 @@
   .controls select { font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px;
                      background: var(--card); color: var(--fg); }
   .linkish { background: none; border: 0; color: var(--accent); padding: 0; font-size: 13px; }
-  #compare-result .table-wrap { max-height: 78vh; overflow: auto; }
-  #compare-grid { min-width: 0; width: auto; font-size: 13px; border-collapse: separate; border-spacing: 0; }
-  #compare-grid th, #compare-grid td { padding: 6px; min-width: 116px; }
-  #compare-grid th.fy-head { text-align: center; border-left: 1px solid var(--line); color: var(--fg); }
-  #compare-grid th.first-stage, #compare-grid td.first-stage { border-left: 1px solid var(--line); }
-  #compare-grid .acct { position: sticky; left: 0; z-index: 1; background: var(--card); min-width: 200px; max-width: 240px; }
-  /* the two header rows scroll as one block, so no seam opens between them */
-  #compare-grid thead { position: sticky; top: 0; z-index: 3; background: var(--card); box-shadow: 0 1px 0 var(--line); }
-  #compare-grid thead th { position: static; }
-  #compare-grid thead th.acct { position: sticky; left: 0; z-index: 4; }
-  .acct-name { font-weight: 600; text-align: left; }
-  .acct-name button.linkish { font-size: inherit; font-weight: 600; text-align: left; }
-  details.more { margin-top: 6px; }
-  details.more summary { cursor: pointer; color: var(--accent); font-size: 12px; }
-  details.more .line { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+  /* ---- Subcommittee grid (compare view) ---- */
+  body.wide main { max-width: none; padding-bottom: 8px; }
+  :root { --g-rule: #E6E6E1; --g-group: #C4C6BE; --g-zebra: #F7F7F4; --g-hover: #E3ECF8; --g-shade: #EEF0EA;
+          --g-shade-hover: #D6E3F5; --g-up: #1A7339; --g-down: #A8460C; --g-token: #5C5C57; --g-head: #FFFFFF; }
+  /* muted text in the grid area stays AA (>= 4.5:1) on every row background, hover included */
+  #compare-grid, .tiles, .grid-legend { --muted: var(--g-token); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) { --g-rule: #2E2D2A; --g-group: #55554F; --g-zebra: #1B1B19; --g-hover: #22324A;
+      --g-shade: #23241F; --g-shade-hover: #2B3D58; --g-up: #6FCF8E; --g-down: #F0915A; --g-token: #A09F99; --g-head: #1E1E1B; }
+  }
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 0 0 8px; }
+  .toolbar label { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+  .toolbar select { font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px;
+                    background: var(--card); color: var(--fg); }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button, .tool { font: inherit; font-size: 13px; padding: 5px 10px; border: 0; border-radius: 0;
+                       background: var(--card); color: var(--fg); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg button[aria-pressed=true] { background: var(--accent); color: #fff; }
+  .tool { border: 1px solid var(--line); border-radius: 8px; }
+  .seg button:focus-visible, .tool:focus-visible, .chev:focus-visible, .linkish:focus-visible, a.num:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px; }
+  .grid-legend { font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0 0 10px; }
+  .grid-legend b { font-weight: 600; color: var(--fg); }
+  .tiles { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 5px 10px; min-width: 140px; }
+  .tile .k { font-size: 12px; color: var(--muted); }
+  .tile .v { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 20px; }
+  .tile .s { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .tile.wide { flex: 1 1 100%; }
+  body.wide main { padding-top: 12px; }
+  body.wide .sub { margin-bottom: 6px; }
+  body.wide #freshness { font-size: 12px; }
+  body.wide .tabs { margin-bottom: 8px; }
+  .grid-wrap { overflow: scroll; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+  #compare-grid { border-collapse: separate; border-spacing: 0; width: max-content; min-width: 100%;
+                  font-size: 14px; font-variant-numeric: tabular-nums; }
+  #compare-grid th, #compare-grid td { border: 0; border-right: 1px solid var(--g-rule); border-bottom: 1px solid var(--g-rule);
+                  padding: 7px 10px; line-height: 20px; vertical-align: top; background: var(--card); }
+  #compare-grid td { text-align: right; min-width: 104px; white-space: nowrap; }
+  #compare-grid .g0 { border-left: 2px solid var(--g-group); }
+  #compare-grid thead th { position: sticky; z-index: 3; background: var(--g-head); color: var(--fg); font-size: 13px;
+                  font-weight: 600; text-align: center; white-space: nowrap; }
+  #compare-grid thead tr:first-child th { top: 0; height: 38px; }
+  #compare-grid thead tr:nth-child(2) th { top: 38px; font-weight: 500; color: var(--muted); }
+  #compare-grid .acct { position: sticky; left: 0; z-index: 2; width: 380px; min-width: 380px; max-width: 380px;
+                        text-align: left; font-weight: 400; white-space: normal; }
+  #compare-grid thead th.acct { z-index: 5; text-align: left; vertical-align: bottom; }
+  .namecell { display: flex; align-items: flex-start; }
+  .chev-col { flex: 0 0 20px; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; }
+  .chev { width: 20px; height: 20px; padding: 0; border: 0; background: none; color: var(--fg); cursor: pointer;
+          border-radius: 4px; font-size: 12px; line-height: 20px; }
+  .chev::before { content: "\25B8"; display: inline-block; transition: transform .1s; }
+  .chev[aria-expanded=true]::before { transform: rotate(90deg); }
+  .namebody { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 6px; }
+  .namebody .linkish { font-size: 14px; color: var(--fg); text-align: left; line-height: 20px; }
+  .namebody .linkish:hover { color: var(--accent); text-decoration: underline; }
+  .tag { display: inline-block; padding: 0 6px; border-radius: 4px; font-size: 11px; line-height: 18px;
+         background: var(--warn-bg); color: var(--warn-fg); white-space: nowrap; vertical-align: 1px; }
+  .tag.muted { background: none; border: 1px solid var(--line); color: var(--muted); }
+  #compare-grid tr.z > td, #compare-grid tr.z > th { background: var(--g-zebra); }
+  #compare-grid tr.shaded > td, #compare-grid tr.shaded > th { background: var(--g-shade); }
+  #compare-grid tr.shaded .namebody .linkish { font-weight: 600; }
+  #compare-grid tr.title-row > th { background: var(--g-shade); font-weight: 700; text-align: left; }
+  #compare-grid tr.note-row > td, #compare-grid tr.note-row > th { font-size: 12px; color: var(--muted); }
+  #compare-grid tr.note-row td.note-text { text-align: left; white-space: nowrap; }
+  #compare-grid tr.note-row > * { padding-top: 3px; padding-bottom: 3px; }
+  /* full-row hover on every row type; beats zebra and shading (same specificity, later rule) */
+  #compare-grid tbody tr:hover > td, #compare-grid tbody tr:hover > th { background: var(--g-hover); }
+  #compare-grid tbody tr.shaded:hover > td, #compare-grid tbody tr.shaded:hover > th,
+  #compare-grid tbody tr.title-row:hover > th { background: var(--g-shade-hover); }
+  a.num { color: var(--fg); text-decoration: none; border-bottom: 1px dotted var(--muted); }
+  a.num:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .tok { color: var(--g-token); cursor: help; }
+  .tok.npt { font-size: 11px; border: 1px solid var(--line); border-radius: 4px; padding: 0 4px; }
   td.outside { outline: 1px dashed var(--line); outline-offset: -3px; }
+  .up { color: var(--g-up); } .down { color: var(--g-down); }
+  td.change .pct { display: block; font-size: 12px; line-height: 14px; }
+  .dot { display: none; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: 2px; }
+  .reviewer .dot { display: inline-block; }
+  .dot.validated { background: #1A7339; } .dot.unverified { background: #8A8A84; } .dot.flagged { background: #B3261E; }
+  details.more { display: inline-block; position: relative; margin-left: 4px; }
+  details.more > summary { list-style: none; cursor: pointer; color: var(--accent); font-size: 11px; }
+  details.more > summary::-webkit-details-marker { display: none; }
+  details.more[open] > .pop { position: absolute; right: 0; top: 20px; z-index: 6; background: var(--card); text-align: left;
+       border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0,0,0,.12);
+       min-width: 260px; white-space: normal; font-size: 13px; }
+  details.more .line + .line { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); }
+  .totals-strip { font-size: 13px; }
+  .stage-note-mark { color: var(--accent); cursor: help; font-weight: 600; }
+  .stage-notes { font-size: 13px; color: var(--muted); margin: 4px 0 8px; padding-left: 18px; }
   .rollup-badge { display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 4px; font-size: 11px;
                   font-weight: 600; letter-spacing: .02em; background: var(--warn-bg); color: var(--warn-fg); cursor: help; }
-  #compare-grid tr.rollup > td, #compare-grid tr.rollup > th { background: var(--warn-bg); }
-  #compare-grid tr.member > th.acct { padding-left: 22px; }
-  #compare-grid tr.child > th.acct { padding-left: 40px; }
-  .child-of { font-style: italic; }
-  .stage-note-mark { color: var(--accent); cursor: help; font-weight: 600; }
-  .stage-notes { font-size: 13px; color: var(--muted); margin: 8px 0 0; padding-left: 18px; }
-  #compare-grid tr.title-head > * { background: var(--bg); font-weight: 700; font-size: 14px; color: var(--fg);
-                                    border-top: 2px solid var(--line); }
-  #compare-grid tr.title-head .title-meta { font-weight: 400; color: var(--muted); font-size: 12px; }
-  #compare-grid tr.total-row > * { font-weight: 600; }
-  #compare-grid td.total-none { color: var(--muted); font-style: italic; font-weight: 400; }
-  tr.rollup .amt { font-style: italic; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Appropriations history</h1>
-  <p class="sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
+  <h1 id="page-title">Appropriations history</h1>
+  <p class="sub" id="page-sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
   <p class="sub" id="freshness" hidden data-testid="freshness"></p>
   <noscript><p class="error">This page needs JavaScript to search and show account histories.</p></noscript>
 
@@ -145,34 +211,38 @@
   </div>
 
   <div id="compare-view" hidden data-testid="compare-view">
-    <form id="compare-form" class="panel controls">
-      <fieldset>
-        <legend>Subcommittee</legend>
-        <select id="sc" aria-label="Subcommittee" data-testid="sc"></select>
-      </fieldset>
-      <fieldset id="fy-set">
-        <legend>Fiscal years</legend>
-        <label>from <select id="fy-from" aria-label="First fiscal year"></select></label>
-        <label>to <select id="fy-to" aria-label="Last fiscal year"></select></label>
-        <span id="fy-boxes"></span>
-      </fieldset>
-      <fieldset id="stage-set">
-        <legend>Stages</legend>
-        <label><input type="checkbox" id="stage-all" checked> All stages</label>
-        <span id="stage-boxes"></span>
-      </fieldset>
-      <div><button type="submit">Show grid</button></div>
-    </form>
+    <div class="toolbar" role="toolbar" aria-label="Grid controls">
+      <label>Subcommittee <select id="sc" data-testid="sc"></select></label>
+      <div class="seg" role="group" aria-label="View" id="view-switch" data-testid="view-switch">
+        <button type="button" data-grid="stages" aria-pressed="true">Compare stages</button>
+        <button type="button" data-grid="years" aria-pressed="false">Compare two years</button>
+        <button type="button" data-grid="enacted" aria-pressed="false">Enacted history</button>
+      </div>
+      <span id="year-pickers"></span>
+      <div class="seg" role="group" aria-label="Units" id="units" data-testid="units">
+        <button type="button" data-units="k" aria-pressed="true">$ thousands</button>
+        <button type="button" data-units="m" aria-pressed="false">$ millions</button>
+      </div>
+      <button type="button" class="tool" id="expand-all" data-testid="expand-all">Expand all</button>
+      <button type="button" class="tool" id="collapse-all" data-testid="collapse-all">Collapse all</button>
+      <label><input type="checkbox" id="reviewer" data-testid="reviewer"> Reviewer mode</label>
+    </div>
+    <div class="grid-legend" id="grid-legend" data-testid="legend">
+      <span><b>1,234</b> figure &mdash; click for its source</span>
+      <span><span class="tok">&mdash;</span> not funded (printed zero, or confirmed absent)</span>
+      <span><span class="tok npt">No printed total</span> the document prints the account, not this line</span>
+      <span><span class="tok">?</span> missing (document on file, no figure yet)</span>
+      <span><span class="tok">n/c</span> not yet collected</span>
+      <span><span class="tok">n/e</span> not yet enacted</span>
+      <span><span class="up">+12</span> / <span class="down">&minus;12</span> change</span>
+      <span>Reviewer mode: <span class="dot validated" style="display:inline-block"></span>validated
+        <span class="dot unverified" style="display:inline-block"></span>unverified
+        <span class="dot flagged" style="display:inline-block"></span>flagged</span>
+    </div>
     <div id="compare-message" role="status"></div>
-    <section id="compare-result" class="panel" hidden data-testid="compare-result">
-      <div class="legend">Grouped by bill title, in bill order. One row per account (former names resolve into it); a rollup heads the
-        accounts it totals, which fold away under it. Totals are shown only where a printed total is on file. Each cell's headline is the account's
-        budget authority for that year and stage; <strong>+ more</strong> opens every other line on file for the cell
-        (supplemental, rescission, transfer, component lines) &mdash; shown, never summed in.
-        The six cell states (Not funded / None, No printed total, Missing, Not yet collected, Not yet enacted, or a figure) mean exactly what
-        they mean for one account; the count of each is shown above the grid. &#9656; source shows where a figure was printed. A dashed outline marks a year or stage outside the account's records &mdash; before its first figure or confirmed absence.</div>
-      <div class="legend" id="state-counts" data-testid="state-counts"></div>
-      <div class="table-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
+    <section id="compare-result" hidden data-testid="compare-result">
+      <div class="tiles" id="tiles" data-testid="tiles"></div>
+      <div class="grid-wrap" id="grid-wrap"><table id="compare-grid" data-testid="compare-grid"></table></div>
     </section>
   </div>
 </main>
@@ -489,21 +559,64 @@ function renderSources(h) {
 
 // ---- Subcommittee grid: every account of a subcommittee side by side.
 // The cells are approps_store.subcommittee_grid() -- each account's own
-// history_grid() -- so nothing here decides a state; this only picks the
-// fiscal-year x stage columns and lays the rows out.
+// history_grid() -- so nothing here decides a state, a figure or a total; this
+// only picks the columns for a view, lays the rows out, and works out the
+// differences between figures it shows (GridMath).
 
+// GRID-MATH-BEGIN -- the change arithmetic, kept apart so tests run it under node
+const GridMath = {
+  // dollars -> the displayed unit ("k": $ thousands, "m": $ millions)
+  scale(amount, units) { return amount == null ? null : amount / (units === "m" ? 1e6 : 1e3); },
+  number(amount, units) {
+    if (amount == null) return "";
+    const v = GridMath.scale(amount, units);
+    const s = Math.abs(v).toLocaleString("en-US", units === "m" ? { minimumFractionDigits: 1, maximumFractionDigits: 1 }
+                                                              : { maximumFractionDigits: 0 });
+    return (v < 0 && s !== "0" && s !== "0.0" ? "−" : "") + s;
+  },
+  // b against a: null when either is missing (no figure -> no change value); pct null when a is zero
+  change(a, b) {
+    if (a == null || b == null) return null;
+    const delta = b - a;
+    return { delta, pct: a === 0 ? null : (delta / Math.abs(a)) * 100 };
+  },
+  signedNumber(delta, units) {
+    const s = GridMath.number(Math.abs(delta), units);
+    if (s === "0" || s === "0.0") return s;
+    return (delta > 0 ? "+" : "−") + s;
+  },
+  signedPct(pct) {
+    if (pct == null) return "";
+    const s = Math.abs(pct).toFixed(1);
+    if (s === "0.0") return "0.0%";
+    return (pct > 0 ? "+" : "−") + s + "%";
+  },
+  direction(delta) { return delta > 0 ? "up" : delta < 0 ? "down" : ""; },
+};
+// GRID-MATH-END
+
+const STAGES4 = ["President's Budget", "House Reported", "Senate Reported", "Enacted"];
 const STAGE_SHORT = { "President's Budget": "PB", "House Reported": "House", "Senate Reported": "Senate",
                       "Enacted": "Enacted", "House Passed": "House passed", "Senate Passed": "Senate passed" };
 const isHeadline = (l) => l.amount_type === "budget authority" && !l.component;
 const scCache = new Map();
 let scNames = null;
 let scLabels = {};
+const G = { sc: null, grid: "stages", fy: null, a: null, b: null, units: "k", reviewer: false };
+const NAME_OF = new Map();      // account id -> name, for the rows being rendered
+const STATUS_OF = new Map();    // account id -> status
+const collapsed = new Set();    // chevrons closed (by account id)
 
 function showView(view) {
   const compare = view === "compare";
   $("#account-view").hidden = compare;
   $("#compare-view").hidden = !compare;
+  document.body.classList.toggle("wide", compare);
   for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.view === view));
+  if (!compare) {
+    $("#page-title").textContent = "Appropriations history";
+    $("#page-sub").textContent = "Federal appropriations by account, fiscal year and stage · read-only · every figure cites the document and page it came from";
+  }
 }
 
 function compareStatus(msg, isError) {
@@ -512,216 +625,388 @@ function compareStatus(msg, isError) {
 }
 
 async function loadSubcommittee(name) {
-  if (!scCache.has(name)) scCache.set(name, source.subcommittee(name));
-  try { return await scCache.get(name); } catch (e) { scCache.delete(name); throw e; }
+  if (!scCache.has(name)) scCache.set(name, await source.subcommittee(name));
+  return scCache.get(name);
 }
 
-// the controls for one subcommittee's years and stages; `want` preselects
-function buildControls(grid, want) {
-  const years = grid.fiscal_years, stages = grid.stages;
-  const pickYears = want && want.years ? new Set(want.years.filter((y) => years.includes(y))) : new Set(years);
-  const opts = () => years.map((y) => el("option", { value: y, text: "FY" + y }));
-  $("#fy-from").replaceChildren(...opts()); $("#fy-to").replaceChildren(...opts());
-  const sorted = [...pickYears].sort((a, b) => a - b);
-  $("#fy-from").value = sorted.length ? sorted[0] : years[0];
-  $("#fy-to").value = sorted.length ? sorted[sorted.length - 1] : years[years.length - 1];
-  $("#fy-boxes").replaceChildren(...years.map((y) => el("label", {},
-    el("input", { type: "checkbox", value: y, "data-testid": "fy-option", ...(pickYears.has(y) ? { checked: "" } : {}) }),
-    " FY" + y)));
-  const allStages = !want || !want.stages;
-  const pickStages = allStages ? new Set(stages) : new Set(want.stages.filter((st) => stages.includes(st)));
-  $("#stage-all").checked = allStages || pickStages.size === stages.length;
-  $("#stage-boxes").replaceChildren(...stages.map((st) => el("label", {},
-    el("input", { type: "checkbox", value: st, "data-testid": "stage-option", ...(pickStages.has(st) ? { checked: "" } : {}) }),
-    " " + st)));
-}
-
-function selectedYears() {
-  return [...document.querySelectorAll("#fy-boxes input:checked")].map((i) => Number(i.value));
-}
-function selectedStages() {
-  return [...document.querySelectorAll("#stage-boxes input:checked")].map((i) => i.value);
-}
-
-function applyRange() {
-  let a = Number($("#fy-from").value), b = Number($("#fy-to").value);
-  if (a > b) [a, b] = [b, a];
-  for (const i of document.querySelectorAll("#fy-boxes input")) i.checked = Number(i.value) >= a && Number(i.value) <= b;
-}
-
-function compareURL(sc, years, stages, grid) {
-  const p = new URLSearchParams({ view: "compare", sc });
-  const all = grid.fiscal_years;
-  const contiguous = years.length && years[years.length - 1] - years[0] + 1 === years.length;
-  if (years.length !== all.length) p.set("fy", contiguous && years.length > 1 ? `${years[0]}-${years[years.length - 1]}` : years.join(","));
-  if (stages.length !== grid.stages.length) p.set("stage", stages.join(","));
-  return "?" + p.toString();
-}
-
-function parseYears(v) {
-  if (!v) return null;
-  const out = [];
-  for (const part of v.split(",")) {
-    const m = part.match(/^(\d{4})(?:-(\d{4}))?$/);
-    if (!m) continue;
-    const a = Number(m[1]), b = Number(m[2] || m[1]);
-    for (let y = Math.min(a, b); y <= Math.max(a, b); y++) out.push(y);
-  }
-  return out;
-}
-
-function renderCompare(grid, years, stages) {
-  const t = $("#compare-grid");
-  t.replaceChildren();
-  const c = grid.state_counts || {};
-  $("#state-counts").textContent = `Cells in ${scLabels[grid.subcommittee] || grid.subcommittee} (every account, every year and stage on file): ` +
-    `${c.value || 0} with a figure \u00b7 ${c.not_funded || 0} not funded \u00b7 ${c.no_printed_total || 0} no printed total \u00b7 ` +
-    `${c.missing || 0} missing \u00b7 ` +
-    `${c.not_collected || 0} not yet collected \u00b7 ${c.not_enacted || 0} not yet enacted`;
-  const cols = [];
-  for (const y of grid.fiscal_years) if (years.includes(y)) for (const st of grid.stages) if (stages.includes(st)) cols.push([y, st]);
-  const shownYears = grid.fiscal_years.filter((y) => years.includes(y));
-  const shownStages = grid.stages.filter((st) => stages.includes(st));
-  const first = (st) => shownStages.indexOf(st) === 0;
-  t.append(el("thead", {},
-    el("tr", {}, el("th", { class: "acct", rowspan: "2", text: "Account" }),
-      ...shownYears.map((y) => el("th", { class: "fy-head", colspan: String(shownStages.length), text: "FY" + y }))),
-    el("tr", {}, ...cols.map(([y, st]) => {
-      const note = (grid.stage_notes || {})[y + "|" + st];
-      return el("th", { class: first(st) ? "first-stage" : "", title: note ? `${st} \u2014 ${note}` : st },
-        note ? noteMark(note) : null, STAGE_SHORT[st] || st);
-    }))));
-  const body = el("tbody");
-  const byId = new Map(grid.rows.map((r) => [r.account.canonical_account_id, r]));
-  for (const r of grid.rows) NAME_OF.set(r.account.canonical_account_id, r.account.canonical_name);
-  // a sourced total (a rollup the workbook notes as a title or bill total), or
-  // a note saying there is none -- never a sum of the loaded accounts
-  const totalRow = (label, row, none, testid, title) => {
-    const tr = el("tr", { class: "total-row", dataset: { testid, ...(title !== undefined ? { title: title || "" } : {}) } });
-    tr.append(el("th", { class: "acct", scope: "row" }, el("div", { class: "acct-name", text: label }),
-      row ? el("div", { class: "meta", text: `printed total \u00b7 ${row.account.canonical_account_id}` }) : null));
-    if (row) for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));
-    else tr.append(el("td", { class: "total-none", colspan: String(cols.length), "data-testid": "no-total", text: none }));
-    return tr;
-  };
-  body.append(totalRow(`Bill total \u2014 ${scLabels[grid.subcommittee] || grid.subcommittee}`, grid.bill_total,
-    "No printed bill total on file \u2014 not shown, and the accounts below are not summed into one.", "bill-total"));
-  for (const group of grid.titles) {
-    const label = group.title || "Not yet placed in a title";
-    body.append(el("tr", { class: "title-head", dataset: { testid: "title-head", title: group.title || "" } },
-      el("th", { class: "acct", scope: "rowgroup", text: label }),
-      el("td", { colspan: String(cols.length), class: "title-meta",
-                 text: `${group.rows.length} account${group.rows.length === 1 ? "" : "s"}` })));
-    body.append(totalRow(`Total, ${group.title || "unplaced accounts"}`, group.total, group.title
-      ? `No printed total on file for ${group.title} \u2014 not shown. The accounts below are not summed into one (a title may be only partly loaded).`
-      : "These accounts aren't placed in a title yet \u2014 no total.", "title-total", group.title));
-    for (const id of group.rows) body.append(renderCompareRow(byId.get(id), cols, first));
-  }
-  t.append(body);
-  t.parentNode.querySelector(".stage-notes")?.remove();
-  const notes = stageNoteList(grid.stage_notes, shownYears, shownStages);
-  if (notes) t.parentNode.append(notes);
-  NAME_OF.clear();
-  $("#compare-result").hidden = false;
-}
-
-const NAME_OF = new Map();      // account id -> name, for the rows being rendered
-
-function renderCompareRow(row, cols, first) {
-  const a = row.account;
-  const name = el("button", { type: "button", class: "linkish", title: "Open this account's full history",
-                              text: a.canonical_name });
-  name.addEventListener("click", () => openAccount(a.canonical_account_id));
-  const head = el("th", { class: "acct", scope: "row" },
-    el("div", { class: "acct-name", "data-testid": "row-name" }, name),
-    el("div", { class: "meta", text: `${a.agency} · ${a.canonical_account_id}` + (a.status !== "active" ? ` · ${a.status}` : "") }),
-    el("div", { class: "meta", "data-testid": "row-figures-on-file",
-                text: figuresOnFile(Object.entries(row.cells).filter(([, c]) => c.lines.some((l) => l.observations.length || l.absence))
-                                      .map(([k]) => ({ fiscal_year: Number(k.split("|")[0]) }))) }));
-  if (row.historical_names.length)
-    head.append(el("div", { class: "meta", "data-testid": "row-former",
-                            text: "also printed as " + row.historical_names.map((n) => `“${n}”`).join(", ") }));
-  for (const r of row.relationships)
-    head.append(el("div", { class: "flag", "data-testid": "row-relationship",
-      text: `${r.relationship_id}: ${r.from_account_id} ${r.relationship_type} ${r.to_account_id}` +
-            (r.human_reviewed ? "" : " (not yet reviewed)") }));
-  // a total row (Account.total_scope "agency"): already the sum of the
-  // accounts under it (all their lines, not only the headlines) -- adding it
-  // in counts every dollar twice. It heads its group; its accounts fold away.
-  const cls = [];
-  if (row.rollup) {
-    cls.push("rollup");
-    head.append(el("div", {}, el("span", { class: "rollup-badge", "data-testid": "rollup", title: a.notes,
-                                            text: "Rollup of the accounts below \u2014 don't add" })));
-    if (row.rollup_members.length) {
-      const n = row.rollup_members.length;
-      const toggle = el("button", { type: "button", class: "linkish toggle", "aria-expanded": "true",
-                                    "data-testid": "rollup-toggle", text: `\u25BE hide its ${n} accounts` });
-      toggle.addEventListener("click", () => {
-        const open = toggle.getAttribute("aria-expanded") !== "true";
-        toggle.setAttribute("aria-expanded", String(open));
-        toggle.textContent = open ? `\u25BE hide its ${n} accounts` : `\u25B8 show its ${n} accounts`;
-        for (const tr of document.querySelectorAll(`#compare-grid tr[data-member-of="${a.canonical_account_id}"]`))
-          tr.hidden = !open;
-      });
-      head.append(el("div", {}, toggle));
-    }
-  }
-  if (row.member_of) cls.push("member");
-  // an account inside another account's figure (Account.parent_account_id): indented under it, never added
-  if (a.parent_account_id) {
-    cls.push("child");
-    head.append(el("div", { class: "meta child-of", "data-testid": "row-child-of",
-      text: `within ${NAME_OF.get(a.parent_account_id) || a.parent_account_id} \u2014 inside its figure, not added` }));
-  }
-  const tr = el("tr", { class: cls.join(" "), dataset: { account: a.canonical_account_id, testid: "compare-row",
-                                                         ...(row.member_of ? { memberOf: row.member_of } : {}) } }, head);
-  for (const [y, st] of cols) tr.append(renderCompareCell(row, y, st, first(st)));
-  return tr;
-}
-
-function renderCompareCell(row, y, st, firstStage) {
+// ---- reading a row's cells (never computing a state)
+function headOf(row, y, st) {
   const cell = row.cells[y + "|" + st];
+  if (!cell) return null;
   const lines = cell.lines;
-  const td = el("td", { class: firstStage ? "first-stage" : "", dataset: { fy: y, stage: st, testid: "compare-cell" } });
-  if (cell.outside_history) {
+  return { cell, lines, h: lines.find(isHeadline) || lines[0] || null };
+}
+// the headline's printed figure (a printed zero is 0), or null where nothing is printed
+function figure(row, y, st) {
+  const x = headOf(row, y, st);
+  return x && x.h && x.h.observations.length ? x.h.observations[0].amount : null;
+}
+const validated = (s) => s === "auto-validated" || s === "human-verified";
+const statusClass = (s) => validated(s) ? "validated" : s === "flagged" ? "flagged" : "unverified";
+
+const TOKENS = {
+  not_funded: ["—", "Not funded: printed as a dash or zero, or checked and confirmed absent"],
+  missing: ["?", "Missing: a document on file covers this year and stage, but no figure is recorded yet"],
+  not_collected: ["n/c", "Not yet collected: no document on file covers this year and stage"],
+  not_enacted: ["n/e", "Not yet enacted: no enacted law for this fiscal year yet"],
+  no_printed_total: ["No printed total", "No printed total: the document prints the account but not this line"],
+};
+function token(state, line) {
+  const [text, meaning] = TOKENS[state] || [state, state];
+  let why = meaning;
+  if (line && line.absence) why += ` — ${line.absence.evidence}`;
+  else if (line && state === "not_funded" && line.observations[0]) {
+    const o = line.observations[0];
+    why += ` — printed as a dash or zero (${o.source_document_id}${o.source_page ? " p." + o.source_page : ""})`;
+  }
+  return el("span", { class: "tok" + (state === "no_printed_total" ? " npt" : ""), "data-testid": "token-" + testid(state),
+                      title: why, "aria-label": why, text });
+}
+function sourceHref(o) {
+  const first = (o.source_page || "").split("-")[0];
+  return o.url_or_identifier && /^https?:/.test(o.url_or_identifier)
+    ? o.url_or_identifier + (first ? "#page=" + first : "") : null;
+}
+function numberLink(o, units) {
+  const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
+  const href = sourceHref(o);
+  const text = GridMath.number(o.amount, units);
+  const title = `${label} · ${o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
+  return href ? el("a", { class: "num", "data-testid": "amount", href, target: "_blank", rel: "noopener", title,
+                          "data-source": label, text })
+              : el("span", { class: "num", "data-testid": "amount", title, "data-source": label, text });
+}
+
+// one figure cell: the headline line's state or figure; other lines on file behind "+n"
+function figureCell(row, y, st, cls, withMore) {
+  const td = el("td", { class: cls || "", dataset: { fy: y, stage: st, testid: "compare-cell" } });
+  const x = headOf(row, y, st);
+  if (!x || !x.h) { td.dataset.state = ""; return td; }        // nothing that can exist in this cell
+  if (x.cell.outside_history) {
     td.classList.add("outside");
     td.dataset.outside = "true";
     const span = row.fiscal_year_span;
     td.title = !span ? "Nothing on file for this account."
       : `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${span[0]}–FY${span[1]}.`;
   }
-  // the same whole-cell rule as the single-account grid
-  const only = emptyState(lines);
-  if (only) {
-    td.classList.add("empty");
-    td.dataset.state = only;
-    td.append(stateChip(only));
-    return td;
-  }
-  if (!lines.length) return td;                      // nothing that can exist in this cell
-  // the headline, as approps_store.headline_state(): the budget-authority line, else the cell's first line
-  const headline = lines.find(isHeadline) || lines[0];
-  td.append(renderLine(headline, false));
-  // contained / view lines of the headline show right under it, labelled as not added
-  const alongside = lines.filter((l) => l !== headline && notAdded(l) && l.state === "value");
-  for (const l of alongside) td.append(renderLine(l, true));
-  const rest = lines.filter((l) => l !== headline && !alongside.includes(l));
-  if (rest.length) {
-    const n = (s) => rest.filter((l) => l.state === s).length;
-    const parts = [n("value") && `${n("value")} with a figure`, n("not_funded") && `${n("not_funded")} not funded`,
-                   n("no_printed_total") && `${n("no_printed_total")} no printed total`,
-                   n("missing") && `${n("missing")} missing`, n("not_collected") && `${n("not_collected")} not yet collected`,
-                   n("not_enacted") && `${n("not_enacted")} not yet enacted`].filter(Boolean);
-    const more = el("details", { class: "more", "data-testid": "more" },
-      el("summary", { text: `+ ${rest.length} more line${rest.length === 1 ? "" : "s"} (${parts.join(", ")})` }));
-    for (const l of rest) more.append(renderLine(l, true));
-    td.append(more);
+  const h = x.h;
+  td.dataset.state = h.state;
+  const o = h.observations[0];
+  if (o) td.append(el("span", { class: "dot " + statusClass(o.verification_status), "data-testid": "status-dot",
+                                "data-status": o.verification_status, title: o.verification_status,
+                                "aria-label": "status " + o.verification_status }));
+  if (h.state === "value") td.append(numberLink(o, G.units));
+  else td.append(token(h.state, h));
+  if (withMore) {
+    const rest = x.lines.filter((l) => l !== h && (l.observations.length || l.absence));
+    if (rest.length) {
+      const pop = el("div", { class: "pop" }, ...rest.map((l) => renderLine(l, true)));
+      td.append(el("details", { class: "more", "data-testid": "more" },
+        el("summary", { text: `+${rest.length}`, title: `${rest.length} other line${rest.length === 1 ? "" : "s"} on file (shown, never added)`,
+                        "aria-label": `${rest.length} other lines on file` }), pop));
+    }
   }
   return td;
 }
 
-async function showCompare(want, push) {
+function changeCell(a, b, what, cls, pctOnly) {
+  const td = el("td", { class: "change " + (cls || ""), dataset: { testid: "change-cell", kind: what } });
+  const c = GridMath.change(a, b);
+  if (!c) { td.title = "No change value: a figure is missing"; return td; }
+  const dir = GridMath.direction(c.delta);
+  if (pctOnly) {
+    td.append(el("span", { class: dir, text: GridMath.signedPct(c.pct), "aria-label": `${what}: ${GridMath.signedPct(c.pct) || "no percentage"}` }));
+  } else {
+    td.append(el("span", { class: dir, "data-testid": "change", text: GridMath.signedNumber(c.delta, G.units),
+                           "aria-label": `${what}: ${GridMath.signedNumber(c.delta, G.units)} ${G.units === "m" ? "million" : "thousand"} dollars` }));
+  }
+  td.dataset.delta = String(c.delta);
+  return td;
+}
+
+// ---- columns per view
+function columns(grid) {
+  const years = grid.fiscal_years;
+  if (G.grid === "years") {
+    const groups = [G.a, G.b].map((y) => ({ label: `FY${y}`, cols: STAGES4.map((st) => ({ type: "fig", y, st, label: STAGE_SHORT[st] })) }));
+    groups.push({ label: `Change FY${G.a} → FY${G.b}`, cols: STAGES4.map((st) => ({ type: "chg", a: [G.a, st], b: [G.b, st], label: STAGE_SHORT[st], what: `${STAGE_SHORT[st]} FY${G.b} vs FY${G.a}`, two: true })) });
+    return groups;
+  }
+  if (G.grid === "enacted") {
+    return years.map((y, i) => ({ label: `FY${y}`, cols: [{ type: "fig", y, st: "Enacted", label: "Enacted" }]
+      .concat(i ? [{ type: "chg", a: [years[i - 1], "Enacted"], b: [y, "Enacted"], label: "Change", what: `FY${y} vs FY${years[i - 1]} enacted`, two: true }] : []) }));
+  }
+  const y = G.fy;
+  return [
+    { label: `FY${y}`, cols: STAGES4.map((st) => ({ type: "fig", y, st, label: STAGE_SHORT[st], more: true })) },
+    { label: `Request vs FY${y - 1} enacted`, cols: [
+      { type: "chg", a: [y - 1, "Enacted"], b: [y, "President's Budget"], label: "$", what: `Request vs FY${y - 1} enacted` },
+      { type: "chg", a: [y - 1, "Enacted"], b: [y, "President's Budget"], label: "%", what: `Request vs FY${y - 1} enacted, percent`, pct: true }] },
+    { label: `Enacted vs FY${y - 1} enacted`, cols: [
+      { type: "chg", a: [y - 1, "Enacted"], b: [y, "Enacted"], label: "$", what: `Enacted vs FY${y - 1} enacted` },
+      { type: "chg", a: [y - 1, "Enacted"], b: [y, "Enacted"], label: "%", what: `Enacted vs FY${y - 1} enacted, percent`, pct: true }] },
+  ];
+}
+
+function cellFor(row, col, first) {
+  const cls = first ? "g0" : "";
+  if (col.type === "fig") return figureCell(row, col.y, col.st, cls, col.more);
+  const a = figure(row, ...col.a), b = figure(row, ...col.b);
+  if (!col.two) return changeCell(a, b, col.what, cls, col.pct);
+  const td = changeCell(a, b, col.what, cls);
+  const c = GridMath.change(a, b);
+  if (c && c.pct != null) td.append(el("span", { class: "pct " + GridMath.direction(c.delta), text: GridMath.signedPct(c.pct) }));
+  return td;
+}
+
+// ---- rows: agency totals fold over their accounts, a parent over its child accounts, a proposed
+// agency over the relationships moving accounts into it; title and bill totals sit off the grid
+function relNote(rel, side) {
+  const fy = rel.effective_fiscal_year;
+  const toName = NAME_OF.get(rel.to_account_id) || rel.to_account_id;
+  const fromName = NAME_OF.get(rel.from_account_id) || rel.from_account_id;
+  const proposed = STATUS_OF.get(rel.to_account_id) === "proposed";
+  const prefix = fy ? `FY${fy}${proposed ? " request" : ""}: ` : "";
+  const verb = (side === "to" ? REL_TO : REL_FROM)[rel.relationship_type] || rel.relationship_type;
+  return prefix + `${verb} ${side === "to" ? fromName : toName}` + (proposed ? " (proposed, not enacted)" : "")
+    + (rel.human_reviewed ? "" : " · not yet reviewed");
+}
+
+function buildRows(grid, cols, ncols) {
+  const out = [];
+  const byId = new Map(grid.rows.map((r) => [r.account.canonical_account_id, r]));
+  const depthOf = (r) => (r.member_of ? 1 : 0) + (r.account.parent_account_id ? 1 : 0);
+  const ancestors = (r) => [r.member_of, r.account.parent_account_id,
+                            r.account.parent_account_id && byId.get(r.account.parent_account_id) ? byId.get(r.account.parent_account_id).member_of : null]
+    .filter(Boolean);
+  for (const group of grid.titles) {
+    out.push(el("tr", { class: "title-row", dataset: { testid: "title-head", title: group.title || "" } },
+      el("th", { class: "acct", scope: "rowgroup", text: group.title || "Not yet placed in a title" }),
+      el("td", { colspan: String(ncols), class: "note-text", style: "text-align:left;color:var(--muted)",
+                 text: `${group.rows.length} account${group.rows.length === 1 ? "" : "s"}` })));
+    for (const id of group.rows) {
+      const r = byId.get(id), a = r.account;
+      const incoming = a.status === "proposed" && r.rollup ? r.relationships.filter((x) => x.to_account_id === id) : [];
+      const outgoing = r.relationships.filter((x) => x.from_account_id === id && STATUS_OF.get(x.to_account_id) === "proposed");
+      const kids = (r.rollup_members || []).concat(r.children || []);
+      const folds = kids.length ? kids.length : incoming.length;
+      const name = el("button", { type: "button", class: "linkish", "data-testid": "row-name", text: a.canonical_name,
+                                  title: `${a.canonical_account_id}${r.historical_names.length ? " · also printed as " + r.historical_names.map((n) => `“${n}”`).join(", ") : ""}` });
+      name.addEventListener("click", () => openAccount(a.canonical_account_id));
+      const chevCol = el("span", { class: "chev-col" });
+      if (folds) {
+        const open = !collapsed.has(id);
+        const what = kids.length ? `${kids.length} account${kids.length === 1 ? "" : "s"}` : `${incoming.length} relationship notes`;
+        const chev = el("button", { type: "button", class: "chev", "aria-expanded": String(open), "data-testid": "chevron",
+                                    "aria-label": `${open ? "Hide" : "Show"} ${what} under ${a.canonical_name}`, dataset: { for: id } });
+        chev.addEventListener("click", () => toggle(id));
+        chevCol.append(chev);
+      }
+      const body = el("div", { class: "namebody" }, name);
+      if (a.status === "proposed" && r.rollup) body.append(el("span", { class: "tag", "data-testid": "tag", text: "proposed agency · not enacted" }));
+      else if (a.status === "proposed") body.append(el("span", { class: "tag", "data-testid": "tag", text: "proposed in request" }));
+      if (a.parent_account_id) body.append(el("span", { class: "tag muted", "data-testid": "tag", text: "inside the line above · not added",
+                                                        title: `inside ${NAME_OF.get(a.parent_account_id)}'s figure; never added again` }));
+      if (r.rollup === "agency" && kids.length) body.append(el("span", { class: "tag muted", "data-testid": "rollup", title: a.notes || "",
+                                                                         text: "agency total · printed, not added" }));
+      const head = el("th", { class: "acct", scope: "row" },
+        el("div", { class: "namecell", style: `padding-left:${depthOf(r) * 16}px` }, chevCol, body));
+      const cls = ["acct-row"];
+      if (r.rollup) cls.push("shaded");
+      const tr = el("tr", { class: cls.join(" "), dataset: { account: id, testid: "compare-row", anc: ancestors(r).join(" "),
+                                                             ...(r.member_of ? { memberOf: r.member_of } : {}) } }, head);
+      cols.forEach((g) => g.cols.forEach((c, i) => tr.append(cellFor(r, c, i === 0))));
+      out.push(tr);
+      for (const rel of incoming) out.push(noteRow(relNote(rel, "to"), ncols, id, [id, ...ancestors(r)], depthOf(r) + 1, "rel-note"));
+      for (const rel of outgoing) out.push(noteRow(relNote(rel, "from"), ncols, id, ancestors(r), depthOf(r) + 1, "move-note"));
+    }
+  }
+  return out;
+}
+function noteRow(text, ncols, of, anc, depth, testidName) {
+  // one line: the arrow in the name column, the note across the figure columns
+  return el("tr", { class: "note-row", dataset: { testid: testidName, noteOf: of, anc: anc.join(" ") } },
+    el("th", { class: "acct", scope: "row", "aria-label": text },
+      el("div", { class: "namecell", style: `padding-left:${depth * 16}px` }, el("span", { class: "chev-col", text: "\u21b3" }))),
+    el("td", { colspan: String(ncols), class: "note-text", text }));
+}
+
+function toggle(id, open) {
+  const willOpen = open === undefined ? collapsed.has(id) : open;
+  if (willOpen) collapsed.delete(id); else collapsed.add(id);
+  applyFolds();
+}
+function applyFolds() {
+  for (const chev of document.querySelectorAll("#compare-grid .chev")) {
+    const open = !collapsed.has(chev.dataset.for);
+    chev.setAttribute("aria-expanded", String(open));
+    chev.setAttribute("aria-label", chev.getAttribute("aria-label").replace(/^(Hide|Show)/, open ? "Hide" : "Show"));
+  }
+  let z = 0;
+  for (const tr of document.querySelectorAll("#compare-grid tbody tr")) {
+    const anc = (tr.dataset.anc || "").split(" ").filter(Boolean);
+    // a relationship note row is under its own account's chevron too
+    tr.hidden = anc.some((x) => collapsed.has(x));
+    if (tr.classList.contains("acct-row") && !tr.hidden) tr.classList.toggle("z", z++ % 2 === 1);
+  }
+}
+
+// ---- tiles: sourced totals only (a title or bill total row), never a sum of the accounts
+function totalsSource(grid) {
+  const t = grid.titles.filter((x) => x.total).map((x) => ({ label: `${x.title} total`, row: x.total }));
+  if (grid.bill_total) t.unshift({ label: "Bill total", row: grid.bill_total });
+  return t;
+}
+function tile(k, v, s, extra) {
+  return el("div", { class: "tile" + (extra || ""), dataset: { testid: "tile" } },
+    el("div", { class: "k", text: k }), el("div", { class: "v", text: v }), s ? el("div", { class: "s", text: s }) : null);
+}
+const unitWord = () => (G.units === "m" ? "$ millions" : "$ thousands");
+function renderTiles(grid) {
+  const box = $("#tiles");
+  box.replaceChildren();
+  const totals = totalsSource(grid);
+  const rows = grid.rows;
+  const withFigure = (y, st) => rows.filter((r) => figure(r, y, st) != null).length;
+  if (!totals.length) box.append(tile("Printed totals", "None on file",
+    "No title or bill total is printed for these accounts — the grid never sums them", " totals-strip"));
+  if (G.grid === "stages") {
+    for (const t of totals) for (const st of STAGES4) {
+      const v = figure(t.row, G.fy, st);
+      box.append(tile(`${t.label} · FY${G.fy} ${STAGE_SHORT[st]}`, v == null ? "—" : GridMath.number(v, G.units), `printed · ${unitWord()}`, " totals-strip"));
+    }
+    box.append(tile(`Accounts with a figure, FY${G.fy}`, STAGES4.map((st) => `${STAGE_SHORT[st]} ${withFigure(G.fy, st)}`).join(" · "),
+                    `of ${rows.length} accounts`));
+  } else if (G.grid === "years") {
+    for (const t of totals) for (const st of STAGES4) {
+      const c = GridMath.change(figure(t.row, G.a, st), figure(t.row, G.b, st));
+      box.append(tile(`${t.label} change · ${STAGE_SHORT[st]}`, c ? GridMath.signedNumber(c.delta, G.units) : "—",
+                      c ? `${GridMath.signedPct(c.pct)} · FY${G.a} → FY${G.b}` : `no printed total in both years`, " totals-strip"));
+    }
+  } else {
+    const ys = grid.fiscal_years;
+    for (const t of totals) {
+      const have = ys.filter((y) => figure(t.row, y, "Enacted") != null);
+      if (have.length) {
+        const f = have[0], l = have[have.length - 1];
+        const c = GridMath.change(figure(t.row, f, "Enacted"), figure(t.row, l, "Enacted"));
+        box.append(tile(`${t.label} enacted · FY${f} → FY${l}`,
+          `${GridMath.number(figure(t.row, f, "Enacted"), G.units)} → ${GridMath.number(figure(t.row, l, "Enacted"), G.units)}`,
+          `${GridMath.signedNumber(c.delta, G.units)} (${GridMath.signedPct(c.pct)}) · printed · ${unitWord()}`, " totals-strip"));
+      }
+    }
+    box.append(tile("Accounts with enacted data", String(rows.filter((r) => ys.some((y) => figure(r, y, "Enacted") != null)).length),
+                    `of ${rows.length} accounts`));
+  }
+  const c = grid.state_counts || {};
+  const counts = el("div", { class: "tile", dataset: { testid: "state-counts" } },
+    el("div", { class: "k", text: `Cells in ${scLabels[grid.subcommittee] || grid.subcommittee} (every account, every year and stage on file)` }));
+  const parts = [["value", "with a figure"], ["not_funded", "not funded"], ["no_printed_total", "no printed total"],
+                 ["missing", "missing"], ["not_collected", "not yet collected"], ["not_enacted", "not yet enacted"]];
+  counts.append(el("div", { class: "s" }, ...parts.flatMap(([k, label], i) => [i ? " · " : "",
+    el("span", { dataset: { state: k }, text: `${(c[k] || 0).toLocaleString("en-US")} ${label}` })])));
+  box.append(counts);
+  const shownStages = G.grid === "stages" ? STAGES4.map((st) => [G.fy, st]) : G.grid === "years"
+    ? [G.a, G.b].flatMap((y) => STAGES4.map((st) => [y, st])) : grid.fiscal_years.map((y) => [y, "Enacted"]);
+  const notes = Object.entries(grid.stage_notes || {}).filter(([k]) => shownStages.some(([y, st]) => k === `${y}|${st}`));
+  if (notes.length) box.append(el("ul", { class: "stage-notes tile wide", "data-testid": "stage-notes" },
+    ...notes.map(([k, n]) => { const [y, st] = k.split("|"); return el("li", { text: `† FY${y} ${st}: ${n}` }); })));
+}
+
+// ---- the table
+function renderCompare(grid) {
+  NAME_OF.clear(); STATUS_OF.clear();
+  for (const r of grid.rows) { NAME_OF.set(r.account.canonical_account_id, r.account.canonical_name);
+                               STATUS_OF.set(r.account.canonical_account_id, r.account.status); }
+  const label = scLabels[grid.subcommittee] || grid.subcommittee;
+  $("#page-title").textContent = label;
+  $("#page-sub").textContent = "Subcommittee grid · read-only · every figure links to the document and page it came from";
+  const t = $("#compare-grid");
+  t.classList.toggle("reviewer", G.reviewer);
+  t.replaceChildren();
+  const cols = columns(grid);
+  const ncols = cols.reduce((n, g) => n + g.cols.length, 0);
+  const note = (y, st) => (grid.stage_notes || {})[y + "|" + st];
+  const r1 = el("tr", {}, el("th", { class: "acct", rowspan: "2", scope: "col", text: "Account" }));
+  const r2 = el("tr", {});
+  for (const g of cols) {
+    r1.append(el("th", { class: "g0", colspan: String(g.cols.length), scope: "colgroup", text: g.label }));
+    g.cols.forEach((c, i) => {
+      const n = c.type === "fig" ? note(c.y, c.st) : null;
+      r2.append(el("th", { class: i === 0 ? "g0" : "", scope: "col", title: n ? `${c.st} — ${n}` : (c.st || c.what || c.label) },
+        n ? noteMark(n) : null, c.label));
+    });
+  }
+  t.append(el("thead", {}, r1, r2));
+  t.append(el("tbody", {}, ...buildRows(grid, cols, ncols)));
+  renderTiles(grid);
+  applyFolds();
+  $("#compare-result").hidden = false;
+  fitGrid();
+}
+// the grid fills the window below the toolbar and tiles; its own scrollbars stay in view
+function fitGrid() {
+  const w = $("#grid-wrap");
+  if (!w || $("#compare-result").hidden) return;
+  const top = w.getBoundingClientRect().top + window.scrollY;
+  w.style.height = `max(320px, calc(100vh - ${Math.round(top)}px - 12px))`;
+}
+window.addEventListener("resize", fitGrid);
+
+// ---- state <-> URL
+function compareURL() {
+  const q = new URLSearchParams({ view: "compare", sc: G.sc, grid: G.grid });
+  if (G.grid === "stages") q.set("fy", G.fy);
+  if (G.grid === "years") { q.set("a", G.a); q.set("b", G.b); }
+  if (G.units !== "k") q.set("units", G.units);
+  if (G.reviewer) q.set("rev", "1");
+  return "?" + q.toString();
+}
+function defaultYear(grid) {
+  const ys = grid.fiscal_years;
+  return [...ys].reverse().find((y) => grid.rows.some((r) => figure(r, y, "Enacted") != null)) || ys[ys.length - 1];
+}
+function settle(grid, want) {
+  const ys = grid.fiscal_years;
+  const pickYear = (v, dflt) => (ys.includes(Number(v)) ? Number(v) : dflt);
+  if (want) {
+    G.grid = ["stages", "years", "enacted"].includes(want.grid) ? want.grid : "stages";
+    G.units = want.units === "m" ? "m" : "k";
+    G.reviewer = want.rev === "1";
+    // an old link's "fy=2017-2026" / "fy=2019,2021" reads as its last year
+    const fy = String(want.fy || "").split(/[,-]/).filter(Boolean).pop();
+    G.fy = pickYear(fy, defaultYear(grid));
+    G.b = pickYear(want.b, G.fy);
+    G.a = pickYear(want.a, ys[Math.max(0, ys.indexOf(G.b) - 1)]);
+  }
+  if (!ys.includes(G.fy)) G.fy = defaultYear(grid);
+  if (!ys.includes(G.b)) G.b = G.fy;
+  if (!ys.includes(G.a)) G.a = ys[Math.max(0, ys.indexOf(G.b) - 1)];
+}
+function renderControls(grid) {
+  for (const b of document.querySelectorAll("#view-switch button")) b.setAttribute("aria-pressed", String(b.dataset.grid === G.grid));
+  for (const b of document.querySelectorAll("#units button")) b.setAttribute("aria-pressed", String(b.dataset.units === G.units));
+  $("#reviewer").checked = G.reviewer;
+  const sel = (id, label, value) => {
+    const s = el("select", { id, "aria-label": label }, ...grid.fiscal_years.map((y) => el("option", { value: y, text: `FY${y}` })));
+    s.value = String(value);
+    s.addEventListener("change", () => { G[{ "fy-pick": "fy", "fy-a": "a", "fy-b": "b" }[id]] = Number(s.value); redraw(); });
+    return el("label", {}, label, s);
+  };
+  const box = $("#year-pickers");
+  box.replaceChildren();
+  if (G.grid === "stages") box.append(sel("fy-pick", "Fiscal year", G.fy));
+  if (G.grid === "years") box.append(sel("fy-a", "FY A", G.a), " ", sel("fy-b", "FY B", G.b));
+}
+async function redraw() {
+  const grid = await loadSubcommittee(G.sc);
+  settle(grid);
+  renderControls(grid);
+  history.replaceState(null, "", compareURL());
+  renderCompare(grid);
+}
+
+async function showCompare(want) {
   showView("compare");
   compareStatus("Loading…");
   try {
@@ -731,18 +1016,18 @@ async function showCompare(want, push) {
       scLabels = list.names || {};
       $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
     }
-    const sc = want && want.sc && scNames.includes(want.sc) ? want.sc : $("#sc").value || scNames[0];
-    $("#sc").value = sc;
-    const grid = await loadSubcommittee(sc);
-    if (want) buildControls(grid, want);
-    const years = selectedYears(), stages = selectedStages();
-    if (!years.length || !stages.length) {
-      $("#compare-result").hidden = true;
-      return compareStatus(!years.length ? "Pick at least one fiscal year." : "Pick at least one stage.");
-    }
+    G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || $("#sc").value || scNames[0];
+    $("#sc").value = G.sc;
+    const grid = await loadSubcommittee(G.sc);
+    // a proposed agency's relationship notes start folded; its chevron opens them
+    for (const r of grid.rows)
+      if (r.account.status === "proposed" && r.rollup && !(r.rollup_members || []).length && !(r.children || []).length)
+        collapsed.add(r.account.canonical_account_id);
+    settle(grid, want || {});
     compareStatus("");
-    if (push) history.replaceState(null, "", compareURL(sc, years, stages, grid));
-    renderCompare(grid, years, stages);
+    renderControls(grid);
+    history.replaceState(null, "", compareURL());
+    renderCompare(grid);
   } catch (e) { compareStatus("Error: " + e.message, true); }
 }
 
@@ -753,21 +1038,21 @@ async function openAccount(id) {
   try { showAccount(await source.account(id)); } catch (e) { reset("Error: " + e.message, true); }
 }
 
-$("#fy-from").addEventListener("change", applyRange);
-$("#fy-to").addEventListener("change", applyRange);
-$("#stage-all").addEventListener("change", () => {
-  for (const i of document.querySelectorAll("#stage-boxes input")) i.checked = $("#stage-all").checked;
+$("#sc").addEventListener("change", () => { G.sc = $("#sc").value; collapsed.clear(); showCompare({ sc: G.sc, grid: G.grid, units: G.units, rev: G.reviewer ? "1" : "" }); });
+for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
+for (const b of document.querySelectorAll("#units button")) b.addEventListener("click", () => { G.units = b.dataset.units; redraw(); });
+$("#reviewer").addEventListener("change", () => { G.reviewer = $("#reviewer").checked; redraw(); });
+$("#expand-all").addEventListener("click", () => { collapsed.clear(); applyFolds(); });
+$("#collapse-all").addEventListener("click", () => {
+  for (const c of document.querySelectorAll("#compare-grid .chev")) collapsed.add(c.dataset.for);
+  applyFolds();
 });
-$("#stage-boxes").addEventListener("change", () => {
-  $("#stage-all").checked = [...document.querySelectorAll("#stage-boxes input")].every((i) => i.checked);
-});
-$("#sc").addEventListener("change", () => showCompare({ sc: $("#sc").value }, true));
-$("#compare-form").addEventListener("submit", (e) => { e.preventDefault(); showCompare(null, true); });
 for (const b of document.querySelectorAll(".tabs button")) {
   b.addEventListener("click", () => {
     if (b.dataset.view === "compare") {
-      if (scNames) { showView("compare"); history.replaceState(null, "", "?view=compare&sc=" + encodeURIComponent($("#sc").value)); }
-      else showCompare({}, true);
+      if (scNames && G.sc) { showView("compare"); history.replaceState(null, "", compareURL());
+                             $("#page-title").textContent = scLabels[G.sc] || G.sc; fitGrid(); }
+      else showCompare({});
     } else {
       showView("account");
       const q = $("#q").value.trim();
@@ -784,8 +1069,8 @@ $("#search-form").addEventListener("submit", (e) => {
 const params = new URLSearchParams(location.search);
 const initial = params.get("q");
 if (params.get("view") === "compare") {
-  showCompare({ sc: params.get("sc"), years: parseYears(params.get("fy")),
-                stages: params.get("stage") ? params.get("stage").split(",") : null }, false);
+  showCompare({ sc: params.get("sc"), grid: params.get("grid"), fy: params.get("fy"), a: params.get("a"), b: params.get("b"),
+                units: params.get("units"), rev: params.get("rev") });
 } else if (params.get("account")) {
   openAccount(params.get("account"));
 } else if (initial) { $("#q").value = initial; runSearch(initial); }
