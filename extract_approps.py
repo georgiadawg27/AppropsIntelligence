@@ -1279,14 +1279,18 @@ def source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
     """Source Document row: govinfo-fetched or manually ingested (proposal
     approved 2026-09-25: ingest_method, advance_copy, confirmation_status,
     reconciled_with_document_id, ingested_by)."""
+    import public_links
     m = manifest_entry or {}
     manual = m.get("ingest_method") == "manual"
+    # the public link (public_links.py: checked against the file's sha256), never the API fetch
+    # link, which only works with an api_key; none yet -> an identifier, not a link
+    public = public_links.no_api_key(m.get("public_url"))
     return {
         "document_id": str(uuid.uuid5(OBS_NAMESPACE, f"{package_id}|{pdf_sha}")),
         "package_id": package_id,
         "source_agency": m.get("source_agency") or ("manual ingest" if manual else "GPO"),
-        "url_or_identifier": (m.get("source_url") or f"manual:{package_id}") if manual
-        else f"https://api.govinfo.gov/packages/{package_id}/pdf",
+        "url_or_identifier": public or (f"manual:{package_id}" if manual else f"govinfo:{package_id}"),
+        "link_needs_review": bool(m.get("link_needs_review")),
         "content_sha256": pdf_sha,
         "document_type": doc["document_type"],
         "fiscal_year": m.get("fiscal_year"),

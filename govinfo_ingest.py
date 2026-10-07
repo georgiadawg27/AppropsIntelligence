@@ -32,6 +32,12 @@ Usage:
     # A document the pipeline can't fetch itself (JES, advance copy of a report)
     python govinfo_ingest.py ingest-local fy26_cjs_jes.pdf --subcommittee CJS --fiscal-year 2026 \\
         --stage Enacted --doc-type jes --source-url https://www.appropriations.senate.gov/imo/media/doc/fy26_cjs_jes.pdf
+    # (--source-url is required unless --not-public: a file published nowhere)
+
+    # Each stored document's public link (public_links.py): Congress.gov for a committee
+    # report, else govinfo's content PDF, else the --source-url -- kept only when the file
+    # there has the stored sha256; the rest are listed in document_store/links_needing_review.json
+    python govinfo_ingest.py links --bill CRPT-119hrpt271=H.R.5304
 """
 
 import argparse
@@ -48,6 +54,7 @@ from urllib.request import Request, urlopen
 
 from dotenv import load_dotenv
 
+import public_links
 from subcommittees import SUBCOMMITTEES, subcommittees_named
 
 # Keys come from the project's .env, not the shell's inherited environment.
@@ -195,17 +202,19 @@ def download(link, api_key):
         return resp.read()
 
 
-def fetch_and_store(package_id, api_key, manifest):
+def fetch_and_store(package_id, api_key, manifest, bill_id=None):
     """
     Fetch & hash stage: pull a package's summary, download its PDF, hash it,
     and store both -- skipped entirely if the hash already on file matches,
-    i.e. nothing actually changed since the last run.
+    i.e. nothing actually changed since the last run. bill_id: the bill a
+    report or law was found through (its public link is looked up by it).
     """
     summary = api_get(f"/packages/{package_id}/summary", api_key)
     pdf_link = pdf_link_for(package_id, summary)
     if not pdf_link:
         return {"package_id": package_id, "status": "no_pdf_available"}
 
+    granule_id = None
     try:
         content = download(pdf_link, api_key)
     except HTTPError as e:
@@ -218,7 +227,8 @@ def fetch_and_store(package_id, api_key, manifest):
         ids = [g["granuleId"] for g in granules.get("granules", [])]
         if len(ids) != 1:
             return {"package_id": package_id, "status": "multi_granule_report", "granules": ids}
-        pdf_link = f"{API_BASE}/packages/{package_id}/granules/{ids[0]}/pdf"
+        granule_id = ids[0]
+        pdf_link = f"{API_BASE}/packages/{package_id}/granules/{granule_id}/pdf"
         content = download(pdf_link, api_key)
     if not content.startswith(b"%PDF"):
         return {"package_id": package_id, "status": "not_a_pdf", "url": pdf_link}
@@ -227,6 +237,9 @@ def fetch_and_store(package_id, api_key, manifest):
     prior = manifest.get(package_id)
     out_path = STORE_DIR / f"{package_id}.pdf"
     if prior and prior.get("hash") == content_hash and out_path.exists():
+        if "public_url" not in prior:            # stored before public links were derived
+            prior.update({"fetch_link": pdf_link, "granule_id": granule_id, "bill_id": prior.get("bill_id") or bill_id})
+            public_links.apply(prior, public_links.derive(package_id, prior, api_key=api_key))
         return {"package_id": package_id, "status": "unchanged", "hash": content_hash}
 
     STORE_DIR.mkdir(parents=True, exist_ok=True)
@@ -238,12 +251,18 @@ def fetch_and_store(package_id, api_key, manifest):
         "doc_class": summary.get("docClass"),
         "date_issued": summary.get("dateIssued"),
         "details_link": summary.get("detailsLink"),
+        # where the API fetched it from (needs an api_key, which is never stored: download() adds
+        # it to the request only); the public link, for the site and the workbook, is set below
+        "fetch_link": pdf_link,
+        "granule_id": granule_id,
+        "bill_id": bill_id,
         "stored_path": str(out_path),
         "fetched_at": datetime.now(timezone.utc).isoformat(),
         "ingest_method": "govinfo_api",
         "advance_copy": False,
         "confirmation_status": "official",
     }
+    public_links.apply(manifest[package_id], public_links.derive(package_id, manifest[package_id], api_key=api_key))
     return {"package_id": package_id, "status": "stored", "hash": content_hash, "path": str(out_path)}
 
 
@@ -272,12 +291,17 @@ def manual_document_id(subcommittee, fiscal_year, stage, doc_type, content_hash)
 
 def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_type, advance_copy,
                  source_url=None, source_agency=None, bill_id=None, report_id=None, ingested_by=None,
-                 publication_date=None):
+                 publication_date=None, public=True, api_key=None):
     """
     Store a local PDF into document_store/ and the manifest. An advance copy
     starts "unconfirmed" until reconciled against GPO's official version; a
     JES (or anything else ingested by hand that isn't an advance copy) has no
     official counterpart to reconcile against.
+
+    A public document needs its source_url: where its public link comes from
+    (checked against the file's sha256, as every public link is; a committee
+    report with a bill_id is looked up on Congress.gov first). public=False is
+    for a file published nowhere (shared privately): it gets no link.
     """
     if subcommittee not in SUBCOMMITTEES.values():
         # the extractor finds a multi-division document's division by this name
@@ -290,6 +314,10 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
         raise ValueError(f"a {doc_type} is never a govinfo package, so it can't be an advance copy of one")
     if publication_date:
         datetime.strptime(publication_date, "%Y-%m-%d")       # reject a malformed date up front
+    if public and not source_url:
+        raise ValueError("a public document needs its source_url (its public link); pass public=False "
+                         "(--not-public) for a file published nowhere")
+    public_links.no_api_key(source_url)
     content = Path(pdf_path).read_bytes()
     if not content.startswith(b"%PDF"):
         raise ValueError(f"{pdf_path} is not a PDF")
@@ -324,6 +352,10 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
         "confirmation_status": "unconfirmed" if advance_copy else "no_official_counterpart",
         "reconciled_with_document_id": None,
     }
+    if public:
+        public_links.apply(manifest[doc_id], public_links.derive(doc_id, manifest[doc_id], api_key=api_key))
+    else:
+        manifest[doc_id].update({"public_url": None, "public_url_source": None, "link_needs_review": False})
     return {"package_id": doc_id, "status": "stored", "hash": content_hash, "path": str(out_path)}
 
 
@@ -442,9 +474,9 @@ def run(api_key, tracked_bills, since):
 
     # A failure is retried once if transient, then recorded as a result --
     # never only printed, so a caller sees what didn't arrive.
-    def store(package_id):
+    def store(package_id, bill_id=None):
         try:
-            result, attempts = with_retry(lambda: fetch_and_store(package_id, api_key, manifest))
+            result, attempts = with_retry(lambda: fetch_and_store(package_id, api_key, manifest, bill_id=bill_id))
             if attempts > 1:
                 result["attempts"] = attempts
             print(f"    {package_id}: {result['status']}" + (" (after a retry)" if attempts > 1 else ""))
@@ -486,7 +518,7 @@ def run(api_key, tracked_bills, since):
                     continue
                 if rel["packageId"] not in seen:
                     seen.add(rel["packageId"])
-                    store(rel["packageId"])
+                    store(rel["packageId"], bill_id=pkg["packageId"])
                 if collection == "CRPT" and rel["packageId"] in manifest:
                     reconcile_advance_copies(manifest, pkg["packageId"], rel["packageId"])
     save_manifest(manifest)
@@ -515,7 +547,9 @@ def main_ingest_local(argv):
     parser.add_argument("--doc-type", required=True, choices=DOC_TYPES)
     parser.add_argument("--advance-copy", action="store_true",
                         help="posted before GPO processed it; reconciled when the official package appears")
-    parser.add_argument("--source-url", help="where the file was found")
+    parser.add_argument("--source-url", help="where the file was found: its public link, required unless --not-public")
+    parser.add_argument("--not-public", action="store_true",
+                        help="the file is published nowhere (shared privately): no public link")
     parser.add_argument("--source-agency", help="who published it, e.g. 'Senate Committee on Appropriations'")
     parser.add_argument("--bill-id", help="e.g. S2354 -- lets reconciliation find the official report via /related")
     parser.add_argument("--report-id", help="e.g. S.Rept.119-44, if known")
@@ -528,7 +562,8 @@ def main_ingest_local(argv):
                            stage=args.stage, doc_type=args.doc_type, advance_copy=args.advance_copy,
                            source_url=args.source_url, source_agency=args.source_agency, bill_id=args.bill_id,
                            report_id=args.report_id, ingested_by=args.ingested_by,
-                           publication_date=args.publication_date)
+                           publication_date=args.publication_date, public=not args.not_public,
+                           api_key=clean_key(os.environ.get("GOVINFO_API_KEY")))
     except ValueError as e:
         parser.error(str(e))
     save_manifest(manifest)
@@ -536,9 +571,39 @@ def main_ingest_local(argv):
     return res
 
 
+REVIEW_PATH = STORE_DIR / "links_needing_review.json"
+
+
+def main_links(argv):
+    """(Re)derive every stored document's public link and list those that need review."""
+    parser = argparse.ArgumentParser(prog="govinfo_ingest.py links",
+                                     description="Derive each stored document's public link (checked against its sha256).")
+    parser.add_argument("--bill", action="append", default=[], metavar="PACKAGE=BILL",
+                        help="the bill a report was found through, e.g. CRPT-119hrpt271=H.R.5304 (repeatable)")
+    args = parser.parse_args(argv)
+    bills = dict(b.split("=", 1) for b in args.bill)
+    api_key = clean_key(os.environ.get("GOVINFO_API_KEY"))
+    manifest = load_manifest()
+    for pid, entry in sorted(manifest.items()):
+        if pid in bills:
+            entry["bill_id"] = bills[pid]
+        if entry.get("ingest_method") == "manual" and not entry.get("source_url"):
+            continue                                  # published nowhere: no link to derive
+        res = public_links.derive(pid, entry, api_key=api_key)
+        public_links.apply(entry, res)
+        print(f"{pid}: {res['public_url_source'] or 'NEEDS REVIEW'} {res['public_url'] or ''}")
+    save_manifest(manifest)
+    review = public_links.needing_review(manifest)
+    REVIEW_PATH.write_text(json.dumps(review, indent=2) + "\n")
+    print(f"{len(review)} link(s) need review -> {REVIEW_PATH}")
+    return review
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "ingest-local":
         return main_ingest_local(sys.argv[2:])
+    if len(sys.argv) > 1 and sys.argv[1] == "links":
+        return main_links(sys.argv[2:])
     parser = argparse.ArgumentParser(description="Detect and store new govinfo.gov documents for tracked bills.")
     parser.add_argument("--api-key", default=os.environ.get("GOVINFO_API_KEY"),
                         help="api.data.gov key; defaults to GOVINFO_API_KEY from .env (https://api.data.gov/signup/)")

@@ -34,13 +34,24 @@ class KeyCleaning(unittest.TestCase):
         self.assertIsNone(g.clean_key(None))
 
 
+def offline(url, accept=None):
+    """public_links.http_get for offline tests: every public-link check fails, nothing goes out."""
+    raise g.URLError("offline test: no public-link check")
+
+
 class TempStore:
-    """Point the module's store at a temp dir for the duration of a test."""
+    """Point the module's store at a temp dir for the duration of a test (public-link checks
+    stay offline unless a test supplies its own)."""
+
+    def __init__(self, http_get=offline):
+        self.http_get = http_get
 
     def __enter__(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.patches = [mock.patch.object(g, "STORE_DIR", Path(self.tmp.name)),
                         mock.patch.object(g, "MANIFEST_PATH", Path(self.tmp.name) / "manifest.json")]
+        if self.http_get:
+            self.patches.append(mock.patch.object(g.public_links, "http_get", self.http_get))
         for pt in self.patches:
             pt.start()
         return Path(self.tmp.name)
@@ -223,7 +234,7 @@ class RelatedLookupRouting(unittest.TestCase):
                 mock.patch.object(g, "fetch_new_packages", return_value=bills) as poll, \
                 mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: related.get((pid, c), [])), \
                 mock.patch.object(g, "fetch_and_store",
-                                  side_effect=lambda pid, k, m: stored.append(pid) or {"package_id": pid, "status": "stored"}):
+                                  side_effect=lambda pid, k, m, **kw: stored.append(pid) or {"package_id": pid, "status": "stored"}):
             g.run("k", ["119S2354"], "2025-01-01T00:00:00Z")
         self.assertEqual([c.args[0] for c in poll.call_args_list], ["BILLS"])   # no CRPT/PLAW scan
         self.assertEqual(stored, ["BILLS-119s2354rs", "BILLS-119s2354is", "CRPT-119srpt44"])
@@ -279,7 +290,7 @@ class RelatedFalsePositives(unittest.TestCase):
         with TempStore(), mock.patch.object(g, "fetch_new_packages", return_value=bill), \
                 mock.patch.object(g, "fetch_related", side_effect=lambda pid, c, k: related.get((pid, c), [])), \
                 mock.patch.object(g, "fetch_and_store",
-                                  side_effect=lambda pid, k, m: stored.append(pid) or {"package_id": pid, "status": "stored"}), \
+                                  side_effect=lambda pid, k, m, **kw: stored.append(pid) or {"package_id": pid, "status": "stored"}), \
                 mock.patch("sys.stdout"):
             results = g.run("k", ["118HR2882"], "2024-01-01T00:00:00Z")
         self.assertEqual(stored, ["BILLS-118hr2882enr", "PLAW-118publ47"])
@@ -307,7 +318,7 @@ class FetchFailuresAreVisible(unittest.TestCase):
     def failing(self, *errors):
         errors = list(errors)
 
-        def fetch(pid, k, m):
+        def fetch(pid, k, m, **kw):
             if errors:
                 raise errors.pop(0)
             return {"package_id": pid, "status": "stored"}

@@ -101,3 +101,17 @@ python -m pytest tests -n auto --dist loadscope --ignore=tests/test_web.py --ign
 
 While working, run the modules for the files you changed; CI runs both groups
 on every pull request (a page-only change skips the second, which still reports).
+On a pull request the matcher-parity test checks a fixed, seeded sample of about
+1,500 queries spread across query kinds (`PARITY_SAMPLE=1500`); pushes to main
+check all 14,574.
+
+## Source links
+
+Each stored document gets a public link (`public_links.py`), separate from the
+API link it was fetched from: Congress.gov for an Appropriations committee report
+found through its bill, else govinfo's content PDF (with the granule the download
+used), else a manual ingest's `--source-url` (required unless `--not-public`).
+A link is kept only when the file there has the stored sha256; otherwise the
+document is listed for review. `python govinfo_ingest.py links` (re)derives them
+all and writes `document_store/links_needing_review.json`. No stored or shown URL
+ever carries an `api_key`.

@@ -59,7 +59,7 @@ class V33Store(unittest.TestCase):
         return S.connect(path)
 
     def test_counts(self):
-        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v34.xlsx")
+        self.assertEqual(WORKBOOK.name, "Approps_Pilot_Schema_Loaded_v35.xlsx")
         self.assertEqual(self.report["rows"], {
             "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
             "component": 19, "appropriations_observation": 2601, "confirmed_absence": 234,
@@ -306,14 +306,17 @@ class BudgetJustificationIngest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             pdf = Path(d) / "cj.pdf"
             pdf.write_bytes(b"%PDF-1.7 test")
-            with mock.patch.object(g, "STORE_DIR", Path(d) / "store"):
+            with mock.patch.object(g, "STORE_DIR", Path(d) / "store"), \
+                    mock.patch.object(g.public_links, "http_get", side_effect=g.URLError("offline test")):
                 m = {}
                 res = g.ingest_local(pdf, m, subcommittee="LHHS", fiscal_year=2026, stage="President's Budget",
-                                     doc_type="congressional_budget_justification", advance_copy=False)
+                                     doc_type="congressional_budget_justification", advance_copy=False,
+                                     source_url="https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf")
                 self.assertEqual(m[res["package_id"]]["confirmation_status"], "no_official_counterpart")
                 with self.assertRaises(ValueError):
                     g.ingest_local(pdf, {}, subcommittee="LHHS", fiscal_year=2026, stage="President's Budget",
-                                   doc_type="congressional_budget_justification", advance_copy=True)
+                                   doc_type="congressional_budget_justification", advance_copy=True,
+                                   source_url="https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf")
         import extract_approps as ex
         self.assertEqual(ex.describe_package(res["package_id"], m[res["package_id"]])["document_type"],
                          "congressional_budget_justification")
