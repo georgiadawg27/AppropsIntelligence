@@ -142,6 +142,7 @@
   .zero { color: #5D6472 !important; }
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 6px; vertical-align: middle; }
   .dot.flag { background: #B7791F; }
+  .dot.pend { background: transparent; box-shadow: inset 0 0 0 1.5px #B7791F; }
   .dot.unv { border: 1.5px solid #8A93A3; width: 5px; height: 5px; }
   .up { color: #1A7339; } .down { color: #A8460C; } .flat { color: #5D6472; }
   .pct { display: block; font-size: 12px; }
@@ -271,7 +272,7 @@
         <span><span class="up">+</span> / <span class="down">&minus;</span> change, with % of the earlier figure (shown apart from the figures)</span>
         <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
         <span><span class="tag total" style="margin-left:0">total</span> printed total of the accounts indented below it, not added again</span>
-        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document</span>
+        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot pend"></span> verified, a record still pending review <span id="rev-count" data-testid="pending-count"></span></span>
       </footer>
       <footer class="gfooter" id="grid-counts" data-testid="state-counts"></footer>
       <footer class="gfooter" id="grid-notes"></footer>
@@ -351,18 +352,25 @@ function staticSource(base) {
   };
 }
 
-let freshnessText = "";
+let freshnessText = "", downloadHref = "";
+// the provenance line, and the link to the workbook CI built from the same data
+function fillProvenance(box) {
+  box.replaceChildren(freshnessText);
+  if (downloadHref)
+    box.append(" ", el("a", { href: downloadHref, download: "", "data-testid": "download-workbook", text: "Download workbook" }),
+               " (built by CI from the same data).");
+  box.hidden = !freshnessText;
+}
 if (STATIC_BASE) {
   source.loadIndex().then((idx) => {
     const m = idx.source;
-    const box = $("#freshness");
-    freshnessText = `Static snapshot as of the last committed workbook: ${m.workbook}` +
-      (m.workbook_committed ? ` (committed ${m.workbook_committed.slice(0, 10)})` : "") +
-      ` \u00b7 sha256 ${m.workbook_sha256.slice(0, 12)}. Regenerated automatically when a new workbook is committed \u2014 not live.`;
-    box.textContent = freshnessText;
-    box.hidden = false;
-    $("#grid-provenance").textContent = freshnessText;
-    $("#grid-provenance").hidden = false;
+    freshnessText = `Static snapshot of ${m.data || m.workbook}` + (m.version ? ` (${m.version})` : "") +
+      (m.data_committed ? `, committed ${m.data_committed.slice(0, 10)}` : "") +
+      (m.data_sha256 ? ` \u00b7 sha256 ${m.data_sha256.slice(0, 12)}` : "") +
+      ". Rebuilt automatically when the data changes \u2014 not live.";
+    downloadHref = m.download ? STATIC_BASE.replace(/data\/?$/, "") + m.download : "";
+    fillProvenance($("#freshness"));
+    fillProvenance($("#grid-provenance"));
   }).catch((e) => reset("Error: " + e.message, true));
 }
 
@@ -682,6 +690,8 @@ function figure(row, y, st) {
   return x && x.h && x.h.observations.length ? x.h.observations[0].amount : null;
 }
 const validated = (s) => s === "auto-validated" || s === "human-verified";
+// an observation's validation records a person still has to look at (human_review_status = pending)
+const pendingReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "pending");
 
 const TOKENS = {
   not_funded: ["—", "Not funded: printed as a dash or zero, or checked and confirmed absent"],
@@ -736,11 +746,20 @@ function figureCell(row, y, st, cls) {
   else td.append(token(h.state, h));
   const more = otherLines(row, y, st, x.lines, h);
   if (more) td.append(more);
-  if (G.reviewer && o && !validated(o.verification_status)) {
+  // Reviewer mode: the mark is the observation's stored verification_status (flagged / not yet
+  // confirmed); what is still open for a person comes from its validation records'
+  // human_review_status ("pending"), listed in the tooltip -- no wording is read
+  const pending = o ? pendingReview(o) : [];
+  if (G.reviewer && o && (!validated(o.verification_status) || pending.length)) {
     const flagged = o.verification_status === "flagged";
-    const what = flagged ? "Flagged for review" : "Not yet confirmed by a sum or second document";
-    td.append(el("span", { class: "dot " + (flagged ? "flag" : "unv"), role: "img", "data-testid": "status-dot",
-                           "data-status": o.verification_status, title: `${what} (${o.verification_status})`, "aria-label": what }));
+    const kind = flagged ? "flag" : validated(o.verification_status) ? "pend" : "unv";
+    const what = { flag: "Flagged for review", unv: "Not yet confirmed by a sum or second document",
+                   pend: "Verified, with a record still pending review" }[kind];
+    const open = pending.length ? ` \u2014 ${pending.length} pending review: ` +
+      pending.map((v) => `${v.validation_id} ${v.rule_applied} ${v.result}`).join("; ") : "";
+    td.append(el("span", { class: "dot " + kind, role: "img", "data-testid": "status-dot",
+                           "data-status": o.verification_status, "data-pending": String(pending.length),
+                           title: `${what} (${o.verification_status})${open}`, "aria-label": what }));
   }
   return td;
 }
@@ -1067,6 +1086,16 @@ function renderCompare(grid) {
   renderBody();
   renderTiles(grid);
   $("#rev-legend").hidden = !G.reviewer;
+  if (G.reviewer) {
+    // cells in view whose figure has validation records pending review (human_review_status), every row
+    const rows = [...grid.rows, ...(grid.titles || []).map((t) => t.total).filter(Boolean), grid.bill_total].filter(Boolean);
+    const keys = [...new Set(cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`))];
+    const n = rows.reduce((acc, row) => acc + keys.filter((k) => {
+      const [y, st] = k.split("|"), x = headOf(row, y, st), o = x && x.h && x.h.observations[0];
+      return o && pendingReview(o).length;
+    }).length, 0);
+    $("#rev-count").textContent = `\u00b7 ${n.toLocaleString("en-US")} cell${n === 1 ? "" : "s"} in view with records pending review`;
+  }
   const c = grid.state_counts || {};
   const parts = [["value", "with a figure"], ["not_funded", "not funded"], ["no_printed_total", "no printed total"],
                  ["missing", "missing"], ["not_collected", "not yet collected"], ["not_enacted", "not yet enacted"]];
@@ -1079,8 +1108,7 @@ function renderCompare(grid) {
     return el("span", { "data-testid": "stage-notes", text: `† FY${y} ${st}: ${n}` });
   }));
   $("#grid-notes").hidden = !notes.length;
-  $("#grid-provenance").textContent = freshnessText;
-  $("#grid-provenance").hidden = !$("#grid-provenance").textContent;
+  fillProvenance($("#grid-provenance"));
   $("#compare-result").hidden = false;
   pinHeader();
 }
@@ -1191,8 +1219,7 @@ async function showCompare(want) {
       scLabels = list.names || {};
       $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
       if (STATIC_BASE) {
-        const m = /_v(\d+)\b/.exec((await source.loadIndex()).source.workbook || "");
-        dataVersion = m ? "v" + m[1] : "";
+        dataVersion = (await source.loadIndex()).source.version || "";
       }
     }
     G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || $("#sc").value || scNames[0];

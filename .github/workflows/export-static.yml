@@ -1,5 +1,7 @@
-# Regenerate the static site (docs/, served by GitHub Pages) whenever a new
-# reference workbook -- or anything the export depends on -- is committed.
+# Regenerate the static site (docs/, served by GitHub Pages) and reference/accounts.json
+# whenever the canonical data (data/staged.json) -- or anything the export depends on --
+# is committed. The export builds the workbook from data/staged.json
+# (scripts/build_workbook.py) and publishes it as docs/Approps_Pilot_Schema_Loaded.xlsx.
 # The export is deterministic, so a run that changes nothing commits nothing.
 # Commits made with GITHUB_TOKEN don't trigger workflows, so this can't loop.
 name: Export static site
@@ -7,8 +9,10 @@ name: Export static site
 on:
   push:
     paths:
-      # the reference workbook (approps_store.WORKBOOK_PATTERNS)
-      - "reference/Approps_Pilot_Schema_Loaded_v*.xlsx"
+      # the canonical data and the script that builds the workbook from it
+      - "data/**"
+      - "scripts/build_workbook.py"
+      - "reference/build_accounts.py"
       - "approps_store.py"
       - "subcommittees.py"
       - "approps_web.py"
@@ -39,23 +43,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0          # the workbook's commit date goes into the page
+          fetch-depth: 0          # the data's commit date goes into the page
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
       - name: Install export dependencies
         run: pip install openpyxl
-      - name: Export docs/ from the committed reference workbook
+      - name: Build the workbook from data/staged.json and export docs/
         run: python export_static.py
-      - name: Commit docs/ if it changed
+      - name: Regenerate reference/accounts.json from the same build
+        run: python reference/build_accounts.py
+      - name: Commit docs/ and reference/accounts.json if they changed
         run: |
-          git add -A docs
+          git add -A docs reference/accounts.json
           if git diff --cached --quiet; then
             echo "docs/ unchanged -- nothing to commit"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Regenerate static export (docs/) from $(python -c 'import approps_store as S; print(S.reference_workbook().name)')" \
+          git commit -m "Regenerate static export (docs/) from data/staged.json ($(python -c 'import approps_store as S; print(S.data_version(S.reference_workbook()))'))" \
                      -m "Automated by .github/workflows/export-static.yml for ${GITHUB_SHA::7}."
           git push origin "HEAD:${GITHUB_REF_NAME}"
