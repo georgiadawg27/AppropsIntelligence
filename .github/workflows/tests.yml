@@ -5,6 +5,7 @@
 # Two jobs run side by side, each with pytest-xdist across the runner's CPUs:
 #   data     -- builds the workbook from data/staged.json (scripts/build_workbook.py, which stops on
 #               any failed check), recalculates it in LibreOffice and fails on any formula error,
+#               checks the site's copy (lookup results stored) against LibreOffice's results,
 #               uploads it as an artifact, then runs the store, ingest, extraction and build tests
 #               (every module but the three below)
 #   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node)
@@ -87,7 +88,7 @@ jobs:
         if: needs.changes.outputs.data == 'true'
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends libreoffice-calc python3-uno
+          sudo apt-get install -y -q --no-install-recommends libreoffice-calc python3-uno python3-openpyxl
       - name: Recalculate in LibreOffice; fail on any formula error
         if: needs.changes.outputs.data == 'true'
         # the system python3 is the one with LibreOffice's uno bridge
@@ -95,6 +96,16 @@ jobs:
           set -o pipefail
           /usr/bin/python3 scripts/recalc_check.py build/Approps_Pilot_Schema_Loaded.xlsx | tee build/recalc.txt
           cat build/recalc.txt >> "$GITHUB_STEP_SUMMARY"
+      - name: The site's workbook -- its stored lookup results equal LibreOffice's
+        if: needs.changes.outputs.data == 'true'
+        # approps_store.reference_workbook(): the same build with each lookup formula's result
+        # stored (calculate_lookups); what the store, the site and the Download link use
+        run: |
+          set -o pipefail
+          python -c "import approps_store as S; print(S.reference_workbook())"
+          /usr/bin/python3 scripts/recalc_check.py build/site/Approps_Pilot_Schema_Loaded.xlsx --compare-cached \
+            | tee -a build/recalc.txt
+          tail -1 build/recalc.txt >> "$GITHUB_STEP_SUMMARY"
       - name: Upload the built workbook
         if: needs.changes.outputs.data == 'true'
         uses: actions/upload-artifact@v4

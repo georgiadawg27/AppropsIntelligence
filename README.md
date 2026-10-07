@@ -9,14 +9,67 @@ history with a source citation for every figure.
 | `govinfo_ingest.py` | Finds and stores bills, committee reports and public laws |
 | `extract_approps.py` | Extracts comparative tables (text layer, OCR, or vision) into observations |
 | `validate_approps.py` | Arithmetic, structural, unit and account-identity checks |
-| `approps_store.py` | SQLite store built from the reference workbook (`reference/Approps_Pilot_Schema_Loaded_vNN.xlsx`, highest vNN); account matching and history queries (CLI) |
+| `data/staged.json` + `scripts/build_workbook.py` | The canonical data, and the script that builds the workbook from it (see **Data**) |
+| `approps_store.py` | SQLite store loaded from the workbook built from `data/staged.json`; account matching and history queries (CLI) |
 | `approps_web.py` + `web/` | Read-only local web UI over the store |
 | `export_static.py` → `docs/` | Static copy of the UI for GitHub Pages |
+
+## Data
+
+**Where it lives.** The source of truth is `data/staged.json`: every account,
+observation, source document, Bill Report Reference row, validation record and
+the rest, one JSON document. `scripts/build_workbook.py` builds the workbook
+(`Approps_Pilot_Schema_Loaded.xlsx`) from it. No workbook is committed: the site,
+the store and the tests all read a build of `data/staged.json`.
+
+**How to rebuild.**
+
+```
+mkdir -p build && python scripts/build_workbook.py      # -> build/Approps_Pilot_Schema_Loaded.xlsx
+python export_static.py                                 # the site (docs/) and the Download workbook file
+python reference/build_accounts.py                      # reference/accounts.json
+```
+
+The build runs its own checks first and stops on any failure: a value outside its
+allowed list, a broken reference (unknown account, document, component, headline or
+parent), a duplicate ID, a leftover effective date, a govinfo landing-page link, or
+enactment fields on a row that is not Enacted. `approps_store.reference_workbook()`
+runs the same build when `data/` or the script is newer than `build/`, then stores
+each lookup formula's result in the file (`calculate_lookups`), as a spreadsheet
+does when it recalculates; that copy (`build/site/`) is what the store loads and
+what the page's **Download workbook** link serves (`docs/Approps_Pilot_Schema_Loaded.xlsx`,
+its timestamps fixed so an unchanged build is the same file).
+
+CI (`.github/workflows/tests.yml`, data job) builds the workbook, recalculates it in
+LibreOffice headless and fails on any formula error (`scripts/recalc_check.py`;
+data text that begins with "=" stays text), checks the stored lookup results against
+LibreOffice's, and uploads the workbook as an artifact. `tests/test_build_workbook.py`
+holds the build to the v38 workbook value for value, sheet by sheet
+(`tests/fixtures/workbook_v38_values.json`; when the data changes on purpose, regenerate
+it with `python scripts/workbook_digest.py build/Approps_Pilot_Schema_Loaded.xlsx`).
+On a push that changes the data, `.github/workflows/export-static.yml` regenerates
+`docs/` and `reference/accounts.json` and commits them.
+
+IDs are never reused or renumbered (REL-LHHS-0003/0004 stay retired).
+
+**Review statuses.** Two fields, never inferred from wording on the page:
+
+- `verification_status` (each observation): `auto-validated` only with confidence
+  >= 0.90, every check passing and at least one check that confirms the figure (a sum
+  or a second document); `flagged` when a check fails or a person flagged it for review;
+  otherwise `unverified`. `human-verified`, `provisional` and `superseded` are set by
+  their own steps. Reviewer mode marks a flagged cell with a solid dot and an
+  unverified one with an open dot.
+- `human_review_status` (each validation record): `pending` -- a person still has to
+  look at it -- or `resolved` (with `reviewer` and `resolution`); blank on a check that
+  passed. Reviewer mode lists a cell's pending records in its mark's tooltip, counts
+  the cells in view that have any, and marks a verified cell that still has one with
+  an outlined dot.
 
 ## Local UI (live)
 
 ```
-python approps_store.py load reference/Approps_Pilot_Schema_Loaded_v33.xlsx
+python approps_store.py load     # builds the workbook from data/staged.json, then loads it
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
@@ -61,16 +114,16 @@ Python matching rule, held to identical answers by `tests/test_static.py`.
 Values, "not applicable" (confirmed absences) and "missing" render exactly as
 in the live UI, as does the note when a name matched through a former name.
 
-**Freshness: as of the last committed reference workbook — updated
-automatically, not in real time.** The page shows which workbook (file name,
-commit date, sha256) it was built from.
+**Freshness: as of the last committed `data/staged.json` — updated
+automatically, not in real time.** The page shows which data (path, version,
+commit date, sha256) it was built from, and links the workbook built from it.
 
 How it stays current: `.github/workflows/export-static.yml` runs on every push
-that changes the reference workbook (either file name) or the code the export depends on, runs
-`python export_static.py`, and commits `docs/` back to the same branch if
-anything changed. Re-running on an unchanged workbook produces identical
-files, so nothing is committed. It can also be run by hand from the Actions
-tab (workflow_dispatch).
+that changes `data/`, the build script or the code the export depends on, runs
+`python export_static.py` and `python reference/build_accounts.py`, and commits
+`docs/` and `reference/accounts.json` back to the same branch if anything changed.
+Re-running on unchanged data produces identical files, so nothing is committed.
+It can also be run by hand from the Actions tab (workflow_dispatch).
 
 One-time setup: Settings → Pages → Build and deployment → Source: *Deploy
 from a branch*, branch `main`, folder `/docs`. Pages serves the default

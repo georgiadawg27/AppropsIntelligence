@@ -314,10 +314,19 @@ class StaticVersusLive(StaticTest):
         self.page.goto(self.static_url)
         self.page.wait_for_selector("[data-testid=freshness]:not([hidden])")
         text = self.page.text_content("[data-testid=freshness]")
-        self.assertIn(WORKBOOK.name, text)
+        self.assertIn("data/staged.json (v38)", text)
         self.assertIn("not live", text)
+        # the Download workbook link opens docs/Approps_Pilot_Schema_Loaded.xlsx, the CI-built workbook
+        link = self.page.locator("[data-testid=freshness] [data-testid=download-workbook]")
+        self.assertEqual(link.get_attribute("href"), "Approps_Pilot_Schema_Loaded.xlsx")
+        self.assertEqual(link.text_content(), "Download workbook")
+        resolved = self.page.evaluate("(a) => new URL(a, location.href).href", link.get_attribute("href"))
+        self.assertTrue(resolved.endswith("/Approps_Pilot_Schema_Loaded.xlsx"))
+        body = self.page.request.get(resolved).body()
+        self.assertEqual(body, (self.out / "Approps_Pilot_Schema_Loaded.xlsx").read_bytes())
         self.page.goto(self.live_url)
         self.assertTrue(self.page.locator("[data-testid=freshness]").is_hidden())
+        self.assertEqual(self.page.locator("[data-testid=download-workbook]").count(), 0)
 
 
 if __name__ == "__main__":
