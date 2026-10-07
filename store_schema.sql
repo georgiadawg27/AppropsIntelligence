@@ -104,6 +104,15 @@ CREATE TABLE bill_report_reference (
     lookup_key     TEXT NOT NULL UNIQUE CHECK (lookup_key = subcommittee || '-' || fiscal_year || '-' || stage),
     -- v33: what a person needs to know about this stage's documents (e.g. no bill reported)
     notes          TEXT,
+    -- v37, Enacted rows: how the year was enacted -- the bill the law was enacted as, the
+    -- subcommittee's division of it, the date, and whether it was a standalone act, a minibus,
+    -- an omnibus or a full-year continuing resolution
+    vehicle_bill_id TEXT,
+    division        TEXT,
+    enactment_date  TEXT,
+    funding_type    TEXT CHECK (funding_type IN ('standalone', 'minibus', 'omnibus', 'full_year_cr')),
+    CHECK (stage = 'Enacted' OR (vehicle_bill_id IS NULL AND division IS NULL AND enactment_date IS NULL
+                                 AND funding_type IS NULL)),
     UNIQUE (subcommittee, fiscal_year, stage)
 ) STRICT;
 
