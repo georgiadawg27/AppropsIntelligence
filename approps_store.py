@@ -4,7 +4,7 @@ approps_store.py
 The relational store (SQLite, schema in store_schema.sql) and the thinnest
 query surface on it.
 
-    python approps_store.py load path/to/Approps_Pilot_Schema_Loaded_vNN.xlsx [--db approps.db]
+    python approps_store.py load [path/to/workbook.xlsx] [--db approps.db]   (default: built from data/staged.json)
     python approps_store.py history "NASA Science" [--db approps.db] [--json]
     python approps_store.py resolve-relationship REL-0001 --reviewer NAME --resolution TEXT [--db approps.db]
 
@@ -57,16 +57,121 @@ class LoadError(Exception):
     pass
 
 
-# The reference workbook's file name, in reference/: Approps_Pilot_Schema_
-# Loaded_vNN.xlsx (from v30; it holds more than CJS -- the CJS_Title_III_...
-# name of v29 and earlier is no longer accepted). The highest vNN wins.
+# The canonical data is data/staged.json; scripts/build_workbook.py builds the
+# workbook from it (and stops on any failed check). Nothing reads a committed
+# workbook: reference_workbook() builds BUILT_WORKBOOK when it is missing or older
+# than the data or the script, and returns it.
+#
+# openpyxl writes the observation tab's four lookup formulas (bill_id, report_id,
+# bill_url, report_jes_url) without results, and a workbook saved without its
+# formula results is one the loader refuses (check_bill_report_lookups). So the
+# build is followed by calculate_lookups(), which stores each formula's result next
+# to it, as a spreadsheet does when it recalculates and saves; CI checks those
+# results against LibreOffice's (scripts/recalc_check.py --compare-cached).
+STAGED = ROOT / "data" / "staged.json"
+BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
+BUILT_WORKBOOK = ROOT / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
+
+# A workbook file in a folder (load a specific workbook with `load PATH`):
+# Approps_Pilot_Schema_Loaded_vNN.xlsx, the highest vNN wins.
 WORKBOOK_PATTERNS = ("Approps_Pilot_Schema_Loaded_v*.xlsx",)
 WORKBOOK_VERSION_RE = re.compile(r"_v(\d+)\.xlsx$")
 
 
+def calculate_lookups(src, dst):
+    """Copy the workbook src to dst with every Appropriations Observation lookup formula's
+    result stored with it. The result is what the formula computes:
+    IFERROR(""&INDEX(<Bill Report Reference column>, MATCH(<account's subcommittee>-<fiscal_year>-<stage>,
+    lookup_key, 0)), "") -- the reference row's value as text, or "" when there is none."""
+    import html
+    import zipfile
+    import openpyxl
+    wb = openpyxl.load_workbook(src, read_only=True)
+    try:
+        def rows(tab):
+            it = wb[tab].iter_rows(values_only=True)
+            head = list(next(it))
+            return head, [dict(zip(head, r)) for r in it if any(v is not None for v in r)]
+        _, accts = rows("Account")
+        sub = {a["canonical_account_id"]: a["subcommittee"] for a in accts}
+        _, refs = rows("Bill Report Reference")
+        brr = {}
+        for r in refs:
+            brr.setdefault(r["lookup_key"], r)                # MATCH(..., 0): the first match
+        head, obs = rows("Appropriations Observation")
+        sheets = wb.sheetnames
+    finally:
+        wb.close()
+    text = lambda v: "" if v is None else (str(int(v)) if isinstance(v, float) and v.is_integer() else str(v))
+    result = {}                                               # (column letter, row) -> text
+    from openpyxl.utils import get_column_letter
+    letters = {c: get_column_letter(head.index(c) + 1) for c in LOOKUP_COLUMNS}
+    for i, o in enumerate(obs, start=2):
+        key = f"{text(sub.get(o['canonical_account_id']))}-{text(o['fiscal_year'])}-{text(o['stage'])}"
+        ref = brr.get(key) if o["canonical_account_id"] in sub else None
+        for c in LOOKUP_COLUMNS:
+            result[(letters[c], i)] = text(ref.get(c)) if ref else ""
+    sheet = f"xl/worksheets/sheet{sheets.index('Appropriations Observation') + 1}.xml"   # openpyxl's naming
+    filled = 0
+
+    def fill(m):
+        nonlocal filled
+        col, row, attrs, formula = m.group(1), int(m.group(2)), m.group(3), m.group(4)
+        if (col, row) not in result:
+            return m.group(0)
+        filled += 1
+        attrs = re.sub(r'\s+t="[^"]*"', "", attrs)
+        return f'<c r="{col}{row}"{attrs} t="str"><f>{formula}</f><v>{html.escape(result[(col, row)], quote=False)}</v></c>'
+
+    with zipfile.ZipFile(src) as zin, zipfile.ZipFile(dst, "w", zipfile.ZIP_DEFLATED) as zout:
+        for info in zin.infolist():
+            data = zin.read(info.filename)
+            if info.filename == sheet:
+                data = re.sub(r'<c r="([A-Z]+)(\d+)"([^>]*)><f>(.*?)</f>(?:<v\s*/>|<v></v>)?</c>',
+                              fill, data.decode("utf-8")).encode("utf-8")
+            zout.writestr(info, data)
+    if filled != len(result):
+        raise LoadError(f"calculate_lookups: filled {filled} of {len(result)} lookup formulas")
+    return filled
+
+
+def build_workbook(out=None):
+    """Build the workbook from data/staged.json (scripts/build_workbook.py), then store its
+    lookup formulas' results (calculate_lookups) -> its path. The script reads data/ and
+    writes build/ relative to its working directory; it runs in a scratch copy and the result
+    is moved into place, so a concurrent reader (parallel tests) never sees half a file."""
+    import shutil
+    import subprocess
+    import tempfile
+    out = Path(out) if out else BUILT_WORKBOOK
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=out.parent) as tmp:
+        (Path(tmp) / "data").mkdir()
+        (Path(tmp) / "build").mkdir()
+        shutil.copy(STAGED, Path(tmp) / "data" / "staged.json")
+        r = subprocess.run([sys.executable, str(BUILD_SCRIPT)], cwd=tmp, capture_output=True, text=True)
+        if r.returncode != 0:
+            raise LoadError(f"building the workbook from {STAGED.relative_to(ROOT)} stopped:\n"
+                            + (r.stdout + r.stderr).strip())
+        calculate_lookups(Path(tmp, "build", "Approps_Pilot_Schema_Loaded.xlsx"), Path(tmp, "calculated.xlsx"))
+        Path(tmp, "calculated.xlsx").replace(out)
+    return out
+
+
 def reference_workbook(folder=None):
-    """The reference workbook in reference/ (see WORKBOOK_PATTERNS)."""
-    folder = Path(folder) if folder else ROOT / "reference"
+    """The workbook the store, the site and the tests load: built from data/staged.json
+    (build_workbook) unless the build is current. With a folder: the highest-vNN
+    Approps_Pilot_Schema_Loaded_vNN.xlsx in it (WORKBOOK_PATTERNS)."""
+    if folder is None:
+        import fcntl
+        BUILT_WORKBOOK.parent.mkdir(parents=True, exist_ok=True)
+        with open(BUILT_WORKBOOK.parent / ".build.lock", "w") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)              # one build at a time; the others then find it current
+            newest_input = max(STAGED.stat().st_mtime, BUILD_SCRIPT.stat().st_mtime, Path(__file__).stat().st_mtime)
+            if not BUILT_WORKBOOK.exists() or BUILT_WORKBOOK.stat().st_mtime < newest_input:
+                build_workbook()
+        return BUILT_WORKBOOK
+    folder = Path(folder)
     found = sorted({p for pat in WORKBOOK_PATTERNS for p in folder.glob(pat)})
     if not found:
         raise LoadError(f"no reference workbook in {folder} (looked for {' or '.join(WORKBOOK_PATTERNS)}; "
@@ -77,6 +182,20 @@ def reference_workbook(folder=None):
     if len(newest) > 1:
         raise LoadError(f"two reference workbooks at v{top}: {[p.name for p in newest]}")
     return newest[0]
+
+
+def data_version(workbook):
+    """The data's version ("v38"): the newest "vNN:" heading on the workbook's Read Me tab."""
+    import openpyxl
+    wb = openpyxl.load_workbook(workbook, read_only=True)
+    try:
+        for (v,) in wb["Read Me"].iter_rows(max_col=1, values_only=True):
+            m = re.match(r"v(\d+):", str(v or ""))
+            if m:
+                return "v" + m.group(1)
+    finally:
+        wb.close()
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -351,6 +470,9 @@ def check_historical_names(rows):
     return problems
 
 
+LOOKUP_COLUMNS = ("bill_id", "report_id", "bill_url", "report_jes_url")
+
+
 def check_bill_report_lookups(tabs, rows):
     """The workbook's bill_id / report_id / bill_url / report_jes_url on each
     observation are formulas looking up Bill Report Reference; their cached
@@ -361,7 +483,7 @@ def check_bill_report_lookups(tabs, rows):
     problems = []
     for (rownum, raw), o in zip(tabs["Appropriations Observation"], rows["Appropriations Observation"]):
         ref = brr.get(bill_report_key(subcommittee.get(o["canonical_account_id"]), o["fiscal_year"], o["stage"]))
-        for col in ("bill_id", "report_id", "bill_url", "report_jes_url"):
+        for col in LOOKUP_COLUMNS:
             want = (ref or {}).get(col)
             got = None if blank(raw.get(col)) else str(raw[col]).strip()
             if want != got:
@@ -1503,7 +1625,7 @@ def cmd_history(args):
 
 def cmd_load(args):
     try:
-        report = load(args.workbook, args.db, waive=args.waive)
+        report = load(args.workbook or reference_workbook(), args.db, waive=args.waive)
     except LoadError as e:
         raise SystemExit(f"load failed, nothing written: {e}")
     print(f"{args.db}: " + ", ".join(f"{t} {n}" for t, n in report["rows"].items()))
@@ -1537,7 +1659,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1], formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
     pl = sub.add_parser("load", help="build the database from the pilot workbook")
-    pl.add_argument("workbook")
+    pl.add_argument("workbook", nargs="?", help="default: the workbook built from data/staged.json")
     pl.add_argument("--db", default=str(DEFAULT_DB))
     pl.add_argument("--waive", action="append", default=[], choices=sorted(WAIVABLE),
                     help="load despite this cross-tab check's problems (listed in the report)")

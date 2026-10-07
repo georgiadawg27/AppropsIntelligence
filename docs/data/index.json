@@ -799,6 +799,10 @@
   "ambiguity_margin": 2
  },
  "source": {
+  "data": "data/staged.json",
+  "data_committed": "2026-10-07T22:46:44+00:00",
+  "data_sha256": "cb0b4d864aac031498c6301db719e599b99d7f009f2f0434713de296ded5d8a0",
+  "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
    "account_relationship": 11,
@@ -810,9 +814,8 @@
    "source_document": 35,
    "validation_record": 6791
   },
+  "version": "v38",
   "warnings": [],
-  "workbook": "Approps_Pilot_Schema_Loaded_v37.xlsx",
-  "workbook_committed": "2026-10-07T21:02:07+00:00",
-  "workbook_sha256": "59a295d68cdc973ede5e1e4d7e4cdfe4777e76282cf6453cdc0430c82b7e8f88"
+  "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
  }
 }

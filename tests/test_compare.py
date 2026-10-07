@@ -817,6 +817,26 @@ class CompareBrowser(CompareTest):
                       if h["observations"] and h["observations"][0]["verification_status"] == "flagged")
         self.assertEqual(self.page.locator("[data-testid=status-dot][data-status=flagged]").count(), flagged)
 
+    def test_reviewer_mode_lists_pending_records(self):
+        # the mark stays verification_status; the open records come from human_review_status
+        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2027&rev=1")
+        self.page.click("#expand-all")
+        dots = self.page.locator("[data-testid=status-dot]")
+        self.assertEqual(dots.count(), 1)                    # CJS: no flagged or unconfirmed cell in view
+        d = dots.first
+        self.assertEqual(d.get_attribute("class"), "dot pend")
+        self.assertEqual(d.get_attribute("data-status"), "human-verified")
+        self.assertEqual(d.get_attribute("data-pending"), "1")
+        self.assertIn("VAL-0089 semantic flag", d.get_attribute("title"))
+        self.assertEqual(self.page.text_content("[data-testid=pending-count]"),
+                         "· 1 cell in view with records pending review")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
+        self.page.click("#expand-all")
+        for d in self.page.locator("[data-testid=status-dot][data-status=flagged]").all():
+            n = int(d.get_attribute("data-pending"))
+            self.assertGreater(n, 0)                         # every flagged cell has an open record ...
+            self.assertIn(f"{n} pending review: ", d.get_attribute("title"))   # ... listed by ID
+
     # ---- views, units, URL ---------------------------------------------------------------
 
     def test_view_years_and_units_live_in_the_url(self):
@@ -885,7 +905,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.page.inner_text("#grid-title"), "Labor-HHS-Education · Title II, Department of Health and Human Services")
         self.assertEqual(self.page.inner_text("#grid-subline"),
                          "Budget authority in $ thousands (as printed in the committee tables) · every figure links to the page "
-                         "it was printed on · data as of v37")
+                         "it was printed on · data as of v38")
         self.assertIn("sha256", self.page.inner_text("#grid-provenance"))
         self.assertTrue(self.page.is_hidden("#freshness"))
         self.assertTrue(self.page.is_visible(".tabs"))
