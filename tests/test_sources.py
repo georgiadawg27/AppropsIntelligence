@@ -38,10 +38,8 @@ WORKBOOK = S.reference_workbook()
 # Sources cited at a page whose link is not a PDF. Each one is a known gap, not a pattern:
 # the list must not grow without a reason written here.
 PAGE_LINK_EXCEPTIONS = {
-    # the Senate committee's download link for its FY2023 Labor-HHS draft explanatory statement
-    # (S. 4659 was introduced, never reported, so govinfo has no report); a download link, which
-    # browsers save rather than open at a page
-    "SRC-EXPL-LHHS-FY2023-SENATE": "Senate committee download link (no govinfo report exists)",
+    # (v37: the FY2023 Labor-HHS Senate draft's download link came off this list -- it now points at
+    # the PDF the link redirected to, LHHSFY23REPT.pdf, whose sha256 matches the stored file)
     # CBO's web page for its H.R. 8845 cost estimate; the estimate's own PDF sits behind it
     "SRC-CBO-HR8845-FY2027": "CBO cost-estimate web page",
 }
@@ -79,14 +77,25 @@ class PageLinks(Store):
             self.assertFalse(url.lower().endswith(".pdf"), doc_id)
 
     def test_the_nine_v35_sources_open_at_a_page(self):
+        # a PDF on govinfo or Congress.gov (v37: whichever one's file has the stored sha256)
         urls = dict(self.conn.execute("SELECT document_id, url_or_identifier FROM source_document"))
-        for doc_id in ("SRC-CRPT-118SRPT84", "SRC-CRPT-118SRPT207", "SRC-CRPT-119SRPT55",
+        for doc_id in ("SRC-CRPT-118SRPT84", "SRC-CRPT-118SRPT207", "SRC-CRPT-119SRPT55", "SRC-CRPT-118HRPT585",
                        "SRC-CRPT-119HRPT271", "SRC-CRPT-119HRPT696", "SRC-CRPT-117HRPT403",
                        "SRC-EXPL-LHHS-FY2026-ENACTED", "SRC-PLAW-119PUBL4"):
-            self.assertRegex(urls[doc_id], r"^https://www\.govinfo\.gov/content/pkg/[^/]+/pdf/[^/]+\.pdf$", doc_id)
-        # v36: the file govinfo serves at the package URL is not this report (its PDF hangs off the
-        # -pt1 granule); Congress.gov's part-1 PDF is the one whose sha256 matches what was ingested
+            self.assertRegex(urls[doc_id], r"^https://www\.(govinfo\.gov/content/pkg/[^/]+/pdf|congress\.gov/\d+/crpt/[^/]+)/[^/]+\.pdf$", doc_id)
         self.assertEqual(urls["SRC-CRPT-118HRPT585"], "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf")
+
+    def test_v37_carries_every_verified_link(self):
+        # each link link_results_v36.csv found sha256-matched elsewhere is now that link
+        import csv
+        rows = list(csv.DictReader((ROOT / "reference" / "review" / "links" / "link_results_v36.csv").open()))
+        now = {(d, "url_or_identifier"): u for d, u in self.conn.execute("SELECT document_id, url_or_identifier FROM source_document")}
+        for rid, b, r in self.conn.execute("SELECT reference_id, bill_url, report_jes_url FROM bill_report_reference"):
+            now[(rid, "bill_url")], now[(rid, "report_jes_url")] = b or "", r or ""
+        verified = [(r["id"], r["field"], r["derived_url"]) for r in rows if r["sha256_matched"] == "yes"]
+        self.assertEqual(len(verified), 75)
+        self.assertEqual([(i, f) for i, f, u in verified if now[(i, f)] != u], [])
+        self.assertEqual(sum(1 for r in rows if r["sha256_matched"] == "yes" and r["derived_url"] != r["current_url"]), 45)
 
     def test_no_bill_report_reference_link_is_a_landing_page(self):
         # v36: the eight Labor-HHS report/JES links point at PDFs, not govinfo's app/details pages

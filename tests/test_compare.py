@@ -779,7 +779,7 @@ class CompareBrowser(CompareTest):
         # no prior-year figure, no change value: AHA has no FY2025 Enacted
         self.assertEqual(self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL] [data-testid=change-cell]").first.inner_text(), "")
         heads = self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
-        self.assertEqual(heads, [["Account", "FY2025", "FY2026", "", "Change · FY2026 enacted vs"],
+        self.assertEqual(heads, [["Account", "FY2025 (CR)", "FY2026", "", "Change · FY2026 enacted vs"],
                                  ["Enacted", "Request", "House", "Senate", "Enacted", "FY2025 enacted", "Request"]])
 
     def test_two_years_and_history_columns(self):
@@ -792,7 +792,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
-                                   ["FY2023", "FY2024", "FY2025", "FY2026", "Request", "House", "FY23 → FY26"]])
+                                   ["FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY23 → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
     def test_reviewer_mode_dots(self):
@@ -967,6 +967,28 @@ class CompareBrowser(CompareTest):
         self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL] [data-testid=chevron]").click()
         self.assertEqual(self.page.locator("tr.last").count(), 2)
         self.assertEqual(self.page.locator("tr[data-testid=rel-note]").last.get_attribute("class"), "note last")
+
+    def test_a_full_year_cr_year_is_labeled_in_every_view(self):
+        # from the data (Bill Report Reference funding_type, v37), never hard-coded: FY2025 in both subcommittees
+        for sc, grid in (("LHHS", self.lhhs), ("CJS", self.grid)):
+            crs = {y: e for y, e in (grid.get("enactments") or {}).items() if e.get("funding_type") == "full_year_cr"}
+            self.assertEqual(sorted(crs), ["2025"], sc)
+            e = crs["2025"]
+            title = (f"Funded by a full-year continuing resolution ({e['bill_id'].replace('P.L.', 'P.L. ')}, "
+                     f"enacted {e['enactment_date']})")
+            self.assertEqual(title, "Funded by a full-year continuing resolution (P.L. 119-4, enacted 2025-03-15)")
+            for q, text in (("stages&fy=2026", "FY2025 (CR)"), ("stages&fy=2025", "Enacted (CR)"),
+                            ("years&a=2025&b=2026", "Enacted (CR)"), ("history", "FY2025 (CR)")):
+                with self.subTest(sc=sc, view=q):
+                    self.open("static", f"?view=compare&sc={sc}&grid={q}")
+                    labels = self.page.eval_on_selector_all("[data-testid=cr-label]", "es => es.map(e => [e.innerText, e.dataset.cr, e.title])")
+                    self.assertEqual(labels, [[text, "2025", title]])
+                    # no other header says CR
+                    heads = self.page.eval_on_selector_all("#compare-grid thead th", "ts => ts.map(t => t.innerText)")
+                    self.assertEqual([h for h in heads if "(CR)" in h], [text])
+            # a view without FY2025 Enacted labels nothing
+            self.open("static", f"?view=compare&sc={sc}&grid=years&a=2024&b=2026")
+            self.assertEqual(self.page.locator("[data-testid=cr-label]").count(), 0)
 
     def test_change_block_is_set_apart_in_every_view(self):
         for q in ("stages", "years", "history"):
