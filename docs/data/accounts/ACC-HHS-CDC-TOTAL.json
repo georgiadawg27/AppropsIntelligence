@@ -217,7 +217,7 @@
            "validation_id": "VAL-LHHS-02018"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -365,7 +365,7 @@
            "validation_id": "VAL-LHHS-02307"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -514,7 +514,7 @@
            "validation_id": "VAL-LHHS-02219"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -674,7 +674,7 @@
            "validation_id": "VAL-LHHS-00543"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1248,7 +1248,7 @@
            "validation_id": "VAL-LHHS-00571"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1402,7 +1402,7 @@
            "validation_id": "VAL-LHHS-00581"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1556,7 +1556,7 @@
            "validation_id": "VAL-LHHS-00591"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1821,7 +1821,7 @@
            "validation_id": "VAL-LHHS-00603"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1969,7 +1969,7 @@
            "validation_id": "VAL-LHHS-00612"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2105,7 +2105,7 @@
            "validation_id": "VAL-LHHS-00619"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2265,7 +2265,7 @@
            "validation_id": "VAL-LHHS-00627"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2413,7 +2413,7 @@
            "validation_id": "VAL-LHHS-00636"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2677,7 +2677,7 @@
       "validation_id": "VAL-LHHS-02307"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 10730159000,
@@ -2799,7 +2799,7 @@
       "validation_id": "VAL-LHHS-02018"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 10499354000,
@@ -2922,7 +2922,7 @@
       "validation_id": "VAL-LHHS-02219"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 10500829000,
@@ -3411,7 +3411,7 @@
       "validation_id": "VAL-LHHS-00543"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9222090000,
@@ -3539,7 +3539,7 @@
       "validation_id": "VAL-LHHS-00581"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9738690000,
@@ -3667,7 +3667,7 @@
       "validation_id": "VAL-LHHS-00571"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 7446058000,
@@ -3795,7 +3795,7 @@
       "validation_id": "VAL-LHHS-00591"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9395090000,
@@ -3997,7 +3997,7 @@
       "validation_id": "VAL-LHHS-00612"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 5475241000,
@@ -4119,7 +4119,7 @@
       "validation_id": "VAL-LHHS-00603"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 7480880000,
@@ -4235,7 +4235,7 @@
       "validation_id": "VAL-LHHS-00619"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 9152090000,
@@ -4425,7 +4425,7 @@
       "validation_id": "VAL-LHHS-00636"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 6345461000,
@@ -4547,7 +4547,7 @@
       "validation_id": "VAL-LHHS-00627"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 8164411000,
@@ -4622,26 +4622,7 @@
     "Enacted"
    ]
   ],
-  "relationships": [
-   {
-    "confidence": 0.4,
-    "effective_fiscal_year": 2026,
-    "evidence": "Part of CDC only: FY2026 Budget Appendix p.337, World Trade Center Health Program: 'This account is moving to the Administration for a Healthy America, in alignment with the HHS reorganization.' Not a consolidation of the CDC total.",
-    "from_account_id": "ACC-HHS-CDC-TOTAL",
-    "human_reviewed": 0,
-    "other_account_id": "ACC-HHS-AHA-TOTAL",
-    "other_fiscal_years": [
-     2026,
-     2027
-    ],
-    "other_name": "Administration for a Healthy America (agency total)",
-    "other_observations": 4,
-    "other_status": "proposed",
-    "relationship_id": "REL-LHHS-0004",
-    "relationship_type": "uncertain",
-    "to_account_id": "ACC-HHS-AHA-TOTAL"
-   }
-  ],
+  "relationships": [],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

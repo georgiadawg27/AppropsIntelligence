@@ -203,7 +203,7 @@
            "validation_id": "VAL-LHHS-02893"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -461,7 +461,7 @@
            "validation_id": "VAL-LHHS-02909"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -545,7 +545,7 @@
            "validation_id": "VAL-LHHS-02915"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -629,7 +629,7 @@
            "validation_id": "VAL-LHHS-02921"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -713,7 +713,7 @@
            "validation_id": "VAL-LHHS-02927"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -796,7 +796,7 @@
            "validation_id": "VAL-LHHS-02932"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -880,7 +880,7 @@
            "validation_id": "VAL-LHHS-02938"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -958,7 +958,7 @@
            "validation_id": "VAL-LHHS-02943"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1030,7 +1030,7 @@
            "validation_id": "VAL-LHHS-02947"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1132,7 +1132,7 @@
            "validation_id": "VAL-LHHS-02953"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1210,7 +1210,7 @@
            "validation_id": "VAL-LHHS-02958"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1621,7 +1621,7 @@
       "validation_id": "VAL-LHHS-02893"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 685097000,
@@ -1691,7 +1691,7 @@
       "validation_id": "VAL-LHHS-02921"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 352606000,
@@ -1761,7 +1761,7 @@
       "validation_id": "VAL-LHHS-02915"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 576606000,
@@ -1831,7 +1831,7 @@
       "validation_id": "VAL-LHHS-02927"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 499606000,
@@ -1895,7 +1895,7 @@
       "validation_id": "VAL-LHHS-02909"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 388478000,
@@ -1959,7 +1959,7 @@
       "validation_id": "VAL-LHHS-02943"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 244606000,
@@ -2029,7 +2029,7 @@
       "validation_id": "VAL-LHHS-02938"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 488606000,
@@ -2087,7 +2087,7 @@
       "validation_id": "VAL-LHHS-02947"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 484606000,
@@ -2151,7 +2151,7 @@
       "validation_id": "VAL-LHHS-02932"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 711478000,
@@ -2215,7 +2215,7 @@
       "validation_id": "VAL-LHHS-02958"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 335606000,
@@ -2285,7 +2285,7 @@
       "validation_id": "VAL-LHHS-02953"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    }
   ],
   "open_cells": [
@@ -2317,6 +2317,7 @@
   "relationships": [
    {
     "confidence": 0.5,
+    "direction": "from",
     "effective_fiscal_year": 2024,
     "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
     "from_account_id": "ACC-HHS-ASPR-OPER",

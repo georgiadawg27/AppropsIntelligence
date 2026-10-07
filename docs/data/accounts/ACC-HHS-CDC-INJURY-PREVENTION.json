@@ -63,7 +63,7 @@
            "validation_id": "VAL-LHHS-03533"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -280,7 +280,7 @@
            "validation_id": "VAL-LHHS-03545"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -436,7 +436,7 @@
            "validation_id": "VAL-LHHS-03552"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -508,7 +508,7 @@
            "validation_id": "VAL-LHHS-03556"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1525,7 +1525,7 @@
       "validation_id": "VAL-LHHS-03545"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 761379000,
@@ -1577,7 +1577,7 @@
       "validation_id": "VAL-LHHS-03533"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 1351669000,
@@ -1629,7 +1629,7 @@
       "validation_id": "VAL-LHHS-03552"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 761879000,
@@ -1687,7 +1687,7 @@
       "validation_id": "VAL-LHHS-03556"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 761379000,
@@ -2306,7 +2306,36 @@
     "Enacted"
    ]
   ],
-  "relationships": [],
+  "relationships": [
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "from",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.11 (PDF p.1), Primary Care: 'National Center for Injury Prevention and Control: $550.1 million'. Amount match: H.Rept. 119-271 p.341 FY 2026 Request, Injury Prevention and Control 550,079 (thousands) = $550.1M rounded. P.L. 119-75 keeps it under CDC.",
+    "from_account_id": "ACC-HHS-CDC-INJURY-PREVENTION",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0012",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

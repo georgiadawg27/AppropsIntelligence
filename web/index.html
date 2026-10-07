@@ -327,15 +327,40 @@ function showAccount(data) {
   }
   const others = h.historical_names.filter((n) => !r || n.former_name !== r.matched_name).map((n) => n.former_name);
   if (others.length) panel.append(el("div", { class: "meta", text: "Also printed as: " + others.map((n) => `“${n}”`).join(", ") }));
-  for (const rel of h.relationships) {
-    panel.append(el("div", { class: "note rel", "data-testid": "relationship" },
-      `${rel.relationship_id}: ${rel.from_account_id} ${rel.relationship_type} ${rel.to_account_id} ` +
-      `(FY${rel.effective_fiscal_year}, confidence ${rel.confidence}, ${rel.human_reviewed ? "reviewed" : "not yet reviewed"}). ` +
-      `“${rel.other_name}” has ${rel.other_observations} observation(s) of its own, not included below.`));
-  }
+  for (const rel of h.relationships) panel.append(relationshipNote(rel));
   renderGrid(data.grid, h);
   renderSources(h);
   $("#result").hidden = false;
+}
+
+// An Account Relationship, as it reads from this account's side (each relationship shows on
+// both accounts' pages): "FY2026 request: moved to Administration for a Healthy America
+// (proposed, not enacted)", the other account a link, the evidence's documents cited.
+const REL_FROM = { moved_reclassified: "moved to", consolidated: "consolidated into", merged_into: "merged into",
+                   split_from: "split from", renamed: "renamed as", same: "the same account as",
+                   uncertain: "relationship uncertain with" };
+const REL_TO = { moved_reclassified: "moved in from", consolidated: "consolidates", merged_into: "absorbs",
+                 split_from: "split off", renamed: "renamed from", same: "the same account as",
+                 uncertain: "relationship uncertain with" };
+function relationshipNote(rel) {
+  const proposed = /^\s*proposed,? not enacted/i.test(rel.evidence || "");
+  const verb = (rel.direction === "to" ? REL_TO : REL_FROM)[rel.relationship_type] || rel.relationship_type;
+  const other = el("button", { type: "button", class: "linkish", "data-testid": "relationship-other",
+                               text: rel.other_name, title: rel.other_account_id });
+  other.addEventListener("click", () => pick(rel.other_account_id, rel.other_name));
+  const box = el("div", { class: "note rel", "data-testid": "relationship" },
+    el("strong", { text: rel.effective_fiscal_year ? `FY${rel.effective_fiscal_year}${proposed ? " request" : ""}: ` : "" }),
+    `${verb} `, other,
+    proposed ? el("span", { "data-testid": "relationship-proposed", text: " (proposed, not enacted)" }) : null,
+    rel.human_reviewed ? null : el("span", { class: "flag", text: " · not yet reviewed" }));
+  for (const c of rel.cites || []) {
+    const label = `${c.document_id}${c.pages.length ? " " + c.pages.join(", ") : ""}`;
+    box.append(el("div", { class: "cite", "data-testid": "relationship-cite" }, "Source: ",
+      /^https?:/.test(c.url) ? el("a", { href: c.url, target: "_blank", rel: "noopener", text: label }) : label));
+  }
+  box.append(el("div", { class: "meta", text: `${rel.relationship_id} · ${rel.relationship_type} · confidence ${rel.confidence} · ` +
+    `“${rel.other_name}” has ${rel.other_observations} observation(s) of its own, not included below.`, title: rel.evidence }));
+  return box;
 }
 
 // A figure's (or absence's) document and page, folded behind "source" so the

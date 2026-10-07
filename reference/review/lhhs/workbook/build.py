@@ -538,7 +538,7 @@ def main():
             # check passing (each other document printing the fact is a cross_document check)
             status = validate_approps.verification_status(
                 f.get("extraction_confidence") or 0.95,
-                [(r["rule_applied"], r["result"]) for r in recs]
+                [(r["rule_applied"], r["result"], r["expected_result"]) for r in recs]
                 + [("cross_document", "pass")] * len(agree) + [("cross_document", "flag")] * len(disagree))
             label = f["account_name_as_written"]
             if label.startswith("mitation for Title XVIII"):

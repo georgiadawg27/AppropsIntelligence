@@ -460,7 +460,7 @@
            "validation_id": "VAL-LHHS-01425"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1094,7 +1094,7 @@
            "validation_id": "VAL-LHHS-01553"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1311,7 +1311,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "Heading 'NIH Innovation Account, CURES Act' in FY2023, FY2024, FY2026 laws; none in the FY2027 House bill (the CURES authorization ends with FY2026). v32 records it as NIH-total component CURES ('contained'). Decision: an account of its own (proposed here) or keep as the component -- not both, or the NIH reconciliation counts it twice. Law heading 'NIH Innovation Account, CURES Act' (P.L. 117-328, 118-47, 119-75); none in the FY2027 House bill. Its figures were NIH-total component CURES (contained) through v32: re-homed here with the same observation IDs. The NIH total (with CURES Act funding) is the sum of NIH's accounts including this one.",
+   "notes": "Law heading 'NIH Innovation Account, CURES Act' (P.L. 117-328, 118-47, 119-75); none in the FY2027 House bill (the CURES authorization ends with FY2026). An account of its own since v33: its figures were NIH-total component CURES ('contained') through v32 and were re-homed here with the same observation IDs. The NIH total (with CURES Act funding) adds it with NIH's other accounts; the Title II total subtracts it.",
    "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
@@ -1689,7 +1689,7 @@
       "validation_id": "VAL-LHHS-01425"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 407000000,
@@ -2205,7 +2205,7 @@
       "validation_id": "VAL-LHHS-01553"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 226000000,

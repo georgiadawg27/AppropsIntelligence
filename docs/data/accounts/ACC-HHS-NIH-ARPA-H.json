@@ -207,7 +207,7 @@
            "validation_id": "VAL-LHHS-04492"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -286,7 +286,7 @@
            "validation_id": "VAL-LHHS-04497"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -502,7 +502,7 @@
            "validation_id": "VAL-LHHS-04506"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1245,7 +1245,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "FY2023 law places the heading under the Office of the Secretary (P.L. 117-328 p.420); FY2024 on, under NIH (P.L. 118-47 p.202). Proposed under NIH, one account. v32's NIH-total view 'program_level_excluding_arpa_h' shows NIH's printed totals include it. One account under NIH. P.L. 117-328 (FY2023) places the heading under the Office of the Secretary (p.420), and H.Rept. 117-403's Bill column prints it there ('Advanced Research Projects', OS); from P.L. 118-47 it is under NIH. Each document is reconciled by its own printed grouping.",
+   "notes": "One account under NIH. P.L. 117-328 (FY2023) places the heading under the Office of the Secretary (p.420), and H.Rept. 117-403's Bill column prints it there ('Advanced Research Projects', OS); from P.L. 118-47 (FY2024, p.202) it is under NIH. Each document is reconciled by its own printed grouping. NIH's printed totals include it (v32's view 'program_level_excluding_arpa_h' was NIH's total less it).",
    "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
@@ -1390,7 +1390,7 @@
       "validation_id": "VAL-LHHS-04492"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 2750000000,
@@ -1513,7 +1513,7 @@
       "validation_id": "VAL-LHHS-04497"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 1500000000,
@@ -1663,7 +1663,7 @@
       "validation_id": "VAL-LHHS-04506"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 1500000000,

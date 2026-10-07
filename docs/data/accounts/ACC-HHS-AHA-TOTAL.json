@@ -839,9 +839,19 @@
   ],
   "relationships": [
    {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
     "confidence": 0.9,
+    "direction": "to",
     "effective_fiscal_year": 2026,
-    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA.",
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA. Also FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)' -- names HRSA.",
     "from_account_id": "ACC-HHS-HRSA-TOTAL",
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-HRSA-TOTAL",
@@ -857,9 +867,19 @@
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    },
    {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
     "confidence": 0.9,
+    "direction": "to",
     "effective_fiscal_year": 2026,
-    "evidence": "Proposed, not enacted. FY2026 Budget Appendix p.360: 'In 2026 SAMHSA will be reorganized into the Agency for a Healthy America to improve coordination of health resources for Americans.' FY2027 Appendix p.464 repeats it for 2027. P.L. 119-75 keeps SAMHSA.",
+    "evidence": "Proposed, not enacted. FY2026 Budget Appendix p.360: 'In 2026 SAMHSA will be reorganized into the Agency for a Healthy America to improve coordination of health resources for Americans.' FY2027 Appendix p.464 repeats it for 2027. P.L. 119-75 keeps SAMHSA. Also FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)' -- names SAMHSA.",
     "from_account_id": "ACC-HHS-SAMHSA-TOTAL",
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-SAMHSA-TOTAL",
@@ -875,39 +895,146 @@
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    },
    {
-    "confidence": 0.5,
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.13"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "to",
     "effective_fiscal_year": 2026,
-    "evidence": "Part of NIH only, and only in the FY2026 request: FY2026 Budget Appendix p.357: 'relocate the National Institute of Environmental Health Sciences into the new Administration for a Healthy America'. The FY2027 Appendix p.461 instead proposes relocating NIEHS into CDC. Not a consolidation of the NIH total.",
-    "from_account_id": "ACC-HHS-NIH-TOTAL",
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.13 (PDF p.3), Environmental Health: 'National Institute of Environmental Health Sciences (NIEHS): $594.1 million'. Amount match: H.Rept. 119-271 p.344 FY 2026 Request, NIEHS 594,086 (thousands) = $594.1M rounded. The FY2027 request instead proposes moving NIEHS into CDC (a placement note on the account, not a relationship). P.L. 119-75 keeps NIEHS under NIH.",
+    "from_account_id": "ACC-HHS-NIH-NIEHS",
     "human_reviewed": 0,
-    "other_account_id": "ACC-HHS-NIH-TOTAL",
+    "other_account_id": "ACC-HHS-NIH-NIEHS",
     "other_fiscal_years": [
      2023,
      2027
     ],
-    "other_name": "National Institutes of Health (agency total)",
-    "other_observations": 47,
+    "other_name": "National Institute of Environmental Health Sciences",
+    "other_observations": 17,
     "other_status": "active",
-    "relationship_id": "REL-LHHS-0003",
-    "relationship_type": "uncertain",
+    "relationship_id": "REL-LHHS-0011",
+    "relationship_type": "moved_reclassified",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    },
    {
-    "confidence": 0.4,
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "to",
     "effective_fiscal_year": 2026,
-    "evidence": "Part of CDC only: FY2026 Budget Appendix p.337, World Trade Center Health Program: 'This account is moving to the Administration for a Healthy America, in alignment with the HHS reorganization.' Not a consolidation of the CDC total.",
-    "from_account_id": "ACC-HHS-CDC-TOTAL",
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.11 (PDF p.1), Primary Care: 'National Center for Injury Prevention and Control: $550.1 million'. Amount match: H.Rept. 119-271 p.341 FY 2026 Request, Injury Prevention and Control 550,079 (thousands) = $550.1M rounded. P.L. 119-75 keeps it under CDC.",
+    "from_account_id": "ACC-HHS-CDC-INJURY-PREVENTION",
     "human_reviewed": 0,
-    "other_account_id": "ACC-HHS-CDC-TOTAL",
+    "other_account_id": "ACC-HHS-CDC-INJURY-PREVENTION",
     "other_fiscal_years": [
      2023,
      2027
     ],
-    "other_name": "Centers for Disease Control and Prevention (agency total)",
-    "other_observations": 34,
+    "other_name": "Injury Prevention and Control",
+    "other_observations": 17,
     "other_status": "active",
-    "relationship_id": "REL-LHHS-0004",
-    "relationship_type": "uncertain",
+    "relationship_id": "REL-LHHS-0012",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "to",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. pp.15-16 (PDF pp.5-6), Maternal and Child Health: 'Birth Defects, Developmental Disabilities, Disability & Health: $157.8 million'. Amount match: H.Rept. 119-271 p.341 FY 2026 Request, Birth Defects, Developmental Disabilities, Disabilities and Health 157,810 (thousands) = $157.8M rounded. P.L. 119-75 keeps it under CDC.",
+    "from_account_id": "ACC-HHS-CDC-BIRTH-DEFECTS",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-CDC-BIRTH-DEFECTS",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Birth Defects, Developmental Disabilities, Disabilities and Health",
+    "other_observations": 16,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0013",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.13"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "to",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.13 (PDF p.3), Environmental Health: 'Occupational Safety and Health: $73.2 million ... in discretionary funding to support select programs in worker safety and health, including the National Mesothelioma Registry and Tissue Bank, National Firefighter Registry for Cancer, and Mining Research'. Amount match: H.Rept. 119-271 p.342 FY 2026 Request, National Institute for Occupational Safety and Health 73,200 (thousands) = $73.2M: the whole NIOSH request. P.L. 119-75 keeps NIOSH under CDC.",
+    "from_account_id": "ACC-HHS-CDC-NIOSH",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-CDC-NIOSH",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "National Institute for Occupational Safety and Health",
+    "other_observations": 17,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0014",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   },
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.14"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "to",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.14 (PDF p.4), Environmental Health: 'Energy Employees Occupational Illness Compensation Program Act (EEOICPA): $50.8 million in mandatory funding (post-sequester)'. Amount match, pre- vs post-sequester: H.Rept. 119-271 p.342 FY 2026 Request prints 55,358 (thousands), the appropriation before sequestration; 55,358 - 50,800 = 4,558 (8.2%) sequestered. The FY2026 Budget Appendix (BUDGET-2026-APP p.333), AHA's proposed Environmental Health account (075-0386), appropriates the same '$55,358,000' for EEOICPA and shows, in $ millions for 2026: mandatory appropriation 55, permanently reduced -4, mandatory total 51 (= $50.8M rounded). P.L. 119-75 keeps it under CDC.",
+    "from_account_id": "ACC-HHS-CDC-EEOICP",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-CDC-EEOICP",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Energy Employees Occupational Illness Compensation Program",
+    "other_observations": 16,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0015",
+    "relationship_type": "moved_reclassified",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
   ],

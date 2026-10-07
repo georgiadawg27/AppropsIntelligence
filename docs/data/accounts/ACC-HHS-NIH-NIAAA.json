@@ -490,7 +490,7 @@
            "validation_id": "VAL-LHHS-05030"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1661,7 +1661,7 @@
       "validation_id": "VAL-LHHS-05030"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "unverified"
    },
    {
     "amount": 595318000,
@@ -2271,6 +2271,7 @@
   "relationships": [
    {
     "confidence": 0.9,
+    "direction": "from",
     "effective_fiscal_year": 2027,
     "evidence": "As REL-LHHS-0005.",
     "from_account_id": "ACC-HHS-NIH-NIAAA",

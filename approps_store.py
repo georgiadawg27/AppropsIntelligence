@@ -941,6 +941,29 @@ def resolve(conn, text, agency=None):
     return out
 
 
+CITED_DOCUMENT_RE = re.compile(r"\bSRC-[A-Z0-9][A-Z0-9-]*[A-Z0-9]")
+CITED_PAGE_RE = re.compile(r"\bpp?\.\s*(\d+)\s*\(PDF p\.\s*(\d+)\)")
+
+
+def relationship_cites(conn, evidence):
+    """The source documents a relationship's evidence names (Source Document ids it
+    quotes), each with its link and the pages cited for it -- "p.13 (PDF p.3)" after
+    the document's id, up to the next id named -- so the page can link them.
+    -> {"cites": [{"document_id", "url", "pages": ["p.13", ...]}]} or {} if none."""
+    out = []
+    hits = list(CITED_DOCUMENT_RE.finditer(evidence or ""))
+    for i, m in enumerate(hits):
+        d = conn.execute("SELECT url_or_identifier FROM source_document WHERE document_id = ?", (m.group(0),)).fetchone()
+        if d is None or any(c["document_id"] == m.group(0) for c in out):
+            continue
+        span = evidence[m.end():hits[i + 1].start() if i + 1 < len(hits) else len(evidence)]
+        # the printed page, never a #page anchor: the PDF page counted in the evidence is of the file
+        # that was read (the FY2026 AHA CJ: the owner's 9-page excerpt), not of the file the url serves
+        pages = list(dict.fromkeys(f"p.{p}" for p, _ in CITED_PAGE_RE.findall(span)))
+        out.append({"document_id": m.group(0), "url": d[0], "pages": pages})
+    return {"cites": out} if out else {}
+
+
 def history(conn, account_id):
     """An account's full record: the account, its former names, its account
     relationships (each way), and every observation with its source document
@@ -963,7 +986,9 @@ def history(conn, account_id):
         n = conn.execute("SELECT count(*), min(fiscal_year), max(fiscal_year) FROM appropriations_observation "
                          "WHERE canonical_account_id = ?", (other,)).fetchone()
         rels.append({**dict(r), "other_account_id": other, "other_name": o["canonical_name"],
-                     "other_status": o["status"], "other_observations": n[0], "other_fiscal_years": [n[1], n[2]]})
+                     "other_status": o["status"], "other_observations": n[0], "other_fiscal_years": [n[1], n[2]],
+                     "direction": "from" if r["from_account_id"] == account_id else "to",
+                     **relationship_cites(conn, r["evidence"])})
     stage_rank = {s: i for i, s in enumerate(STAGE_ORDER)}
     obs = []
     for r in conn.execute(

@@ -418,6 +418,27 @@ class V33Page(BrowserBase):
         self.compare("/?view=compare&sc=LHHS&fy=2024-2024&stage=Senate+Reported")
         self.assertEqual(self.page.locator("[data-testid=stage-notes]").count(), 0)
 
+    def open(self, acct):
+        self.page.goto(self.base + "/")
+        self.page.evaluate(f"pick({acct!r}, 'test')")
+        self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+
+    def test_a_relationship_on_both_accounts_pages(self):
+        self.open("ACC-HHS-NIH-NIEHS")
+        rel = self.page.locator("[data-testid=relationship]").filter(has_text="Administration for a Healthy America").first
+        self.assertTrue(rel.inner_text().startswith(
+            "FY2026 request: moved to Administration for a Healthy America (agency total) (proposed, not enacted)"))
+        link = rel.locator("[data-testid=relationship-cite] a")
+        self.assertEqual((link.inner_text(), link.get_attribute("href")),
+                         ("SRC-CJ-AHA-FY2026 p.11, p.13", "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"))
+        self.open("ACC-HHS-AHA-TOTAL")
+        texts = self.page.locator("[data-testid=relationship]").all_inner_texts()
+        self.assertTrue(any(t.startswith("FY2026 request: moved in from National Institute of Environmental Health Sciences")
+                            for t in texts), texts)
+        # the other account opens from the note
+        self.page.locator("[data-testid=relationship-other]", has_text="National Institute of Environmental Health Sciences").click()
+        self.page.wait_for_function("document.querySelector('[data-testid=account-name]').textContent.includes('Environmental')")
+
     def test_note_on_the_account_grid(self):
         self.page.goto(self.base + "/")
         self.page.evaluate("pick('ACC-HHS-NIH-TOTAL', 'test')")

@@ -2088,7 +2088,37 @@
     "Enacted"
    ]
   ],
-  "relationships": [],
+  "relationships": [
+   {
+    "cites": [
+     {
+      "document_id": "SRC-CJ-AHA-FY2026",
+      "pages": [
+       "p.11",
+       "p.14"
+      ],
+      "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf"
+     }
+    ],
+    "confidence": 0.9,
+    "direction": "from",
+    "effective_fiscal_year": 2026,
+    "evidence": "Proposed, not enacted (FY2026 President's Budget). FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)'. p.14 (PDF p.4), Environmental Health: 'Energy Employees Occupational Illness Compensation Program Act (EEOICPA): $50.8 million in mandatory funding (post-sequester)'. Amount match, pre- vs post-sequester: H.Rept. 119-271 p.342 FY 2026 Request prints 55,358 (thousands), the appropriation before sequestration; 55,358 - 50,800 = 4,558 (8.2%) sequestered. The FY2026 Budget Appendix (BUDGET-2026-APP p.333), AHA's proposed Environmental Health account (075-0386), appropriates the same '$55,358,000' for EEOICPA and shows, in $ millions for 2026: mandatory appropriation 55, permanently reduced -4, mandatory total 51 (= $50.8M rounded). P.L. 119-75 keeps it under CDC.",
+    "from_account_id": "ACC-HHS-CDC-EEOICP",
+    "human_reviewed": 0,
+    "other_account_id": "ACC-HHS-AHA-TOTAL",
+    "other_fiscal_years": [
+     2026,
+     2027
+    ],
+    "other_name": "Administration for a Healthy America (agency total)",
+    "other_observations": 4,
+    "other_status": "proposed",
+    "relationship_id": "REL-LHHS-0015",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-AHA-TOTAL"
+   }
+  ],
   "stage_notes": {
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },
