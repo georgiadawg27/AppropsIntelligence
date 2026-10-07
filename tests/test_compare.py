@@ -95,6 +95,24 @@ def expected_headline(row, fy, stage):
             "outside": cell["outside_history"]}
 
 
+def series_text(l):
+    """The page's seriesText: a line's label; a contained or view line says it is not added."""
+    if l.get("adds_to_headline") is False:
+        how = "inside the figure above" if l["component_kind"] == "contained" else "the figure above, scoped another way"
+        return f"{l['component_label'] or l['component']} \u2014 {how}; not added"
+    return l["amount_type"] + (" \u00b7 " + l["component"] if l["component"] else "")
+
+
+def other_lines(row, fy, stage):
+    """A cell's non-headline lines with a figure: what its "+N" marker counts and lists."""
+    cell = row["cells"].get(f"{fy}|{stage}")
+    if not cell or not cell["lines"]:
+        return []
+    lines = cell["lines"]
+    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), lines[0])
+    return [l for l in lines if l is not h and l["state"] == "value" and l["observations"]]
+
+
 class CompareTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -847,13 +865,14 @@ class CompareBrowser(CompareTest):
             const acct = document.querySelector('#compare-grid tbody td.acct');
             return {height: w.getBoundingClientRect().height, scrollable: w.scrollHeight > w.clientHeight,
                     overflow: getComputedStyle(w).overflow, head2: getComputedStyle(h2).top,
+                    head1: document.querySelector('#compare-grid thead th.grp').getBoundingClientRect().height + 'px',
                     nameSticky: getComputedStyle(acct).position, acct: acct.getBoundingClientRect().width,
                     font: getComputedStyle(document.querySelector('#compare-grid td')).fontFamily,
                     size: getComputedStyle(document.querySelector('#compare-grid')).fontSize}; }""")
         self.assertEqual(m["height"], 900 - 120)                    # calc(100vh - 120px)
         self.assertTrue(m["scrollable"])
         self.assertEqual(m["overflow"], "auto")
-        self.assertEqual((m["head2"], m["nameSticky"], m["acct"]), ("38px", "sticky", 360))
+        self.assertEqual((m["head2"], m["nameSticky"], m["acct"]), (m["head1"], "sticky", 360))   # right under the first row
         self.assertTrue(m["font"].startswith('"Public Sans"'))
         self.assertEqual(m["size"], "14px")
         self.page.set_viewport_size({"width": 1440, "height": 500})
@@ -905,6 +924,89 @@ class CompareBrowser(CompareTest):
         before = self.cell("ACC-DOJ-CVF", 2017, "Enacted")
         self.assertEqual(before.get_attribute("data-outside"), "true")
         self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017 Enacted"))
+
+
+    # ---- other lines in a cell, the pinned header, narrow screens ------------------------
+
+    def markers(self):
+        return {(m.evaluate("e => e.closest('tr').dataset.account"), int(m.evaluate("e => e.closest('td').dataset.fy")),
+                 m.evaluate("e => e.closest('td').dataset.stage")): (m.inner_text(), m.get_attribute("title"))
+                for m in self.page.locator("[data-testid=more]").all()}
+
+    def test_other_lines_marker_on_every_cell_that_has_them(self):
+        lhhs_pairs = {"stages&fy=2026": [(2025, "Enacted")] + [(2026, st) for st in FOUR],
+                      "history": [(y, "Enacted") for y in (2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
+                      "years&a=2024&b=2026": [(y, st) for y in (2024, 2026) for st in FOUR]}
+        cases = [("LHHS", q, p, self.lhhs) for q, p in lhhs_pairs.items()]
+        cases.append(("CJS", "stages&fy=2024", [(2023, "Enacted")] + [(2024, st) for st in FOUR], self.grid))
+        for sc, q, pairs, grid in cases:
+            with self.subTest(sc=sc, view=q):
+                self.open("static", f"?view=compare&sc={sc}&grid={q}")
+                self.page.click("#expand-all")
+                rows = grid["rows"] + [t["total"] for t in grid["titles"] if t["total"]]
+                want = {}
+                for r in rows:
+                    for y, st in pairs:
+                        rest = other_lines(r, y, st)
+                        if rest:
+                            want[(r["account"]["canonical_account_id"], y, st)] = (
+                                f"+{len(rest)}", f"{len(rest)} other line{'' if len(rest) == 1 else 's'} on file, $ thousands:\n"
+                                + "\n".join(f"{series_text(l)}: {thousands(l['observations'][0]['amount'])}" for l in rest))
+                self.assertGreater(len(want), 0)
+                self.assertEqual(self.markers(), want)
+
+    def test_other_lines_examples(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        m = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").locator("[data-testid=more]")
+        self.assertEqual((m.inner_text(), m.get_attribute("title")),
+                         ("+1", "1 other line on file, $ thousands:\n"
+                                "program level \u2014 the figure above, scoped another way; not added: 579,688"))
+        self.assertEqual(m.evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).color]"), ["11px", "rgb(93, 100, 114)"])
+        self.assertIn("program level", m.get_attribute("aria-label"))
+        self.assertIn("+2 other lines on file for this cell (hover to list, click to open the account)",
+                      self.page.inner_text("[data-testid=legend]"))
+        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024")
+        self.page.click("#expand-all")
+        cell = self.cell("ACC-NASA-EXPLORATION", 2024, "Enacted")
+        m = cell.locator("[data-testid=more]")
+        self.assertEqual((m.inner_text(), m.get_attribute("title")), ("+1", "1 other line on file, $ thousands:\nsupplemental: 450,000"))
+        # the headline number still links to its source; the marker opens the account at this year and stage
+        self.assertTrue(cell.locator("[data-testid=amount]").get_attribute("href").startswith("http"))
+        m.click()
+        self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.assertEqual(self.page.inner_text("[data-testid=account-name]"), "Exploration")
+        self.assertTrue(self.page.url.endswith("?account=ACC-NASA-EXPLORATION&fy=2024&stage=Enacted"), self.page.url)
+        focus = self.page.locator("#grid td[data-focus=true]")
+        self.assertEqual((focus.count(), focus.get_attribute("data-stage")), (1, "Enacted"))
+        self.assertEqual(focus.evaluate("e => e.closest('tr').dataset.fy"), "2024")
+
+    def test_header_rows_meet_while_scrolling(self):
+        for q in ("stages", "years", "history"):
+            self.open("static", f"?view=compare&sc=LHHS&grid={q}")
+            self.page.click("#expand-all")
+            self.page.eval_on_selector("#grid-wrap", "w => { w.scrollTop = 700; }")
+            self.page.wait_for_timeout(50)
+            m = self.page.evaluate("""() => {
+                const r1 = document.querySelector('#compare-grid thead tr th.grp').getBoundingClientRect();
+                const th2 = document.querySelector('#compare-grid thead tr + tr th');
+                const r2 = th2.getBoundingClientRect();
+                // what shows at the seam, just above the second row, in the middle of a column
+                const at = document.elementFromPoint(r2.left + r2.width / 2, r2.top - 0.5);
+                return {bottom1: r1.bottom, top2: r2.top, seam: at.closest('thead') ? 'thead' : at.tagName};
+            }""")
+            self.assertAlmostEqual(m["top2"], m["bottom1"], delta=0.5, msg=q)
+            self.assertEqual(m["seam"], "thead", q)
+
+    def test_tiles_fit_at_390px(self):
+        self.page.set_viewport_size({"width": 390, "height": 844})
+        for sc in ("LHHS", "CJS"):
+            for q in ("stages", "years", "history"):
+                self.open("static", f"?view=compare&sc={sc}&grid={q}")
+                over = self.page.eval_on_selector_all("[data-testid=tile]", """ts => ts.flatMap(t => [...t.children].filter(c =>
+                    c.scrollWidth > c.clientWidth + 0.5 || c.getBoundingClientRect().right > t.getBoundingClientRect().right + 0.5)
+                    .map(c => t.innerText))""")
+                self.assertEqual(over, [], (sc, q))
+                self.assertFalse(self.page.evaluate("document.documentElement.scrollWidth > innerWidth"), (sc, q))
 
 
 class GridMathUnits(unittest.TestCase):
