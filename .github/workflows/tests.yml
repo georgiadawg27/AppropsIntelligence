@@ -1,6 +1,13 @@
 # The full test suite, on every pull request and every push to main.
 # export-static.yml also calls it (workflow_call) and commits docs/ only when
 # it passes on that same commit.
+#
+# Two jobs run side by side, each with pytest-xdist across the runner's CPUs:
+#   data     -- the store, ingest, extraction and build tests (every module but the three below)
+#   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node)
+# A change that touches only the page (web/, docs/, screenshots/, the three page test
+# modules, Markdown) can't affect the data tests, so `data` skips its steps for it. The
+# workflow itself always runs, and `test` always reports: it passes only when both jobs did.
 name: Tests
 
 on:
@@ -14,7 +21,87 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      data: ${{ steps.paths.outputs.data }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Does this change reach the data tests?
+        id: paths
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          base=""
+          if [ "$EVENT" = "pull_request" ]; then base="$PR_BASE"; fi
+          if [ "$EVENT" = "push" ]; then base="$PUSH_BEFORE"; fi
+          # no base to compare (manual run, new branch, unknown history): run everything
+          if [ -z "$base" ] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+            echo "data=true" >> "$GITHUB_OUTPUT"; echo "no comparable base -- running every test"; exit 0
+          fi
+          changed=$(git diff --name-only "$(git merge-base "$base" HEAD)" HEAD)
+          echo "$changed"
+          page_only='^(web/|docs/|screenshots/|tests/test_(web|compare|static)\.py$|.*\.md$)'
+          if [ -n "$changed" ] && ! echo "$changed" | grep -Eqv "$page_only"; then
+            echo "data=false" >> "$GITHUB_OUTPUT"; echo "page-only change -- the data tests are skipped"
+          else
+            echo "data=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  data:
+    needs: changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Page-only change
+        if: needs.changes.outputs.data != 'true'
+        run: echo "Only the page changed (web/, docs/, screenshots/, page tests, Markdown) -- nothing here to run."
+      - uses: actions/checkout@v4
+        if: needs.changes.outputs.data == 'true'
+        with:
+          fetch-depth: 0          # tests read the workbook's commit date
+      - uses: actions/setup-python@v5
+        if: needs.changes.outputs.data == 'true'
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        if: needs.changes.outputs.data == 'true'
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: pip install -r requirements.txt pytest pytest-xdist
+      - name: Fetch the source documents the tests read
+        if: needs.changes.outputs.data == 'true'
+        # document_store/ is gitignored; these are public govinfo PDFs (no key).
+        # A failed fetch leaves its tests skipped with that reason, not failed.
+        run: |
+          mkdir -p document_store
+          for p in CRPT-119hrpt652 CRPT-119srpt44 CRPT-118srpt62 CRPT-119srpt55 PLAW-118publ47; do
+            curl -fsSL --retry 3 -o "document_store/$p.pdf" "https://www.govinfo.gov/content/pkg/$p/pdf/$p.pdf" \
+              || { echo "::warning::could not fetch $p -- its tests will skip"; rm -f "document_store/$p.pdf"; }
+          done
+          # the Labor-HHS FY2026 JES: the Congressional Record granule it was ingested from
+          # (document_store/manifest.json source_url), kept only if its bytes are the ingested ones
+          jes=document_store/MANUAL-LHHS-FY2026-Enacted-jes-e44f7662.pdf
+          if curl -fsSL --retry 3 -o "$jes" \
+               "https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf" \
+             && echo "e44f766294e2f7fc9d38c86ac307a27b4f3405d2654085e03b2b71eed90b9f75  $jes" | sha256sum -c --quiet; then :
+          else echo "::warning::Labor-HHS JES not fetched or not the ingested bytes -- its tests will skip"; rm -f "$jes"; fi
+      - name: Run the data tests
+        if: needs.changes.outputs.data == 'true'
+        # the four live govinfo API tests (tests/test_ingest.py Live*) run only when the
+        # repository has a GOVINFO_API_KEY secret; without it they skip, saying so
+        env:
+          GOVINFO_API_KEY: ${{ secrets.GOVINFO_API_KEY }}
+        run: >
+          python -m pytest tests -v -rs -p no:cacheprovider -n auto --dist loadscope --durations=10
+          --ignore=tests/test_web.py --ignore=tests/test_compare.py --ignore=tests/test_static.py
+
+  browser:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
@@ -31,34 +118,51 @@ jobs:
         with:
           node-version: "22"
       - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Install Chromium for the browser tests
+        run: pip install -r requirements.txt pytest pytest-xdist
+      - name: Browser cache key
+        id: pw
+        run: echo "key=pw-chromium-${{ runner.os }}-$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')" >> "$GITHUB_OUTPUT"
+      - name: Reuse the installed Chromium
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ steps.pw.outputs.key }}
+      - name: Install Chromium (first run for this playwright version)
+        if: steps.pw-cache.outputs.cache-hit != 'true'
+        run: PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD= python -m playwright install --with-deps chromium
+      - name: Point the tests at Chromium
         run: |
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD= python -m playwright install --with-deps chromium
           python - >> "$GITHUB_ENV" <<'PY'
           from playwright.sync_api import sync_playwright
           with sync_playwright() as p:
               print(f"PLAYWRIGHT_CHROMIUM={p.chromium.executable_path}")
           PY
-      - name: Fetch the source documents the tests read
-        # document_store/ is gitignored; these are public govinfo PDFs (no key).
-        # A failed fetch leaves its tests skipped with that reason, not failed.
+      - name: System libraries for Chromium (only if the runner lacks them)
+        if: steps.pw-cache.outputs.cache-hit == 'true'
         run: |
-          mkdir -p document_store
-          for p in CRPT-119hrpt652 CRPT-119srpt44 CRPT-118srpt62 CRPT-119srpt55 PLAW-118publ47; do
-            curl -fsSL --retry 3 -o "document_store/$p.pdf" "https://www.govinfo.gov/content/pkg/$p/pdf/$p.pdf" \
-              || { echo "::warning::could not fetch $p -- its tests will skip"; rm -f "document_store/$p.pdf"; }
-          done
-          # the Labor-HHS FY2026 JES: the Congressional Record granule it was ingested from
-          # (document_store/manifest.json source_url), kept only if its bytes are the ingested ones
-          jes=document_store/MANUAL-LHHS-FY2026-Enacted-jes-e44f7662.pdf
-          if curl -fsSL --retry 3 -o "$jes" \
-               "https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf" \
-             && echo "e44f766294e2f7fc9d38c86ac307a27b4f3405d2654085e03b2b71eed90b9f75  $jes" | sha256sum -c --quiet; then :
-          else echo "::warning::Labor-HHS JES not fetched or not the ingested bytes -- its tests will skip"; rm -f "$jes"; fi
-      - name: Run the test suite
-        # the four live govinfo API tests (tests/test_ingest.py Live*) run only when the
-        # repository has a GOVINFO_API_KEY secret; without it they skip, saying so
+          python - <<'PY' || python -m playwright install-deps chromium
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              p.chromium.launch().close()
+          PY
+      - name: Run the browser tests
+        run: >
+          python -m pytest tests/test_web.py tests/test_compare.py tests/test_static.py -v -rs -p no:cacheprovider
+          -n auto --dist loadscope --durations=10
+
+  # the check to require: always reports, and passes only when both jobs passed
+  # (data counts as passed when a page-only change skipped its steps)
+  test:
+    needs: [changes, data, browser]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Both jobs passed
         env:
-          GOVINFO_API_KEY: ${{ secrets.GOVINFO_API_KEY }}
-        run: python -m unittest discover -s tests -v
+          CHANGES: ${{ needs.changes.result }}
+          DATA: ${{ needs.data.result }}
+          BROWSER: ${{ needs.browser.result }}
+        run: |
+          echo "changes=$CHANGES data=$DATA browser=$BROWSER"
+          [ "$CHANGES" = success ] && [ "$DATA" = success ] && [ "$BROWSER" = success ]

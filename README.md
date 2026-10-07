@@ -88,3 +88,16 @@ python -m unittest discover -s tests
 
 Browser tests need `playwright` (uses the preinstalled Chromium); the
 matcher-parity test needs `node`.
+
+Faster, the way CI runs it (`pip install pytest pytest-xdist`): two groups,
+each spread across the CPUs.
+
+```
+# page: tests/test_web.py, test_compare.py, test_static.py
+python -m pytest tests/test_web.py tests/test_compare.py tests/test_static.py -n auto --dist loadscope
+# everything else: store, ingest, extraction, build
+python -m pytest tests -n auto --dist loadscope --ignore=tests/test_web.py --ignore=tests/test_compare.py --ignore=tests/test_static.py
+```
+
+While working, run the modules for the files you changed; CI runs both groups
+on every pull request (a page-only change skips the second, which still reports).
