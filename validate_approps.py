@@ -412,7 +412,7 @@ def validate(nodes, cols, observations, page_meta, unit, source_document=None):
             checks.append(("table_total", "fail"))
         # confirmed by a sum: its own rollup record, or (a child) the record of the rollup it adds into
         checks.append(("arithmetic", "pass" if oid in arithmetic_pass else "flag"))
-        if any(r == "fail" for _, r in checks):
+        if any(c[1] == "fail" for c in checks):
             o["extraction_confidence"] = min(o["extraction_confidence"], FAILED_CONFIDENCE)
         o["verification_status"] = verification_status(o["extraction_confidence"], checks)
         if o["verification_status"] == "unverified":
