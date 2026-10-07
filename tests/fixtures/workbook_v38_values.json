@@ -1,0 +1,57 @@
+{
+ "workbook": "Approps_Pilot_Schema_Loaded_v38.xlsx",
+ "workbook_sha256": "a859ece31bf2fa3e7691ba40666fc2683a3d5726f4cd5247400a3c3f906787a5",
+ "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py",
+ "sheets": {
+  "Read Me": {
+   "rows": 68,
+   "columns": 1,
+   "sha256": "202f59a5491b4706afb6dfe3296abcfd477d0cfc228f76ab551dd0541f05b318"
+  },
+  "Account": {
+   "rows": 131,
+   "columns": 15,
+   "sha256": "baf02bb4aa875bbda06fc89515166a1836533ac3ff891207cc2787b8d00c51bb"
+  },
+  "Historical Name": {
+   "rows": 12,
+   "columns": 7,
+   "sha256": "71585ec773bcc4d808aa4623a2ac756ebbf476826aabee08fcb4410b4ae957f4"
+  },
+  "Confirmed Absence": {
+   "rows": 235,
+   "columns": 9,
+   "sha256": "39a6922b7f3d51b412d4605439b0930fd6c7533de67f15baa8ae12d3e18fbef4"
+  },
+  "Appropriations Observation": {
+   "rows": 2602,
+   "columns": 21,
+   "sha256": "3dc4314ecf3b4fff009ded8be3a13c00f3d5ad66fedf4dc6ebea808bb4927aaf"
+  },
+  "Account Relationship": {
+   "rows": 12,
+   "columns": 8,
+   "sha256": "9bee5a4ae71ece3731c92ad088ffcc88729cd9e2cf8709c014d5fbf4ed563a9e"
+  },
+  "Source Document": {
+   "rows": 36,
+   "columns": 12,
+   "sha256": "acac7a4958d4358148089dd0df42bd2f194bbe915133ce17f8a6c6c26f2306cb"
+  },
+  "Bill Report Reference": {
+   "rows": 59,
+   "columns": 14,
+   "sha256": "1e59cc2ebd35eeafc0ec7e48bf6ae02161e0658cfea290ce47ed5f4404c834a0"
+  },
+  "Validation Record": {
+   "rows": 6792,
+   "columns": 9,
+   "sha256": "932f93bce8172fd22785639054263c7cfd1870505c662f0cc5c7302d5822c8f9"
+  },
+  "Component": {
+   "rows": 20,
+   "columns": 4,
+   "sha256": "a8539a6256f2562fc82d398c1d942a297eaf00ba8232f8947b06c682045e5e22"
+  }
+ }
+}

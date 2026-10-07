@@ -3,10 +3,14 @@
 # it passes on that same commit.
 #
 # Two jobs run side by side, each with pytest-xdist across the runner's CPUs:
-#   data     -- the store, ingest, extraction and build tests (every module but the three below)
+#   data     -- builds the workbook from data/staged.json (scripts/build_workbook.py, which stops on
+#               any failed check), recalculates it in LibreOffice and fails on any formula error,
+#               uploads it as an artifact, then runs the store, ingest, extraction and build tests
+#               (every module but the three below)
 #   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node)
 # A change that touches only the page (web/, docs/, screenshots/, the three page test
-# modules, Markdown) can't affect the data tests, so `data` skips its steps for it. The
+# modules, Markdown) can't affect the data tests, so `data` skips its steps for it; a change
+# under data/ or scripts/ is not page-only, so it runs them. The
 # workflow itself always runs, and `test` always reports: it passes only when both jobs did.
 name: Tests
 
@@ -74,6 +78,30 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
         run: pip install -r requirements.txt pytest pytest-xdist
+      - name: Build the workbook from data/staged.json
+        if: needs.changes.outputs.data == 'true'
+        # the script runs its own checks first (allowed values, broken references, duplicate IDs,
+        # effective dates, govinfo landing pages, enactment fields off Enacted rows) and stops on any
+        run: mkdir -p build && python scripts/build_workbook.py
+      - name: Install LibreOffice (headless recalculation)
+        if: needs.changes.outputs.data == 'true'
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q --no-install-recommends libreoffice-calc python3-uno
+      - name: Recalculate in LibreOffice; fail on any formula error
+        if: needs.changes.outputs.data == 'true'
+        # the system python3 is the one with LibreOffice's uno bridge
+        run: |
+          set -o pipefail
+          /usr/bin/python3 scripts/recalc_check.py build/Approps_Pilot_Schema_Loaded.xlsx | tee build/recalc.txt
+          cat build/recalc.txt >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload the built workbook
+        if: needs.changes.outputs.data == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Approps_Pilot_Schema_Loaded
+          path: build/Approps_Pilot_Schema_Loaded.xlsx
+          if-no-files-found: error
       - name: Fetch the source documents the tests read
         if: needs.changes.outputs.data == 'true'
         # document_store/ is gitignored; these are public govinfo PDFs (no key).
