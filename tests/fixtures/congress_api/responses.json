@@ -1,0 +1,676 @@
+{
+ "bill/118/hr/1713": {
+  "bill": {
+   "actions": {
+    "count": 22,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/actions?format=json"
+   },
+   "cboCostEstimates": [
+    {
+     "description": "As ordered reported by the House Committee on Science, Space, and Technology on March 29, 2023\n",
+     "pubDate": "2023-04-17T22:12:00Z",
+     "title": "H.R. 1713, DOE and USDA Interagency Research Act",
+     "url": "https://www.cbo.gov/publication/59081"
+    },
+    {
+     "description": "As reported by the House Committee on Agriculture on May 22, 2023\n",
+     "pubDate": "2023-06-09T21:36:00Z",
+     "title": "H.R. 1713, DOE and USDA Interagency Research Act",
+     "url": "https://www.cbo.gov/publication/59264"
+    }
+   ],
+   "committeeReports": [
+    {
+     "citation": "H. Rept. 118-74",
+     "url": "https://api.congress.gov/v3/committee-report/118/HRPT/74?format=json"
+    },
+    {
+     "citation": "H. Rept. 118-74,Part 2",
+     "url": "https://api.congress.gov/v3/committee-report/118/HRPT/74?format=json"
+    }
+   ],
+   "committees": {
+    "count": 3,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/committees?format=json"
+   },
+   "congress": 118,
+   "constitutionalAuthorityStatementText": "<pre>\n[Congressional Record Volume 169, Number 52 (Wednesday, March 22, 2023)]\n[House]\nFrom the Congressional Record Online through the Government Publishing Office [<a href=\"https://www.gpo.gov\">www.gpo.gov</a>]\nBy Mr. LUCAS:\nH.R. 1713.\nCongress has the power to enact this legislation pursuant\nto the following:\nU.S. Constitution, Article 1, Section 8, Clause 18:\n``The Congress shall have Power . . . To make all Laws\nwhich shall be necessary and proper for carrying into\nExecution the forgoing Powers, and all other Powers vested by\nthis Constitution in the Government of the United States, or\nin any Department or Officer thereof.''\nThe single subject of this legislation is:\nThe DOE and USDA Interagency Research Act is a bill that\naddresses the single subject of authorizing interagency\nresearch and development activities between the U.S.\nDepartment of Energy and the U.S. Department of Agriculture\n[Page H1328]\n</pre>",
+   "cosponsors": {
+    "count": 10,
+    "countIncludingWithdrawnCosponsors": 10,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/cosponsors?format=json"
+   },
+   "introducedDate": "2023-03-22",
+   "latestAction": {
+    "actionDate": "2023-12-05",
+    "text": "Received in the Senate and Read twice and referred to the Committee on Energy and Natural Resources."
+   },
+   "legislationUrl": "https://www.congress.gov/bill/118th-congress/house-bill/1713",
+   "number": "1713",
+   "originChamber": "House",
+   "originChamberCode": "H",
+   "policyArea": {
+    "name": "Agriculture and Food"
+   },
+   "relatedBills": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/relatedbills?format=json"
+   },
+   "sponsors": [
+    {
+     "bioguideId": "L000491",
+     "district": 3,
+     "firstName": "FRANK",
+     "fullName": "Rep. Lucas, Frank D. [R-OK-3]",
+     "isByRequest": "N",
+     "lastName": "LUCAS",
+     "middleName": "D.",
+     "party": "R",
+     "state": "OK",
+     "url": "https://api.congress.gov/v3/member/L000491?format=json"
+    }
+   ],
+   "subjects": {
+    "count": 16,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/subjects?format=json"
+   },
+   "summaries": {
+    "count": 4,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/summaries?format=json"
+   },
+   "textVersions": {
+    "count": 4,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/text?format=json"
+   },
+   "title": "DOE and USDA Interagency Research Act",
+   "titles": {
+    "count": 6,
+    "url": "https://api.congress.gov/v3/bill/118/hr/1713/titles?format=json"
+   },
+   "type": "HR",
+   "updateDate": "2026-09-08T18:09:59Z",
+   "updateDateIncludingText": "2026-09-08T18:09:59Z"
+  },
+  "request": {
+   "billNumber": "1713",
+   "billType": "hr",
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json"
+  }
+ },
+ "bill/118/hr/2882": {
+  "bill": {
+   "actions": {
+    "count": 64,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/actions?format=json"
+   },
+   "amendments": {
+    "count": 124,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/amendments?format=json"
+   },
+   "cboCostEstimates": [
+    {
+     "description": "As ordered reported by the House Committee on Natural Resources on November 15, 2023\n",
+     "pubDate": "2024-01-10T18:25:00Z",
+     "title": "H.R. 2882, Udall Foundation Reauthorization Act of 2023",
+     "url": "https://www.cbo.gov/publication/59871"
+    }
+   ],
+   "committeeReports": [
+    {
+     "citation": "H. Rept. 118-364",
+     "url": "https://api.congress.gov/v3/committee-report/118/HRPT/364?format=json"
+    }
+   ],
+   "committees": {
+    "count": 2,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/committees?format=json"
+   },
+   "congress": 118,
+   "cosponsors": {
+    "count": 7,
+    "countIncludingWithdrawnCosponsors": 7,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/cosponsors?format=json"
+   },
+   "introducedDate": "2023-04-26",
+   "latestAction": {
+    "actionDate": "2024-03-23",
+    "text": "Became Public Law No: 118-47."
+   },
+   "laws": [
+    {
+     "number": "118-47",
+     "type": "Public Law"
+    }
+   ],
+   "legislationUrl": "https://www.congress.gov/bill/118th-congress/house-bill/2882",
+   "number": "2882",
+   "originChamber": "House",
+   "originChamberCode": "H",
+   "policyArea": {
+    "name": "Economics and Public Finance"
+   },
+   "relatedBills": {
+    "count": 24,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/relatedbills?format=json"
+   },
+   "sponsors": [
+    {
+     "bioguideId": "C001133",
+     "district": 6,
+     "firstName": "Juan",
+     "fullName": "Rep. Ciscomani, Juan [R-AZ-6]",
+     "isByRequest": "N",
+     "lastName": "Ciscomani",
+     "party": "R",
+     "state": "AZ",
+     "url": "https://api.congress.gov/v3/member/C001133?format=json"
+    }
+   ],
+   "subjects": {
+    "count": 451,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/subjects?format=json"
+   },
+   "summaries": {
+    "count": 7,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/summaries?format=json"
+   },
+   "textVersions": {
+    "count": 7,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/text?format=json"
+   },
+   "title": "Further Consolidated Appropriations Act, 2024",
+   "titles": {
+    "count": 49,
+    "url": "https://api.congress.gov/v3/bill/118/hr/2882/titles?format=json"
+   },
+   "type": "HR",
+   "updateDate": "2026-01-15T01:16:52Z",
+   "updateDateIncludingText": "2026-01-15T01:16:52Z"
+  },
+  "request": {
+   "billNumber": "2882",
+   "billType": "hr",
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json"
+  }
+ },
+ "bill/118/hr/9029": {
+  "bill": {
+   "actions": {
+    "count": 5,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/actions?format=json"
+   },
+   "committeeReports": [
+    {
+     "citation": "H. Rept. 118-585",
+     "url": "https://api.congress.gov/v3/committee-report/118/HRPT/585?format=json"
+    }
+   ],
+   "committees": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/committees?format=json"
+   },
+   "congress": 118,
+   "introducedDate": "2024-07-12",
+   "latestAction": {
+    "actionDate": "2024-07-12",
+    "text": "Placed on the Union Calendar, Calendar No. 485."
+   },
+   "legislationUrl": "https://www.congress.gov/bill/118th-congress/house-bill/9029",
+   "number": "9029",
+   "originChamber": "House",
+   "originChamberCode": "H",
+   "policyArea": {
+    "name": "Economics and Public Finance"
+   },
+   "relatedBills": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/relatedbills?format=json"
+   },
+   "sponsors": [
+    {
+     "bioguideId": "A000055",
+     "district": 4,
+     "firstName": "Robert",
+     "fullName": "Rep. Aderholt, Robert B. [R-AL-4]",
+     "isByRequest": "N",
+     "lastName": "Aderholt",
+     "middleName": "B.",
+     "party": "R",
+     "state": "AL",
+     "url": "https://api.congress.gov/v3/member/A000055?format=json"
+    }
+   ],
+   "subjects": {
+    "count": 157,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/subjects?format=json"
+   },
+   "summaries": {
+    "count": 2,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/summaries?format=json"
+   },
+   "textVersions": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/text?format=json"
+   },
+   "title": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2025",
+   "titles": {
+    "count": 6,
+    "url": "https://api.congress.gov/v3/bill/118/hr/9029/titles?format=json"
+   },
+   "type": "HR",
+   "updateDate": "2026-02-02T17:13:34Z",
+   "updateDateIncludingText": "2026-02-02T17:13:34Z"
+  },
+  "request": {
+   "billNumber": "9029",
+   "billType": "hr",
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json"
+  }
+ },
+ "bill/119/hr/5304": {
+  "bill": {
+   "actions": {
+    "count": 3,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/actions?format=json"
+   },
+   "committeeReports": [
+    {
+     "citation": "H. Rept. 119-271",
+     "url": "https://api.congress.gov/v3/committee-report/119/HRPT/271?format=json"
+    }
+   ],
+   "committees": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/committees?format=json"
+   },
+   "congress": 119,
+   "constitutionalAuthorityStatementText": "<pre>\n[Congressional Record Volume 171, Number 149 (Thursday, September 11, 2025)]\n[House]\nFrom the Congressional Record Online through the Government Publishing Office [<a href=\"https://www.gpo.gov\">www.gpo.gov</a>]\nBy Mr. ADERHOLT:\nH.R. 5304.\nCongress has the power to enact this legislation pursuant\nto the following:\nThe principal constitutional authority for this legislation\nis clause 7 of section 9 of article I of the Constitution of\nthe United States (the appropriation power), which states:\n``No Money shall be drawn from the Treasury, but in\nConsequence of Appropriations made by Law . . . .'' In\naddition, clause 1 of section 8 of article I of the\nConstitution (the spending power) provides: ``The Congress\nshall have the Power . . . to pay the Debts and provide for\nthe common Defence and general Welfare of the United States .\n. . .'' Together, these specific constitutional provisions\nestablish the congressional power of the purse, granting\nCongress the authority to appropriate funds, to determine\ntheir purpose, amount, and period of availability, and to set\nforth terms and conditions governing their use.\n[Page H4265]\n</pre>",
+   "introducedDate": "2025-09-11",
+   "latestAction": {
+    "actionDate": "2025-09-11",
+    "text": "Placed on the Union Calendar, Calendar No. 227."
+   },
+   "legislationUrl": "https://www.congress.gov/bill/119th-congress/house-bill/5304",
+   "number": "5304",
+   "originChamber": "House",
+   "originChamberCode": "H",
+   "policyArea": {
+    "name": "Economics and Public Finance"
+   },
+   "relatedBills": {
+    "count": 2,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/relatedbills?format=json"
+   },
+   "sponsors": [
+    {
+     "bioguideId": "A000055",
+     "district": 4,
+     "firstName": "Robert",
+     "fullName": "Rep. Aderholt, Robert B. [R-AL-4]",
+     "isByRequest": "N",
+     "lastName": "Aderholt",
+     "middleName": "B.",
+     "party": "R",
+     "state": "AL",
+     "url": "https://api.congress.gov/v3/member/A000055?format=json"
+    }
+   ],
+   "subjects": {
+    "count": 162,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/subjects?format=json"
+   },
+   "summaries": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/summaries?format=json"
+   },
+   "textVersions": {
+    "count": 1,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/text?format=json"
+   },
+   "title": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2026",
+   "titles": {
+    "count": 7,
+    "url": "https://api.congress.gov/v3/bill/119/hr/5304/titles?format=json"
+   },
+   "type": "HR",
+   "updateDate": "2026-07-11T15:38:23Z",
+   "updateDateIncludingText": "2026-07-11T15:38:23Z"
+  },
+  "request": {
+   "billNumber": "5304",
+   "billType": "hr",
+   "congress": "119",
+   "contentType": "application/json",
+   "format": "json"
+  }
+ },
+ "committee-report/118/hrpt/364": {
+  "committeeReports": [
+   {
+    "associatedBill": [
+     {
+      "congress": 118,
+      "number": "2882",
+      "type": "HR",
+      "url": "https://api.congress.gov/v3/bill/118/hr/2882?format=json"
+     }
+    ],
+    "chamber": "House",
+    "citation": "H. Rept. 118-364",
+    "committees": [
+     {
+      "name": "Natural Resources Committee",
+      "systemCode": "hsii00",
+      "url": "https://api.congress.gov/v3/committee/house/hsii00?format=json"
+     }
+    ],
+    "congress": 118,
+    "isConferenceReport": false,
+    "issueDate": "2024-01-30T05:00:00Z",
+    "number": 364,
+    "part": 1,
+    "reportType": "H.Rept.",
+    "sessionNumber": 2,
+    "text": {
+     "count": 2,
+     "url": "https://api.congress.gov/v3/committee-report/118/hrpt/364/text?format=json"
+    },
+    "title": "UDALL FOUNDATION REAUTHORIZATION ACT OF 2023",
+    "type": "HRPT",
+    "updateDate": "2025-05-27T14:15:02Z"
+   }
+  ],
+  "request": {
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "364",
+   "reportType": "hrpt"
+  }
+ },
+ "committee-report/118/hrpt/585": {
+  "committeeReports": [
+   {
+    "associatedBill": [
+     {
+      "congress": 118,
+      "number": "9029",
+      "type": "HR",
+      "url": "https://api.congress.gov/v3/bill/118/hr/9029?format=json"
+     }
+    ],
+    "chamber": "House",
+    "citation": "H. Rept. 118-585",
+    "committees": [
+     {
+      "name": "Appropriations Committee",
+      "systemCode": "hsap00",
+      "url": "https://api.congress.gov/v3/committee/house/hsap00?format=json"
+     }
+    ],
+    "congress": 118,
+    "isConferenceReport": false,
+    "issueDate": "2024-07-12T04:00:00Z",
+    "number": 585,
+    "part": 1,
+    "reportType": "H.Rept.",
+    "sessionNumber": 2,
+    "text": {
+     "count": 2,
+     "url": "https://api.congress.gov/v3/committee-report/118/hrpt/585/text?format=json"
+    },
+    "title": "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION, AND RELATED AGENCIES APPROPRIATIONS BILL, 2025",
+    "type": "HRPT",
+    "updateDate": "2025-05-27T14:14:14Z"
+   }
+  ],
+  "request": {
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "585",
+   "reportType": "hrpt"
+  }
+ },
+ "committee-report/118/hrpt/585/text": {
+  "pagination": {
+   "count": 2
+  },
+  "request": {
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "585",
+   "reportType": "hrpt"
+  },
+  "text": [
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "Formatted Text",
+      "url": "https://www.congress.gov/118/crpt/hrpt585/generated/CRPT-118hrpt585.htm"
+     }
+    ]
+   },
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "PDF",
+      "url": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf"
+     }
+    ]
+   }
+  ]
+ },
+ "committee-report/118/hrpt/74": {
+  "committeeReports": [
+   {
+    "associatedBill": [
+     {
+      "congress": 118,
+      "number": "1713",
+      "type": "HR",
+      "url": "https://api.congress.gov/v3/bill/118/hr/1713?format=json"
+     }
+    ],
+    "chamber": "House",
+    "citation": "H. Rept. 118-74",
+    "committees": [
+     {
+      "name": "Science, Space, and Technology Committee",
+      "systemCode": "hssy00",
+      "url": "https://api.congress.gov/v3/committee/house/hssy00?format=json"
+     }
+    ],
+    "congress": 118,
+    "isConferenceReport": false,
+    "issueDate": "2023-05-22T04:00:00Z",
+    "number": 74,
+    "part": 1,
+    "reportType": "H.Rept.",
+    "sessionNumber": 1,
+    "text": {
+     "count": 4,
+     "url": "https://api.congress.gov/v3/committee-report/118/hrpt/74/text?format=json"
+    },
+    "title": "DOE AND USDA INTERAGENCY RESEARCH ACT",
+    "type": "HRPT",
+    "updateDate": "2025-05-27T14:16:54Z"
+   },
+   {
+    "associatedBill": [
+     {
+      "congress": 118,
+      "number": "1713",
+      "type": "HR",
+      "url": "https://api.congress.gov/v3/bill/118/hr/1713?format=json"
+     }
+    ],
+    "chamber": "House",
+    "citation": "H. Rept. 118-74,Part 2",
+    "committees": [
+     {
+      "name": "Agriculture Committee",
+      "systemCode": "hsag00",
+      "url": "https://api.congress.gov/v3/committee/house/hsag00?format=json"
+     }
+    ],
+    "congress": 118,
+    "isConferenceReport": false,
+    "issueDate": "2023-05-22T04:00:00Z",
+    "number": 74,
+    "part": 2,
+    "reportType": "H.Rept.",
+    "sessionNumber": 1,
+    "text": {
+     "count": 4,
+     "url": "https://api.congress.gov/v3/committee-report/118/hrpt/74/text?format=json"
+    },
+    "title": "DOE AND USDA INTERAGENCY RESEARCH ACT",
+    "type": "HRPT",
+    "updateDate": "2025-05-27T14:16:34Z"
+   }
+  ],
+  "request": {
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "74",
+   "reportType": "hrpt"
+  }
+ },
+ "committee-report/118/hrpt/74/text": {
+  "pagination": {
+   "count": 4
+  },
+  "request": {
+   "congress": "118",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "74",
+   "reportType": "hrpt"
+  },
+  "text": [
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "Formatted Text",
+      "url": "https://www.congress.gov/118/crpt/hrpt74/generated/CRPT-118hrpt74.htm"
+     }
+    ]
+   },
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "PDF",
+      "url": "https://www.congress.gov/118/crpt/hrpt74/CRPT-118hrpt74.pdf"
+     }
+    ]
+   },
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "Formatted Text",
+      "url": "https://www.congress.gov/118/crpt/hrpt74/generated/CRPT-118hrpt74-pt2.htm"
+     }
+    ]
+   },
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "PDF",
+      "url": "https://www.congress.gov/118/crpt/hrpt74/CRPT-118hrpt74-pt2.pdf"
+     }
+    ]
+   }
+  ]
+ },
+ "committee-report/119/hrpt/271": {
+  "committeeReports": [
+   {
+    "associatedBill": [
+     {
+      "congress": 119,
+      "number": "5304",
+      "type": "HR",
+      "url": "https://api.congress.gov/v3/bill/119/hr/5304?format=json"
+     }
+    ],
+    "chamber": "House",
+    "citation": "H. Rept. 119-271",
+    "committees": [
+     {
+      "name": "Appropriations Committee",
+      "systemCode": "hsap00",
+      "url": "https://api.congress.gov/v3/committee/house/hsap00?format=json"
+     }
+    ],
+    "congress": 119,
+    "isConferenceReport": false,
+    "issueDate": "2025-09-11T04:00:00Z",
+    "number": 271,
+    "part": 1,
+    "reportType": "H.Rept.",
+    "sessionNumber": 1,
+    "text": {
+     "count": 2,
+     "url": "https://api.congress.gov/v3/committee-report/119/hrpt/271/text?format=json"
+    },
+    "title": "DEPARTMENTS OF LABOR, HEALTH AND HUMAN SERVICES, AND EDUCATION, AND RELATED AGENCIES APPROPRIATIONS BILL, 2026",
+    "type": "HRPT",
+    "updateDate": "2026-02-04T04:26:28Z"
+   }
+  ],
+  "request": {
+   "congress": "119",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "271",
+   "reportType": "hrpt"
+  }
+ },
+ "committee-report/119/hrpt/271/text": {
+  "pagination": {
+   "count": 2
+  },
+  "request": {
+   "congress": "119",
+   "contentType": "application/json",
+   "format": "json",
+   "reportNumber": "271",
+   "reportType": "hrpt"
+  },
+  "text": [
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "Formatted Text",
+      "url": "https://www.congress.gov/119/crpt/hrpt271/generated/CRPT-119hrpt271.htm"
+     }
+    ]
+   },
+   {
+    "formats": [
+     {
+      "isErrata": "N",
+      "type": "PDF",
+      "url": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf"
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -44,7 +44,8 @@ GT24 = ROOT / "tests" / "ground_truth" / "fy24_cjs_jes_title_iii.json"
 
 
 def ingest_jes(store):
-    with mock.patch.object(g, "STORE_DIR", store), mock.patch.object(g, "MANIFEST_PATH", store / "manifest.json"):
+    with mock.patch.object(g, "STORE_DIR", store), mock.patch.object(g, "MANIFEST_PATH", store / "manifest.json"), \
+            mock.patch.object(g.public_links, "http_get", side_effect=g.URLError("offline test")):
         m = g.load_manifest()
         res = g.ingest_local(JES, m, subcommittee="CJS", fiscal_year=2026, stage="Enacted", doc_type="jes",
                              advance_copy=False, source_agency="Senate Committee on Appropriations",
@@ -210,7 +211,7 @@ class Jes24Breadth(unittest.TestCase):
         with mock.patch.object(g, "STORE_DIR", d / "store"), mock.patch.object(g, "MANIFEST_PATH", d / "store" / "manifest.json"):
             m = g.load_manifest()
             res = g.ingest_local(JES24, m, subcommittee="CJS", fiscal_year=2024, stage="Enacted", doc_type="jes",
-                                 advance_copy=False)
+                                 advance_copy=False, public=False)      # a scan shared with the project
             g.save_manifest(m)
         with mock.patch.object(ex, "_client", side_effect=no_api):
             cls.result = ex.run(res["path"], title="TITLE III", cache_dir=d / "cache", out_dir=d / "out", verbose=False)

@@ -30,12 +30,17 @@ SENATE = ROOT / "document_store" / "CRPT-119srpt44.pdf"
 JES = ROOT / "fy26_cjs_jes.pdf"
 
 
+def offline(url, accept=None):
+    raise g.URLError("offline test: no public-link check")
+
+
 class TempStore:
     def __enter__(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.dir = Path(self.tmp.name)
         self.patches = [mock.patch.object(g, "STORE_DIR", self.dir / "store"),
-                        mock.patch.object(g, "MANIFEST_PATH", self.dir / "store" / "manifest.json")]
+                        mock.patch.object(g, "MANIFEST_PATH", self.dir / "store" / "manifest.json"),
+                        mock.patch.object(g.public_links, "http_get", offline)]     # no live link checks
         for pt in self.patches:
             pt.start()
         return self.dir
@@ -48,7 +53,8 @@ class TempStore:
 
 def ingest(pdf, **kw):
     m = g.load_manifest()
-    args = dict(subcommittee="CJS", fiscal_year=2026, stage="Enacted", doc_type="jes", advance_copy=False)
+    args = dict(subcommittee="CJS", fiscal_year=2026, stage="Enacted", doc_type="jes", advance_copy=False,
+                source_url="https://example.invalid/document.pdf")       # a public document needs its link
     args.update(kw)
     res = g.ingest_local(pdf, m, **args)
     g.save_manifest(m)
@@ -121,9 +127,10 @@ class ManualIngest(unittest.TestCase):
             doc = ex.describe_package(res["package_id"], m[res["package_id"]])
             self.assertEqual((doc["document_type"], doc["stage"], doc["chamber"]), ("explanatory_statement", "Enacted", "N/A"))
             sd = ex.source_document_fields(res["package_id"], "sha", doc, m[res["package_id"]], [])
+            # a --source-url whose file isn't the one ingested (here: unreachable) is no public link
             self.assertEqual((sd["ingest_method"], sd["advance_copy"], sd["confirmation_status"], sd["subcommittee"],
-                              sd["url_or_identifier"]),
-                             ("manual", False, "no_official_counterpart", "CJS", "https://example.invalid/jes.pdf"))
+                              sd["url_or_identifier"], sd["link_needs_review"]),
+                             ("manual", False, "no_official_counterpart", "CJS", f"manual:{res['package_id']}", True))
 
 
 @unittest.skipUnless(SENATE.exists(), "CRPT-119srpt44.pdf not present")
@@ -226,7 +233,7 @@ class AdvanceCopyReconciliation(unittest.TestCase):
                         "packageId": "CRPT-119srpt44", "congress": "119",   # govinfo's own title and Congress
                         "title": "DEPARTMENTS OF COMMERCE AND JUSTICE, SCIENCE, AND RELATED AGENCIES APPROPRIATIONS BILL, 2026"}]
                         if c == "CRPT" else []), \
-                    mock.patch.object(g, "fetch_and_store", side_effect=lambda pid, k, man: (
+                    mock.patch.object(g, "fetch_and_store", side_effect=lambda pid, k, man, **kw: (
                         man.update({pid: {"hash": "x", "stored_path": "x", "ingest_method": "govinfo_api"}}) or
                         {"package_id": pid, "status": "stored"})), \
                     mock.patch("reconcile.reconcile", return_value={"outcome": "confirmed_identical_bytes"}) as rec:

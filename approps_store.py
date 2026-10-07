@@ -802,6 +802,22 @@ def resolve_relationship(conn, relationship_id, reviewer, resolution, verificati
 WAIVABLE = {"historical_names_display": check_historical_names}
 
 
+URL_COLUMNS = {"Source Document": ("document_id", "url_or_identifier"),
+               "Bill Report Reference": ("reference_id", "bill_url", "report_jes_url")}
+
+
+def api_key_urls(rows):
+    """A link the site would show must never carry an api_key (govinfo's API fetch links need
+    one; the public content links don't)."""
+    out = []
+    for tab, (key, *cols) in URL_COLUMNS.items():
+        for r in rows.get(tab) or []:
+            for c in cols:
+                if r.get(c) and re.search(r"api[_-]?key", str(r[c]), re.I):
+                    out.append(f"{tab} {r[key]}: {c} carries an api_key -- use the public link")
+    return out
+
+
 def load(workbook, db_path, waive=()):
     """Build a fresh database at db_path from the workbook. -> load report."""
     unknown = set(waive) - set(WAIVABLE)
@@ -820,7 +836,7 @@ def load(workbook, db_path, waive=()):
         rows["Component"] = [{"component_id": c, "label": A.COMPONENT_LABELS[c][0], "kind": k, "description": d}
                              for c, k, d in A.COMPONENT_KINDS]
         report["component_kinds_from"] = "accounts.COMPONENT_KINDS (no Component rows in the workbook)"
-    problems = check_bill_report_lookups(tabs, rows)
+    problems = check_bill_report_lookups(tabs, rows) + api_key_urls(rows)
     for name, check in WAIVABLE.items():
         found = check(rows)
         if name in waive:

@@ -147,6 +147,10 @@ jobs:
               p.chromium.launch().close()
           PY
       - name: Run the browser tests
+        env:
+          # matcher parity: a fixed, seeded ~1,500-query sample across query kinds on pull requests;
+          # all 14,574 queries on pushes to main (tests/test_static.py MatcherParity)
+          PARITY_SAMPLE: ${{ github.event_name == 'pull_request' && '1500' || '' }}
         run: >
           python -m pytest tests/test_web.py tests/test_compare.py tests/test_static.py -v -rs -p no:cacheprovider
           -n auto --dist loadscope --durations=10

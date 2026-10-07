@@ -47,28 +47,60 @@ def python_answers(db, queries):
         conn.close()
 
 
-def names_and_variants(pool):
-    """Queries a user could type: every name as is, with its agency in
-    front, and one- and two-edit misspellings of each; agencies alone;
-    junk."""
-    qs = set()
+def typed_queries(pool):
+    """Queries a user could type, each with its kind: every name as is, with its agency in
+    front, and one- and two-edit misspellings of each; agencies alone; junk. {query: kind}
+    (a query two recipes produce keeps the first kind)."""
+    qs = {}
+
+    def add(kind, *qq):
+        for q in qq:
+            qs.setdefault(q, kind)
     agencies = sorted({a["agency"] for a in pool})
     for a in pool:
         for n in [a["canonical_name"]] + a["historical_names"]:
-            qs.update({n, n.lower(), n.upper(), "  " + n + "  ", f"NASA {n}", f"NSF {n}", f"DOJ {n}", f"{a['agency']} {n}"})
+            add("name", n, n.lower(), n.upper(), "  " + n + "  ")
+            add("agency_prefixed", f"NASA {n}", f"NSF {n}", f"DOJ {n}", f"{a['agency']} {n}")
             letters = [i for i, ch in enumerate(n) if ch.isalpha()]
             for k, i in enumerate(letters):
-                qs.add(n[:i] + n[i + 1:])                                   # deletion
-                qs.add(n[:i] + ("x" if n[i] != "x" else "q") + n[i + 1:])   # substitution
+                add("deletion", n[:i] + n[i + 1:])
+                add("substitution", n[:i] + ("x" if n[i] != "x" else "q") + n[i + 1:])
                 if k % 2 == 0 and i + 3 < len(n):
-                    qs.add(n[:i] + n[i + 1] + n[i] + n[i + 2:])             # transposition (two edits)
-                    qs.add(n[:i] + "zz" + n[i + 2:])                        # two substitutions
+                    add("transposition", n[:i] + n[i + 1] + n[i] + n[i + 2:])     # two edits
+                    add("two_substitutions", n[:i] + "zz" + n[i + 2:])
     for ag in agencies:
-        qs.update({ag, ag.lower(), "".join(w[0] for w in ag.split() if w.lower() not in S.STOPWORDS)})
-    qs.update({"Office of Inspector General", "Nothing Like Any Account", "a", "NASA", "NSF", "National",
-               "Science Science", "Deep Spaee Exploratlon Systems", "Scince", "Space Operation", "Educaton",
-               "<img src=x>", "Exploration Technology", "Space Tech", "Defense function", "STEM"})
-    return sorted(qs)
+        add("agency", ag, ag.lower(), "".join(w[0] for w in ag.split() if w.lower() not in S.STOPWORDS))
+    add("hand_picked", "Office of Inspector General", "Nothing Like Any Account", "a", "NASA", "NSF", "National",
+        "Science Science", "Deep Spaee Exploratlon Systems", "Scince", "Space Operation", "Educaton",
+        "<img src=x>", "Exploration Technology", "Space Tech", "Defense function", "STEM")
+    return qs
+
+
+def names_and_variants(pool):
+    return sorted(typed_queries(pool))
+
+
+PARITY_SEED = 20261007
+
+
+def parity_sample(typed, size, seed=PARITY_SEED):
+    """A fixed, seeded sample of about `size` queries spread across the kinds: each kind in
+    proportion to its share, at least 50 of it (all of a smaller kind); the agency and
+    hand-picked queries always in full."""
+    import random
+    by_kind = {}
+    for q, k in sorted(typed.items()):
+        by_kind.setdefault(k, []).append(q)
+    rng = random.Random(seed)
+    total = len(typed)
+    out = []
+    for k, qs in sorted(by_kind.items()):
+        if k in ("agency", "hand_picked"):
+            out += qs
+            continue
+        n = min(len(qs), max(50, round(size * len(qs) / total)))
+        out += rng.sample(qs, n)
+    return sorted(out)
 
 
 def python_answer(res):
@@ -156,8 +188,12 @@ class MatcherParity(StaticTest):
     """web/match.js gives approps_store.resolve()'s answer for every query."""
 
     def test_same_answers_as_python(self):
-        queries = names_and_variants(self.index["accounts"])
-        self.assertGreater(len(queries), 2000)
+        # every query (14,574) on pushes to main; a pull request's CI sets PARITY_SAMPLE for a
+        # fixed, seeded sample spread across the query kinds (the matcher itself is unchanged)
+        typed = typed_queries(self.index["accounts"])
+        self.assertGreater(len(typed), 2000)
+        size = int(os.environ.get("PARITY_SAMPLE") or 0)
+        queries = parity_sample(typed, size) if size else sorted(typed)
         script = f"""
             const m = require({json.dumps(str(ROOT / "web" / "match.js"))});
             const idx = require({json.dumps(str(self.out / "data" / "index.json"))});
