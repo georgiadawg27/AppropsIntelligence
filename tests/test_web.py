@@ -399,23 +399,23 @@ class V33Page(BrowserBase):
         self.assertNotIn("CJS Title III pilot", self.page.inner_text("main"))
 
     def test_health_centers_indented_under_primary_care(self):
-        self.compare("/?view=compare&sc=LHHS&fy=2024-2024&stage=Senate+Reported")
+        self.compare("/?view=compare&sc=LHHS&grid=stages&fy=2024")
         ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
         i = ids.index("ACC-HHS-HRSA-PRIMARY-CARE")
         self.assertEqual(ids[i + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
         row = self.page.locator("#compare-grid tr[data-account='ACC-HHS-HRSA-HEALTH-CENTERS']")
-        self.assertIn("child", row.get_attribute("class"))
-        self.assertIn("within Primary Health Care", row.locator("[data-testid=row-child-of]").inner_text())
+        self.assertEqual(row.locator("[data-testid=tag]").inner_text(), "inside the line above · not added")
+        self.assertIn("inside Primary Health Care", row.locator("[data-testid=tag]").get_attribute("title"))
 
     def test_fy2023_senate_note_with_the_stage(self):
-        self.compare("/?view=compare&sc=LHHS&fy=2023-2023&stage=Senate+Reported")
+        self.compare("/?view=compare&sc=LHHS&grid=stages&fy=2023")
         mark = self.page.locator("#compare-grid thead [data-testid=stage-note-mark]")
         self.assertEqual(mark.count(), 1)
         self.assertIn("never reported", mark.get_attribute("title"))
         self.assertIn("FY2023 Senate Reported: committee draft released 2022-07-28",
                       self.page.inner_text("[data-testid=stage-notes]"))
         # not shown when the column isn't
-        self.compare("/?view=compare&sc=LHHS&fy=2024-2024&stage=Senate+Reported")
+        self.compare("/?view=compare&sc=LHHS&grid=stages&fy=2024")
         self.assertEqual(self.page.locator("[data-testid=stage-notes]").count(), 0)
 
     def open(self, acct):

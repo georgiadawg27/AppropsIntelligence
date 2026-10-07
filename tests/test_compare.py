@@ -41,26 +41,6 @@ def plain(obj):
     return json.loads(json.dumps(obj, default=str))
 
 
-def label(line):
-    return line["amount_type"] + (" · " + line["component"] if line["component"] else "")
-
-
-def expected_cell(cell):
-    """What the page must show for one cell, from the Python grid: the
-    whole-cell rule (nothing on file and one state: shown once, as that
-    state), the budget-authority headline (else the cell's first line), and
-    every other line behind "more". Only a figure shows an amount."""
-    lines = cell["lines"]
-    if lines and all(not line["observations"] and not line.get("absence") and line["state"] == lines[0]["state"]
-                     for line in lines):
-        return {"empty": True, "outside": cell["outside_history"]}
-    head = next((line for line in lines if line["amount_type"] == "budget authority" and not line["component"]), lines[0])
-    shown = lambda line: [money(o["amount"]) for o in line["observations"]] if line["state"] == "value" else []
-    return {"empty": False, "outside": cell["outside_history"],
-            "head": [head["state"], shown(head)],
-            "more": [[label(line), line["state"], shown(line)] for line in lines if line is not head]}
-
-
 def with_sourced_totals(src, dst):
     """A copy of the store with a printed Title III total (FY2024 Enacted,
     33,944,930 as H.Rept. 118-582 p.248 prints it) and a bill-total row: the
@@ -84,18 +64,32 @@ def with_sourced_totals(src, dst):
     return dst
 
 
+# every figure cell of the grid as rendered: account, fiscal year, stage, state, the number shown
 SHOWN_JS = """() => [...document.querySelectorAll('[data-testid=compare-cell]')].map(td => {
-    const acct = td.closest('tr').dataset.account;
-    const amounts = (n) => [...n.querySelectorAll(':scope > .amt')].map(a => a.textContent);
-    const out = {account: acct, fy: Number(td.dataset.fy), stage: td.dataset.stage,
-                 empty: td.classList.contains('empty'), outside: td.dataset.outside === 'true'};
-    if (!out.empty) {
-      const head = td.querySelector(':scope > .line');
-      out.head = [head.dataset.state, amounts(head)];
-      out.more = [...td.querySelectorAll(':scope > details.more > .line')].map(l => [l.dataset.series, l.dataset.state, amounts(l)]);
-    }
-    return out;
+    const amt = td.querySelector(':scope > [data-testid=amount]');
+    return {account: td.closest('tr').dataset.account, fy: Number(td.dataset.fy), stage: td.dataset.stage,
+            state: td.dataset.state, amount: amt ? amt.textContent : null, outside: td.dataset.outside === 'true'};
 })"""
+
+
+def thousands(amount):
+    """GridMath.number in $ thousands: whole thousands with commas, a minus sign for a negative."""
+    v = round(amount / 1000)
+    return ("\u2212" if v < 0 else "") + f"{abs(v):,}"
+
+
+def expected_headline(row, fy, stage):
+    """What a grid cell shows: the headline line's (budget authority, no component; else the cell's
+    first line) state, and its printed figure in $ thousands where it has one."""
+    cell = row["cells"][f"{fy}|{stage}"]
+    lines = cell["lines"]
+    if not lines:
+        return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": "",
+                "amount": None, "outside": cell["outside_history"]}
+    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), lines[0])
+    return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": h["state"],
+            "amount": thousands(h["observations"][0]["amount"]) if h["state"] == "value" else None,
+            "outside": cell["outside_history"]}
 
 
 class CompareTest(unittest.TestCase):
@@ -460,9 +454,15 @@ class GridData(CompareTest):
 
 @unittest.skipUnless(sync_playwright and chromium_path(), "playwright / chromium not available")
 class CompareBrowser(CompareTest):
+    """The grid page: three views over the store's own cells. Every state and figure is the
+    store's (subcommittee_grid); the page picks columns, lays rows out and works out changes."""
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        conn = S.connect(cls.db, readonly=True)
+        cls.lhhs = plain(S.subcommittee_grid(conn, "LHHS"))
+        conn.close()
         cls.out = Path(cls.tmp.name) / "docs"
         E.export(WORKBOOK, cls.out)
 
@@ -488,7 +488,7 @@ class CompareBrowser(CompareTest):
         super().tearDownClass()
 
     def setUp(self):
-        self.page = self.browser.new_page(viewport={"width": 1300, "height": 900})
+        self.page = self.browser.new_page(viewport={"width": 1440, "height": 900})
         self.errors = []
         self.page.on("pageerror", lambda e: self.errors.append(str(e)))
 
@@ -496,212 +496,315 @@ class CompareBrowser(CompareTest):
         self.page.close()
         self.assertEqual(self.errors, [])
 
-    def open(self, where, query="?view=compare&sc=CJS&fy=2017-2026"):
+    def open(self, where="static", query="?view=compare&sc=CJS"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
 
     def cell(self, aid, fy, stage):
         return self.page.locator(f"tr[data-account={aid}] td[data-fy='{fy}'][data-stage=\"{stage}\"]")
 
-    def expected(self, years, stages):
-        return [{"account": r["account"]["canonical_account_id"], "fy": y, "stage": st,
-                 **expected_cell(r["cells"][f"{y}|{st}"])}
-                for r in self.grid["rows"] for y in years for st in stages]
+    def lrow(self, aid):
+        return next(r for r in self.lhhs["rows"] if r["account"]["canonical_account_id"] == aid)
 
-    def test_fy2017_2026_all_stages_every_cell(self):
-        for where in self.urls:
-            with self.subTest(where):
-                self.open(where)
-                shown = self.page.evaluate(SHOWN_JS)
-                self.assertEqual(len(shown), 30 * 10 * 4)
-                self.assertEqual(shown, self.expected(YEARS, FOUR))
+    # ---- the cells are the store's -------------------------------------------------------
 
-    def test_acceptance_accounts_are_rows_resolved_through_former_names(self):
-        self.open("static")
-        rows = self.page.locator("[data-testid=compare-row]")
-        self.assertEqual(rows.count(), 30)
-        for aid in ("ACC-NASA-SCIENCE", "ACC-NASA-EXPLORATION", "ACC-NASA-SPACEOPS", "ACC-DOJ-OIG", "ACC-NASA-OIG",
-                    "ACC-NSF-OIG", "ACC-NSF-RRA", "ACC-NASA-SPACETECH", "ACC-DOJ-CVF"):
-            self.assertEqual(self.page.locator(f"tr[data-account={aid}]").count(), 1, aid)
-        self.assertIn("“LEO and Spaceflight Operations”",
-                      self.page.locator("tr[data-account=ACC-NASA-SPACEOPS] [data-testid=row-former]").inner_text())
-        self.assertIn("“Deep Space Exploration Systems”",
-                      self.page.locator("tr[data-account=ACC-NASA-EXPLORATION] [data-testid=row-former]").inner_text())
-        self.assertEqual(self.page.locator("tr[data-account=ACC-NASA-SPACEOPS] [data-testid=row-name]").inner_text(),
-                         "Space Operations")
+    def test_every_headline_cell_is_the_stores(self):
+        # Compare stages, each fiscal year: every account's four stage cells, state and figure
+        for fy in YEARS:
+            with self.subTest(fy=fy):
+                self.open("static", f"?view=compare&sc=CJS&grid=stages&fy={fy}")
+                self.assertEqual(self.page.evaluate(SHOWN_JS),
+                                 [expected_headline(r, fy, st) for r in self.grid["rows"] for st in FOUR])
 
-    def test_exploration_headline_is_budget_authority_and_expands_to_the_supplemental(self):
-        self.open("static")
-        td = self.cell("ACC-NASA-EXPLORATION", 2024, "Enacted")
-        self.assertEqual(td.locator(":scope > .line .amt").inner_text(), "$7,216,200,000")   # BA, not BA + supplemental
-        more = td.locator("details.more")
-        self.assertFalse(more.locator(".line[data-series=supplemental]").is_visible())       # folded by default
-        more.locator(":scope > summary").click()
-        self.assertEqual(more.locator(".line[data-series=supplemental] .amt").inner_text(), "$450,000,000")
-        # every Exploration cell with a supplemental figure carries it behind "more"
-        exp = self.row("ACC-NASA-EXPLORATION")
-        n = 0
-        for y in YEARS:
-            for st in FOUR:
-                for line in exp["cells"][f"{y}|{st}"]["lines"]:
-                    if line["amount_type"] == "supplemental" and line["state"] == "value":
-                        n += 1
-                        self.assertEqual(self.cell("ACC-NASA-EXPLORATION", y, st)
-                                         .locator("details.more .line[data-series=supplemental] .amt").all_text_contents(),
-                                         [money(o["amount"]) for o in line["observations"]])
-        self.assertEqual(n, 4)          # the other five supplemental lines print a zero: not funded, no figure
+    def test_enacted_history_and_two_years_show_the_same_cells(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=enacted")
+        self.assertEqual(self.page.evaluate(SHOWN_JS),
+                         [expected_headline(r, y, "Enacted") for r in self.lhhs["rows"] for y in self.lhhs["fiscal_years"]])
+        self.open("static", "?view=compare&sc=LHHS&grid=years&a=2024&b=2026")
+        self.assertEqual(self.page.evaluate(SHOWN_JS),
+                         [expected_headline(r, y, st) for r in self.lhhs["rows"] for y in (2024, 2026) for st in FOUR])
 
-    def test_rra_expands_to_the_defense_function_line(self):
-        self.open("static")
-        rra = self.row("ACC-NSF-RRA")
-        for y in YEARS:
-            for st in FOUR:
-                defense = next(line for line in rra["cells"][f"{y}|{st}"]["lines"] if line["component"] == "defense")
-                got = self.cell("ACC-NSF-RRA", y, st).locator("details.more .line[data-series='budget authority · defense']")
-                self.assertEqual(got.get_attribute("data-state"), "value")
-                self.assertEqual(got.locator(".amt").all_text_contents(), [money(o["amount"]) for o in defense["observations"]])
-
-    def test_confirmed_absence_is_not_funded_never_blank_or_zero(self):
-        self.open("static")
-        spaceops = self.row("ACC-NASA-SPACEOPS")
-        n = absences = 0
-        for y in YEARS:
-            for st in FOUR:
-                resc = next(line for line in spaceops["cells"][f"{y}|{st}"]["lines"] if line["amount_type"] == "rescission")
-                line = self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more .line[data-series=rescission]")
-                self.assertEqual(line.get_attribute("data-state"), resc["state"], (y, st))
-                if resc["state"] == "not_funded":
-                    n += 1
-                    absences += bool(resc["absence"])
-                    self.cell("ACC-NASA-SPACEOPS", y, st).locator("details.more > summary").click()
-                    chip = line.locator("[data-testid=not-funded]")
-                    self.assertTrue(chip.is_visible())
-                    self.assertEqual(chip.inner_text(), "None")              # a rescission line: "None"
-                    # hover shows the evidence: the absence's, or the printed dash / zero's page
-                    self.assertEqual(chip.get_attribute("title"), resc["absence"]["evidence"] if resc["absence"] else
-                                     "Printed as a dash or zero (%s%s)." % (resc["observations"][0]["source_document_id"],
-                                     f" p.{resc['observations'][0]['source_page']}" if resc["observations"][0]["source_page"] else ""))
-                    self.assertEqual(line.locator(".amt").count(), 0)
-        self.assertEqual(absences, 34)              # v23 added FY2019's three 'NASA closeouts' cells
-        self.assertGreaterEqual(n, absences)
-
-    def test_narrow_filter_fy2026_enacted(self):
-        for where in self.urls:
-            with self.subTest(where):
-                self.open(where)
-                self.page.select_option("#fy-from", "2026")
-                self.page.select_option("#fy-to", "2026")
-                self.page.uncheck("#stage-all")
-                self.page.check("#stage-boxes input[value=Enacted]")
-                self.page.click("#compare-form button[type=submit]")
-                self.page.wait_for_function("document.querySelectorAll('[data-testid=compare-cell]').length === 30")
-                self.assertEqual(self.page.evaluate(SHOWN_JS), self.expected([2026], ["Enacted"]))
-                self.assertEqual(self.page.locator("#compare-grid thead").inner_text().split(), ["Account", "FY2026", "Enacted"])
-                self.assertTrue(self.page.url.endswith("?view=compare&sc=CJS&fy=2026&stage=Enacted"), self.page.url)
-                html = self.page.inner_html("#compare-grid")
-                self.open(where, "?view=compare&sc=CJS&fy=2026&stage=Enacted")          # the link reproduces it
-                self.assertEqual(self.page.inner_html("#compare-grid"), html)
-
-    def test_multiple_years_and_stages(self):
-        self.open("static", "?view=compare&sc=CJS&fy=2019,2021&stage=President's Budget,Enacted")
-        self.assertEqual(self.page.evaluate(SHOWN_JS), self.expected([2019, 2021], ["President's Budget", "Enacted"]))
-        self.assertEqual([i.get_attribute("value") for i in self.page.locator("#fy-boxes input:checked").all()],
-                         ["2019", "2021"])
-        self.assertFalse(self.page.is_checked("#stage-all"))
+    def test_grid_state_counts_are_unchanged(self):
+        want = {"LHHS": {"value": 1452, "not_funded": 102, "no_printed_total": 13, "missing": 133, "not_collected": 200,
+                         "not_enacted": 100},
+                "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
+                        "not_enacted": 30}}
+        for sc, counts in want.items():
+            for grid in ("stages", "years", "enacted"):
+                self.open("static", f"?view=compare&sc={sc}&grid={grid}")
+                got = {s.get_attribute("data-state"): int(s.inner_text().split()[0].replace(",", ""))
+                       for s in self.page.locator("[data-testid=state-counts] [data-state]").all()}
+                self.assertEqual(got, counts, (sc, grid))
 
     def test_static_renders_exactly_what_live_renders(self):
-        for query in ("?view=compare&sc=CJS&fy=2017-2026", "?view=compare&sc=CJS", "?view=compare&sc=CJS&fy=2020&stage=Senate Reported"):
+        for query in ("?view=compare&sc=CJS", "?view=compare&sc=LHHS&grid=years&a=2025&b=2026&units=m",
+                      "?view=compare&sc=LHHS&grid=enacted&rev=1"):
             got = {}
             for where in self.urls:
                 self.open(where, query)
-                got[where] = self.page.inner_html("#compare-grid")
+                # the grid's height follows the page above it (the static page carries a freshness line)
+                got[where] = self.page.inner_html("#tiles") + self.page.inner_html("#compare-grid")
             self.assertEqual(got["static"], got["live"], query)
 
-    def test_rollup_rows_are_marked(self):
-        self.open("static")
-        marked = [r.get_attribute("data-account") for r in self.page.locator("[data-testid=compare-row].rollup").all()]
-        self.assertEqual(marked, ["ACC-NASA-TOTAL", "ACC-NSF-TOTAL"])
-        for aid in marked:
-            badge = self.page.locator(f"tr[data-account={aid}] [data-testid=rollup]")
-            self.assertEqual(badge.inner_text(), "Rollup of the accounts below — don't add")
-            self.assertIn("Derived rollup", badge.get_attribute("title"))
-            # it heads its group: the next rows are the accounts it totals
-            order = [r.get_attribute("data-account") for r in self.page.locator("[data-testid=compare-row]").all()]
-            members = self.row(aid)["rollup_members"]
-            self.assertEqual(order[order.index(aid) + 1: order.index(aid) + 1 + len(members)], members)
-            self.assertEqual([r.get_attribute("data-account") for r in self.page.locator(f"tr[data-member-of={aid}]").all()], members)
-        self.assertEqual(self.page.locator("[data-testid=rollup]").count(), 2)
+    # ---- rows ----------------------------------------------------------------------------
 
-    def test_rollup_folds_its_accounts_away(self):
-        self.open("static")
-        toggle = self.page.locator("tr[data-account=ACC-NASA-TOTAL] [data-testid=rollup-toggle]")
-        members = self.page.locator("tr[data-member-of=ACC-NASA-TOTAL]")
-        self.assertEqual((members.count(), toggle.inner_text()), (9, "▾ hide its 9 accounts"))
-        toggle.click()
-        self.assertEqual([m.is_hidden() for m in members.all()], [True] * 9)
-        self.assertEqual(toggle.get_attribute("aria-expanded"), "false")
-        self.assertTrue(self.page.locator("tr[data-account=ACC-NSF-RRA]").is_visible())         # NSF's group untouched
-        toggle.click()
-        self.assertEqual([m.is_visible() for m in members.all()], [True] * 9)
+    def test_chevrons_only_where_a_row_folds(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        chev = lambda aid: self.page.locator(f"tr[data-account={aid}] [data-testid=chevron]")
+        for aid in ("ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL", "ACC-HHS-NIH-NCI"):
+            self.assertEqual(chev(aid).count(), 0, aid)
+            self.assertEqual(self.page.locator(f"tr[data-account={aid}]").get_attribute("data-anc").find("ACC-HHS-AHA-TOTAL"), -1)
+        for aid in ("ACC-HHS-AHA-TOTAL", "ACC-HHS-NIH-TOTAL", "ACC-HHS-HRSA-PRIMARY-CARE"):
+            self.assertEqual(chev(aid).count(), 1, aid)
+        # every chevron is a row that folds something
+        with_chevron = {r.get_attribute("data-account") for r in self.page.locator("tr:has([data-testid=chevron])").all()}
+        folds = {r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if r["rollup_members"] or r.get("children")}
+        self.assertEqual(with_chevron, folds | {"ACC-HHS-AHA-TOTAL"})
 
-    def test_citations_open_on_click(self):
-        self.open("static")
-        td = self.cell("ACC-NASA-SCIENCE", 2024, "Enacted")
-        src = td.locator(":scope > .line details.src")
-        self.assertFalse(src.locator(".cite").is_visible())
-        self.assertEqual(src.locator("summary").inner_text().strip(), "source")
-        src.locator("summary").click()
-        self.assertTrue(src.locator(".cite").is_visible())
-        o = next(l for l in self.row("ACC-NASA-SCIENCE")["cells"]["2024|Enacted"]["lines"]
-                 if l["amount_type"] == "budget authority")["observations"][0]
-        self.assertEqual(src.locator(".cite").inner_text(), f"{o['source_document_id']} p.{o['source_page']}")
+    def test_nih_folds_over_its_institutes(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        chev = self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=chevron]")
+        members = self.page.locator("tr[data-member-of=ACC-HHS-NIH-TOTAL]")
+        self.assertEqual(members.count(), len(self.lrow("ACC-HHS-NIH-TOTAL")["rollup_members"]))
+        self.assertEqual(chev.get_attribute("aria-expanded"), "true")
+        chev.focus()
+        self.page.keyboard.press("Enter")                           # keyboard-operable
+        self.assertEqual(chev.get_attribute("aria-expanded"), "false")
+        self.assertEqual({m.is_hidden() for m in members.all()}, {True})
+        self.assertTrue(self.page.locator("tr[data-account=ACC-HHS-CDC-NIOSH]").is_visible())   # CDC's group untouched
+        chev.click()
+        self.assertEqual({m.is_visible() for m in members.all()}, {True})
 
-    def test_titles_head_their_groups_and_totals_are_never_summed(self):
-        self.open("static")
-        heads = self.page.locator("[data-testid=title-head]")
-        self.assertEqual([h.locator("th").inner_text() for h in heads.all()],
-                         ["Title I", "Title II", "Title III", "Title V", "Not yet placed in a title"])
-        notes = [n.inner_text() for n in self.page.locator("[data-testid=no-total]").all()]
-        self.assertEqual(len(notes), 6)                             # the bill, four titles, the unplaced account
-        self.assertTrue(notes[0].startswith("No printed bill total on file"))
-        self.assertTrue(notes[3].startswith("No printed total on file for Title III"))
-        # no dollar figure anywhere in a total row
-        self.assertEqual(self.page.locator("tr.total-row [data-testid=amount]").count(), 0)
+    def test_aha_opens_to_its_seven_incoming_relationships(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        aha = self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL]")
+        self.assertEqual(aha.locator("[data-testid=tag]").inner_text(), "proposed agency · not enacted")
+        notes = self.page.locator("tr[data-testid=rel-note][data-note-of=ACC-HHS-AHA-TOTAL]")
+        self.assertEqual(notes.count(), 7)
+        self.assertEqual({n.is_hidden() for n in notes.all()}, {True})             # folded until opened
+        aha.locator("[data-testid=chevron]").click()
+        self.assertEqual({n.is_visible() for n in notes.all()}, {True})
+        texts = [n.locator("td.note-text").inner_text() for n in notes.all()]
+        self.assertIn("FY2026 request: moved in from National Institute of Environmental Health Sciences "
+                      "(proposed, not enacted) · not yet reviewed", texts)
 
-    def test_a_sourced_total_renders_as_a_row(self):
+    def test_an_outgoing_proposed_move_is_a_note_under_the_account(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        note = self.page.locator("tr[data-testid=move-note][data-note-of=ACC-HHS-NIH-NIEHS]")
+        self.assertEqual(note.count(), 1)
+        self.assertEqual(note.locator("td.note-text").inner_text(),
+                         "FY2026 request: moved to Administration for a Healthy America (agency total) "
+                         "(proposed, not enacted) · not yet reviewed")
+        ids = self.page.eval_on_selector_all("#compare-grid tbody tr", "trs => trs.map(t => t.dataset.account || t.dataset.noteOf)")
+        self.assertEqual(ids[ids.index("ACC-HHS-NIH-NIEHS") + 1], "ACC-HHS-NIH-NIEHS")    # right under it
+
+    def test_tags(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        tag = lambda aid: [t.inner_text() for t in self.page.locator(f"tr[data-account={aid}] [data-testid=tag]").all()]
+        self.assertEqual(tag("ACC-HHS-NIH-SUBSTANCE-USE"), ["proposed in request"])
+        self.assertEqual(tag("ACC-HHS-HRSA-HEALTH-CENTERS"), ["inside the line above · not added"])
+        self.assertEqual(tag("ACC-HHS-NIH-NCI"), [])
+        ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
+        self.assertEqual(ids[ids.index("ACC-HHS-HRSA-PRIMARY-CARE") + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
+        # rows show the name only: no "single appropriation heading" or other notes
+        self.assertNotIn("single appropriation heading", self.page.inner_text("#compare-grid").lower())
+
+    def test_title_and_bill_totals_are_off_the_grid(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        self.assertEqual(self.page.locator("tr[data-account=ACC-HHS-TITLE-II-TOTAL]").count(), 0)
+        total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
+        want = expected_headline(total, 2026, "Enacted")["amount"]
+        tiles = [t.inner_text() for t in self.page.locator("[data-testid=tile]").all()]
+        self.assertTrue(any(t.startswith("Title II total · FY2026 Enacted") and want in t for t in tiles), tiles)
+        self.open("static", "?view=compare&sc=CJS")
+        self.assertIn("None on file", self.page.inner_text("[data-testid=tiles]"))     # never a sum of the accounts
+
+    def test_a_sourced_total_shows_in_the_tiles(self):
         db = with_sourced_totals(self.db, Path(self.tmp.name) / "totals_browser.db")
         srv = W.serve(db, port=0, verbose=False)
         threading.Thread(target=srv.serve_forever, daemon=True).start()
         try:
-            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2024&stage=Enacted")
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&grid=stages&fy=2024")
             self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-            total = self.page.locator("[data-testid=title-total][data-title='Title III']")
-            self.assertEqual(total.locator("[data-testid=amount]").inner_text(), "$33,944,930,000")
-            self.assertIn("printed total", total.inner_text())
-            self.assertEqual(self.page.locator("[data-testid=bill-total] [data-testid=no-total]").count(), 0)
+            tiles = [t.inner_text() for t in self.page.locator("[data-testid=tile]").all()]
+            self.assertTrue(any(t.startswith("Title III total · FY2024 Enacted") and "33,944,930" in t for t in tiles), tiles)
             self.assertEqual(self.page.locator("[data-testid=compare-row][data-account=ACC-T3-TOTAL]").count(), 0)
         finally:
             srv.shutdown()
             srv.server_close()
 
-    def test_outside_tooltip_and_figures_on_file(self):
-        self.open("static")
-        before = self.cell("ACC-DOJ-CVF", 2017, "Enacted")
-        self.assertEqual(before.get_attribute("data-outside"), "true")
-        self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017 Enacted"))
-        cells = self.row("ACC-NASA-SCIENCE")["cells"]
-        ys = [int(k.split("|")[0]) for k, c in cells.items()
-              if any(l["observations"] or l.get("absence") for l in c["lines"])]
-        self.assertEqual(self.page.locator("tr[data-account=ACC-NASA-SCIENCE] [data-testid=row-figures-on-file]").inner_text(),
-                         f"Figures on file: FY{min(ys)}\u2013FY{max(ys)}")
+    # ---- cells ---------------------------------------------------------------------------
+
+    def test_a_number_links_to_its_source(self):
+        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024")
+        a = self.cell("ACC-NASA-SCIENCE", 2024, "Enacted").locator("[data-testid=amount]")
+        o = next(l for l in self.row("ACC-NASA-SCIENCE")["cells"]["2024|Enacted"]["lines"]
+                 if l["amount_type"] == "budget authority")["observations"][0]
+        self.assertEqual(a.inner_text(), thousands(o["amount"]))
+        self.assertEqual(a.get_attribute("data-source"), f"{o['source_document_id']} p.{o['source_page']}")
+        self.assertEqual(a.get_attribute("href"), o["url_or_identifier"] + "#page=" + str(o["source_page"]).split("-")[0])
+
+    def test_tokens_carry_their_meaning(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        for state, text in (("not_enacted", "n/e"), ("missing", "?"), ("not_collected", "n/c"), ("not_funded", "\u2014"),
+                            ("no_printed_total", "No printed total")):
+            self.open("static", "?view=compare&sc=LHHS&grid=enacted" if state == "not_enacted" else
+                      "?view=compare&sc=LHHS&grid=years&a=2023&b=2024")
+            tok = self.page.locator(f"td[data-state={state}] [data-testid=token-{state.replace('_', '-')}]").first
+            self.assertEqual(tok.inner_text(), text, state)
+            self.assertTrue(tok.get_attribute("aria-label") and tok.get_attribute("title"), state)
+
+    def test_change_columns(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        r = self.lrow("ACC-HHS-HRSA-TOTAL")
+        fig = lambda y, st: next(l for l in r["cells"][f"{y}|{st}"]["lines"] if l["amount_type"] == "budget authority"
+                                 and not l["component"])["observations"][0]["amount"]
+        row = self.page.locator("tr[data-account=ACC-HHS-HRSA-TOTAL]")
+        ch = [c.inner_text() for c in row.locator("[data-testid=change-cell]").all()]
+        req = fig(2026, "President's Budget") - fig(2025, "Enacted")
+        enacted = fig(2026, "Enacted") - fig(2025, "Enacted")
+        pct = lambda d: ("+" if d > 0 else "\u2212") + f"{abs(d) / fig(2025, 'Enacted') * 100:.1f}%"
+        sign = lambda d: ("+" if d > 0 else "\u2212") + f"{abs(d) // 1000:,}"
+        self.assertEqual(ch, [sign(req), pct(req), sign(enacted), pct(enacted)])
+        colors = row.locator("[data-testid=change-cell] span").evaluate_all("ss => ss.map(s => getComputedStyle(s).color)")
+        self.assertEqual(set(colors) - {"rgb(26, 115, 57)", "rgb(168, 70, 12)"}, set())
+        # no prior-year figure, no change value: AHA has no FY2025 Enacted
+        self.assertEqual({c.inner_text() for c in self.page.locator("tr[data-account=ACC-HHS-AHA-TOTAL] [data-testid=change-cell]").all()}, {""})
+
+    def test_reviewer_mode_dots(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        dot = self.cell("ACC-HHS-HRSA-TOTAL", 2026, "Enacted").locator("[data-testid=status-dot]")
+        self.assertTrue(dot.is_hidden())
+        self.page.check("#reviewer")
+        self.assertTrue(dot.is_visible())
+        self.assertIn("rev=1", self.page.url)
+        status = self.lrow("ACC-HHS-HRSA-TOTAL")["cells"]["2026|Enacted"]["lines"][0]["observations"][0]["verification_status"]
+        self.assertEqual(dot.get_attribute("data-status"), status)                 # the status as stored, as-is
+        flagged = self.page.locator("[data-testid=status-dot][data-status=flagged]")
+        self.assertEqual({d.get_attribute("class") for d in flagged.all()} - {"dot flagged"}, set())
+
+    # ---- views, units, URL ---------------------------------------------------------------
+
+    def test_view_years_and_units_live_in_the_url(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        self.assertTrue(self.page.url.endswith("?view=compare&sc=LHHS&grid=stages&fy=2026"), self.page.url)
+        self.page.click("#view-switch button[data-grid=years]")
+        self.page.select_option("#fy-a", "2024")
+        self.page.click("#units button[data-units=m]")
+        self.assertTrue(self.page.url.endswith("grid=years&a=2024&b=2026&units=m"), self.page.url)
+        html = self.page.inner_html("#compare-result")
+        self.open("static", "?" + self.page.url.split("?", 1)[1])
+        self.assertEqual(self.page.inner_html("#compare-result"), html)              # the link reproduces it
+        # millions: one decimal
+        a = self.cell("ACC-HHS-HRSA-TOTAL", 2026, "Enacted").locator("[data-testid=amount]").inner_text()
+        self.assertRegex(a, r"^[\d,]+\.\d$")
+        # an old link (fy range, stages) still opens, at its last year
+        self.open("static", "?view=compare&sc=CJS&fy=2017-2025&stage=Enacted")
+        self.assertTrue(self.page.url.endswith("grid=stages&fy=2025"), self.page.url)
+
+    def test_expand_and_collapse_all(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        self.page.click("#collapse-all")
+        visible = [r.get_attribute("data-account") for r in self.page.locator("tr[data-testid=compare-row]").all() if r.is_visible()]
+        self.assertEqual(visible, [r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if not r["member_of"]])
+        self.page.click("#expand-all")
+        self.assertEqual(sum(r.is_visible() for r in self.page.locator("tr[data-testid=compare-row]").all()), len(self.lhhs["rows"]))
+        self.assertEqual({c.get_attribute("aria-expanded") for c in self.page.locator("[data-testid=chevron]").all()}, {"true"})
+
+    # ---- layout and style ----------------------------------------------------------------
+
+    def test_layout(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=enacted")
+        m = self.page.evaluate("""() => { const w = document.querySelector('#grid-wrap'), r = w.getBoundingClientRect();
+            const h2 = document.querySelector('#compare-grid thead tr:nth-child(2) th');
+            return {bottom: r.bottom, inner: innerHeight, scrollable: w.scrollHeight > w.clientHeight,
+                    overflow: getComputedStyle(w).overflowX + ' ' + getComputedStyle(w).overflowY,
+                    pageScrolls: document.documentElement.scrollHeight > innerHeight + 1,
+                    head2: getComputedStyle(h2).top, nameSticky: getComputedStyle(document.querySelector('#compare-grid tbody th.acct')).position,
+                    font: getComputedStyle(document.body).fontFamily, size: getComputedStyle(document.body).fontSize}; }""")
+        self.assertLessEqual(m["bottom"], m["inner"])           # both scrollbars in view, no page scroll to reach them
+        self.assertTrue(m["scrollable"])
+        self.assertEqual(m["overflow"], "scroll scroll")
+        self.assertFalse(m["pageScrolls"])
+        self.assertEqual((m["head2"], m["nameSticky"]), ("38px", "sticky"))
+        self.assertTrue(m["font"].startswith('"Public Sans"'))
+        self.assertEqual(m["size"], "14px")
+        self.assertEqual(self.page.inner_text("#page-title"), "Labor-HHS-Education")
+        self.open("static", "?view=compare&sc=CJS")
+        self.assertEqual(self.page.inner_text("#page-title"), "Commerce, Justice, Science")
+        self.assertNotIn("pilot", (self.page.inner_text("#page-title") + self.page.inner_text("#page-sub")).lower())
+
+    def test_rules_zebra_and_hover(self):
+        self.open("static", "?view=compare&sc=LHHS")
+        css = lambda sel, prop: self.page.locator(sel).first.evaluate(f"e => getComputedStyle(e).{prop}")
+        self.assertEqual(css("#compare-grid tbody td:not(.g0)", "borderRightColor"), "rgb(230, 230, 225)")
+        self.assertEqual(css("#compare-grid tbody td.g0", "borderLeftWidth"), "2px")
+        self.assertEqual(css("#compare-grid tbody td.g0", "borderLeftColor"), "rgb(196, 198, 190)")
+        self.assertEqual(css("#compare-grid tbody tr.z:not(.shaded) > td", "backgroundColor"), "rgb(247, 247, 244)")
+        plain_row = self.page.locator("tr[data-account=ACC-HHS-NIH-NCI]")
+        plain_row.hover()
+        self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in plain_row.locator("> *").all()},
+                         {"rgb(227, 236, 248)"})
+        shaded = self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL]")
+        shaded.hover()
+        self.assertEqual({c.evaluate("e => getComputedStyle(e).backgroundColor") for c in shaded.locator("> *").all()},
+                         {"rgb(214, 227, 245)"})
+        title = self.page.locator("tr[data-testid=title-head]")
+        title.hover()
+        self.assertEqual(title.locator("th").evaluate("e => getComputedStyle(e).backgroundColor"), "rgb(214, 227, 245)")
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")
-        self.page.click("tr[data-account=ACC-NASA-SPACEOPS] [data-testid=row-name] button")
+        self.page.click("tr[data-account=ACC-NASA-SPACEOPS] [data-testid=row-name]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
         self.assertTrue(self.page.is_hidden("[data-testid=compare-view]"))
         self.assertEqual(self.page.inner_text("[data-testid=account-name]"), "Space Operations")
         self.assertTrue(self.page.url.endswith("?account=ACC-NASA-SPACEOPS"))
+
+    def test_outside_tooltip(self):
+        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2017")
+        before = self.cell("ACC-DOJ-CVF", 2017, "Enacted")
+        self.assertEqual(before.get_attribute("data-outside"), "true")
+        self.assertTrue(before.get_attribute("title").startswith("Nothing on file for this account in FY2017 Enacted"))
+
+
+class GridMathUnits(unittest.TestCase):
+    """The page's change arithmetic (web/index.html, between GRID-MATH-BEGIN and -END), run under node."""
+
+    @classmethod
+    def setUpClass(cls):
+        import shutil as sh
+        cls.node = sh.which("node")
+        if not cls.node:
+            raise unittest.SkipTest("node not installed")
+        html = (ROOT / "web" / "index.html").read_text()
+        cls.code = html.split("// GRID-MATH-BEGIN", 1)[1].split("\n", 1)[1].split("// GRID-MATH-END", 1)[0]
+
+    def run_js(self, expr):
+        import subprocess
+        src = self.code + f"\nprocess.stdout.write(JSON.stringify({expr}));"
+        return json.loads(subprocess.run([self.node, "-e", src], capture_output=True, text=True, check=True).stdout)
+
+    def test_sign_and_percent(self):
+        self.assertEqual(self.run_js("[GridMath.signedNumber(1234000, 'k'), GridMath.signedNumber(-1234000, 'k'), "
+                                     "GridMath.signedNumber(0, 'k')]"), ["+1,234", "\u22121,234", "0"])
+        c = self.run_js("GridMath.change(200000, 150000)")
+        self.assertEqual(c, {"delta": -50000, "pct": -25})
+        self.assertEqual(self.run_js("[GridMath.signedPct(-25), GridMath.signedPct(12.345), GridMath.signedPct(0), "
+                                     "GridMath.signedPct(null)]"), ["\u221225.0%", "+12.3%", "0.0%", ""])
+        self.assertEqual(self.run_js("[GridMath.direction(5), GridMath.direction(-5), GridMath.direction(0)]"),
+                         ["up", "down", ""])
+
+    def test_a_missing_figure_has_no_change(self):
+        self.assertEqual(self.run_js("[GridMath.change(null, 5), GridMath.change(5, null)]"), [None, None])
+        # a printed zero is a figure: the change is real, the percentage isn't defined
+        self.assertEqual(self.run_js("GridMath.change(0, 7000)"), {"delta": 7000, "pct": None})
+
+    def test_units(self):
+        self.assertEqual(self.run_js("[GridMath.number(47811518000, 'k'), GridMath.number(47811518000, 'm'), "
+                                     "GridMath.number(-2500000, 'm'), GridMath.number(null, 'k')]"),
+                         ["47,811,518", "47,811.5", "\u22122.5", ""])
+        self.assertEqual(self.run_js("[GridMath.signedNumber(933878000, 'm'), GridMath.scale(1000, 'k')]"), ["+933.9", 1])
 
 
 if __name__ == "__main__":
