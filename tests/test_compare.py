@@ -791,7 +791,7 @@ class CompareBrowser(CompareTest):
         self.page.select_option("#basis", "0")
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
-        self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change · Change"],
+        self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
                                    ["FY2023", "FY2024", "FY2025", "FY2026", "Request", "House", "FY23 → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
@@ -922,9 +922,15 @@ class CompareBrowser(CompareTest):
                 self.open("static", f"?view=compare&sc={sc}")
                 self.page.click("#expand-all")
                 labelled = self.page.eval_on_selector_all("[data-testid=total]", "ts => ts.map(t => t.closest('tr').dataset.account)")
-                rollups = [r["account"]["canonical_account_id"] for r in grid["rows"] if r["rollup"]] + \
+                # every rollup row except a proposed agency (its rows beneath are relationship notes, not accounts)
+                rollups = [r["account"]["canonical_account_id"] for r in grid["rows"]
+                           if r["rollup"] and r["account"]["status"] != "proposed"] + \
                           [t["total"]["account"]["canonical_account_id"] for t in grid["titles"] if t["total"]]
                 self.assertEqual(sorted(labelled), sorted(rollups))
+                for r in grid["rows"]:
+                    if r["rollup"] and r["account"]["status"] == "proposed":
+                        tags = self.page.locator(f"tr[data-account={r['account']['canonical_account_id']}] .tag")
+                        self.assertEqual([t.inner_text() for t in tags.all()], ["proposed agency · not enacted"])
                 self.assertEqual(self.page.locator("tr.child [data-testid=total], tr.group [data-testid=total]").count(), 0)
                 # pinned to the name cell's top-right, never on a line of its own
                 for t in self.page.locator("[data-testid=total]").all():
@@ -973,7 +979,9 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(gap.evaluate("""e => { const s = getComputedStyle(e);
                     return [e.getBoundingClientRect().width, s.backgroundColor, s.borderLeftColor, s.borderTopWidth]; }"""),
                                  [14, "rgb(246, 246, 243)", "rgb(201, 203, 196)", "0px"])
-                self.assertTrue(self.page.locator("#compare-grid thead th.grp.delta").inner_text().startswith("Change · "))
+                head = self.page.locator("#compare-grid thead th.grp.delta").inner_text()
+                self.assertTrue(head.startswith("Change"), head)
+                self.assertNotIn("Change · Change", self.page.inner_text("#compare-grid thead"))
                 # every figure row: one gap cell, right before its first change cell, unpainted by stripes
                 bad = self.page.eval_on_selector_all("#compare-grid tbody tr[data-testid=compare-row]", """trs => trs.filter(tr => {
                     const gaps = tr.querySelectorAll(':scope > td.gap'), first = tr.querySelector(':scope > [data-testid=change-cell]');

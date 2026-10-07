@@ -904,7 +904,9 @@ function buildRows(grid, cols) {
       const members = ids.filter((m) => m.member_of === id);
       const incoming = a.status === "proposed" ? r.relationships.filter((x) => x.to_account_id === id) : [];
       const kids = members.length + incoming.length > 0, isOpen = kids && open.has(id);
-      const tags = (a.status === "proposed" ? [{ cls: "prop", text: "proposed agency · not enacted", title: a.notes || "" }] : []).concat([TOTAL]);
+      // TOTAL marks a row that sums the accounts indented beneath it; a proposed agency's rows beneath
+      // are relationship notes, not accounts
+      const tags = a.status === "proposed" ? [{ cls: "prop", text: "proposed agency · not enacted", title: a.notes || "" }] : [TOTAL];
       out.push(el("tr", { class: "agency", dataset: { account: id, testid: "compare-row" } },
         nameCell({ id, name: plainName(a.canonical_name), title: accountTitle(r), abbr, chev: kids, spacer: !kids, open: isOpen, tags }),
         ...cellsFor(r, cols)));
@@ -1036,7 +1038,7 @@ function renderCompare(grid) {
     const change = g.cls === "delta";
     if (change) r1.append(el("th", { class: "gap", rowspan: "2", "aria-hidden": "true" }));
     r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""}${change ? "" : " gs"}`,
-                         text: change ? `Change · ${g.label}` : g.label }));
+                         text: change && !/^Change\b/.test(g.label) ? `Change · ${g.label}` : g.label }));
   }
   const r2 = el("tr", {}, ...cols.map((c) => {
     const n = note(c);
