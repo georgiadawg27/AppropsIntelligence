@@ -75,6 +75,11 @@ CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic")
 ROUTINE_SEMANTIC_EXPECTED = "amount_type fits the row label"
 
 
+def is_resolved(human_review_status, resolution):
+    """A validation record a person resolved: status 'resolved' and the resolution written down."""
+    return human_review_status == "resolved" and bool((resolution or "").strip())
+
+
 def review_flag(rule, result, expected=None):
     """A flag that puts the row in front of a person: another document prints a
     different figure (cross_document), or a semantic or scope question written for
@@ -103,12 +108,17 @@ def verification_status(confidence, checks):
                          an unconfirmed nesting, a sum that doesn't close --
                          no confirming check, or a confidence below the
                          threshold)
-    checks: the observation's (rule_applied, result) or (rule_applied, result,
-    expected_result) tuples.
+    checks: the observation's (rule_applied, result), (rule_applied, result,
+    expected_result) or (rule_applied, result, expected_result,
+    human_review_status, resolution) tuples.
+    A check a person resolved (human_review_status 'resolved' with a non-empty
+    resolution) no longer counts: it neither fails nor flags nor confirms; the
+    rule above applies to the unresolved checks.
     Human-verified, provisional and superseded are set by their own steps,
     never by this rule.
     """
-    checks = [tuple(c) + (None,) * (3 - len(c)) for c in checks]
+    checks = [tuple(c) + (None,) * (5 - len(c)) for c in checks]
+    checks = [c[:3] for c in checks if not is_resolved(c[3], c[4])]
     results = [r for _, r, _ in checks]
     if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"
