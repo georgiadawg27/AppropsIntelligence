@@ -336,7 +336,9 @@
    "agency": "Health Resources and Services Administration",
    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
    "canonical_name": "HRSA-Wide Activities and Program Support",
-   "historical_names": []
+   "historical_names": [
+    "Program Management"
+   ]
   },
   {
    "agency": "Health Resources and Services Administration",
@@ -804,19 +806,19 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-08T19:52:50+00:00",
-  "data_sha256": "cb8cdcffc0f9dfbb9e855fd4de516dba0a07ba98df85e3f04470a1db53be4641",
+  "data_committed": "2026-10-08T21:05:01+00:00",
+  "data_sha256": "29ea1b573155d5a17455c79c2154d85fa3a65648c55451ed946e356bd0413251",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
    "account_relationship": 11,
-   "appropriations_observation": 3109,
+   "appropriations_observation": 3131,
    "bill_report_reference": 63,
-   "component": 19,
+   "component": 22,
    "confirmed_absence": 230,
-   "historical_name": 13,
+   "historical_name": 14,
    "source_document": 39,
-   "validation_record": 9453
+   "validation_record": 9496
   },
   "version": "v38",
   "warnings": [],

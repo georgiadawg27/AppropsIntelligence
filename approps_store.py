@@ -1179,6 +1179,18 @@ def history(conn, account_id):
         if notes:
             rec["cell_note"] = " ".join(notes)
         obs.append(rec)
+    # a line recorded with a note ('... -- Note: House proposed ...', a chamber's one-off proposal) shows it in its
+    # cell's corner: on the cell's headline, else on the line itself
+    for rec in obs:
+        text = rec.get("source_table_or_section") or ""
+        if " -- Note: " not in text or rec["verification_status"] == "superseded":
+            continue
+        note = text.split(" -- Note: ", 1)[1]
+        head = next((x for x in obs if (x["fiscal_year"], x["stage"]) == (rec["fiscal_year"], rec["stage"])
+                     and x["amount_type"] == "budget authority" and x["component"] is None
+                     and x["verification_status"] != "superseded"), rec)
+        if note not in (head.get("cell_note") or ""):
+            head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     absences = [dict(r) for r in conn.execute(
@@ -1222,9 +1234,11 @@ def history(conn, account_id):
 #   not_collected  -- no source document on file covers this fiscal year + stage
 #   not_enacted    -- the Enacted stage of a fiscal year after the last one with an
 #                     enacted document on file: no enacted law yet
-#   no_figure      -- a fiscal year before a proposed account's first figure (Account.status
-#                     'proposed': it exists only as a request, so earlier years have no
-#                     figure to find); not counted as missing
+#   no_figure      -- a fiscal year before the account's first figure, where it did not exist
+#                     yet: a proposed account (Account.status 'proposed': it exists only as
+#                     a request), or one a document shows did not exist yet (a confirmed absence
+#                     before its first figure whose evidence says so, e.g. ARPA-H's FY2021
+#                     Enacted); not counted as missing
 CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure")
 
 
@@ -1503,18 +1517,27 @@ def subcommittee_grid(conn, subcommittee):
     def row_of(a):
         _, h, g = grids[a["canonical_account_id"]]
         own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
+        # the years before the account existed: before its first figure, for a proposed account, or for one a
+        # document shows did not exist yet (a confirmed absence before its first figure, e.g. ARPA-H in FY2021)
+        figures = [o["fiscal_year"] for o in h["observations"] if o.get("verification_status") != "superseded"]
+        first = min(figures) if figures else None
+        before = first is not None and (a.get("status") == "proposed" or any(
+            x["fiscal_year"] < first and "did not exist" in (x.get("evidence") or "") for x in h["absences"]))
         cells = {}
         for y in years:
             for st in stages:
                 if y in own and st in own[y]:
-                    cells[f"{y}|{st}"] = {"lines": own[y][st], "outside_history": False}
+                    lines = own[y][st]
+                    if before and y < first:
+                        lines = [dict(l, state="no_figure", missing=False) if l["state"] == "missing" else l for l in lines]
+                    cells[f"{y}|{st}"] = {"lines": lines, "outside_history": False}
                 else:
                     lines = []
                     for s in g["series"]:
                         if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st:
                             continue                     # as in history_grid: only where it can exist / is recorded
                         state = cell_state([], None, y, st, h["coverage"])
-                        if state == "missing" and a.get("status") == "proposed" and own and y < min(own):
+                        if state == "missing" and before and y < first:
                             state = "no_figure"
                         lines.append({"amount_type": s["amount_type"], "component": s["component"],
                                       "component_kind": s["component_kind"], "component_label": s["component_label"],

@@ -76,9 +76,9 @@ class Load(StoreTest):
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 13, "source_document": 39, "bill_report_reference": 63,
-            "appropriations_observation": 3109, "confirmed_absence": 230, "account_relationship": 11,
-            "validation_record": 9453, "component": 19})
+            "account": 130, "historical_name": 14, "source_document": 39, "bill_report_reference": 63,
+            "appropriations_observation": 3131, "confirmed_absence": 230, "account_relationship": 11,
+            "validation_record": 9496, "component": 22})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
@@ -479,7 +479,8 @@ class FactKey(StoreCopyTest):
     def test_v13_has_no_collisions(self):
         self.assertEqual(self.conn.execute(
             "SELECT count(*) FROM (SELECT 1 FROM appropriations_observation GROUP BY canonical_account_id, fiscal_year, "
-            "stage, amount_type, ifnull(component, ''), ifnull(transfer_link_account_id, '') HAVING count(*) > 1)"
+            "stage, amount_type, ifnull(component, ''), ifnull(transfer_link_account_id, '') HAVING "
+            "sum(verification_status <> 'superseded') > 1)"
         ).fetchone()[0], 0)
         # the 42 facts that collided without component / transfer link
         rows = self.conn.execute("SELECT canonical_account_id, component, transfer_link_account_id FROM "
@@ -496,7 +497,7 @@ class FactKey(StoreCopyTest):
             "WHERE a.subcommittee = ?", (sub,))}
         # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's
         self.assertEqual(used("CJS"), {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
-        self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"})
+        self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"} | set(accounts.PROPOSAL_COMPONENTS))
         # v33: the CURES Act money is its own account, no longer a component of NIH's total
         self.assertNotIn("CURES", used("LHHS"))
         self.assertIn("program_level_excluding_arpa_h", used("LHHS"))
@@ -837,15 +838,20 @@ class NoPrintedTotal(StoreCopyTest):
             "FROM validation_record v JOIN appropriations_observation o USING (observation_id) "
             "WHERE o.fiscal_year = 2022 AND v.rule_applied = 'table_total' AND v.result = 'flag' "
             "AND (v.resolution IS NULL OR v.resolution NOT LIKE 'informational%')").fetchall()
-        pending = sorted((a, st) for a, st, hs, e, r in rows if hs == "pending")
-        self.assertEqual(pending, sorted([("ACC-HHS-HRSA-TOTAL", st) for st in ("House Reported", "President's Budget", "Senate Reported")]
-                                         + [("ACC-HHS-NIH-TOTAL", st) for st in ("House Reported", "President's Budget", "Senate Reported", "Enacted")]
-                                         + [("ACC-HHS-ACF-TOTAL", "House Reported")]))
-        for a, st, hs, e, r in rows:
-            if hs == "pending":
-                self.assertIn("outside our accounts", e)
-            else:
-                self.assertTrue(r.startswith("The shortfall"), (a, st))
+        # every one is resolved: exactly explained, or explained by the owner's decisions (Program Management,
+        # Kids First inside the derived OD, Diaper Grants recorded)
+        self.assertEqual([(a, st) for a, st, hs, e, r in rows if hs == "pending"], [])
+        self.assertTrue(all(r.startswith("The ") for a, st, hs, e, r in rows))
+        # the decisions: OD = OD line + Kids First (derived; the OD line's observation superseded), Diaper Grants a
+        # separate SSBG line with its corner note
+        od = self.head("ACC-HHS-NIH-OD", 2022, "Enacted")["observations"][0]
+        self.assertEqual((od["amount"], od["extraction_method"]), (2_629_120_000, "derived"))
+        h = S.history(self.conn, "ACC-HHS-ACF-SSBG")
+        ssbg = [o for o in h["observations"] if (o["fiscal_year"], o["stage"]) == (2022, "House Reported")]
+        self.assertEqual(sorted((o["component"] or "", o["amount"]) for o in ssbg),
+                         [("", 1_700_000_000), ("chamber_proposal", 200_000_000)])
+        self.assertEqual(next(o for o in ssbg if not o["component"])["cell_note"],
+                         "House proposed Diaper Grants under this heading (not enacted).")
 
     def test_no_figure_before_a_proposed_accounts_first_figure(self):
         # a proposed account (AHA, the NIH consolidation) has no figure before the request that proposed it:
@@ -867,7 +873,7 @@ class NoPrintedTotal(StoreCopyTest):
         self.assertEqual(list(counts), list(S.CELL_STATES))
         # the FY2024 House column (100 cells) moved from not yet collected to the draft's figures and states; then the NEF rescission from H.R. 5894 (missing -> value)
         # then the FY2022 backfill (+400 cells) and 'no figure for this year' (68 of them were missing)
-        self.assertEqual(counts, {"value": 1886, "not_funded": 111, "no_printed_total": 7, "missing": 104,
+        self.assertEqual(counts, {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101,
                                   "not_collected": 100, "not_enacted": 100, "no_figure": 92})
 
 

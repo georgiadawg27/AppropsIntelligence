@@ -269,9 +269,9 @@ ws_obs = wb.create_sheet("Appropriations Observation")
 headers = ["observation_id", "canonical_account_id", "fiscal_year", "stage", "chamber", "bill_id", "report_id",
            "amount", "amount_type", "component", "offsetting_collections", "transfer_link_account_id",
            "source_document_id", "source_page", "source_table_or_section", "extraction_method", "confidence",
-           "verification_status", "bill_url", "report_jes_url", "headline_observation_id"]
+           "verification_status", "bill_url", "report_jes_url", "headline_observation_id", "superseded_by_observation_id"]
 write_rows(ws_obs, headers, data["observations"],
-           [14, 22, 10, 16, 10, 14, 14, 16, 18, 16, 12, 20, 18, 12, 42, 16, 10, 16, 40, 40, 20],
+           [14, 22, 10, 16, 10, 14, 14, 16, 18, 16, 12, 20, 18, 12, 42, 16, 10, 16, 40, 40, 20, 20],
            flag_col="verification_status", flag_value="flagged")
 n_obs = len(data["observations"]) + 1
 add_dropdown(ws_obs, "D", STAGE_ALL, 2, n_obs)
@@ -511,6 +511,9 @@ rows = [
     ("\u2022 Labor-HHS rows keep their pipeline provenance (extraction_method text-extracted / AI-extracted / "
      "human_entered; verification_status auto-validated / unverified / flagged). Flagged observations are shaded pink; "
      "failed validations are shaded darker red \u2014 all current fails are table_total checks on rollup rows.", NOTE_FONT),
+    ("\u2022 New column V on Appropriations Observation: superseded_by_observation_id. A superseded observation "
+     "(verification_status superseded) names the observation that replaced it; nothing is deleted (NIH Office of "
+     "the Director FY2022, re-derived as the Office of the Director + Gabriella Miller Kids First).", NOTE_FONT),
     ("\u2022 extraction_method 'derived': a headline the table doesn't print, computed from two printed lines where the "
      "later years' tables define it exactly (Grants to States for Medicaid FY2022-FY2023: 'appropriated in this bill' "
      "minus the new advance); the note names both lines and pages, and a structural record checks the arithmetic. A "

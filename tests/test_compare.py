@@ -566,7 +566,7 @@ class CompareBrowser(CompareTest):
         # figures and states (+86 value, +6 not funded, +8 missing); then H.R. 5894 filled the NEF rescission (-1 missing, +1 value)
         # then the FY2022 backfill (+400 cells); FY2022/FY2023 Medicaid's derived headlines (4 FY2023 cells: no printed
         # total -> value); and 'no figure for this year': a proposed account's cells before its first figure (68 were missing)
-        want = {"LHHS": {"value": 1886, "not_funded": 111, "no_printed_total": 7, "missing": 104, "not_collected": 100,
+        want = {"LHHS": {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101, "not_collected": 100,
                          "not_enacted": 100, "no_figure": 92},
                 "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
                         "not_enacted": 30, "no_figure": 0}}
@@ -1104,13 +1104,14 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(same, 0)
                 self.assertEqual(self.page.locator("#compare-grid td.delta").first.evaluate("e => getComputedStyle(e).fontSize"), "13px")
 
-    def test_notes_are_corner_marks_246_in_all(self):
+    def test_notes_are_corner_marks_261_in_all(self):
         # the cells with other lines on file, both subcommittees (title totals included): 208, + 6 in the
         # FY2024 House draft's column (the ACF, ACL, CDC, NIH and OS totals and Medicaid: program-level and
-        # advance lines beside the headline); + 32 with the FY2022 column and FY2023 Medicaid's views
+        # advance lines beside the headline); + 32 with the FY2022 column and FY2023 Medicaid's views; + 15 with the
+        # owner's FY2022 decisions (earmark, Kids First and Diaper Grants lines)
         total = sum(1 for g in (self.lhhs, self.grid) for r in g["rows"] + [t["total"] for t in g["titles"] if t["total"]]
                     for k in r["cells"] if other_lines(r, *k.split("|")))
-        self.assertEqual(total, 246)
+        self.assertEqual(total, 261)
         for sc in ("LHHS", "CJS"):
             self.open("static", f"?view=compare&sc={sc}&grid=history")
             self.page.click("#expand-all")
