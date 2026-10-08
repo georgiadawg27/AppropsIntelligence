@@ -45,13 +45,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00532 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00530"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00531"
@@ -75,7 +77,7 @@
            "validation_id": "VAL-LHHS-00534"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -484,7 +486,8 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02215"
@@ -514,7 +517,7 @@
            "validation_id": "VAL-LHHS-02219"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -638,13 +641,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00538"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00539"
@@ -674,7 +679,7 @@
            "validation_id": "VAL-LHHS-00543"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -799,7 +804,8 @@
            "validation_id": "VAL-LHHS-06851"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-06852"
@@ -835,7 +841,7 @@
            "validation_id": "VAL-LHHS-07168"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -954,13 +960,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00550 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00548"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00549"
@@ -984,7 +992,7 @@
            "validation_id": "VAL-LHHS-00552"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1096,13 +1104,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00558 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-00559 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00556"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00557"
@@ -1132,7 +1142,7 @@
            "validation_id": "VAL-LHHS-00561"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1367,7 +1377,8 @@
            "validation_id": "VAL-LHHS-00566"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00567"
@@ -1397,7 +1408,7 @@
            "validation_id": "VAL-LHHS-00571"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1515,13 +1526,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00576"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00577"
@@ -1551,7 +1564,7 @@
            "validation_id": "VAL-LHHS-00581"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1669,13 +1682,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00586"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00587"
@@ -1705,7 +1720,7 @@
            "validation_id": "VAL-LHHS-00591"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1940,7 +1955,8 @@
            "validation_id": "VAL-LHHS-00598"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00599"
@@ -1970,7 +1986,7 @@
            "validation_id": "VAL-LHHS-00603"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2094,7 +2110,8 @@
            "validation_id": "VAL-LHHS-00608"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00609"
@@ -2118,7 +2135,7 @@
            "validation_id": "VAL-LHHS-00612"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2236,7 +2253,8 @@
            "validation_id": "VAL-LHHS-00616"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00617"
@@ -2384,7 +2402,8 @@
            "validation_id": "VAL-LHHS-00622"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00623"
@@ -2414,7 +2433,7 @@
            "validation_id": "VAL-LHHS-00627"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2538,7 +2557,8 @@
            "validation_id": "VAL-LHHS-00632"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00633"
@@ -2562,7 +2582,7 @@
            "validation_id": "VAL-LHHS-00636"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3045,7 +3065,8 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02215"
@@ -3075,7 +3096,7 @@
       "validation_id": "VAL-LHHS-02219"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 10500829000,
@@ -3168,13 +3189,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00532 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00530"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00531"
@@ -3198,7 +3221,7 @@
       "validation_id": "VAL-LHHS-00534"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 9217590000,
@@ -3284,13 +3307,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00550 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00548"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00549"
@@ -3314,7 +3339,7 @@
       "validation_id": "VAL-LHHS-00552"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 11636211000,
@@ -3407,7 +3432,8 @@
       "validation_id": "VAL-LHHS-06851"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-06852"
@@ -3443,7 +3469,7 @@
       "validation_id": "VAL-LHHS-07168"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 7591566000,
@@ -3536,13 +3562,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-00558 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-00559 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00556"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00557"
@@ -3572,7 +3600,7 @@
       "validation_id": "VAL-LHHS-00561"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 9197590000,
@@ -3664,13 +3692,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00538"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00539"
@@ -3700,7 +3730,7 @@
       "validation_id": "VAL-LHHS-00543"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 9222090000,
@@ -3792,13 +3822,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00576"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00577"
@@ -3828,7 +3860,7 @@
       "validation_id": "VAL-LHHS-00581"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 9738690000,
@@ -3926,7 +3958,8 @@
       "validation_id": "VAL-LHHS-00566"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00567"
@@ -3956,7 +3989,7 @@
       "validation_id": "VAL-LHHS-00571"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 7446058000,
@@ -4048,13 +4081,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00586"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00587"
@@ -4084,7 +4119,7 @@
       "validation_id": "VAL-LHHS-00591"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 9395090000,
@@ -4262,7 +4297,8 @@
       "validation_id": "VAL-LHHS-00608"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00609"
@@ -4286,7 +4322,7 @@
       "validation_id": "VAL-LHHS-00612"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 5475241000,
@@ -4378,7 +4414,8 @@
       "validation_id": "VAL-LHHS-00598"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00599"
@@ -4408,7 +4445,7 @@
       "validation_id": "VAL-LHHS-00603"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 7480880000,
@@ -4506,7 +4543,8 @@
       "validation_id": "VAL-LHHS-00616"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00617"
@@ -4690,7 +4728,8 @@
       "validation_id": "VAL-LHHS-00632"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00633"
@@ -4714,7 +4753,7 @@
       "validation_id": "VAL-LHHS-00636"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 6345461000,
@@ -4806,7 +4845,8 @@
       "validation_id": "VAL-LHHS-00622"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Discretionary + Mandatory) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00623"
@@ -4836,7 +4876,7 @@
       "validation_id": "VAL-LHHS-00627"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 8164411000,

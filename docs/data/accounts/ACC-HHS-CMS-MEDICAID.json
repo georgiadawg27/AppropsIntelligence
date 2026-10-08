@@ -88,13 +88,14 @@
            "validation_id": "VAL-LHHS-02365"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02366"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -158,13 +159,14 @@
            "validation_id": "VAL-LHHS-02369"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02370"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -249,7 +251,8 @@
            "validation_id": "VAL-LHHS-02341"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-02342"
@@ -267,13 +270,14 @@
            "validation_id": "VAL-LHHS-02344"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02345"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -349,7 +353,8 @@
            "validation_id": "VAL-LHHS-02350"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02351"
@@ -361,7 +366,7 @@
            "validation_id": "VAL-LHHS-02352"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -440,7 +445,8 @@
            "validation_id": "VAL-LHHS-02327"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-02328"
@@ -458,7 +464,8 @@
            "validation_id": "VAL-LHHS-02330"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02331"
@@ -470,7 +477,7 @@
            "validation_id": "VAL-LHHS-02332"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -540,7 +547,8 @@
            "validation_id": "VAL-LHHS-02336"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02337"
@@ -558,7 +566,7 @@
            "validation_id": "VAL-LHHS-02339"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -651,13 +659,14 @@
            "validation_id": "VAL-LHHS-02355"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, fiscal year 2024')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02356"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -728,7 +737,8 @@
            "validation_id": "VAL-LHHS-02360"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02361"
@@ -740,7 +750,7 @@
            "validation_id": "VAL-LHHS-02362"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1045,7 +1055,8 @@
            "validation_id": "VAL-LHHS-00663"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00664"
@@ -1057,7 +1068,7 @@
            "validation_id": "VAL-LHHS-00665"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1121,7 +1132,8 @@
            "validation_id": "VAL-LHHS-00658"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00659"
@@ -1133,7 +1145,7 @@
            "validation_id": "VAL-LHHS-00660"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1437,13 +1449,14 @@
            "validation_id": "VAL-LHHS-06875"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-06876"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1508,7 +1521,8 @@
            "validation_id": "VAL-LHHS-06879"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-06880"
@@ -1526,13 +1540,14 @@
            "validation_id": "VAL-LHHS-06882"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-06883"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1617,7 +1632,8 @@
            "validation_id": "VAL-LHHS-02372"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02373"
@@ -1687,7 +1703,8 @@
            "validation_id": "VAL-LHHS-02376"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02377"
@@ -1699,7 +1716,7 @@
            "validation_id": "VAL-LHHS-02378"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1790,13 +1807,14 @@
            "validation_id": "VAL-LHHS-02381"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02382"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1866,7 +1884,8 @@
            "validation_id": "VAL-LHHS-02386"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02387"
@@ -1878,7 +1897,7 @@
            "validation_id": "VAL-LHHS-02388"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1931,13 +1950,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01931"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1983,13 +2003,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01933"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2035,13 +2056,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01932"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2139,13 +2161,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01934"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2445,13 +2468,14 @@
            "validation_id": "VAL-LHHS-00691"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00692"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2515,7 +2539,8 @@
            "validation_id": "VAL-LHHS-00683"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00684"
@@ -2533,13 +2558,14 @@
            "validation_id": "VAL-LHHS-00686"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00687"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2809,7 +2835,8 @@
            "validation_id": "VAL-LHHS-00711"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00712"
@@ -2821,7 +2848,7 @@
            "validation_id": "VAL-LHHS-00713"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2885,7 +2912,8 @@
            "validation_id": "VAL-LHHS-00707"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00708"
@@ -2897,7 +2925,7 @@
            "validation_id": "VAL-LHHS-00709"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3173,13 +3201,14 @@
            "validation_id": "VAL-LHHS-00733"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00734"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3249,13 +3278,14 @@
            "validation_id": "VAL-LHHS-00729"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00730"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3828,13 +3858,14 @@
            "validation_id": "VAL-LHHS-00765"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00766"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3892,7 +3923,8 @@
            "validation_id": "VAL-LHHS-00757"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00758"
@@ -3910,13 +3942,14 @@
            "validation_id": "VAL-LHHS-00760"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00761"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -4192,13 +4225,14 @@
            "validation_id": "VAL-LHHS-00786"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00787"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -4250,7 +4284,8 @@
            "validation_id": "VAL-LHHS-00779"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00780"
@@ -4268,13 +4303,14 @@
            "validation_id": "VAL-LHHS-00782"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00783"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -4526,7 +4562,8 @@
            "validation_id": "VAL-LHHS-00801"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00802"
@@ -4590,7 +4627,8 @@
            "validation_id": "VAL-LHHS-00798"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00799"
@@ -4936,13 +4974,14 @@
            "validation_id": "VAL-LHHS-00828"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2028')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00829"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5006,7 +5045,8 @@
            "validation_id": "VAL-LHHS-00820"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00821"
@@ -5024,13 +5064,14 @@
            "validation_id": "VAL-LHHS-00823"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00824"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5306,13 +5347,14 @@
            "validation_id": "VAL-LHHS-00850"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2028')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00851"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5370,7 +5412,8 @@
            "validation_id": "VAL-LHHS-00843"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00844"
@@ -5388,13 +5431,14 @@
            "validation_id": "VAL-LHHS-00846"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-00847"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5706,7 +5750,8 @@
       "validation_id": "VAL-LHHS-02327"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02328"
@@ -5724,7 +5769,8 @@
       "validation_id": "VAL-LHHS-02330"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02331"
@@ -5736,7 +5782,7 @@
       "validation_id": "VAL-LHHS-02332"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -165722018000,
@@ -5794,7 +5840,8 @@
       "validation_id": "VAL-LHHS-02336"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02337"
@@ -5812,7 +5859,7 @@
       "validation_id": "VAL-LHHS-02339"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 197580474000,
@@ -5858,7 +5905,8 @@
       "validation_id": "VAL-LHHS-02341"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02342"
@@ -5876,13 +5924,14 @@
       "validation_id": "VAL-LHHS-02344"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02345"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -165722018000,
@@ -5946,7 +5995,8 @@
       "validation_id": "VAL-LHHS-02350"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02351"
@@ -5958,7 +6008,7 @@
       "validation_id": "VAL-LHHS-02352"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 197580474000,
@@ -6011,13 +6061,14 @@
       "validation_id": "VAL-LHHS-02355"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, fiscal year 2024')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02356"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -165722018000,
@@ -6076,7 +6127,8 @@
       "validation_id": "VAL-LHHS-02360"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02361"
@@ -6088,7 +6140,7 @@
       "validation_id": "VAL-LHHS-02362"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 197580474000,
@@ -6140,13 +6192,14 @@
       "validation_id": "VAL-LHHS-02365"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02366"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -165722018000,
@@ -6198,13 +6251,14 @@
       "validation_id": "VAL-LHHS-02369"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02370"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 245580414000,
@@ -6250,7 +6304,8 @@
       "validation_id": "VAL-LHHS-02372"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02373"
@@ -6308,7 +6363,8 @@
       "validation_id": "VAL-LHHS-02376"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02377"
@@ -6320,7 +6376,7 @@
       "validation_id": "VAL-LHHS-02378"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 406956850000,
@@ -6574,13 +6630,14 @@
       "validation_id": "VAL-LHHS-06875"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-06876"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -197580474000,
@@ -6633,7 +6690,8 @@
       "validation_id": "VAL-LHHS-06879"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-06880"
@@ -6651,13 +6709,14 @@
       "validation_id": "VAL-LHHS-06882"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-06883"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 245580414000,
@@ -6709,13 +6768,14 @@
       "validation_id": "VAL-LHHS-02381"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2025')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02382"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -197580474000,
@@ -6773,7 +6833,8 @@
       "validation_id": "VAL-LHHS-02386"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02387"
@@ -6785,7 +6846,7 @@
       "validation_id": "VAL-LHHS-02388"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 406956850000,
@@ -7035,7 +7096,8 @@
       "validation_id": "VAL-LHHS-00663"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00664"
@@ -7047,7 +7109,7 @@
       "validation_id": "VAL-LHHS-00665"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -197580474000,
@@ -7099,7 +7161,8 @@
       "validation_id": "VAL-LHHS-00658"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00659"
@@ -7111,7 +7174,7 @@
       "validation_id": "VAL-LHHS-00660"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 383609399000,
@@ -7331,7 +7394,8 @@
       "validation_id": "VAL-LHHS-00711"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00712"
@@ -7343,7 +7407,7 @@
       "validation_id": "VAL-LHHS-00713"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -245580414000,
@@ -7395,7 +7459,8 @@
       "validation_id": "VAL-LHHS-00707"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00708"
@@ -7407,7 +7472,7 @@
       "validation_id": "VAL-LHHS-00709"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 383609399000,
@@ -7657,13 +7722,14 @@
       "validation_id": "VAL-LHHS-00691"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00692"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -245580414000,
@@ -7715,7 +7781,8 @@
       "validation_id": "VAL-LHHS-00683"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00684"
@@ -7733,13 +7800,14 @@
       "validation_id": "VAL-LHHS-00686"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00687"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 383609399000,
@@ -7965,13 +8033,14 @@
       "validation_id": "VAL-LHHS-00733"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2026')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00734"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -245580414000,
@@ -8029,13 +8098,14 @@
       "validation_id": "VAL-LHHS-00729"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00730"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 383609399000,
@@ -8069,13 +8139,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01931"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 644673219000,
@@ -8109,13 +8180,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01933"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 629189813000,
@@ -8149,13 +8221,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01932"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 261063820000,
@@ -8229,13 +8302,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01934"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 508148791000,
@@ -8461,13 +8535,14 @@
       "validation_id": "VAL-LHHS-00786"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00787"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -261063820000,
@@ -8507,7 +8582,8 @@
       "validation_id": "VAL-LHHS-00779"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00780"
@@ -8525,13 +8601,14 @@
       "validation_id": "VAL-LHHS-00782"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00783"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 508148791000,
@@ -8781,13 +8858,14 @@
       "validation_id": "VAL-LHHS-00765"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00766"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -261063820000,
@@ -8833,7 +8911,8 @@
       "validation_id": "VAL-LHHS-00757"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00758"
@@ -8851,13 +8930,14 @@
       "validation_id": "VAL-LHHS-00760"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00761"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 508148791000,
@@ -9059,7 +9139,8 @@
       "validation_id": "VAL-LHHS-00801"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2027')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00802"
@@ -9111,7 +9192,8 @@
       "validation_id": "VAL-LHHS-00798"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00799"
@@ -9549,13 +9631,14 @@
       "validation_id": "VAL-LHHS-00850"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2028')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00851"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -316514725000,
@@ -9601,7 +9684,8 @@
       "validation_id": "VAL-LHHS-00843"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00844"
@@ -9619,13 +9703,14 @@
       "validation_id": "VAL-LHHS-00846"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00847"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 468678021000,
@@ -9875,13 +9960,14 @@
       "validation_id": "VAL-LHHS-00828"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2028')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00829"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -316514725000,
@@ -9933,7 +10019,8 @@
       "validation_id": "VAL-LHHS-00820"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00821"
@@ -9951,13 +10038,14 @@
       "validation_id": "VAL-LHHS-00823"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-00824"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [

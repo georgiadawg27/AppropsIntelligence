@@ -51,7 +51,8 @@
            "validation_id": "VAL-LHHS-03832"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03833"
@@ -75,7 +76,7 @@
            "validation_id": "VAL-LHHS-03836"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -123,13 +124,15 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-03837"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03838"
@@ -159,7 +162,7 @@
            "validation_id": "VAL-LHHS-03842"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -207,13 +210,15 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-03843"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03844"
@@ -243,7 +248,7 @@
            "validation_id": "VAL-LHHS-03848"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -292,13 +297,15 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-03849"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03850"
@@ -328,7 +335,7 @@
            "validation_id": "VAL-LHHS-03854"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -387,7 +394,8 @@
            "validation_id": "VAL-LHHS-03855"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03856"
@@ -417,7 +425,7 @@
            "validation_id": "VAL-LHHS-03860"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -472,7 +480,8 @@
            "validation_id": "VAL-LHHS-06861"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-06862"
@@ -502,7 +511,7 @@
            "validation_id": "VAL-LHHS-06866"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -556,7 +565,8 @@
            "validation_id": "VAL-LHHS-03861"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03862"
@@ -580,7 +590,7 @@
            "validation_id": "VAL-LHHS-03865"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -634,7 +644,8 @@
            "validation_id": "VAL-LHHS-03866"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03867"
@@ -664,7 +675,7 @@
            "validation_id": "VAL-LHHS-03871"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -885,7 +896,8 @@
            "validation_id": "VAL-LHHS-03883"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03884"
@@ -909,7 +921,7 @@
            "validation_id": "VAL-LHHS-03887"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -963,7 +975,8 @@
            "validation_id": "VAL-LHHS-03888"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03889"
@@ -987,7 +1000,7 @@
            "validation_id": "VAL-LHHS-03892"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1286,7 +1299,8 @@
            "validation_id": "VAL-LHHS-03909"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-03910"
@@ -1304,7 +1318,7 @@
            "validation_id": "VAL-LHHS-03912"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1652,13 +1666,15 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-03843"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03844"
@@ -1688,7 +1704,7 @@
       "validation_id": "VAL-LHHS-03848"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 899000000,
@@ -1722,13 +1738,15 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-03837"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03838"
@@ -1758,7 +1776,7 @@
       "validation_id": "VAL-LHHS-03842"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 893000000,
@@ -1793,13 +1811,15 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-03849"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03850"
@@ -1829,7 +1849,7 @@
       "validation_id": "VAL-LHHS-03854"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 893000000,
@@ -1869,7 +1889,8 @@
       "validation_id": "VAL-LHHS-03832"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03833"
@@ -1893,7 +1914,7 @@
       "validation_id": "VAL-LHHS-03836"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 937000000,
@@ -1933,7 +1954,8 @@
       "validation_id": "VAL-LHHS-03861"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03862"
@@ -1957,7 +1979,7 @@
       "validation_id": "VAL-LHHS-03865"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 915000000,
@@ -1998,7 +2020,8 @@
       "validation_id": "VAL-LHHS-06861"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-06862"
@@ -2028,7 +2051,7 @@
       "validation_id": "VAL-LHHS-06866"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 915000000,
@@ -2068,7 +2091,8 @@
       "validation_id": "VAL-LHHS-03866"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03867"
@@ -2098,7 +2122,7 @@
       "validation_id": "VAL-LHHS-03871"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 915000000,
@@ -2138,7 +2162,8 @@
       "validation_id": "VAL-LHHS-03855"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03856"
@@ -2168,7 +2193,7 @@
       "validation_id": "VAL-LHHS-03860"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 941000000,
@@ -2208,7 +2233,8 @@
       "validation_id": "VAL-LHHS-03883"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03884"
@@ -2232,7 +2258,7 @@
       "validation_id": "VAL-LHHS-03887"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 941000000,
@@ -2342,7 +2368,8 @@
       "validation_id": "VAL-LHHS-03888"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03889"
@@ -2366,7 +2393,7 @@
       "validation_id": "VAL-LHHS-03892"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 941000000,
@@ -2604,7 +2631,8 @@
       "validation_id": "VAL-LHHS-03909"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-03910"
@@ -2622,7 +2650,7 @@
       "validation_id": "VAL-LHHS-03912"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 941000000,

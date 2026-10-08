@@ -195,7 +195,8 @@
            "validation_id": "VAL-LHHS-04490"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "false positive: 'Advance' is part of the account's name (ARPA-H); the line is budget authority, as recorded",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-04491"
@@ -207,7 +208,7 @@
            "validation_id": "VAL-LHHS-04492"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -280,13 +281,14 @@
            "validation_id": "VAL-LHHS-04496"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "false positive: 'Advance' is part of the account's name (ARPA-H); the line is budget authority, as recorded",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-04497"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1442,7 +1444,8 @@
       "validation_id": "VAL-LHHS-04490"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "false positive: 'Advance' is part of the account's name (ARPA-H); the line is budget authority, as recorded",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-04491"
@@ -1454,7 +1457,7 @@
       "validation_id": "VAL-LHHS-04492"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2750000000,
@@ -1571,13 +1574,14 @@
       "validation_id": "VAL-LHHS-04496"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "false positive: 'Advance' is part of the account's name (ARPA-H); the line is budget authority, as recorded",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-04497"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1500000000,

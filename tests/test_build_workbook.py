@@ -118,6 +118,18 @@ class BuildChecksStopTheBuild(unittest.TestCase):
         def bad(d): d["source_docs"][0]["url_or_identifier"] = "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
         self.assertIn("govinfo landing page", self.run_with(bad))
 
+    def test_a_status_the_rule_does_not_give(self):
+        def bad(d):
+            o = next(o for o in d["observations"] if o["verification_status"] == "flagged")
+            o["verification_status"] = "auto-validated"
+        self.assertIn("verification_status rule", self.run_with(bad))
+
+    def test_a_resolution_left_blank(self):
+        def bad(d):
+            v = next(v for v in d["validations"] if v["human_review_status"] == "resolved")
+            v["resolution"] = ""
+        self.assertIn("resolved without a resolution", self.run_with(bad))
+
     def test_enactment_fields_on_a_row_that_is_not_enacted(self):
         def bad(d):
             r = next(r for r in d["bill_report_refs"] if r["stage"] != "Enacted")

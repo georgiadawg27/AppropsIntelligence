@@ -335,13 +335,14 @@
            "validation_id": "VAL-LHHS-01031"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Adoption Incentives (rescission)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01032"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -1134,13 +1135,14 @@
       "validation_id": "VAL-LHHS-01031"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Adoption Incentives (rescission)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01032"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,

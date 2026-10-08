@@ -45,7 +45,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02884 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-02883"
@@ -69,13 +70,14 @@
            "validation_id": "VAL-LHHS-02886"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02887"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -191,7 +193,8 @@
            "validation_id": "VAL-LHHS-02891"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02892"
@@ -203,7 +206,7 @@
            "validation_id": "VAL-LHHS-02893"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -282,13 +285,14 @@
            "validation_id": "VAL-LHHS-06783"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-06784"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -336,7 +340,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02895 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-02894"
@@ -360,13 +365,14 @@
            "validation_id": "VAL-LHHS-02897"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02898"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -414,7 +420,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02900 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-02901 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-02899"
@@ -444,13 +451,14 @@
            "validation_id": "VAL-LHHS-02903"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02904"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -527,13 +535,14 @@
            "validation_id": "VAL-LHHS-02908"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02909"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -611,13 +620,14 @@
            "validation_id": "VAL-LHHS-02914"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02915"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -689,7 +699,8 @@
            "validation_id": "VAL-LHHS-02919"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02920"
@@ -701,7 +712,7 @@
            "validation_id": "VAL-LHHS-02921"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -779,13 +790,14 @@
            "validation_id": "VAL-LHHS-02926"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02927"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -862,13 +874,14 @@
            "validation_id": "VAL-LHHS-02931"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02932"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -946,13 +959,14 @@
            "validation_id": "VAL-LHHS-02937"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02938"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1024,13 +1038,14 @@
            "validation_id": "VAL-LHHS-02942"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02943"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1096,13 +1111,14 @@
            "validation_id": "VAL-LHHS-02946"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02947"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1198,13 +1214,14 @@
            "validation_id": "VAL-LHHS-02952"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02953"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1276,13 +1293,14 @@
            "validation_id": "VAL-LHHS-02957"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-02958"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1463,7 +1481,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02884 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02883"
@@ -1487,13 +1506,14 @@
       "validation_id": "VAL-LHHS-02886"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02887"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 656790000,
@@ -1527,7 +1547,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02895 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02894"
@@ -1551,13 +1572,14 @@
       "validation_id": "VAL-LHHS-02897"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02898"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 342606000,
@@ -1622,13 +1644,14 @@
       "validation_id": "VAL-LHHS-06783"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-06784"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 541686000,
@@ -1662,7 +1685,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02900 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-02901 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02899"
@@ -1692,13 +1716,14 @@
       "validation_id": "VAL-LHHS-02903"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02904"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 499606000,
@@ -1756,7 +1781,8 @@
       "validation_id": "VAL-LHHS-02891"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02892"
@@ -1768,7 +1794,7 @@
       "validation_id": "VAL-LHHS-02893"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 685097000,
@@ -1826,7 +1852,8 @@
       "validation_id": "VAL-LHHS-02919"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02920"
@@ -1838,7 +1865,7 @@
       "validation_id": "VAL-LHHS-02921"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 352606000,
@@ -1902,13 +1929,14 @@
       "validation_id": "VAL-LHHS-02914"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02915"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 576606000,
@@ -1972,13 +2000,14 @@
       "validation_id": "VAL-LHHS-02926"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02927"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 499606000,
@@ -2036,13 +2065,14 @@
       "validation_id": "VAL-LHHS-02908"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02909"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 388478000,
@@ -2100,13 +2130,14 @@
       "validation_id": "VAL-LHHS-02942"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02943"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 244606000,
@@ -2170,13 +2201,14 @@
       "validation_id": "VAL-LHHS-02937"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02938"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 488606000,
@@ -2228,13 +2260,14 @@
       "validation_id": "VAL-LHHS-02946"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02947"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 484606000,
@@ -2292,13 +2325,14 @@
       "validation_id": "VAL-LHHS-02931"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02932"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 711478000,
@@ -2356,13 +2390,14 @@
       "validation_id": "VAL-LHHS-02957"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02958"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 335606000,
@@ -2426,13 +2461,14 @@
       "validation_id": "VAL-LHHS-02952"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02953"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [

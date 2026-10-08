@@ -104,7 +104,21 @@ class V33Store(unittest.TestCase):
 
     def checks(self, oid):
         return [tuple(r) for r in self.conn.execute(
-            "SELECT rule_applied, result, expected_result FROM validation_record WHERE observation_id = ?", (oid,))]
+            "SELECT rule_applied, result, expected_result, human_review_status, resolution FROM validation_record "
+            "WHERE observation_id = ?", (oid,))]
+
+    def test_a_resolved_check_no_longer_counts(self):
+        fail = ("structural", "fail", "1 = sum of [a]")
+        ok = ("table_total", "pass", "2 = sum of [b]")
+        self.assertEqual(V.verification_status(0.95, [fail, ok]), "flagged")
+        self.assertEqual(V.verification_status(0.95, [fail + ("resolved", "parse artifact"), ok]), "auto-validated")
+        self.assertEqual(V.verification_status(0.95, [fail + ("resolved", " "), ok]), "flagged")     # no resolution written
+        self.assertEqual(V.verification_status(0.95, [fail + ("pending", "x"), ok]), "flagged")
+        self.assertEqual(V.verification_status(0.50, [fail + ("resolved", "parse artifact"), ok]), "unverified")
+        # a resolved record neither flags nor confirms
+        xd = ("cross_document", "flag", "another document prints 3")
+        self.assertEqual(V.verification_status(0.95, [xd + ("resolved", "explained"), ("source_text", "pass")]), "unverified")
+        self.assertEqual(V.verification_status(0.95, [("cross_document", "pass") + (None, "resolved", "x")]), "unverified")
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
@@ -115,15 +129,19 @@ class V33Store(unittest.TestCase):
             n += 1
         self.assertEqual(n, 1833)                       # + the 101 FY2024 House draft rows and the NEF rescission, by the same rule
 
-    def test_the_fourteen_deliberate_flags_stay_flagged(self):
+    def test_the_fourteen_deliberate_flags(self):
+        # the two Title II scope totals stay flagged (pending); the owner resolved the twelve FY2025 Enacted
+        # estimates (PR #29), which leaves them unverified -- nothing else confirms an estimate
         got = dict(self.conn.execute("SELECT observation_id, verification_status FROM appropriations_observation "
                                      "WHERE observation_id IN (%s)" % ",".join("?" * 14), self.FLAGGED_FOR_REVIEW).fetchall())
-        self.assertEqual(got, dict.fromkeys(self.FLAGGED_FOR_REVIEW, "flagged"))
+        self.assertEqual(got, {oid: "flagged" if oid in ("OBS-LHHS-0434", "OBS-LHHS-0440") else "unverified"
+                               for oid in self.FLAGGED_FOR_REVIEW})
         for oid in self.FLAGGED_FOR_REVIEW:
-            # none has a failed check: each is flagged by a review flag (a scope question or a disagreeing document)
-            self.assertNotIn("fail", [r for _, r, _ in self.checks(oid)])
-            self.assertTrue(any(V.review_flag(*c) for c in self.checks(oid)), oid)
-            self.assertEqual(V.verification_status(0.95, self.checks(oid)), "flagged", oid)
+            # none has a failed check: each was flagged by a review flag (a scope question or a disagreeing document)
+            self.assertNotIn("fail", [c[1] for c in self.checks(oid)])
+            self.assertTrue(any(V.review_flag(*c[:3]) for c in self.checks(oid)), oid)
+            self.assertEqual(V.verification_status(0.95, [c[:3] for c in self.checks(oid)]), "flagged", oid)
+            self.assertEqual(V.verification_status(0.95, self.checks(oid)), got[oid], oid)
 
     def test_a_routine_semantic_flag_is_not_a_review_flag(self):
         self.assertFalse(V.review_flag("semantic", "flag", "amount_type fits the row label (advance)"))

@@ -51,7 +51,8 @@
            "validation_id": "VAL-LHHS-00238"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00239"
@@ -75,7 +76,7 @@
            "validation_id": "VAL-LHHS-00242"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -193,13 +194,15 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-01996 (the printed change column [Bill vs. Enacted]); VAL-LHHS-01997 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01994"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01995"
@@ -229,7 +232,7 @@
            "validation_id": "VAL-LHHS-01999"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -353,7 +356,8 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02007 (the printed change column [Bill vs. Request]); VAL-LHHS-02305 (another document prints it)",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02005"
@@ -389,7 +393,7 @@
            "validation_id": "VAL-LHHS-02305"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -514,7 +518,8 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02206 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-02207 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02205"
@@ -544,7 +549,7 @@
            "validation_id": "VAL-LHHS-02209"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -591,7 +596,8 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02211 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-02212 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02210"
@@ -621,7 +627,7 @@
            "validation_id": "VAL-LHHS-02214"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -680,7 +686,8 @@
            "validation_id": "VAL-LHHS-00247"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00248"
@@ -710,7 +717,7 @@
            "validation_id": "VAL-LHHS-00252"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -841,7 +848,8 @@
            "validation_id": "VAL-LHHS-06759"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-06760"
@@ -1002,7 +1010,8 @@
            "validation_id": "VAL-LHHS-00258"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00259"
@@ -1026,7 +1035,7 @@
            "validation_id": "VAL-LHHS-00262"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1150,7 +1159,8 @@
            "validation_id": "VAL-LHHS-00267"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00268"
@@ -1180,7 +1190,7 @@
            "validation_id": "VAL-LHHS-00272"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1421,7 +1431,8 @@
            "validation_id": "VAL-LHHS-00278"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00279"
@@ -1451,7 +1462,7 @@
            "validation_id": "VAL-LHHS-00283"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1581,7 +1592,8 @@
            "validation_id": "VAL-LHHS-00289"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00290"
@@ -1611,7 +1623,7 @@
            "validation_id": "VAL-LHHS-00294"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1741,7 +1753,8 @@
            "validation_id": "VAL-LHHS-00300"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00301"
@@ -1771,7 +1784,7 @@
            "validation_id": "VAL-LHHS-00305"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2012,7 +2025,8 @@
            "validation_id": "VAL-LHHS-00313"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00314"
@@ -2042,7 +2056,7 @@
            "validation_id": "VAL-LHHS-00318"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2320,7 +2334,8 @@
            "validation_id": "VAL-LHHS-00333"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00334"
@@ -2338,7 +2353,7 @@
            "validation_id": "VAL-LHHS-00336"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2474,7 +2489,8 @@
            "validation_id": "VAL-LHHS-00340"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-00341"
@@ -2504,7 +2520,7 @@
            "validation_id": "VAL-LHHS-00345"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2902,7 +2918,8 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02007 (the printed change column [Bill vs. Request]); VAL-LHHS-02305 (another document prints it)",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02005"
@@ -2938,7 +2955,7 @@
       "validation_id": "VAL-LHHS-02305"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 3040936000,
@@ -3036,13 +3053,15 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-01996 (the printed change column [Bill vs. Enacted]); VAL-LHHS-01997 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01994"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01995"
@@ -3072,7 +3091,7 @@
       "validation_id": "VAL-LHHS-01999"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 2945823000,
@@ -3171,7 +3190,8 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02206 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-02207 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02205"
@@ -3201,7 +3221,7 @@
       "validation_id": "VAL-LHHS-02209"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2542788000,
@@ -3236,7 +3256,8 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02211 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-02212 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02210"
@@ -3266,7 +3287,7 @@
       "validation_id": "VAL-LHHS-02214"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2537787000,
@@ -3306,7 +3327,8 @@
       "validation_id": "VAL-LHHS-00238"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00239"
@@ -3330,7 +3352,7 @@
       "validation_id": "VAL-LHHS-00242"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2565487000,
@@ -3428,7 +3450,8 @@
       "validation_id": "VAL-LHHS-00258"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00259"
@@ -3452,7 +3475,7 @@
       "validation_id": "VAL-LHHS-00262"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 3055322000,
@@ -3551,7 +3574,8 @@
       "validation_id": "VAL-LHHS-06759"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-06760"
@@ -3686,7 +3710,8 @@
       "validation_id": "VAL-LHHS-00267"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00268"
@@ -3716,7 +3741,7 @@
       "validation_id": "VAL-LHHS-00272"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2552292000,
@@ -3820,7 +3845,8 @@
       "validation_id": "VAL-LHHS-00247"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00248"
@@ -3850,7 +3876,7 @@
       "validation_id": "VAL-LHHS-00252"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2548042000,
@@ -3954,7 +3980,8 @@
       "validation_id": "VAL-LHHS-00289"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00290"
@@ -3984,7 +4011,7 @@
       "validation_id": "VAL-LHHS-00294"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2634043000,
@@ -4088,7 +4115,8 @@
       "validation_id": "VAL-LHHS-00278"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00279"
@@ -4118,7 +4146,7 @@
       "validation_id": "VAL-LHHS-00283"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2498109000,
@@ -4222,7 +4250,8 @@
       "validation_id": "VAL-LHHS-00300"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00301"
@@ -4252,7 +4281,7 @@
       "validation_id": "VAL-LHHS-00305"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2543817000,
@@ -4558,7 +4587,8 @@
       "validation_id": "VAL-LHHS-00313"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00314"
@@ -4588,7 +4618,7 @@
       "validation_id": "VAL-LHHS-00318"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2508132000,
@@ -4692,7 +4722,8 @@
       "validation_id": "VAL-LHHS-00333"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00334"
@@ -4710,7 +4741,7 @@
       "validation_id": "VAL-LHHS-00336"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2542479000,
@@ -5004,7 +5035,8 @@
       "validation_id": "VAL-LHHS-00340"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-00341"
@@ -5034,7 +5066,7 @@
       "validation_id": "VAL-LHHS-00345"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2522711000,
