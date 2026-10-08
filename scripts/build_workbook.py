@@ -20,8 +20,8 @@ ACCOUNT_STATUS = ["active", "inactive", "superseded", "proposed"]
 FUND_TYPE = ["general", "trust", "special", "revolving", "working_capital", "no_year"]
 REL_TYPE = ["same", "renamed", "split_from", "merged_into", "consolidated", "moved_reclassified", "uncertain"]
 DOC_TYPE = ["bill", "committee_report", "explanatory_statement", "public_law", "presidents_budget", "budget_appendix", "congressional_budget_justification", "cbo_cost_estimate", "crs_report", "omb_public_budget_database", "other"]
-RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic"]
-RESULT = ["pass", "fail", "flag"]
+RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text"]
+RESULT = ["pass", "fail", "flag", "info"]
 REVIEW = ["pending", "resolved"]
 CHAMBER = ["House", "Senate", "N/A"]
 BOOL = ["TRUE", "FALSE"]
@@ -445,7 +445,9 @@ rows = [
      "check passing, and at least one check that confirms the figure (a sum or cross-document match); 'flagged' when "
      "a check fails or a person deliberately flagged it; otherwise 'unverified'. 382 Labor-HHS rows moved from "
      "auto-validated to unverified, 2 the other way. No auto-validated row is below 0.90. A check a person resolved "
-     "(human_review_status 'resolved', its resolution written) no longer counts; the rule applies to the rest.", NOTE_FONT),
+     "(human_review_status 'resolved', its resolution written) no longer counts; the rule applies to the rest. "
+     "law_text (an Enacted figure equal to the enrolled law's first dollar amount under its heading) confirms like a "
+     "printed sum; a law_text 'info' record (program level, advances, transfers, trust-fund limitations) counts neither way.", NOTE_FONT),
     ("\u2022 FY2026 AHA Congressional Justification added (SRC-CJ-AHA-FY2026, excerpt pp. 11-19). Five proposed moves "
      "into AHA, each matched to the dollar against H.Rept. 119-271's FY2026 request: NIEHS, CDC Injury Prevention, "
      "Birth Defects, NIOSH and EEOICPA (REL-LHHS-0011..0015). REL-LHHS-0003/0004 (agency-total links) removed; their "

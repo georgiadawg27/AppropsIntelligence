@@ -55,6 +55,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-05578"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07234"
           }
          ],
          "verification_status": "unverified"
@@ -349,6 +355,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-05594"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07310"
           }
          ],
          "verification_status": "auto-validated"
@@ -912,6 +924,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-05618"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07385"
           }
          ],
          "verification_status": "auto-validated"
@@ -1621,6 +1639,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-05578"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07234"
      }
     ],
     "verification_status": "unverified"
@@ -1842,6 +1866,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-05594"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07310"
      }
     ],
     "verification_status": "auto-validated"
@@ -2276,6 +2306,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-05618"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07385"
      }
     ],
     "verification_status": "auto-validated"

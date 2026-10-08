@@ -68,6 +68,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06082"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07242"
           }
          ],
          "verification_status": "auto-validated"
@@ -415,6 +421,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-06106"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07318"
           }
          ],
          "verification_status": "auto-validated"
@@ -1083,6 +1095,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06144"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-07393"
           }
          ],
          "verification_status": "unverified"
@@ -1910,6 +1928,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06082"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07242"
      }
     ],
     "verification_status": "auto-validated"
@@ -2183,6 +2207,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-06106"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07318"
      }
     ],
     "verification_status": "auto-validated"
@@ -2722,6 +2752,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06144"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-07393"
      }
     ],
     "verification_status": "unverified"

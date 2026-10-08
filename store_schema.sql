@@ -220,10 +220,13 @@ CREATE TABLE validation_record (
     rule_applied        TEXT NOT NULL CHECK (rule_applied IN ('source_text', 'structural', 'table_total', 'cross_document',
                                                               'historical', 'account_identity', 'unit', 'semantic',
                                                               -- reconcile.py: an advance copy against GPO's official version
-                                                              'advance_copy_reconciliation')),
+                                                              'advance_copy_reconciliation',
+                                                              -- reference/review/law_text.py: an Enacted figure against the enrolled law
+                                                              'law_text')),
     expected_result     TEXT,
     observed_result     TEXT,
-    result              TEXT NOT NULL CHECK (result IN ('pass', 'fail', 'flag')),
+    -- info: a comparison recorded for the reader that neither fails nor confirms (law_text's known differences)
+    result              TEXT NOT NULL CHECK (result IN ('pass', 'fail', 'flag', 'info')),
     human_review_status TEXT CHECK (human_review_status IS NULL OR human_review_status IN ('pending', 'resolved')),
     reviewer            TEXT,
     resolution          TEXT
