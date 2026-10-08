@@ -562,7 +562,9 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, st) for y in (2024, 2026) for st in FOUR if st != "House Reported"]))
 
     def test_grid_state_counts_are_unchanged(self):
-        want = {"LHHS": {"value": 1452, "not_funded": 102, "no_printed_total": 13, "missing": 133, "not_collected": 200,
+        # LHHS: the FY2024 House column (100 cells) moved from not yet collected to the subcommittee draft's
+        # figures and states (+86 value, +6 not funded, +8 missing); every other cell as before
+        want = {"LHHS": {"value": 1538, "not_funded": 108, "no_printed_total": 13, "missing": 141, "not_collected": 100,
                          "not_enacted": 100},
                 "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
                         "not_enacted": 30}}
@@ -747,7 +749,9 @@ class CompareBrowser(CompareTest):
     def test_tokens_carry_their_meaning(self):
         for state, text in (("not_enacted", "n/e"), ("missing", "?"), ("not_collected", "n/c"), ("not_funded", "—"),
                             ("no_printed_total", "no printed total")):
+            # not yet collected: FY2027 Senate (the FY2024 House column now holds the subcommittee draft's figures)
             self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2027" if state == "not_enacted" else
+                      "?view=compare&sc=LHHS&grid=years&a=2026&b=2027" if state == "not_collected" else
                       "?view=compare&sc=LHHS&grid=years&a=2023&b=2024")
             self.page.click("#expand-all")
             tok = self.page.locator(f"td[data-state={state}] [data-testid=token-{state.replace('_', '-')}]").first
@@ -782,11 +786,47 @@ class CompareBrowser(CompareTest):
         self.assertEqual(heads, [["Account", "FY2025 (CR)", "FY2026", "", "Change · FY2026 enacted vs"],
                                  ["Enacted", "Request", "House", "Senate", "Enacted", "FY2025 enacted", "Request"]])
 
+    def test_draft_stages_are_labeled_in_every_view(self):
+        # a House / Senate column whose Bill Report Reference row says draft = TRUE (the full committee never
+        # reported the bill) reads "House (draft)" / "Senate (draft)"; its title names the document
+        want = {"LHHS": {(2023, "Senate Reported"), (2024, "House Reported")},
+                "CJS": {(2021, "Senate Reported"), (2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")}}
+        title = "Committee draft \u2014 the full committee never reported this bill \u00b7 "
+        for sc, drafts in want.items():
+            g = self.lhhs if sc == "LHHS" else self.grid
+            self.assertEqual({(int(k.split("|")[0]), k.split("|")[1]) for k in g["drafts"]}, drafts, sc)
+            seen = set()
+            views = [f"grid=stages&fy={y}" for y in sorted({y for y, _ in drafts})] + ["grid=years&a=2023&b=2024",
+                                                                                      "grid=years&a=2021&b=2022", "grid=history"]
+            for view in views:
+                self.open("static", f"?view=compare&sc={sc}&{view}")
+                labels = self.page.locator("#compare-grid thead [data-testid=draft-label]")
+                for i in range(labels.count()):
+                    th = labels.nth(i)
+                    y, st = th.get_attribute("data-draft").split("|")
+                    self.assertIn((int(y), st), drafts, (sc, view))
+                    # (a stage with a Bill Report Reference note keeps its "†" mark before the label)
+                    self.assertEqual(th.inner_text().removeprefix("\u2020").strip(),
+                                     {"House Reported": "House", "Senate Reported": "Senate"}[st] + " (draft)")
+                    doc = g["drafts"][f"{y}|{st}"]["document"]
+                    self.assertTrue(th.get_attribute("title").startswith(title + doc), th.get_attribute("title"))
+                    seen.add((int(y), st))
+                # every other House / Senate header is plain
+                plain = self.page.eval_on_selector_all("#compare-grid thead th:not([data-testid=draft-label])",
+                                                       "ts => ts.map(t => t.innerText).filter(t => /\\(draft\\)/.test(t))")
+                self.assertEqual(plain, [], (sc, view))
+                if view == "grid=history":
+                    # the history view's stage columns are the next year's request and House: no draft among them
+                    self.assertEqual(labels.count(), 0, sc)
+            self.assertEqual(seen, drafts, sc)
+        self.assertEqual(self.lhhs["drafts"]["2024|House Reported"]["document_id"], "SRC-EXPL-LHHS-FY2024-HOUSE")
+
     def test_two_years_and_history_columns(self):
         self.open("static", "?view=compare&sc=LHHS&grid=years")
         heads = lambda: self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
+        # FY2024's House column is the subcommittee draft (Bill Report Reference draft = TRUE)
         self.assertEqual(heads(), [["Account", "FY2024", "FY2026", "", "Change · FY2026 vs FY2024"],
-                                   ["Request", "House", "Senate", "Enacted"] * 2 + ["Enacted"]])
+                                   ["Request", "House (draft)", "Senate", "Enacted", "Request", "House", "Senate", "Enacted", "Enacted"]])
         self.assertEqual(self.page.locator("#compare-grid thead th.yb").count(), 5)
         self.page.select_option("#basis", "0")
         self.assertEqual(heads()[1][-1], "Request")
@@ -1041,11 +1081,13 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(same, 0)
                 self.assertEqual(self.page.locator("#compare-grid td.delta").first.evaluate("e => getComputedStyle(e).fontSize"), "13px")
 
-    def test_notes_are_corner_marks_208_in_all(self):
-        # the cells with other lines on file, both subcommittees (title totals included)
+    def test_notes_are_corner_marks_214_in_all(self):
+        # the cells with other lines on file, both subcommittees (title totals included): 208, + 6 in the
+        # FY2024 House draft's column (the ACF, ACL, CDC, NIH and OS totals and Medicaid: program-level and
+        # advance lines beside the headline)
         total = sum(1 for g in (self.lhhs, self.grid) for r in g["rows"] + [t["total"] for t in g["titles"] if t["total"]]
                     for k in r["cells"] if other_lines(r, *k.split("|")))
-        self.assertEqual(total, 208)
+        self.assertEqual(total, 214)
         for sc in ("LHHS", "CJS"):
             self.open("static", f"?view=compare&sc={sc}&grid=history")
             self.page.click("#expand-all")

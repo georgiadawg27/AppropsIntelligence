@@ -1,0 +1,57 @@
+{
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft added; Bill Report Reference draft column)",
+ "data_sha256": "41ac060da58741de294566053abbed6f14203b944ee9a3f3bd374b87ca75c331",
+ "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
+ "sheets": {
+  "Read Me": {
+   "rows": 68,
+   "columns": 1,
+   "sha256": "c67e79a340f6238966027a8754a284f1bc82ce8ce2b2dba5626cbb7f928713e6"
+  },
+  "Account": {
+   "rows": 131,
+   "columns": 15,
+   "sha256": "baf02bb4aa875bbda06fc89515166a1836533ac3ff891207cc2787b8d00c51bb"
+  },
+  "Historical Name": {
+   "rows": 12,
+   "columns": 7,
+   "sha256": "71585ec773bcc4d808aa4623a2ac756ebbf476826aabee08fcb4410b4ae957f4"
+  },
+  "Confirmed Absence": {
+   "rows": 237,
+   "columns": 9,
+   "sha256": "18f2c8947bd4e6a7c66cd0b2d566f55ded486042a19e2d58a082b1a888401431"
+  },
+  "Appropriations Observation": {
+   "rows": 2703,
+   "columns": 21,
+   "sha256": "309ef35548776e865b6d9436ca210b6c703aeeb8952f88f9fa03b9dec550276b"
+  },
+  "Account Relationship": {
+   "rows": 12,
+   "columns": 8,
+   "sha256": "9bee5a4ae71ece3731c92ad088ffcc88729cd9e2cf8709c014d5fbf4ed563a9e"
+  },
+  "Source Document": {
+   "rows": 37,
+   "columns": 12,
+   "sha256": "971566a9dd3f5898b2c0746e078a8ed33483403c3ebe67dd5ba19d971f519b75"
+  },
+  "Bill Report Reference": {
+   "rows": 60,
+   "columns": 15,
+   "sha256": "076792d7d37df56305b379ee33bc89f02f3bee1447f43a7d174bcc0004aec0de"
+  },
+  "Validation Record": {
+   "rows": 7265,
+   "columns": 9,
+   "sha256": "372375d0fabfe0e25ac52472776696cad0494c6a9fe1abea1103485bdcebcb57"
+  },
+  "Component": {
+   "rows": 20,
+   "columns": 4,
+   "sha256": "a8539a6256f2562fc82d398c1d942a297eaf00ba8232f8947b06c682045e5e22"
+  }
+ }
+}

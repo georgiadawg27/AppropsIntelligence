@@ -17,14 +17,15 @@ DOCS = ROOT / "docs"
 
 # grid-state counts and flagged cells, measured on the export from the committed v37 workbook
 # just before the switch (the grid's headline cell is flagged when its observation's
-# verification_status is "flagged")
+# verification_status is "flagged"); then the FY2024 House Labor-HHS draft: its 100 cells moved
+# from not yet collected to figures and states, 4 of them flagged
 STATE_COUNTS = {
-    "LHHS": {"value": 1452, "not_funded": 102, "no_printed_total": 13, "missing": 133, "not_collected": 200,
+    "LHHS": {"value": 1538, "not_funded": 108, "no_printed_total": 13, "missing": 141, "not_collected": 100,
              "not_enacted": 100},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
             "not_enacted": 30},
 }
-FLAGGED_CELLS = {"LHHS": 73, "CJS": 0}
+FLAGGED_CELLS = {"LHHS": 77, "CJS": 0}
 
 
 def grid(sc):
@@ -70,9 +71,12 @@ class SiteReadsData(unittest.TestCase):
 
     def test_review_status_comes_with_every_cell(self):
         # Reviewer mode reads human_review_status from each observation's validation records;
-        # the data is unchanged: 434 records pending
+        # the 434 records pending before the FY2024 House draft stay as they are; its own 27 follow the standard rule
         data = json.loads(S.STAGED.read_text())
-        self.assertEqual(sum(v.get("human_review_status") == "pending" for v in data["validations"]), 434)
+        self.assertEqual(sum(v.get("human_review_status") == "pending" for v in data["validations"]), 461)
+        new = [v for v in data["validations"] if int(v["validation_id"].rsplit("-", 1)[1]) > 6702 and v["validation_id"].startswith("VAL-LHHS")]
+        self.assertEqual(sum(v["human_review_status"] == "pending" for v in new), 27)
+        self.assertTrue(all((v["human_review_status"] == "pending") == (v["result"] in ("fail", "flag")) for v in new))
         self.assertEqual({v.get("human_review_status") for v in data["validations"]}, {"", "pending"})
         for sc in ("LHHS", "CJS"):
             for _, _, o in headline_observations(grid(sc)):
@@ -87,6 +91,30 @@ class SiteReadsData(unittest.TestCase):
                  if o["verification_status"] in ("auto-validated", "human-verified")
                  and any(v["human_review_status"] == "pending" for v in o["validation"])]
         self.assertEqual(found, [("ACC-DOJ-CVF", "2027|House Reported", "OBS-0966", ["VAL-0089"])])
+
+
+class DraftStages(unittest.TestCase):
+    def test_bill_report_reference_draft_column(self):
+        data = json.loads(S.STAGED.read_text())
+        self.assertEqual({r["draft"] for r in data["bill_report_refs"]}, {"TRUE", "FALSE"})
+        self.assertEqual(sorted(r["reference_id"] for r in data["bill_report_refs"] if r["draft"] == "TRUE"),
+                         ["BR-CJS-FY2021-SENATE", "BR-CJS-FY2022-SENATE", "BR-CJS-FY2023-SENATE", "BR-CJS-FY2024-HOUSE",
+                          "BR-LHHS-FY2023-SENATE", "BR-LHHS-FY2024-HOUSE"])
+        import openpyxl
+        wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
+        head = next(wb["Bill Report Reference"].iter_rows(max_row=1, values_only=True))
+        self.assertEqual(head[-1], "draft")
+
+    def test_fy2024_house_reference(self):
+        data = json.loads(S.STAGED.read_text())
+        r = next(r for r in data["bill_report_refs"] if r["reference_id"] == "BR-LHHS-FY2024-HOUSE")
+        self.assertEqual((r["lookup_key"], r["bill_id"], r["report_id"], r["draft"]),
+                         ("LHHS-2024-House Reported", "H.R.5894", "JES_LHHS_H.R.5894", "TRUE"))
+        self.assertEqual(r["bill_url"], "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf")
+        doc = next(d for d in data["source_docs"] if d["document_id"] == "SRC-EXPL-LHHS-FY2024-HOUSE")
+        self.assertEqual(r["report_jes_url"], doc["url_or_identifier"])
+        self.assertIn("408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d", doc["notes"])
+        self.assertEqual((doc["stage"], doc["fiscal_year"], doc["document_type"]), ("House Reported", 2024, "explanatory_statement"))
 
 
 class DownloadWorkbook(unittest.TestCase):

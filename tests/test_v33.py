@@ -62,10 +62,11 @@ class V33Store(unittest.TestCase):
         # the workbook is built from data/staged.json (v38), not read from a committed file
         self.assertEqual(WORKBOOK, S.BUILT_WORKBOOK)
         self.assertEqual(S.data_version(WORKBOOK), "v38")
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
-            "component": 19, "appropriations_observation": 2601, "confirmed_absence": 234,
-            "account_relationship": 11, "validation_record": 6791})
+            "account": 130, "historical_name": 11, "source_document": 36, "bill_report_reference": 59,
+            "component": 19, "appropriations_observation": 2702, "confirmed_absence": 236,
+            "account_relationship": 11, "validation_record": 7264})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -112,7 +113,7 @@ class V33Store(unittest.TestCase):
                 "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
             self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
             n += 1
-        self.assertEqual(n, 1731)
+        self.assertEqual(n, 1832)                       # + the 101 FY2024 House draft rows, by the same rule
 
     def test_the_fourteen_deliberate_flags_stay_flagged(self):
         got = dict(self.conn.execute("SELECT observation_id, verification_status FROM appropriations_observation "

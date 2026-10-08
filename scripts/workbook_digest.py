@@ -3,12 +3,12 @@ A workbook's values, sheet by sheet, as a small fingerprint: for every sheet its
 column count and the sha256 of its cell values (formulas as their text, never styling).
 
     python scripts/workbook_digest.py build/Approps_Pilot_Schema_Loaded.xlsx            # print the digest
-    python scripts/workbook_digest.py build/X.xlsx --compare tests/fixtures/workbook_v38_values.json
+    python scripts/workbook_digest.py build/X.xlsx --compare tests/fixtures/workbook_values.json
 
 Two workbooks with the same digest hold the same values in the same cells on the same
-sheets, in the same order. tests/fixtures/workbook_v38_values.json is the digest of the
-reference v38 workbook (Approps_Pilot_Schema_Loaded_v38.xlsx, sha256 a859ece3...), so the
-CI-built workbook is checked against it without keeping a copy of the file.
+sheets, in the same order. tests/fixtures/workbook_values.json is the digest of the
+reference build (first the v38 workbook, sha256 a859ece3...; regenerated when the data
+changes on purpose), so the CI-built workbook is checked against it without a copy of the file.
 """
 
 import argparse

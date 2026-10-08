@@ -11,6 +11,9 @@ Report only: H.R. 5894 (FY2024 Labor-HHS, as introduced) read as bill text, and 
 2. The same headings and amounts read from the text of both PDFs -- H.R. 5894 and the
    subcommittee mark -- with one parser, so the two are compared like for like; every heading
    whose amount differs, or that only one prints, goes to mark_vs_hr5894.csv.
+3. Our FY2024 House figures (data/staged.json, from the explanatory materials' table) against those
+   amounts: each account's headline, matched to the heading of the same name (its canonical name or
+   the label the table printed), -> extracted_vs_hr5894.csv.
 Nothing here changes data/staged.json.
 """
 
@@ -27,7 +30,7 @@ def xml_title_ii(path):
     s = Path(path).read_text(encoding="utf-8")
     titles = [(m.start(), html.unescape(re.sub("<[^>]+>", "", m.group(1))).strip())
               for m in re.finditer(r"<title\b[^>]*>\s*<enum>[^<]*</enum>\s*<header\b[^>]*>(.*?)</header>", s, re.S)]
-    out = []
+    out, agency = [], ""
     for m in re.finditer(r"<appropriations-(major|intermediate|small)\b[^>]*>\s*<header\b[^>]*>(.*?)</header>(.*?)</appropriations-\1>",
                          s, re.S):
         title = ([t for p, t in titles if p <= m.start()] or [""])[-1]
@@ -35,6 +38,8 @@ def xml_title_ii(path):
             continue
         hdr = html.unescape(re.sub("<[^>]+>", "", m.group(2))).strip()
         body = html.unescape(re.sub("<[^>]+>", " ", m.group(3)))
+        if m.group(1) == "intermediate" and not hdr.startswith("("):
+            agency = hdr                              # the agency heading the next accounts sit under
         amt = re.search(r"\$([\d,]+)", body)
         if hdr.startswith("(") and out:
             out[-1]["header_note"] = hdr
@@ -42,7 +47,7 @@ def xml_title_ii(path):
                 out[-1]["amount"] = int(amt.group(1).replace(",", ""))
             continue
         out.append({"level": m.group(1), "heading": hdr, "amount": int(amt.group(1).replace(",", "")) if amt else None,
-                    "header_note": ""})
+                    "header_note": "", "agency": agency})
     return out
 
 
@@ -92,14 +97,54 @@ def norm(h):
     return re.sub(r"[^a-z0-9]+", " ", re.sub(r"\(.*?\)", "", h.lower())).strip()
 
 
+def compare_extracted(rows):
+    """Our FY2024 House headline figures (budget authority, no component) vs the bill's heading amounts."""
+    import json
+    data = json.loads((HERE.parents[3] / "data" / "staged.json").read_text())
+    acct = {a["canonical_account_id"]: a for a in data["accounts"] if a["subcommittee"] == "LHHS"}
+    by_head = {}
+    for r in rows:
+        by_head.setdefault(norm(r["heading"]), []).append(r)
+
+    def pick(name, agency):
+        cands = by_head.get(norm(name), [])
+        same = [r for r in cands if norm(agency) in norm(r["agency"]) or norm(r["agency"]) in norm(agency)]
+        return (same or cands or [None])[0]
+    out = []
+    for o in data["observations"]:
+        if not (o["fiscal_year"] == 2024 and o["stage"] == "House Reported" and o["canonical_account_id"] in acct
+                and o["amount_type"] == "budget authority" and not o["component"]):
+            continue
+        a = acct[o["canonical_account_id"]]
+        m = re.search(r"printed as (['\"])(.*?)\1", o["source_table_or_section"])
+        names = [a["canonical_name"], m.group(2) if m else ""]
+        hit = next((pick(n, a["agency"]) for n in names if n and norm(n) in by_head), None)
+        if a.get("total_scope"):
+            res = "a total: the bill appropriates by heading, not by agency or title"
+        elif hit is None:
+            res = "no heading of that name in Title II"
+        elif hit["amount"] is None:
+            res = "no dollar amount in the heading's paragraph"
+        else:
+            res = "same" if hit["amount"] == o["amount"] else f"differs by {o['amount'] - hit['amount']:+,}"
+        out.append([o["observation_id"], o["canonical_account_id"], a["canonical_name"], o["amount"],
+                    hit["heading"] if hit else "", hit["amount"] if hit and hit["amount"] is not None else "", res])
+    with open(HERE / "extracted_vs_hr5894.csv", "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["observation_id", "canonical_account_id", "canonical_name", "our_fy2024_house_dollars", "hr5894_heading",
+                    "hr5894_first_amount_dollars", "result"])
+        w.writerows(sorted(out, key=lambda r: r[1]))
+    return out
+
+
 def main(argv):
     xml, bill_pdf, mark_pdf = argv
     rows = xml_title_ii(xml)
     with open(HERE / "hr5894_title_ii.csv", "w", newline="") as f:
         w = csv.writer(f)
-        w.writerow(["level", "heading", "first_amount_dollars", "header_note"])
+        w.writerow(["agency_heading", "level", "heading", "first_amount_dollars", "header_note"])
         for r in rows:
-            w.writerow([r["level"], r["heading"], r["amount"] if r["amount"] is not None else "", r["header_note"]])
+            w.writerow([r["agency"], r["level"], r["heading"], r["amount"] if r["amount"] is not None else "", r["header_note"]])
     bill, mark = pdf_title_ii(bill_pdf), pdf_title_ii(mark_pdf)
     def index(rs):
         out = {}
@@ -125,6 +170,9 @@ def main(argv):
         w.writerows(diffs)
     print(f"H.R. 5894 Title II: {len(rows)} headings from the XML, {sum(r['amount'] is not None for r in rows)} with an amount; "
           f"PDF text: {len(bill)} headings in H.R. 5894, {len(mark)} in the mark; {len(diffs)} differ")
+    from collections import Counter
+    cmp = compare_extracted(rows)
+    print("extracted vs H.R. 5894:", dict(Counter(r[-1] if not r[-1].startswith("differs") else "differs" for r in cmp)))
     return rows
 
 

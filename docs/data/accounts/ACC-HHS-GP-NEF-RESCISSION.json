@@ -371,9 +371,9 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_collected"
+       "state": "missing"
       },
       {
        "absence": null,
@@ -382,9 +382,9 @@
        "component": "emergency",
        "component_kind": "part",
        "component_label": "(emergency)",
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_collected"
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1606,6 +1606,10 @@
     ],
     [
      2024,
+     "House Reported"
+    ],
+    [
+     2024,
      "President's Budget"
     ],
     [
@@ -1660,6 +1664,10 @@
    [
     2023,
     "Senate Reported"
+   ],
+   [
+    2024,
+    "House Reported"
    ]
   ],
   "observations": [
