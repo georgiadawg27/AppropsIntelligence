@@ -1119,16 +1119,29 @@ class CompareBrowser(CompareTest):
             self.assertEqual(self.page.eval_on_selector_all("#compare-grid td", "ts => ts.filter(t => /\\+\\d+$/.test(t.innerText.trim())"
                                                             " && !t.querySelector('[data-testid=change]')).length"), 0)
 
+    def test_the_cell_note_on_liheap_fy2023_enacted(self):
+        # a law_text match combined across divisions of the law carries its note (VAL-LHHS-07183, OBS-LHHS-0014)
+        note = ("Includes $2,500,000,000 from Division N (Disaster Relief Supplemental Appropriations Act, 2023) "
+                "of P.L. 117-328.")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
+        self.page.click("#expand-all")
+        notes = self.page.locator("#compare-grid [data-testid=cell-note]")
+        self.assertEqual(notes.count(), 1)
+        n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
+        self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
+
     def test_the_one_cell_note_global_health_fy2024_house(self):
         # a pending cross_document flag against bill text shows as a note in the cell's corner:
-        # VAL-LHHS-07178 on OBS-LHHS-1757, and no other cell
+        # VAL-LHHS-07178 on OBS-LHHS-1757 (the FY2024 view's FY2023 Enacted column may carry LIHEAP's note)
         note = ("H.R. 5894 bill text prints $370,772,000; the explanatory materials' table "
                 "(and its change column) print 370,722 thousand.")
         for sc in ("CJS", "LHHS"):
             self.open("static", f"?view=compare&sc={sc}&grid=stages&fy=2024")
             self.page.click("#expand-all")
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
-            self.assertEqual(notes.count(), 1 if sc == "LHHS" else 0, sc)
+            titles = notes.evaluate_all("ns => ns.map(n => n.title)")
+            self.assertEqual(sum(1 for x in titles if x.startswith("H.R. 5894")), 1 if sc == "LHHS" else 0, sc)
+            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000")) for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)

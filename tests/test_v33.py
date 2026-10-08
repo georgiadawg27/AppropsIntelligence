@@ -66,7 +66,7 @@ class V33Store(unittest.TestCase):
         self.assertEqual(self.report["rows"], {
             "account": 130, "historical_name": 11, "source_document": 37, "bill_report_reference": 59,
             "component": 19, "appropriations_observation": 2703, "confirmed_absence": 236,
-            "account_relationship": 11, "validation_record": 7641})
+            "account_relationship": 11, "validation_record": 7642})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -126,13 +126,35 @@ class V33Store(unittest.TestCase):
         self.assertEqual(V.verification_status(0.95, [src, ("law_text", "pass", "H.R. 2617 div. H ...")]), "auto-validated")
         self.assertEqual(V.verification_status(0.95, [src, ("law_text", "info", "H.R. 2617 div. H ...")]), "unverified")
         self.assertEqual(V.verification_status(0.95, [("table_total", "pass"), ("law_text", "info")]), "auto-validated")
-        self.assertEqual(V.verification_status(0.50, [src, ("law_text", "pass")]), "unverified")     # confidence still decides
+        self.assertEqual(V.verification_status(0.50, [src, ("law_text", "pass")]), "auto-validated")  # another document confirms below 0.90
         rows = self.conn.execute("SELECT result, count(*) FROM validation_record WHERE rule_applied = 'law_text' "
                                  "GROUP BY result").fetchall()
-        self.assertEqual(dict(rows), {"pass": 328, "info": 46})
+        self.assertEqual(dict(rows), {"pass": 329, "info": 45})          # + LIHEAP FY2023, matched across divisions H + N
         # never pending: an info is a recorded difference, not a question
         self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record WHERE rule_applied = 'law_text' "
                                            "AND human_review_status IS NOT NULL AND human_review_status <> ''").fetchone()[0], 0)
+
+    def test_another_document_confirms_below_the_threshold(self):
+        # below 0.90 a passing check against another document confirms; the stored confidence is unchanged
+        src, total = ("source_text", "pass"), ("table_total", "pass")
+        self.assertEqual(V.verification_status(0.5, [src, total]), "unverified")
+        self.assertEqual(V.verification_status(0.5, [src, total, ("cross_document", "pass")]), "auto-validated")
+        self.assertEqual(V.verification_status(0.5, [src, ("law_text", "pass")]), "auto-validated")
+        self.assertEqual(V.verification_status(0.5, [src, ("law_text", "info")]), "unverified")
+        self.assertEqual(V.verification_status(0.5, [("law_text", "pass"), ("structural", "fail")]), "flagged")
+        # every cross_document pass that lifts a figure below 0.90 cites a document other than the figure's own
+        import re
+        for oid, src_doc, exp in self.conn.execute(
+                "SELECT o.observation_id, o.source_document_id, v.expected_result FROM appropriations_observation o "
+                "JOIN validation_record v USING (observation_id) WHERE o.confidence < 0.9 "
+                "AND v.rule_applied = 'cross_document' AND v.result = 'pass'").fetchall():
+            m = re.search(r"(\d{3})[HS]RPT(\d+)", src_doc)
+            self.assertNotIn(src_doc, exp, oid)
+            if m:
+                self.assertNotIn(f"{m.group(1)}-{m.group(2)} p", exp, oid)
+        n = self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE confidence < 0.9 "
+                              "AND verification_status = 'auto-validated'").fetchone()[0]
+        self.assertEqual(n, 70)
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
