@@ -62,6 +62,12 @@ def main(argv=None):
                      "result": "pass", "human_review_status": "", "reviewer": "", "resolution": ""})
         print("OBS-0771 re-sourced to SRC-CRPT-118SRPT198 p.227; cross_document", vals[-1]["validation_id"])
 
+    # the Senate report prints the FY2025 request column it is now cited for
+    srpt = next(d for d in data["source_docs"] if d["document_id"] == "SRC-CRPT-118SRPT198")
+    if "FY2025 President's Budget" not in (srpt.get("also_covers") or ""):
+        srpt["also_covers"] = "; ".join(x for x in (srpt.get("also_covers"), "FY2025 President's Budget") if x)
+        print("SRC-CRPT-118SRPT198 also_covers:", srpt["also_covers"])
+
     # 3 and 4. the law_text records that read across divisions or laws
     for oid, (res, exp, obsd) in L.ACROSS.items():
         v = next(v for v in vals if v["observation_id"] == oid and v["rule_applied"] == "law_text")
