@@ -345,7 +345,7 @@ class Browser(BrowserBase):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 234)                         # v33: CJS's 197 + Labor-HHS's 37
+        self.assertEqual(n, 236)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House
 
 
 

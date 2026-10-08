@@ -396,8 +396,74 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 4709000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-CHILD-SUPPORT",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1734",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "270",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Child Support Enforcement and Family Support Payments, appropriated in this bill' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-06712"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06713"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06714"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06715"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06716"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -1384,6 +1450,10 @@
     ],
     [
      2024,
+     "House Reported"
+    ],
+    [
+     2024,
      "President's Budget"
     ],
     [
@@ -1729,6 +1799,71 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-02562"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 4709000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-CHILD-SUPPORT",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1734",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "270",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Child Support Enforcement and Family Support Payments, appropriated in this bill' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-06712"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06713"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06714"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06715"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06716"
      }
     ],
     "verification_status": "auto-validated"
@@ -2461,10 +2596,6 @@
    }
   ],
   "open_cells": [
-   [
-    2024,
-    "House Reported"
-   ],
    [
     2027,
     "Senate Reported"

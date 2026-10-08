@@ -314,7 +314,7 @@ TABS = [
         ("stage", to_text, True), ("bill_id", to_text, False), ("report_id", to_text, False),
         ("bill_url", to_text, False), ("report_jes_url", to_text, False), ("lookup_key", to_text, True),
         ("notes", to_text, False), ("vehicle_bill_id", to_text, False), ("division", to_text, False),
-        ("enactment_date", to_date, False), ("funding_type", to_funding_type, False)]),
+        ("enactment_date", to_date, False), ("funding_type", to_funding_type, False), ("draft", to_bool, False)]),
     ("Component", "component", [
         ("component_id", to_text, True), ("label", to_text, False), ("kind", to_text, True),
         ("description", to_text, True)]),
@@ -357,7 +357,8 @@ OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                     # released 2022-07-28; S. 4659 introduced and referred, never reported")
                     "Source Document": {"notes"},
                     # v37: how an Enacted year was enacted (vehicle bill, division, date, funding type)
-                    "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type"}}
+                    "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
+                                              "draft"}}
 # Columns a workbook may still carry but the store no longer has: read past,
 # never loaded. Account.effective_start / effective_end (removed in v33): each
 # value was the first year of data on file, not a real start or end date --
@@ -1215,6 +1216,27 @@ def stage_notes(conn, subcommittee):
         "ORDER BY fiscal_year, stage", (subcommittee,))}
 
 
+def draft_stages(conn, subcommittee):
+    """Stages whose document is a committee draft (Bill Report Reference draft = TRUE: the full
+    committee never reported the bill), keyed "<fiscal_year>|<stage>" -> the document the stage's
+    figures come from (its id, agency and type; the one most of its observations cite)."""
+    out = {}
+    for r in conn.execute(
+            "SELECT b.fiscal_year, b.stage, b.bill_id, d.document_id, d.source_agency, d.document_type, count(o.observation_id) n "
+            "FROM bill_report_reference b "
+            "LEFT JOIN appropriations_observation o ON o.bill_report_reference_id = b.reference_id "
+            "LEFT JOIN source_document d ON d.document_id = o.source_document_id "
+            "WHERE b.subcommittee = ? AND b.draft = 1 "
+            "GROUP BY b.reference_id, d.document_id ORDER BY b.fiscal_year, b.stage, n DESC, d.document_id", (subcommittee,)):
+        key = f"{r['fiscal_year']}|{r['stage']}"
+        if key in out:
+            continue
+        out[key] = {"bill_id": r["bill_id"], "document_id": r["document_id"],
+                    "document": (f"{r['source_agency']} {r['document_type'].replace('_', ' ')} ({r['document_id']})"
+                                 if r["document_id"] else None)}
+    return out
+
+
 def enactments(conn, subcommittee):
     """How each Enacted year was enacted (Bill Report Reference, v37), keyed by fiscal year:
     the law, the bill it was enacted as, the division, the date and the funding type. Only
@@ -1547,7 +1569,8 @@ def subcommittee_grid(conn, subcommittee):
     return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
             "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts,
             **({"stage_notes": notes} if (notes := stage_notes(conn, subcommittee)) else {}),
-            **({"enactments": e} if (e := enactments(conn, subcommittee)) else {})}
+            **({"enactments": e} if (e := enactments(conn, subcommittee)) else {}),
+            **({"drafts": dr} if (dr := draft_stages(conn, subcommittee)) else {})}
 
 
 def fmt_amount(v):

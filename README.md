@@ -44,13 +44,19 @@ CI (`.github/workflows/tests.yml`, data job) builds the workbook, recalculates i
 LibreOffice headless and fails on any formula error (`scripts/recalc_check.py`;
 data text that begins with "=" stays text), checks the stored lookup results against
 LibreOffice's, and uploads the workbook as an artifact. `tests/test_build_workbook.py`
-holds the build to the v38 workbook value for value, sheet by sheet
-(`tests/fixtures/workbook_v38_values.json`; when the data changes on purpose, regenerate
+holds the build to the reference build value for value, sheet by sheet
+(`tests/fixtures/workbook_values.json`; when the data changes on purpose, regenerate
 it with `python scripts/workbook_digest.py build/Approps_Pilot_Schema_Loaded.xlsx`).
 On a push that changes the data, `.github/workflows/export-static.yml` regenerates
 `docs/` and `reference/accounts.json` and commits them.
 
 IDs are never reused or renumbered (REL-LHHS-0003/0004 stay retired).
+
+**Draft stages.** Bill Report Reference `draft` (TRUE/FALSE) marks a stage whose figures come from a
+committee draft -- the full committee never reported the bill (CJS FY2021-23 Senate, CJS FY2024 House,
+Labor-HHS FY2023 Senate and FY2024 House). The grid labels those columns "House (draft)" / "Senate (draft)".
+The FY2024 House Labor-HHS rows were added by `reference/review/lhhs/fy2024_house/build_rows.py`
+(appends to `data/staged.json`; its bill-text and cross-document reports sit beside it).
 
 **Review statuses.** Two fields, never inferred from wording on the page:
 

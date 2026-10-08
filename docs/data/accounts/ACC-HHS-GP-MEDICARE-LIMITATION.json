@@ -118,7 +118,22 @@
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0041",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+        "document_type": "explanatory_statement",
+        "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Limitation for Title XVIII of the Social Security Act' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Title XVIII|1834\\(l\\)/) provides none either.",
+        "fiscal_year": 2024,
+        "publication_date": "2023-11-02",
+        "source_agency": "House Committee on Appropriations",
+        "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+        "stage": "House Reported",
+        "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
@@ -126,7 +141,7 @@
        "component_label": null,
        "missing": false,
        "observations": [],
-       "state": "not_collected"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -620,6 +635,22 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0041",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_type": "explanatory_statement",
+    "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Limitation for Title XVIII of the Social Security Act' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Title XVIII|1834\\(l\\)/) provides none either.",
+    "fiscal_year": 2024,
+    "publication_date": "2023-11-02",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "stage": "House Reported",
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0016",
     "confirmed_date": "2026-09-28",
     "document_type": "committee_report",
@@ -729,6 +760,10 @@
     [
      2024,
      "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
     ],
     [
      2024,
@@ -967,10 +1002,6 @@
    ],
    [
     2023,
-    "House Reported"
-   ],
-   [
-    2024,
     "House Reported"
    ],
    [

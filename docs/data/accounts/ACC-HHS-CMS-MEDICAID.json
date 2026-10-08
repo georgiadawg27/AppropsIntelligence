@@ -1148,8 +1148,228 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 406956850000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1768",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "267",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-06867"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06868"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06869"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06870"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06871"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "appropriated_in_this_bill",
+       "component_kind": "view",
+       "component_label": "appropriated in this bill",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 652537264000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": "appropriated_in_this_bill",
+         "component_kind": "view",
+         "component_label": "appropriated in this bill",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-1768",
+         "observation_id": "OBS-LHHS-1771",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "267",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-06884"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06885"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06886"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06887"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06888"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level_available_this_fiscal_year",
+       "component_kind": "view",
+       "component_label": "program level, available this fiscal year",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 604537324000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": "program_level_available_this_fiscal_year",
+         "component_kind": "view",
+         "component_label": "program level, available this fiscal year",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-1768",
+         "observation_id": "OBS-LHHS-1772",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "267",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-06889"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06890"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06891"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06892"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06893"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -1159,8 +1379,74 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": 245580414000,
+         "amount_type": "advance",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1769",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "267",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06872"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06873"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06874"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06875"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-06876"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -1170,8 +1456,86 @@
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_collected"
+       "observations": [
+        {
+         "amount": -197580474000,
+         "amount_type": "prior_year_advance",
+         "bill_id": "H.R.5894",
+         "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+         "document_stage": "House Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1770",
+         "offsetting_collections": 0,
+         "publication_date": "2023-11-02",
+         "report_id": "JES_LHHS_H.R.5894",
+         "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+         "source_page": "267",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06877"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06878"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06879"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-06880"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-06881"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-06882"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-LHHS-06883"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -5248,6 +5612,10 @@
     ],
     [
      2024,
+     "House Reported"
+    ],
+    [
+     2024,
      "President's Budget"
     ],
     [
@@ -5950,6 +6318,343 @@
       "result": "pass",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-02378"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 406956850000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1768",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "267",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-06867"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06868"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06869"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06870"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06871"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 652537264000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": "appropriated_in_this_bill",
+    "component_kind": "view",
+    "component_label": "appropriated in this bill",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-1768",
+    "observation_id": "OBS-LHHS-1771",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "267",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-06884"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06885"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06886"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06887"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06888"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 604537324000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": "program_level_available_this_fiscal_year",
+    "component_kind": "view",
+    "component_label": "program level, available this fiscal year",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-1768",
+    "observation_id": "OBS-LHHS-1772",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "267",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-06889"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06890"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06891"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06892"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06893"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 245580414000,
+    "amount_type": "advance",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1769",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "267",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2025' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06872"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06873"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06874"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06875"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-06876"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": -197580474000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "H.R.5894",
+    "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
+    "document_stage": "House Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1770",
+    "offsetting_collections": 0,
+    "publication_date": "2023-11-02",
+    "report_id": "JES_LHHS_H.R.5894",
+    "report_jes_url": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
+    "source_page": "267",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06877"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06878"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06879"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-06880"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-06881"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-06882"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-06883"
      }
     ],
     "verification_status": "unverified"
@@ -9256,10 +9961,6 @@
    }
   ],
   "open_cells": [
-   [
-    2024,
-    "House Reported"
-   ],
    [
     2027,
     "Senate Reported"

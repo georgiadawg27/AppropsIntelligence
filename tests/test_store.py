@@ -74,10 +74,11 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         # v34: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 35, "bill_report_reference": 58,
-            "appropriations_observation": 2601, "confirmed_absence": 234, "account_relationship": 11,
-            "validation_record": 6791, "component": 19})
+            "account": 130, "historical_name": 11, "source_document": 36, "bill_report_reference": 59,
+            "appropriations_observation": 2702, "confirmed_absence": 236, "account_relationship": 11,
+            "validation_record": 7264, "component": 19})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
@@ -560,7 +561,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 234)                         # v33: CJS's 197 + Labor-HHS's 37
+        self.assertEqual(n, 236)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House
         self.assertEqual(npt, 13)
 
     def test_grid_has_three_states(self):
@@ -615,10 +616,11 @@ class GridStates(StoreTest):
         self.assertEqual(line, "missing")
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
-        # no Labor-HHS document on file covers FY2024 House Reported (the FY2024 House bill was never reported)
-        line = self.state("ACC-HHS-NIH-TOTAL", 2024, "House Reported")
+        # no Labor-HHS document on file covers FY2027 Senate Reported (no Senate FY2027 bill is on file; the
+        # FY2024 House column, the earlier example, now holds the House subcommittee draft's figures)
+        line = self.state("ACC-HHS-NIH-TOTAL", 2027, "Senate Reported")
         self.assertEqual(line["state"], "not_collected")
-        self.assertNotIn((2024, "House Reported"), S.history(self.conn, "ACC-HHS-NIH-TOTAL")["missing_cells"])
+        self.assertNotIn((2027, "Senate Reported"), S.history(self.conn, "ACC-HHS-NIH-TOTAL")["missing_cells"])
 
     def test_no_enacted_law_yet(self):
         self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2027, "Enacted")["state"], "not_enacted")
@@ -802,8 +804,9 @@ class NoPrintedTotal(StoreCopyTest):
     def test_counted_apart(self):
         counts = S.subcommittee_grid(self.conn, "LHHS")["state_counts"]
         self.assertEqual(list(counts), list(S.CELL_STATES))
-        self.assertEqual(counts, {"value": 1452, "not_funded": 102, "no_printed_total": 13, "missing": 133,
-                                  "not_collected": 200, "not_enacted": 100})
+        # the FY2024 House column (100 cells) moved from not yet collected to the draft's figures and states
+        self.assertEqual(counts, {"value": 1538, "not_funded": 108, "no_printed_total": 13, "missing": 141,
+                                  "not_collected": 100, "not_enacted": 100})
 
 
 class ComponentStage(StoreCopyTest):

@@ -45,7 +45,7 @@ def _check_enums():
         ("relationships", "relationship_type", REL_TYPE), ("relationships", "human_reviewed", BOOL),
         ("source_docs", "document_type", DOC_TYPE), ("source_docs", "stage", STAGE_ALL),
         ("bill_report_refs", "stage", STAGE_BR), ("bill_report_refs", "subcommittee", SUBCOMMITTEES),
-        ("bill_report_refs", "funding_type", FUNDING_TYPE),
+        ("bill_report_refs", "funding_type", FUNDING_TYPE), ("bill_report_refs", "draft", BOOL),
         ("validations", "rule_applied", RULE), ("validations", "result", RESULT),
         ("validations", "human_review_status", REVIEW),
         ("components", "kind", COMP_KIND),
@@ -292,11 +292,15 @@ STAGES = ["Enacted", "Senate Reported", "House Reported", "President's Budget"]
 STAGE_CODE = {"Enacted": "ENACTED", "Senate Reported": "SENATE", "House Reported": "HOUSE", "President's Budget": "PB"}
 ws = wb.create_sheet("Bill Report Reference")
 headers = ["reference_id", "subcommittee", "fiscal_year", "stage", "bill_id", "report_id", "bill_url",
-           "report_jes_url", "lookup_key", "notes", "vehicle_bill_id", "division", "enactment_date", "funding_type"]
-write_rows(ws, headers, data["bill_report_refs"], [22, 14, 12, 16, 16, 16, 40, 40, 30, 60, 16, 10, 14, 14])
+           "report_jes_url", "lookup_key", "notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
+           "draft"]
+# draft (last column, so no existing column moves): TRUE when the stage's document is a committee draft --
+# the full committee never reported the bill (e.g. CJS FY2024 House, H.R. 5893); FALSE otherwise
+write_rows(ws, headers, data["bill_report_refs"], [22, 14, 12, 16, 16, 16, 40, 40, 30, 60, 16, 10, 14, 14, 10])
 n_br = len(data["bill_report_refs"]) + 1
 add_dropdown(ws, "D", STAGE_BR, 2, n_br)
 add_dropdown(ws, "N", FUNDING_TYPE, 2, n_br)
+add_dropdown(ws, "O", BOOL, 2, n_br)
 for r in range(2, n_br + 1):
     for col_letter in ("E", "F", "G", "H"):
         ws[f"{col_letter}{r}"].fill = PatternFill("solid", fgColor="FFF2CC")

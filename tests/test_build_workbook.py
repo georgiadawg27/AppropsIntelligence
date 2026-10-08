@@ -1,6 +1,7 @@
 """
 The workbook is built from data/staged.json by scripts/build_workbook.py (CI does it in the
-data job). These tests build it and hold it to the reference v38 workbook, value for value,
+data job). These tests build it and hold it to the reference build (tests/fixtures/workbook_values.json;
+v38 plus the FY2024 House Labor-HHS draft), value for value,
 and check that the build's own checks stop it on bad data.
 """
 
@@ -20,7 +21,7 @@ import workbook_digest as W  # noqa: E402
 
 SCRIPT = ROOT / "scripts" / "build_workbook.py"
 STAGED = ROOT / "data" / "staged.json"
-V38 = ROOT / "tests" / "fixtures" / "workbook_v38_values.json"
+V38 = ROOT / "tests" / "fixtures" / "workbook_values.json"     # the reference build (v38 until the FY2024 House draft)
 OUT = "build/Approps_Pilot_Schema_Loaded.xlsx"
 
 
@@ -45,7 +46,7 @@ class BuiltWorkbook(unittest.TestCase):
     def tearDownClass(cls):
         cls.tmp.cleanup()
 
-    def test_matches_the_v38_workbook_sheet_by_sheet(self):
+    def test_matches_the_reference_workbook_sheet_by_sheet(self):
         want = json.loads(V38.read_text())["sheets"]
         self.assertEqual(W.compare(W.digest(self.path), want), [])
         self.assertEqual(list(want), ["Read Me", "Account", "Historical Name", "Confirmed Absence",
@@ -66,7 +67,7 @@ class BuiltWorkbook(unittest.TestCase):
         formulas = [(ws.title, c.column_letter) for ws in self.wb.worksheets
                     for row in ws.iter_rows() for c in row if c.data_type == "f"]
         self.assertEqual(len(formulas), 4 * n_obs)
-        self.assertEqual(len(formulas), 10_404)
+        self.assertEqual(len(formulas), 10_808)                # 2,702 observations x 4 lookups
         self.assertEqual({f for f in formulas}, {("Appropriations Observation", col) for col in "FGST"})
 
     def test_text_starting_with_equals_stays_text(self):
