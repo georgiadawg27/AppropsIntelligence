@@ -32,6 +32,7 @@ import csv
 import glob
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -49,9 +50,11 @@ from build_rows import clean as _clean  # noqa: E402
 
 
 def clean(label):
-    """build_rows.clean, with the fiscal year in a label made generic: 'New advance, 1st quarter, FY 2023' is
-    the same row in every year's table."""
-    return re.sub(r"\b(fy|fiscal year)\s*(19|20)\d\d\b", r"\1 ####", _clean(label), flags=re.I)
+    """build_rows.clean, with the fiscal year in a label made generic ('New advance, 1st quarter, FY 2023' is the
+    same row in every year's table) and a bare footnote digit dropped."""
+    s = re.sub(r"\b(fy|fiscal year)\s*(19|20)\d\d\b", r"\1 ####", _clean(label), flags=re.I)
+    # a footnote mark printed as a bare digit after a word ('Total, AHRQ Program Level 3', 'Federal funds 3')
+    return re.sub(r"(?<=[a-z]) \d$", "", s)
 
 STAGED = ROOT / "data" / "staged.json"
 TODAY = "2026-10-08"
@@ -209,6 +212,76 @@ YEARS = {
     },
 }
 
+YEARS[2021] = {
+    "stages": [
+        ("House Reported", "House", "CRPT-116hrpt450", "Bill", "SRC-CRPT-116HRPT450"),
+        ("President's Budget", "N/A", "CRPT-116hrpt450", "FY 2021 Request", "SRC-CRPT-116HRPT450"),
+        ("Senate Reported", "Senate", "MANUAL-LHHS-FY2021-SenateReported-explanatory_statement-6c401e04",
+         "Committee recommendation", "SRC-EXPL-LHHS-FY2021-SENATE"),
+        ("Enacted", "N/A", "CRPT-117hrpt96", "FY 2021 Enacted", "SRC-CRPT-117HRPT96"),
+    ],
+    "fallback": {"Enacted": ("MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17", "2021 appropriation",
+                             "SRC-EXPL-LHHS-FY2022-SENATE")},
+    "historical_names": [],
+    "sum_items": [it for it in YEARS[2022]["sum_items"] if it["kind"] != "other_law"] + [
+        {"total": "ACC-HHS-NIH-TOTAL", "label": r"national institute for research on safety and quality.*", "kind": "outside",
+         "proposal": "money outside our accounts: the FY2021 request moves AHRQ into NIH as NIRSQ (the request's AHRQ "
+                     "lines are 0) -- proposed: record it as ACC-HHS-AHRQ-TOTAL's FY2021 request with a relationship note "
+                     "(AHRQ proposed as an NIH institute), or a new proposed account; the owner decides"}],
+    "title_counts_cures": True,
+    # accounts that did not exist yet: a printed dash/zero in this year's column is a confirmed absence, not a figure
+    "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
+    "request_appendix": {"stage": "President's Budget", "other": "SRC-EXPL-LHHS-FY2021-SENATE",
+                         "appendix": "document_store/BUDGET-2021-APP.pdf"},
+    "proposals": YEARS[2022]["proposals"],
+    "cross": [
+        ("Enacted", "MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17", "2021 appropriation",
+         "SRC-EXPL-LHHS-FY2022-SENATE"),
+        ("President's Budget", "MANUAL-LHHS-FY2021-SenateReported-explanatory_statement-6c401e04", "Budget estimate",
+         "SRC-EXPL-LHHS-FY2021-SENATE"),
+    ],
+    "also_covers": {"SRC-CRPT-117HRPT96": "FY2021 Enacted", "SRC-EXPL-LHHS-FY2022-SENATE": "FY2021 Enacted"},
+    "docs": [
+        {"document_id": "SRC-CRPT-116HRPT450", "source_agency": "House Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "document_type": "committee_report", "congress_session": "116-2", "fiscal_year": 2021,
+         "publication_date": "2020-07-15 00:00:00", "stage": "House Reported",
+         "retrieval_timestamp": "2026-10-08 00:00:00", "source_page": "393-426",
+         "also_covers": "FY2021 President's Budget",
+         "notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). "
+                  "Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is "
+                  "image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed "
+                  "the table's arithmetic."},
+        {"document_id": "SRC-EXPL-LHHS-FY2021-SENATE", "source_agency": "Senate Committee on Appropriations",
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "document_type": "explanatory_statement", "congress_session": "116-2", "fiscal_year": 2021,
+         "publication_date": "2020-11-10 00:00:00", "stage": "Senate Reported",
+         "retrieval_timestamp": "2026-10-08 00:00:00", "source_page": "243-263",
+         "also_covers": "FY2021 President's Budget",
+         "notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft "
+                  "bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the "
+                  "link). Text layer; page citations are PDF page numbers."},
+    ],
+    "brr": [
+        {"reference_id": "BR-LHHS-FY2021-HOUSE", "stage": "House Reported", "bill_id": "H.R.7614",
+         "report_id": "H.Rept.116-450",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2021-SENATE", "stage": "Senate Reported", "bill_id": "Senate chair's draft, FY2021",
+         "report_id": "N/A", "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "notes": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill "
+                  "number (Congress.gov lists none)", "draft": "TRUE"},
+        {"reference_id": "BR-LHHS-FY2021-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2021/APP",
+         "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "report_jes_url": "N/A", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2021-ENACTED", "stage": "Enacted", "bill_id": "P.L.116-260", "report_id": "N/A",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 133", "division": "H", "enactment_date": "2020-12-27",
+         "funding_type": "omnibus", "draft": "FALSE"},
+    ],
+}
+
 
 def load_extraction(pkg):
     x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
@@ -304,11 +377,9 @@ def main(argv=None):
         for chamber, tables in (("House", HOUSE_TABLES), ("Senate", SENATE_TABLES)):
             if src in tables:
                 facts[key]["rank"].append((chamber, tables.index(src), lab))
-    for h in data.get("historical_names_tab", []) + cfg.get("historical_names", []):
-        aid = h.get("canonical_account_id")
-        if aid in acct and h.get("former_name"):
-            for lab in [h["former_name"]] + h.get("printed", []):
-                facts[(aid, "budget authority", "")]["labels"][clean(lab)] += 1
+    for aid, lab in former_names(data, cfg, fy):
+        if aid in acct:
+            facts[(aid, "budget authority", "")]["labels"][lab] += 1
 
     extractions = {}
 
@@ -317,7 +388,7 @@ def main(argv=None):
             extractions[pkg] = load_extraction(pkg)
         return extractions[pkg]
 
-    def find(key, pkg, col, chamber):
+    def find(key, pkg, col, chamber, anywhere=True):
         x, sections = ext(pkg)
         aid = key[0]
         ag = AGENCY_KEY.get(acct[aid]["agency"], "TAIL")
@@ -326,7 +397,11 @@ def main(argv=None):
         pool = rows_for(sections, col, ag)
         hits = [f for f in pool if f["_clean"] in facts[key]["labels"]]
         if not hits and ag != "TAIL":
-            hits = [f for f in rows_for(sections, col, "TAIL") if f["_clean"] in facts[key]["labels"]]
+            # not in its agency's section: anywhere in the table -- or, for a cross-document lookup, only among the
+            # lines outside every agency section (a generic label like 'Formula Grants' recurs under other agencies)
+            pool = (rows_for(sections, col, "TAIL") if anywhere else
+                    [f for a_, rs in sections[col] if a_ == "TAIL" for f in rs])
+            hits = [f for f in pool if f["_clean"] in facts[key]["labels"]]
         if len({h["amount"] for h in hits}) > 1:
             for _, _, lab in sorted(r for r in facts[key]["rank"] if r[0] == (chamber if chamber != "N/A" else "House")):
                 pick = [h for h in hits if h["_clean"] == lab]
@@ -359,6 +434,7 @@ def main(argv=None):
     by_stage = {}
     ext_by_src = {}
     explained = []                                       # (stage, total, items) of the short sums
+    absences = []                                        # confirmed absences (absent_before)
     for stage, chamber, pkg, col, src in cfg["stages"]:
         x, sections = ext(pkg)
         ext_by_src[src] = x["observations"]
@@ -422,6 +498,20 @@ def main(argv=None):
                               _parts=parts, _row=parts[0])
             derived[key] = (total, note, arith)
             report.append([stage, aid, "budget authority", "", "derived", total, "-".join(pages), note])
+        # an account a printed dash/zero shows did not exist yet (absent_before): a confirmed absence, not a figure
+        for aid, first in cfg.get("absent_before", {}).items():
+            key = (aid, "budget authority", "")
+            if fy < first and key in found and not (found[key]["amount"] or 0):
+                f = found.pop(key)
+                f_src, f_col = (origin[key][2], origin[key][1]) if key in origin else (src, col)
+                absences.append({"canonical_account_id": aid, "fiscal_year": fy, "stage": stage,
+                                 "amount_type": "budget authority", "component": "", "source_document_id": f_src,
+                                 "evidence": (f"{doc_label(f_src).rstrip(chr(39) + 's')} p.{f['source_page']} prints "
+                                              f"'{clean_label(f)}' with no amount ('{(f.get('amount_as_printed') or '-').strip()}') "
+                                              f"in the {f_col} column: the account did not exist in FY{fy} (first funded "
+                                              f"FY{first})"),
+                                 "confirmed_date": TODAY})
+                report.append([stage, *key, "confirmed absence", 0, f["source_page"], f["account_name_as_written"]])
         by_key = {}
         for key in sorted(found, key=lambda k: (k[0], k[2] != "", k[1] != "budget authority", k[1], k[2])):
             aid, amount_type, component = key
@@ -468,7 +558,7 @@ def main(argv=None):
             if o["source_document_id"] == src:
                 cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "same document"])
                 continue
-            hits = find(key, pkg, col, "Senate" if "Senate" in pkg or "SRPT" in pkg.upper() else "House")
+            hits = find(key, pkg, col, "Senate" if "Senate" in pkg or "SRPT" in pkg.upper() else "House", anywhere=False)
             vals = {h["amount"] or 0 for h in hits}
             if len(vals) != 1:
                 cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "not printed" if not hits else "ambiguous"])
@@ -484,6 +574,49 @@ def main(argv=None):
                                                f"({h.get('extraction_method') or 'extracted'}, '{h['account_name_as_written'].strip()}' [{col}])",
                             "observed_result": f"{o['amount'] // 1000:,} as recorded", "result": "pass" if ok else "flag"}
                            | ({"_resolve": f"{rb['reason']} Note: {rb['note']}"} if base else {}))
+
+    # rule 5 (owner, 2026-10-08), where the request columns differ: the House report's figure is kept; a difference
+    # is resolved when the House figure is the budget appendix's own request for the account (its appropriation
+    # language prints "[$<prior>] $<request>"), or, for a total, when its whole difference is such verified accounts'
+    ra = cfg.get("request_appendix")
+    if ra:
+        flat = re.sub(r"\s+", " ", subprocess.run(["pdftotext", "-layout", str(ROOT / ra["appendix"]), "-"],
+                                                  capture_output=True, text=True).stdout)
+        diffs = {}
+        for v in new_val:
+            if v["rule_applied"] != "cross_document" or v["result"] != "flag" or v.get("_resolve"):
+                continue
+            o = next(x for x in new_obs if x["observation_id"] == v["observation_id"])
+            if o["stage"] != ra["stage"] or ra["other"] not in v["expected_result"]:
+                continue
+            other = int(re.search(r"prints ([\d,]+)", v["expected_result"]).group(1).replace(",", "")) * 1000
+            diffs[(o["canonical_account_id"], o["component"] or "")] = (v, o, other)
+        ok = {}
+        for (aid, comp), (v, o, other) in diffs.items():
+            if acct[aid].get("total_scope") or comp:
+                continue
+            if re.search(r"\] \$" + re.escape(f"{o['amount']:,}") + r"\b(?!,\d)", flat):
+                ok[aid] = o["amount"] - other
+                v["_resolve"] = (f"The House report's request column prints {o['amount'] // 1000:,}, the budget appendix's "
+                                 f"own request for this account (its appropriation language: ${o['amount']:,}); the Senate "
+                                 f"draft's budget estimate prints {other // 1000:,}, another baseline. Kept the House "
+                                 f"report's request column (owner's rule 5, 2026-10-08). Note: The Senate draft prints this "
+                                 f"request as {other // 1000:,} thousand; the budget appendix requests "
+                                 f"${o['amount']:,}, as recorded.")
+        for (aid, comp), (v, o, other) in diffs.items():
+            scope = acct[aid].get("total_scope")
+            if not scope:
+                continue
+            members = [(m, d) for (m, c), (_, mo, mother) in diffs.items() if not c and not acct[m].get("total_scope")
+                       and (scope == "title" or acct[m]["agency"] == acct[aid]["agency"])
+                       for d in [mo["amount"] - mother]]
+            if members and all(m in ok for m, _ in members) and sum(d for _, d in members) == o["amount"] - other:
+                v["_resolve"] = ("The difference is exactly the differences of its accounts, each the budget appendix's "
+                                 "own request in the House report's column: " + ", ".join(
+                                     f"{m} {d // 1000:+,}" for m, d in members) + ". Kept the House report's request "
+                                 "column (owner's rule 5, 2026-10-08). Note: The Senate draft prints this request "
+                                 f"{(other - o['amount']) // 1000:,} thousand higher, from accounts whose budget appendix "
+                                 "requests are the House report's.")
 
     # 4. IDs; review status: routine notes resolved by the triage's standard reasons; the rest pending
     val_ids = next_id("VAL-LHHS-", data["validations"], "validation_id", 5)
@@ -506,6 +639,14 @@ def main(argv=None):
         if fam is None and (v["expected_result"] or "").startswith("memo breakdown"):
             fam, fmt = T.memo_family(v, o, ext_by_src)
         disp, reason = T.FAMILIES.get(fam, ("B", ""))
+        if (v["rule_applied"] == "table_total" and "children found by the printed total" in (v["observed_result"] or "")
+                and any(w is not v and w["rule_applied"] == "table_total" and w["result"] == "pass"
+                        and w["expected_result"].startswith(("the ", "the NIH")) for w in by_obs[v["observation_id"]])):
+            # the parser placed this total's lines by fitting the printed total; our own account sum confirms it
+            v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER,
+                      "resolution": "the parser placed this total's lines by the printed total; the account sum check "
+                                    "on the same figure (our accounts) matches it"})
+            continue
         if v.get("_resolve"):                            # the owner's rules 3 and 5 (2026-10-08)
             v.update({"human_review_status": "resolved", "reviewer": OWNER_RULE, "resolution": v["_resolve"]})
         elif disp == "A":
@@ -610,11 +751,29 @@ def main(argv=None):
             data["historical_names_tab"].append({"historical_name_id": next(hn_ids), "canonical_account_id": h["canonical_account_id"],
                                                  "former_name": h["former_name"], "evidence": h["evidence"],
                                                  "approved_date": TODAY, "confidence": 1.0, "human_reviewed": "TRUE"})
+        ca_ids = next_id("CA-LHHS-", data["confirmed_absences"], "confirmed_absence_id", 4)
+        for c in absences:
+            data["confirmed_absences"].append({"confirmed_absence_id": next(ca_ids), **c})
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
         print("appended to", STAGED.relative_to(ROOT))
     return {"obs": new_obs, "val": new_val, "cross": cross, "unmatched": unmatched}
+
+
+def former_names(data, cfg, fy):
+    """(account, cleaned label) of every former name in use in fiscal year fy. A name valid only for some years
+    says so in its evidence ('Valid for FY2022 and earlier': HRSA's 'Program Management', the account's headline
+    through FY2022 and a line inside it from FY2023) -- mapped by year, not by name."""
+    out = []
+    for h in data.get("historical_names_tab", []) + cfg.get("historical_names", []):
+        if not h.get("former_name"):
+            continue
+        m = re.search(r"Valid for FY(\d{4}) and earlier", h.get("evidence") or "")
+        if m and fy > int(m.group(1)):
+            continue
+        out += [(h["canonical_account_id"], clean(lab)) for lab in [h["former_name"]] + h.get("printed", [])]
+    return out
 
 
 def clean_label(f):

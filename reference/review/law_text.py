@@ -229,7 +229,7 @@ def main(argv=None):
         hist[h.get("canonical_account_id")].append(h.get("former_name") or h.get("historical_name") or "")
     by_acc_fy = collections.defaultdict(list)
     for o in data["observations"]:
-        if o["stage"] == "Enacted":
+        if o["stage"] == "Enacted" and o["verification_status"] != "superseded":
             by_acc_fy[(o["canonical_account_id"], o["fiscal_year"])].append(o)
     refs = {(r["subcommittee"], int(r["fiscal_year"])): r for r in data["bill_report_refs"] if r["stage"] == "Enacted"}
     # an observation already compared with the enrolled law (an other-law note is a law_text record too, not a comparison)
@@ -239,7 +239,7 @@ def main(argv=None):
                                                                                       v["observed_result"]) for x in x if x],
                                        v["validation_id"])
                  for v in data["validations"] if "prints amounts from other laws" in (v["expected_result"] or "")}
-    rows, recs, sources = [], [], {}
+    rows, recs, sources, updates = [], [], {}, []
     for sc, years in YEARS.items():
         for fy in years:
             ref = refs[(sc, fy)]
@@ -286,6 +286,14 @@ def main(argv=None):
                     row.update(result=res, reason=why)
                     rows.append(row)
                     if (o["observation_id"], "law_text") in have:
+                        # an earlier record the improved check now matches (the heading's paragraphs summed): updated
+                        # in place, recording the paragraphs (owner, 2026-10-08) -- a check result, not a figure
+                        if res == "pass" and why.startswith("match (the sum of the heading's"):
+                            law_amt = " + ".join(f"${x:,}" for x in h["leads"])
+                            updates.append((o["observation_id"],
+                                            f"{ref['vehicle_bill_id']} (enrolled) div. {ref['division']}, '{h['heading']}': "
+                                            f"its {len(h['leads'])} paragraphs {law_amt}",
+                                            f"{o['amount']:,} as recorded; {why}"))
                         continue
                     law_amt = f"${h['amount']:,}" if h["amount"] is not None else "no dollar amount"
                     recs.append({"observation_id": o["observation_id"], "rule_applied": "law_text",
@@ -308,10 +316,10 @@ def main(argv=None):
     print(dict(c))
     print(collections.Counter(r["reason"] for r in rows if r["result"] == "info"))
     if a.write:
-        write(data, recs)
+        write(data, recs, updates)
 
 
-def write(data, recs):
+def write(data, recs, updates=()):
     def nxt(prefix, width):
         n = max(int(v["validation_id"][len(prefix):]) for v in data["validations"]
                 if re.fullmatch(re.escape(prefix) + r"\d+", v["validation_id"]))
@@ -322,6 +330,15 @@ def write(data, recs):
     obs = {o["observation_id"]: o for o in data["observations"]}
     order = ["validation_id", "observation_id", "rule_applied", "expected_result", "observed_result", "result",
              "human_review_status", "reviewer", "resolution"]
+    changed = []
+    for oid, exp, obsd in updates:
+        v = next(v for v in data["validations"] if v["observation_id"] == oid and v["rule_applied"] == "law_text"
+                 and "(enrolled)" in (v["expected_result"] or ""))
+        if (v["result"], v["expected_result"], v["observed_result"]) != ("pass", exp, obsd):
+            changed.append((v["validation_id"], oid, v["result"]))
+            v.update({"result": "pass", "expected_result": exp, "observed_result": obsd})
+    for vid, oid, was in changed:
+        print(f"updated {vid} ({oid}): {was} -> pass")
     for r in recs:
         sc = "LHHS" if r["observation_id"].startswith("OBS-LHHS-") else "CJS"
         r.update({"validation_id": next(ids[sc]), "human_review_status": "", "reviewer": "", "resolution": ""})
