@@ -563,8 +563,8 @@ class CompareBrowser(CompareTest):
 
     def test_grid_state_counts_are_unchanged(self):
         # LHHS: the FY2024 House column (100 cells) moved from not yet collected to the subcommittee draft's
-        # figures and states (+86 value, +6 not funded, +8 missing); every other cell as before
-        want = {"LHHS": {"value": 1538, "not_funded": 108, "no_printed_total": 13, "missing": 141, "not_collected": 100,
+        # figures and states (+86 value, +6 not funded, +8 missing); then H.R. 5894 filled the NEF rescission (-1 missing, +1 value)
+        want = {"LHHS": {"value": 1539, "not_funded": 108, "no_printed_total": 13, "missing": 140, "not_collected": 100,
                          "not_enacted": 100},
                 "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
                         "not_enacted": 30}}
@@ -1097,6 +1097,23 @@ class CompareBrowser(CompareTest):
             # no "+N" text anywhere in the grid
             self.assertEqual(self.page.eval_on_selector_all("#compare-grid td", "ts => ts.filter(t => /\\+\\d+$/.test(t.innerText.trim())"
                                                             " && !t.querySelector('[data-testid=change]')).length"), 0)
+
+    def test_the_one_cell_note_global_health_fy2024_house(self):
+        # a pending cross_document flag against bill text shows as a note in the cell's corner:
+        # VAL-LHHS-07178 on OBS-LHHS-1757, and no other cell
+        note = ("H.R. 5894 bill text prints $370,772,000; the explanatory materials' table "
+                "(and its change column) print 370,722 thousand.")
+        for sc in ("CJS", "LHHS"):
+            self.open("static", f"?view=compare&sc={sc}&grid=stages&fy=2024")
+            self.page.click("#expand-all")
+            notes = self.page.locator("#compare-grid [data-testid=cell-note]")
+            self.assertEqual(notes.count(), 1 if sc == "LHHS" else 0, sc)
+        cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
+        n = cell.locator("[data-testid=cell-note]")
+        self.assertEqual(n.count(), 1)
+        self.assertEqual(n.get_attribute("title"), note)
+        self.assertEqual(n.get_attribute("aria-label"), note)
+        self.assertIn("370,722", cell.inner_text())             # the figure kept
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")

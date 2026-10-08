@@ -1158,9 +1158,17 @@ def history(conn, account_id):
         for k in ("document_notes", "superseded_by_observation_id"):
             if rec[k] is None:
                 del rec[k]
-        rec["validation"] = [dict(v) for v in conn.execute(
-            "SELECT validation_id, rule_applied, result, human_review_status FROM validation_record "
-            "WHERE observation_id = ? ORDER BY validation_id", (r["observation_id"],))]
+        recs = [dict(v) for v in conn.execute(
+            "SELECT validation_id, rule_applied, result, human_review_status, expected_result, observed_result "
+            "FROM validation_record WHERE observation_id = ? ORDER BY validation_id", (r["observation_id"],))]
+        rec["validation"] = [{k: v[k] for k in ("validation_id", "rule_applied", "result", "human_review_status")} for v in recs]
+        # a disagreement with the bill text, still pending review, shows as a note in the cell's corner:
+        # "<what the bill text prints>; <what the recorded figure's document prints>."
+        notes = [f"{v['expected_result']}; {v['observed_result']}." for v in recs
+                 if v["rule_applied"] == "cross_document" and v["result"] == "flag" and v["human_review_status"] == "pending"
+                 and "bill text" in (v["expected_result"] or "")]
+        if notes:
+            rec["cell_note"] = " ".join(notes)
         obs.append(rec)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))

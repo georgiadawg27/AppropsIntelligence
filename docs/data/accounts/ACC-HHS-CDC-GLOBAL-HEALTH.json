@@ -374,6 +374,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
          "canonical_account_id": "ACC-HHS-CDC-GLOBAL-HEALTH",
+         "cell_note": "H.R. 5894 bill text prints $370,772,000; the explanatory materials' table (and its change column) print 370,722 thousand.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -422,9 +423,15 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06822"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-07178"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "flagged"
         }
        ],
        "state": "value"
@@ -1684,6 +1691,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
     "canonical_account_id": "ACC-HHS-CDC-GLOBAL-HEALTH",
+    "cell_note": "H.R. 5894 bill text prints $370,772,000; the explanatory materials' table (and its change column) print 370,722 thousand.",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -1732,9 +1740,15 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06822"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-07178"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "flagged"
    },
    {
     "amount": 692843000,
