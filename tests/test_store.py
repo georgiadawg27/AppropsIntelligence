@@ -272,7 +272,8 @@ class NasaScienceAcceptance(StoreTest):
                 ((2017, "Enacted"), 5_764_900_000, "SRC-CRPT-115HRPT231", 120),
                 ((2018, "President's Budget"), 5_711_800_000, "SRC-CRPT-115HRPT231", 120)):
             o = cell[(fy, stage)]
-            lo, hi = map(int, o["source_page"].split("-"))
+            ps = [int(x) for x in o["source_page"].split("-")]       # a range, or the one page a page check narrowed it to
+            lo, hi = min(ps), max(ps)
             self.assertEqual((o["amount"], o["source_document_id"]), (amount, doc), (fy, stage))
             self.assertTrue(lo <= page <= hi, (fy, stage, o["source_page"]))
 

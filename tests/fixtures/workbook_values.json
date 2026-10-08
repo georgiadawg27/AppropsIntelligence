@@ -1,6 +1,6 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage resolutions of 2026-10-08)",
- "data_sha256": "46f6867e9115f47f958e2657d6e5c2c81ebe93c329ecb7c9fa59c673c3635ba0",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage resolutions and page checks of 2026-10-08)",
+ "data_sha256": "64ec1c25d73082ceb889352cdad3c020fb9a4426fd2cc2c7cabf002fc322d240",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
@@ -26,7 +26,7 @@
   "Appropriations Observation": {
    "rows": 2704,
    "columns": 21,
-   "sha256": "1f573158a668c5739db01259313521a328ad787d5d4333a70151f0a958d32231"
+   "sha256": "8c43cab336cca4051cc6c5f83e519492e6b175debf30664856d7ab7c54141bca"
   },
   "Account Relationship": {
    "rows": 12,

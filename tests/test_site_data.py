@@ -194,6 +194,36 @@ class ReviewList(unittest.TestCase):
         self.assertEqual(page.count('data-testid="page-check-row"'), 129)
         self.assertNotIn("api_key", page)
 
+    def test_page_checks_read(self):
+        # every page check read again (page_check_read.py): 70 LHHS pages confirmed, 58 CJS ranges narrowed
+        # to the one page that prints the figure, 1 left for the owner (OBS-0771: implied, not printed)
+        import csv
+        import re
+        from collections import Counter
+        with open(ROOT / "reference" / "review" / "page_check_results.csv", newline="") as f:
+            res = list(csv.DictReader(f))
+        self.assertEqual(Counter(r["result"] for r in res), {"confirmed": 70, "narrowed": 58, "needs_owner": 1})
+        self.assertEqual([r["observation_id"] for r in res if r["result"] == "needs_owner"], ["OBS-0771"])
+        self.assertTrue((ROOT / "reference" / "review" / "page_checks" / "OBS-0771-CRPT-118hrpt582-p248.png").is_file())
+        data = json.loads(S.STAGED.read_text())
+        obs = {o["observation_id"]: o for o in data["observations"]}
+        for r in res:
+            o = obs[r["observation_id"]]
+            if r["result"] == "needs_owner":
+                self.assertEqual((r["human_review_status"], o["source_page"]), ("pending", r["cited_page"]))
+                continue
+            self.assertEqual((r["human_review_status"], r["reviewer"], r["resolution"]),
+                             ("resolved", "page image check 2026-10-08", f"figure seen on PDF p.{r['page_seen']}"))
+            self.assertEqual(o["source_page"], r["page_seen"])
+            if r["result"] == "narrowed":
+                lo, hi = (int(x) for x in re.findall(r"\d+", r["cited_page"]))
+                self.assertTrue(lo <= int(r["page_seen"]) <= hi)
+                self.assertTrue(o["source_table_or_section"].endswith(
+                    f" -- narrowed from {r['cited_page']} by {'page image' if r['method'] == 'page image' else 'page text'}"))
+        # the rows a person settled by reading (25 page images in all, under the 80 allowed; one row by its OCR text)
+        reads = (ROOT / "reference" / "review" / "page_check_image_reads.jsonl").read_text().splitlines()
+        self.assertEqual(len(reads), 26)
+
     def test_cbo_observations_tagged_interim(self):
         data = json.loads(S.STAGED.read_text())
         cbo = sorted(o["observation_id"] for o in data["observations"] if o["source_document_id"] == "SRC-CBO-HR8845-FY2027")
