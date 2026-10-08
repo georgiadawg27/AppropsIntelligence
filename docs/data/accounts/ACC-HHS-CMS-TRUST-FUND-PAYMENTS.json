@@ -45,7 +45,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00972"
@@ -69,7 +70,7 @@
            "validation_id": "VAL-LHHS-00975"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -117,7 +118,8 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02049"
@@ -153,7 +155,7 @@
            "validation_id": "VAL-LHHS-02054"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -201,7 +203,8 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02055"
@@ -231,7 +234,7 @@
            "validation_id": "VAL-LHHS-02311"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -280,7 +283,8 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-02234"
@@ -304,7 +308,7 @@
            "validation_id": "VAL-LHHS-02237"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -357,7 +361,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00976"
@@ -393,7 +398,7 @@
            "validation_id": "VAL-LHHS-00981"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -442,7 +447,8 @@
          "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-06905"
@@ -472,7 +478,7 @@
            "validation_id": "VAL-LHHS-06909"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -520,7 +526,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00982"
@@ -586,7 +593,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00985"
@@ -610,7 +618,7 @@
            "validation_id": "VAL-LHHS-00988"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -663,13 +671,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01938"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -717,7 +726,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00989"
@@ -747,7 +757,7 @@
            "validation_id": "VAL-LHHS-00993"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -795,7 +805,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00994"
@@ -819,7 +830,7 @@
            "validation_id": "VAL-LHHS-00997"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -867,7 +878,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00998"
@@ -891,7 +903,7 @@
            "validation_id": "VAL-LHHS-01001"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1004,7 +1016,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01004"
@@ -1034,7 +1047,7 @@
            "validation_id": "VAL-LHHS-01008"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1082,7 +1095,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01009"
@@ -1106,7 +1120,7 @@
            "validation_id": "VAL-LHHS-01012"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1154,7 +1168,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01013"
@@ -1238,7 +1253,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01016"
@@ -1268,7 +1284,7 @@
            "validation_id": "VAL-LHHS-01020"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1316,7 +1332,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01021"
@@ -1340,7 +1357,7 @@
            "validation_id": "VAL-LHHS-01024"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1508,7 +1525,8 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02055"
@@ -1538,7 +1556,7 @@
       "validation_id": "VAL-LHHS-02311"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 548130000000,
@@ -1572,7 +1590,8 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02049"
@@ -1608,7 +1627,7 @@
       "validation_id": "VAL-LHHS-02054"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 548130000000,
@@ -1643,7 +1662,8 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-02234"
@@ -1667,7 +1687,7 @@
       "validation_id": "VAL-LHHS-02237"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 548130000000,
@@ -1701,7 +1721,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00972"
@@ -1725,7 +1746,7 @@
       "validation_id": "VAL-LHHS-00975"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 476725000000,
@@ -1759,7 +1780,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00982"
@@ -1812,7 +1834,8 @@
     "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-06905"
@@ -1842,7 +1865,7 @@
       "validation_id": "VAL-LHHS-06909"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 476725000000,
@@ -1876,7 +1899,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00985"
@@ -1900,7 +1924,7 @@
       "validation_id": "VAL-LHHS-00988"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 476725000000,
@@ -1934,7 +1958,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00976"
@@ -1970,7 +1995,7 @@
       "validation_id": "VAL-LHHS-00981"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 521757000000,
@@ -2004,7 +2029,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00994"
@@ -2028,7 +2054,7 @@
       "validation_id": "VAL-LHHS-00997"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 521757000000,
@@ -2062,7 +2088,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00989"
@@ -2092,7 +2119,7 @@
       "validation_id": "VAL-LHHS-00993"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 521757000000,
@@ -2126,7 +2153,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00998"
@@ -2150,7 +2178,7 @@
       "validation_id": "VAL-LHHS-01001"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 521757000000,
@@ -2184,13 +2212,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01938"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 593817000000,
@@ -2224,7 +2253,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01009"
@@ -2248,7 +2278,7 @@
       "validation_id": "VAL-LHHS-01012"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 593817000000,
@@ -2282,7 +2312,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01004"
@@ -2312,7 +2343,7 @@
       "validation_id": "VAL-LHHS-01008"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 593817000000,
@@ -2346,7 +2377,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01013"
@@ -2444,7 +2476,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01021"
@@ -2468,7 +2501,7 @@
       "validation_id": "VAL-LHHS-01024"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 686855000000,
@@ -2502,7 +2535,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01016"
@@ -2532,7 +2566,7 @@
       "validation_id": "VAL-LHHS-01020"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [

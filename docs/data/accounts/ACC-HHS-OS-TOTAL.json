@@ -45,13 +45,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01590"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01591"
@@ -592,13 +594,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01595"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01596"
@@ -753,13 +757,15 @@
          "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-07125"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07126"
@@ -920,13 +926,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01606"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01607"
@@ -998,13 +1006,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01611"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01612"
@@ -1087,13 +1097,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01950"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1139,13 +1150,14 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01951"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1199,7 +1211,8 @@
            "validation_id": "VAL-LHHS-01617"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01618"
@@ -1229,7 +1242,7 @@
            "validation_id": "VAL-LHHS-01622"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1353,13 +1366,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01628"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01629"
@@ -1513,13 +1528,15 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01639"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01640"
@@ -1784,13 +1801,15 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01652"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01653"
@@ -1820,7 +1839,7 @@
            "validation_id": "VAL-LHHS-01657"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1944,13 +1963,15 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01663"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01664"
@@ -1974,7 +1995,7 @@
            "validation_id": "VAL-LHHS-01667"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2092,13 +2113,15 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01672"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01673"
@@ -2246,13 +2269,15 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01679"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01680"
@@ -2282,7 +2307,7 @@
            "validation_id": "VAL-LHHS-01684"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2406,13 +2431,15 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-01690"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
            "result": "flag",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-01691"
@@ -2436,7 +2463,7 @@
            "validation_id": "VAL-LHHS-01694"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3066,13 +3093,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01590"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01591"
@@ -3130,13 +3159,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01606"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01607"
@@ -3195,13 +3226,15 @@
     "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-07125"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07126"
@@ -3336,13 +3369,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01611"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01612"
@@ -3406,13 +3441,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01595"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01596"
@@ -3540,13 +3577,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01628"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01629"
@@ -3680,7 +3719,8 @@
       "validation_id": "VAL-LHHS-01617"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01618"
@@ -3710,7 +3750,7 @@
       "validation_id": "VAL-LHHS-01622"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1753995000,
@@ -3808,13 +3848,15 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01639"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01640"
@@ -3942,13 +3984,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01950"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1997786000,
@@ -3982,13 +4025,14 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure is the FY2026 House report's FY2025 estimate, as decided earlier. The FY2025 (CR) column label discloses this.",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01951"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 2235195000,
@@ -4022,13 +4066,15 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01663"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01664"
@@ -4052,7 +4098,7 @@
       "validation_id": "VAL-LHHS-01667"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2288338000,
@@ -4144,13 +4190,15 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01652"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01653"
@@ -4180,7 +4228,7 @@
       "validation_id": "VAL-LHHS-01657"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1920407000,
@@ -4278,13 +4326,15 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01672"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01673"
@@ -4468,13 +4518,15 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01690"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01691"
@@ -4498,7 +4550,7 @@
       "validation_id": "VAL-LHHS-01694"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2173830000,
@@ -4590,13 +4642,15 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-01679"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
       "result": "flag",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-01680"
@@ -4626,7 +4680,7 @@
       "validation_id": "VAL-LHHS-01684"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1811658000,

@@ -715,13 +715,14 @@
            "validation_id": "VAL-LHHS-01086"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 235)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01087"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -791,13 +792,14 @@
            "validation_id": "VAL-LHHS-01091"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (emergency)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01092"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -1175,13 +1177,14 @@
            "validation_id": "VAL-LHHS-01105"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 234)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01106"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1258,13 +1261,14 @@
            "validation_id": "VAL-LHHS-01109"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 234)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01110"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1441,13 +1445,14 @@
            "validation_id": "VAL-LHHS-01115"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 237)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01116"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1524,13 +1529,14 @@
            "validation_id": "VAL-LHHS-01119"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 237)')",
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01120"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -2232,13 +2238,14 @@
       "validation_id": "VAL-LHHS-01086"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 235)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01087"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -2296,13 +2303,14 @@
       "validation_id": "VAL-LHHS-01091"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (emergency)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01092"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -1656000000,
@@ -2474,13 +2482,14 @@
       "validation_id": "VAL-LHHS-01109"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 234)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01110"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -1613000000,
@@ -2538,13 +2547,14 @@
       "validation_id": "VAL-LHHS-01105"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 234)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01106"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -1613000000,
@@ -2676,13 +2686,14 @@
       "validation_id": "VAL-LHHS-01119"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 237)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01120"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": -1619000000,
@@ -2740,13 +2751,14 @@
       "validation_id": "VAL-LHHS-01115"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('Nonrecurring expenses fund, HHS (rescission) (Sec. 237)')",
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01116"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [

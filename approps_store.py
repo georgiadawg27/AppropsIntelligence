@@ -1159,9 +1159,11 @@ def history(conn, account_id):
             if rec[k] is None:
                 del rec[k]
         recs = [dict(v) for v in conn.execute(
-            "SELECT validation_id, rule_applied, result, human_review_status, expected_result, observed_result "
+            "SELECT validation_id, rule_applied, result, human_review_status, resolution, expected_result, observed_result "
             "FROM validation_record WHERE observation_id = ? ORDER BY validation_id", (r["observation_id"],))]
-        rec["validation"] = [{k: v[k] for k in ("validation_id", "rule_applied", "result", "human_review_status")} for v in recs]
+        # a resolved record carries its resolution (reviewer mode shows it as "resolved: <reason>")
+        rec["validation"] = [{k: v[k] for k in ("validation_id", "rule_applied", "result", "human_review_status")}
+                             | ({"resolution": v["resolution"]} if v["human_review_status"] == "resolved" else {}) for v in recs]
         # a disagreement with the bill text, still pending review, shows as a note in the cell's corner:
         # "<what the bill text prints>; <what the recorded figure's document prints>."
         notes = [f"{v['expected_result']}; {v['observed_result']}." for v in recs

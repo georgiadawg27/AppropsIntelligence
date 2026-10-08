@@ -158,6 +158,10 @@ def export(workbook, out):
             target.write_text(text)
     if built:
         publish_workbook(workbook, out / DOWNLOAD, data_committed)
+    # the page checks still open for a person (reference/review/page_check_sheet.csv), linked to the PDFs
+    sys.path.insert(0, str(ROOT / "reference" / "review"))
+    import page_check_sheet
+    page_check_sheet.write_page(out / "review" / "page-checks.html")
     return {"accounts": len(ids), "workbook": workbook.name, "out": str(out)}
 
 

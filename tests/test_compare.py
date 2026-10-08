@@ -848,14 +848,35 @@ class CompareBrowser(CompareTest):
         self.assertGreater(dots.count(), 0)
         for d in dots.all():
             status = d.get_attribute("data-status")
-            self.assertNotIn(status, ("auto-validated", "human-verified"))
-            self.assertEqual(d.get_attribute("class"), "dot flag" if status == "flagged" else "dot unv")
+            if status in ("auto-validated", "human-verified"):
+                # a verified cell shows a mark only for its records: pending (pend) or resolved (res)
+                pending, resolved = int(d.get_attribute("data-pending")), int(d.get_attribute("data-resolved"))
+                self.assertEqual(d.get_attribute("class"), "dot pend" if pending else "dot res")
+                self.assertGreater(pending + resolved, 0)
+            else:
+                self.assertEqual(d.get_attribute("class"), "dot flag" if status == "flagged" else "dot unv")
         rows = self.lhhs["rows"] + [self.lhhs["titles"][0]["total"]]
         flagged = sum(1 for r in rows for y, st in [(2025, "Enacted")] + [(2026, s) for s in FOUR]
                       for c in [r["cells"].get(f"{y}|{st}")] if c and c["lines"]
                       for h in [next((l for l in c["lines"] if l["amount_type"] == "budget authority" and not l["component"]), c["lines"][0])]
                       if h["observations"] and h["observations"][0]["verification_status"] == "flagged")
         self.assertEqual(self.page.locator("[data-testid=status-dot][data-status=flagged]").count(), flagged)
+
+    def test_reviewer_mode_lists_resolved_records(self):
+        # a record a person resolved stays in the tooltip as "resolved: <its resolution>"
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
+        self.page.click("#expand-all")
+        d = self.cell("ACC-HHS-ACF-TOTAL", 2025, "Enacted").locator("[data-testid=status-dot]")
+        self.assertEqual(d.count(), 1)
+        self.assertEqual(d.get_attribute("data-status"), "unverified")       # was flagged; the CR question resolved
+        self.assertEqual(d.get_attribute("data-pending"), "0")
+        self.assertIn("VAL-LHHS-01923 resolved: Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4)",
+                      d.get_attribute("title"))
+        res = self.page.locator("[data-testid=status-dot].res")
+        self.assertGreater(res.count(), 0)
+        for x in res.all()[:20]:
+            self.assertIn(" resolved: ", x.get_attribute("title"))
+            self.assertIn(x.get_attribute("data-status"), ("auto-validated", "human-verified"))
 
     def test_reviewer_mode_lists_pending_records(self):
         # the mark stays verification_status; the open records come from human_review_status

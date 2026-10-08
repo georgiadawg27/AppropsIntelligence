@@ -19,14 +19,15 @@ DOCS = ROOT / "docs"
 # just before the switch (the grid's headline cell is flagged when its observation's
 # verification_status is "flagged"); then the FY2024 House Labor-HHS draft: its 100 cells moved
 # from not yet collected to figures and states, 4 of them flagged; then H.R. 5894: the NEF rescission moved from
-# missing to a figure, and CDC Global Health became flagged (its bill-text disagreement)
+# missing to a figure, and CDC Global Health became flagged (its bill-text disagreement); then the owner's
+# triage (PR #29): resolved records no longer count, 78 flagged cells -> 5 (71 unverified, 2 auto-validated)
 STATE_COUNTS = {
     "LHHS": {"value": 1539, "not_funded": 108, "no_printed_total": 13, "missing": 140, "not_collected": 100,
              "not_enacted": 100},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
             "not_enacted": 30},
 }
-FLAGGED_CELLS = {"LHHS": 78, "CJS": 0}
+FLAGGED_CELLS = {"LHHS": 5, "CJS": 0}
 
 
 def grid(sc):
@@ -71,18 +72,40 @@ class SiteReadsData(unittest.TestCase):
             self.assertEqual(got, want, sc)
 
     def test_review_status_comes_with_every_cell(self):
-        # Reviewer mode reads human_review_status from each observation's validation records;
-        # the 434 records pending before the FY2024 House draft stay as they are; its own 27 and the Global Health
-        # bill-text flag (VAL-LHHS-07178) follow the standard rule
+        # Reviewer mode reads human_review_status from each observation's validation records. The owner's
+        # triage (PR #29) resolved 452 of the 462 pending records; 10 stay pending
         data = json.loads(S.STAGED.read_text())
-        self.assertEqual(sum(v.get("human_review_status") == "pending" for v in data["validations"]), 462)
-        new = [v for v in data["validations"] if int(v["validation_id"].rsplit("-", 1)[1]) > 6702 and v["validation_id"].startswith("VAL-LHHS")]
-        self.assertEqual(sum(v["human_review_status"] == "pending" for v in new), 28)
-        self.assertTrue(all((v["human_review_status"] == "pending") == (v["result"] in ("fail", "flag")) for v in new))
-        self.assertEqual({v.get("human_review_status") for v in data["validations"]}, {"", "pending"})
+        st = [v.get("human_review_status") for v in data["validations"]]
+        self.assertEqual((st.count("pending"), st.count("resolved")), (10, 452))
+        self.assertEqual(set(st), {"", "pending", "resolved"})
+        self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
+                         ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
+                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912", "VAL-LHHS-07178"])
+        for v in data["validations"]:
+            if v["human_review_status"] == "resolved":
+                self.assertTrue(v["resolution"].strip(), v["validation_id"])
+                self.assertEqual(v["reviewer"], "owner (group approval 2026-10-08)")
+                self.assertIn(v["result"], ("fail", "flag"))
         for sc in ("LHHS", "CJS"):
             for _, _, o in headline_observations(grid(sc)):
                 self.assertTrue(all("human_review_status" in v for v in o["validation"]), o["observation_id"])
+                self.assertTrue(all(v.get("resolution") for v in o["validation"] if v["human_review_status"] == "resolved"))
+
+    def test_triage_resolutions_follow_the_proposal(self):
+        import csv
+        data = json.loads(S.STAGED.read_text())
+        by_id = {v["validation_id"]: v for v in data["validations"]}
+        with open(ROOT / "reference" / "review" / "triage_proposal.csv", newline="") as f:
+            rows = [r for r in csv.DictReader(f) if r["id"].startswith("VAL-")]
+        for r in rows:
+            v = by_id[r["id"]]
+            if r["proposed_disposition"] == "A":
+                self.assertEqual((v["human_review_status"], v["resolution"]), ("resolved", r["reason"]), r["id"])
+            elif r["family"] == "cr-estimate":
+                self.assertEqual(v["human_review_status"], "resolved")
+                self.assertTrue(v["resolution"].startswith("Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4)"))
+            else:
+                self.assertEqual(v["human_review_status"], "pending", r["id"])
 
     def test_the_one_verified_cell_with_a_pending_record(self):
         # CJS has no flagged cell; one verified cell still has a record pending review:
@@ -146,6 +169,30 @@ class ReviewList(unittest.TestCase):
 
     def test_aha_link_item_removed(self):
         self.assertFalse([r for r in self.rows() if r["id"] == "SRC-CJ-AHA-FY2026"])
+
+    def test_page_check_sheet(self):
+        import csv
+        with open(ROOT / "reference" / "review" / "page_check_sheet.csv", newline="") as f:
+            sheet = list(csv.DictReader(f))
+        page_items = [r for r in self.rows() if r["reason"] == "page not confirmed by text search"]
+        self.assertEqual((len(page_items), len(sheet)), (140, 129))      # less the 11 derived figures (resolved)
+        self.assertEqual(sum(bool(r["nearby_page"]) for r in sheet), 13)
+        data = json.loads(S.STAGED.read_text())
+        obs = {o["observation_id"]: o for o in data["observations"]}
+        docs = {d["document_id"]: d["url_or_identifier"] for d in data["source_docs"]}
+        import re
+        for r in sheet:
+            o = obs[r["observation_id"]]
+            first = min(int(x) for x in re.findall(r"\d+", o["source_page"]))
+            self.assertEqual(r["pdf_link"], f"{docs[o['source_document_id']]}#page={first}")
+            self.assertTrue(r["pdf_link"].split("#")[0].endswith(".pdf"))
+            self.assertEqual((int(r["fiscal_year"]), r["stage"]), (o["fiscal_year"], o["stage"]))
+            if r["nearby_page"]:
+                near = re.findall(r"\d+", r["nearby_page"])[0]
+                self.assertTrue(r["nearby_link"].endswith(f"#page={near}"))
+        page = (DOCS / "review" / "page-checks.html").read_text()
+        self.assertEqual(page.count('data-testid="page-check-row"'), 129)
+        self.assertNotIn("api_key", page)
 
     def test_cbo_observations_tagged_interim(self):
         data = json.loads(S.STAGED.read_text())

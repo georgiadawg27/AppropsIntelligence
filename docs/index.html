@@ -147,6 +147,7 @@
   .dot.flag { background: #B7791F; }
   .dot.pend { background: transparent; box-shadow: inset 0 0 0 1.5px #B7791F; }
   .dot.unv { border: 1.5px solid #8A93A3; width: 5px; height: 5px; }
+  .dot.res { background: #C9CED6; width: 5px; height: 5px; }
   .up { color: #1A7339; } .down { color: #A8460C; } .flat { color: #5D6472; }
   .pct { display: block; font-size: 12px; }
   .chev { appearance: none; border: 0; background: none; padding: 0; width: 20px; height: 20px; flex: 0 0 20px; cursor: pointer;
@@ -276,7 +277,7 @@
         <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
         <span><span class="cn-legend"></span>the sources disagree on this figure (pending review): hover to read</span>
         <span><span class="tag total" style="margin-left:0">total</span> printed total of the accounts indented below it, not added again</span>
-        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot pend"></span> verified, a record still pending review <span id="rev-count" data-testid="pending-count"></span></span>
+        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></span>
       </footer>
       <footer class="gfooter" id="grid-counts" data-testid="state-counts"></footer>
       <footer class="gfooter" id="grid-notes"></footer>
@@ -696,6 +697,7 @@ function figure(row, y, st) {
 const validated = (s) => s === "auto-validated" || s === "human-verified";
 // an observation's validation records a person still has to look at (human_review_status = pending)
 const pendingReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "pending");
+const resolvedReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "resolved");
 
 const TOKENS = {
   not_funded: ["—", "Not funded: printed as a dash or zero, or checked and confirmed absent"],
@@ -754,18 +756,23 @@ function figureCell(row, y, st, cls) {
     td.append(el("span", { class: "cn", role: "note", "data-testid": "cell-note", title: o.cell_note, "aria-label": o.cell_note }));
   // Reviewer mode: the mark is the observation's stored verification_status (flagged / not yet
   // confirmed); what is still open for a person comes from its validation records'
-  // human_review_status ("pending"), listed in the tooltip -- no wording is read
+  // human_review_status ("pending"), listed in the tooltip -- no wording is read; records a person
+  // resolved stay listed there too, each as "resolved: <its resolution>"
   const pending = o ? pendingReview(o) : [];
-  if (G.reviewer && o && (!validated(o.verification_status) || pending.length)) {
+  const resolved = o ? resolvedReview(o) : [];
+  if (G.reviewer && o && (!validated(o.verification_status) || pending.length || resolved.length)) {
     const flagged = o.verification_status === "flagged";
-    const kind = flagged ? "flag" : validated(o.verification_status) ? "pend" : "unv";
+    const kind = flagged ? "flag" : !validated(o.verification_status) ? "unv" : pending.length ? "pend" : "res";
     const what = { flag: "Flagged for review", unv: "Not yet confirmed by a sum or second document",
-                   pend: "Verified, with a record still pending review" }[kind];
+                   pend: "Verified, with a record still pending review",
+                   res: "Verified, with records resolved by a person" }[kind];
     const open = pending.length ? ` \u2014 ${pending.length} pending review: ` +
       pending.map((v) => `${v.validation_id} ${v.rule_applied} ${v.result}`).join("; ") : "";
+    const done = resolved.map((v) => `\n${v.validation_id} resolved: ${v.resolution}`).join("");
     td.append(el("span", { class: "dot " + kind, role: "img", "data-testid": "status-dot",
                            "data-status": o.verification_status, "data-pending": String(pending.length),
-                           title: `${what} (${o.verification_status})${open}`, "aria-label": what }));
+                           "data-resolved": String(resolved.length),
+                           title: `${what} (${o.verification_status})${open}${done}`, "aria-label": what }));
   }
   return td;
 }

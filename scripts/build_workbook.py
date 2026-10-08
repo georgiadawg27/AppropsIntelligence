@@ -122,6 +122,35 @@ def _check_integrity():
 
 _check_integrity()
 
+def _check_status_rule():
+    """Every verification_status the rule sets is the one validate_approps.verification_status gives for
+    the observation's checks (a check a person resolved, with its resolution written, no longer counts).
+    Human-verified, provisional and superseded are set by their own steps. Stops the build."""
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import validate_approps as V
+    from collections import defaultdict
+    checks = defaultdict(list)
+    for v in data["validations"]:
+        checks[v["observation_id"]].append((v["rule_applied"], v["result"], v.get("expected_result"),
+                                           v.get("human_review_status"), v.get("resolution")))
+    errs = []
+    for v in data["validations"]:
+        if v.get("human_review_status") == "resolved" and not (v.get("resolution") or "").strip():
+            errs.append(f"{v['validation_id']}: resolved without a resolution")
+    for o in data["observations"]:
+        if o["verification_status"] in ("human-verified", "provisional", "superseded"):
+            continue
+        want = V.verification_status(o["confidence"], checks[o["observation_id"]])
+        if o["verification_status"] != want:
+            errs.append(f"{o['observation_id']}: verification_status {o['verification_status']!r}, the rule gives {want!r}")
+    if errs:
+        raise SystemExit("BUILD STOPPED: verification_status rule\n  " + "\n  ".join(errs[:50])
+                         + (f"\n  ... {len(errs)} total" if len(errs) > 50 else ""))
+
+_check_status_rule()
+
 FONT_NAME = "Arial"
 HEADER_FILL = PatternFill("solid", fgColor="1F3864")
 HEADER_FONT = Font(name=FONT_NAME, bold=True, color="FFFFFF", size=10)
@@ -415,7 +444,8 @@ rows = [
     ("\u2022 One rule now sets verification_status everywhere: 'auto-validated' only with confidence >= 0.90, every "
      "check passing, and at least one check that confirms the figure (a sum or cross-document match); 'flagged' when "
      "a check fails or a person deliberately flagged it; otherwise 'unverified'. 382 Labor-HHS rows moved from "
-     "auto-validated to unverified, 2 the other way. No auto-validated row is below 0.90.", NOTE_FONT),
+     "auto-validated to unverified, 2 the other way. No auto-validated row is below 0.90. A check a person resolved "
+     "(human_review_status 'resolved', its resolution written) no longer counts; the rule applies to the rest.", NOTE_FONT),
     ("\u2022 FY2026 AHA Congressional Justification added (SRC-CJ-AHA-FY2026, excerpt pp. 11-19). Five proposed moves "
      "into AHA, each matched to the dollar against H.Rept. 119-271's FY2026 request: NIEHS, CDC Injury Prevention, "
      "Birth Defects, NIOSH and EEOICPA (REL-LHHS-0011..0015). REL-LHHS-0003/0004 (agency-total links) removed; their "

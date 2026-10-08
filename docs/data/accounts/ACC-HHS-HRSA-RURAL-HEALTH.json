@@ -117,7 +117,8 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04337 (the printed change column [Bill vs. Enacted]); VAL-LHHS-04338 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-04336"
@@ -147,7 +148,7 @@
            "validation_id": "VAL-LHHS-04340"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -195,7 +196,8 @@
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04342 (the printed change column [Bill vs. Request]); VAL-LHHS-04345 (another document prints it)",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-04341"
@@ -225,7 +227,7 @@
            "validation_id": "VAL-LHHS-04345"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -274,7 +276,8 @@
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04347 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-04348 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-04346"
@@ -304,7 +307,7 @@
            "validation_id": "VAL-LHHS-04350"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1556,7 +1559,8 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04342 (the printed change column [Bill vs. Request]); VAL-LHHS-04345 (another document prints it)",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-04341"
@@ -1586,7 +1590,7 @@
       "validation_id": "VAL-LHHS-04345"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 375675000,
@@ -1620,7 +1624,8 @@
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04337 (the printed change column [Bill vs. Enacted]); VAL-LHHS-04338 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-04336"
@@ -1650,7 +1655,7 @@
       "validation_id": "VAL-LHHS-04340"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 392137000,
@@ -1685,7 +1690,8 @@
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04347 (the printed change column [Senate Committee recommendation compared with (+ or -) 2022 appropriation]); VAL-LHHS-04348 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-04346"
@@ -1715,7 +1721,7 @@
       "validation_id": "VAL-LHHS-04350"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 352407000,

@@ -363,7 +363,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00046"
@@ -399,7 +400,7 @@
            "validation_id": "VAL-LHHS-00051"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -729,7 +730,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00061"
@@ -759,7 +761,7 @@
            "validation_id": "VAL-LHHS-00065"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -807,7 +809,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00066"
@@ -837,7 +840,7 @@
            "validation_id": "VAL-LHHS-00070"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -885,7 +888,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00071"
@@ -915,7 +919,7 @@
            "validation_id": "VAL-LHHS-00075"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1166,7 +1170,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-00085"
@@ -1946,7 +1951,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00046"
@@ -1982,7 +1988,7 @@
       "validation_id": "VAL-LHHS-00051"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 4111000000,
@@ -2016,7 +2022,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00066"
@@ -2046,7 +2053,7 @@
       "validation_id": "VAL-LHHS-00070"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 4040000000,
@@ -2080,7 +2087,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00061"
@@ -2110,7 +2118,7 @@
       "validation_id": "VAL-LHHS-00065"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 4125000000,
@@ -2144,7 +2152,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00071"
@@ -2174,7 +2183,7 @@
       "validation_id": "VAL-LHHS-00075"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 4025000000,
@@ -2358,7 +2367,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-00085"

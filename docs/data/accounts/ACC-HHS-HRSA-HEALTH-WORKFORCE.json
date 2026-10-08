@@ -45,7 +45,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04102 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04101"
@@ -69,7 +70,7 @@
            "validation_id": "VAL-LHHS-04104"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -357,7 +358,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04121 (the printed change column [Senate Committee recommendation compared with (+ or -) 2024 appropriation]); VAL-LHHS-04124 (another document prints it)",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04120"
@@ -387,7 +389,7 @@
            "validation_id": "VAL-LHHS-04124"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -436,7 +438,8 @@
          "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-06933 (the printed change column [Bill vs. Enacted]); VAL-LHHS-06934 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-06932"
@@ -466,7 +469,7 @@
            "validation_id": "VAL-LHHS-06936"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -514,7 +517,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04126 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04125"
@@ -538,7 +542,7 @@
            "validation_id": "VAL-LHHS-04128"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -586,7 +590,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04130 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-04131 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04129"
@@ -616,7 +621,7 @@
            "validation_id": "VAL-LHHS-04133"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -669,7 +674,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04135 (the printed change column [Bill vs. Estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04134"
@@ -693,7 +699,7 @@
            "validation_id": "VAL-LHHS-04137"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -741,7 +747,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04139 (the printed change column [Bill vs. Enacted]); VAL-LHHS-04140 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04138"
@@ -771,7 +778,7 @@
            "validation_id": "VAL-LHHS-04142"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -819,7 +826,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04144 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate]); VAL-LHHS-04147 (another document prints it)",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04143"
@@ -849,7 +857,7 @@
            "validation_id": "VAL-LHHS-04147"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -897,7 +905,8 @@
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04149 (the printed change column [Senate Committee recommendation compared with (+ or -) 2024 appropriation]); VAL-LHHS-04150 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04148"
@@ -927,7 +936,7 @@
            "validation_id": "VAL-LHHS-04152"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -980,7 +989,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04154 (the printed change column [Committee vs. Enacted])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04153"
@@ -1004,7 +1014,7 @@
            "validation_id": "VAL-LHHS-04156"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1052,7 +1062,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04158 (the printed change column [Bill vs. Estimate]); VAL-LHHS-04159 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04157"
@@ -1082,7 +1093,7 @@
            "validation_id": "VAL-LHHS-04161"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1130,7 +1141,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04163 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04162"
@@ -1154,7 +1166,7 @@
            "validation_id": "VAL-LHHS-04165"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1286,7 +1298,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04170 (the printed change column [Committee vs. Enacted]); VAL-LHHS-04171 (the printed change column [Committee vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04169"
@@ -1316,7 +1329,7 @@
            "validation_id": "VAL-LHHS-04173"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1364,7 +1377,8 @@
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
          "validation": [
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04175 (the printed change column [Committee vs. Request])",
            "result": "fail",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-04174"
@@ -1388,7 +1402,7 @@
            "validation_id": "VAL-LHHS-04177"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1749,7 +1763,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04102 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04101"
@@ -1773,7 +1788,7 @@
       "validation_id": "VAL-LHHS-04104"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1747486000,
@@ -1807,7 +1822,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04126 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04125"
@@ -1831,7 +1847,7 @@
       "validation_id": "VAL-LHHS-04128"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1336348000,
@@ -1866,7 +1882,8 @@
     "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-06933 (the printed change column [Bill vs. Enacted]); VAL-LHHS-06934 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-06932"
@@ -1896,7 +1913,7 @@
       "validation_id": "VAL-LHHS-06936"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1391376000,
@@ -1930,7 +1947,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04130 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation]); VAL-LHHS-04131 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04129"
@@ -1960,7 +1978,7 @@
       "validation_id": "VAL-LHHS-04133"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1404376000,
@@ -1994,7 +2012,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04121 (the printed change column [Senate Committee recommendation compared with (+ or -) 2024 appropriation]); VAL-LHHS-04124 (another document prints it)",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04120"
@@ -2024,7 +2043,7 @@
       "validation_id": "VAL-LHHS-04124"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1467376000,
@@ -2058,7 +2077,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04144 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate]); VAL-LHHS-04147 (another document prints it)",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04143"
@@ -2088,7 +2108,7 @@
       "validation_id": "VAL-LHHS-04147"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1342011000,
@@ -2122,7 +2142,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04139 (the printed change column [Bill vs. Enacted]); VAL-LHHS-04140 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04138"
@@ -2152,7 +2173,7 @@
       "validation_id": "VAL-LHHS-04142"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1411376000,
@@ -2186,7 +2207,8 @@
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04149 (the printed change column [Senate Committee recommendation compared with (+ or -) 2024 appropriation]); VAL-LHHS-04150 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04148"
@@ -2216,7 +2238,7 @@
       "validation_id": "VAL-LHHS-04152"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1404376000,
@@ -2250,7 +2272,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04135 (the printed change column [Bill vs. Estimate])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04134"
@@ -2274,7 +2297,7 @@
       "validation_id": "VAL-LHHS-04137"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 394620000,
@@ -2308,7 +2331,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04163 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04162"
@@ -2332,7 +2356,7 @@
       "validation_id": "VAL-LHHS-04165"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1366933000,
@@ -2366,7 +2390,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04158 (the printed change column [Bill vs. Estimate]); VAL-LHHS-04159 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04157"
@@ -2396,7 +2421,7 @@
       "validation_id": "VAL-LHHS-04161"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1383376000,
@@ -2482,7 +2507,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04154 (the printed change column [Committee vs. Enacted])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04153"
@@ -2506,7 +2532,7 @@
       "validation_id": "VAL-LHHS-04156"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 393020000,
@@ -2540,7 +2566,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04175 (the printed change column [Committee vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04174"
@@ -2564,7 +2591,7 @@
       "validation_id": "VAL-LHHS-04177"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1438876000,
@@ -2598,7 +2625,8 @@
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
     "validation": [
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-04170 (the printed change column [Committee vs. Enacted]); VAL-LHHS-04171 (the printed change column [Committee vs. Request])",
       "result": "fail",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-04169"
@@ -2628,7 +2656,7 @@
       "validation_id": "VAL-LHHS-04173"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    }
   ],
   "open_cells": [
