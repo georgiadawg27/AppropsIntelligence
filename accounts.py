@@ -182,7 +182,13 @@ COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President
 #            (extract_approps.SCOPE_RES), stored under that printed scope:
 #            Medicaid's three totals are "program_level_available_this_fiscal_year",
 #            the plain current-year total (no component), and "appropriated_in_this_bill"
-INCLUDED_COMPONENTS = ("CURES",)
+#   kids_first / congressionally_directed_spending -- a line printed inside the
+#            account's figure (the Gabriella Miller Kids First line under the NIH
+#            Office of the Director; HRSA's community project funding) (owner, 2026-10-08)
+INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending")
+# A chamber's one-off line under an account's heading (Labor-HHS: Diaper Grants, House FY2022): a part of the
+# account's cell, never a new account (owner, 2026-10-08)
+PROPOSAL_COMPONENTS = ("chamber_proposal",)
 PARALLEL_SCOPE_COMPONENTS = (
     "program_level", "fiscal_year_program_level",
     "program_level_with_cures_and_phs_evaluation_act_funding", "program_level_excluding_arpa_h",
@@ -200,7 +206,12 @@ COMPONENT_KINDS = (
        ("budget_amendment", "part", "a budget amendment to the President's request"),
        ("emergency", "part", "a separate line of the account designated emergency ('... (emergency)'), where the "
                              "account's amount type has no emergency form: an emergency rescission")]
-    + [("CURES", "contained", "NIH Innovation Account (21st Century Cures Act): inside NIH's headline total")]
+    + [("CURES", "contained", "NIH Innovation Account (21st Century Cures Act): inside NIH's headline total"),
+       ("kids_first", "contained", "the Gabriella Miller Kids First Research Act line: inside the NIH Office of the "
+                                   "Director's figure"),
+       ("congressionally_directed_spending", "contained", "community project funding / congressionally directed "
+                                                          "spending printed as its own line inside the account's figure"),
+       ("chamber_proposal", "part", "a one-off line a chamber proposed under the account's heading (a note)")]
     + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
 # Each component's label (Component.label): the name as a source document
 # prints it, taken from the document's text, never made up from the
@@ -225,6 +236,11 @@ COMPONENT_LABELS = {
     "emergency": ("(emergency)", "printed name",
                   "H.Rept. 118-585 p.339 / S.Rept. 118-207 p.467: 'Nonrecurring expenses fund, HHS (rescission) (emergency)'"),
     "CURES": ("CURES Act", "printed name", "the Labor-HHS Title II tables, under the title total: 'CURES Act'"),
+    "kids_first": ("Gabriella Miller Kids First Research Act (Common Fund add)", "printed name",
+                   "H.Rept. 117-96 p.477, under NIH's Office of the Director"),
+    "congressionally_directed_spending": ("Community Project Funding / Congressionally Directed Spending", "printed name",
+                                          "H.Rept. 118-585, HRSA-Wide Activities and Program Support"),
+    "chamber_proposal": ("Diaper Grants", "heading or line text", "H.Rept. 117-96 p.485, under Social Services Block Grant"),
     "program_level": ("program level", "printed name", "e.g. 'Total, SAMHSA, program level' (Labor-HHS Title II tables)"),
     "fiscal_year_program_level": ("fiscal year program level", "printed name",
                                   "'Total, General Departmental Management fiscal year program level' (Labor-HHS)"),

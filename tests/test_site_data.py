@@ -23,7 +23,7 @@ DOCS = ROOT / "docs"
 # triage (PR #29): resolved records no longer count, 78 flagged cells -> 5 (71 unverified, 2 auto-validated);
 # then the FY2022 Labor-HHS backfill (+400 cells) and 'no figure for this year' (a proposed account before its first figure)
 STATE_COUNTS = {
-    "LHHS": {"value": 1886, "not_funded": 111, "no_printed_total": 7, "missing": 104, "not_collected": 100,
+    "LHHS": {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101, "not_collected": 100,
              "not_enacted": 100, "no_figure": 92},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
             "not_enacted": 30, "no_figure": 0},
@@ -82,7 +82,7 @@ class SiteReadsData(unittest.TestCase):
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] == 2022
                   and o["observation_id"].startswith("OBS-LHHS-")}
         st = [v.get("human_review_status") for v in data["validations"]]
-        self.assertEqual((st.count("pending"), st.count("resolved")), (21, 555))
+        self.assertEqual((st.count("pending"), st.count("resolved")), (13, 563))
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
                          ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",

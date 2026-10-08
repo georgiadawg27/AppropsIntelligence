@@ -79,6 +79,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -98,6 +109,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
          "canonical_account_id": "ACC-HHS-ACF-SSBG",
+         "cell_note": "House proposed Diaper Grants under this heading (not enacted).",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -149,6 +161,65 @@
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 200000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.4502",
+         "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-SSBG",
+         "chamber": "House",
+         "component": "chamber_proposal",
+         "component_kind": "part",
+         "component_label": "Diaper Grants",
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2261",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "H.Rept.117-96",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "485",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Diaper Grants' [Bill] -- Note: House proposed Diaper Grants under this heading (not enacted).",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09252"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09253"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -225,6 +296,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -286,6 +368,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ]
     },
@@ -357,6 +450,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -429,6 +533,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -501,6 +616,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -562,6 +688,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ]
     },
@@ -639,6 +776,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -712,6 +860,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -772,6 +931,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -832,6 +1002,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ]
     },
@@ -903,6 +1084,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -975,6 +1167,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1041,6 +1244,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1101,6 +1315,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ]
     },
@@ -1178,6 +1403,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1250,6 +1486,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1316,6 +1563,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1376,6 +1634,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ]
     },
@@ -1391,6 +1660,17 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
        "missing": false,
        "observations": [],
        "state": "not_enacted"
@@ -1466,6 +1746,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "President's Budget": [
@@ -1532,6 +1823,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -1542,6 +1844,17 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": "chamber_proposal",
+       "component_kind": "part",
+       "component_label": "Diaper Grants",
        "missing": false,
        "observations": [],
        "state": "not_collected"
@@ -1557,6 +1870,12 @@
     "component": null,
     "component_kind": null,
     "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "chamber_proposal",
+    "component_kind": "part",
+    "component_label": "Diaper Grants"
    }
   ],
   "stages": [
@@ -1746,6 +2065,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
     "canonical_account_id": "ACC-HHS-ACF-SSBG",
+    "cell_note": "House proposed Diaper Grants under this heading (not enacted).",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -1797,6 +2117,53 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 200000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.4502",
+    "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-SSBG",
+    "chamber": "House",
+    "component": "chamber_proposal",
+    "component_kind": "part",
+    "component_label": "Diaper Grants",
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2261",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "H.Rept.117-96",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "485",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Diaper Grants' [Bill] -- Note: House proposed Diaper Grants under this heading (not enacted).",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09252"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09253"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 1700000000,

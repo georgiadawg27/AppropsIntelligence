@@ -74,9 +74,73 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-08979"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-09254"
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1057896000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-103",
+         "bill_report_reference_id": "BR-LHHS-FY2022-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.5,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": "OBS-LHHS-2171",
+         "observation_id": "OBS-LHHS-2252",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "809",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Projects' [FY 2022 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09238"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09239"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -90,9 +154,57 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 536407000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.4502",
+         "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2240",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "H.Rept.117-96",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "470",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09213"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09214"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -103,9 +215,63 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 167971000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2022/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2022-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2241",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "470",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [FY 2022 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09215"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09216"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-09217"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -116,9 +282,57 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 893127000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3062",
+         "bill_report_reference_id": "BR-LHHS-FY2022-SENATE",
+         "bill_url": "https://www.congress.gov/117/bills/s3062/BILLS-117s3062is.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "Senate chair's draft explanatory statement for FY2022, released with S. 3062 (introduced 2021-10-25, never reported). sha256 b033ae17fc2e948b... (the file at the link). Text layer; page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2242",
+         "offsetting_collections": 0,
+         "publication_date": "2021-10-18",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2022-SENATE",
+         "source_page": "346",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09218"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09219"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -202,6 +416,64 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1521681000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-1063",
+         "observation_id": "OBS-LHHS-2243",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "375",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending/Community Project Funding' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09220"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09221"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -275,6 +547,64 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-04263"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 726569000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "House",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.5,
+         "document_fiscal_year": 2023,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-1064",
+         "observation_id": "OBS-LHHS-2244",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT403",
+         "source_page": "809",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Projects' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09222"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09223"
           }
          ],
          "verification_status": "unverified"
@@ -440,6 +770,65 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 860181000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": "OBS-LHHS-1066",
+         "observation_id": "OBS-LHHS-2245",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+         "source_page": "403",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending Items' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09224"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09225"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -526,6 +915,64 @@
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 890788000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.118-47",
+         "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-118publ47/pdf/PLAW-118publ47.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-1067",
+         "observation_id": "OBS-LHHS-2246",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "433",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding / Congressionally Directed Spending' [2024 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09226"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09227"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -755,6 +1202,64 @@
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 891997000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-1069",
+         "observation_id": "OBS-LHHS-2247",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "375",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending/Community Project Funding' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09228"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09229"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1069,6 +1574,64 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 871077000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4942",
+         "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s4942rs/pdf/BILLS-118s4942rs.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": "OBS-LHHS-1073",
+         "observation_id": "OBS-LHHS-2248",
+         "offsetting_collections": 0,
+         "publication_date": "2024-08-01",
+         "report_id": "S.Rept.118-207",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT207",
+         "source_page": "433",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding / Congressionally Directed Spending' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09230"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09231"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -1149,6 +1712,64 @@
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 857793000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.119-75",
+         "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-1074",
+         "observation_id": "OBS-LHHS-2249",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "JES_LHHS_P.L.119-75",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "370",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding/Congressionally Directed Spending' [FY 2026 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09232"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09233"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1368,6 +1989,64 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 873748000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2587",
+         "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": "OBS-LHHS-1077",
+         "observation_id": "OBS-LHHS-2250",
+         "offsetting_collections": 0,
+         "publication_date": "2025-08-01",
+         "report_id": "S.Rept.119-55",
+         "report_jes_url": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT55",
+         "source_page": "433",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09234"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09235"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -1461,6 +2140,64 @@
           }
          ],
          "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "congressionally_directed_spending",
+       "component_kind": "contained",
+       "component_label": "Community Project Funding / Congressionally Directed Spending",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 420344000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9260",
+         "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+         "chamber": "House",
+         "component": "congressionally_directed_spending",
+         "component_kind": "contained",
+         "component_label": "Community Project Funding / Congressionally Directed Spending",
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": "OBS-LHHS-1078",
+         "observation_id": "OBS-LHHS-2251",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "H.Rept.119-696",
+         "report_jes_url": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "370",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding/Congressionally Directed Spending' [Committee Recommendation]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09236"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09237"
+          }
+         ],
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -1561,6 +2298,12 @@
     "component": null,
     "component_kind": null,
     "component_label": null
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending"
    }
   ],
   "stages": [
@@ -1580,7 +2323,7 @@
    "display_order": 32,
    "fund_type": "general",
    "historical_identifiers": null,
-   "historical_names": null,
+   "historical_names": "Program Management",
    "notes": null,
    "parent_account_id": null,
    "status": "active",
@@ -1681,22 +2424,166 @@
    ],
    "enacted_through": 2026
   },
-  "historical_names": [],
-  "missing_cells": [
-   [
-    2022,
-    "President's Budget"
-   ],
-   [
-    2022,
-    "House Reported"
-   ],
-   [
-    2022,
-    "Senate Reported"
-   ]
+  "historical_names": [
+   {
+    "approved_date": "2026-10-08",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "confidence": 1.0,
+    "evidence": "HRSA's single program-management line through FY2022: H.Rept. 117-96 p.470 and the FY2022 Senate chair's draft p.346 print 'Program Management' (including community project funding). The FY2023 reports print the same FY2022 money as 'Total, HRSA-Wide Activities and Program Support' 1,213,196 = Program Management 155,300 + Community Projects 1,057,896 (H.Rept. 117-403 p.809). Valid for FY2022 and earlier; from FY2023 'Program Management' is a line inside this account, not its headline. Approved by the owner 2026-10-08.",
+    "former_name": "Program Management",
+    "historical_name_id": "HN-LHHS-0007",
+    "human_reviewed": 1
+   }
   ],
+  "missing_cells": [],
   "observations": [
+   {
+    "amount": 167971000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2022/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2022-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2241",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "470",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [FY 2022 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09215"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09216"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-09217"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 536407000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.4502",
+    "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2240",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "H.Rept.117-96",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "470",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09213"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09214"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 893127000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3062",
+    "bill_report_reference_id": "BR-LHHS-FY2022-SENATE",
+    "bill_url": "https://www.congress.gov/117/bills/s3062/BILLS-117s3062is.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "Senate chair's draft explanatory statement for FY2022, released with S. 3062 (introduced 2021-10-25, never reported). sha256 b033ae17fc2e948b... (the file at the link). Text layer; page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2242",
+    "offsetting_collections": 0,
+    "publication_date": "2021-10-18",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2022-SENATE",
+    "source_page": "346",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Program Management' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09218"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09219"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": 1213196000,
     "amount_type": "budget authority",
@@ -1758,9 +2645,61 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-08979"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-09254"
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1057896000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-103",
+    "bill_report_reference_id": "BR-LHHS-FY2022-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.5,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": "OBS-LHHS-2171",
+    "observation_id": "OBS-LHHS-2252",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "809",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Projects' [FY 2022 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09238"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09239"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 230709000,
@@ -1893,6 +2832,52 @@
     "verification_status": "unverified"
    },
    {
+    "amount": 726569000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "House",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.5,
+    "document_fiscal_year": 2023,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-1064",
+    "observation_id": "OBS-LHHS-2244",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT403",
+    "source_page": "809",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Projects' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09222"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09223"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
     "amount": 1029152000,
     "amount_type": "budget authority",
     "bill_id": "S.4659",
@@ -1954,6 +2939,53 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-04273"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 860181000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-1066",
+    "observation_id": "OBS-LHHS-2245",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
+    "source_page": "403",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending Items' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09224"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09225"
      }
     ],
     "verification_status": "unverified"
@@ -2021,6 +3053,52 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1521681000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": "OBS-LHHS-1063",
+    "observation_id": "OBS-LHHS-2243",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "375",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending/Community Project Funding' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09220"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09221"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 360709000,
@@ -2210,6 +3288,52 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 891997000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-1069",
+    "observation_id": "OBS-LHHS-2247",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "375",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending/Community Project Funding' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09228"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09229"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
     "amount": 1110376000,
     "amount_type": "budget authority",
     "bill_id": "P.L.118-47",
@@ -2278,6 +3402,52 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 890788000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.118-47",
+    "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-118publ47/pdf/PLAW-118publ47.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-1067",
+    "observation_id": "OBS-LHHS-2246",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "433",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding / Congressionally Directed Spending' [2024 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09226"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09227"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 214088000,
@@ -2470,6 +3640,52 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 871077000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4942",
+    "bill_report_reference_id": "BR-LHHS-FY2025-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s4942rs/pdf/BILLS-118s4942rs.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": "OBS-LHHS-1073",
+    "observation_id": "OBS-LHHS-2248",
+    "offsetting_collections": 0,
+    "publication_date": "2024-08-01",
+    "report_id": "S.Rept.118-207",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT207",
+    "source_page": "433",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding / Congressionally Directed Spending' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09230"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09231"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 219588000,
@@ -2704,6 +3920,52 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 873748000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2587",
+    "bill_report_reference_id": "BR-LHHS-FY2026-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-1077",
+    "observation_id": "OBS-LHHS-2250",
+    "offsetting_collections": 0,
+    "publication_date": "2025-08-01",
+    "report_id": "S.Rept.119-55",
+    "report_jes_url": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT55",
+    "source_page": "433",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Congressionally Directed Spending' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09234"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09235"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
     "amount": 1076181000,
     "amount_type": "budget authority",
     "bill_id": "P.L.119-75",
@@ -2766,6 +4028,52 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 857793000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.119-75",
+    "bill_report_reference_id": "BR-LHHS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": "OBS-LHHS-1074",
+    "observation_id": "OBS-LHHS-2249",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "JES_LHHS_P.L.119-75",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "370",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding/Congressionally Directed Spending' [FY 2026 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09232"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09233"
+     }
+    ],
+    "verification_status": "unverified"
    },
    {
     "amount": 70050000,
@@ -2888,21 +4196,55 @@
      }
     ],
     "verification_status": "auto-validated"
+   },
+   {
+    "amount": 420344000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9260",
+    "bill_report_reference_id": "BR-LHHS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-PROGRAM-SUPPORT",
+    "chamber": "House",
+    "component": "congressionally_directed_spending",
+    "component_kind": "contained",
+    "component_label": "Community Project Funding / Congressionally Directed Spending",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-LHHS-1078",
+    "observation_id": "OBS-LHHS-2251",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "H.Rept.119-696",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "370",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Community Project Funding/Congressionally Directed Spending' [Committee Recommendation]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09236"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09237"
+     }
+    ],
+    "verification_status": "unverified"
    }
   ],
   "open_cells": [
-   [
-    2022,
-    "President's Budget"
-   ],
-   [
-    2022,
-    "House Reported"
-   ],
-   [
-    2022,
-    "Senate Reported"
-   ],
    [
     2027,
     "Senate Reported"

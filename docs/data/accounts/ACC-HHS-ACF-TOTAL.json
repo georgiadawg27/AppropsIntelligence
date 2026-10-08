@@ -251,7 +251,8 @@
            "validation_id": "VAL-LHHS-07449"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall is ACC-HHS-ACF-CHILD-SUPPORT's new advance (1,300,000, an advance line of the account, not recorded) + Diaper Grants (200,000), now recorded as an SSBG chamber-proposal line (owner 2026-10-08): with them the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-07837"
@@ -4360,7 +4361,8 @@
       "validation_id": "VAL-LHHS-07449"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall is ACC-HHS-ACF-CHILD-SUPPORT's new advance (1,300,000, an advance line of the account, not recorded) + Diaper Grants (200,000), now recorded as an SSBG chamber-proposal line (owner 2026-10-08): with them the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-07837"

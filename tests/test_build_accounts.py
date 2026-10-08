@@ -106,6 +106,7 @@ class CommittedReference(unittest.TestCase):
             "ACC-NASA-STEM-ENGAGEMENT": ["Education", "STEM Opportunities formerly Education"],
             # approved by the owner with the FY2022 Labor-HHS backfill (2026-10-08)
             "ACC-HHS-HRSA-HEALTH-SYSTEMS": ["Health Care Systems"],
+            "ACC-HHS-HRSA-PROGRAM-SUPPORT": ["Program Management"],          # FY2022 and earlier only
             "ACC-HHS-NIH-NICHD": ["National Institute of Child Health and Human Development"]})
         self.assertNotIn("ACC-NASA-LEO", accts)
         self.assertNotIn("ACC-NASA-EXPLTECH", accts)                 # folded into Space Technology in v24

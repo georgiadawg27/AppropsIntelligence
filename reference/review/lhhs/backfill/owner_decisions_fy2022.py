@@ -41,13 +41,13 @@ TODAY = "2026-10-08"
 REVIEWER = "owner rules (2026-10-08)"
 HRSA_PS, NIH_OD, SSBG = "ACC-HHS-HRSA-PROGRAM-SUPPORT", "ACC-HHS-NIH-OD", "ACC-HHS-ACF-SSBG"
 COMPONENTS = [
-    {"component_id": "congressionally_directed_spending", "label": "Congressionally directed spending",
+    {"component_id": "congressionally_directed_spending", "label": "Community Project Funding / Congressionally Directed Spending",
      "kind": "contained", "description": "community project funding / congressionally directed spending printed as its "
                                          "own line inside the account's figure (already in the headline: never add it again)"},
-    {"component_id": "kids_first", "label": "Gabriella Miller Kids First", "kind": "contained",
+    {"component_id": "kids_first", "label": "Gabriella Miller Kids First Research Act (Common Fund add)", "kind": "contained",
      "description": "the Gabriella Miller Kids First Research Act line printed under the NIH Office of the Director "
                     "(inside the Office of the Director's figure: never add it again)"},
-    {"component_id": "chamber_proposal", "label": "Chamber proposal", "kind": "part",
+    {"component_id": "chamber_proposal", "label": "Diaper Grants", "kind": "part",
      "description": "a one-off line a chamber proposed under the account's heading, not in the account's own line "
                     "(the cell shows it as a note)"},
 ]
