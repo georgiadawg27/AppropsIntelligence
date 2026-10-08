@@ -1172,6 +1172,10 @@ def history(conn, account_id):
         # a law_text match combined across divisions of the law: "Includes $X from Division Y (...) of P.L. ..."
         notes += [(v["observed_result"] or "")[(v["observed_result"] or "").index("Includes $"):] for v in recs
                   if v["rule_applied"] == "law_text" and "Includes $" in (v["observed_result"] or "")]
+        # a resolved cross-document difference the owner asked to show (its resolution ends "Note: ...")
+        notes += [v["resolution"][v["resolution"].index("Note: ") + 6:] for v in recs
+                  if v["rule_applied"] == "cross_document" and v["human_review_status"] == "resolved"
+                  and "Note: " in (v["resolution"] or "")]
         if notes:
             rec["cell_note"] = " ".join(notes)
         obs.append(rec)

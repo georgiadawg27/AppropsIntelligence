@@ -62,6 +62,7 @@ SENATE_TABLES = ["SRC-CRPT-119SRPT55", "SRC-CRPT-118SRPT207", "SRC-CRPT-118SRPT8
                  "SRC-EXPL-LHHS-FY2022-SENATE", "SRC-EXPL-LHHS-FY2021-SENATE", "SRC-CRPT-115SRPT289",
                  "SRC-CRPT-115SRPT150", "SRC-CRPT-114SRPT274"]
 TRIAGE_REVIEWER = "triage rules"
+OWNER_RULE = "owner rules (2026-10-08)"
 
 # ---- the years ---------------------------------------------------------------------------------------------
 YEARS = {
@@ -77,6 +78,60 @@ YEARS = {
         # where the stage's table has no readable row for a fact, the other FY+1 committee table's column
         "fallback": {"Enacted": ("MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550", "2022 appropriation",
                                  "SRC-EXPL-LHHS-FY2023-SENATE")},
+        # the owner's approved former names (2026-10-08): written to Historical Name; 'printed' are the table labels
+        "historical_names": [
+            {"canonical_account_id": "ACC-HHS-HRSA-HEALTH-SYSTEMS", "former_name": "Health Care Systems",
+             "printed": ["Subtotal, Health Care Systems Bureau, appropriation"],
+             "evidence": "H.Rept. 117-96 p.470 and the FY2022 Senate chair's draft explanatory statement p.345 print the "
+                         "group as 'Health Care Systems' with 'Subtotal, Health Care Systems Bureau, appropriation' "
+                         "(Organ Transplantation, Cord Blood, C.W. Bill Young, 340B, Poison Control, Hansen's Disease); "
+                         "the FY2023+ tables print the same programs as 'Health Systems'. Approved by the owner 2026-10-08."},
+            {"canonical_account_id": "ACC-HHS-NIH-NICHD",
+             "former_name": "National Institute of Child Health and Human Development",
+             "printed": ["National Institute of Child Health and Human Development (NICHD)"],
+             "evidence": "H.Rept. 117-96 p.476 and the FY2022 Senate chair's draft explanatory statement p.348 print "
+                         "'National Institute of Child Health and Human Development (NICHD)'; later tables print 'Eunice "
+                         "Kennedy Shriver National Institute of Child Health and Human Development'. Approved by the owner "
+                         "2026-10-08."},
+        ],
+        # a short agency sum (owner's rule 3, 2026-10-08): the printed lines that make up the shortfall. 'inside': money
+        # already inside an existing account (an unrecorded line of it); 'other_law': another law's line; 'outside':
+        # money in none of our accounts -- the check stays pending and the owner decides (the proposal)
+        "sum_items": [
+            {"total": "ACC-HHS-ACF-TOTAL", "label": r"new advance, 1st quarter, fy ####", "path": "Child Support Enforcement",
+             "kind": "inside", "why": "ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its "
+             "headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not "
+             "recorded (follow-up)"},
+            {"total": "ACC-HHS-CDC-TOTAL", "label": r"cr funding - p\.l\. 117-43 vessel sanitation program.*",
+             "kind": "other_law", "why": "another law's line (the P.L. 117-43 continuing resolution, Vessel Sanitation "
+             "Program, sec. 138) printed under Environmental Health and counted in the CDC total"},
+            {"total": "ACC-HHS-HRSA-TOTAL", "label": r"program management", "kind": "outside",
+             "proposal": "money outside our accounts: HRSA's FY2022 'Program Management' heading -- proposed Historical "
+                         "Name 'Program Management' for ACC-HHS-HRSA-PROGRAM-SUPPORT (the later tables' 'Program Support'); "
+                         "the owner decides"},
+            {"total": "ACC-HHS-NIH-TOTAL", "label": r"gabriella miller kids first research act.*", "kind": "outside",
+             "proposal": "money outside our accounts: printed under the NIH Office of the Director, but our FY2022 "
+                         "ACC-HHS-NIH-OD figure is the 'Office of the Director' line alone, while FY2023-FY2026 record "
+                         "'Subtotal, Office of the Director', which includes this line -- proposed: derive FY2022 OD as "
+                         "Office of the Director + this line (the later scope); the owner decides"},
+            {"total": "ACC-HHS-ACF-TOTAL", "label": r"diaper grants", "kind": "outside",
+             "proposal": "money outside our accounts: printed under Social Services Block Grant (House bill only), but "
+                         "our ACC-HHS-ACF-SSBG figure is the SSBG line alone -- proposed: a new account (Diaper Grants), "
+                         "or count it in SSBG for FY2022 House; the owner decides"},
+        ],
+        # the Title II total counts the CURES Act lines inside NIH's total (it prints no 'less' line for them)
+        "title_counts_cures": True,
+        # a request column read from another request baseline (owner's rule 5): keep the House report's column
+        "request_baseline": {
+            "stage": "President's Budget", "other": "SRC-EXPL-LHHS-FY2022-SENATE", "difference": -612_000,
+            "reason": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the "
+                      "budget appendix applies to Payments to States for Child Support Enforcement and Family Support "
+                      "Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request "
+                      "column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), "
+                      "612 thousand. Kept the House report's request column (owner's rule, 2026-10-08).",
+            "note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the "
+                    "budget's permanent reduction (the House report prints 9,388 after it).",
+        },
         # rows the label rule can't reach, read by hand: (stage, account) -> (cleaned label, why)
         "proposals": {
             "national institute of child health and human development": "Historical Name 'National Institute of Child Health and "
@@ -221,6 +276,20 @@ def main(argv=None):
         n, bad = DH.check_rule(data["observations"], aid)
         assert n and not bad, f"{aid}: derived-headline rule fails on {bad} (of {n} cells)"
         print(f"{aid}: the derived-headline rule holds on all {n} cells that print the headline and both lines")
+    later_cols = []
+    for path in sorted(glob.glob(str(ROOT / "extractions" / "*.title-ii.json"))):
+        pkg = Path(path).name.split(".")[0]
+        if pkg in {st[2] for st in cfg["stages"]}:
+            continue
+        try:
+            _, secs = load_extraction(pkg)
+        except (KeyError, ValueError):
+            continue
+        later_cols += [(pkg, col, secs) for col in secs]
+    for aid, (ag, _, _) in DH.SUM_RULES.items():
+        n, bad = DH.check_sum_rule([(f"{p}:{c}", rows_for(secs, c, ag)) for p, c, secs in later_cols], aid)
+        assert n and not bad, f"{aid}: derived-headline sum rule fails on {bad} (of {n} printed subtotals)"
+        print(f"{aid}: the derived-headline sum rule holds on all {n} printed subtotals")
 
     # 1. facts and their labels (printed labels, former names), with the chamber tables that printed them
     facts = collections.defaultdict(lambda: {"labels": collections.Counter(), "rank": []})
@@ -235,10 +304,11 @@ def main(argv=None):
         for chamber, tables in (("House", HOUSE_TABLES), ("Senate", SENATE_TABLES)):
             if src in tables:
                 facts[key]["rank"].append((chamber, tables.index(src), lab))
-    for h in data.get("historical_names_tab", []):
+    for h in data.get("historical_names_tab", []) + cfg.get("historical_names", []):
         aid = h.get("canonical_account_id")
         if aid in acct and h.get("former_name"):
-            facts[(aid, "budget authority", "")]["labels"][clean(h["former_name"])] += 1
+            for lab in [h["former_name"]] + h.get("printed", []):
+                facts[(aid, "budget authority", "")]["labels"][clean(lab)] += 1
 
     extractions = {}
 
@@ -288,6 +358,7 @@ def main(argv=None):
     new_obs, new_val, report = [], [], []
     by_stage = {}
     ext_by_src = {}
+    explained = []                                       # (stage, total, items) of the short sums
     for stage, chamber, pkg, col, src in cfg["stages"]:
         x, sections = ext(pkg)
         ext_by_src[src] = x["observations"]
@@ -325,11 +396,32 @@ def main(argv=None):
             ka = (aid, *DH.RULES[aid][0])
             pages = sorted({str(found[(aid, *k)]["source_page"]) for k in DH.RULES[aid]})
             found[(aid, "budget authority", "")] = dict(found[ka], amount=d[0], source_page="-".join(pages),
-                                                       account_name_as_written="", _records=[])
+                                                       account_name_as_written="", _records=[], _row=found[ka].get("_row", found[ka]))
             derived[(aid, "budget authority", "")] = d
             if ka in origin:
                 origin[(aid, "budget authority", "")] = origin[ka]
             report.append([stage, aid, "budget authority", "", "derived", d[0], "-".join(pages), d[1]])
+        # a headline printed only as its lines (derived_headlines.SUM_RULES): their sum
+        for aid, (ag, heading, _) in DH.SUM_RULES.items():
+            key = (aid, "budget authority", "")
+            if aid not in acct or key in found or col not in sections:
+                continue
+            parts = DH.lines_under(rows_for(sections, col, ag), heading)
+            if not parts:
+                continue
+            total = sum(f["amount"] or 0 for f in parts)
+            pages = sorted({str(f["source_page"]) for f in parts})
+            note = ("derived, not a printed line: the sum of the lines printed under '" + heading + "': "
+                    + " + ".join(f"'{clean_label(f)}' {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})" for f in parts)
+                    + f" = {total // 1000:,} (thousands); the later tables print '{heading.split(' and ')[0]}' subtotals "
+                    "as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)")
+            arith = ("headline = the sum of the lines printed under the heading: "
+                     + " + ".join(f"{(f['amount'] or 0) // 1000:,}" for f in parts) + f" = {total // 1000:,} (thousands)",
+                     f"{total // 1000:,} as recorded")
+            found[key] = dict(parts[0], amount=total, source_page="-".join(pages), account_name_as_written="", _records=[],
+                              _parts=parts, _row=parts[0])
+            derived[key] = (total, note, arith)
+            report.append([stage, aid, "budget authority", "", "derived", total, "-".join(pages), note])
         by_key = {}
         for key in sorted(found, key=lambda k: (k[0], k[2] != "", k[1] != "budget authority", k[1], k[2])):
             aid, amount_type, component = key
@@ -366,7 +458,7 @@ def main(argv=None):
         by_stage[stage] = (by_key, found)
         other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg)
         # sum checks
-        sum_checks(acct, by_key, found, new_val)
+        sum_checks(acct, by_key, found, new_val, sections=sections, col=col, cfg=cfg, explained=explained, stage=stage)
 
     # 3. cross-document
     cross = []
@@ -384,10 +476,14 @@ def main(argv=None):
             h = hits[0]
             ok = (h["amount"] or 0) == o["amount"]
             cross.append([stage, *key, o["observation_id"], o["amount"], h["amount"] or 0, h["source_page"], "agree" if ok else "differ"])
+            rb = cfg.get("request_baseline") or {}
+            base = (not ok and rb.get("stage") == stage and rb.get("other") == src
+                    and o["amount"] - (h["amount"] or 0) == rb.get("difference"))
             new_val.append({"observation_id": o["observation_id"], "rule_applied": "cross_document",
                             "expected_result": f"{src} p.{h['source_page']} prints {(h['amount'] or 0) // 1000:,} "
                                                f"({h.get('extraction_method') or 'extracted'}, '{h['account_name_as_written'].strip()}' [{col}])",
-                            "observed_result": f"{o['amount'] // 1000:,} as recorded", "result": "pass" if ok else "flag"})
+                            "observed_result": f"{o['amount'] // 1000:,} as recorded", "result": "pass" if ok else "flag"}
+                           | ({"_resolve": f"{rb['reason']} Note: {rb['note']}"} if base else {}))
 
     # 4. IDs; review status: routine notes resolved by the triage's standard reasons; the rest pending
     val_ids = next_id("VAL-LHHS-", data["validations"], "validation_id", 5)
@@ -410,7 +506,9 @@ def main(argv=None):
         if fam is None and (v["expected_result"] or "").startswith("memo breakdown"):
             fam, fmt = T.memo_family(v, o, ext_by_src)
         disp, reason = T.FAMILIES.get(fam, ("B", ""))
-        if disp == "A":
+        if v.get("_resolve"):                            # the owner's rules 3 and 5 (2026-10-08)
+            v.update({"human_review_status": "resolved", "reviewer": OWNER_RULE, "resolution": v["_resolve"]})
+        elif disp == "A":
             v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER, "resolution": reason.format(**fmt)})
         else:
             v["human_review_status"] = "pending"
@@ -443,6 +541,20 @@ def main(argv=None):
                     unmatched[k] = {"agency_section": ag, "heading": k[1], "path": f["account_path"], "figures": [],
                                     "proposal": propose(f, facts, cfg)}
                 unmatched[k]["figures"].append(f"{stage} {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})")
+
+    # a line whose money is outside our accounts (a short sum's 'outside' item) is an unmatched heading, whatever
+    # later tables print
+    for st, tot_id, short, items, ok in explained:
+        for a_, kind, why in items:
+            if kind != "outside":
+                continue
+            head, rest = why.split(" (p.", 1)
+            k = (AGENCY_KEY.get(acct[tot_id]["agency"]), head.strip("'"))
+            u = unmatched.setdefault(k, {"agency_section": k[0], "heading": k[1], "path": "", "figures": [], "proposal": ""})
+            u["proposal"] = rest.split("): ", 1)[1]
+            fig = f"{st} {a_ // 1000:,} (p.{rest.split(')', 1)[0]})"
+            if fig not in u["figures"]:
+                u["figures"].append(fig)
 
     # ---- report
     stage_counts = collections.Counter(o["stage"] for o in new_obs)
@@ -490,6 +602,14 @@ def main(argv=None):
                    "enactment_date": r.get("enactment_date", ""), "funding_type": r.get("funding_type", ""),
                    "draft": r["draft"]}
             data["bill_report_refs"].append(row)
+        hn_ids = next_id("HN-LHHS-", data["historical_names_tab"], "historical_name_id", 4)
+        for h in cfg.get("historical_names", []):
+            if any(x["canonical_account_id"] == h["canonical_account_id"] and x["former_name"] == h["former_name"]
+                   for x in data["historical_names_tab"]):
+                continue
+            data["historical_names_tab"].append({"historical_name_id": next(hn_ids), "canonical_account_id": h["canonical_account_id"],
+                                                 "former_name": h["former_name"], "evidence": h["evidence"],
+                                                 "approved_date": TODAY, "confidence": 1.0, "human_reviewed": "TRUE"})
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
@@ -574,9 +694,13 @@ def other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg):
         pending, block = [], []
 
 
-def sum_checks(acct, by_key, found, new_val):
+def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, explained=None, stage=None):
     """The agency totals = their member accounts; the Title II total = agency totals + department-wide lines - CURES
-    (as build_rows.py)."""
+    (as build_rows.py). A short sum is explained, line by line, by the printed lines that make up the difference
+    (explain_shortfall): resolved when they add up to it exactly and each one's money is inside an existing account
+    (or is another law's line); otherwise it stays pending, naming them."""
+    cfg = cfg or {}
+
     def amt(aid, component=""):
         o = by_key.get((aid, "budget authority", component))
         return o["amount"] if o else None
@@ -595,6 +719,58 @@ def sum_checks(acct, by_key, found, new_val):
                         "expected_result": exp,
                         "observed_result": f"{want // 1000:,} as printed ('{found[(tot_id, 'budget authority', '')]['account_name_as_written'].strip()}')",
                         "result": "pass" if got == want else "flag"})
+        return want - got
+
+    def explain(tot_id, short, items):
+        """Write the explanation onto the last record: resolved (_resolve) or pending, naming the lines."""
+        v = new_val[-1]
+        got = sum(i[0] for i in items)
+        text = "; ".join(f"{'+' if a >= 0 else '-'}{abs(a) // 1000:,} {why}" for a, kind, why in items)
+        outside = [why for a, kind, why in items if kind == "outside"]
+        if items and got == short and not outside:
+            v["_resolve"] = (f"The shortfall {short // 1000:,} (thousands) is exactly: {text}. Every other line of the "
+                             "section is inside an account: with these the sum equals the printed total.")
+        else:
+            v["expected_result"] += (f"; shortfall {short // 1000:,} (thousands)"
+                                     + (f" = {text}" if items and got == short else
+                                        f"; explained {got // 1000:,}: {text or 'none'}; unexplained {(short - got) // 1000:,}")
+                                     + ("; outside our accounts -- the owner decides" if outside else ""))
+        if explained is not None:
+            explained.append((stage, tot_id, short, items, got == short and not outside))
+
+    def section_items(tot_id, x_, mem):
+        """The printed lines of the agency's section that make up a short sum."""
+        rows = rows_for(sections, col, AGENCY_KEY.get(x_["agency"], "TAIL")) if sections and col in sections else []
+        nodes = {id(f) for f in rows}
+        everywhere = {id(f) for f in rows_for(sections, col, "TAIL")} if sections and col in sections else set()
+        row_of = lambda f: id(f.get("_row", f))
+        items = []
+        for m in mem:                                     # a member printed in another agency's section
+            f = found.get((m, "budget authority", ""))
+            # (a member read from this table but outside this section -- unless lines of its name in this section
+            # add up to it: the CURES Act lines printed under each NIH institute)
+            own = clean(acct[m]["canonical_name"])
+            if f is not None and row_of(f) in everywhere and row_of(f) not in nodes and amt(m) is not None \
+                    and sum(r["amount"] or 0 for r in rows if r["_clean"].startswith(own) and not r.get("is_memo")) != amt(m):
+                items.append((-amt(m), "inside", f"{m} (an existing account printed in another agency's section of this "
+                                                  f"table, p.{f['source_page']}, and counted in that agency's total)"))
+        for key, f in found.items():                      # another agency's account printed in this section
+            a_ = acct.get(key[0], {})
+            if key[1:] == ("budget authority", "") and row_of(f) in nodes and not a_.get("total_scope") \
+                    and a_.get("agency") != x_["agency"]:
+                items.append((by_key[key]["amount"], "inside", f"{key[0]} (an existing account of {a_['agency']} "
+                                                              f"printed in this section, p.{f['source_page']})"))
+        for it in cfg.get("sum_items", []):
+            if it["total"] != tot_id:
+                continue
+            for f in rows:
+                if f.get("is_memo") or not re.fullmatch(it["label"], f["_clean"]) or it.get("path", "") not in f["account_path"] \
+                        or not f["amount"]:
+                    continue
+                why = it.get("why") or it["proposal"]
+                items.append((f["amount"] or 0, it["kind"], f"'{clean_label(f)}' (p.{f['source_page']}): {why}"))
+        return items
+
     for tot_id, x_ in acct.items():
         if x_.get("total_scope") != "agency" or (tot_id, "budget authority", "") not in by_key:
             continue
@@ -610,9 +786,11 @@ def sum_checks(acct, by_key, found, new_val):
                 vals.append((m, v))
         what = (f"the NIH institutes and other NIH accounts ({len(vals)})" if x_["agency"] == "National Institutes of Health"
                 else f"the {len(vals)} {x_['agency']} accounts")
-        add(tot_id, vals, [m for m in lack if m not in printed], what)
+        short = add(tot_id, vals, [m for m in lack if m not in printed], what)
         if any(m in printed for m in lack):
             new_val[-1]["result"] = "flag"
+        if new_val[-1]["result"] == "flag":
+            explain(tot_id, short, section_items(tot_id, x_, mem))
     title_id = next((aid for aid, x_ in acct.items() if x_.get("total_scope") == "title"), None)
     if title_id and (title_id, "budget authority", "") in by_key:
         parts = [(aid, amt(aid)) for aid, x_ in acct.items() if x_.get("total_scope") == "agency" and amt(aid) is not None]
@@ -624,8 +802,12 @@ def sum_checks(acct, by_key, found, new_val):
         cures = amt("ACC-HHS-NIH-CURES")
         if cures:
             parts.append(("minus ACC-HHS-NIH-CURES", -cures))
-        add(title_id, parts, [], "the agency totals + the department-wide lines - the CURES Act line")
-
+        short = add(title_id, parts, [], "the agency totals + the department-wide lines - the CURES Act line")
+        if new_val[-1]["result"] == "flag":
+            items = ([(cures, "inside", "ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside "
+                                       "the NIH total (the table prints no line taking them out)")]
+                     if cures and cfg.get("title_counts_cures") else [])
+            explain(title_id, short, items)
 
 if __name__ == "__main__":
     main()

@@ -119,6 +119,8 @@ def division_headings(path, letter):
                          r"(?=<appropriations-(?:major|intermediate|small)\b|</title>|</division>|$)", body, re.S):
         level, hdr = m.group(1), " ".join(text(m.group(2)).split())
         para = " ".join(text(m.group(3)).split())
+        # each <text> paragraph's own first amount (a heading may carry several appropriating paragraphs)
+        leads = [first_amount(" ".join(text(t).split())) for t in re.findall(r"<text\b[^>]*>(.*?)</text>", m.group(3), re.S)]
         title = ([t for p, t in titles if p <= m.start()] or [""])[-1]
         if level == "major":
             major, inter = hdr, ""
@@ -130,7 +132,7 @@ def division_headings(path, letter):
             if prev["amount"] is None:
                 prev["amount"] = first_amount(para)
             continue
-        out.append({"heading": hdr, "level": level, "amount": first_amount(para),
+        out.append({"heading": hdr, "level": level, "amount": first_amount(para), "leads": [a for a in leads if a],
                     "paragraph": para, "context": " | ".join(x for x in (title, major, inter) if x)})
     return out
 
@@ -173,6 +175,9 @@ def reason(o, h, others):
     if any(ours + x["amount"] == law for x in rel):
         x = next(x for x in rel if ours + x["amount"] == law)
         return f"the law's first amount is the headline plus {x['component'] or x['amount_type']} ({x['observation_id']})"
+    leads = h.get("leads") or []
+    if len(leads) > 1 and sum(leads) == ours:
+        return None                                       # a match: the sum of the heading's paragraphs (reason_match)
     import itertools
     rest = [x for x, lim in amounts(h["paragraph"]) if x != law][:12]
     for k in (1, 2):
@@ -269,6 +274,9 @@ def main(argv=None):
                         res, why = "pass", ""
                     else:
                         res, why = "info", reason(o, h, obs_list)
+                        if why is None:                  # the heading's paragraphs sum to the figure
+                            res, why = "pass", ("match (the sum of the heading's " + str(len(h["leads"])) + " paragraphs): "
+                                                + " + ".join(f"${a:,}" for a in h["leads"]) + f" = {o['amount']:,} as recorded")
                     extra, note_id = other_law.get(o["observation_id"], ([], ""))
                     if res == "info" and extra and h["amount"] is not None and h["amount"] + sum(extra) == o["amount"]:
                         why = ("the headline is the first amount plus " + " + ".join(f"${x:,}" for x in extra)

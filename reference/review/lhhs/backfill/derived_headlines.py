@@ -5,6 +5,9 @@ an account the document funds. Where it can't be derived exactly, the build stop
 
     Grants to States for Medicaid: headline = 'appropriated in this bill' - 'new advance, 1st quarter, FY<N+1>'
         (holds on every FY2024-FY2027 cell that prints all three: check_rule)
+    CDC-Wide Activities and Program Support: headline = the sum of the budget-authority lines printed under the
+        heading (the later tables' 'Subtotal, CDC-Wide Activities'; a Prevention and Public Health Fund line is a
+        transfer memo, not in it -- check_sum_rule)
 
 A derived observation has extraction_method 'derived', the document and page(s) of its two lines, a note naming
 them, and a structural (arithmetic) validation record.
@@ -24,7 +27,7 @@ def check_rule(observations, aid):
     cells = {}
     for o in observations:
         if o["canonical_account_id"] == aid and o["fiscal_year"] >= FIRST_PRINTED_FY[aid] \
-                and o.get("verification_status") != "superseded":
+                and o.get("verification_status") != "superseded" and o.get("extraction_method") != "derived":
             cells.setdefault((o["fiscal_year"], o["stage"]), {})[(o["amount_type"], o["component"] or "")] = o["amount"]
     checked, bad = 0, []
     for k, v in sorted(cells.items()):
@@ -52,3 +55,49 @@ def derive(aid, lines, label_of, page_of):
     arith = (f"headline = appropriated in this bill - the new advance for the next fiscal year: {a // 1000:,} - "
              f"{b // 1000:,} = {amount // 1000:,} (thousands)", f"{amount // 1000:,} as recorded")
     return amount, note, arith
+
+
+# headline = the sum of the lines printed under a heading: account -> (agency section, heading in the row's path,
+# the later tables' subtotal label)
+SUM_RULES = {
+    "ACC-HHS-CDC-PROGRAM-SUPPORT": ("CDC", "CDC-Wide Activities and Program Support", r"subtotal, cdc.wide activities$"),
+}
+
+
+def lines_under(rows, heading):
+    """The budget-authority lines printed under the heading: from its first row to the next subtotal, not memo
+    lines (a row's printed path can lose the heading, so position decides, not the path)."""
+    norm = lambda t: t.replace("\u2013", "-").lower()
+    start = next((i for i, f in enumerate(rows) if norm(heading) in norm(f["account_path"])), None)
+    if start is None:
+        return []
+    out = []
+    for f in rows[start:]:
+        label = " ".join(norm(f["account_name_as_written"]).split()).rstrip(" .")
+        if f["is_rollup"] or label.startswith(("subtotal", "total")):
+            # a nested subtotal ('Subtotal, Public Health Infrastructure and Capacity') stays inside the heading;
+            # the heading's own subtotal (unlabeled, or 'Subtotal, CDC-Wide Activities') or a total ends it
+            if label in ("subtotal", "subtotal (including transfers)") or label.startswith("total") \
+                    or norm(heading).split(" and ")[0].lower() in label:
+                break
+            continue
+        if not f.get("is_memo"):
+            out.append(f)
+    return out
+
+
+def check_sum_rule(columns, aid):
+    """columns: [(name, rows of the agency section)] from the later tables. Where the subtotal is printed, the lines
+    printed under the heading before it (lines_under) sum to it exactly. Returns (checked, bad)."""
+    import re
+    _, _, label = SUM_RULES[aid]
+    checked, bad = 0, []
+    for name, rows in columns:
+        for i, f in enumerate(rows):
+            if not re.match(label, " ".join(f["account_name_as_written"].lower().split()).replace("\u2013", "-")):
+                continue
+            parts = lines_under(rows[:i], SUM_RULES[aid][1])
+            checked += 1
+            if sum(g["amount"] or 0 for g in parts) != (f["amount"] or 0):
+                bad.append((name, f["amount"], [(g["account_name_as_written"], g["amount"]) for g in parts]))
+    return checked, bad
