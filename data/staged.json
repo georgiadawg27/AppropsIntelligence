@@ -912,7 +912,7 @@
    "historical_identifiers": "",
    "fund_type": "general",
    "subcommittee": "LHHS",
-   "notes": "A general-provision line printed only for FY2026 Enacted (the JES and H.Rept. 119-696 p.392, 2,000; '---' in the FY2027 columns). The provision of P.L. 119-75 it reflects is not identified here -- the Title II general provisions carry no section naming title XVIII with that figure; to be confirmed. Vision read H.Rept. 119-696's label as 'mitation ...' (the page image prints 'Limitation ...').",
+   "notes": "A general-provision line printed only for FY2026 Enacted (the JES and H.Rept. 119-696 p.392, 2,000; '---' in the FY2027 columns). The provision of P.L. 119-75 it reflects is not identified here -- the Title II general provisions carry no section naming title XVIII with that figure; to be confirmed. Vision read H.Rept. 119-696's label as 'mitation ...' (the page image prints 'Limitation ...'). The FY2026 line is P.L. 119-75 Division B sec. 241 (PDF p.120, 140 Stat. 293): CMS shall not apply the distance requirements of SSA sec. 1820(c)(2)(B)(i)(I) to certain critical access hospitals -- a title XVIII provision the FY2026 explanatory statement lists as 'a new provision related to title XVIII of the Social Security Act' (p.245) and its table scores at 2,000 (p.296). Not in the FY2021 or FY2022 bills, Budget Appendix language or laws (searched for '1820(c)(2)(B)' and 'distance requirement'). Its confirmed absences, which rested on tables' silence, were retired 2026-10-08 (owner).",
    "title": "Title II",
    "display_order": 24,
    "total_scope": "",
@@ -73628,6 +73628,111 @@
    "verification_status": "unverified",
    "component": "",
    "headline_observation_id": ""
+  },
+  {
+   "observation_id": "OBS-LHHS-2662",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "fiscal_year": 2022,
+   "stage": "Senate Reported",
+   "chamber": "Senate",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 0,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-BILLS-117S3062IS",
+   "source_page": "110",
+   "source_table_or_section": "Title II, Office of the Secretary, 'OFFICE OF THE NATIONAL COORDINATOR FOR HEALTH INFORMATION TECHNOLOGY' -- '$86,614,000 shall be from amounts made available under section 241 of the PHS Act': no new budget authority [bill text]",
+   "extraction_method": "text-extracted",
+   "confidence": 0.95,
+   "verification_status": "unverified",
+   "component": "",
+   "headline_observation_id": ""
+  },
+  {
+   "observation_id": "OBS-LHHS-2663",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "fiscal_year": 2022,
+   "stage": "Senate Reported",
+   "chamber": "Senate",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 86614000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-BILLS-117S3062IS",
+   "source_page": "110",
+   "source_table_or_section": "Title II, Office of the Secretary, 'OFFICE OF THE NATIONAL COORDINATOR FOR HEALTH INFORMATION TECHNOLOGY' -- '$86,614,000 shall be from amounts made available under section 241 of the PHS Act' (the PHS evaluation set-aside) [bill text]",
+   "extraction_method": "text-extracted",
+   "confidence": 0.95,
+   "verification_status": "auto-validated",
+   "component": "program_level",
+   "headline_observation_id": "OBS-LHHS-2662"
+  },
+  {
+   "observation_id": "OBS-LHHS-2664",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "fiscal_year": 2022,
+   "stage": "House Reported",
+   "chamber": "House",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 86614000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-CRPT-117HRPT96",
+   "source_page": "493",
+   "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Evaluation Tap Funding' under 'Office of the National Coordinator for Health Information Technology' [Bill]",
+   "extraction_method": "AI-extracted",
+   "confidence": 0.95,
+   "verification_status": "auto-validated",
+   "component": "program_level",
+   "headline_observation_id": "OBS-LHHS-1920"
+  },
+  {
+   "observation_id": "OBS-LHHS-2665",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "fiscal_year": 2022,
+   "stage": "President's Budget",
+   "chamber": "N/A",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 86614000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-CRPT-117HRPT96",
+   "source_page": "493",
+   "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Evaluation Tap Funding' under 'Office of the National Coordinator for Health Information Technology' [FY 2022 Request]",
+   "extraction_method": "AI-extracted",
+   "confidence": 0.95,
+   "verification_status": "auto-validated",
+   "component": "program_level",
+   "headline_observation_id": "OBS-LHHS-2017"
+  },
+  {
+   "observation_id": "OBS-LHHS-2666",
+   "canonical_account_id": "ACC-HHS-OS-ONC",
+   "fiscal_year": 2022,
+   "stage": "Enacted",
+   "chamber": "N/A",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 64238000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-CRPT-117HRPT403",
+   "source_page": "834",
+   "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Evaluation Tap Funding' under 'Information Technology' (the Office of the National Coordinator) [FY 2022 Enacted]",
+   "extraction_method": "AI-extracted",
+   "confidence": 0.95,
+   "verification_status": "auto-validated",
+   "component": "program_level",
+   "headline_observation_id": "OBS-LHHS-2211"
   }
  ],
  "source_docs": [
@@ -74215,7 +74320,7 @@
    "publication_date": "2020-07-15",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "46-125",
    "also_covers": "",
    "notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74229,7 +74334,7 @@
    "publication_date": "2020-11-10",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "49-123",
    "also_covers": "",
    "notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74243,7 +74348,7 @@
    "publication_date": "2021-07-19",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "46-133",
    "also_covers": "",
    "notes": "H.R. 4502 as reported (BILLS-117hr4502rh): the FY2022 House Labor-HHS bill (H.Rept. 117-96). sha256 2338d7b8862f234f... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74257,7 +74362,7 @@
    "publication_date": "2021-10-25",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "54-137",
    "also_covers": "",
    "notes": "S. 3062 as introduced (BILLS-117s3062is): the FY2022 Senate chair's draft Labor-HHS bill (SRC-EXPL-LHHS-FY2022-SENATE), introduced 2021-10-25, never reported. sha256 6409256665fd4f6c... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74271,7 +74376,7 @@
    "publication_date": "2020-02-10",
    "stage": "President's Budget",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "435-508",
    "also_covers": "",
    "notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74285,7 +74390,7 @@
    "publication_date": "2021-05-28",
    "stage": "President's Budget",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "437-510",
    "also_covers": "",
    "notes": "Budget of the U.S. Government, FY2022, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 20b539e8ee140736... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74299,7 +74404,7 @@
    "publication_date": "2020-12-27",
    "stage": "Enacted",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "367-447",
    "also_covers": "",
    "notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers."
   },
@@ -74313,7 +74418,7 @@
    "publication_date": "2022-03-15",
    "stage": "Enacted",
    "retrieval_timestamp": "2026-10-08",
-   "source_page": "",
+   "source_page": "373-453",
    "also_covers": "",
    "notes": "Consolidated Appropriations Act, 2022; Division H (Labor-HHS) is PDF pp. 373-453. sha256 e2c47b8c6d20fb65... (the file at the link). Page citations are PDF page numbers."
   }
@@ -198552,6 +198657,61 @@
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-11054",
+   "observation_id": "OBS-LHHS-2662",
+   "rule_applied": "source_text",
+   "expected_result": "S. 3062 (introduced) p.110: ONC's paragraph appropriates no new budget authority ('$86,614,000 shall be from amounts made available under section 241 of the PHS Act')",
+   "observed_result": "0 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-11055",
+   "observation_id": "OBS-LHHS-2663",
+   "rule_applied": "cross_document",
+   "expected_result": "SRC-EXPL-LHHS-FY2022-SENATE p.359 prints 'Evaluation Tap Funding' (86,614) under ONC, ONC itself '---' [Committee recommendation]",
+   "observed_result": "86,614,000 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-11056",
+   "observation_id": "OBS-LHHS-2664",
+   "rule_applied": "cross_document",
+   "expected_result": "SRC-BILLS-117HR4502RH p.103: '$86,614,000 shall be available from amounts available under section 241 of the PHS Act'",
+   "observed_result": "86,614,000 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-11057",
+   "observation_id": "OBS-LHHS-2665",
+   "rule_applied": "cross_document",
+   "expected_result": "SRC-EXPL-LHHS-FY2022-SENATE p.359 prints 'Evaluation Tap Funding' (86,614) [Budget estimate]",
+   "observed_result": "86,614,000 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-11058",
+   "observation_id": "OBS-LHHS-2666",
+   "rule_applied": "law_text",
+   "expected_result": "P.L. 117-103 div. H, 'OFFICE OF THE NATIONAL COORDINATOR FOR HEALTH INFORMATION TECHNOLOGY': '$64,238,000 shall be from amounts made available under section 241 of the PHS Act' (p.416)",
+   "observed_result": "64,238,000 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
   }
  ],
  "relationships": [
@@ -202202,83 +202362,6 @@
    "confirmed_date": "2026-09-28"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0012",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2024,
-   "stage": "Enacted",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT207",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2024 Enacted.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0013",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2025,
-   "stage": "President's Budget",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT207",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 President's Budget.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0014",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2025,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT207",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 Senate Reported.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0015",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2023,
-   "stage": "Enacted",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT84",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2023 Enacted.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0016",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2024,
-   "stage": "President's Budget",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT84",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 President's Budget.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0017",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2024,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-118SRPT84",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 Senate Reported.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0018",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2026,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-CRPT-119SRPT55",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.119-55 (whole text layer searched for /Title XVIII/, the Title II table pp. 426-442; 450 and the bill-level sections after the grand total included) for FY2026 Senate Reported.",
-   "confirmed_date": "2026-09-28"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0019",
    "canonical_account_id": "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION",
    "fiscal_year": 2026,
@@ -202411,17 +202494,6 @@
    "confirmed_date": "2026-10-06"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0036",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2023,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
-   "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Title XVIII/; the Title II table pp. 399-419 and the table's end p.437 included).",
-   "confirmed_date": "2026-10-06"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0037",
    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
    "fiscal_year": 2023,
@@ -202463,17 +202535,6 @@
    "component": "",
    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
    "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Adoption Incentives (rescission)' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Adoption Incentives/) provides none either.",
-   "confirmed_date": "2026-10-08"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0041",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2024,
-   "stage": "House Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
-   "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Limitation for Title XVIII of the Social Security Act' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Title XVIII|1834\\(l\\)/) provides none either.",
    "confirmed_date": "2026-10-08"
   },
   {
@@ -202521,17 +202582,6 @@
    "confirmed_date": "2026-10-08"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0046",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2021,
-   "stage": "House Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BILLS-116HR7614RH",
-   "evidence": "H.R. 7614 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0047",
    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
    "fiscal_year": 2021,
@@ -202573,17 +202623,6 @@
    "component": "",
    "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
    "evidence": "the Senate chair's draft bill, FY2021: no rescission of Adoption Incentives (or other adoption) funds in the whole text (searched for 'adoption' in the same sentence as a rescission or cancellation: none). Its Title II rescissions: none (sec. 237 makes $87,000,000 and other Nonrecurring Expenses Fund balances available, p.121; it rescinds nothing).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0051",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2021,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
-   "evidence": "the Senate chair's draft bill, FY2021: no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
    "confirmed_date": "2026-10-08"
   },
   {
@@ -202631,17 +202670,6 @@
    "confirmed_date": "2026-10-08"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0056",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2021,
-   "stage": "President's Budget",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BUDGET-APP-FY2021",
-   "evidence": "the FY2021 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0057",
    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
    "fiscal_year": 2021,
@@ -202672,17 +202700,6 @@
    "component": "",
    "source_document_id": "SRC-PLAW-116PUBL260",
    "evidence": "P.L. 116-260: no rescission of Adoption Incentives (or other adoption) funds in Division H (searched for 'adoption' in the same sentence as a rescission or cancellation: none). Its Title II rescissions: sec. 238 (Nonrecurring Expenses Fund, $375,000,000, p.418).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0060",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2021,
-   "stage": "Enacted",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-PLAW-116PUBL260",
-   "evidence": "P.L. 116-260: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
    "confirmed_date": "2026-10-08"
   },
   {
@@ -202719,17 +202736,6 @@
    "confirmed_date": "2026-10-08"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0064",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2022,
-   "stage": "House Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BILLS-117HR4502RH",
-   "evidence": "H.R. 4502 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0065",
    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
    "fiscal_year": 2022,
@@ -202760,17 +202766,6 @@
    "component": "",
    "source_document_id": "SRC-BILLS-117S3062IS",
    "evidence": "S. 3062 (introduced): no rescission of Adoption Incentives (or other adoption) funds in the whole text (searched for 'adoption' in the same sentence as a rescission or cancellation: none). Its Title II rescissions: sec. 234 (Nonrecurring Expenses Fund, $500,000,000, pp.131-132) and sec. 236 (the biosafety level 4 laboratory's balances rescinded and re-appropriated, p.133).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0068",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2022,
-   "stage": "Senate Reported",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BILLS-117S3062IS",
-   "evidence": "S. 3062 (introduced): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
    "confirmed_date": "2026-10-08"
   },
   {
@@ -202807,17 +202802,6 @@
    "confirmed_date": "2026-10-08"
   },
   {
-   "confirmed_absence_id": "CA-LHHS-0072",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2022,
-   "stage": "President's Budget",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-BUDGET-APP-FY2022",
-   "evidence": "the FY2022 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
    "confirmed_absence_id": "CA-LHHS-0073",
    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
    "fiscal_year": 2022,
@@ -202837,17 +202821,6 @@
    "component": "",
    "source_document_id": "SRC-PLAW-117PUBL103",
    "evidence": "P.L. 117-103: no rescission of Adoption Incentives (or other adoption) funds in Division H (searched for 'adoption' in the same sentence as a rescission or cancellation: none). Its Title II rescissions: sec. 236 (Nonrecurring Expenses Fund, $650,000,000, p.426) and sec. 237 (the biosafety level 4 laboratory's balances rescinded and re-appropriated, p.426).",
-   "confirmed_date": "2026-10-08"
-  },
-  {
-   "confirmed_absence_id": "CA-LHHS-0075",
-   "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-   "fiscal_year": 2022,
-   "stage": "Enacted",
-   "amount_type": "budget authority",
-   "component": "",
-   "source_document_id": "SRC-PLAW-117PUBL103",
-   "evidence": "P.L. 117-103: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
    "confirmed_date": "2026-10-08"
   }
  ],
