@@ -229,6 +229,11 @@ def main(argv=None):
     refs = {(r["subcommittee"], int(r["fiscal_year"])): r for r in data["bill_report_refs"] if r["stage"] == "Enacted"}
     # an observation already compared with the enrolled law (an other-law note is a law_text record too, not a comparison)
     have = {(v["observation_id"], v["rule_applied"]) for v in data["validations"] if "(enrolled)" in (v["expected_result"] or "")}
+    # the other-law notes (build_year.other_law_notes): amounts from other laws printed within a figure
+    other_law = {v["observation_id"]: ([int(x.replace(",", "")) for x in re.findall(r"Includes \$([\d,]+)|and \$([\d,]+)",
+                                                                                      v["observed_result"]) for x in x if x],
+                                       v["validation_id"])
+                 for v in data["validations"] if "prints amounts from other laws" in (v["expected_result"] or "")}
     rows, recs, sources = [], [], {}
     for sc, years in YEARS.items():
         for fy in years:
@@ -264,6 +269,10 @@ def main(argv=None):
                         res, why = "pass", ""
                     else:
                         res, why = "info", reason(o, h, obs_list)
+                    extra, note_id = other_law.get(o["observation_id"], ([], ""))
+                    if res == "info" and extra and h["amount"] is not None and h["amount"] + sum(extra) == o["amount"]:
+                        why = ("the headline is the first amount plus " + " + ".join(f"${x:,}" for x in extra)
+                               + f" from other laws printed within the figure (another law, by design; {note_id})")
                     if o["observation_id"] in ACROSS:
                         res, _, why = ACROSS[o["observation_id"]]
                     row.update(result=res, reason=why)

@@ -40,6 +40,8 @@ House Reported,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,1057141900
 House Reported,ACC-HHS-CMS-HCFAC,budget authority,,found,872793000,483,"Total, Health Care Fraud and Abuse Control (Trust funds)"
 House Reported,ACC-HHS-CMS-MEDICAID,advance,,found,165722018000,482,"New advance, 1st quarter, FY 2023"
 House Reported,ACC-HHS-CMS-MEDICAID,budget authority,,not printed,,,
+House Reported,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,found,534388124000,482,"Total, Grants to States for Medicaid, appropriated in this bill"
+House Reported,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,found,517398421000,482,"Total, Medicaid Program Level, available this fiscal year"
 House Reported,ACC-HHS-CMS-MEDICAID,prior_year_advance,,found,-148732315000,482,Less appropriations provided in prior years.
 House Reported,ACC-HHS-CMS-PROGRAM-MANAGEMENT,budget authority,,found,4315843000,483,"Total, Program management"
 House Reported,ACC-HHS-CMS-TOTAL,budget authority,,found,1027438760000,483,"Total, Centers for Medicare and Medicaid Services"
@@ -115,8 +117,7 @@ House Reported,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,9160277
 House Reported,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,5430743000,479,"Subtotal, Substance Abuse Treatment"
 House Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,1159426321000,496,"Total, Title II, Department of Health and Human Services"
 House Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
-House Reported,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,view; no headline,534388124000,482,"Total, Grants to States for Medicaid, appropriated in this bill"
-House Reported,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,view; no headline,517398421000,482,"Total, Medicaid Program Level, available this fiscal year"
+House Reported,ACC-HHS-CMS-MEDICAID,budget authority,,derived,368666106000,482,"derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 534,388,124 (p.482) - 'New advance, 1st quarter, FY 2023' 165,722,018 (p.482) = 368,666,106 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference"
 President's Budget,ACC-HHS-ACF-CCDBG,budget authority,,found,7377000000,485,Payments to States for the Child Care and Development Block Grant
 President's Budget,ACC-HHS-ACF-CFSP,budget authority,,found,14902760000,487,"Total, Children and Families Services Programs"
 President's Budget,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,found,2794432000,484,"Total, Family Support Payments, available in this bill"
@@ -158,6 +159,8 @@ President's Budget,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,955251
 President's Budget,ACC-HHS-CMS-HCFAC,budget authority,,found,872793000,483,"Total, Health Care Fraud and Abuse Control (Trust funds)"
 President's Budget,ACC-HHS-CMS-MEDICAID,advance,,found,165722018000,482,"New advance, 1st quarter, FY 2023"
 President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,,not printed,,,
+President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,found,534388124000,482,"Total, Grants to States for Medicaid, appropriated in this bill"
+President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,found,517398421000,482,"Total, Medicaid Program Level, available this fiscal year"
 President's Budget,ACC-HHS-CMS-MEDICAID,prior_year_advance,,found,-148732315000,482,Less appropriations provided in prior years.
 President's Budget,ACC-HHS-CMS-PROGRAM-MANAGEMENT,budget authority,,found,4315843000,483,"Total, Program management"
 President's Budget,ACC-HHS-CMS-TOTAL,budget authority,,found,1027438760000,483,"Total, Centers for Medicare and Medicaid Services"
@@ -233,8 +236,7 @@ President's Budget,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,973
 President's Budget,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,6327743000,479,"Subtotal, Substance Abuse Treatment"
 President's Budget,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,1159554185000,496,"Total, Title II, Department of Health and Human Services"
 President's Budget,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
-President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,view; no headline,534388124000,482,"Total, Grants to States for Medicaid, appropriated in this bill"
-President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,view; no headline,517398421000,482,"Total, Medicaid Program Level, available this fiscal year"
+President's Budget,ACC-HHS-CMS-MEDICAID,budget authority,,derived,368666106000,482,"derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 534,388,124 (p.482) - 'New advance, 1st quarter, FY 2023' 165,722,018 (p.482) = 368,666,106 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference"
 Senate Reported,ACC-HHS-ACF-CCDBG,budget authority,,found,7311000000,354,Payments to States for the Child Care and Development Block Grant
 Senate Reported,ACC-HHS-ACF-CFSP,budget authority,,found,14949267000,355,"Total, Children and Families Services Programs"
 Senate Reported,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,found,2795044000,354,"Total, Family Support Payments, available in this bill"
@@ -276,6 +278,8 @@ Senate Reported,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,973426900
 Senate Reported,ACC-HHS-CMS-HCFAC,budget authority,,found,873000000,353,"Total, Health Care Fraud and Abuse Control (Trust funds)"
 Senate Reported,ACC-HHS-CMS-MEDICAID,advance,,found,165722018000,352,"New advance, 1st quarter, FY 2023"
 Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,,not printed,,,
+Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,found,534388124000,352,"Total, Grants to States for Medicaid, appropriated in this bill"
+Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,found,517398421000,352,"Total, Medicaid Program Level, available this fiscal year"
 Senate Reported,ACC-HHS-CMS-MEDICAID,prior_year_advance,,found,-148732315000,352,Less appropriations provided in prior years
 Senate Reported,ACC-HHS-CMS-PROGRAM-MANAGEMENT,budget authority,,found,4250843000,353,"Total, Program management"
 Senate Reported,ACC-HHS-CMS-TOTAL,budget authority,,found,1027373967000,353,"Total, Centers for Medicare and Medicaid Services"
@@ -351,8 +355,7 @@ Senate Reported,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,910307
 Senate Reported,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,5570243000,351,"Subtotal, Substance Abuse Treatment"
 Senate Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,1157772066000,361,"Total, Title II, Department of Health and Human Services"
 Senate Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
-Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,view; no headline,534388124000,352,"Total, Grants to States for Medicaid, appropriated in this bill"
-Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,view; no headline,517398421000,352,"Total, Medicaid Program Level, available this fiscal year"
+Senate Reported,ACC-HHS-CMS-MEDICAID,budget authority,,derived,368666106000,352,"derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 534,388,124 (p.352) - 'New advance, 1st quarter, FY 2023' 165,722,018 (p.352) = 368,666,106 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference"
 Enacted,ACC-HHS-ACF-CCDBG,budget authority,,found,6165330000,825,Payments to States for the Child Care and Development Block Grant
 Enacted,ACC-HHS-ACF-CFSP,budget authority,,found,13438343000,827,"Total, Children and Families Services Programs"
 Enacted,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,found,2795000000,823,"Total, Family Support Payments, available in this bill"
@@ -394,6 +397,8 @@ Enacted,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,8457204000,813,"T
 Enacted,ACC-HHS-CMS-HCFAC,budget authority,,found,873000000,822,"Total, Health Care Fraud and Abuse Control (Trust funds)"
 Enacted,ACC-HHS-CMS-MEDICAID,advance,,found,165722018000,821,"New advance, 1st quarter, FY 2024"
 Enacted,ACC-HHS-CMS-MEDICAID,budget authority,,not printed,,,
+Enacted,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,found,534388124000,821,"Total, Grants to States for Medicaid, appropriated in this bill"
+Enacted,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,found,517398421000,821,"Total, Medicaid Program Level, available this fiscal year"
 Enacted,ACC-HHS-CMS-MEDICAID,prior_year_advance,,found,-148732315000,821,Less appropriations provided in prior years.
 Enacted,ACC-HHS-CMS-PROGRAM-MANAGEMENT,budget authority,,found,3669744000,822,"Total, Program Management"
 Enacted,ACC-HHS-CMS-TOTAL,budget authority,,found,1026792868000,822,"Total, Centers for Medicare and Medicaid Services"
@@ -469,5 +474,4 @@ Enacted,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,6545602000,819
 Enacted,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,3873396000,408,"Subtotal, Substance Use Services, appropriation"
 Enacted,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,1150368762000,837,"Total, Title II, Department of Health and Human Services"
 Enacted,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
-Enacted,ACC-HHS-CMS-MEDICAID,budget authority,appropriated_in_this_bill,view; no headline,534388124000,821,"Total, Grants to States for Medicaid, appropriated in this bill"
-Enacted,ACC-HHS-CMS-MEDICAID,budget authority,program_level_available_this_fiscal_year,view; no headline,517398421000,821,"Total, Medicaid Program Level, available this fiscal year"
+Enacted,ACC-HHS-CMS-MEDICAID,budget authority,,derived,368666106000,821,"derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 534,388,124 (p.821) - 'New advance, 1st quarter, FY 2024' 165,722,018 (p.821) = 368,666,106 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference"

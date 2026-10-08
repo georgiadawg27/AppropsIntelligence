@@ -43,6 +43,7 @@ sys.path.insert(0, str(ROOT / "reference" / "review" / "lhhs" / "fy2024_house"))
 
 import validate_approps as V  # noqa: E402
 import triage as T  # noqa: E402
+import derived_headlines as DH  # noqa: E402
 from build_rows import AGENCY_TOTALS, AGENCY_KEY, PRINTED  # noqa: E402
 from build_rows import clean as _clean  # noqa: E402
 
@@ -216,6 +217,10 @@ def main(argv=None):
     lhhs_obs = [o for o in data["observations"] if o["canonical_account_id"] in acct]
     have = {(o["canonical_account_id"], o["fiscal_year"], o["stage"]) for o in lhhs_obs}
     assert not any(k[1] == fy for k in have), f"FY{fy} already has Labor-HHS observations"
+    for aid in DH.RULES:                                  # the derivation holds on every later year that prints it
+        n, bad = DH.check_rule(data["observations"], aid)
+        assert n and not bad, f"{aid}: derived-headline rule fails on {bad} (of {n} cells)"
+        print(f"{aid}: the derived-headline rule holds on all {n} cells that print the headline and both lines")
 
     # 1. facts and their labels (printed labels, former names), with the chamber tables that printed them
     facts = collections.defaultdict(lambda: {"labels": collections.Counter(), "rank": []})
@@ -283,7 +288,6 @@ def main(argv=None):
     new_obs, new_val, report = [], [], []
     by_stage = {}
     ext_by_src = {}
-    absent = {}
     for stage, chamber, pkg, col, src in cfg["stages"]:
         x, sections = ext(pkg)
         ext_by_src[src] = x["observations"]
@@ -307,18 +311,25 @@ def main(argv=None):
                 report.append([stage, *key, "ambiguous", "", "", "; ".join(f"{h['account_name_as_written']} {h['amount']}" for h in hits)])
             else:
                 report.append([stage, *key, "not printed", "", "", ""])
-        dropped = {}
-        # a view or contained line whose headline this table doesn't print: not recorded (it needs the headline it
-        # is a view of / inside of); the headline is a confirmed absence, as for FY2023 Medicaid (CA-LHHS-0028)
-        for key in [k for k in found if k[2] and comps.get(k[2], {}).get("kind") in ("contained", "view")]:
-            if (key[0], "budget authority", "") in found:
+        # a view or contained line whose headline this table doesn't print: the headline is derived where the later
+        # years define it exactly (derived_headlines); otherwise stop -- never a confirmed absence on a funded account
+        derived = {}
+        for aid in sorted({k[0] for k in found if k[2] and comps.get(k[2], {}).get("kind") in ("contained", "view")}):
+            if (aid, "budget authority", "") in found:
                 continue
-            f = dropped[key] = found.pop(key)
-            f_src = origin[key][2] if key in origin else src
-            absent.setdefault((key[0], stage, f_src), []).append(
-                f"'{f['account_name_as_written'].strip()}' {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})")
-            report[:] = [r for r in report if r[:4] != [stage, *key]] + [[stage, *key, "view; no headline", f["amount"],
-                                                                        f["source_page"], f["account_name_as_written"]]]
+            lines = {k[1:]: found[k]["amount"] or 0 for k in found if k[0] == aid}
+            d = DH.derive(aid, lines, lambda k: clean_label(found[(aid, *k)]), lambda k: found[(aid, *k)]["source_page"])
+            if d is None:
+                raise SystemExit(f"{stage} {aid}: its headline isn't printed and can't be derived exactly "
+                                 f"({sorted(lines)}); the owner decides (no printed total)")
+            ka = (aid, *DH.RULES[aid][0])
+            pages = sorted({str(found[(aid, *k)]["source_page"]) for k in DH.RULES[aid]})
+            found[(aid, "budget authority", "")] = dict(found[ka], amount=d[0], source_page="-".join(pages),
+                                                       account_name_as_written="", _records=[])
+            derived[(aid, "budget authority", "")] = d
+            if ka in origin:
+                origin[(aid, "budget authority", "")] = origin[ka]
+            report.append([stage, aid, "budget authority", "", "derived", d[0], "-".join(pages), d[1]])
         by_key = {}
         for key in sorted(found, key=lambda k: (k[0], k[2] != "", k[1] != "budget authority", k[1], k[2])):
             aid, amount_type, component = key
@@ -329,14 +340,18 @@ def main(argv=None):
                  "amount": f["amount"] or 0, "amount_type": amount_type, "component": component, "headline_observation_id": "",
                  "offsetting_collections": "FALSE", "transfer_link_account_id": "", "source_document_id": f_src,
                  "source_page": str(f["source_page"]),
-                 "source_table_or_section": (f"Title II, {acct[aid]['agency']} -- printed as {f['account_name_as_written'].strip()!r} [{f_col}]"
+                 "source_table_or_section": (f"Title II, {acct[aid]['agency']} -- {derived[key][1]}" if key in derived else
+                                             f"Title II, {acct[aid]['agency']} -- printed as {f['account_name_as_written'].strip()!r} [{f_col}]"
                                              + (f" -- {cfg['override'][(stage, aid)][1]}" if (stage, aid) in cfg.get("override", {}) and key[1:] == ("budget authority", "") else "")
                                              + (f" -- {src}'s column has no readable row for it" if key in origin else "")
                                              + (advance_note(fy, f["account_name_as_written"], f_col) if amount_type == "advance" else "")),
-                 "extraction_method": f.get("extraction_method") or "AI-extracted",
+                 "extraction_method": "derived" if key in derived else (f.get("extraction_method") or "AI-extracted"),
                  "confidence": f.get("extraction_confidence") or 0.95, "verification_status": ""}
             by_key[key] = o
             new_obs.append(o)
+            if key in derived:
+                new_val.append({"observation_id": oid, "rule_applied": "structural", "expected_result": derived[key][2][0],
+                                "observed_result": derived[key][2][1], "result": "pass"})
             for r in f["_records"]:
                 if r["rule_applied"] in ("table_total", "structural", "source_text", "unit", "semantic"):
                     new_val.append({"observation_id": oid, "rule_applied": r["rule_applied"],
@@ -351,7 +366,7 @@ def main(argv=None):
         by_stage[stage] = (by_key, found)
         other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg)
         # sum checks
-        sum_checks(acct, by_key, found, new_val, dropped)
+        sum_checks(acct, by_key, found, new_val)
 
     # 3. cross-document
     cross = []
@@ -475,21 +490,15 @@ def main(argv=None):
                    "enactment_date": r.get("enactment_date", ""), "funding_type": r.get("funding_type", ""),
                    "draft": r["draft"]}
             data["bill_report_refs"].append(row)
-        ca_ids = next_id("CA-LHHS-", data["confirmed_absences"], "confirmed_absence_id", 4)
-        for (aid, stage, f_src), lines in absent.items():
-            data["confirmed_absences"].append({
-                "confirmed_absence_id": next(ca_ids), "canonical_account_id": aid, "fiscal_year": fy, "stage": stage,
-                "amount_type": "budget authority", "component": "", "source_document_id": f_src,
-                "evidence": (f"No row for this account's headline figure ('Total, {acct[aid]['canonical_name']}') in "
-                             f"{doc_label(f_src)} Title II table for FY{fy} {stage}. The document prints only "
-                             + "; ".join(lines) + " -- not recorded: each is another scope of the headline (component "
-                             "kind 'view'), which needs the headline it is a view of."),
-                "confirmed_date": TODAY})
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
         print("appended to", STAGED.relative_to(ROOT))
     return {"obs": new_obs, "val": new_val, "cross": cross, "unmatched": unmatched}
+
+
+def clean_label(f):
+    return " ".join(f["account_name_as_written"].split()).rstrip(" .")
 
 
 def doc_label(src):
@@ -565,19 +574,11 @@ def other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg):
         pending, block = [], []
 
 
-def sum_checks(acct, by_key, found, new_val, dropped=None):
+def sum_checks(acct, by_key, found, new_val):
     """The agency totals = their member accounts; the Title II total = agency totals + department-wide lines - CURES
-    (as build_rows.py). A member's 'appropriated in this bill' line counts even where it isn't recorded (no headline
-    printed: Medicaid FY2022); the sum names it."""
-    dropped = dropped or {}
-    unrecorded = []
-
+    (as build_rows.py)."""
     def amt(aid, component=""):
         o = by_key.get((aid, "budget authority", component))
-        if o is None and (aid, "budget authority", component) in dropped:
-            f = dropped[(aid, "budget authority", component)]
-            unrecorded.append(f"{aid} '{f['account_name_as_written'].strip()}' p.{f['source_page']}")
-            return f["amount"]
         return o["amount"] if o else None
     printed = {k[0] for k in found}
     members = collections.defaultdict(list)
@@ -589,10 +590,7 @@ def sum_checks(acct, by_key, found, new_val, dropped=None):
     def add(tot_id, parts, not_printed, what):
         got, want = sum(v for _, v in parts), amt(tot_id)
         exp = (f"{what} = {got // 1000:,} (thousands): " + " + ".join(f"{p} {v // 1000:,}" for p, v in parts)
-               + (f"; not printed in this table, so not in the sum: {', '.join(not_printed)}" if not_printed else "")
-               + (f"; printed but not recorded (no headline it is a view of): {', '.join(dict.fromkeys(unrecorded))}"
-                  if unrecorded else ""))
-        unrecorded.clear()
+               + (f"; not printed in this table, so not in the sum: {', '.join(not_printed)}" if not_printed else ""))
         new_val.append({"observation_id": by_key[(tot_id, "budget authority", "")]["observation_id"], "rule_applied": "table_total",
                         "expected_result": exp,
                         "observed_result": f"{want // 1000:,} as printed ('{found[(tot_id, 'budget authority', '')]['account_name_as_written'].strip()}')",

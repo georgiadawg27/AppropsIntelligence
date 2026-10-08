@@ -14,7 +14,7 @@ with open("data/staged.json") as f:
 # ---------------------------------------------------------------------------
 STAGE_ALL = ["President's Budget", "House Reported", "Senate Reported", "Enacted", "House Passed", "Senate Passed"]
 AMOUNT_TYPE = ["budget authority", "obligation", "outlay", "rescission", "transfer", "offsetting_collection", "supplemental", "advance", "prior_year_advance", "other"]
-EXTRACTION = ["AI-extracted", "human-entered", "hybrid", "text-extracted"]
+EXTRACTION = ["AI-extracted", "human-entered", "hybrid", "text-extracted", "derived"]
 VERIFICATION = ["unverified", "auto-validated", "human-verified", "flagged", "provisional", "superseded"]
 ACCOUNT_STATUS = ["active", "inactive", "superseded", "proposed"]
 FUND_TYPE = ["general", "trust", "special", "revolving", "working_capital", "no_year"]
