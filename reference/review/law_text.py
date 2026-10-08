@@ -192,6 +192,25 @@ def reason(o, h, others):
             "(another paragraph or division of the act) -- worth a look")
 
 
+# Differences read further than one heading's paragraph (2026-10-08): the record's result and wording,
+# kept here so a rerun reports them the same way
+ACROSS = {
+    "OBS-LHHS-0014": ("pass",
+                      "H.R. 2617 (enrolled) div. H, 'LOW INCOME HOME ENERGY ASSISTANCE': $1,500,000,000; div. N "
+                      "(Disaster Relief Supplemental Appropriations Act, 2023), same heading, second paragraph: $2,500,000,000",
+                      "match (combined across divisions: H + N): $1,500,000,000 + $2,500,000,000 = 4,000,000,000 as recorded "
+                      "(div. H names that second paragraph in its allocation proviso; div. N's first paragraph, "
+                      "$1,000,000,000, is not in this figure). Includes $2,500,000,000 from Division N (Disaster Relief "
+                      "Supplemental Appropriations Act, 2023) of P.L. 117-328."),
+    "OBS-LHHS-1664": ("info",
+                      "H.R. 2617 (enrolled) div. H, 'MENTAL HEALTH': first amount $2,693,507,000",
+                      "2,755,507,000 as recorded = $2,693,507,000 (P.L. 117-328 div. H) + $62,000,000 for 988 Suicide "
+                      "Lifeline activities appropriated by P.L. 117-180 (H.R. 6833, the FY2023 continuing resolution, "
+                      "div. A sec. 145); S.Rept. 118-84 p.380 prints that row as 'CR Funding--Public Law 117-180 Suicide "
+                      "Lifeline 62,000' inside the 2023 appropriation (another law, by design)"),
+}
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
@@ -242,6 +261,8 @@ def main(argv=None):
                         res, why = "pass", ""
                     else:
                         res, why = "info", reason(o, h, obs_list)
+                    if o["observation_id"] in ACROSS:
+                        res, _, why = ACROSS[o["observation_id"]]
                     row.update(result=res, reason=why)
                     rows.append(row)
                     if (o["observation_id"], "law_text") in have:

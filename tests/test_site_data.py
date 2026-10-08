@@ -196,21 +196,33 @@ class ReviewList(unittest.TestCase):
 
     def test_page_checks_read(self):
         # every page check read again (page_check_read.py): 70 LHHS pages confirmed, 58 CJS ranges narrowed
-        # to the one page that prints the figure, 1 left for the owner (OBS-0771: implied, not printed)
+        # to the one page that prints the figure; OBS-0771 (not printed as a line there) settled by the owner:
+        # printed in S.Rept. 118-198 p.227
         import csv
         import re
         from collections import Counter
         with open(ROOT / "reference" / "review" / "page_check_results.csv", newline="") as f:
             res = list(csv.DictReader(f))
-        self.assertEqual(Counter(r["result"] for r in res), {"confirmed": 70, "narrowed": 58, "needs_owner": 1})
-        self.assertEqual([r["observation_id"] for r in res if r["result"] == "needs_owner"], ["OBS-0771"])
+        self.assertEqual(Counter(r["result"] for r in res), {"confirmed": 70, "narrowed": 58, "resolved_by_owner": 1})
+        self.assertEqual([r["observation_id"] for r in res if r["result"] == "resolved_by_owner"], ["OBS-0771"])
         self.assertTrue((ROOT / "reference" / "review" / "page_checks" / "OBS-0771-CRPT-118hrpt582-p248.png").is_file())
         data = json.loads(S.STAGED.read_text())
         obs = {o["observation_id"]: o for o in data["observations"]}
         for r in res:
             o = obs[r["observation_id"]]
-            if r["result"] == "needs_owner":
-                self.assertEqual((r["human_review_status"], o["source_page"]), ("pending", r["cited_page"]))
+            if r["result"] == "resolved_by_owner":
+                self.assertEqual((r["human_review_status"], r["reviewer"], r["resolution"]),
+                                 ("resolved", "owner 2026-10-08", "printed in S.Rept. 118-198 p.227"))
+                self.assertEqual((o["source_document_id"], o["source_page"], o["extraction_method"], o["amount"]),
+                                 ("SRC-CRPT-118SRPT198", "227", "human-entered", 420_000_000))
+                self.assertTrue(o["source_table_or_section"].endswith(
+                    "-- emergency piece of the FY2025 request; printed in the Senate report (p.227); not printed as "
+                    "its own line in H.Rept. 118-582"))
+                v = [v for v in data["validations"] if v["observation_id"] == r["observation_id"]
+                     and v["rule_applied"] == "cross_document"]
+                self.assertEqual([(x["validation_id"], x["result"]) for x in v], [("VAL-0243", "pass")])
+                self.assertIn("8,045,320 = base 7,519,320 (OBS-0695) + defense 106,000 (OBS-0735) + 420,000",
+                              v[0]["expected_result"])
                 continue
             self.assertEqual((r["human_review_status"], r["reviewer"], r["resolution"]),
                              ("resolved", "page image check 2026-10-08", f"figure seen on PDF p.{r['page_seen']}"))

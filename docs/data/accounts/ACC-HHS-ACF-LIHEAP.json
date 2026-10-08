@@ -20,6 +20,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
          "canonical_account_id": "ACC-HHS-ACF-LIHEAP",
+         "cell_note": "Includes $2,500,000,000 from Division N (Disaster Relief Supplemental Appropriations Act, 2023) of P.L. 117-328.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -70,7 +71,7 @@
           },
           {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-07183"
           }
@@ -1705,6 +1706,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
     "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
     "canonical_account_id": "ACC-HHS-ACF-LIHEAP",
+    "cell_note": "Includes $2,500,000,000 from Division N (Disaster Relief Supplemental Appropriations Act, 2023) of P.L. 117-328.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -1755,7 +1757,7 @@
      },
      {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-07183"
      }

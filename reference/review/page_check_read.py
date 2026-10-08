@@ -392,6 +392,10 @@ if __name__ == "__main__" and sys.argv[1] == "match":
 READS = HERE / "page_check_image_reads.jsonl"       # the rows a person settled by reading the page
 RESULTS = HERE / "page_check_results.csv"
 REVIEWER = "page image check 2026-10-08"
+# page checks the owner settled: observation_id -> (page now cited, reviewer, resolution, note)
+OWNER = {"OBS-0771": ("227", "owner 2026-10-08", "printed in S.Rept. 118-198 p.227",
+                      "re-sourced to SRC-CRPT-118SRPT198 p.227 (Research and related activities (emergency), Budget "
+                      "estimate column); H.Rept. 118-582 pp.247-248 print no line for it")}
 
 
 def results():
@@ -428,9 +432,15 @@ def cmd_apply():
     narrowed = 0
     for oid, r in sorted(res.items()):
         s, o = sheet[oid], obs[oid]
-        cited = s["source_page"]
+        cited = s.get("cited_page") or s["source_page"]       # the page cited before any narrowing
         rng = len(pages(cited)) > 1
         resolved = r["status"] == "confirmed"
+        if oid in OWNER:
+            page, who, resolution, note = OWNER[oid]
+            rows.append({"observation_id": oid, "source_document_id": s["source_document_id"], "cited_page": cited,
+                         "result": "resolved_by_owner", "page_seen": page, "method": "owner",
+                         "human_review_status": "resolved", "reviewer": who, "resolution": resolution, "note": note})
+            continue
         if resolved and rng:
             how = "page image" if r["method"] == "page image" else "page text"
             note = f"narrowed from {cited} by {how}"

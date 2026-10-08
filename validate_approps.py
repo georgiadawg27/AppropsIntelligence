@@ -67,6 +67,8 @@ NOT_RUN = {
 # ("arithmetic": validate()'s own note that some printed sum confirmed the row, its own or a parent's)
 # ("law_text": the enrolled law's first dollar amount under the account's heading, reference/review/law_text.py)
 CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic", "law_text")
+# the confirming checks read from a document other than the figure's own source
+OTHER_DOCUMENT_RULES = ("cross_document", "law_text")
 
 
 # The routine semantic flag validate() puts on every line that isn't plain budget authority (an
@@ -99,8 +101,10 @@ def verification_status(confidence, checks):
       flagged         -- a check failed, or the row carries a flag for review
                          (review_flag: a cross-document disagreement, or a
                          deliberate semantic / scope question)
-      auto-validated  -- confidence >= AUTO_PUBLISH_CONFIDENCE, every check
-                         passed, and at least one of them confirms the figure
+      auto-validated  -- confidence >= AUTO_PUBLISH_CONFIDENCE (or, below it, a
+                         passing check against another document: cross_document
+                         or law_text), every check passed, and at least one of
+                         them confirms the figure
                          (CONFIRMING_RULES: a printed sum or difference, or
                          another document) -- source_text and unit alone
                          don't say the number is right
@@ -125,8 +129,11 @@ def verification_status(confidence, checks):
     results = [r for _, r, _ in checks]
     if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"
+    # below the confidence threshold, a passing check against another document (the enacted law, or a
+    # second document printing the same figure) confirms the figure all the same
+    other_document = any(rule in OTHER_DOCUMENT_RULES and r == "pass" for rule, r, _ in checks)
     if all(r == "pass" for r in results) and any(rule in CONFIRMING_RULES for rule, _, _ in checks) \
-            and confidence >= AUTO_PUBLISH_CONFIDENCE:
+            and (confidence >= AUTO_PUBLISH_CONFIDENCE or other_document):
         return "auto-validated"
     return "unverified"
 

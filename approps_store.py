@@ -1169,6 +1169,9 @@ def history(conn, account_id):
         notes = [f"{v['expected_result']}; {v['observed_result']}." for v in recs
                  if v["rule_applied"] == "cross_document" and v["result"] == "flag" and v["human_review_status"] == "pending"
                  and "bill text" in (v["expected_result"] or "")]
+        # a law_text match combined across divisions of the law: "Includes $X from Division Y (...) of P.L. ..."
+        notes += [(v["observed_result"] or "")[(v["observed_result"] or "").index("Includes $"):] for v in recs
+                  if v["rule_applied"] == "law_text" and "Includes $" in (v["observed_result"] or "")]
         if notes:
             rec["cell_note"] = " ".join(notes)
         obs.append(rec)
