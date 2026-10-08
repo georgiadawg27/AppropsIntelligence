@@ -1,32 +1,32 @@
 {
  "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines)",
- "data_sha256": "50b0fbe3ca76a28574714f16c7486884fc2c9c3d8393572509334a8a1936c8d6",
+ "data_sha256": "cb8cdcffc0f9dfbb9e855fd4de516dba0a07ba98df85e3f04470a1db53be4641",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 69,
    "columns": 1,
-   "sha256": "9da710eee63824d52293c600f56e0c6a754c4dc95366aa4e7a4edc866a593789"
+   "sha256": "1bb166f475dc482c14faed057faef214ac11fe03c8473ccb3f68d85c8d160642"
   },
   "Account": {
    "rows": 131,
    "columns": 15,
-   "sha256": "baf02bb4aa875bbda06fc89515166a1836533ac3ff891207cc2787b8d00c51bb"
+   "sha256": "36241279c17f65ee92e2740bd7815bb00c76793610f9af64dae3128854975062"
   },
   "Historical Name": {
-   "rows": 12,
+   "rows": 14,
    "columns": 7,
-   "sha256": "71585ec773bcc4d808aa4623a2ac756ebbf476826aabee08fcb4410b4ae957f4"
+   "sha256": "0bd0523fb809cd2c1f6ace224e673b4612895dd44630bc96914c2621ddc42db1"
   },
   "Confirmed Absence": {
-   "rows": 233,
+   "rows": 231,
    "columns": 9,
-   "sha256": "04802afc4bbe9d6272c991a2991a687aa59f2f564e9a7ed48bb87768ebac1657"
+   "sha256": "60d6b8c98df7930a4ad16c9be3f7fd9ddebeb395d954b6cb64e02e56172a9c52"
   },
   "Appropriations Observation": {
-   "rows": 3094,
+   "rows": 3110,
    "columns": 21,
-   "sha256": "bf66527c36716667cb3a1f6ea43d95aa01548f7309415f02e6c4d198ebf118c1"
+   "sha256": "1448e5a546e5feea1420306b6e14852e2bff86b775e4ce38a9686478c2f50003"
   },
   "Account Relationship": {
    "rows": 12,
@@ -44,9 +44,9 @@
    "sha256": "87dba35c33a94a403602bfa289c9adbbe1d968e206adb7bdaefdf837dc65194e"
   },
   "Validation Record": {
-   "rows": 9415,
+   "rows": 9454,
    "columns": 9,
-   "sha256": "8d86ae7fee4e3b82c25da07cb8f02dec947fd2276b0fe42e8e84d62e62b315c6"
+   "sha256": "5ae8644131ebd2c46c8ca540d80d85d28b0a3c028c6f407e892f7042ba382f25"
   },
   "Component": {
    "rows": 20,

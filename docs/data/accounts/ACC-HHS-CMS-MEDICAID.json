@@ -31,7 +31,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2146",
+         "observation_id": "OBS-LHHS-2156",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -48,13 +48,13 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08669"
+           "validation_id": "VAL-LHHS-08698"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-09124"
+           "validation_id": "VAL-LHHS-09162"
           }
          ],
          "verification_status": "auto-validated"
@@ -88,8 +88,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2146",
-         "observation_id": "OBS-LHHS-2149",
+         "headline_observation_id": "OBS-LHHS-2156",
+         "observation_id": "OBS-LHHS-2159",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -106,31 +106,31 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08679"
+           "validation_id": "VAL-LHHS-08708"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08680"
+           "validation_id": "VAL-LHHS-08709"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08681"
+           "validation_id": "VAL-LHHS-08710"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08682"
+           "validation_id": "VAL-LHHS-08711"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08937"
+           "validation_id": "VAL-LHHS-08966"
           }
          ],
          "verification_status": "auto-validated"
@@ -164,8 +164,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2146",
-         "observation_id": "OBS-LHHS-2150",
+         "headline_observation_id": "OBS-LHHS-2156",
+         "observation_id": "OBS-LHHS-2160",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -182,31 +182,31 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08683"
+           "validation_id": "VAL-LHHS-08712"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08684"
+           "validation_id": "VAL-LHHS-08713"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08685"
+           "validation_id": "VAL-LHHS-08714"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08686"
+           "validation_id": "VAL-LHHS-08715"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08938"
+           "validation_id": "VAL-LHHS-08967"
           }
          ],
          "verification_status": "auto-validated"
@@ -241,7 +241,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2147",
+         "observation_id": "OBS-LHHS-2157",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -258,39 +258,39 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08670"
+           "validation_id": "VAL-LHHS-08699"
           },
           {
            "human_review_status": "resolved",
            "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08671"
+           "validation_id": "VAL-LHHS-08700"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08672"
+           "validation_id": "VAL-LHHS-08701"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08673"
+           "validation_id": "VAL-LHHS-08702"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-08674"
+           "validation_id": "VAL-LHHS-08703"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08936"
+           "validation_id": "VAL-LHHS-08965"
           }
          ],
          "verification_status": "auto-validated"
@@ -325,7 +325,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2148",
+         "observation_id": "OBS-LHHS-2158",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -342,32 +342,32 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08675"
+           "validation_id": "VAL-LHHS-08704"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08676"
+           "validation_id": "VAL-LHHS-08705"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08677"
+           "validation_id": "VAL-LHHS-08706"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-08678"
+           "validation_id": "VAL-LHHS-08707"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08939"
+           "validation_id": "VAL-LHHS-08968"
           }
          ],
          "verification_status": "auto-validated"
@@ -405,7 +405,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1865",
+         "observation_id": "OBS-LHHS-1866",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -422,7 +422,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07540"
+           "validation_id": "VAL-LHHS-07541"
           }
          ],
          "verification_status": "auto-validated"
@@ -457,8 +457,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1865",
-         "observation_id": "OBS-LHHS-1868",
+         "headline_observation_id": "OBS-LHHS-1866",
+         "observation_id": "OBS-LHHS-1869",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -475,12 +475,6 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07553"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07554"
           },
           {
@@ -492,14 +486,20 @@
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "source_text",
+           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07556"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "unit",
+           "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-07557"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-07558"
           }
          ],
          "verification_status": "auto-validated"
@@ -534,8 +534,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1865",
-         "observation_id": "OBS-LHHS-1869",
+         "headline_observation_id": "OBS-LHHS-1866",
+         "observation_id": "OBS-LHHS-1870",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -552,12 +552,6 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07558"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07559"
           },
           {
@@ -569,14 +563,20 @@
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "source_text",
+           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07561"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "unit",
+           "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-07562"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-07563"
           }
          ],
          "verification_status": "auto-validated"
@@ -612,7 +612,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1866",
+         "observation_id": "OBS-LHHS-1867",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -629,39 +629,39 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07541"
+           "validation_id": "VAL-LHHS-07542"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07542"
+           "validation_id": "VAL-LHHS-07543"
           },
           {
            "human_review_status": "resolved",
            "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07543"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-07544"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "unit",
+           "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-07545"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-07546"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-07546"
+           "validation_id": "VAL-LHHS-07547"
           }
          ],
          "verification_status": "auto-validated"
@@ -697,7 +697,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1867",
+         "observation_id": "OBS-LHHS-1868",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -714,12 +714,6 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07547"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07548"
           },
           {
@@ -731,21 +725,27 @@
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "source_text",
+           "rule_applied": "structural",
            "validation_id": "VAL-LHHS-07550"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "unit",
+           "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-07551"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-07552"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-07552"
+           "validation_id": "VAL-LHHS-07553"
           }
          ],
          "verification_status": "auto-validated"
@@ -783,7 +783,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1959",
+         "observation_id": "OBS-LHHS-1963",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -800,7 +800,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07937"
+           "validation_id": "VAL-LHHS-07948"
           }
          ],
          "verification_status": "auto-validated"
@@ -835,8 +835,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1959",
-         "observation_id": "OBS-LHHS-1962",
+         "headline_observation_id": "OBS-LHHS-1963",
+         "observation_id": "OBS-LHHS-1966",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -853,31 +853,31 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07948"
+           "validation_id": "VAL-LHHS-07959"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07949"
+           "validation_id": "VAL-LHHS-07960"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07950"
+           "validation_id": "VAL-LHHS-07961"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07951"
+           "validation_id": "VAL-LHHS-07962"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09030"
+           "validation_id": "VAL-LHHS-09059"
           }
          ],
          "verification_status": "auto-validated"
@@ -912,8 +912,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1959",
-         "observation_id": "OBS-LHHS-1963",
+         "headline_observation_id": "OBS-LHHS-1963",
+         "observation_id": "OBS-LHHS-1967",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -930,31 +930,31 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07952"
+           "validation_id": "VAL-LHHS-07963"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07953"
+           "validation_id": "VAL-LHHS-07964"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07954"
+           "validation_id": "VAL-LHHS-07965"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07955"
+           "validation_id": "VAL-LHHS-07966"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09031"
+           "validation_id": "VAL-LHHS-09060"
           }
          ],
          "verification_status": "auto-validated"
@@ -990,7 +990,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1960",
+         "observation_id": "OBS-LHHS-1964",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -1007,39 +1007,39 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07938"
+           "validation_id": "VAL-LHHS-07949"
           },
           {
            "human_review_status": "resolved",
            "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07939"
+           "validation_id": "VAL-LHHS-07950"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07940"
+           "validation_id": "VAL-LHHS-07951"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07941"
+           "validation_id": "VAL-LHHS-07952"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-07942"
+           "validation_id": "VAL-LHHS-07953"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09029"
+           "validation_id": "VAL-LHHS-09058"
           }
          ],
          "verification_status": "auto-validated"
@@ -1075,7 +1075,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1961",
+         "observation_id": "OBS-LHHS-1965",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -1092,38 +1092,38 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07943"
+           "validation_id": "VAL-LHHS-07954"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07944"
+           "validation_id": "VAL-LHHS-07955"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07945"
+           "validation_id": "VAL-LHHS-07956"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07946"
+           "validation_id": "VAL-LHHS-07957"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-07947"
+           "validation_id": "VAL-LHHS-07958"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09032"
+           "validation_id": "VAL-LHHS-09061"
           }
          ],
          "verification_status": "auto-validated"
@@ -1161,7 +1161,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2053",
+         "observation_id": "OBS-LHHS-2060",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -1178,7 +1178,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08291"
+           "validation_id": "VAL-LHHS-08310"
           }
          ],
          "verification_status": "auto-validated"
@@ -1213,8 +1213,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2053",
-         "observation_id": "OBS-LHHS-2056",
+         "headline_observation_id": "OBS-LHHS-2060",
+         "observation_id": "OBS-LHHS-2063",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -1231,25 +1231,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08301"
+           "validation_id": "VAL-LHHS-08320"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08302"
+           "validation_id": "VAL-LHHS-08321"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08303"
+           "validation_id": "VAL-LHHS-08322"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08304"
+           "validation_id": "VAL-LHHS-08323"
           }
          ],
          "verification_status": "auto-validated"
@@ -1284,8 +1284,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2053",
-         "observation_id": "OBS-LHHS-2057",
+         "headline_observation_id": "OBS-LHHS-2060",
+         "observation_id": "OBS-LHHS-2064",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -1302,25 +1302,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08305"
+           "validation_id": "VAL-LHHS-08324"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08306"
+           "validation_id": "VAL-LHHS-08325"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08307"
+           "validation_id": "VAL-LHHS-08326"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08308"
+           "validation_id": "VAL-LHHS-08327"
           }
          ],
          "verification_status": "auto-validated"
@@ -1356,7 +1356,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2054",
+         "observation_id": "OBS-LHHS-2061",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -1373,26 +1373,26 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08292"
+           "validation_id": "VAL-LHHS-08311"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08293"
+           "validation_id": "VAL-LHHS-08312"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08294"
+           "validation_id": "VAL-LHHS-08313"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-08295"
+           "validation_id": "VAL-LHHS-08314"
           }
          ],
          "verification_status": "auto-validated"
@@ -1428,7 +1428,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2055",
+         "observation_id": "OBS-LHHS-2062",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -1445,32 +1445,32 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08296"
+           "validation_id": "VAL-LHHS-08315"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08297"
+           "validation_id": "VAL-LHHS-08316"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08298"
+           "validation_id": "VAL-LHHS-08317"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08299"
+           "validation_id": "VAL-LHHS-08318"
           },
           {
            "human_review_status": "resolved",
            "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
            "result": "flag",
            "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-08300"
+           "validation_id": "VAL-LHHS-08319"
           }
          ],
          "verification_status": "auto-validated"
@@ -1512,7 +1512,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2221",
+         "observation_id": "OBS-LHHS-2231",
          "offsetting_collections": 0,
          "publication_date": "2023-07-27",
          "report_id": "N/A",
@@ -1529,13 +1529,13 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09099"
+           "validation_id": "VAL-LHHS-09130"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-09173"
+           "validation_id": "VAL-LHHS-09212"
           }
          ],
          "verification_status": "auto-validated"
@@ -1569,8 +1569,8 @@
          "document_type": "committee_report",
          "extraction_method": "text-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2221",
-         "observation_id": "OBS-LHHS-2222",
+         "headline_observation_id": "OBS-LHHS-2231",
+         "observation_id": "OBS-LHHS-2232",
          "offsetting_collections": 0,
          "publication_date": "2023-07-27",
          "report_id": "N/A",
@@ -1587,7 +1587,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09100"
+           "validation_id": "VAL-LHHS-09131"
           }
          ],
          "verification_status": "auto-validated"
@@ -1621,8 +1621,8 @@
          "document_type": "committee_report",
          "extraction_method": "text-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2221",
-         "observation_id": "OBS-LHHS-2223",
+         "headline_observation_id": "OBS-LHHS-2231",
+         "observation_id": "OBS-LHHS-2233",
          "offsetting_collections": 0,
          "publication_date": "2023-07-27",
          "report_id": "N/A",
@@ -1639,7 +1639,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09101"
+           "validation_id": "VAL-LHHS-09132"
           }
          ],
          "verification_status": "auto-validated"
@@ -1818,7 +1818,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2215",
+         "observation_id": "OBS-LHHS-2225",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "H.Rept.117-403",
@@ -1835,7 +1835,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09093"
+           "validation_id": "VAL-LHHS-09124"
           }
          ],
          "verification_status": "auto-validated"
@@ -1869,8 +1869,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2215",
-         "observation_id": "OBS-LHHS-2216",
+         "headline_observation_id": "OBS-LHHS-2225",
+         "observation_id": "OBS-LHHS-2226",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "H.Rept.117-403",
@@ -1887,7 +1887,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09094"
+           "validation_id": "VAL-LHHS-09125"
           }
          ],
          "verification_status": "auto-validated"
@@ -1921,8 +1921,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2215",
-         "observation_id": "OBS-LHHS-2217",
+         "headline_observation_id": "OBS-LHHS-2225",
+         "observation_id": "OBS-LHHS-2227",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "H.Rept.117-403",
@@ -1939,7 +1939,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09095"
+           "validation_id": "VAL-LHHS-09126"
           }
          ],
          "verification_status": "auto-validated"
@@ -2149,7 +2149,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2212",
+         "observation_id": "OBS-LHHS-2222",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -2166,7 +2166,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09090"
+           "validation_id": "VAL-LHHS-09121"
           }
          ],
          "verification_status": "auto-validated"
@@ -2200,8 +2200,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2212",
-         "observation_id": "OBS-LHHS-2213",
+         "headline_observation_id": "OBS-LHHS-2222",
+         "observation_id": "OBS-LHHS-2223",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -2218,7 +2218,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09091"
+           "validation_id": "VAL-LHHS-09122"
           }
          ],
          "verification_status": "auto-validated"
@@ -2252,8 +2252,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2212",
-         "observation_id": "OBS-LHHS-2214",
+         "headline_observation_id": "OBS-LHHS-2222",
+         "observation_id": "OBS-LHHS-2224",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -2270,7 +2270,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09092"
+           "validation_id": "VAL-LHHS-09123"
           }
          ],
          "verification_status": "auto-validated"
@@ -2481,7 +2481,7 @@
          "extraction_method": "derived",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2218",
+         "observation_id": "OBS-LHHS-2228",
          "offsetting_collections": 0,
          "publication_date": "2022-07-28",
          "report_id": "N/A",
@@ -2498,7 +2498,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09096"
+           "validation_id": "VAL-LHHS-09127"
           }
          ],
          "verification_status": "auto-validated"
@@ -2533,8 +2533,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2218",
-         "observation_id": "OBS-LHHS-2219",
+         "headline_observation_id": "OBS-LHHS-2228",
+         "observation_id": "OBS-LHHS-2229",
          "offsetting_collections": 0,
          "publication_date": "2022-07-28",
          "report_id": "N/A",
@@ -2551,7 +2551,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09097"
+           "validation_id": "VAL-LHHS-09128"
           }
          ],
          "verification_status": "auto-validated"
@@ -2586,8 +2586,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2023,
-         "headline_observation_id": "OBS-LHHS-2218",
-         "observation_id": "OBS-LHHS-2220",
+         "headline_observation_id": "OBS-LHHS-2228",
+         "observation_id": "OBS-LHHS-2230",
          "offsetting_collections": 0,
          "publication_date": "2022-07-28",
          "report_id": "N/A",
@@ -2604,7 +2604,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09098"
+           "validation_id": "VAL-LHHS-09129"
           }
          ],
          "verification_status": "auto-validated"
@@ -3574,29 +3574,160 @@
      ],
      "President's Budget": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0006",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in S.Rept.118-84 Title II table pp. 366-392 for FY2024 President's Budget. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382); 'Total, Medicaid program level, available this fiscal year' 604,537,324 (p.382) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
-        "fiscal_year": 2024,
-        "publication_date": "2023-07-27",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT84",
-        "stage": "President's Budget",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "no_printed_total"
+       "observations": [
+        {
+         "amount": 406956850000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2234",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382) - 'New advance, 1st quarter, FY 2025' 245,580,414 (p.382) = 406,956,850 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09133"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "appropriated_in_this_bill",
+       "component_kind": "view",
+       "component_label": "appropriated in this bill",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 652537264000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": "appropriated_in_this_bill",
+         "component_kind": "view",
+         "component_label": "appropriated in this bill",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-2234",
+         "observation_id": "OBS-LHHS-2235",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09134"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level_available_this_fiscal_year",
+       "component_kind": "view",
+       "component_label": "program level, available this fiscal year",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 604537324000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2024/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "N/A",
+         "component": "program_level_available_this_fiscal_year",
+         "component_kind": "view",
+         "component_label": "program level, available this fiscal year",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-2234",
+         "observation_id": "OBS-LHHS-2236",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Budget estimate]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09135"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -3743,29 +3874,160 @@
      ],
      "Senate Reported": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0007",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in S.Rept.118-84 Title II table pp. 366-392 for FY2024 Senate Reported. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382); 'Total, Medicaid program level, available this fiscal year' 604,537,324 (p.382) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
-        "fiscal_year": 2024,
-        "publication_date": "2023-07-27",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT84",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "no_printed_total"
+       "observations": [
+        {
+         "amount": 406956850000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2237",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382) - 'New advance, 1st quarter, FY 2025' 245,580,414 (p.382) = 406,956,850 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09136"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "appropriated_in_this_bill",
+       "component_kind": "view",
+       "component_label": "appropriated in this bill",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 652537264000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": "appropriated_in_this_bill",
+         "component_kind": "view",
+         "component_label": "appropriated in this bill",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-2237",
+         "observation_id": "OBS-LHHS-2238",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09137"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level_available_this_fiscal_year",
+       "component_kind": "view",
+       "component_label": "program level, available this fiscal year",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 604537324000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+         "chamber": "Senate",
+         "component": "program_level_available_this_fiscal_year",
+         "component_kind": "view",
+         "component_label": "program level, available this fiscal year",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": "OBS-LHHS-2237",
+         "observation_id": "OBS-LHHS-2239",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "382",
+         "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09138"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       },
       {
        "absence": null,
@@ -7548,38 +7810,7 @@
   ]
  },
  "history": {
-  "absences": [
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0006",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in S.Rept.118-84 Title II table pp. 366-392 for FY2024 President's Budget. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382); 'Total, Medicaid program level, available this fiscal year' 604,537,324 (p.382) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
-    "fiscal_year": 2024,
-    "publication_date": "2023-07-27",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "stage": "President's Budget",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0007",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No row for this account's headline figure ('Total, Grants to States for Medicaid') in S.Rept.118-84 Title II table pp. 366-392 for FY2024 Senate Reported. The document prints only 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382); 'Total, Medicaid program level, available this fiscal year' 604,537,324 (p.382) -- not recorded: each is another scope of the headline (component kind 'view'), which needs the headline it is a view of.",
-    "fiscal_year": 2024,
-    "publication_date": "2023-07-27",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-   }
-  ],
+  "absences": [],
   "account": {
    "agency": "Centers for Medicare & Medicaid Services",
    "bureau": "Grants to States for Medicaid",
@@ -7711,7 +7942,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1959",
+    "observation_id": "OBS-LHHS-1963",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -7728,7 +7959,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07937"
+      "validation_id": "VAL-LHHS-07948"
      }
     ],
     "verification_status": "auto-validated"
@@ -7751,8 +7982,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1959",
-    "observation_id": "OBS-LHHS-1962",
+    "headline_observation_id": "OBS-LHHS-1963",
+    "observation_id": "OBS-LHHS-1966",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -7769,31 +8000,31 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07948"
+      "validation_id": "VAL-LHHS-07959"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07949"
+      "validation_id": "VAL-LHHS-07960"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07950"
+      "validation_id": "VAL-LHHS-07961"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07951"
+      "validation_id": "VAL-LHHS-07962"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09030"
+      "validation_id": "VAL-LHHS-09059"
      }
     ],
     "verification_status": "auto-validated"
@@ -7816,8 +8047,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1959",
-    "observation_id": "OBS-LHHS-1963",
+    "headline_observation_id": "OBS-LHHS-1963",
+    "observation_id": "OBS-LHHS-1967",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -7834,31 +8065,31 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07952"
+      "validation_id": "VAL-LHHS-07963"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07953"
+      "validation_id": "VAL-LHHS-07964"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07954"
+      "validation_id": "VAL-LHHS-07965"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07955"
+      "validation_id": "VAL-LHHS-07966"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09031"
+      "validation_id": "VAL-LHHS-09060"
      }
     ],
     "verification_status": "auto-validated"
@@ -7882,7 +8113,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1960",
+    "observation_id": "OBS-LHHS-1964",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -7899,39 +8130,39 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07938"
+      "validation_id": "VAL-LHHS-07949"
      },
      {
       "human_review_status": "resolved",
       "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07939"
+      "validation_id": "VAL-LHHS-07950"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07940"
+      "validation_id": "VAL-LHHS-07951"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07941"
+      "validation_id": "VAL-LHHS-07952"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-07942"
+      "validation_id": "VAL-LHHS-07953"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09029"
+      "validation_id": "VAL-LHHS-09058"
      }
     ],
     "verification_status": "auto-validated"
@@ -7955,7 +8186,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1961",
+    "observation_id": "OBS-LHHS-1965",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -7972,38 +8203,38 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07943"
+      "validation_id": "VAL-LHHS-07954"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07944"
+      "validation_id": "VAL-LHHS-07955"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07945"
+      "validation_id": "VAL-LHHS-07956"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07946"
+      "validation_id": "VAL-LHHS-07957"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-07947"
+      "validation_id": "VAL-LHHS-07958"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09032"
+      "validation_id": "VAL-LHHS-09061"
      }
     ],
     "verification_status": "auto-validated"
@@ -8027,7 +8258,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1865",
+    "observation_id": "OBS-LHHS-1866",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -8044,7 +8275,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07540"
+      "validation_id": "VAL-LHHS-07541"
      }
     ],
     "verification_status": "auto-validated"
@@ -8067,8 +8298,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1865",
-    "observation_id": "OBS-LHHS-1868",
+    "headline_observation_id": "OBS-LHHS-1866",
+    "observation_id": "OBS-LHHS-1869",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -8085,12 +8316,6 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07553"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07554"
      },
      {
@@ -8102,14 +8327,20 @@
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "source_text",
+      "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07556"
      },
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "unit",
+      "rule_applied": "source_text",
       "validation_id": "VAL-LHHS-07557"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-07558"
      }
     ],
     "verification_status": "auto-validated"
@@ -8132,8 +8363,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1865",
-    "observation_id": "OBS-LHHS-1869",
+    "headline_observation_id": "OBS-LHHS-1866",
+    "observation_id": "OBS-LHHS-1870",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -8150,12 +8381,6 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07558"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07559"
      },
      {
@@ -8167,14 +8392,20 @@
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "source_text",
+      "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07561"
      },
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "unit",
+      "rule_applied": "source_text",
       "validation_id": "VAL-LHHS-07562"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-07563"
      }
     ],
     "verification_status": "auto-validated"
@@ -8182,79 +8413,6 @@
    {
     "amount": 165722018000,
     "amount_type": "advance",
-    "bill_id": "H.R.4502",
-    "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
-    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
-    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
-    "chamber": "House",
-    "component": null,
-    "component_kind": null,
-    "component_label": null,
-    "confidence": 0.95,
-    "document_fiscal_year": 2022,
-    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
-    "document_stage": "House Reported",
-    "document_type": "committee_report",
-    "extraction_method": "AI-extracted",
-    "fiscal_year": 2022,
-    "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1866",
-    "offsetting_collections": 0,
-    "publication_date": "2021-07-19",
-    "report_id": "H.Rept.117-96",
-    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-117HRPT96",
-    "source_page": "482",
-    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2023' [Bill]; advance for FY2023",
-    "stage": "House Reported",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
-    "validation": [
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07541"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07542"
-     },
-     {
-      "human_review_status": "resolved",
-      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
-      "result": "flag",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07543"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07544"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07545"
-     },
-     {
-      "human_review_status": "resolved",
-      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
-      "result": "flag",
-      "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-07546"
-     }
-    ],
-    "verification_status": "auto-validated"
-   },
-   {
-    "amount": -148732315000,
-    "amount_type": "prior_year_advance",
     "bill_id": "H.R.4502",
     "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
@@ -8279,7 +8437,7 @@
     "source_agency": "House Committee on Appropriations",
     "source_document_id": "SRC-CRPT-117HRPT96",
     "source_page": "482",
-    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'New advance, 1st quarter, FY 2023' [Bill]; advance for FY2023",
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
@@ -8288,8 +8446,75 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07547"
+      "validation_id": "VAL-LHHS-07542"
      },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-07543"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-07544"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-07545"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-07546"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-LHHS-07547"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": -148732315000,
+    "amount_type": "prior_year_advance",
+    "bill_id": "H.R.4502",
+    "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1868",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "H.Rept.117-96",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "482",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Less appropriations provided in prior years.' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
      {
       "human_review_status": null,
       "result": "pass",
@@ -8305,21 +8530,27 @@
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "source_text",
+      "rule_applied": "structural",
       "validation_id": "VAL-LHHS-07550"
      },
      {
       "human_review_status": null,
       "result": "pass",
-      "rule_applied": "unit",
+      "rule_applied": "source_text",
       "validation_id": "VAL-LHHS-07551"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-07552"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-07552"
+      "validation_id": "VAL-LHHS-07553"
      }
     ],
     "verification_status": "auto-validated"
@@ -8343,7 +8574,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2053",
+    "observation_id": "OBS-LHHS-2060",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -8360,7 +8591,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08291"
+      "validation_id": "VAL-LHHS-08310"
      }
     ],
     "verification_status": "auto-validated"
@@ -8383,8 +8614,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2053",
-    "observation_id": "OBS-LHHS-2056",
+    "headline_observation_id": "OBS-LHHS-2060",
+    "observation_id": "OBS-LHHS-2063",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -8401,25 +8632,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08301"
+      "validation_id": "VAL-LHHS-08320"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08302"
+      "validation_id": "VAL-LHHS-08321"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08303"
+      "validation_id": "VAL-LHHS-08322"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08304"
+      "validation_id": "VAL-LHHS-08323"
      }
     ],
     "verification_status": "auto-validated"
@@ -8442,8 +8673,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2053",
-    "observation_id": "OBS-LHHS-2057",
+    "headline_observation_id": "OBS-LHHS-2060",
+    "observation_id": "OBS-LHHS-2064",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -8460,25 +8691,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08305"
+      "validation_id": "VAL-LHHS-08324"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08306"
+      "validation_id": "VAL-LHHS-08325"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08307"
+      "validation_id": "VAL-LHHS-08326"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08308"
+      "validation_id": "VAL-LHHS-08327"
      }
     ],
     "verification_status": "auto-validated"
@@ -8502,7 +8733,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2054",
+    "observation_id": "OBS-LHHS-2061",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -8519,26 +8750,26 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08292"
+      "validation_id": "VAL-LHHS-08311"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08293"
+      "validation_id": "VAL-LHHS-08312"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08294"
+      "validation_id": "VAL-LHHS-08313"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2023')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-08295"
+      "validation_id": "VAL-LHHS-08314"
      }
     ],
     "verification_status": "auto-validated"
@@ -8562,7 +8793,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2055",
+    "observation_id": "OBS-LHHS-2062",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -8579,32 +8810,32 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08296"
+      "validation_id": "VAL-LHHS-08315"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08297"
+      "validation_id": "VAL-LHHS-08316"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08298"
+      "validation_id": "VAL-LHHS-08317"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08299"
+      "validation_id": "VAL-LHHS-08318"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-08300"
+      "validation_id": "VAL-LHHS-08319"
      }
     ],
     "verification_status": "auto-validated"
@@ -8627,7 +8858,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2146",
+    "observation_id": "OBS-LHHS-2156",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8644,13 +8875,13 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08669"
+      "validation_id": "VAL-LHHS-08698"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "law_text",
-      "validation_id": "VAL-LHHS-09124"
+      "validation_id": "VAL-LHHS-09162"
      }
     ],
     "verification_status": "auto-validated"
@@ -8672,8 +8903,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2146",
-    "observation_id": "OBS-LHHS-2149",
+    "headline_observation_id": "OBS-LHHS-2156",
+    "observation_id": "OBS-LHHS-2159",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8690,31 +8921,31 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08679"
+      "validation_id": "VAL-LHHS-08708"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08680"
+      "validation_id": "VAL-LHHS-08709"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08681"
+      "validation_id": "VAL-LHHS-08710"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08682"
+      "validation_id": "VAL-LHHS-08711"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08937"
+      "validation_id": "VAL-LHHS-08966"
      }
     ],
     "verification_status": "auto-validated"
@@ -8736,8 +8967,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2146",
-    "observation_id": "OBS-LHHS-2150",
+    "headline_observation_id": "OBS-LHHS-2156",
+    "observation_id": "OBS-LHHS-2160",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8754,31 +8985,31 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08683"
+      "validation_id": "VAL-LHHS-08712"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08684"
+      "validation_id": "VAL-LHHS-08713"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08685"
+      "validation_id": "VAL-LHHS-08714"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08686"
+      "validation_id": "VAL-LHHS-08715"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08938"
+      "validation_id": "VAL-LHHS-08967"
      }
     ],
     "verification_status": "auto-validated"
@@ -8801,7 +9032,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2147",
+    "observation_id": "OBS-LHHS-2157",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8818,39 +9049,39 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08670"
+      "validation_id": "VAL-LHHS-08699"
      },
      {
       "human_review_status": "resolved",
       "resolution": "parse artifact: the model-read indent nests this Medicaid line under 'Vaccines for Children' (e.g. 5,608,606 vs 197,580,474); no sum relationship exists",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08671"
+      "validation_id": "VAL-LHHS-08700"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08672"
+      "validation_id": "VAL-LHHS-08701"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08673"
+      "validation_id": "VAL-LHHS-08702"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2024')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-08674"
+      "validation_id": "VAL-LHHS-08703"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08936"
+      "validation_id": "VAL-LHHS-08965"
      }
     ],
     "verification_status": "auto-validated"
@@ -8873,7 +9104,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2148",
+    "observation_id": "OBS-LHHS-2158",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8890,32 +9121,32 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08675"
+      "validation_id": "VAL-LHHS-08704"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08676"
+      "validation_id": "VAL-LHHS-08705"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08677"
+      "validation_id": "VAL-LHHS-08706"
      },
      {
       "human_review_status": "resolved",
       "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')",
       "result": "flag",
       "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-08678"
+      "validation_id": "VAL-LHHS-08707"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08939"
+      "validation_id": "VAL-LHHS-08968"
      }
     ],
     "verification_status": "auto-validated"
@@ -8938,7 +9169,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2023,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2212",
+    "observation_id": "OBS-LHHS-2222",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8955,7 +9186,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09090"
+      "validation_id": "VAL-LHHS-09121"
      }
     ],
     "verification_status": "auto-validated"
@@ -8977,8 +9208,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2212",
-    "observation_id": "OBS-LHHS-2213",
+    "headline_observation_id": "OBS-LHHS-2222",
+    "observation_id": "OBS-LHHS-2223",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -8995,7 +9226,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09091"
+      "validation_id": "VAL-LHHS-09122"
      }
     ],
     "verification_status": "auto-validated"
@@ -9017,8 +9248,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2212",
-    "observation_id": "OBS-LHHS-2214",
+    "headline_observation_id": "OBS-LHHS-2222",
+    "observation_id": "OBS-LHHS-2224",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -9035,7 +9266,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09092"
+      "validation_id": "VAL-LHHS-09123"
      }
     ],
     "verification_status": "auto-validated"
@@ -9207,7 +9438,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2023,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2215",
+    "observation_id": "OBS-LHHS-2225",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "H.Rept.117-403",
@@ -9224,7 +9455,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09093"
+      "validation_id": "VAL-LHHS-09124"
      }
     ],
     "verification_status": "auto-validated"
@@ -9246,8 +9477,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2215",
-    "observation_id": "OBS-LHHS-2216",
+    "headline_observation_id": "OBS-LHHS-2225",
+    "observation_id": "OBS-LHHS-2226",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "H.Rept.117-403",
@@ -9264,7 +9495,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09094"
+      "validation_id": "VAL-LHHS-09125"
      }
     ],
     "verification_status": "auto-validated"
@@ -9286,8 +9517,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2215",
-    "observation_id": "OBS-LHHS-2217",
+    "headline_observation_id": "OBS-LHHS-2225",
+    "observation_id": "OBS-LHHS-2227",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "H.Rept.117-403",
@@ -9304,7 +9535,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09095"
+      "validation_id": "VAL-LHHS-09126"
      }
     ],
     "verification_status": "auto-validated"
@@ -9477,7 +9708,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2023,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2218",
+    "observation_id": "OBS-LHHS-2228",
     "offsetting_collections": 0,
     "publication_date": "2022-07-28",
     "report_id": "N/A",
@@ -9494,7 +9725,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09096"
+      "validation_id": "VAL-LHHS-09127"
      }
     ],
     "verification_status": "auto-validated"
@@ -9517,8 +9748,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2218",
-    "observation_id": "OBS-LHHS-2219",
+    "headline_observation_id": "OBS-LHHS-2228",
+    "observation_id": "OBS-LHHS-2229",
     "offsetting_collections": 0,
     "publication_date": "2022-07-28",
     "report_id": "N/A",
@@ -9535,7 +9766,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09097"
+      "validation_id": "VAL-LHHS-09128"
      }
     ],
     "verification_status": "auto-validated"
@@ -9558,8 +9789,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2218",
-    "observation_id": "OBS-LHHS-2220",
+    "headline_observation_id": "OBS-LHHS-2228",
+    "observation_id": "OBS-LHHS-2230",
     "offsetting_collections": 0,
     "publication_date": "2022-07-28",
     "report_id": "N/A",
@@ -9576,7 +9807,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09098"
+      "validation_id": "VAL-LHHS-09129"
      }
     ],
     "verification_status": "auto-validated"
@@ -9731,7 +9962,7 @@
     "extraction_method": "derived",
     "fiscal_year": 2023,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2221",
+    "observation_id": "OBS-LHHS-2231",
     "offsetting_collections": 0,
     "publication_date": "2023-07-27",
     "report_id": "N/A",
@@ -9748,13 +9979,13 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09099"
+      "validation_id": "VAL-LHHS-09130"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "law_text",
-      "validation_id": "VAL-LHHS-09173"
+      "validation_id": "VAL-LHHS-09212"
      }
     ],
     "verification_status": "auto-validated"
@@ -9776,8 +10007,8 @@
     "document_type": "committee_report",
     "extraction_method": "text-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2221",
-    "observation_id": "OBS-LHHS-2222",
+    "headline_observation_id": "OBS-LHHS-2231",
+    "observation_id": "OBS-LHHS-2232",
     "offsetting_collections": 0,
     "publication_date": "2023-07-27",
     "report_id": "N/A",
@@ -9794,7 +10025,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09100"
+      "validation_id": "VAL-LHHS-09131"
      }
     ],
     "verification_status": "auto-validated"
@@ -9816,8 +10047,8 @@
     "document_type": "committee_report",
     "extraction_method": "text-extracted",
     "fiscal_year": 2023,
-    "headline_observation_id": "OBS-LHHS-2221",
-    "observation_id": "OBS-LHHS-2223",
+    "headline_observation_id": "OBS-LHHS-2231",
+    "observation_id": "OBS-LHHS-2233",
     "offsetting_collections": 0,
     "publication_date": "2023-07-27",
     "report_id": "N/A",
@@ -9834,7 +10065,7 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-09101"
+      "validation_id": "VAL-LHHS-09132"
      }
     ],
     "verification_status": "auto-validated"
@@ -9953,6 +10184,126 @@
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-02370"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 406956850000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2234",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382) - 'New advance, 1st quarter, FY 2025' 245,580,414 (p.382) = 406,956,850 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09133"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 652537264000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": "appropriated_in_this_bill",
+    "component_kind": "view",
+    "component_label": "appropriated in this bill",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-2234",
+    "observation_id": "OBS-LHHS-2235",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09134"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 604537324000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2024/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2024-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "N/A",
+    "component": "program_level_available_this_fiscal_year",
+    "component_kind": "view",
+    "component_label": "program level, available this fiscal year",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-2234",
+    "observation_id": "OBS-LHHS-2236",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Budget estimate]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09135"
      }
     ],
     "verification_status": "auto-validated"
@@ -10411,6 +10762,126 @@
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-06883"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 406956850000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2237",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 652,537,264 (p.382) - 'New advance, 1st quarter, FY 2025' 245,580,414 (p.382) = 406,956,850 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09136"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 652537264000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": "appropriated_in_this_bill",
+    "component_kind": "view",
+    "component_label": "appropriated in this bill",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-2237",
+    "observation_id": "OBS-LHHS-2238",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid, appropriated in this bill' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09137"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 604537324000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "canonical_account_id": "ACC-HHS-CMS-MEDICAID",
+    "chamber": "Senate",
+    "component": "program_level_available_this_fiscal_year",
+    "component_kind": "view",
+    "component_label": "program level, available this fiscal year",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": "OBS-LHHS-2237",
+    "observation_id": "OBS-LHHS-2239",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "382",
+    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Medicaid program level, available this fiscal year' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09138"
      }
     ],
     "verification_status": "auto-validated"

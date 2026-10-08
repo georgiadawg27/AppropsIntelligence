@@ -345,7 +345,7 @@ class Browser(BrowserBase):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 232)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 4 FY2023 Medicaid
+        self.assertEqual(n, 230)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 6 Medicaid (FY2023, FY2024)
 
 
 
@@ -363,12 +363,12 @@ class NoPrintedTotalAndCoverage(BrowserBase):
 
     def test_no_printed_total(self):
         self.open_account("ACC-HHS-CMS-MEDICAID")
-        line = self.chip(2024, "President's Budget")                 # CA-LHHS-0006 (FY2023's are derived headlines now)
+        # Medicaid's FY2023 and FY2024 request/Senate headlines are derived now: no cell of it is "no printed total"
+        self.assertEqual(self.chip(2024, "President's Budget").get_attribute("data-state"), "value")
+        self.open_account("ACC-HHS-ASPR-TOTAL")
+        line = self.chip(2023, "House Reported")
         self.assertEqual(line.get_attribute("data-state"), "no_printed_total")
         self.assertEqual(line.locator("[data-testid=no-printed-total]").inner_text(), "No printed total")
-        self.assertIn("Total, Grants to States for Medicaid", line.locator("[data-testid=no-printed-total]").get_attribute("title"))
-        self.open_account("ACC-HHS-ASPR-TOTAL")
-        self.assertEqual(self.chip(2023, "House Reported").get_attribute("data-state"), "no_printed_total")
         # a rescission line with nothing else of its account in the cell: still "None"
         self.open_account("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION")
         line = self.chip(2026, "House Reported", "rescission")

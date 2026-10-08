@@ -31,7 +31,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2117",
+         "observation_id": "OBS-LHHS-2126",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -48,37 +48,37 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08569"
+           "validation_id": "VAL-LHHS-08597"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08570"
+           "validation_id": "VAL-LHHS-08598"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08571"
+           "validation_id": "VAL-LHHS-08599"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08572"
+           "validation_id": "VAL-LHHS-08600"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08909"
+           "validation_id": "VAL-LHHS-08938"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-09104"
+           "validation_id": "VAL-LHHS-09141"
           }
          ],
          "verification_status": "auto-validated"
@@ -183,6 +183,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2022-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
          "canonical_account_id": "ACC-HHS-ACF-CHILD-SUPPORT",
+         "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -195,7 +196,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1930",
+         "observation_id": "OBS-LHHS-1933",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -212,34 +213,35 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07837"
+           "validation_id": "VAL-LHHS-07847"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07838"
+           "validation_id": "VAL-LHHS-07848"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07839"
+           "validation_id": "VAL-LHHS-07849"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07840"
+           "validation_id": "VAL-LHHS-07850"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
            "result": "flag",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09000"
+           "validation_id": "VAL-LHHS-09029"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -274,7 +276,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2024",
+         "observation_id": "OBS-LHHS-2030",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -291,25 +293,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08174"
+           "validation_id": "VAL-LHHS-08192"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08175"
+           "validation_id": "VAL-LHHS-08193"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08176"
+           "validation_id": "VAL-LHHS-08194"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08177"
+           "validation_id": "VAL-LHHS-08195"
           }
          ],
          "verification_status": "unverified"
@@ -1867,6 +1869,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2022-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
     "canonical_account_id": "ACC-HHS-ACF-CHILD-SUPPORT",
+    "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -1879,7 +1882,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1930",
+    "observation_id": "OBS-LHHS-1933",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -1896,34 +1899,35 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07837"
+      "validation_id": "VAL-LHHS-07847"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07838"
+      "validation_id": "VAL-LHHS-07848"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07839"
+      "validation_id": "VAL-LHHS-07849"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07840"
+      "validation_id": "VAL-LHHS-07850"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
       "result": "flag",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09000"
+      "validation_id": "VAL-LHHS-09029"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2794432000,
@@ -2009,7 +2013,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2024",
+    "observation_id": "OBS-LHHS-2030",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -2026,25 +2030,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08174"
+      "validation_id": "VAL-LHHS-08192"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08175"
+      "validation_id": "VAL-LHHS-08193"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08176"
+      "validation_id": "VAL-LHHS-08194"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08177"
+      "validation_id": "VAL-LHHS-08195"
      }
     ],
     "verification_status": "unverified"
@@ -2067,7 +2071,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2117",
+    "observation_id": "OBS-LHHS-2126",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -2084,37 +2088,37 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08569"
+      "validation_id": "VAL-LHHS-08597"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08570"
+      "validation_id": "VAL-LHHS-08598"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08571"
+      "validation_id": "VAL-LHHS-08599"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08572"
+      "validation_id": "VAL-LHHS-08600"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08909"
+      "validation_id": "VAL-LHHS-08938"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "law_text",
-      "validation_id": "VAL-LHHS-09104"
+      "validation_id": "VAL-LHHS-09141"
      }
     ],
     "verification_status": "auto-validated"

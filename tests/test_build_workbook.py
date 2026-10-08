@@ -67,7 +67,7 @@ class BuiltWorkbook(unittest.TestCase):
         formulas = [(ws.title, c.column_letter) for ws in self.wb.worksheets
                     for row in ws.iter_rows() for c in row if c.data_type == "f"]
         self.assertEqual(len(formulas), 4 * n_obs)
-        self.assertEqual(len(formulas), 12_372)                # 3,093 observations x 4 lookups
+        self.assertEqual(len(formulas), 12_436)                # 3,109 observations x 4 lookups
         self.assertEqual({f for f in formulas}, {("Appropriations Observation", col) for col in "FGST"})
 
     def test_text_starting_with_equals_stays_text(self):

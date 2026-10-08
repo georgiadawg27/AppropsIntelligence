@@ -31,7 +31,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2211",
+         "observation_id": "OBS-LHHS-2221",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -46,43 +46,44 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08895 (the printed change column [Bill vs. Enacted]); VAL-LHHS-08997 (another document prints it)",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08924 (the printed change column [Bill vs. Enacted]); VAL-LHHS-09026 (another document prints it)",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08894"
+           "validation_id": "VAL-LHHS-08923"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08895"
+           "validation_id": "VAL-LHHS-08924"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08896"
+           "validation_id": "VAL-LHHS-08925"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08897"
+           "validation_id": "VAL-LHHS-08926"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08906"
+           "validation_id": "VAL-LHHS-08935"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08997"
+           "validation_id": "VAL-LHHS-09026"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -117,7 +118,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1927",
+         "observation_id": "OBS-LHHS-1930",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -132,40 +133,41 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07818 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07819 (the printed change column [Bill vs. Request])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07828 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07829 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07817"
+           "validation_id": "VAL-LHHS-07827"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07818"
+           "validation_id": "VAL-LHHS-07828"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07819"
+           "validation_id": "VAL-LHHS-07829"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07820"
+           "validation_id": "VAL-LHHS-07830"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07821"
+           "validation_id": "VAL-LHHS-07831"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07829"
+           "validation_id": "VAL-LHHS-07839"
           }
          ],
          "verification_status": "unverified"
@@ -191,6 +193,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2022-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
          "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -203,7 +206,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2021",
+         "observation_id": "OBS-LHHS-2027",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -218,43 +221,45 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08154 (the printed change column [Bill vs. Request])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08172 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08153"
+           "validation_id": "VAL-LHHS-08171"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08154"
+           "validation_id": "VAL-LHHS-08172"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08155"
+           "validation_id": "VAL-LHHS-08173"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08156"
+           "validation_id": "VAL-LHHS-08174"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08164"
+           "validation_id": "VAL-LHHS-08182"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
            "result": "flag",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09089"
+           "validation_id": "VAL-LHHS-09120"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -289,7 +294,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2114",
+         "observation_id": "OBS-LHHS-2123",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -304,40 +309,41 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08550 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08551 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08578 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08579 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08549"
+           "validation_id": "VAL-LHHS-08577"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08550"
+           "validation_id": "VAL-LHHS-08578"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08551"
+           "validation_id": "VAL-LHHS-08579"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08552"
+           "validation_id": "VAL-LHHS-08580"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08553"
+           "validation_id": "VAL-LHHS-08581"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08561"
+           "validation_id": "VAL-LHHS-08589"
           }
          ],
          "verification_status": "unverified"
@@ -2787,6 +2793,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2022-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
     "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -2799,7 +2806,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2021",
+    "observation_id": "OBS-LHHS-2027",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -2814,43 +2821,45 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08154 (the printed change column [Bill vs. Request])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08172 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08153"
+      "validation_id": "VAL-LHHS-08171"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08154"
+      "validation_id": "VAL-LHHS-08172"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08155"
+      "validation_id": "VAL-LHHS-08173"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08156"
+      "validation_id": "VAL-LHHS-08174"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08164"
+      "validation_id": "VAL-LHHS-08182"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
       "result": "flag",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09089"
+      "validation_id": "VAL-LHHS-09120"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1159426321000,
@@ -2871,7 +2880,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1927",
+    "observation_id": "OBS-LHHS-1930",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -2886,40 +2895,41 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07818 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07819 (the printed change column [Bill vs. Request])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07828 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07829 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07817"
+      "validation_id": "VAL-LHHS-07827"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07818"
+      "validation_id": "VAL-LHHS-07828"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07819"
+      "validation_id": "VAL-LHHS-07829"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07820"
+      "validation_id": "VAL-LHHS-07830"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07821"
+      "validation_id": "VAL-LHHS-07831"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07829"
+      "validation_id": "VAL-LHHS-07839"
      }
     ],
     "verification_status": "unverified"
@@ -2943,7 +2953,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2114",
+    "observation_id": "OBS-LHHS-2123",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -2958,40 +2968,41 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08550 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08551 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08578 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08579 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08549"
+      "validation_id": "VAL-LHHS-08577"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08550"
+      "validation_id": "VAL-LHHS-08578"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08551"
+      "validation_id": "VAL-LHHS-08579"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08552"
+      "validation_id": "VAL-LHHS-08580"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08553"
+      "validation_id": "VAL-LHHS-08581"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08561"
+      "validation_id": "VAL-LHHS-08589"
      }
     ],
     "verification_status": "unverified"
@@ -3014,7 +3025,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2211",
+    "observation_id": "OBS-LHHS-2221",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -3029,43 +3040,44 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08895 (the printed change column [Bill vs. Enacted]); VAL-LHHS-08997 (another document prints it)",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08924 (the printed change column [Bill vs. Enacted]); VAL-LHHS-09026 (another document prints it)",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08894"
+      "validation_id": "VAL-LHHS-08923"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08895"
+      "validation_id": "VAL-LHHS-08924"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08896"
+      "validation_id": "VAL-LHHS-08925"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08897"
+      "validation_id": "VAL-LHHS-08926"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 496,000 (thousands) is exactly: +496,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08906"
+      "validation_id": "VAL-LHHS-08935"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08997"
+      "validation_id": "VAL-LHHS-09026"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1255017830000,

@@ -31,7 +31,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2208",
+         "observation_id": "OBS-LHHS-2218",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -49,44 +49,44 @@
            "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08881"
+           "validation_id": "VAL-LHHS-08910"
           },
           {
            "human_review_status": "resolved",
            "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08882"
+           "validation_id": "VAL-LHHS-08911"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08883"
+           "validation_id": "VAL-LHHS-08912"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08884"
+           "validation_id": "VAL-LHHS-08913"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08885"
+           "validation_id": "VAL-LHHS-08914"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08902"
+           "validation_id": "VAL-LHHS-08931"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08995"
+           "validation_id": "VAL-LHHS-09024"
           }
          ],
          "verification_status": "auto-validated"
@@ -120,8 +120,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2208",
-         "observation_id": "OBS-LHHS-2209",
+         "headline_observation_id": "OBS-LHHS-2218",
+         "observation_id": "OBS-LHHS-2219",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -138,25 +138,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08886"
+           "validation_id": "VAL-LHHS-08915"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08887"
+           "validation_id": "VAL-LHHS-08916"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08888"
+           "validation_id": "VAL-LHHS-08917"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08996"
+           "validation_id": "VAL-LHHS-09025"
           }
          ],
          "verification_status": "auto-validated"
@@ -194,7 +194,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1924",
+         "observation_id": "OBS-LHHS-1927",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -209,47 +209,47 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07803 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07804 (the printed change column [Bill vs. Request])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07813 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07814 (the printed change column [Bill vs. Request])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07801"
+           "validation_id": "VAL-LHHS-07811"
           },
           {
            "human_review_status": "resolved",
            "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07802"
+           "validation_id": "VAL-LHHS-07812"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07803"
+           "validation_id": "VAL-LHHS-07813"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07804"
+           "validation_id": "VAL-LHHS-07814"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07805"
+           "validation_id": "VAL-LHHS-07815"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07806"
+           "validation_id": "VAL-LHHS-07816"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07825"
+           "validation_id": "VAL-LHHS-07835"
           }
          ],
          "verification_status": "unverified"
@@ -284,8 +284,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1924",
-         "observation_id": "OBS-LHHS-1925",
+         "headline_observation_id": "OBS-LHHS-1927",
+         "observation_id": "OBS-LHHS-1928",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "H.Rept.117-96",
@@ -302,25 +302,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07807"
+           "validation_id": "VAL-LHHS-07817"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07808"
+           "validation_id": "VAL-LHHS-07818"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07809"
+           "validation_id": "VAL-LHHS-07819"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07810"
+           "validation_id": "VAL-LHHS-07820"
           }
          ],
          "verification_status": "auto-validated"
@@ -358,7 +358,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2018",
+         "observation_id": "OBS-LHHS-2024",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -373,47 +373,47 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08142 (the printed change column [Bill vs. Request]); VAL-LHHS-08160 (a printed sum)",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08160 (the printed change column [Bill vs. Request]); VAL-LHHS-08178 (a printed sum)",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08140"
+           "validation_id": "VAL-LHHS-08158"
           },
           {
            "human_review_status": "resolved",
            "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08141"
+           "validation_id": "VAL-LHHS-08159"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08142"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08143"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08144"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
            "validation_id": "VAL-LHHS-08160"
           },
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-08161"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-08162"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-08178"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09086"
+           "validation_id": "VAL-LHHS-09117"
           }
          ],
          "verification_status": "auto-validated"
@@ -448,8 +448,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2018",
-         "observation_id": "OBS-LHHS-2019",
+         "headline_observation_id": "OBS-LHHS-2024",
+         "observation_id": "OBS-LHHS-2025",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -466,25 +466,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08145"
+           "validation_id": "VAL-LHHS-08163"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08146"
+           "validation_id": "VAL-LHHS-08164"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08147"
+           "validation_id": "VAL-LHHS-08165"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09087"
+           "validation_id": "VAL-LHHS-09118"
           }
          ],
          "verification_status": "auto-validated"
@@ -522,7 +522,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2111",
+         "observation_id": "OBS-LHHS-2120",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -537,47 +537,47 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08535 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08536 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08563 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08564 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08533"
+           "validation_id": "VAL-LHHS-08561"
           },
           {
            "human_review_status": "resolved",
            "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
            "result": "flag",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08534"
+           "validation_id": "VAL-LHHS-08562"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08535"
+           "validation_id": "VAL-LHHS-08563"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08536"
+           "validation_id": "VAL-LHHS-08564"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08537"
+           "validation_id": "VAL-LHHS-08565"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08538"
+           "validation_id": "VAL-LHHS-08566"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08557"
+           "validation_id": "VAL-LHHS-08585"
           }
          ],
          "verification_status": "unverified"
@@ -612,8 +612,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2111",
-         "observation_id": "OBS-LHHS-2112",
+         "headline_observation_id": "OBS-LHHS-2120",
+         "observation_id": "OBS-LHHS-2121",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -630,25 +630,25 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08539"
+           "validation_id": "VAL-LHHS-08567"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08540"
+           "validation_id": "VAL-LHHS-08568"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08541"
+           "validation_id": "VAL-LHHS-08569"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08542"
+           "validation_id": "VAL-LHHS-08570"
           }
          ],
          "verification_status": "auto-validated"
@@ -3284,7 +3284,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2018",
+    "observation_id": "OBS-LHHS-2024",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -3299,47 +3299,47 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08142 (the printed change column [Bill vs. Request]); VAL-LHHS-08160 (a printed sum)",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08160 (the printed change column [Bill vs. Request]); VAL-LHHS-08178 (a printed sum)",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08140"
+      "validation_id": "VAL-LHHS-08158"
      },
      {
       "human_review_status": "resolved",
       "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08141"
+      "validation_id": "VAL-LHHS-08159"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08142"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08143"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08144"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "table_total",
       "validation_id": "VAL-LHHS-08160"
      },
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-08161"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-08162"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-08178"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09086"
+      "validation_id": "VAL-LHHS-09117"
      }
     ],
     "verification_status": "auto-validated"
@@ -3362,8 +3362,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2018",
-    "observation_id": "OBS-LHHS-2019",
+    "headline_observation_id": "OBS-LHHS-2024",
+    "observation_id": "OBS-LHHS-2025",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -3380,25 +3380,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08145"
+      "validation_id": "VAL-LHHS-08163"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08146"
+      "validation_id": "VAL-LHHS-08164"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08147"
+      "validation_id": "VAL-LHHS-08165"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09087"
+      "validation_id": "VAL-LHHS-09118"
      }
     ],
     "verification_status": "auto-validated"
@@ -3422,7 +3422,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1924",
+    "observation_id": "OBS-LHHS-1927",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -3437,47 +3437,47 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07803 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07804 (the printed change column [Bill vs. Request])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-07813 (the printed change column [Bill vs. Enacted]); VAL-LHHS-07814 (the printed change column [Bill vs. Request])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07801"
+      "validation_id": "VAL-LHHS-07811"
      },
      {
       "human_review_status": "resolved",
       "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07802"
+      "validation_id": "VAL-LHHS-07812"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07803"
+      "validation_id": "VAL-LHHS-07813"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07804"
+      "validation_id": "VAL-LHHS-07814"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07805"
+      "validation_id": "VAL-LHHS-07815"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07806"
+      "validation_id": "VAL-LHHS-07816"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07825"
+      "validation_id": "VAL-LHHS-07835"
      }
     ],
     "verification_status": "unverified"
@@ -3500,8 +3500,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1924",
-    "observation_id": "OBS-LHHS-1925",
+    "headline_observation_id": "OBS-LHHS-1927",
+    "observation_id": "OBS-LHHS-1928",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "H.Rept.117-96",
@@ -3518,25 +3518,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07807"
+      "validation_id": "VAL-LHHS-07817"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07808"
+      "validation_id": "VAL-LHHS-07818"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07809"
+      "validation_id": "VAL-LHHS-07819"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07810"
+      "validation_id": "VAL-LHHS-07820"
      }
     ],
     "verification_status": "auto-validated"
@@ -3560,7 +3560,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2111",
+    "observation_id": "OBS-LHHS-2120",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -3575,47 +3575,47 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08535 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08536 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08563 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08564 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08533"
+      "validation_id": "VAL-LHHS-08561"
      },
      {
       "human_review_status": "resolved",
       "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08534"
+      "validation_id": "VAL-LHHS-08562"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08535"
+      "validation_id": "VAL-LHHS-08563"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08536"
+      "validation_id": "VAL-LHHS-08564"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08537"
+      "validation_id": "VAL-LHHS-08565"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08538"
+      "validation_id": "VAL-LHHS-08566"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08557"
+      "validation_id": "VAL-LHHS-08585"
      }
     ],
     "verification_status": "unverified"
@@ -3638,8 +3638,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2111",
-    "observation_id": "OBS-LHHS-2112",
+    "headline_observation_id": "OBS-LHHS-2120",
+    "observation_id": "OBS-LHHS-2121",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -3656,25 +3656,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08539"
+      "validation_id": "VAL-LHHS-08567"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08540"
+      "validation_id": "VAL-LHHS-08568"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08541"
+      "validation_id": "VAL-LHHS-08569"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08542"
+      "validation_id": "VAL-LHHS-08570"
      }
     ],
     "verification_status": "auto-validated"
@@ -3697,7 +3697,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2208",
+    "observation_id": "OBS-LHHS-2218",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -3715,44 +3715,44 @@
       "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08881"
+      "validation_id": "VAL-LHHS-08910"
      },
      {
       "human_review_status": "resolved",
       "resolution": "informational: the memo lines printed under this total are 'of which' amounts or alternate (program-level) totals, not its parts; a memo breakdown cannot confirm the figure",
       "result": "flag",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08882"
+      "validation_id": "VAL-LHHS-08911"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08883"
+      "validation_id": "VAL-LHHS-08912"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08884"
+      "validation_id": "VAL-LHHS-08913"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08885"
+      "validation_id": "VAL-LHHS-08914"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08902"
+      "validation_id": "VAL-LHHS-08931"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08995"
+      "validation_id": "VAL-LHHS-09024"
      }
     ],
     "verification_status": "auto-validated"
@@ -3774,8 +3774,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2208",
-    "observation_id": "OBS-LHHS-2209",
+    "headline_observation_id": "OBS-LHHS-2218",
+    "observation_id": "OBS-LHHS-2219",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -3792,25 +3792,25 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08886"
+      "validation_id": "VAL-LHHS-08915"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08887"
+      "validation_id": "VAL-LHHS-08916"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08888"
+      "validation_id": "VAL-LHHS-08917"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08996"
+      "validation_id": "VAL-LHHS-09025"
      }
     ],
     "verification_status": "auto-validated"

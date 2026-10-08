@@ -31,7 +31,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2124",
+         "observation_id": "OBS-LHHS-2133",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -49,46 +49,47 @@
            "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08594"
+           "validation_id": "VAL-LHHS-08622"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08595"
+           "validation_id": "VAL-LHHS-08623"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08596"
+           "validation_id": "VAL-LHHS-08624"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08597"
+           "validation_id": "VAL-LHHS-08625"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08598"
+           "validation_id": "VAL-LHHS-08626"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2024' (p.823): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08904"
+           "validation_id": "VAL-LHHS-08933"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08916"
+           "validation_id": "VAL-LHHS-08945"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -119,8 +120,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2124",
-         "observation_id": "OBS-LHHS-2125",
+         "headline_observation_id": "OBS-LHHS-2133",
+         "observation_id": "OBS-LHHS-2134",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -138,31 +139,31 @@
            "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08599"
+           "validation_id": "VAL-LHHS-08627"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08600"
+           "validation_id": "VAL-LHHS-08628"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08601"
+           "validation_id": "VAL-LHHS-08629"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08602"
+           "validation_id": "VAL-LHHS-08630"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08917"
+           "validation_id": "VAL-LHHS-08946"
           }
          ],
          "verification_status": "auto-validated"
@@ -253,7 +254,7 @@
            "human_review_status": "pending",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07827"
+           "validation_id": "VAL-LHHS-07837"
           }
          ],
          "verification_status": "unverified"
@@ -356,6 +357,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2022-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
          "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -368,7 +370,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1937",
+         "observation_id": "OBS-LHHS-1940",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -385,46 +387,48 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07863"
+           "validation_id": "VAL-LHHS-07873"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07864"
+           "validation_id": "VAL-LHHS-07874"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07865"
+           "validation_id": "VAL-LHHS-07875"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07866"
+           "validation_id": "VAL-LHHS-07876"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07867"
+           "validation_id": "VAL-LHHS-07877"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2023' (p.484): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08162"
+           "validation_id": "VAL-LHHS-08180"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
            "result": "flag",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09007"
+           "validation_id": "VAL-LHHS-09036"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -445,6 +449,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2022-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
          "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
          "chamber": "N/A",
          "component": "program_level",
          "component_kind": "view",
@@ -456,8 +461,8 @@
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-1937",
-         "observation_id": "OBS-LHHS-1938",
+         "headline_observation_id": "OBS-LHHS-1940",
+         "observation_id": "OBS-LHHS-1941",
          "offsetting_collections": 0,
          "publication_date": "2021-07-19",
          "report_id": "N/A",
@@ -474,34 +479,35 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-07868"
+           "validation_id": "VAL-LHHS-07878"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-07869"
+           "validation_id": "VAL-LHHS-07879"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-07870"
+           "validation_id": "VAL-LHHS-07880"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-07871"
+           "validation_id": "VAL-LHHS-07881"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
            "result": "flag",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-09008"
+           "validation_id": "VAL-LHHS-09037"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -536,7 +542,7 @@
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2031",
+         "observation_id": "OBS-LHHS-2037",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -554,43 +560,44 @@
            "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08201"
+           "validation_id": "VAL-LHHS-08219"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08202"
+           "validation_id": "VAL-LHHS-08220"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08203"
+           "validation_id": "VAL-LHHS-08221"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08204"
+           "validation_id": "VAL-LHHS-08222"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08205"
+           "validation_id": "VAL-LHHS-08223"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08206"
+           "validation_id": "VAL-LHHS-08224"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2023' (p.354): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
            "result": "flag",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08559"
+           "validation_id": "VAL-LHHS-08587"
           }
          ],
          "verification_status": "unverified"
@@ -625,8 +632,8 @@
          "document_type": "explanatory_statement",
          "extraction_method": "text-extracted",
          "fiscal_year": 2022,
-         "headline_observation_id": "OBS-LHHS-2031",
-         "observation_id": "OBS-LHHS-2032",
+         "headline_observation_id": "OBS-LHHS-2037",
+         "observation_id": "OBS-LHHS-2038",
          "offsetting_collections": 0,
          "publication_date": "2021-10-18",
          "report_id": "N/A",
@@ -641,34 +648,34 @@
          "validation": [
           {
            "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08208 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08209 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08226 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08227 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
            "result": "fail",
            "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-08207"
+           "validation_id": "VAL-LHHS-08225"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08208"
+           "validation_id": "VAL-LHHS-08226"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08209"
+           "validation_id": "VAL-LHHS-08227"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08210"
+           "validation_id": "VAL-LHHS-08228"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08211"
+           "validation_id": "VAL-LHHS-08229"
           }
          ],
          "verification_status": "unverified"
@@ -4144,6 +4151,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2022-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
     "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -4156,7 +4164,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-1937",
+    "observation_id": "OBS-LHHS-1940",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -4173,46 +4181,48 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07863"
+      "validation_id": "VAL-LHHS-07873"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07864"
+      "validation_id": "VAL-LHHS-07874"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07865"
+      "validation_id": "VAL-LHHS-07875"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07866"
+      "validation_id": "VAL-LHHS-07876"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07867"
+      "validation_id": "VAL-LHHS-07877"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2023' (p.484): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08162"
+      "validation_id": "VAL-LHHS-08180"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
       "result": "flag",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09007"
+      "validation_id": "VAL-LHHS-09036"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 46943443000,
@@ -4221,6 +4231,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2022-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
     "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "cell_note": "The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
     "chamber": "N/A",
     "component": "program_level",
     "component_kind": "view",
@@ -4232,8 +4243,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-1937",
-    "observation_id": "OBS-LHHS-1938",
+    "headline_observation_id": "OBS-LHHS-1940",
+    "observation_id": "OBS-LHHS-1941",
     "offsetting_collections": 0,
     "publication_date": "2021-07-19",
     "report_id": "N/A",
@@ -4250,34 +4261,35 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07868"
+      "validation_id": "VAL-LHHS-07878"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-07869"
+      "validation_id": "VAL-LHHS-07879"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-07870"
+      "validation_id": "VAL-LHHS-07880"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-07871"
+      "validation_id": "VAL-LHHS-07881"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The Senate draft's budget estimate is the request before the -$1 million permanent reduction the budget appendix applies to Payments to States for Child Support Enforcement and Family Support Programs (075-1501: appropriation $2,795 million, $2,794 million after the reduction); the House report's request column is after it: Repatriation 9,388 (H.Rept. 117-96 p.484) vs 10,000 (Senate draft p.353), 612 thousand. Kept the House report's request column (owner's rule, 2026-10-08). Note: The Senate draft prints this request $612,000 higher: Repatriation 10,000 thousand before the budget's permanent reduction (the House report prints 9,388 after it).",
       "result": "flag",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-09008"
+      "validation_id": "VAL-LHHS-09037"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 47623664000,
@@ -4351,7 +4363,7 @@
       "human_review_status": "pending",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-07827"
+      "validation_id": "VAL-LHHS-07837"
      }
     ],
     "verification_status": "unverified"
@@ -4440,7 +4452,7 @@
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2031",
+    "observation_id": "OBS-LHHS-2037",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -4458,43 +4470,44 @@
       "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08201"
+      "validation_id": "VAL-LHHS-08219"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08202"
+      "validation_id": "VAL-LHHS-08220"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08203"
+      "validation_id": "VAL-LHHS-08221"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08204"
+      "validation_id": "VAL-LHHS-08222"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08205"
+      "validation_id": "VAL-LHHS-08223"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08206"
+      "validation_id": "VAL-LHHS-08224"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2023' (p.354): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08559"
+      "validation_id": "VAL-LHHS-08587"
      }
     ],
     "verification_status": "unverified"
@@ -4517,8 +4530,8 @@
     "document_type": "explanatory_statement",
     "extraction_method": "text-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2031",
-    "observation_id": "OBS-LHHS-2032",
+    "headline_observation_id": "OBS-LHHS-2037",
+    "observation_id": "OBS-LHHS-2038",
     "offsetting_collections": 0,
     "publication_date": "2021-10-18",
     "report_id": "N/A",
@@ -4533,34 +4546,34 @@
     "validation": [
      {
       "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08208 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08209 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-08226 (the printed change column [Senate Committee recommendation compared with (+ or -) 2021 appropriation]); VAL-LHHS-08227 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
       "result": "fail",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08207"
+      "validation_id": "VAL-LHHS-08225"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08208"
+      "validation_id": "VAL-LHHS-08226"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08209"
+      "validation_id": "VAL-LHHS-08227"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08210"
+      "validation_id": "VAL-LHHS-08228"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08211"
+      "validation_id": "VAL-LHHS-08229"
      }
     ],
     "verification_status": "unverified"
@@ -4583,7 +4596,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2124",
+    "observation_id": "OBS-LHHS-2133",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -4601,46 +4614,47 @@
       "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08594"
+      "validation_id": "VAL-LHHS-08622"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08595"
+      "validation_id": "VAL-LHHS-08623"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08596"
+      "validation_id": "VAL-LHHS-08624"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08597"
+      "validation_id": "VAL-LHHS-08625"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08598"
+      "validation_id": "VAL-LHHS-08626"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 1,300,000 (thousands) is exactly: +1,300,000 'New advance, 1st quarter, FY 2024' (p.823): ACC-HHS-ACF-CHILD-SUPPORT's new advance for the next fiscal year, printed below its headline ('available in this bill') and counted in the ACF total -- an advance line of the account, not recorded (follow-up). Every other line of the section is inside an account: with these the sum equals the printed total.",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08904"
+      "validation_id": "VAL-LHHS-08933"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08916"
+      "validation_id": "VAL-LHHS-08945"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 48714706000,
@@ -4659,8 +4673,8 @@
     "document_type": "committee_report",
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
-    "headline_observation_id": "OBS-LHHS-2124",
-    "observation_id": "OBS-LHHS-2125",
+    "headline_observation_id": "OBS-LHHS-2133",
+    "observation_id": "OBS-LHHS-2134",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -4678,31 +4692,31 @@
       "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
       "result": "flag",
       "rule_applied": "table_total",
-      "validation_id": "VAL-LHHS-08599"
+      "validation_id": "VAL-LHHS-08627"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08600"
+      "validation_id": "VAL-LHHS-08628"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08601"
+      "validation_id": "VAL-LHHS-08629"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08602"
+      "validation_id": "VAL-LHHS-08630"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08917"
+      "validation_id": "VAL-LHHS-08946"
      }
     ],
     "verification_status": "auto-validated"

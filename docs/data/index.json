@@ -310,7 +310,9 @@
    "agency": "Health Resources and Services Administration",
    "canonical_account_id": "ACC-HHS-HRSA-HEALTH-SYSTEMS",
    "canonical_name": "Health Systems",
-   "historical_names": []
+   "historical_names": [
+    "Health Care Systems"
+   ]
   },
   {
    "agency": "Health Resources and Services Administration",
@@ -478,7 +480,9 @@
    "agency": "National Institutes of Health",
    "canonical_account_id": "ACC-HHS-NIH-NICHD",
    "canonical_name": "Eunice Kennedy Shriver National Institute of Child Health and Human Development",
-   "historical_names": []
+   "historical_names": [
+    "National Institute of Child Health and Human Development"
+   ]
   },
   {
    "agency": "National Institutes of Health",
@@ -800,19 +804,19 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-08T18:06:35+00:00",
-  "data_sha256": "50b0fbe3ca76a28574714f16c7486884fc2c9c3d8393572509334a8a1936c8d6",
+  "data_committed": "2026-10-08T19:52:50+00:00",
+  "data_sha256": "cb8cdcffc0f9dfbb9e855fd4de516dba0a07ba98df85e3f04470a1db53be4641",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
    "account_relationship": 11,
-   "appropriations_observation": 3093,
+   "appropriations_observation": 3109,
    "bill_report_reference": 63,
    "component": 19,
-   "confirmed_absence": 232,
-   "historical_name": 11,
+   "confirmed_absence": 230,
+   "historical_name": 13,
    "source_document": 39,
-   "validation_record": 9414
+   "validation_record": 9453
   },
   "version": "v38",
   "warnings": [],

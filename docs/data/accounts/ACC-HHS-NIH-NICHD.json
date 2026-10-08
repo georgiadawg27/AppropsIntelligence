@@ -31,7 +31,7 @@
          "extraction_method": "AI-extracted",
          "fiscal_year": 2022,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2181",
+         "observation_id": "OBS-LHHS-2191",
          "offsetting_collections": 0,
          "publication_date": "2022-07-05",
          "report_id": "N/A",
@@ -48,31 +48,31 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-08789"
+           "validation_id": "VAL-LHHS-08818"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-08790"
+           "validation_id": "VAL-LHHS-08819"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-08791"
+           "validation_id": "VAL-LHHS-08820"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-08970"
+           "validation_id": "VAL-LHHS-08999"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-09149"
+           "validation_id": "VAL-LHHS-09188"
           }
          ],
          "verification_status": "auto-validated"
@@ -89,9 +89,69 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1689786000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.4502",
+         "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-NICHD",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1900",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "H.Rept.117-96",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "476",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-07692"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-07693"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-07694"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-07695"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -102,9 +162,69 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1942117000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2022/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2022-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-NICHD",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-1997",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "476",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [FY 2022 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-08066"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-08067"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-08068"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-09091"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "Senate Reported": [
@@ -115,9 +235,69 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1678970000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3062",
+         "bill_report_reference_id": "BR-LHHS-FY2022-SENATE",
+         "bill_url": "https://www.congress.gov/117/bills/s3062/BILLS-117s3062is.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-NICHD",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2022,
+         "document_notes": "Senate chair's draft explanatory statement for FY2022, released with S. 3062 (introduced 2021-10-25, never reported). sha256 b033ae17fc2e948b... (the file at the link). Text layer; page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2094",
+         "offsetting_collections": 0,
+         "publication_date": "2021-10-18",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2022-SENATE",
+         "source_page": "348",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-08451"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-08452"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-08453"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-08454"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -1468,7 +1648,7 @@
    "display_order": 54,
    "fund_type": "general",
    "historical_identifiers": null,
-   "historical_names": null,
+   "historical_names": "National Institute of Child Health and Human Development",
    "notes": null,
    "parent_account_id": null,
    "status": "active",
@@ -1569,22 +1749,196 @@
    ],
    "enacted_through": 2026
   },
-  "historical_names": [],
-  "missing_cells": [
-   [
-    2022,
-    "President's Budget"
-   ],
-   [
-    2022,
-    "House Reported"
-   ],
-   [
-    2022,
-    "Senate Reported"
-   ]
+  "historical_names": [
+   {
+    "approved_date": "2026-10-08",
+    "canonical_account_id": "ACC-HHS-NIH-NICHD",
+    "confidence": 1.0,
+    "evidence": "H.Rept. 117-96 p.476 and the FY2022 Senate chair's draft explanatory statement p.348 print 'National Institute of Child Health and Human Development (NICHD)'; later tables print 'Eunice Kennedy Shriver National Institute of Child Health and Human Development'. Approved by the owner 2026-10-08.",
+    "former_name": "National Institute of Child Health and Human Development",
+    "historical_name_id": "HN-LHHS-0006",
+    "human_reviewed": 1
+   }
   ],
+  "missing_cells": [],
   "observations": [
+   {
+    "amount": 1942117000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2022/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2022-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-NICHD",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1997",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "476",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [FY 2022 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-08066"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-08067"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-08068"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-09091"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1689786000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.4502",
+    "bill_report_reference_id": "BR-LHHS-FY2022-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-NICHD",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-1900",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "H.Rept.117-96",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "476",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-07692"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-07693"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-07694"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-07695"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1678970000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3062",
+    "bill_report_reference_id": "BR-LHHS-FY2022-SENATE",
+    "bill_url": "https://www.congress.gov/117/bills/s3062/BILLS-117s3062is.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-NICHD",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2022,
+    "document_notes": "Senate chair's draft explanatory statement for FY2022, released with S. 3062 (introduced 2021-10-25, never reported). sha256 b033ae17fc2e948b... (the file at the link). Text layer; page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2094",
+    "offsetting_collections": 0,
+    "publication_date": "2021-10-18",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2022-SENATE",
+    "source_page": "348",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Child Health and Human Development (NICHD)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-08451"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-08452"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-08453"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-08454"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": 1683009000,
     "amount_type": "budget authority",
@@ -1603,7 +1957,7 @@
     "extraction_method": "AI-extracted",
     "fiscal_year": 2022,
     "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-2181",
+    "observation_id": "OBS-LHHS-2191",
     "offsetting_collections": 0,
     "publication_date": "2022-07-05",
     "report_id": "N/A",
@@ -1620,31 +1974,31 @@
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-08789"
+      "validation_id": "VAL-LHHS-08818"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-08790"
+      "validation_id": "VAL-LHHS-08819"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-08791"
+      "validation_id": "VAL-LHHS-08820"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "cross_document",
-      "validation_id": "VAL-LHHS-08970"
+      "validation_id": "VAL-LHHS-08999"
      },
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "law_text",
-      "validation_id": "VAL-LHHS-09149"
+      "validation_id": "VAL-LHHS-09188"
      }
     ],
     "verification_status": "auto-validated"
@@ -2667,18 +3021,6 @@
    }
   ],
   "open_cells": [
-   [
-    2022,
-    "President's Budget"
-   ],
-   [
-    2022,
-    "House Reported"
-   ],
-   [
-    2022,
-    "Senate Reported"
-   ],
    [
     2027,
     "Senate Reported"

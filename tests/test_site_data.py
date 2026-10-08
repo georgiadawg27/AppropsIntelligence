@@ -23,12 +23,12 @@ DOCS = ROOT / "docs"
 # triage (PR #29): resolved records no longer count, 78 flagged cells -> 5 (71 unverified, 2 auto-validated);
 # then the FY2022 Labor-HHS backfill (+400 cells) and 'no figure for this year' (a proposed account before its first figure)
 STATE_COUNTS = {
-    "LHHS": {"value": 1874, "not_funded": 111, "no_printed_total": 9, "missing": 114, "not_collected": 100,
+    "LHHS": {"value": 1886, "not_funded": 111, "no_printed_total": 7, "missing": 104, "not_collected": 100,
              "not_enacted": 100, "no_figure": 92},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
             "not_enacted": 30, "no_figure": 0},
 }
-FLAGGED_CELLS = {"LHHS": 8, "CJS": 0}             # + 3 FY2022 headlines
+FLAGGED_CELLS = {"LHHS": 5, "CJS": 0}             # the FY2022 request differences are resolved (rule 5)
 
 
 def grid(sc):
@@ -75,12 +75,14 @@ class SiteReadsData(unittest.TestCase):
     def test_review_status_comes_with_every_cell(self):
         # Reviewer mode reads human_review_status from each observation's validation records. The owner's
         # triage (PR #29) resolved 452 of the 462 pending records; 10 stay pending. The FY2022 backfill adds 27 pending
-        # (sum and cross-document questions) and 90 resolved at creation by the triage's standard reasons
+        # (sum and cross-document questions) and 90 resolved at creation by the triage's standard reasons; the owner's
+        # rules 3 and 5 (2026-10-08) resolve 13 more (short sums explained exactly, the request baseline) and 16 sums
+        # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending
         data = json.loads(S.STAGED.read_text())
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] == 2022
                   and o["observation_id"].startswith("OBS-LHHS-")}
         st = [v.get("human_review_status") for v in data["validations"]]
-        self.assertEqual((st.count("pending"), st.count("resolved")), (37, 542))
+        self.assertEqual((st.count("pending"), st.count("resolved")), (21, 555))
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
                          ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
@@ -90,9 +92,10 @@ class SiteReadsData(unittest.TestCase):
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
-                self.assertEqual(v["reviewer"], "triage rules" if v["observation_id"] in fy2022
-                                 else "owner (group approval 2026-10-08)")
+                self.assertIn(v["reviewer"], ("triage rules", "owner rules (2026-10-08)") if v["observation_id"] in fy2022
+                              else ("owner (group approval 2026-10-08)",))
                 self.assertIn(v["result"], ("fail", "flag"))
+                self.assertTrue(v["resolution"])
         for sc in ("LHHS", "CJS"):
             for _, _, o in headline_observations(grid(sc)):
                 self.assertTrue(all("human_review_status" in v for v in o["validation"]), o["observation_id"])
