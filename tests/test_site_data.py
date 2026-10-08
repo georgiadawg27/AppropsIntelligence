@@ -20,14 +20,15 @@ DOCS = ROOT / "docs"
 # verification_status is "flagged"); then the FY2024 House Labor-HHS draft: its 100 cells moved
 # from not yet collected to figures and states, 4 of them flagged; then H.R. 5894: the NEF rescission moved from
 # missing to a figure, and CDC Global Health became flagged (its bill-text disagreement); then the owner's
-# triage (PR #29): resolved records no longer count, 78 flagged cells -> 5 (71 unverified, 2 auto-validated)
+# triage (PR #29): resolved records no longer count, 78 flagged cells -> 5 (71 unverified, 2 auto-validated);
+# then the FY2022 Labor-HHS backfill (+400 cells) and 'no figure for this year' (a proposed account before its first figure)
 STATE_COUNTS = {
-    "LHHS": {"value": 1539, "not_funded": 108, "no_printed_total": 13, "missing": 140, "not_collected": 100,
-             "not_enacted": 100},
+    "LHHS": {"value": 1874, "not_funded": 111, "no_printed_total": 9, "missing": 114, "not_collected": 100,
+             "not_enacted": 100, "no_figure": 92},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
-            "not_enacted": 30},
+            "not_enacted": 30, "no_figure": 0},
 }
-FLAGGED_CELLS = {"LHHS": 5, "CJS": 0}
+FLAGGED_CELLS = {"LHHS": 8, "CJS": 0}             # + 3 FY2022 headlines
 
 
 def grid(sc):
@@ -73,18 +74,24 @@ class SiteReadsData(unittest.TestCase):
 
     def test_review_status_comes_with_every_cell(self):
         # Reviewer mode reads human_review_status from each observation's validation records. The owner's
-        # triage (PR #29) resolved 452 of the 462 pending records; 10 stay pending
+        # triage (PR #29) resolved 452 of the 462 pending records; 10 stay pending. The FY2022 backfill adds 27 pending
+        # (sum and cross-document questions) and 90 resolved at creation by the triage's standard reasons
         data = json.loads(S.STAGED.read_text())
+        fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] == 2022
+                  and o["observation_id"].startswith("OBS-LHHS-")}
         st = [v.get("human_review_status") for v in data["validations"]]
-        self.assertEqual((st.count("pending"), st.count("resolved")), (10, 452))
+        self.assertEqual((st.count("pending"), st.count("resolved")), (37, 542))
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
                          ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
-                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912", "VAL-LHHS-07178"])
+                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912", "VAL-LHHS-07178"]
+                         + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
+                            and v["observation_id"] in fy2022])
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
-                self.assertEqual(v["reviewer"], "owner (group approval 2026-10-08)")
+                self.assertEqual(v["reviewer"], "triage rules" if v["observation_id"] in fy2022
+                                 else "owner (group approval 2026-10-08)")
                 self.assertIn(v["result"], ("fail", "flag"))
         for sc in ("LHHS", "CJS"):
             for _, _, o in headline_observations(grid(sc)):
@@ -124,7 +131,7 @@ class DraftStages(unittest.TestCase):
         self.assertEqual({r["draft"] for r in data["bill_report_refs"]}, {"TRUE", "FALSE"})
         self.assertEqual(sorted(r["reference_id"] for r in data["bill_report_refs"] if r["draft"] == "TRUE"),
                          ["BR-CJS-FY2021-SENATE", "BR-CJS-FY2022-SENATE", "BR-CJS-FY2023-SENATE", "BR-CJS-FY2024-HOUSE",
-                          "BR-LHHS-FY2023-SENATE", "BR-LHHS-FY2024-HOUSE"])
+                          "BR-LHHS-FY2022-SENATE", "BR-LHHS-FY2023-SENATE", "BR-LHHS-FY2024-HOUSE"])
         import openpyxl
         wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
         head = next(wb["Bill Report Reference"].iter_rows(max_row=1, values_only=True))

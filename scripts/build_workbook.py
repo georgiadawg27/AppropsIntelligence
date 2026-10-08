@@ -511,6 +511,10 @@ rows = [
     ("\u2022 Labor-HHS rows keep their pipeline provenance (extraction_method text-extracted / AI-extracted / "
      "human_entered; verification_status auto-validated / unverified / flagged). Flagged observations are shaded pink; "
      "failed validations are shaded darker red \u2014 all current fails are table_total checks on rollup rows.", NOTE_FONT),
+    ("\u2022 extraction_method 'derived': a headline the table doesn't print, computed from two printed lines where the "
+     "later years' tables define it exactly (Grants to States for Medicaid FY2022-FY2023: 'appropriated in this bill' "
+     "minus the new advance); the note names both lines and pages, and a structural record checks the arithmetic. A "
+     "confirmed absence is never recorded on an account the document funds.", NOTE_FONT),
     ("", BODY_FONT),
     ("Earlier passes (CJS)", BOLD_NOTE),
     (f"\u2022 Your 40 filled-in Source Document rows collapsed to {len(data['source_docs'])} truly distinct documents \u2014 "

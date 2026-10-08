@@ -74,11 +74,11 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         # v34: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
-        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info)
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 37, "bill_report_reference": 59,
-            "appropriations_observation": 2703, "confirmed_absence": 236, "account_relationship": 11,
-            "validation_record": 7642, "component": 19})
+            "account": 130, "historical_name": 11, "source_document": 39, "bill_report_reference": 63,
+            "appropriations_observation": 3093, "confirmed_absence": 232, "account_relationship": 11,
+            "validation_record": 9414, "component": 19})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
@@ -562,8 +562,8 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 236)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House
-        self.assertEqual(npt, 13)
+        self.assertEqual(n, 232)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 4 FY2023 Medicaid
+        self.assertEqual(npt, 9)
 
     def test_grid_has_three_states(self):
         g = S.history_grid(S.history(self.conn, "ACC-NASA-EXPLORATION"))
@@ -586,7 +586,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
 
 
 class GridStates(StoreTest):
-    """Every cell is in exactly one of six states (approps_store.CELL_STATES),
+    """Every cell is in exactly one of seven states (approps_store.CELL_STATES),
     computed from what is on file, never stored."""
 
     def state(self, account, fy, stage, amount_type="budget authority", component=None):
@@ -789,14 +789,38 @@ class NoPrintedTotal(StoreCopyTest):
         row = next(r for r in g["rows"] if r["fiscal_year"] == fy)
         return next(l for l in row["cells"][stage] if l["amount_type"] == amount_type and l["component"] is None)
 
-    def test_fy2023_medicaid_headline_and_aspr_total(self):
-        # v33's FY2023 rows: Medicaid's new advance printed beside its missing headline (S.Rept. 118-84,
-        # FY2023 Enacted), and the ASPR total the FY2023 House report doesn't print
-        line = self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted")
-        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0005"))
-        self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", 2023, "Enacted", "advance")["state"], "value")
+    def test_fy2023_aspr_total(self):
+        # the ASPR total the FY2023 House report doesn't print
         line = self.head("ACC-HHS-ASPR-TOTAL", 2023, "House Reported")
         self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0031"))
+
+    def test_fy2022_and_fy2023_medicaid_headlines_are_derived(self):
+        # the FY2022 and FY2023 tables print Medicaid's views and its advance, never its headline: the headline is
+        # derived ('appropriated in this bill' - the new advance, the FY2024-FY2027 definition), never a confirmed
+        # absence on a funded account (FY2023's CA-LHHS-0005/0028/0029/0032 retired)
+        for fy, amount in ((2022, 368_666_106_000), (2023, 367_357_090_000)):
+            for stage in ("House Reported", "President's Budget", "Senate Reported", "Enacted"):
+                line = self.head("ACC-HHS-CMS-MEDICAID", fy, stage)
+                o = line["observations"][0]
+                self.assertEqual((line["state"], line["absence"], o["amount"]), ("value", None, amount), (fy, stage))
+                self.assertEqual(self.head("ACC-HHS-CMS-MEDICAID", fy, stage, "advance")["state"], "value", (fy, stage))
+        ids = {r[0] for r in self.conn.execute("SELECT confirmed_absence_id FROM confirmed_absence")}
+        self.assertFalse(ids & {"CA-LHHS-0005", "CA-LHHS-0028", "CA-LHHS-0029", "CA-LHHS-0032"})
+        methods = {r[0] for r in self.conn.execute(
+            "SELECT extraction_method FROM appropriations_observation WHERE canonical_account_id = 'ACC-HHS-CMS-MEDICAID' "
+            "AND fiscal_year IN (2022, 2023) AND amount_type = 'budget authority' AND component IS NULL")}
+        self.assertEqual(methods, {"derived"})
+
+    def test_no_figure_before_a_proposed_accounts_first_figure(self):
+        # a proposed account (AHA, the NIH consolidation) has no figure before the request that proposed it:
+        # 'no figure for this year', not missing; an active account's empty cell stays missing
+        rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
+        state = lambda account, key: S.headline_state(rows[account]["cells"][key]["lines"])
+        for account in ("ACC-HHS-AHA-TOTAL", "ACC-HHS-NIH-NEUROSCIENCE"):
+            for stage in ("House Reported", "Enacted"):
+                self.assertEqual(state(account, f"2022|{stage}"), "no_figure", (account, stage))
+        self.assertEqual(state("ACC-HHS-AHA-TOTAL", "2026|President's Budget"), "value")
+        self.assertIn("no_figure", S.CELL_STATES)
 
     def test_a_rescission_line_with_nothing_beside_it_is_still_none(self):
         line = self.head("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", 2026, "House Reported", "rescission")
@@ -806,8 +830,9 @@ class NoPrintedTotal(StoreCopyTest):
         counts = S.subcommittee_grid(self.conn, "LHHS")["state_counts"]
         self.assertEqual(list(counts), list(S.CELL_STATES))
         # the FY2024 House column (100 cells) moved from not yet collected to the draft's figures and states; then the NEF rescission from H.R. 5894 (missing -> value)
-        self.assertEqual(counts, {"value": 1539, "not_funded": 108, "no_printed_total": 13, "missing": 140,
-                                  "not_collected": 100, "not_enacted": 100})
+        # then the FY2022 backfill (+400 cells) and 'no figure for this year' (68 of them were missing)
+        self.assertEqual(counts, {"value": 1874, "not_funded": 111, "no_printed_total": 9, "missing": 114,
+                                  "not_collected": 100, "not_enacted": 100, "no_figure": 92})
 
 
 class ComponentStage(StoreCopyTest):

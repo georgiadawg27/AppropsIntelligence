@@ -527,6 +527,22 @@
   "coverage": {
    "cells": [
     [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
      2023,
      "Enacted"
     ],
@@ -860,11 +876,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-HRSA-TOTAL",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "Health Resources and Services Administration (agency total)",
-    "other_observations": 18,
+    "other_observations": 22,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0001",
     "relationship_type": "consolidated",
@@ -888,11 +904,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-SAMHSA-TOTAL",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "Substance Abuse and Mental Health Services Administration (agency total)",
-    "other_observations": 32,
+    "other_observations": 40,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0002",
     "relationship_type": "consolidated",
@@ -917,11 +933,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-NIH-NIEHS",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "National Institute of Environmental Health Sciences",
-    "other_observations": 18,
+    "other_observations": 22,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0011",
     "relationship_type": "moved_reclassified",
@@ -945,11 +961,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-CDC-INJURY-PREVENTION",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "Injury Prevention and Control",
-    "other_observations": 18,
+    "other_observations": 22,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0012",
     "relationship_type": "moved_reclassified",
@@ -973,11 +989,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-CDC-BIRTH-DEFECTS",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "Birth Defects, Developmental Disabilities, Disabilities and Health",
-    "other_observations": 17,
+    "other_observations": 21,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0013",
     "relationship_type": "moved_reclassified",
@@ -1002,11 +1018,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-CDC-NIOSH",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "National Institute for Occupational Safety and Health",
-    "other_observations": 18,
+    "other_observations": 22,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0014",
     "relationship_type": "moved_reclassified",
@@ -1031,11 +1047,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-CDC-EEOICP",
     "other_fiscal_years": [
-     2023,
+     2022,
      2027
     ],
     "other_name": "Energy Employees Occupational Illness Compensation Program",
-    "other_observations": 17,
+    "other_observations": 21,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0015",
     "relationship_type": "moved_reclassified",
@@ -1043,6 +1059,7 @@
    }
   ],
   "stage_notes": {
+   "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },
   "total_scope": "agency"

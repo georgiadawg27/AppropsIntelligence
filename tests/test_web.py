@@ -345,7 +345,7 @@ class Browser(BrowserBase):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 236)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House
+        self.assertEqual(n, 232)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 4 FY2023 Medicaid
 
 
 
@@ -363,7 +363,7 @@ class NoPrintedTotalAndCoverage(BrowserBase):
 
     def test_no_printed_total(self):
         self.open_account("ACC-HHS-CMS-MEDICAID")
-        line = self.chip(2023, "Enacted")
+        line = self.chip(2024, "President's Budget")                 # CA-LHHS-0006 (FY2023's are derived headlines now)
         self.assertEqual(line.get_attribute("data-state"), "no_printed_total")
         self.assertEqual(line.locator("[data-testid=no-printed-total]").inner_text(), "No printed total")
         self.assertIn("Total, Grants to States for Medicaid", line.locator("[data-testid=no-printed-total]").get_attribute("title"))

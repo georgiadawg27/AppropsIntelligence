@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08)",
- "data_sha256": "bd5d58903690d64fc56be37ff5a279a82e5856b3f7e26476ebef2cb0ddc55f6f",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines)",
+ "data_sha256": "50b0fbe3ca76a28574714f16c7486884fc2c9c3d8393572509334a8a1936c8d6",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
-   "rows": 68,
+   "rows": 69,
    "columns": 1,
-   "sha256": "46bf19291f2945fc3235bd3cfb9318e8d36a58d70be6c82ec542df764d1bf9b8"
+   "sha256": "9da710eee63824d52293c600f56e0c6a754c4dc95366aa4e7a4edc866a593789"
   },
   "Account": {
    "rows": 131,
@@ -19,14 +19,14 @@
    "sha256": "71585ec773bcc4d808aa4623a2ac756ebbf476826aabee08fcb4410b4ae957f4"
   },
   "Confirmed Absence": {
-   "rows": 237,
+   "rows": 233,
    "columns": 9,
-   "sha256": "18f2c8947bd4e6a7c66cd0b2d566f55ded486042a19e2d58a082b1a888401431"
+   "sha256": "04802afc4bbe9d6272c991a2991a687aa59f2f564e9a7ed48bb87768ebac1657"
   },
   "Appropriations Observation": {
-   "rows": 2704,
+   "rows": 3094,
    "columns": 21,
-   "sha256": "1e39e0150497e8cc56976387065073640259b26cc8304240d8f79a70c995bb26"
+   "sha256": "bf66527c36716667cb3a1f6ea43d95aa01548f7309415f02e6c4d198ebf118c1"
   },
   "Account Relationship": {
    "rows": 12,
@@ -34,19 +34,19 @@
    "sha256": "9bee5a4ae71ece3731c92ad088ffcc88729cd9e2cf8709c014d5fbf4ed563a9e"
   },
   "Source Document": {
-   "rows": 38,
+   "rows": 40,
    "columns": 12,
-   "sha256": "16b7a7a1e599077b7eebc074c730d44899f3b452aa05d489d7572868d8067315"
+   "sha256": "4ffd772e01010659dc77d3e8397c0ad5b80fa0f314dc72b54020278c8ccb2466"
   },
   "Bill Report Reference": {
-   "rows": 60,
+   "rows": 64,
    "columns": 15,
-   "sha256": "076792d7d37df56305b379ee33bc89f02f3bee1447f43a7d174bcc0004aec0de"
+   "sha256": "87dba35c33a94a403602bfa289c9adbbe1d968e206adb7bdaefdf837dc65194e"
   },
   "Validation Record": {
-   "rows": 7643,
+   "rows": 9415,
    "columns": 9,
-   "sha256": "b40405c8a90350543b83b3f57b228dbe95332c8ff82b80198b6b49a1a9be26ae"
+   "sha256": "8d86ae7fee4e3b82c25da07cb8f02dec947fd2276b0fe42e8e84d62e62b315c6"
   },
   "Component": {
    "rows": 20,
