@@ -707,7 +707,7 @@ const TOKENS = {
   missing: ["?", "Missing: a document on file covers this year and stage, but no figure is recorded yet"],
   not_collected: ["n/c", "Not yet collected: no document on file covers this year and stage"],
   not_enacted: ["n/e", "Not yet enacted: no enacted law for this fiscal year yet"],
-  no_figure: ["no figure", "No figure for this year: a proposed account, before its first request"],
+  no_figure: ["no figure", "No figure for this year: a proposed account before its first request, or a program the document funds inside another account"],
   no_printed_total: ["no printed total", "No printed total: the document prints the account but not this line"],
 };
 function token(state, line) {
@@ -756,8 +756,10 @@ function figureCell(row, y, st, cls) {
   else td.append(token(h.state, h));
   const more = otherLines(row, y, st, x.lines, h);
   if (more) td.append(more);
-  if (o && o.cell_note)
-    td.append(el("span", { class: "cn", role: "note", "data-testid": "cell-note", title: o.cell_note, "aria-label": o.cell_note }));
+  // the corner note: the headline observation's, or (a cell with no figure) its line's own
+  const note = (o && o.cell_note) || h.note;
+  if (note)
+    td.append(el("span", { class: "cn", role: "note", "data-testid": "cell-note", title: note, "aria-label": note }));
   // Reviewer mode: the mark is the observation's stored verification_status (flagged / not yet
   // confirmed); what is still open for a person comes from its validation records'
   // human_review_status ("pending"), listed in the tooltip -- no wording is read; records a person

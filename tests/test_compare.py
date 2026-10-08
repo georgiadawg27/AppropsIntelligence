@@ -562,14 +562,8 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, st) for y in (2024, 2026) for st in FOUR if st != "House Reported"]))
 
     def test_grid_state_counts_are_unchanged(self):
-        # LHHS: the FY2024 House column (100 cells) moved from not yet collected to the subcommittee draft's
-        # figures and states (+86 value, +6 not funded, +8 missing); then H.R. 5894 filled the NEF rescission (-1 missing, +1 value)
-        # then the FY2022 backfill (+400 cells); FY2022/FY2023 Medicaid's derived headlines (4 FY2023 cells: no printed
-        # total -> value); and 'no figure for this year': a proposed account's cells before its first figure (68 were missing)
-        want = {"LHHS": {"value": 2226, "not_funded": 116, "no_printed_total": 7, "missing": 132, "not_collected": 100,
-                         "not_enacted": 100, "no_figure": 119},
-                "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
-                        "not_enacted": 30, "no_figure": 0}}
+        # the published grid's counts (tests/fixtures/grid_counts.json, scripts/grid_counts.py): the page shows them
+        want = json.loads((ROOT / "tests" / "fixtures" / "grid_counts.json").read_text())["state_counts"]
         for sc, counts in want.items():
             for grid in ("stages", "years", "history"):
                 self.open("static", f"?view=compare&sc={sc}&grid={grid}")
@@ -1129,8 +1123,14 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
         self.page.click("#expand-all")
         notes = self.page.locator("#compare-grid [data-testid=cell-note]")
-        self.assertEqual(notes.count(), 2)                 # and Refugee FY2022 Enacted, the prior-year column
+        # the view's other notes: Refugee FY2022 Enacted (the prior-year column), ASPR's FY2023 cells (funded within
+        # PHSSEF) and ONC's FY2022 Enacted (the PHS evaluation set-aside)
+        titles = notes.evaluate_all("ns => ns.map(n => n.title)")
+        self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
+        self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation"))
+                            for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
+        self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
 
     def test_the_cell_note_on_refugee_fy2022_enacted(self):
@@ -1154,7 +1154,8 @@ class CompareBrowser(CompareTest):
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
             self.assertEqual(sum(1 for x in titles if x.startswith("H.R. 5894")), 1 if sc == "LHHS" else 0, sc)
-            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000")) for x in titles), titles)
+            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000", "Funded within PHSSEF"))
+                                for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)

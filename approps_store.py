@@ -1124,6 +1124,32 @@ def split_before(rel):
     return rel.get("direction") == "from" and rel["relationship_type"] == "split_from" and bool(rel["human_reviewed"])
 
 
+def old_structure(h, first, cells):
+    """'No figure' wherever a document funds the program inside another account (the old structure): every cell
+    before a confirmed split's effective year (split_before) with no figure of the account's own -- missing, or a
+    confirmed absence of the new heading -- reads no_figure. From the account's first figure on (a later document
+    restating that year in the new structure), such a cell carries the note 'Funded within <account> in this
+    document.' (ASPR's FY2023 House, request and Senate cells: their documents fund it inside PHSSEF)."""
+    split = [r for r in h["relationships"] if split_before(r) and r.get("effective_fiscal_year")]
+    if not split:
+        return
+    eff = min(int(r["effective_fiscal_year"]) for r in split)
+    m = next((re.search(r"Funded within (.+?) before FY\d{4}\.", r["evidence"] or "") for r in split), None)
+    inside = m.group(1) if m else next(r["other_name"] for r in split)
+    for key, cell in cells.items():
+        y = int(key.split("|")[0])
+        if y >= eff:
+            continue
+        lines = []
+        for l in cell["lines"]:
+            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total"):
+                l = dict(l, state="no_figure", missing=False)
+                if first is not None and y >= first:
+                    l["note"] = f"Funded within {inside} in this document."
+            lines.append(l)
+        cell["lines"] = lines
+
+
 def history(conn, account_id):
     """An account's full record: the account, its former names, its account
     relationships (each way), and every observation with its source document
@@ -1179,9 +1205,11 @@ def history(conn, account_id):
         # a law_text match combined across divisions of the law: "Includes $X from Division Y (...) of P.L. ..."
         notes += [(v["observed_result"] or "")[(v["observed_result"] or "").index("Includes $"):] for v in recs
                   if v["rule_applied"] == "law_text" and "Includes $" in (v["observed_result"] or "")]
-        # a law_text check's own note (the money came only through a supplemental: "... Note: No CCPF ...")
+        # a law_text check's own note, only on a 0 figure the law confirms (no such appropriation in the bill's
+        # division) -- where the money came from instead (CCPF FY2021: "No CCPF appropriation in Division H; ...")
         notes += [(v["observed_result"] or "").split("Note: ", 1)[1] for v in recs
-                  if v["rule_applied"] == "law_text" and "Note: " in (v["observed_result"] or "")]
+                  if v["rule_applied"] == "law_text" and r["amount"] == 0 and v["result"] == "pass"
+                  and (v["observed_result"] or "").startswith("0 as recorded. Note: ")]
         # a resolved cross-document difference the owner asked to show (its resolution ends "Note: ...")
         notes += [v["resolution"][v["resolution"].index("Note: ") + 6:] for v in recs
                   if v["rule_applied"] == "cross_document" and v["human_review_status"] == "resolved"
@@ -1201,6 +1229,17 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
+    # a 0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
+    # the program is funded, just not by new budget authority
+    for rec in obs:
+        if rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"] \
+                or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or ""):
+            continue
+        head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
+        if head and head["amount"] == 0:
+            note = f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+            if note not in (head.get("cell_note") or ""):
+                head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
     # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the
     # account's first-year headline cells
     current = [x for x in obs if x["verification_status"] != "superseded"]
@@ -1572,6 +1611,7 @@ def subcommittee_grid(conn, subcommittee):
                                       "adds_to_headline": True, "state": state, "missing": state == "missing",
                                       "observations": [], "absence": None})
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": lines}
+        old_structure(h, first, cells)
         return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",

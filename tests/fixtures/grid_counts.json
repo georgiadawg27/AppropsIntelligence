@@ -1,0 +1,27 @@
+{
+ "note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged.json changes on purpose",
+ "state_counts": {
+  "CJS": {
+   "missing": 460,
+   "no_figure": 0,
+   "no_printed_total": 0,
+   "not_collected": 60,
+   "not_enacted": 30,
+   "not_funded": 18,
+   "value": 752
+  },
+  "LHHS": {
+   "missing": 83,
+   "no_figure": 152,
+   "no_printed_total": 4,
+   "not_collected": 100,
+   "not_enacted": 100,
+   "not_funded": 125,
+   "value": 2236
+  }
+ },
+ "flagged_cells": {
+  "CJS": 0,
+  "LHHS": 5
+ }
+}

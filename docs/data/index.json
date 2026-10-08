@@ -806,33 +806,22 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-08T22:12:19+00:00",
-  "data_sha256": "b5922adccc5902602251a45321efd571d96c3d2c9983d2cace5990c8f07a56b0",
+  "data_committed": "2026-10-08T22:49:28+00:00",
+  "data_sha256": "e19dc95bdd67b6d7a9c963971806408c2bcae3beb51b0a3e8b3b1e1ac830f06a",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
    "account_relationship": 12,
-   "appropriations_observation": 3531,
+   "appropriations_observation": 3536,
    "bill_report_reference": 67,
    "component": 23,
-   "confirmed_absence": 264,
+   "confirmed_absence": 247,
    "historical_name": 14,
    "source_document": 49,
-   "validation_record": 11294
+   "validation_record": 11299
   },
   "version": "v38",
-  "warnings": [
-   "observation OBS-LHHS-2652: source_page '114' is outside SRC-BILL-LHHS-FY2021-SENATE's table pages None",
-   "observation OBS-LHHS-2653: source_page '415' is outside SRC-PLAW-116PUBL260's table pages None",
-   "observation OBS-LHHS-2654: source_page '423' is outside SRC-PLAW-117PUBL103's table pages None",
-   "observation OBS-LHHS-2655: source_page '122' is outside SRC-BILLS-116HR7614RH's table pages None",
-   "observation OBS-LHHS-2656: source_page '506' is outside SRC-BUDGET-APP-FY2021's table pages None",
-   "observation OBS-LHHS-2657: source_page '418' is outside SRC-PLAW-116PUBL260's table pages None",
-   "observation OBS-LHHS-2658: source_page '127' is outside SRC-BILLS-117HR4502RH's table pages None",
-   "observation OBS-LHHS-2659: source_page '132' is outside SRC-BILLS-117S3062IS's table pages None",
-   "observation OBS-LHHS-2660: source_page '507' is outside SRC-BUDGET-APP-FY2022's table pages None",
-   "observation OBS-LHHS-2661: source_page '426' is outside SRC-PLAW-117PUBL103's table pages None"
-  ],
+  "warnings": [],
   "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
  }
 }

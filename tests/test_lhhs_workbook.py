@@ -7,6 +7,7 @@ Run:  python -m unittest tests.test_lhhs_workbook -v
 
 import csv
 import io
+import json
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -35,8 +36,9 @@ class LhhsRowsLoad(unittest.TestCase):
         self.assertEqual(self.report["warnings"], [])
         # v33 carries every row of these CSVs (the account list and the FY2023 rows came after them, outside
         # these files): merging them adds no observation or account the workbook doesn't already have
-        self.assertEqual(self.report["rows"]["account"], 130)
-        self.assertEqual(self.report["rows"]["appropriations_observation"], 3521)
+        staged = json.loads((ROOT / "data" / "staged.json").read_text())
+        self.assertEqual(self.report["rows"]["account"], len(staged["accounts"]))
+        self.assertEqual(self.report["rows"]["appropriations_observation"], len(staged["observations"]))
         ids = {o["observation_id"] for o in rows("observation")}
         import openpyxl
         wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)

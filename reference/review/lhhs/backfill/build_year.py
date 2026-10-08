@@ -434,7 +434,11 @@ def main(argv=None):
     ids = {}
 
     def next_id(prefix, rows, field, width):
-        n = max(int(r[field][len(prefix):]) for r in rows if r[field].startswith(prefix) and r[field][len(prefix):].isdigit())
+        # never reuse an ID: continue after the highest live or retired one (reference/review/lhhs/retired_ids.json)
+        retired = [i for ids_ in json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text()).values()
+                   if isinstance(ids_, dict) for i in ids_]
+        n = max(int(i[len(prefix):]) for i in [r[field] for r in rows] + retired
+                if i.startswith(prefix) and i[len(prefix):].isdigit())
         while True:
             n += 1
             yield f"{prefix}{n:0{width}d}"
