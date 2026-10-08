@@ -62,11 +62,11 @@ class V33Store(unittest.TestCase):
         # the workbook is built from data/staged.json (v38), not read from a committed file
         self.assertEqual(WORKBOOK, S.BUILT_WORKBOOK)
         self.assertEqual(S.data_version(WORKBOOK), "v38")
-        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info)
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 11, "source_document": 37, "bill_report_reference": 59,
-            "component": 19, "appropriations_observation": 2703, "confirmed_absence": 236,
-            "account_relationship": 11, "validation_record": 7642})
+            "account": 130, "historical_name": 13, "source_document": 39, "bill_report_reference": 63,
+            "component": 19, "appropriations_observation": 3109, "confirmed_absence": 230,
+            "account_relationship": 11, "validation_record": 9453})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -129,7 +129,10 @@ class V33Store(unittest.TestCase):
         self.assertEqual(V.verification_status(0.50, [src, ("law_text", "pass")]), "auto-validated")  # another document confirms below 0.90
         rows = self.conn.execute("SELECT result, count(*) FROM validation_record WHERE rule_applied = 'law_text' "
                                  "GROUP BY result").fetchall()
-        self.assertEqual(dict(rows), {"pass": 329, "info": 45})          # + LIHEAP FY2023, matched across divisions H + N
+        # + LIHEAP FY2023, matched across divisions H + N; + FY2022 (H.R. 2471 div. H) and FY2023 Medicaid's derived headline;
+        # + Refugee FY2022's other-law note (an info law_text record from the table, not the law); PHSSEF FY2022 matches the sum
+        # of its heading's four paragraphs
+        self.assertEqual(dict(rows), {"pass": 397, "info": 52})
         # never pending: an info is a recorded difference, not a question
         self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record WHERE rule_applied = 'law_text' "
                                            "AND human_review_status IS NOT NULL AND human_review_status <> ''").fetchone()[0], 0)
@@ -154,7 +157,7 @@ class V33Store(unittest.TestCase):
                 self.assertNotIn(f"{m.group(1)}-{m.group(2)} p", exp, oid)
         n = self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE confidence < 0.9 "
                               "AND verification_status = 'auto-validated'").fetchone()[0]
-        self.assertEqual(n, 70)
+        self.assertEqual(n, 111)                        # + 41 FY2022 figures another document confirms
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
@@ -163,7 +166,7 @@ class V33Store(unittest.TestCase):
                 "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
             self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
             n += 1
-        self.assertEqual(n, 1833)                       # + the 101 FY2024 House draft rows and the NEF rescission, by the same rule
+        self.assertEqual(n, 2239)                       # + the 101 FY2024 House draft rows and the NEF rescission, by the same rule; + FY2022 and the FY2023/FY2024 Medicaid lines
 
     def test_the_fourteen_deliberate_flags(self):
         # the two Title II scope totals stay flagged (pending); the owner resolved the twelve FY2025 Enacted

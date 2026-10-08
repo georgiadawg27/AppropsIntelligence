@@ -167,7 +167,7 @@ CREATE TABLE appropriations_observation (
     source_page              TEXT,
     source_table_or_section  TEXT,
     extraction_method        TEXT NOT NULL CHECK (extraction_method IN ('AI-extracted', 'human-entered', 'hybrid',
-                                                                        'text-extracted')),
+                                                                        'text-extracted', 'derived')),
     confidence               REAL NOT NULL CHECK (confidence BETWEEN 0 AND 1),
     -- provisional: an unconfirmed advance copy that passed every check;
     -- superseded: replaced by the official document's value (reconcile.py)

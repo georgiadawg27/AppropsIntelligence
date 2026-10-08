@@ -272,6 +272,7 @@
         <span><span class="tok">n/c</span> not yet collected</span>
         <span><span class="tok miss">?</span> document on file, figure not yet extracted</span>
         <span><span class="tok">n/e</span> not yet enacted</span>
+        <span><span class="tok">no figure</span> no figure for this year (a proposed account, before its first request)</span>
         <span><span class="up">+</span> / <span class="down">&minus;</span> change, with % of the earlier figure (shown apart from the figures)</span>
         <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
         <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span>
@@ -550,11 +551,13 @@ function figuresOnFile(records) {
 }
 
 // The cell states (approps_store.CELL_STATES), computed by the store, never here.
-const STATE_TEXT = { missing: "Missing", not_collected: "Not yet collected", not_enacted: "Not yet enacted" };
+const STATE_TEXT = { missing: "Missing", not_collected: "Not yet collected", not_enacted: "Not yet enacted",
+                     no_figure: "No figure for this year" };
 const STATE_TITLE = {
   missing: "A document on file covers this year and stage, but no figure or confirmed absence is recorded yet.",
   not_collected: "No document on file covers this year and stage.",
   not_enacted: "No enacted law for this fiscal year yet.",
+  no_figure: "No figure for this year: a proposed account, before its first request.",
 };
 const testid = (state) => state.replace(/_/g, "-");
 function stateChip(state, l) {
@@ -703,6 +706,7 @@ const TOKENS = {
   missing: ["?", "Missing: a document on file covers this year and stage, but no figure is recorded yet"],
   not_collected: ["n/c", "Not yet collected: no document on file covers this year and stage"],
   not_enacted: ["n/e", "Not yet enacted: no enacted law for this fiscal year yet"],
+  no_figure: ["no figure", "No figure for this year: a proposed account, before its first request"],
   no_printed_total: ["no printed total", "No printed total: the document prints the account but not this line"],
 };
 function token(state, line) {
@@ -1119,7 +1123,8 @@ function renderCompare(grid) {
   }
   const c = grid.state_counts || {};
   const parts = [["value", "with a figure"], ["not_funded", "not funded"], ["no_printed_total", "no printed total"],
-                 ["missing", "missing"], ["not_collected", "not yet collected"], ["not_enacted", "not yet enacted"]];
+                 ["missing", "missing"], ["not_collected", "not yet collected"], ["not_enacted", "not yet enacted"],
+                 ["no_figure", "no figure for this year"]];
   $("#grid-counts").replaceChildren(el("span", { text: `Cells in ${label} (every account, every year and stage on file):` }),
     ...parts.map(([k, l]) => el("span", { dataset: { state: k }, text: `${(c[k] || 0).toLocaleString("en-US")} ${l}` })));
   const shown = cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`);
