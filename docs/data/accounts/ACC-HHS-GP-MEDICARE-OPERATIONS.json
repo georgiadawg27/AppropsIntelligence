@@ -11,6 +11,321 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 305000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2653",
+         "offsetting_collections": 0,
+         "publication_date": "2020-12-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-116PUBL260",
+         "source_page": "415",
+         "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations; 134 Stat. 1594-1595) -- 'may transfer up to $305,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11044"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0043",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 7614 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/; the CMS Program Management heading itself provides 'not to exceed $3,984,744,000', p.79).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-07-15",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-116HR7614RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0053",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2021 Budget Appendix brackets the FY2020 law's sec. 227 ($305,000,000 transfer) for deletion (p.505) and proposes no such section.",
+        "fiscal_year": 2021,
+        "publication_date": "2020-02-10",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2021",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 305000000,
+         "amount_type": "budget authority",
+         "bill_id": "Senate chair's draft, FY2021",
+         "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+         "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2652",
+         "offsetting_collections": 0,
+         "publication_date": "2020-11-10",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+         "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+         "source_page": "114",
+         "source_table_or_section": "Title II, General Provisions, sec. 227 (Medicare Operations) -- 'the Secretary ... may transfer up to $305,000,000 to such account from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund' ['Centers for Medicare & Medicaid Services, Program Management'] [bill text]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11043"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 355000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-103",
+         "bill_report_reference_id": "BR-LHHS-FY2022-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "Consolidated Appropriations Act, 2022; Division H (Labor-HHS) is PDF pp. 373-453. sha256 e2c47b8c6d20fb65... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2022,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2654",
+         "offsetting_collections": 0,
+         "publication_date": "2022-03-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-117PUBL103",
+         "source_page": "423",
+         "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations; 136 Stat. 471) -- 'may transfer up to $355,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11045"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0061",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "H.R. 4502 as reported (BILLS-117hr4502rh): the FY2022 House Labor-HHS bill (H.Rept. 117-96). sha256 2338d7b8862f234f... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 4502 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched; the CMS Program Management heading itself provides 'not to exceed $4,315,843,000', p.81).",
+        "fiscal_year": 2022,
+        "publication_date": "2021-07-19",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-117HR4502RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0069",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Budget of the U.S. Government, FY2022, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 20b539e8ee140736... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2022 Budget Appendix brackets the FY2021 law's sec. 227 ($305,000,000 transfer) for deletion (p.506) and proposes no such section.",
+        "fiscal_year": 2022,
+        "publication_date": "2021-05-28",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2022",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0065",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "S. 3062 as introduced (BILLS-117s3062is): the FY2022 Senate chair's draft Labor-HHS bill (SRC-EXPL-LHHS-FY2022-SENATE), introduced 2021-10-25, never reported. sha256 6409256665fd4f6c... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3062 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched; the CMS Program Management heading itself provides 'not to exceed $4,250,843,000', p.89).",
+        "fiscal_year": 2022,
+        "publication_date": "2021-10-25",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-117S3062IS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2022
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
        "missing": true,
        "observations": [],
        "state": "missing"
@@ -972,6 +1287,86 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0043",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 7614 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/; the CMS Program Management heading itself provides 'not to exceed $3,984,744,000', p.79).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-07-15",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR7614RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0053",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2021 Budget Appendix brackets the FY2020 law's sec. 227 ($305,000,000 transfer) for deletion (p.505) and proposes no such section.",
+    "fiscal_year": 2021,
+    "publication_date": "2020-02-10",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2021",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0061",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "H.R. 4502 as reported (BILLS-117hr4502rh): the FY2022 House Labor-HHS bill (H.Rept. 117-96). sha256 2338d7b8862f234f... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 4502 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched; the CMS Program Management heading itself provides 'not to exceed $4,315,843,000', p.81).",
+    "fiscal_year": 2022,
+    "publication_date": "2021-07-19",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117HR4502RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0069",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Budget of the U.S. Government, FY2022, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 20b539e8ee140736... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2022 Budget Appendix brackets the FY2021 law's sec. 227 ($305,000,000 transfer) for deletion (p.506) and proposes no such section.",
+    "fiscal_year": 2022,
+    "publication_date": "2021-05-28",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2022",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0065",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "S. 3062 as introduced (BILLS-117s3062is): the FY2022 Senate chair's draft Labor-HHS bill (SRC-EXPL-LHHS-FY2022-SENATE), introduced 2021-10-25, never reported. sha256 6409256665fd4f6c... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3062 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched; the CMS Program Management heading itself provides 'not to exceed $4,250,843,000', p.89).",
+    "fiscal_year": 2022,
+    "publication_date": "2021-10-25",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117S3062IS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0034",
     "confirmed_date": "2026-10-06",
     "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
@@ -1134,6 +1529,129 @@
    ]
   ],
   "observations": [
+   {
+    "amount": 305000000,
+    "amount_type": "budget authority",
+    "bill_id": "Senate chair's draft, FY2021",
+    "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+    "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2652",
+    "offsetting_collections": 0,
+    "publication_date": "2020-11-10",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+    "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+    "source_page": "114",
+    "source_table_or_section": "Title II, General Provisions, sec. 227 (Medicare Operations) -- 'the Secretary ... may transfer up to $305,000,000 to such account from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund' ['Centers for Medicare & Medicaid Services, Program Management'] [bill text]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11043"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 305000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2653",
+    "offsetting_collections": 0,
+    "publication_date": "2020-12-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-116PUBL260",
+    "source_page": "415",
+    "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations; 134 Stat. 1594-1595) -- 'may transfer up to $305,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11044"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 355000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-103",
+    "bill_report_reference_id": "BR-LHHS-FY2022-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "Consolidated Appropriations Act, 2022; Division H (Labor-HHS) is PDF pp. 373-453. sha256 e2c47b8c6d20fb65... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2022,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2654",
+    "offsetting_collections": 0,
+    "publication_date": "2022-03-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-117PUBL103",
+    "source_page": "423",
+    "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations; 136 Stat. 471) -- 'may transfer up to $355,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11045"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": 0,
     "amount_type": "budget authority",

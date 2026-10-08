@@ -2966,12 +2966,12 @@
   ],
   "relationships": [
    {
-    "confidence": 0.5,
+    "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
     "from_account_id": "ACC-HHS-ASPR-RDP",
-    "human_reviewed": 0,
+    "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-RDP",
     "other_fiscal_years": [
      2023,
@@ -2981,16 +2981,16 @@
     "other_observations": 15,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0009",
-    "relationship_type": "uncertain",
+    "relationship_type": "split_from",
     "to_account_id": "ACC-HHS-OS-PHSSEF"
    },
    {
-    "confidence": 0.5,
+    "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
     "from_account_id": "ACC-HHS-ASPR-OPER",
-    "human_reviewed": 0,
+    "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-OPER",
     "other_fiscal_years": [
      2023,
@@ -3000,7 +3000,26 @@
     "other_observations": 15,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0010",
-    "relationship_type": "uncertain",
+    "relationship_type": "split_from",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   },
+   {
+    "confidence": 1.0,
+    "direction": "to",
+    "effective_fiscal_year": 2024,
+    "evidence": "ASPR's agency total, split from PHSSEF with its two accounts (REL-LHHS-0009, REL-LHHS-0010). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "from_account_id": "ACC-HHS-ASPR-TOTAL",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-ASPR-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Administration for Strategic Preparedness and Response (agency total)",
+    "other_observations": 15,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0016",
+    "relationship_type": "split_from",
     "to_account_id": "ACC-HHS-OS-PHSSEF"
    }
   ],

@@ -1117,6 +1117,13 @@ def relationship_cites(conn, evidence):
     return {"cites": out} if out else {}
 
 
+def split_before(rel):
+    """A confirmed (human-reviewed) split_from relationship read from the new account's side: before its first
+    figure the account's money was inside the other account (ASPR's inside PHSSEF), so those years have no figure
+    of their own -- never missing."""
+    return rel.get("direction") == "from" and rel["relationship_type"] == "split_from" and bool(rel["human_reviewed"])
+
+
 def history(conn, account_id):
     """An account's full record: the account, its former names, its account
     relationships (each way), and every observation with its source document
@@ -1172,6 +1179,9 @@ def history(conn, account_id):
         # a law_text match combined across divisions of the law: "Includes $X from Division Y (...) of P.L. ..."
         notes += [(v["observed_result"] or "")[(v["observed_result"] or "").index("Includes $"):] for v in recs
                   if v["rule_applied"] == "law_text" and "Includes $" in (v["observed_result"] or "")]
+        # a law_text check's own note (the money came only through a supplemental: "... Note: No CCPF ...")
+        notes += [(v["observed_result"] or "").split("Note: ", 1)[1] for v in recs
+                  if v["rule_applied"] == "law_text" and "Note: " in (v["observed_result"] or "")]
         # a resolved cross-document difference the owner asked to show (its resolution ends "Note: ...")
         notes += [v["resolution"][v["resolution"].index("Note: ") + 6:] for v in recs
                   if v["rule_applied"] == "cross_document" and v["human_review_status"] == "resolved"
@@ -1191,6 +1201,17 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
+    # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the
+    # account's first-year headline cells
+    current = [x for x in obs if x["verification_status"] != "superseded"]
+    for r in rels:
+        if split_before(r) and "Note: " in (r["evidence"] or "") and current:
+            note = r["evidence"][r["evidence"].index("Note: ") + 6:]
+            y0 = min(x["fiscal_year"] for x in current)
+            for x in current:
+                if x["fiscal_year"] == y0 and x["amount_type"] == "budget authority" and x["component"] is None \
+                        and note not in (x.get("cell_note") or ""):
+                    x["cell_note"] = " ".join(n for n in (x.get("cell_note"), note) if n)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     absences = [dict(r) for r in conn.execute(
@@ -1238,7 +1259,8 @@ def history(conn, account_id):
 #                     yet: a proposed account (Account.status 'proposed': it exists only as
 #                     a request), or one a document shows did not exist yet (a confirmed absence
 #                     before its first figure whose evidence says so, e.g. ARPA-H's FY2021
-#                     Enacted); not counted as missing
+#                     Enacted), or one a confirmed split_from relationship carves out of another
+#                     account (ASPR's accounts before FY2023: split_before); not counted as missing
 CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure")
 
 
@@ -1340,7 +1362,9 @@ def history_grid(h):
     parallel total's printed scope) is listed only where recorded, next to
     the headline it names (headline_observation_id), and marked
     adds_to_headline False: it is never added to anything (additive_lines).
-    Where a document prints no such scope there is nothing missing.
+    Where a document prints no such scope there is nothing missing. A chamber's
+    one-off proposal line (accounts.PROPOSAL_COMPONENTS: House Diaper Grants)
+    is likewise listed only where recorded: no other cell is missing it.
     -> {"stages", "series": [{"amount_type", "component", "component_kind", "component_label"}],
         "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
@@ -1367,7 +1391,8 @@ def history_grid(h):
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
                 k, label = kind.get(c, (None, None))
-                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED) and not found and not absence:
+                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS) \
+                        and not found and not absence:
                     continue
                 state = cell_state(found, absence, y, st, h["coverage"])
                 if absence and t == "budget authority" and c is None and (scoped or any(k[:2] == (y, st) for k in by)):
@@ -1517,12 +1542,14 @@ def subcommittee_grid(conn, subcommittee):
     def row_of(a):
         _, h, g = grids[a["canonical_account_id"]]
         own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
-        # the years before the account existed: before its first figure, for a proposed account, or for one a
-        # document shows did not exist yet (a confirmed absence before its first figure, e.g. ARPA-H in FY2021)
+        # the years before the account existed: before its first figure, for a proposed account, for one a
+        # document shows did not exist yet (a confirmed absence before its first figure, e.g. ARPA-H in FY2021),
+        # or for one a confirmed relationship splits from another account (ASPR's from PHSSEF: split_before)
         figures = [o["fiscal_year"] for o in h["observations"] if o.get("verification_status") != "superseded"]
         first = min(figures) if figures else None
         before = first is not None and (a.get("status") == "proposed" or any(
-            x["fiscal_year"] < first and "did not exist" in (x.get("evidence") or "") for x in h["absences"]))
+            x["fiscal_year"] < first and "did not exist" in (x.get("evidence") or "") for x in h["absences"])
+            or any(split_before(r) for r in h["relationships"]))
         cells = {}
         for y in years:
             for st in stages:
@@ -1534,7 +1561,8 @@ def subcommittee_grid(conn, subcommittee):
                 else:
                     lines = []
                     for s in g["series"]:
-                        if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st:
+                        if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st \
+                                or s["component"] in A.PROPOSAL_COMPONENTS:
                             continue                     # as in history_grid: only where it can exist / is recorded
                         state = cell_state([], None, y, st, h["coverage"])
                         if state == "missing" and before and y < first:

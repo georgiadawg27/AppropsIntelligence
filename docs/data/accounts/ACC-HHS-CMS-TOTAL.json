@@ -20,6 +20,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
          "canonical_account_id": "ACC-HHS-CMS-TOTAL",
+         "cell_note": "The FY2022 Senate draft's FY2021 figure also includes $305,000,000 from Division H sec. 227 (a transfer from the Medicare trust funds; P.L. 116-260, 134 Stat. 1595), recorded as Medicare Operations.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -76,13 +77,14 @@
            "validation_id": "VAL-LHHS-10786"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Our figure is Division H's heading exactly; the FY2022 Senate draft's FY2021 column adds the $305,000,000 Division H sec. 227 lets the Secretary transfer to the account (P.L. 116-260 PDF p.415). All divisions were searched for CMS Program Management amounts: Division CC's ($2M, $9M, $10M) are for other purposes. Owner 2026-10-08. Note: The FY2022 Senate draft's FY2021 figure also includes $305,000,000 from Division H sec. 227 (a transfer from the Medicare trust funds; P.L. 116-260, 134 Stat. 1595), recorded as Medicare Operations.",
            "result": "flag",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-10824"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -2539,6 +2541,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
     "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
     "canonical_account_id": "ACC-HHS-CMS-TOTAL",
+    "cell_note": "The FY2022 Senate draft's FY2021 figure also includes $305,000,000 from Division H sec. 227 (a transfer from the Medicare trust funds; P.L. 116-260, 134 Stat. 1595), recorded as Medicare Operations.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -2595,13 +2598,14 @@
       "validation_id": "VAL-LHHS-10786"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Our figure is Division H's heading exactly; the FY2022 Senate draft's FY2021 column adds the $305,000,000 Division H sec. 227 lets the Secretary transfer to the account (P.L. 116-260 PDF p.415). All divisions were searched for CMS Program Management amounts: Division CC's ($2M, $9M, $10M) are for other purposes. Owner 2026-10-08. Note: The FY2022 Senate draft's FY2021 figure also includes $305,000,000 from Division H sec. 227 (a transfer from the Medicare trust funds; P.L. 116-260, 134 Stat. 1595), recorded as Medicare Operations.",
       "result": "flag",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-10824"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 1027438760000,

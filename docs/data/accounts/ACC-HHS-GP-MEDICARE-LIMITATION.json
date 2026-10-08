@@ -9,6 +9,240 @@
         "amount_type": "budget authority",
         "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
         "component": null,
+        "confirmed_absence_id": "CA-LHHS-0060",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 116-260: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-12-27",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-116PUBL260",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0046",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 7614 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-07-15",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-116HR7614RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0056",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2021 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-02-10",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2021",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0051",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "the Senate chair's draft bill, FY2021: no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-11-10",
+        "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+        "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0075",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Consolidated Appropriations Act, 2022; Division H (Labor-HHS) is PDF pp. 373-453. sha256 e2c47b8c6d20fb65... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 117-103: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2022,
+        "publication_date": "2022-03-15",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-117PUBL103",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0064",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "H.R. 4502 as reported (BILLS-117hr4502rh): the FY2022 House Labor-HHS bill (H.Rept. 117-96). sha256 2338d7b8862f234f... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 4502 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2022,
+        "publication_date": "2021-07-19",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-117HR4502RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0072",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Budget of the U.S. Government, FY2022, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 20b539e8ee140736... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2022 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2022,
+        "publication_date": "2021-05-28",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2022",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0068",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "S. 3062 as introduced (BILLS-117s3062is): the FY2022 Senate chair's draft Labor-HHS bill (SRC-EXPL-LHHS-FY2022-SENATE), introduced 2021-10-25, never reported. sha256 6409256665fd4f6c... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3062 (introduced): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+        "fiscal_year": 2022,
+        "publication_date": "2021-10-25",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-117S3062IS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2022
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+        "component": null,
         "confirmed_absence_id": "CA-LHHS-0015",
         "confirmed_date": "2026-09-28",
         "document_type": "committee_report",
@@ -585,6 +819,134 @@
  },
  "history": {
   "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0060",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 116-260: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-12-27",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-116PUBL260",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0046",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 7614 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-07-15",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR7614RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0056",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2021 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-02-10",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2021",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0051",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "the Senate chair's draft bill, FY2021: no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-11-10",
+    "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+    "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0075",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Consolidated Appropriations Act, 2022; Division H (Labor-HHS) is PDF pp. 373-453. sha256 e2c47b8c6d20fb65... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 117-103: no limitation on amounts under title XVIII of the Social Security Act in Division H (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2022,
+    "publication_date": "2022-03-15",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-117PUBL103",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0064",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "H.R. 4502 as reported (BILLS-117hr4502rh): the FY2022 House Labor-HHS bill (H.Rept. 117-96). sha256 2338d7b8862f234f... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 4502 (reported): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2022,
+    "publication_date": "2021-07-19",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117HR4502RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0072",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Budget of the U.S. Government, FY2022, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 20b539e8ee140736... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2022 Budget Appendix: no limitation on amounts under title XVIII of the Social Security Act in the HHS chapter's proposed language (pp. 425-511, bracketed text excluded) (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2022,
+    "publication_date": "2021-05-28",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2022",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0068",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "S. 3062 as introduced (BILLS-117s3062is): the FY2022 Senate chair's draft Labor-HHS bill (SRC-EXPL-LHHS-FY2022-SENATE), introduced 2021-10-25, never reported. sha256 6409256665fd4f6c... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3062 (introduced): no limitation on amounts under title XVIII of the Social Security Act in the whole text (searched for 'limitation' within a sentence of 'title XVIII': none; 'XVIII' appears only in the CMS Program Management heading's list of Social Security Act titles). The FY2026 line this account records is not itself identified in P.L. 119-75 (account notes).",
+    "fiscal_year": 2022,
+    "publication_date": "2021-10-25",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117S3062IS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf"
+   },
    {
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
