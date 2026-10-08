@@ -1072,12 +1072,21 @@ function renderCompare(grid) {
                          ...crAttrs(k) }));
     if (k) crInGroup.add(k.fy);
   }
+  // a House / Senate column whose Bill Report Reference row says draft (the full committee never
+  // reported the bill): "House (draft)", its title naming the document the figures come from
+  const draft = (c) => {
+    const d = c.fig && (c.fig[1] === 1 || c.fig[1] === 2) && (grid.drafts || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`];
+    return d ? { key: `${c.fig[0]}|${STAGES4[c.fig[1]]}`,
+                 title: "Committee draft \u2014 the full committee never reported this bill" + (d.document ? ` \u00b7 ${d.document}` : "") } : null;
+  };
   const r2 = el("tr", {}, ...cols.map((c) => {
     const n = note(c);
     const k = c.fig && crInGroup.has(c.fig[0]) ? null : cr(c);
-    const label = k ? `${c.label} (CR)` : c.label;
-    return el("th", { scope: "col", class: c.cls, title: n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}`,
-                      ...crAttrs(k) },
+    const dr = draft(c);
+    const label = k ? `${c.label} (CR)` : dr ? `${c.label} (draft)` : c.label;
+    const plain = n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}`;
+    return el("th", { scope: "col", class: c.cls, title: dr ? dr.title + (n ? ` \u2014 ${n}` : "") : plain,
+                      ...crAttrs(k), ...(dr ? { "data-draft": dr.key, "data-testid": "draft-label" } : {}) },
       n ? noteMark(n) : null, label);
   }));
   current = { grid, cols };
