@@ -64,9 +64,9 @@ class V33Store(unittest.TestCase):
         self.assertEqual(S.data_version(WORKBOOK), "v38")
         # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 14, "source_document": 39, "bill_report_reference": 63,
-            "component": 22, "appropriations_observation": 3131, "confirmed_absence": 230,
-            "account_relationship": 11, "validation_record": 9496})
+            "account": 130, "historical_name": 14, "source_document": 41, "bill_report_reference": 67,
+            "component": 23, "appropriations_observation": 3521, "confirmed_absence": 231,
+            "account_relationship": 11, "validation_record": 11283})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -132,7 +132,7 @@ class V33Store(unittest.TestCase):
         # + LIHEAP FY2023, matched across divisions H + N; + FY2022 (H.R. 2471 div. H) and FY2023 Medicaid's derived headline;
         # + Refugee FY2022's other-law note (an info law_text record from the table, not the law); PHSSEF FY2022 matches the sum
         # of its heading's four paragraphs; earlier records the paragraph sum now matches updated to pass (owner, 2026-10-08)
-        self.assertEqual(dict(rows), {"pass": 404, "info": 47})
+        self.assertEqual(dict(rows), {"pass": 471, "info": 53})
         # never pending: an info is a recorded difference, not a question
         self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record WHERE rule_applied = 'law_text' "
                                            "AND human_review_status IS NOT NULL AND human_review_status <> ''").fetchone()[0], 0)
@@ -157,7 +157,7 @@ class V33Store(unittest.TestCase):
                 self.assertNotIn(f"{m.group(1)}-{m.group(2)} p", exp, oid)
         n = self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE confidence < 0.9 "
                               "AND verification_status = 'auto-validated'").fetchone()[0]
-        self.assertEqual(n, 115)                        # + 45 FY2022 figures another document confirms
+        self.assertEqual(n, 155)                        # + 45 FY2022 and 40 FY2021 figures another document confirms
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
@@ -166,7 +166,7 @@ class V33Store(unittest.TestCase):
                 "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
             self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
             n += 1
-        self.assertEqual(n, 2257)                       # + the 101 FY2024 House draft rows and the NEF rescission, by the same rule; + FY2022 and the FY2023/FY2024 Medicaid lines
+        self.assertEqual(n, 2647)                       # + the 101 FY2024 House draft rows and the NEF rescission, by the same rule; + FY2022 and the FY2023/FY2024 Medicaid lines
 
     def test_the_fourteen_deliberate_flags(self):
         # the two Title II scope totals stay flagged (pending); the owner resolved the twelve FY2025 Enacted

@@ -76,9 +76,9 @@ class Load(StoreTest):
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], {
-            "account": 130, "historical_name": 14, "source_document": 39, "bill_report_reference": 63,
-            "appropriations_observation": 3131, "confirmed_absence": 230, "account_relationship": 11,
-            "validation_record": 9496, "component": 22})
+            "account": 130, "historical_name": 14, "source_document": 41, "bill_report_reference": 67,
+            "appropriations_observation": 3521, "confirmed_absence": 231, "account_relationship": 11,
+            "validation_record": 11283, "component": 23})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
@@ -563,7 +563,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                             n += 1
                             self.assertTrue(line["absence"]["evidence"] and line["absence"]["source_document_id"])
                             self.assertEqual(line["observations"], [])
-        self.assertEqual(n, 230)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 6 Medicaid (FY2023, FY2024)
+        self.assertEqual(n, 231)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 6 Medicaid (FY2023, FY2024); + ARPA-H FY2021
         self.assertEqual(npt, 7)
 
     def test_grid_has_three_states(self):
@@ -873,8 +873,8 @@ class NoPrintedTotal(StoreCopyTest):
         self.assertEqual(list(counts), list(S.CELL_STATES))
         # the FY2024 House column (100 cells) moved from not yet collected to the draft's figures and states; then the NEF rescission from H.R. 5894 (missing -> value)
         # then the FY2022 backfill (+400 cells) and 'no figure for this year' (68 of them were missing)
-        self.assertEqual(counts, {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101,
-                                  "not_collected": 100, "not_enacted": 100, "no_figure": 92})
+        self.assertEqual(counts, {"value": 2226, "not_funded": 116, "no_printed_total": 7, "missing": 132,
+                                  "not_collected": 100, "not_enacted": 100, "no_figure": 119})
 
 
 class ComponentStage(StoreCopyTest):

@@ -551,7 +551,7 @@ class CompareBrowser(CompareTest):
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.page.click("#expand-all")
-        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in (2022, 2023, 2024, 2025, 2026)]
+        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)]
                                                      + [(2027, "President's Budget"), (2027, "House Reported")]))
         self.open("static", "?view=compare&sc=LHHS&grid=years&a=2024&b=2026")
         self.page.click("#expand-all")
@@ -566,8 +566,8 @@ class CompareBrowser(CompareTest):
         # figures and states (+86 value, +6 not funded, +8 missing); then H.R. 5894 filled the NEF rescission (-1 missing, +1 value)
         # then the FY2022 backfill (+400 cells); FY2022/FY2023 Medicaid's derived headlines (4 FY2023 cells: no printed
         # total -> value); and 'no figure for this year': a proposed account's cells before its first figure (68 were missing)
-        want = {"LHHS": {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101, "not_collected": 100,
-                         "not_enacted": 100, "no_figure": 92},
+        want = {"LHHS": {"value": 2226, "not_funded": 116, "no_printed_total": 7, "missing": 132, "not_collected": 100,
+                         "not_enacted": 100, "no_figure": 119},
                 "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
                         "not_enacted": 30, "no_figure": 0}}
         for sc, counts in want.items():
@@ -791,7 +791,7 @@ class CompareBrowser(CompareTest):
     def test_draft_stages_are_labeled_in_every_view(self):
         # a House / Senate column whose Bill Report Reference row says draft = TRUE (the full committee never
         # reported the bill) reads "House (draft)" / "Senate (draft)"; its title names the document
-        want = {"LHHS": {(2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")},
+        want = {"LHHS": {(2021, "Senate Reported"), (2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")},
                 "CJS": {(2021, "Senate Reported"), (2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")}}
         title = "Committee draft \u2014 the full committee never reported this bill \u00b7 "
         for sc, drafts in want.items():
@@ -834,7 +834,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
-                                   ["FY2022", "FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY22 → FY26"]])
+                                   ["FY2021", "FY2022", "FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY21 → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
     def test_reviewer_mode_dots(self):
@@ -1104,14 +1104,14 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(same, 0)
                 self.assertEqual(self.page.locator("#compare-grid td.delta").first.evaluate("e => getComputedStyle(e).fontSize"), "13px")
 
-    def test_notes_are_corner_marks_261_in_all(self):
+    def test_notes_are_corner_marks_296_in_all(self):
         # the cells with other lines on file, both subcommittees (title totals included): 208, + 6 in the
         # FY2024 House draft's column (the ACF, ACL, CDC, NIH and OS totals and Medicaid: program-level and
         # advance lines beside the headline); + 32 with the FY2022 column and FY2023 Medicaid's views; + 15 with the
-        # owner's FY2022 decisions (earmark, Kids First and Diaper Grants lines)
+        # owner's FY2022 decisions (earmark, Kids First and Diaper Grants lines); + 35 with the FY2021 column
         total = sum(1 for g in (self.lhhs, self.grid) for r in g["rows"] + [t["total"] for t in g["titles"] if t["total"]]
                     for k in r["cells"] if other_lines(r, *k.split("|")))
-        self.assertEqual(total, 261)
+        self.assertEqual(total, 296)
         for sc in ("LHHS", "CJS"):
             self.open("static", f"?view=compare&sc={sc}&grid=history")
             self.page.click("#expand-all")
@@ -1186,7 +1186,7 @@ class CompareBrowser(CompareTest):
 
     def test_other_lines_marker_on_every_cell_that_has_them(self):
         lhhs_pairs = {"stages&fy=2026": [(2025, "Enacted")] + [(2026, st) for st in FOUR],
-                      "history": [(y, "Enacted") for y in (2022, 2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
+                      "history": [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
                       "years&a=2024&b=2026": [(y, st) for y in (2024, 2026) for st in FOUR]}
         cases = [("LHHS", q, p, self.lhhs) for q, p in lhhs_pairs.items()]
         cases.append(("CJS", "stages&fy=2024", [(2023, "Enacted")] + [(2024, st) for st in FOUR], self.grid))

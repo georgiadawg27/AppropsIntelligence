@@ -34,7 +34,7 @@ class FormerNamesByYear(unittest.TestCase):
         heads = [o for o in self.data["observations"] if o["canonical_account_id"] == "ACC-HHS-HRSA-PROGRAM-SUPPORT"
                  and not o["component"] and o["verification_status"] != "superseded"]
         printed_pm = {o["fiscal_year"] for o in heads if "printed as 'Program Management'" in o["source_table_or_section"]}
-        self.assertEqual(printed_pm, {2022})
+        self.assertEqual(printed_pm, {2021, 2022})
         self.assertFalse([o["observation_id"] for o in heads if o["fiscal_year"] >= 2023
                           and "'Program Management'" in o["source_table_or_section"]])
 
