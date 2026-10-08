@@ -16945,9 +16945,9 @@
    "amount_type": "supplemental",
    "offsetting_collections": "FALSE",
    "transfer_link_account_id": "",
-   "source_document_id": "SRC-CRPT-118HRPT582",
-   "source_page": "247-248",
-   "source_table_or_section": "Title III, NSF, Research and Related Activities (emergency)",
+   "source_document_id": "SRC-CRPT-118SRPT198",
+   "source_page": "227",
+   "source_table_or_section": "Title III, NSF, Research and Related Activities (emergency) -- emergency piece of the FY2025 request; printed in the Senate report (p.227); not printed as its own line in H.Rept. 118-582",
    "extraction_method": "human-entered",
    "confidence": 1.0,
    "verification_status": "human-verified",
@@ -24546,7 +24546,7 @@
    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Centers for Medicare and Medicaid Services' [2024 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0215",
@@ -24622,7 +24622,7 @@
    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Centers for Medicare and Medicaid Services' [Budget estimate]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0219",
@@ -25154,7 +25154,7 @@
    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Medicare Operations (Sec 227)' [2024 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0247",
@@ -26598,7 +26598,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Cancer Institute (NCI)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0323",
@@ -27833,7 +27833,7 @@
    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2024 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0388",
@@ -27947,7 +27947,7 @@
    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [Budget estimate]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-0394",
@@ -29790,7 +29790,7 @@
    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Head Start' [Bill]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -29811,7 +29811,7 @@
    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Head Start' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -29916,7 +29916,7 @@
    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Familiies' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30084,7 +30084,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control and Prevention' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30189,7 +30189,7 @@
    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Centers for Medicare and Medicaid Services' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30294,7 +30294,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Primary Health Care' [Bill]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30315,7 +30315,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Primary Health Care' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30357,7 +30357,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Health Resources and Services Administration' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30525,7 +30525,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2023 Request] Scope as printed in H.Rept. 117-403: includes the four 'NIH Innovation Account, CURES Act' lines; ARPA-H is printed under NIH in the request column (5,000,000) and '---' in the Bill column, where the committee places it under the Office of the Secretary (p.836).",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30630,7 +30630,7 @@
    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2023 Request] Scope as printed in H.Rept. 117-403: the Office of the Secretary total includes the Public Health and Social Services Emergency Fund (PHSSEF, 'Total, PHSSEF' p.836: the preparedness programs the FY2024+ reports print under ASPR) and, in the Bill column, 'Advanced Research Projects' 2,750,000 (ARPA-H, which the request and the later reports print under NIH).",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30714,7 +30714,7 @@
    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, SAMHSA' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -30777,7 +30777,7 @@
    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Department of Health and Human Services' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -32184,7 +32184,7 @@
    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Children and Families Services Programs' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -34599,7 +34599,7 @@
    "source_table_or_section": "Title II, Administration for Strategic Preparedness and Response -- printed as 'Subtotal Research, Development, and Procurement' [2024 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -34704,7 +34704,7 @@
    "source_table_or_section": "Title II, Administration for Strategic Preparedness and Response -- printed as 'Subtotal Research, Development, and Procurement' [Budget estimate]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -34872,7 +34872,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Birth Defects, Developmental Disabilities, Disabilities and Health' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -35208,7 +35208,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Buildings and Facilities' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -35565,7 +35565,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Chronic Disease Prevention and Health Promotion' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -35922,7 +35922,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Energy Employees Occupational Illness Compensation Program' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -36258,7 +36258,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Emerging and Zoonotic Infectious Diseases' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -36615,7 +36615,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Environmental Health' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -36972,7 +36972,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Global Health' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -37329,7 +37329,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'HIV/AIDS, Viral Hepatitis, Sexually Transmitted Diseases, and Tuberculosis Prevention' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -37686,7 +37686,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -38043,7 +38043,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Injury Prevention and Control' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -38400,7 +38400,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'National Institute for Occupational Safety and Health' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -38757,7 +38757,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Public Health Preparedness and Response' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -39114,7 +39114,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Subtotal, CDC–Wide Activities' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -39387,7 +39387,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Public Health Scientific Services' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -40794,7 +40794,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Health Systems' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41109,7 +41109,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Subtotal, Health Workforce' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41151,7 +41151,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Health Workforce' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41193,7 +41193,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Subtotal, Health Workforce' [2024 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41298,7 +41298,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Subtotal, Health Workforce' [Budget estimate]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41340,7 +41340,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Subtotal, Health Workforce' [FY 2026 Enacted]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -41865,7 +41865,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, HRSA-Wide Activities and Program Support' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -42222,7 +42222,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Rural Health' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -43314,7 +43314,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -43692,7 +43692,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E Fogarty International Center (FIC)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -44049,7 +44049,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Center for Advancing Translational Sciences (NCATS)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -44406,7 +44406,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Center for Complementary and Integrative Health (NCCIH)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -44763,7 +44763,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Eye Institute (NEI)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -45162,7 +45162,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Human Genome Research Institute (NHGRI)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -45519,7 +45519,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Heart, Lung, and Blood Institute (NHLBI)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -45876,7 +45876,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute on Aging (NIA)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -46233,7 +46233,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute on Alcohol Abuse and Alcoholism (NIAAA)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -46590,7 +46590,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Allergy and Infectious Diseases (NIAID)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -46947,7 +46947,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Arthritis and Musculoskeletal and Skin Diseases (NIAMS)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -47304,7 +47304,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Biomedical Imaging and Bioengineering (NIBIB)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -47661,7 +47661,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Eunice Kennedy Shriver National Institute of Child Health and Human Development (NICHD)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -48018,7 +48018,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute on Drug Abuse (NIDA)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -48375,7 +48375,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute on Deafness and Other Communication Disorders (NIDCD)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -48711,7 +48711,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Dental and Craniofacial Research (NIDCR)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -49068,7 +49068,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Diabetes and Digestive and Kidney Diseases [NIDDK]' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -49425,7 +49425,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Environmental Health Sciences (NIEHS)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -50139,7 +50139,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Mental Health (NIMH)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -50496,7 +50496,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute on Minority Health and Health Disparities (NIMHD)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -50853,7 +50853,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Neurological Disorders and Stroke (NINDS)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -51210,7 +51210,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute of Nursing Research (NINR)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -51567,7 +51567,7 @@
    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Library of Medicine (NLM)' [2023 appropriation]",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -54297,7 +54297,7 @@
    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -54486,7 +54486,7 @@
    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Subtotal, Mental Health' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -54843,7 +54843,7 @@
    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Total, Substance Use Prevention Services, appropriation' [FY 2023 Request]",
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -55557,7 +55557,7 @@
    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Subtotal, Substance Use Services, appropriation.' [FY 2023 Request] (vision merged this row with the '(Evaluation Tap Funding)' row under it; read by hand from the page image (PDF p.818, printed p.814))",
    "extraction_method": "human-entered",
    "confidence": 0.5,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -138300,9 +138300,9 @@
    "validation_id": "VAL-LHHS-07183",
    "observation_id": "OBS-LHHS-0014",
    "rule_applied": "law_text",
-   "expected_result": "H.R. 2617 (enrolled) div. H, 'LOW INCOME HOME ENERGY ASSISTANCE': first amount $1,500,000,000",
-   "observed_result": "4,000,000,000 as recorded; the headline is larger than the law's first amount: it counts amounts provided outside this paragraph (another paragraph or division of the act) -- worth a look",
-   "result": "info",
+   "expected_result": "H.R. 2617 (enrolled) div. H, 'LOW INCOME HOME ENERGY ASSISTANCE': $1,500,000,000; div. N (Disaster Relief Supplemental Appropriations Act, 2023), same heading, second paragraph: $2,500,000,000",
+   "observed_result": "match (combined across divisions: H + N): $1,500,000,000 + $2,500,000,000 = 4,000,000,000 as recorded (div. H names that second paragraph in its allocation proviso; div. N's first paragraph, $1,000,000,000, is not in this figure). Includes $2,500,000,000 from Division N (Disaster Relief Supplemental Appropriations Act, 2023) of P.L. 117-328.",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
@@ -139005,7 +139005,7 @@
    "observation_id": "OBS-LHHS-1664",
    "rule_applied": "law_text",
    "expected_result": "H.R. 2617 (enrolled) div. H, 'MENTAL HEALTH': first amount $2,693,507,000",
-   "observed_result": "2,755,507,000 as recorded; the headline is larger than the law's first amount: it counts amounts provided outside this paragraph (another paragraph or division of the act) -- worth a look",
+   "observed_result": "2,755,507,000 as recorded = $2,693,507,000 (P.L. 117-328 div. H) + $62,000,000 for 988 Suicide Lifeline activities appropriated by P.L. 117-180 (H.R. 6833, the FY2023 continuing resolution, div. A sec. 145); S.Rept. 118-84 p.380 prints that row as 'CR Funding--Public Law 117-180 Suicide Lifeline 62,000' inside the 2023 appropriation (another law, by design)",
    "result": "info",
    "human_review_status": "",
    "reviewer": "",
@@ -142361,6 +142361,17 @@
    "rule_applied": "law_text",
    "expected_result": "H.R. 6938 (enrolled) div. A, 'Office of science and technology policy': first amount $7,965,000",
    "observed_result": "7,965,000 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0243",
+   "observation_id": "OBS-0771",
+   "rule_applied": "cross_document",
+   "expected_result": "H.Rept. 118-582 p.248 prints the NSF Research and related activities FY2025 request subtotal 8,045,320 = base 7,519,320 (OBS-0695) + defense 106,000 (OBS-0735) + 420,000",
+   "observed_result": "7,519,320 + 106,000 + 420,000 = 8,045,320 (thousands); 420,000 as recorded (S.Rept. 118-198 p.227, 'Research and related activities (emergency)', Budget estimate column)",
    "result": "pass",
    "human_review_status": "",
    "reviewer": "",
