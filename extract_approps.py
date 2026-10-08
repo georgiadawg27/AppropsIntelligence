@@ -1310,7 +1310,7 @@ def source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
 
 def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=False,
         dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False, manifest_path=None,
-        subcommittee=None):
+        subcommittee=None, single_division=False):
     pdf_path = Path(pdf_path)
     data = pdf_path.read_bytes()
     pdf_sha = hashlib.sha256(data).hexdigest()
@@ -1332,7 +1332,9 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     #    only there.
     routes = [route_page(doc_pdf[i]) for i in range(len(doc_pdf))]
     division = None
-    divisions = division_ranges([r["text"] for r in routes])
+    # a one-subcommittee document that reprints another act's division headings (a Senate draft quoting
+    # the CR in force: "DIVISION A--CONTINUING APPROPRIATIONS ACT, 2022") is read whole
+    divisions = [] if single_division else division_ranges([r["text"] for r in routes])
     if divisions:
         division = resolve_division(divisions, subcommittee or (manifest_entry or {}).get("subcommittee"))
         log(f"  {len(divisions)} divisions; reading Division {division[0]} ({division[1][:70]}), pp. {division[2]}-{division[3]}")
@@ -1866,11 +1868,14 @@ def main():
     ap.add_argument("--subcommittee", help="In a multi-division document, whose division to read, e.g. LHHS "
                                            "(defaults to the manifest's subcommittee)")
     ap.add_argument("--ground-truth", help="JSON of expected dollar figures to diff against")
+    ap.add_argument("--single-division", action="store_true",
+                    help="a one-subcommittee document whose text quotes other acts' DIVISION headings: read it whole")
     args = ap.parse_args()
 
     result = run(args.pdf, title=args.title, model=args.model, cache_dir=args.cache_dir,
                  offline=args.offline, dpi=args.dpi, out_dir=args.out_dir,
-                 use_fallbacks=not args.no_fallbacks, live=args.live, subcommittee=args.subcommittee)
+                 use_fallbacks=not args.no_fallbacks, live=args.live, subcommittee=args.subcommittee,
+                 single_division=args.single_division)
     gt_ok, gt_rows = (True, None)
     if args.ground_truth:
         gt_ok, gt_rows = compare_ground_truth(result, args.ground_truth)

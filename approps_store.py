@@ -1218,7 +1218,10 @@ def history(conn, account_id):
 #   not_collected  -- no source document on file covers this fiscal year + stage
 #   not_enacted    -- the Enacted stage of a fiscal year after the last one with an
 #                     enacted document on file: no enacted law yet
-CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted")
+#   no_figure      -- a fiscal year before a proposed account's first figure (Account.status
+#                     'proposed': it exists only as a request, so earlier years have no
+#                     figure to find); not counted as missing
+CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure")
 
 
 def stage_notes(conn, subcommittee):
@@ -1507,6 +1510,8 @@ def subcommittee_grid(conn, subcommittee):
                         if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st:
                             continue                     # as in history_grid: only where it can exist / is recorded
                         state = cell_state([], None, y, st, h["coverage"])
+                        if state == "missing" and a.get("status") == "proposed" and own and y < min(own):
+                            state = "no_figure"
                         lines.append({"amount_type": s["amount_type"], "component": s["component"],
                                       "component_kind": s["component_kind"], "component_label": s["component_label"],
                                       "adds_to_headline": True, "state": state, "missing": state == "missing",

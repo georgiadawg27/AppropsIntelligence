@@ -37,7 +37,7 @@ STAGED = ROOT / "data" / "staged.json"
 XML_DIR = ROOT / "document_store" / "enrolled_xml"
 OUT = HERE / "law_text_comparison.csv"
 SOURCES = HERE / "law_text_sources.csv"
-YEARS = {"LHHS": range(2023, 2027), "CJS": range(2017, 2027)}
+YEARS = {"LHHS": range(2022, 2027), "CJS": range(2017, 2027)}
 
 # the agency each account's heading sits under, as words of the enclosing headers (title, major, intermediate)
 AGENCY_WORDS = {
@@ -180,7 +180,9 @@ def reason(o, h, others):
             if law + sum(combo) == ours:
                 return ("the headline is the first amount plus " + " + ".join(f"${x:,}" for x in combo)
                         + " printed later in the same paragraph")
-    if re.search(r"first quarter of fiscal year|which shall become available on october 1|advance", p[:600]):
+    if re.search(r"section 241 of the phs act|section 241 of the public health service act", p[:900]) and law > ours:
+        return "the first amount is made available from the PHS evaluation set-aside (section 241), not appropriated budget authority (by design)"
+    if re.search(r"first quarter of fiscal year|which shall become available on october 1|advance appropriation", p[:600]):
         return "advance appropriation: the first amount is for a later fiscal year"
     if re.search(r"trust fund|limitation|derived from|offsetting collections|fees", p[:700]):
         return "trust-fund limitation, fees or collections in the first amount (by design)"
@@ -225,7 +227,8 @@ def main(argv=None):
         if o["stage"] == "Enacted":
             by_acc_fy[(o["canonical_account_id"], o["fiscal_year"])].append(o)
     refs = {(r["subcommittee"], int(r["fiscal_year"])): r for r in data["bill_report_refs"] if r["stage"] == "Enacted"}
-    have = {(v["observation_id"], v["rule_applied"]) for v in data["validations"]}
+    # an observation already compared with the enrolled law (an other-law note is a law_text record too, not a comparison)
+    have = {(v["observation_id"], v["rule_applied"]) for v in data["validations"] if "(enrolled)" in (v["expected_result"] or "")}
     rows, recs, sources = [], [], {}
     for sc, years in YEARS.items():
         for fy in years:

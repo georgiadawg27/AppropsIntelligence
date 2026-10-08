@@ -1,0 +1,633 @@
+"""
+Labor-HHS Title II backfill, one fiscal year at a time (FY2022 back to FY2017). Appends to data/staged.json;
+never changes an existing figure, ID or status (an existing source document may gain an also_covers entry).
+
+    python reference/review/lhhs/backfill/build_year.py 2022            # report only
+    python reference/review/lhhs/backfill/build_year.py 2022 --write    # append
+
+Each stage of the year reads one column of one extracted comparative table (extract_approps.py --title
+"TITLE II"; House reports' image-only tables carry a tesseract text layer first, ocr_pdf.py, so vision reads
+only the pages whose OCR fails the table's arithmetic):
+  House Reported      -- the year's House report, "Bill" column
+  President's Budget  -- the same report's request column
+  Senate Reported     -- the Senate report or chair's draft, "Committee recommendation"
+  Enacted             -- the FY+1 House report's "FY<N> Enacted" column
+The figures are found as in reference/review/lhhs/fy2024_house/build_rows.py: every Labor-HHS fact on file
+(account x amount_type x component) carries the labels it was printed under (and its account's former names);
+the same label, cleaned the same way, is looked up in the column, inside the account's agency section; exact
+label matches only. A label that matches different rows takes the label the same chamber's later tables use.
+
+Checks: the extractor's own records on the row (table_total, structural, source_text, unit, semantic) --
+routine memo / parse notes resolved at creation with the triage's standard reasons (reviewer "triage rules"),
+anything else pending; the sum checks (agency totals, the NIH institutes, the Title II total); cross_document
+(the Enacted column against the other chamber's FY+1 table, the request column against the other chamber's);
+law_text runs separately (reference/review/law_text.py). Statuses by validate_approps.verification_status.
+Writes reference/review/lhhs/backfill/fy<N>_report.csv (every fact: found / not printed / ambiguous) and
+reference/review/backfill_unmatched_<FY>.csv (headings no account matches).
+"""
+
+import argparse
+import collections
+import csv
+import glob
+import json
+import re
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parents[3]
+sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "reference" / "review"))
+sys.path.insert(0, str(ROOT / "reference" / "review" / "lhhs" / "fy2024_house"))
+
+import validate_approps as V  # noqa: E402
+import triage as T  # noqa: E402
+from build_rows import AGENCY_TOTALS, AGENCY_KEY, PRINTED  # noqa: E402
+from build_rows import clean as _clean  # noqa: E402
+
+
+def clean(label):
+    """build_rows.clean, with the fiscal year in a label made generic: 'New advance, 1st quarter, FY 2023' is
+    the same row in every year's table."""
+    return re.sub(r"\b(fy|fiscal year)\s*(19|20)\d\d\b", r"\1 ####", _clean(label), flags=re.I)
+
+STAGED = ROOT / "data" / "staged.json"
+TODAY = "2026-10-08"
+HOUSE_TABLES = ["SRC-CRPT-119HRPT696", "SRC-CRPT-119HRPT271", "SRC-CRPT-118HRPT585", "SRC-EXPL-LHHS-FY2024-HOUSE",
+                "SRC-CRPT-117HRPT403", "SRC-CRPT-117HRPT96", "SRC-CRPT-116HRPT450", "SRC-CRPT-116HRPT62",
+                "SRC-CRPT-115HRPT862", "SRC-CRPT-115HRPT244", "SRC-CRPT-114HRPT699"]
+SENATE_TABLES = ["SRC-CRPT-119SRPT55", "SRC-CRPT-118SRPT207", "SRC-CRPT-118SRPT84", "SRC-EXPL-LHHS-FY2023-SENATE",
+                 "SRC-EXPL-LHHS-FY2022-SENATE", "SRC-EXPL-LHHS-FY2021-SENATE", "SRC-CRPT-115SRPT289",
+                 "SRC-CRPT-115SRPT150", "SRC-CRPT-114SRPT274"]
+TRIAGE_REVIEWER = "triage rules"
+
+# ---- the years ---------------------------------------------------------------------------------------------
+YEARS = {
+    2022: {
+        "stages": [
+            # stage, chamber, extraction package, column header, source document
+            ("House Reported", "House", "CRPT-117hrpt96", "Bill", "SRC-CRPT-117HRPT96"),
+            ("President's Budget", "N/A", "CRPT-117hrpt96", "FY 2022 Request", "SRC-CRPT-117HRPT96"),
+            ("Senate Reported", "Senate", "MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17",
+             "Committee recommendation", "SRC-EXPL-LHHS-FY2022-SENATE"),
+            ("Enacted", "N/A", "CRPT-117hrpt403", "FY 2022 Enacted", "SRC-CRPT-117HRPT403"),
+        ],
+        # where the stage's table has no readable row for a fact, the other FY+1 committee table's column
+        "fallback": {"Enacted": ("MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550", "2022 appropriation",
+                                 "SRC-EXPL-LHHS-FY2023-SENATE")},
+        # rows the label rule can't reach, read by hand: (stage, account) -> (cleaned label, why)
+        "proposals": {
+            "national institute of child health and human development": "Historical Name 'National Institute of Child Health and "
+                "Human Development' for ACC-HHS-NIH-NICHD (renamed 'Eunice Kennedy Shriver ...' in later tables)",
+            "subtotal, health care systems bureau, appropriation": "Historical Name 'Health Care Systems' for "
+                "ACC-HHS-HRSA-HEALTH-SYSTEMS (the FY2023+ 'Health Systems' heading); its FY2022 lines are the same programs",
+            "subtotal, ncats": "not an account: NCATS's subtotal with its transfer line; ACC-HHS-NIH-NCATS is recorded from its own line",
+            "subtotal, buildings and facilities": "not an account: Buildings and Facilities' subtotal; ACC-HHS-NIH-BUILDINGS-FACILITIES "
+                "is recorded from its own line",
+            "total, nih program level (with transfer)": "not an account: a program-level view of the NIH total "
+                "(ACC-HHS-NIH-TOTAL, component program_level, if wanted)",
+            "total, substance abuse prevention": "not an account: the same figure as ACC-HHS-SAMHSA-PREVENTION, recorded from "
+                "its 'Programs of Regional and National Significance' line",
+            "mental and behavorial health": "not an account: a program line inside ACC-HHS-HRSA-HEALTH-WORKFORCE "
+                "(Interdisciplinary Community-Based Linkages; 'Behavioral' misspelled in the table)",
+            "340b drug pricing program/office of pharmacy affairs": "not an account: a program line of the FY2022 'Health "
+                "Care Systems' group (see the Historical Name proposal for ACC-HHS-HRSA-HEALTH-SYSTEMS)",
+            "public health loan repayment program": "not an account: a HRSA Health Workforce program line (printed '---')",
+            "assistant secretary for administration, cybersecurity": "not an account: a PHSSEF line (ACC-HHS-OS-PHSSEF)",
+            "office of security and strategic information": "not an account: a PHSSEF line (ACC-HHS-OS-PHSSEF)",
+            "mental health crisis response grants": "not an account: a SAMHSA Mental Health program line",
+        },
+        "override": {("Enacted", "ACC-HHS-NIH-ARPA-H"): (
+            "advanced research projects",
+            "H.Rept. 117-403 prints ARPA-H twice: under NIH with '---' for FY2022, and under its own heading after the "
+            "Office of the Secretary with 1,000,000 (P.L. 117-103 appropriated FY2022's ARPA-H funds to the Office of "
+            "the Secretary); the second is the FY2022 figure")},
+        "cross": [
+            # stage of our new figure, other document's package, its column, its source document
+            ("Enacted", "MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550", "2022 appropriation",
+             "SRC-EXPL-LHHS-FY2023-SENATE"),
+            ("President's Budget", "MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17", "Budget estimate",
+             "SRC-EXPL-LHHS-FY2022-SENATE"),
+        ],
+        "also_covers": {"SRC-CRPT-117HRPT403": "FY2022 Enacted", "SRC-EXPL-LHHS-FY2023-SENATE": "FY2022 Enacted"},
+        "docs": [
+            {"document_id": "SRC-CRPT-117HRPT96", "source_agency": "House Committee on Appropriations",
+             "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+             "document_type": "committee_report", "congress_session": "117-1", "fiscal_year": 2022,
+             "publication_date": "2021-07-19 00:00:00", "stage": "House Reported",
+             "retrieval_timestamp": "2026-10-08 00:00:00", "source_page": "466-496",
+             "also_covers": "FY2022 President's Budget",
+             "notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). "
+                      "Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is "
+                      "image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the "
+                      "OCR failed the table's arithmetic."},
+            {"document_id": "SRC-EXPL-LHHS-FY2022-SENATE", "source_agency": "Senate Committee on Appropriations",
+             "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+             "document_type": "explanatory_statement", "congress_session": "117-1", "fiscal_year": 2022,
+             "publication_date": "2021-10-18 00:00:00", "stage": "Senate Reported",
+             "retrieval_timestamp": "2026-10-08 00:00:00", "source_page": "334-375",
+             "also_covers": "FY2022 President's Budget",
+             "notes": "Senate chair's draft explanatory statement for FY2022, released with S. 3062 (introduced "
+                      "2021-10-25, never reported). sha256 b033ae17fc2e948b... (the file at the link). Text layer; "
+                      "page citations are PDF page numbers."},
+        ],
+        "brr": [
+            {"reference_id": "BR-LHHS-FY2022-HOUSE", "stage": "House Reported", "bill_id": "H.R.4502",
+             "report_id": "H.Rept.117-96",
+             "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
+             "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf", "draft": "FALSE"},
+            {"reference_id": "BR-LHHS-FY2022-SENATE", "stage": "Senate Reported", "bill_id": "S.3062", "report_id": "N/A",
+             "bill_url": "https://www.congress.gov/117/bills/s3062/BILLS-117s3062is.pdf",
+             "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSREPT_FINAL3.PDF",
+             "notes": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
+             "draft": "TRUE"},
+            {"reference_id": "BR-LHHS-FY2022-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2022/APP",
+             "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP.pdf",
+             "report_jes_url": "N/A", "draft": "FALSE"},
+            {"reference_id": "BR-LHHS-FY2022-ENACTED", "stage": "Enacted", "bill_id": "P.L.117-103", "report_id": "N/A",
+             "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ103/pdf/PLAW-117publ103.pdf",
+             "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 2471", "division": "H", "enactment_date": "2022-03-15",
+             "funding_type": "omnibus", "draft": "FALSE"},
+        ],
+    },
+}
+
+
+def load_extraction(pkg):
+    x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
+    recs = collections.defaultdict(list)
+    for r in x["validation_records"]:
+        recs[r["observation_id"]].append(r)
+    by_col = collections.defaultdict(list)
+    for o in x["observations"]:
+        by_col[o["column_header"]].append(dict(o, _clean=clean(o["account_name_as_written"]), _records=recs[o["observation_id"]]))
+    sections = {}
+    for col, rows in by_col.items():
+        rows.sort(key=lambda f: f["node_id"])
+        secs, cur, closing = [], [], None
+        for f in rows:
+            if closing and f.get("is_memo"):
+                # the memo lines printed under an agency total ('Federal funds', '(Evaluation Tap Funding)')
+                # belong to that agency, not the next one
+                secs[-1][1].append(dict(f, _after_total=True))
+                continue
+            closing = None
+            cur.append(f)
+            ag = next((a for a, rx in AGENCY_TOTALS if re.match(rx, f["_clean"])), None)
+            if ag:
+                secs.append((ag, cur))
+                cur, closing = [], ag
+        secs.append(("TAIL", cur))
+        sections[col] = secs
+    return x, sections
+
+
+def rows_for(sections, col, agency):
+    secs = sections[col]
+    if agency == "TAIL":
+        return [f for _, rows in secs for f in rows]
+    return [f for a, rows in secs if a == agency for f in rows]
+
+
+def later_labels(exclude):
+    """Every cleaned row label printed in the Labor-HHS tables of FY2023 on (the extractions on file)."""
+    out = set()
+    for f in glob.glob(str(ROOT / "extractions" / "*.title-ii.json")):
+        name = Path(f).name.split(".")[0]
+        if name in exclude or not re.search(r"117hrpt403|118|119|FY2023|FY2024|FY2026", name):
+            continue
+        x = json.loads(Path(f).read_text())
+        if "HEALTH AND HUMAN" not in json.dumps(x["observations"][:5]).upper() and "Title II" not in name:
+            pass
+        out |= {clean(o["account_name_as_written"]) for o in x["observations"]}
+    return out
+
+
+def main(argv=None):
+    ap = argparse.ArgumentParser()
+    ap.add_argument("fy", type=int)
+    ap.add_argument("--write", action="store_true")
+    a = ap.parse_args(argv)
+    fy, cfg = a.fy, YEARS[a.fy]
+    data = json.loads(STAGED.read_text())
+    acct = {x["canonical_account_id"]: x for x in data["accounts"] if x["subcommittee"] == "LHHS"}
+    comps = {c["component_id"]: c for c in data["components"]}
+    lhhs_obs = [o for o in data["observations"] if o["canonical_account_id"] in acct]
+    have = {(o["canonical_account_id"], o["fiscal_year"], o["stage"]) for o in lhhs_obs}
+    assert not any(k[1] == fy for k in have), f"FY{fy} already has Labor-HHS observations"
+
+    # 1. facts and their labels (printed labels, former names), with the chamber tables that printed them
+    facts = collections.defaultdict(lambda: {"labels": collections.Counter(), "rank": []})
+    for o in lhhs_obs:
+        m = PRINTED.search(o["source_table_or_section"] or "")
+        if not m:
+            continue
+        key = (o["canonical_account_id"], o["amount_type"], o["component"] or "")
+        lab = clean(m.group(2))
+        facts[key]["labels"][lab] += 1
+        src = o["source_document_id"]
+        for chamber, tables in (("House", HOUSE_TABLES), ("Senate", SENATE_TABLES)):
+            if src in tables:
+                facts[key]["rank"].append((chamber, tables.index(src), lab))
+    for h in data.get("historical_names_tab", []):
+        aid = h.get("canonical_account_id")
+        if aid in acct and h.get("former_name"):
+            facts[(aid, "budget authority", "")]["labels"][clean(h["former_name"])] += 1
+
+    extractions = {}
+
+    def ext(pkg):
+        if pkg not in extractions:
+            extractions[pkg] = load_extraction(pkg)
+        return extractions[pkg]
+
+    def find(key, pkg, col, chamber):
+        x, sections = ext(pkg)
+        aid = key[0]
+        ag = AGENCY_KEY.get(acct[aid]["agency"], "TAIL")
+        if col not in sections:
+            return []
+        pool = rows_for(sections, col, ag)
+        hits = [f for f in pool if f["_clean"] in facts[key]["labels"]]
+        if not hits and ag != "TAIL":
+            hits = [f for f in rows_for(sections, col, "TAIL") if f["_clean"] in facts[key]["labels"]]
+        if len({h["amount"] for h in hits}) > 1:
+            for _, _, lab in sorted(r for r in facts[key]["rank"] if r[0] == (chamber if chamber != "N/A" else "House")):
+                pick = [h for h in hits if h["_clean"] == lab]
+                if pick:
+                    hits = pick
+                    break
+        if len({h["amount"] for h in hits}) > 1:
+            # one label on a program's own line and on the agency total's memo line ('Federal funds' under each
+            # AHRQ program and under 'Total, AHRQ'): the agency total's
+            pick = [h for h in hits if h.get("_after_total")]
+            if pick and acct[aid].get("total_scope"):
+                hits = pick
+        if len({h["amount"] for h in hits}) > 1:
+            words = [w for w in re.findall(r"[a-z]+", acct[aid]["canonical_name"].lower()) if len(w) > 4]
+            pick = [h for h in hits if all(w in h["account_path"].lower() for w in words[-1:])]
+            if pick:
+                hits = pick
+        return hits
+
+    # 2. the stages
+    ids = {}
+
+    def next_id(prefix, rows, field, width):
+        n = max(int(r[field][len(prefix):]) for r in rows if r[field].startswith(prefix) and r[field][len(prefix):].isdigit())
+        while True:
+            n += 1
+            yield f"{prefix}{n:0{width}d}"
+    obs_ids = next_id("OBS-LHHS-", data["observations"], "observation_id", 4)
+    new_obs, new_val, report = [], [], []
+    by_stage = {}
+    ext_by_src = {}
+    absent = {}
+    for stage, chamber, pkg, col, src in cfg["stages"]:
+        x, sections = ext(pkg)
+        ext_by_src[src] = x["observations"]
+        found, origin = {}, {}
+        for key in sorted(facts):
+            hits = find(key, pkg, col, chamber)
+            ov = cfg.get("override", {}).get((stage, key[0]))
+            if ov and key[1:] == ("budget authority", ""):
+                hits = [f for f in rows_for(sections, col, "TAIL") if f["_clean"] == ov[0]]
+            fb = cfg.get("fallback", {}).get(stage)
+            if fb and (not hits or any(h["amount"] is None for h in hits)):
+                fx, _ = ext(fb[0])
+                ext_by_src[fb[2]] = fx["observations"]
+                fhits = find(key, fb[0], fb[1], "Senate")
+                if len({h["amount"] for h in fhits}) == 1 and fhits[0]["amount"] is not None:
+                    hits, origin[key] = fhits, fb
+            if len({h["amount"] for h in hits}) == 1 and hits[0]["amount"] is not None:
+                found[key] = hits[0]
+                report.append([stage, *key, "found", hits[0]["amount"], hits[0]["source_page"], hits[0]["account_name_as_written"]])
+            elif hits:
+                report.append([stage, *key, "ambiguous", "", "", "; ".join(f"{h['account_name_as_written']} {h['amount']}" for h in hits)])
+            else:
+                report.append([stage, *key, "not printed", "", "", ""])
+        dropped = {}
+        # a view or contained line whose headline this table doesn't print: not recorded (it needs the headline it
+        # is a view of / inside of); the headline is a confirmed absence, as for FY2023 Medicaid (CA-LHHS-0028)
+        for key in [k for k in found if k[2] and comps.get(k[2], {}).get("kind") in ("contained", "view")]:
+            if (key[0], "budget authority", "") in found:
+                continue
+            f = dropped[key] = found.pop(key)
+            f_src = origin[key][2] if key in origin else src
+            absent.setdefault((key[0], stage, f_src), []).append(
+                f"'{f['account_name_as_written'].strip()}' {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})")
+            report[:] = [r for r in report if r[:4] != [stage, *key]] + [[stage, *key, "view; no headline", f["amount"],
+                                                                        f["source_page"], f["account_name_as_written"]]]
+        by_key = {}
+        for key in sorted(found, key=lambda k: (k[0], k[2] != "", k[1] != "budget authority", k[1], k[2])):
+            aid, amount_type, component = key
+            f = found[key]
+            f_src, f_col = (origin[key][2], origin[key][1]) if key in origin else (src, col)
+            oid = next(obs_ids)
+            o = {"observation_id": oid, "canonical_account_id": aid, "fiscal_year": fy, "stage": stage, "chamber": chamber,
+                 "amount": f["amount"] or 0, "amount_type": amount_type, "component": component, "headline_observation_id": "",
+                 "offsetting_collections": "FALSE", "transfer_link_account_id": "", "source_document_id": f_src,
+                 "source_page": str(f["source_page"]),
+                 "source_table_or_section": (f"Title II, {acct[aid]['agency']} -- printed as {f['account_name_as_written'].strip()!r} [{f_col}]"
+                                             + (f" -- {cfg['override'][(stage, aid)][1]}" if (stage, aid) in cfg.get("override", {}) and key[1:] == ("budget authority", "") else "")
+                                             + (f" -- {src}'s column has no readable row for it" if key in origin else "")
+                                             + (advance_note(fy, f["account_name_as_written"], f_col) if amount_type == "advance" else "")),
+                 "extraction_method": f.get("extraction_method") or "AI-extracted",
+                 "confidence": f.get("extraction_confidence") or 0.95, "verification_status": ""}
+            by_key[key] = o
+            new_obs.append(o)
+            for r in f["_records"]:
+                if r["rule_applied"] in ("table_total", "structural", "source_text", "unit", "semantic"):
+                    new_val.append({"observation_id": oid, "rule_applied": r["rule_applied"],
+                                    "expected_result": r["expected_result"], "observed_result": r["observed_result"],
+                                    "result": r["result"]})
+        for key, o in by_key.items():
+            aid, amount_type, component = key
+            if component and comps.get(component, {}).get("kind") in ("contained", "view"):
+                head = by_key.get((aid, "budget authority", ""))
+                if head:
+                    o["headline_observation_id"] = head["observation_id"]
+        by_stage[stage] = (by_key, found)
+        other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg)
+        # sum checks
+        sum_checks(acct, by_key, found, new_val, dropped)
+
+    # 3. cross-document
+    cross = []
+    for stage, pkg, col, src in cfg["cross"]:
+        by_key, _ = by_stage[stage]
+        for key, o in sorted(by_key.items()):
+            if o["source_document_id"] == src:
+                cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "same document"])
+                continue
+            hits = find(key, pkg, col, "Senate" if "Senate" in pkg or "SRPT" in pkg.upper() else "House")
+            vals = {h["amount"] or 0 for h in hits}
+            if len(vals) != 1:
+                cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "not printed" if not hits else "ambiguous"])
+                continue
+            h = hits[0]
+            ok = (h["amount"] or 0) == o["amount"]
+            cross.append([stage, *key, o["observation_id"], o["amount"], h["amount"] or 0, h["source_page"], "agree" if ok else "differ"])
+            new_val.append({"observation_id": o["observation_id"], "rule_applied": "cross_document",
+                            "expected_result": f"{src} p.{h['source_page']} prints {(h['amount'] or 0) // 1000:,} "
+                                               f"({h.get('extraction_method') or 'extracted'}, '{h['account_name_as_written'].strip()}' [{col}])",
+                            "observed_result": f"{o['amount'] // 1000:,} as recorded", "result": "pass" if ok else "flag"})
+
+    # 4. IDs; review status: routine notes resolved by the triage's standard reasons; the rest pending
+    val_ids = next_id("VAL-LHHS-", data["validations"], "validation_id", 5)
+    for v in new_val:
+        v["validation_id"] = next(val_ids)
+    by_obs = collections.defaultdict(list)
+    for v in new_val:
+        by_obs[v["observation_id"]].append(v)
+    obs_by_id = {o["observation_id"]: o for o in new_obs}
+    for v in new_val:
+        v.update({"human_review_status": "", "reviewer": "", "resolution": ""})
+        if v["result"] not in ("fail", "flag"):
+            continue
+        o = obs_by_id[v["observation_id"]]
+        others = T.confirming_passes(by_obs[v["observation_id"]], v)
+        try:
+            fam, fmt = T.family(v, o, others)
+        except ValueError:
+            fam, fmt = None, {}
+        if fam is None and (v["expected_result"] or "").startswith("memo breakdown"):
+            fam, fmt = T.memo_family(v, o, ext_by_src)
+        disp, reason = T.FAMILIES.get(fam, ("B", ""))
+        if disp == "A":
+            v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER, "resolution": reason.format(**fmt)})
+        else:
+            v["human_review_status"] = "pending"
+    # 5. statuses (the standard rule) and IDs
+    checks = collections.defaultdict(list)
+    for v in new_val:
+        checks[v["observation_id"]].append((v["rule_applied"], v["result"], v["expected_result"],
+                                            v["human_review_status"], v["resolution"]))
+    for o in new_obs:
+        o["verification_status"] = V.verification_status(o["confidence"], checks[o["observation_id"]])
+    order = ["validation_id", "observation_id", "rule_applied", "expected_result", "observed_result", "result",
+             "human_review_status", "reviewer", "resolution"]
+    new_val = [{k: v[k] for k in order} for v in new_val]
+
+    # 6. unmatched headings: rows of this year's tables whose label no account's labels match and no later
+    #    table prints (a heading that existed then but not now, a rename, a split or a merge)
+    later = later_labels({s[2] for s in cfg["stages"]})
+    all_labels = {lab for f in facts.values() for lab in f["labels"]}
+    unmatched = collections.OrderedDict()
+    for stage, chamber, pkg, col, src in cfg["stages"]:
+        x, sections = ext(pkg)
+        tot_of = {AGENCY_KEY.get(x["agency"]): aid for aid, x in acct.items() if x.get("total_scope") == "agency"}
+        for ag, rows in sections.get(col, []):
+            for f in rows:
+                if f.get("is_memo") or f["_clean"] in all_labels or f["_clean"] in later:
+                    continue
+                f = dict(f, _agency_total=tot_of.get(ag))
+                k = (ag, f["account_name_as_written"].strip())
+                if k not in unmatched:
+                    unmatched[k] = {"agency_section": ag, "heading": k[1], "path": f["account_path"], "figures": [],
+                                    "proposal": propose(f, facts, cfg)}
+                unmatched[k]["figures"].append(f"{stage} {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})")
+
+    # ---- report
+    stage_counts = collections.Counter(o["stage"] for o in new_obs)
+    print(f"FY{fy}: {len(new_obs)} observations {dict(stage_counts)}; {len(new_val)} validations "
+          f"({sum(v['human_review_status'] == 'pending' for v in new_val)} pending, "
+          f"{sum(v['human_review_status'] == 'resolved' for v in new_val)} resolved at creation)")
+    print("statuses:", collections.Counter(o["verification_status"] for o in new_obs))
+    for st in by_stage:
+        accts_found = {k[0] for k in by_stage[st][0]}
+        print(f"  {st}: {len(by_stage[st][0])} facts, {len(accts_found)} accounts; no figure for "
+              f"{len(set(acct) - accts_found)}")
+    for stage in {c[0] for c in cfg["cross"]}:
+        rs = [r for r in cross if r[0] == stage]
+        print(f"  cross-document {stage}: {sum(r[-1] == 'agree' for r in rs)} agree / {sum(r[-1] == 'differ' for r in rs)} "
+              f"differ / {sum(r[-1] in ('not printed', 'ambiguous') for r in rs)} not compared, of {len(rs)}")
+    print(f"  unmatched headings: {len(unmatched)}")
+    out = HERE / f"fy{fy}_report.csv"
+    with open(out, "w", newline="") as fh:
+        w = csv.writer(fh, lineterminator="\n")
+        w.writerow(["stage", "canonical_account_id", "amount_type", "component", "result", "amount", "pdf_page", "printed"])
+        w.writerows(report)
+    with open(HERE / f"fy{fy}_cross_document.csv", "w", newline="") as fh:
+        w = csv.writer(fh, lineterminator="\n")
+        w.writerow(["stage", "canonical_account_id", "amount_type", "component", "our_observation_id", "our_amount",
+                    "other_amount", "other_pdf_page", "result"])
+        w.writerows(cross)
+    with open(ROOT / "reference" / "review" / f"backfill_unmatched_{fy}.csv", "w", newline="") as fh:
+        w = csv.writer(fh, lineterminator="\n")
+        w.writerow(["agency_section", "heading", "printed_path", "figures", "proposed_handling"])
+        for u in unmatched.values():
+            w.writerow([u["agency_section"], u["heading"], u["path"], "; ".join(u["figures"]), u["proposal"]])
+    if a.write:
+        for d in cfg["docs"]:
+            assert d["document_id"] not in {x["document_id"] for x in data["source_docs"]}
+            data["source_docs"].append(d)
+        for did, cov in cfg.get("also_covers", {}).items():
+            d = next(x for x in data["source_docs"] if x["document_id"] == did)
+            if cov not in (d.get("also_covers") or ""):
+                d["also_covers"] = "; ".join(x for x in (d.get("also_covers"), cov) if x)
+        for r in cfg["brr"]:
+            row = {"reference_id": r["reference_id"], "subcommittee": "LHHS", "fiscal_year": fy, "stage": r["stage"],
+                   "bill_id": r["bill_id"], "report_id": r["report_id"], "bill_url": r["bill_url"],
+                   "report_jes_url": r["report_jes_url"], "lookup_key": f"LHHS-{fy}-{r['stage']}", "notes": r.get("notes", ""),
+                   "vehicle_bill_id": r.get("vehicle_bill_id", ""), "division": r.get("division", ""),
+                   "enactment_date": r.get("enactment_date", ""), "funding_type": r.get("funding_type", ""),
+                   "draft": r["draft"]}
+            data["bill_report_refs"].append(row)
+        ca_ids = next_id("CA-LHHS-", data["confirmed_absences"], "confirmed_absence_id", 4)
+        for (aid, stage, f_src), lines in absent.items():
+            data["confirmed_absences"].append({
+                "confirmed_absence_id": next(ca_ids), "canonical_account_id": aid, "fiscal_year": fy, "stage": stage,
+                "amount_type": "budget authority", "component": "", "source_document_id": f_src,
+                "evidence": (f"No row for this account's headline figure ('Total, {acct[aid]['canonical_name']}') in "
+                             f"{doc_label(f_src)} Title II table for FY{fy} {stage}. The document prints only "
+                             + "; ".join(lines) + " -- not recorded: each is another scope of the headline (component "
+                             "kind 'view'), which needs the headline it is a view of."),
+                "confirmed_date": TODAY})
+        data["observations"].extend(new_obs)
+        data["validations"].extend(new_val)
+        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        print("appended to", STAGED.relative_to(ROOT))
+    return {"obs": new_obs, "val": new_val, "cross": cross, "unmatched": unmatched}
+
+
+def doc_label(src):
+    """'SRC-CRPT-117HRPT96' -> 'H.Rept.117-96'; an explanatory statement by its chamber."""
+    m = re.match(r"SRC-CRPT-(\d+)([HS])RPT(\d+)$", src)
+    if m:
+        return f"{m.group(2)}.Rept.{m.group(1)}-{m.group(3)}"
+    return "the Senate draft explanatory statement's" if "SENATE" in src else src
+
+
+def advance_note(fy, printed, col):
+    """An advance line's note: the fiscal year it is for; and, where the row is labelled after a later bill (the
+    next year's report's prior-year column), what the figure in this column is."""
+    m = re.search(r"FY\s*(\d{4})", printed)
+    if not m or int(m.group(1)) == fy + 1:
+        return f"; advance for FY{fy + 1}"
+    return (f"; advance for FY{fy + 1} (the row is labelled 'FY {m.group(1)}' after the report's bill column; in the "
+            f"{col} column the figure is FY{fy}'s advance for the 1st quarter of FY{fy + 1})")
+
+
+OTHER_LAW = re.compile(r"CR Funding|Public Law|\bP\.\s?L\.?\s?\d{3}", re.I)
+
+
+def propose(f, found, cfg):
+    """A first proposal for a heading no account matches; the owner decides."""
+    lab = f["account_name_as_written"].strip()
+    own = cfg.get("proposals", {}).get(clean(lab))
+    if own:
+        return own
+    if OTHER_LAW.search(lab):
+        return "not an account: another law's amount printed within its parent's figure (a corner note where our figure includes it)"
+    if re.search(r"advance|1st quarter", lab, re.I):
+        return "not an account: an advance-appropriation line of the account above it (amount_type advance)"
+    bare = lambda s: re.sub(r"^(sub)?total,?\s*|,? (program level|appropriation|budget authority).*$", "", s)
+    segs = [bare(clean(s)) for s in f["account_path"].split(" / ")[:-1]]
+    for key, g in sorted(found.items(), key=lambda kv: kv[0]):
+        if key[1:] != ("budget authority", ""):
+            continue
+        for lab in g["labels"]:
+            if bare(lab) and bare(lab) in segs:
+                return f"not an account: a program line inside {key[0]} (printed under '{segs[segs.index(bare(lab))]}')"
+    if len(segs) >= 2 and f.get("_agency_total"):
+        return f"not an account: a program line inside {f['_agency_total']} (no narrower account of ours prints its group)"
+    return "owner: no current account prints this heading -- a new account + Historical Name, or a relationship"
+
+
+def other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg):
+    """A figure that prints another law's amount within it (a 'CR Funding - P.L. 117-70' line under a subtotal the
+    figure is): an info record whose 'Includes $...' sentence the cell shows as its corner note."""
+    rows = [f for _, rs in sections.get(col, []) for f in rs]
+    head_rows = {id(f): key for key, f in found.items() if key[1:] == ("budget authority", "")}
+    pending, block = [], []
+    for f in rows:
+        if f["row_kind"] == "line" and not f.get("is_memo"):
+            block.append(f)
+        if OTHER_LAW.search(f["account_name_as_written"]) and f["amount"]:
+            pending.append(f)
+            continue
+        key = head_rows.get(id(f))
+        if key is None:
+            continue
+        # only where the figure is its printed lines with the other law's amounts among them
+        included = sum((g["amount"] or 0) for g in block if g is not f) == (f["amount"] or 0)
+        if pending and included and f["row_kind"] in ("subtotal", "total"):
+            parts = " and ".join(f"${p['amount']:,} ('{p['account_name_as_written'].strip()}')" for p in pending)
+            o = by_key[key]
+            new_val.append({"observation_id": o["observation_id"], "rule_applied": "law_text",
+                            "expected_result": f"{src} p.{f['source_page']} prints amounts from other laws within this figure "
+                                               f"['{f['account_name_as_written'].strip()}', {col}]",
+                            "observed_result": f"{o['amount']:,} as recorded. Includes {parts}, continuing-resolution "
+                                               f"funding printed within this figure ({src} p.{f['source_page']}).",
+                            "result": "info"})
+        pending, block = [], []
+
+
+def sum_checks(acct, by_key, found, new_val, dropped=None):
+    """The agency totals = their member accounts; the Title II total = agency totals + department-wide lines - CURES
+    (as build_rows.py). A member's 'appropriated in this bill' line counts even where it isn't recorded (no headline
+    printed: Medicaid FY2022); the sum names it."""
+    dropped = dropped or {}
+    unrecorded = []
+
+    def amt(aid, component=""):
+        o = by_key.get((aid, "budget authority", component))
+        if o is None and (aid, "budget authority", component) in dropped:
+            f = dropped[(aid, "budget authority", component)]
+            unrecorded.append(f"{aid} '{f['account_name_as_written'].strip()}' p.{f['source_page']}")
+            return f["amount"]
+        return o["amount"] if o else None
+    printed = {k[0] for k in found}
+    members = collections.defaultdict(list)
+    for aid, x_ in acct.items():
+        if x_.get("total_scope") or x_.get("parent_account_id"):
+            continue
+        members[(x_["agency"], x_.get("title"))].append(aid)
+
+    def add(tot_id, parts, not_printed, what):
+        got, want = sum(v for _, v in parts), amt(tot_id)
+        exp = (f"{what} = {got // 1000:,} (thousands): " + " + ".join(f"{p} {v // 1000:,}" for p, v in parts)
+               + (f"; not printed in this table, so not in the sum: {', '.join(not_printed)}" if not_printed else "")
+               + (f"; printed but not recorded (no headline it is a view of): {', '.join(dict.fromkeys(unrecorded))}"
+                  if unrecorded else ""))
+        unrecorded.clear()
+        new_val.append({"observation_id": by_key[(tot_id, "budget authority", "")]["observation_id"], "rule_applied": "table_total",
+                        "expected_result": exp,
+                        "observed_result": f"{want // 1000:,} as printed ('{found[(tot_id, 'budget authority', '')]['account_name_as_written'].strip()}')",
+                        "result": "pass" if got == want else "flag"})
+    for tot_id, x_ in acct.items():
+        if x_.get("total_scope") != "agency" or (tot_id, "budget authority", "") not in by_key:
+            continue
+        mem = members[(x_["agency"], x_.get("title"))]
+        if not mem:
+            continue
+        vals, lack = [], []
+        for m in mem:
+            v = amt(m, "appropriated_in_this_bill") if amt(m, "appropriated_in_this_bill") is not None else amt(m)
+            if v is None:
+                lack.append(m)
+            else:
+                vals.append((m, v))
+        what = (f"the NIH institutes and other NIH accounts ({len(vals)})" if x_["agency"] == "National Institutes of Health"
+                else f"the {len(vals)} {x_['agency']} accounts")
+        add(tot_id, vals, [m for m in lack if m not in printed], what)
+        if any(m in printed for m in lack):
+            new_val[-1]["result"] = "flag"
+    title_id = next((aid for aid, x_ in acct.items() if x_.get("total_scope") == "title"), None)
+    if title_id and (title_id, "budget authority", "") in by_key:
+        parts = [(aid, amt(aid)) for aid, x_ in acct.items() if x_.get("total_scope") == "agency" and amt(aid) is not None]
+        for aid, x_ in acct.items():
+            if x_["agency"] == "Department of Health and Human Services" and not x_.get("total_scope"):
+                for (k_aid, k_type, k_comp), o in by_key.items():
+                    if k_aid == aid and not k_comp:
+                        parts.append((aid, o["amount"]))
+        cures = amt("ACC-HHS-NIH-CURES")
+        if cures:
+            parts.append(("minus ACC-HHS-NIH-CURES", -cures))
+        add(title_id, parts, [], "the agency totals + the department-wide lines - the CURES Act line")
+
+
+if __name__ == "__main__":
+    main()
