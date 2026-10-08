@@ -62,11 +62,11 @@ class V33Store(unittest.TestCase):
         # the workbook is built from data/staged.json (v38), not read from a committed file
         self.assertEqual(WORKBOOK, S.BUILT_WORKBOOK)
         self.assertEqual(S.data_version(WORKBOOK), "v38")
-        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info)
         self.assertEqual(self.report["rows"], {
             "account": 130, "historical_name": 11, "source_document": 37, "bill_report_reference": 59,
             "component": 19, "appropriations_observation": 2703, "confirmed_absence": 236,
-            "account_relationship": 11, "validation_record": 7267})
+            "account_relationship": 11, "validation_record": 7641})
         self.assertEqual(self.report["warnings"], [])
 
     def test_formula_looking_text_is_read_as_text(self):
@@ -119,6 +119,20 @@ class V33Store(unittest.TestCase):
         xd = ("cross_document", "flag", "another document prints 3")
         self.assertEqual(V.verification_status(0.95, [xd + ("resolved", "explained"), ("source_text", "pass")]), "unverified")
         self.assertEqual(V.verification_status(0.95, [("cross_document", "pass") + (None, "resolved", "x")]), "unverified")
+
+    def test_law_text_confirms_and_info_counts_neither_way(self):
+        self.assertIn("law_text", V.CONFIRMING_RULES)
+        src = ("source_text", "pass")
+        self.assertEqual(V.verification_status(0.95, [src, ("law_text", "pass", "H.R. 2617 div. H ...")]), "auto-validated")
+        self.assertEqual(V.verification_status(0.95, [src, ("law_text", "info", "H.R. 2617 div. H ...")]), "unverified")
+        self.assertEqual(V.verification_status(0.95, [("table_total", "pass"), ("law_text", "info")]), "auto-validated")
+        self.assertEqual(V.verification_status(0.50, [src, ("law_text", "pass")]), "unverified")     # confidence still decides
+        rows = self.conn.execute("SELECT result, count(*) FROM validation_record WHERE rule_applied = 'law_text' "
+                                 "GROUP BY result").fetchall()
+        self.assertEqual(dict(rows), {"pass": 328, "info": 46})
+        # never pending: an info is a recorded difference, not a question
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record WHERE rule_applied = 'law_text' "
+                                           "AND human_review_status IS NOT NULL AND human_review_status <> ''").fetchone()[0], 0)
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0

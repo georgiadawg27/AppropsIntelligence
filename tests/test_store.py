@@ -74,11 +74,11 @@ class Load(StoreTest):
     def test_all_seven_tabs_load(self):
         # v34: CJS (30 accounts, 870 observations, 197 absences -- as in v28) + Labor-HHS Title II's full
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
-        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records
+        # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info)
         self.assertEqual(self.report["rows"], {
             "account": 130, "historical_name": 11, "source_document": 37, "bill_report_reference": 59,
             "appropriations_observation": 2703, "confirmed_absence": 236, "account_relationship": 11,
-            "validation_record": 7267, "component": 19})
+            "validation_record": 7641, "component": 19})
         # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
                                                 "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
