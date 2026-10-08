@@ -18,14 +18,15 @@ DOCS = ROOT / "docs"
 # grid-state counts and flagged cells, measured on the export from the committed v37 workbook
 # just before the switch (the grid's headline cell is flagged when its observation's
 # verification_status is "flagged"); then the FY2024 House Labor-HHS draft: its 100 cells moved
-# from not yet collected to figures and states, 4 of them flagged
+# from not yet collected to figures and states, 4 of them flagged; then H.R. 5894: the NEF rescission moved from
+# missing to a figure, and CDC Global Health became flagged (its bill-text disagreement)
 STATE_COUNTS = {
-    "LHHS": {"value": 1538, "not_funded": 108, "no_printed_total": 13, "missing": 141, "not_collected": 100,
+    "LHHS": {"value": 1539, "not_funded": 108, "no_printed_total": 13, "missing": 140, "not_collected": 100,
              "not_enacted": 100},
     "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
             "not_enacted": 30},
 }
-FLAGGED_CELLS = {"LHHS": 77, "CJS": 0}
+FLAGGED_CELLS = {"LHHS": 78, "CJS": 0}
 
 
 def grid(sc):
@@ -71,11 +72,12 @@ class SiteReadsData(unittest.TestCase):
 
     def test_review_status_comes_with_every_cell(self):
         # Reviewer mode reads human_review_status from each observation's validation records;
-        # the 434 records pending before the FY2024 House draft stay as they are; its own 27 follow the standard rule
+        # the 434 records pending before the FY2024 House draft stay as they are; its own 27 and the Global Health
+        # bill-text flag (VAL-LHHS-07178) follow the standard rule
         data = json.loads(S.STAGED.read_text())
-        self.assertEqual(sum(v.get("human_review_status") == "pending" for v in data["validations"]), 461)
+        self.assertEqual(sum(v.get("human_review_status") == "pending" for v in data["validations"]), 462)
         new = [v for v in data["validations"] if int(v["validation_id"].rsplit("-", 1)[1]) > 6702 and v["validation_id"].startswith("VAL-LHHS")]
-        self.assertEqual(sum(v["human_review_status"] == "pending" for v in new), 27)
+        self.assertEqual(sum(v["human_review_status"] == "pending" for v in new), 28)
         self.assertTrue(all((v["human_review_status"] == "pending") == (v["result"] in ("fail", "flag")) for v in new))
         self.assertEqual({v.get("human_review_status") for v in data["validations"]}, {"", "pending"})
         for sc in ("LHHS", "CJS"):

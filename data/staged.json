@@ -56347,7 +56347,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Global Health' [Bill]. Source: the House subcommittee draft's explanatory materials for H.R. 5894 (the full committee never reported a FY2024 Labor-HHS bill).",
    "extraction_method": "AI-extracted",
    "confidence": 0.95,
-   "verification_status": "auto-validated"
+   "verification_status": "flagged"
   },
   {
    "observation_id": "OBS-LHHS-1758",
@@ -57773,6 +57773,25 @@
    "extraction_method": "AI-extracted",
    "confidence": 0.5,
    "verification_status": "flagged"
+  },
+  {
+   "observation_id": "OBS-LHHS-1833",
+   "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+   "fiscal_year": 2024,
+   "stage": "House Reported",
+   "chamber": "House",
+   "amount": -1000000000,
+   "amount_type": "rescission",
+   "component": "",
+   "headline_observation_id": "",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-BILLS-118HR5894IH",
+   "source_page": "118",
+   "source_table_or_section": "Title II, General Provisions, sec. 236 (RESCISSION) -- printed as 'Of the unobligated balances in the \"Nonrecurring Expenses Fund\" established in section 223 of division G of Public Law 110-161, $1,000,000,000 are hereby rescinded' [bill text, as introduced]. The explanatory materials' comparative table prints no Nonrecurring Expenses Fund line.",
+   "extraction_method": "text-extracted",
+   "confidence": 0.95,
+   "verification_status": "unverified"
   }
  ],
  "source_docs": [
@@ -58279,6 +58298,20 @@
    "source_page": "250-284",
    "also_covers": "FY2023 Enacted; FY2024 President's Budget",
    "notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision)."
+  },
+  {
+   "document_id": "SRC-BILLS-118HR5894IH",
+   "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+   "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
+   "document_type": "bill",
+   "congress_session": "118-1",
+   "fiscal_year": 2024,
+   "publication_date": "2023-10-25",
+   "stage": "House Reported",
+   "retrieval_timestamp": "2026-09-27 22:13:13",
+   "source_page": "118",
+   "also_covers": "",
+   "notes": "H.R. 5894 as introduced (BILLS-118hr5894ih): the FY2024 Labor-HHS bill the House subcommittee draft accompanies; the full committee never reported it. Same dollar amounts as the July 14, 2023 subcommittee mark. sha256 67108f5ba780b2e43443bb6bd6d40406c8b668cfc9e7b83d237f5419254c28f1. Page citations are PDF page numbers."
   }
  ],
  "validations": [
@@ -138183,6 +138216,39 @@
    "observed_result": "1,252,404,610 as printed ('Total, Title II, Department of Health and Human Services')",
    "result": "pass",
    "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-07176",
+   "observation_id": "OBS-LHHS-1833",
+   "rule_applied": "source_text",
+   "expected_result": "amount '$1,000,000,000' and 'Nonrecurring Expenses Fund' in sec. 236 of the bill text",
+   "observed_result": "PDF p.118: 'SEC. 236. Of the unobligated balances in the \"Nonrecurring Expenses Fund\" ... $1,000,000,000 are hereby rescinded not later than September 30, 2024'",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-07177",
+   "observation_id": "OBS-LHHS-1833",
+   "rule_applied": "unit",
+   "expected_result": "dollars as printed in the bill text ($1,000,000,000)",
+   "observed_result": "-1,000,000,000 dollars (a rescission, signed)",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-07178",
+   "observation_id": "OBS-LHHS-1757",
+   "rule_applied": "cross_document",
+   "expected_result": "H.R. 5894 bill text prints $370,772,000",
+   "observed_result": "the explanatory materials' table (and its change column) print 370,722 thousand",
+   "result": "flag",
+   "human_review_status": "pending",
    "reviewer": "",
    "resolution": ""
   }
