@@ -854,9 +854,9 @@ def add_observations(conn, rows):
 # ---------------------------------------------------------------------------
 
 def open_findings(conn, observation_id, excluding_rule=None):
-    """Validation records on an observation that are not a pass and not resolved."""
+    """Validation records on an observation that are not a pass (nor an info record) and not resolved."""
     return [dict(r) for r in conn.execute(
-        "SELECT * FROM validation_record WHERE observation_id = ? AND result <> 'pass' "
+        "SELECT * FROM validation_record WHERE observation_id = ? AND result NOT IN ('pass', 'info') "
         "AND (human_review_status IS NULL OR human_review_status <> 'resolved') "
         "AND (? IS NULL OR rule_applied <> ?)", (observation_id, excluding_rule, excluding_rule))]
 

@@ -65,7 +65,8 @@ NOT_RUN = {
 
 # checks that confirm the figure itself: a sum or difference it is part of, or another document
 # ("arithmetic": validate()'s own note that some printed sum confirmed the row, its own or a parent's)
-CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic")
+# ("law_text": the enrolled law's first dollar amount under the account's heading, reference/review/law_text.py)
+CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic", "law_text")
 
 
 # The routine semantic flag validate() puts on every line that isn't plain budget authority (an
@@ -111,14 +112,16 @@ def verification_status(confidence, checks):
     checks: the observation's (rule_applied, result), (rule_applied, result,
     expected_result) or (rule_applied, result, expected_result,
     human_review_status, resolution) tuples.
-    A check a person resolved (human_review_status 'resolved' with a non-empty
-    resolution) no longer counts: it neither fails nor flags nor confirms; the
-    rule above applies to the unresolved checks.
+    An 'info' record does not count either way. A check a person resolved
+    (human_review_status 'resolved' with a non-empty resolution) no longer
+    counts: it neither fails nor flags nor confirms; the rule above applies
+    to the unresolved checks.
     Human-verified, provisional and superseded are set by their own steps,
     never by this rule.
     """
     checks = [tuple(c) + (None,) * (5 - len(c)) for c in checks]
-    checks = [c[:3] for c in checks if not is_resolved(c[3], c[4])]
+    # an 'info' record (law_text's known differences: program level, advances, transfers) neither fails nor confirms
+    checks = [c[:3] for c in checks if not is_resolved(c[3], c[4]) and c[1] != "info"]
     results = [r for _, r, _ in checks]
     if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"
