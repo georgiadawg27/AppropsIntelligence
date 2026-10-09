@@ -14,6 +14,170 @@
        "missing": false,
        "observations": [
         {
+         "amount": 352000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-CURES",
+         "cell_note": "S.Rept. 115-150's 2017 appropriation column prints 52,000 thousand; the law's amounts sum to $352,000,000, as recorded.",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4053",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'NIH Innovation Account, CURES Act2/' [FY 2017 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16835"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16836"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16837"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "Our figure is exactly what P.L. 115-31 Division H states: the 21st Century Cures Act money P.L. 115-31 names as previously appropriated for FY2017 (by P.L. 114-254, sec. 194): $300,000,000 under 'National Cancer Institute' (p.390) + $52,000,000 under 'Office of the Director' (p.393) = $352,000,000. S.Rept. 115-150 (p.231) prints 52,000 thousand: another split of the same FY2017 money. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: S.Rept. 115-150's 2017 appropriation column prints 52,000 thousand; the law's amounts sum to $352,000,000, as recorded.",
+           "result": "flag",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17035"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-CURES",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0124",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 5926 (reported) (2016-07-22) has no NIH Innovation Account and no 21st Century Cures Act funding (the whole bill (Title II pp. 40-102, Title V pp. 142-170) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-07-22",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114HR5926RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-CURES",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0135",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2017 Budget Appendix (2016-02-09) has no NIH Innovation Account and no 21st Century Cures Act funding (the HHS chapter's proposed language (pp. 447-519, bracketed text excluded) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-02-09",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-CURES",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0129",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3040 (placed on calendar) (2016-06-09) has no NIH Innovation Account and no 21st Century Cures Act funding (the whole bill (Title II pp. 43-103) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-09",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114S3040PCS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 496000000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-141",
@@ -2793,7 +2957,56 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-CURES",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0124",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 5926 (reported) (2016-07-22) has no NIH Innovation Account and no 21st Century Cures Act funding (the whole bill (Title II pp. 40-102, Title V pp. 142-170) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-07-22",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114HR5926RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-CURES",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0135",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2017 Budget Appendix (2016-02-09) has no NIH Innovation Account and no 21st Century Cures Act funding (the HHS chapter's proposed language (pp. 447-519, bracketed text excluded) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-02-09",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-CURES",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0129",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3040 (placed on calendar) (2016-06-09) has no NIH Innovation Account and no 21st Century Cures Act funding (the whole bill (Title II pp. 43-103) searched): the account did not exist yet -- the 21st Century Cures Act (P.L. 114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-09",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114S3040PCS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+   }
+  ],
   "account": {
    "agency": "National Institutes of Health",
    "bureau": "NIH Innovation Account, CURES Act",
@@ -2812,6 +3025,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
     [
      2018,
      "Enacted"
@@ -2972,6 +3201,67 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 352000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-CURES",
+    "cell_note": "S.Rept. 115-150's 2017 appropriation column prints 52,000 thousand; the law's amounts sum to $352,000,000, as recorded.",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4053",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'NIH Innovation Account, CURES Act2/' [FY 2017 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16835"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16836"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16837"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "Our figure is exactly what P.L. 115-31 Division H states: the 21st Century Cures Act money P.L. 115-31 names as previously appropriated for FY2017 (by P.L. 114-254, sec. 194): $300,000,000 under 'National Cancer Institute' (p.390) + $52,000,000 under 'Office of the Director' (p.393) = $352,000,000. S.Rept. 115-150 (p.231) prints 52,000 thousand: another split of the same FY2017 money. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: S.Rept. 115-150's 2017 appropriation column prints 52,000 thousand; the law's amounts sum to $352,000,000, as recorded.",
+      "result": "flag",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17035"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 496000000,
     "amount_type": "budget authority",

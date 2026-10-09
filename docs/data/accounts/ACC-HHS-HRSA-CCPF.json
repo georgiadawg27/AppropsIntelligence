@@ -9,6 +9,123 @@
         "amount_type": "budget authority",
         "canonical_account_id": "ACC-HHS-HRSA-CCPF",
         "component": null,
+        "confirmed_absence_id": "CA-LHHS-0139",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 115-31 Division H has no 'Covered Countermeasures Process Fund' heading or appropriation (pp. 368-433 searched).",
+        "fiscal_year": 2017,
+        "publication_date": "2017-05-05",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-115PUBL31",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0123",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 5926 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+        "fiscal_year": 2017,
+        "publication_date": "2016-07-22",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114HR5926RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0134",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2017 Budget Appendix proposes no appropriations language for the Covered Countermeasure Process Fund (HHS chapter, pp. 447-519, searched: only its schedules).",
+        "fiscal_year": 2017,
+        "publication_date": "2016-02-09",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0128",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3040 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-09",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114S3040PCS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
         "confirmed_absence_id": "CA-LHHS-0119",
         "confirmed_date": "2026-10-09",
         "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
@@ -1942,6 +2059,70 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-HRSA-CCPF",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0139",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 115-31 Division H has no 'Covered Countermeasures Process Fund' heading or appropriation (pp. 368-433 searched).",
+    "fiscal_year": 2017,
+    "publication_date": "2017-05-05",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL31",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0123",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 5926 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+    "fiscal_year": 2017,
+    "publication_date": "2016-07-22",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114HR5926RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0134",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2017 Budget Appendix proposes no appropriations language for the Covered Countermeasure Process Fund (HHS chapter, pp. 447-519, searched: only its schedules).",
+    "fiscal_year": 2017,
+    "publication_date": "2016-02-09",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0128",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3040 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-09",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114S3040PCS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0119",
     "confirmed_date": "2026-10-09",
     "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
@@ -2181,6 +2362,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
     [
      2018,
      "Enacted"
