@@ -33,7 +33,7 @@ import text_tables as tt
 
 NUM_TOKEN = re.compile(r"^[\(\)\+\-−\d,\.·•']+$")
 RULE_ROW = re.compile(r"^[\s\-=_·•.,:]+$")
-TITLE_OCR_RE = re.compile(r"^\s*T\s*I\s*T\s*L\s*E\s+([IVXLCl1|\s]+?)\s*[-—–:]\s*(.+)$")
+TITLE_OCR_RE = re.compile(r"^\s*T\s*I\s*T\s*L\s*E\s+([IVXLCl1|!\s]+?)\s*(?:[-—–:]|(?<=!)|\s(?=[A-Z]{4}))\s*(.+)$")
 UNITS_RE = re.compile(r"\(\s*amounts?\s+in\s+[a-z ]+\)|\[\s*in\s+[a-z ]+\]", re.I)
 
 
@@ -132,7 +132,7 @@ def repair_title(label):
     m = TITLE_OCR_RE.match(label)
     if not m:
         return label
-    numeral = re.sub(r"\s+", "", m.group(1)).upper().replace("L", "I").replace("1", "I").replace("|", "I")
+    numeral = re.sub(r"\s+", "", m.group(1)).upper().replace("L", "I").replace("1", "I").replace("|", "I").replace("!", "I")
     if not re.fullmatch(r"[IVXLC]+", numeral):
         return label
     name = re.sub(r"\s+", " ", m.group(2)).strip()
@@ -147,7 +147,31 @@ def norm_amount(tokens):
     s = re.sub(r"(?<=[\d\)])[-\.]+$", "", s)  # leader / rule ink after the figure
     s = re.sub(r"(?<=\d)\.{1,2}(?=\d{3}(\D|$))", ",", s)
     s = re.sub(r"^[\.,]+|[\.,]+$", "", s)
-    return s, bool(re.fullmatch(r"\(?[+-]?\d{1,3}(,\d{3})*\)?", s))
+    s = re.sub(r"(?<=\))\($", "", s)          # the next cell's opening parenthesis read onto this one: '(137,931,797)('
+    if re.fullmatch(r"\(?[+-]?\d{1,3}(,\d{3})*\)?", s):
+        return s, True
+    # GPO's layer drops a comma now and then ('2402,089', '11000', '1,058441'): the digits are still the figure when
+    # every group after the first is whole thousands; the table's own arithmetic checks the reading
+    m = re.fullmatch(r"(\(?)([+-]?)(\d+(?:,\d+)*)(\)?)", s)
+    if m and len(re.sub(r"\D", "", m.group(3))) >= 4 and all(len(g) % 3 == 0 for g in m.group(3).split(",")[1:]):
+        return f"{m.group(1)}{m.group(2)}{int(m.group(3).replace(',', '')):,}{m.group(4)}", True
+    return s, False
+
+
+def split_merged(words):
+    """Two parenthesized cells GPO's layer read as one word ('(748,808,126)(751' then '367,132)'): split the word at
+    ')(' and share its box out by characters, so each part lands in its own column."""
+    out = []
+    for w in words:
+        parts = re.split(r"(?<=\))(?=\()", w["t"])
+        if len(parts) < 2 or not all(NUM_TOKEN.match(x) for x in parts):
+            out.append(w)
+            continue
+        per, u = (w["u1"] - w["u0"]) / len(w["t"]), w["u0"]
+        for x in parts:
+            out.append(dict(w, t=x, u0=u, u1=u + per * len(x)))
+            u += per * len(x)
+    return out
 
 
 def page_rows(page, cols_hint=None):
@@ -183,7 +207,7 @@ def page_rows(page, cols_hint=None):
                 and re.search(r"[~*]|(\b[WM]\b.*){2,}", r["text"]):
             continue                                  # a rule printed as dashes (GPO's layer reads a wavy rule as ~~WW~)
         label_w, cells = [], [[] for _ in cols]
-        for w in r["w"]:
+        for w in split_merged(r["w"]):
             ctr = (w["u0"] + w["u1"]) / 2
             # separators and signs often come out as tokens of their own
             # ("- 179 , 500"), so a token counts if it's only number characters
@@ -194,6 +218,13 @@ def page_rows(page, cols_hint=None):
                 continue
             i = next(i for i in range(len(cols)) if bounds[i] <= ctr < bounds[i + 1])
             cells[i].append(w["t"])
+        for i in range(len(cells) - 1):
+            # one parenthesized figure run into the next ('(748,808,126)(751' + '367,132)'; '(137,931,797)(' +
+            # '137,931,797)'): the second half opens the next column's figure
+            joined, nxt = "".join(cells[i]), "".join(cells[i + 1])
+            m = re.fullmatch(r"(\([\d,]+\))(\([\d,]*)", joined)
+            if m and nxt.endswith(")") and not nxt.startswith("("):
+                cells[i], cells[i + 1] = [m.group(1)], [m.group(2) + nxt]
         if marker_u is not None and len(label_w) > 1 and label_w[-1]["t"] in ("D", "M") \
                 and abs(label_w[-1]["u0"] - marker_u) <= em:
             label_w = label_w[:-1]                    # GPO's discretionary / mandatory marker column
@@ -201,7 +232,7 @@ def page_rows(page, cols_hint=None):
         label = re.sub(r"(\s*[\.·,:]\s*){2,}.*$", "", label)       # dot leaders and what OCR made of them
         label = re.sub(r"[\s\.,·:]+$", "", label).strip()
         label = re.sub(r"(?<=[\.\)])\s*[DM]$", "", label).strip()  # GPO's discretionary / mandatory marker column
-        label = repair_title(label)
+        label = repair_title(re.sub(r"\bT\s*[i1Il|]\s*t\s*[l1I|]\s*e\b", "Title", label))   # 'Total, T1 tle II'
         if re.fullmatch(r"[WMwm~\-—–_=•·*\s]+", label or "x") and len(label) > 2:
             continue                                  # a wavy printed rule read as letters ('M M M W M')
         values, states = [], []

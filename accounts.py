@@ -185,10 +185,11 @@ COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President
 #   kids_first / congressionally_directed_spending -- a line printed inside the
 #            account's figure (the Gabriella Miller Kids First line under the NIH
 #            Office of the Director; HRSA's community project funding) (owner, 2026-10-08)
-INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending", "request_proposal")
+INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending", "request_proposal",
+                       "request_proposal_opioids", "request_proposal_rac_appeals")
 # A chamber's one-off line under an account's heading (Labor-HHS: Diaper Grants, House FY2022): a part of the
 # account's cell, never a new account (owner, 2026-10-08)
-PROPOSAL_COMPONENTS = ("chamber_proposal",)
+PROPOSAL_COMPONENTS = ("chamber_proposal", "request_proposal_ssbg")
 PARALLEL_SCOPE_COMPONENTS = (
     "program_level", "fiscal_year_program_level",
     "program_level_with_cures_and_phs_evaluation_act_funding", "program_level_excluding_arpa_h",
@@ -213,7 +214,13 @@ COMPONENT_KINDS = (
                                                           "spending printed as its own line inside the account's figure"),
        ("chamber_proposal", "part", "a one-off line a chamber proposed under the account's heading (a note)"),
        ("request_proposal", "contained", "a line the President's request proposed, printed inside the account's "
-                                         "total (not enacted)")]
+                                         "total (not enacted)"),
+       ("request_proposal_opioids", "contained", "a line the President's request proposed, printed inside the "
+                                                 "account's total (not enacted)"),
+       ("request_proposal_rac_appeals", "contained", "a line the President's request proposed, printed inside the "
+                                                     "account's total (not enacted)"),
+       ("request_proposal_ssbg", "part", "a one-off line the President's request proposed under the account's "
+                                         "heading (a note)")]
     + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
 # Each component's label (Component.label): the name as a source document
 # prints it, taken from the document's text, never made up from the
@@ -245,6 +252,14 @@ COMPONENT_LABELS = {
     "chamber_proposal": ("Diaper Grants", "heading or line text", "H.Rept. 117-96 p.485, under Social Services Block Grant"),
     "request_proposal": ("National Institute for Research on Safety and Quality (NIRSQ)", "printed name",
                          "H.Rept. 116-450 p.407, the FY2021 request column under NIH"),
+    "request_proposal_opioids": ("Combatting Opioids Abuse and Misuse and Addressing Mental Illness", "printed name",
+                                 "H.Rept. 115-862 p.383, the FY2019 request column under the Office of the Secretary"),
+    "request_proposal_rac_appeals": (
+        "Office of Medicare Hearings and Appeals and Departmental Appeals Board Recovery Audit Contractor (RAC) appeals "
+        "related expenses", "printed name", "H.Rept. 115-862 p.383, the FY2019 request column under the Office of the "
+                                            "Secretary"),
+    "request_proposal_ssbg": ("Discretionary Funds", "heading or line text",
+                              "H.Rept. 115-862 p.375, the FY2019 request column under Social Services Block Grant"),
     "program_level": ("program level", "printed name", "e.g. 'Total, SAMHSA, program level' (Labor-HHS Title II tables)"),
     "fiscal_year_program_level": ("fiscal year program level", "printed name",
                                   "'Total, General Departmental Management fiscal year program level' (Labor-HHS)"),
