@@ -48,7 +48,7 @@ class LhhsRowsLoad(unittest.TestCase):
         staged = json.loads((ROOT / "data" / "staged.json").read_text())
         self.assertEqual(self.report["rows"]["account"], len(staged["accounts"]))
         self.assertEqual(self.report["rows"]["appropriations_observation"], len(staged["observations"]))
-        ids = {o["observation_id"] for o in rows("observation")}
+        ids = {o["observation_id"] for o in rows("observation")} - merge_check.RETIRED   # retired IDs never return
         import openpyxl
         wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
         have = {r[0] for r in wb["Appropriations Observation"].iter_rows(min_row=2, values_only=True)}

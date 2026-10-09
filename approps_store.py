@@ -1164,7 +1164,7 @@ def old_structure(h, first, cells):
             continue
         lines = []
         for l in cell["lines"]:
-            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total"):
+            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total", "no_figure"):
                 l = dict(l, state="no_figure", missing=False)
                 if first is not None and y >= first:
                     l["note"] = f"Funded within {inside} in this document."
@@ -1284,7 +1284,7 @@ def history(conn, account_id):
     current = [x for x in obs if x["verification_status"] != "superseded"]
     for r in rels:
         if split_before(r) and "Note: " in (r["evidence"] or "") and current:
-            note = r["evidence"][r["evidence"].index("Note: ") + 6:]
+            note = r["evidence"][r["evidence"].index("Note: ") + 6:].split(" Cell note (")[0]
             y0 = min(x["fiscal_year"] for x in current)
             for x in current:
                 if x["fiscal_year"] == y0 and x["amount_type"] == "budget authority" and x["component"] is None \

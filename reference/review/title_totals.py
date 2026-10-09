@@ -44,7 +44,8 @@ PRINTED = ROOT / "reference" / "review" / "title_iii_printed.csv"
 
 def lines(conn, accts, fy, stage):
     return conn.execute("SELECT observation_id, canonical_account_id, amount_type, component, amount FROM appropriations_observation "
-                        "WHERE fiscal_year = ? AND stage = ? AND canonical_account_id IN (%s) ORDER BY observation_id"
+                        "WHERE fiscal_year = ? AND stage = ? AND verification_status <> 'superseded' "
+                        "AND canonical_account_id IN (%s) ORDER BY observation_id"
                         % ",".join("?" * len(accts)), (fy, stage, *accts)).fetchall()
 
 

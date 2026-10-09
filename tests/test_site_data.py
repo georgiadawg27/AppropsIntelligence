@@ -90,7 +90,7 @@ class SiteReadsData(unittest.TestCase):
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
-                self.assertIn(v["reviewer"], ("triage rules", "owner rules (2026-10-08)") if v["observation_id"] in fy2022
+                self.assertIn(v["reviewer"], ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
                               else ("owner (group approval 2026-10-08)",))
                 self.assertIn(v["result"], ("fail", "flag"))
                 self.assertTrue(v["resolution"])
@@ -105,7 +105,11 @@ class SiteReadsData(unittest.TestCase):
         by_id = {v["validation_id"]: v for v in data["validations"]}
         with open(ROOT / "reference" / "review" / "triage_proposal.csv", newline="") as f:
             rows = [r for r in csv.DictReader(f) if r["id"].startswith("VAL-")]
+        retired = {i for x in json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text()).values()
+                   if isinstance(x, dict) for i in x}
         for r in rows:
+            if r["id"] in retired:
+                continue                                 # retired by an owner decision (retired_ids.json)
             v = by_id[r["id"]]
             if r["proposed_disposition"] == "A":
                 self.assertEqual((v["human_review_status"], v["resolution"]), ("resolved", r["reason"]), r["id"])

@@ -1129,11 +1129,12 @@ class CompareBrowser(CompareTest):
         self.page.click("#expand-all")
         notes = self.page.locator("#compare-grid [data-testid=cell-note]")
         # the view's other notes: Refugee FY2022 Enacted (the prior-year column), ASPR's FY2023 cells (funded within
-        # PHSSEF) and ONC's FY2022 Enacted (the PHS evaluation set-aside)
+        # PHSSEF), ONC's FY2022 Enacted (the PHS evaluation set-aside) and the FY2023 Enacted figures that follow the
+        # law, S.Rept. 118-84's restatement in their corner (owner, 2026-10-09)
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
-        self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation"))
-                            for x in titles), titles)
+        self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
+                                          "S.Rept. 118-84 restates FY2023")) for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
@@ -1159,8 +1160,8 @@ class CompareBrowser(CompareTest):
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
             self.assertEqual(sum(1 for x in titles if x.startswith("H.R. 5894")), 1 if sc == "LHHS" else 0, sc)
-            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000", "Funded within PHSSEF"))
-                                for x in titles), titles)
+            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000", "Funded within PHSSEF",
+                                              "S.Rept. 118-84 restates FY2023")) for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
