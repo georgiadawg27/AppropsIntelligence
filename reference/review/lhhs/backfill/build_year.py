@@ -54,6 +54,11 @@ def clean(label):
     same row in every year's table) and a bare footnote digit dropped."""
     s = re.sub(r"\b(fy|fiscal year)\s*(19|20)\d\d\b", r"\1 ####", _clean(label), flags=re.I)
     # a footnote mark printed as a bare digit after a word ('Total, AHRQ Program Level 3', 'Federal funds 3')
+    s = re.sub(r"(?<=[a-z]) \d$", "", s)
+    # GPO's discretionary / mandatory marker column, read into the label by the vision pass ('National Eye Institute
+    # (NEI) D', H.Rept. 116-62) -- never a label's own last word, except 'Part D'
+    s = re.sub(r"(?<!part)(?<=[a-z\)\./])[\s\.]+[dm]$", "", s)
+    s = re.sub(r"(?<=[a-z\)])\d{1,2}/$", "", s)    # a footnote mark glued to the word ('CURES Act2/', 'Federal funds)3/')
     return re.sub(r"(?<=[a-z]) \d$", "", s)
 
 STAGED = ROOT / "data" / "staged.json"
@@ -292,6 +297,136 @@ YEARS[2021] = {
 }
 
 
+YEARS[2020] = {
+    # no Senate stage: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill or released a
+    # chair's draft -- the Bill Report Reference says so (not_reported), and the grid reads 'not reported'
+    "stages": [
+        ("House Reported", "House", "CRPT-116hrpt62", "Bill", "SRC-CRPT-116HRPT62"),
+        ("President's Budget", "N/A", "CRPT-116hrpt62", "FY 2020 Request", "SRC-CRPT-116HRPT62"),
+        ("Enacted", "N/A", "CRPT-116hrpt450", "FY 2020 Enacted", "SRC-CRPT-116HRPT450"),
+    ],
+    "fallback": {"Enacted": ("MANUAL-LHHS-FY2021-SenateReported-explanatory_statement-6c401e04", "2020 appropriation",
+                             "SRC-EXPL-LHHS-FY2021-SENATE")},
+    "historical_names": [],
+    "sum_items": YEARS[2021]["sum_items"] + [
+        {"total": "ACC-HHS-CMS-TOTAL", "label": r"new advance, 1st quarter, fy ####", "path": "MEDICAID SERVICES",
+         "kind": "inside", "why": "ACC-HHS-CMS-MEDICAID's new advance for the next fiscal year, recorded as its advance "
+         "line and counted in the CMS total H.Rept. 116-62 prints"},
+        {"total": "ACC-HHS-TITLE-II-TOTAL", "label": r"evaluation tap funding", "path": "Federal Funds", "memo": True,
+         "sign": -1, "kind": "inside", "why": "AHRQ's PHS evaluation funding, inside 'Total, AHRQ (Federal funds)' "
+         "(196,709 + 18,408 + 71,800 + 71,300 = 358,217) and outside the Title II total, which counts budget authority "
+         "only (H.Rept. 116-62 p.342, footnote 3)"}],
+    "proposal_parts": YEARS[2021]["proposal_parts"],
+    "components": [],
+    "title_counts_cures": True,
+    "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
+    "proposals": {**YEARS[2021]["proposals"], **{
+        "total, centers for disease control": "not an account: ACC-HHS-CDC-TOTAL's headline, printed as 'Total, Centers "
+            "for Disease Control' (label override)",
+        "total, acf": "not an account: ACC-HHS-ACF-TOTAL's headline, printed as 'Total, ACF' (label override)",
+        "office of medicare hearings and appeals": "not an account: ACC-HHS-OS-OMHA's headline (label override)",
+        "total, title ii, health and human services": "not an account: ACC-HHS-TITLE-II-TOTAL's headline (label override)",
+        "total, payments to states": "not an account: the sum of ACC-HHS-ACF-FOSTER-CARE's lines before the advance "
+            "adjustments; its headline is derived as the current year + the new advance",
+        "total, payments, current year": "not an account: ACC-HHS-ACF-FOSTER-CARE's current-year line, one of the two "
+            "its derived headline sums",
+        "total, acl program 1 evel": "not an account: a program-level view of ACC-HHS-ACL-TOTAL (the text layer's 'program "
+            "1 evel')",
+        "nurse practitioner residency training initiative": "not an account: a program line inside "
+            "ACC-HHS-HRSA-HEALTH-WORKFORCE (its printed subtotal includes it; the HRSA sum passes)",
+        "nursing corps scholarship and loan repayment program": "not an account: a program line inside "
+            "ACC-HHS-HRSA-HEALTH-WORKFORCE (its printed subtotal includes it; the HRSA sum passes)",
+        "subtotal, nursing programs": "not an account: a subtotal inside ACC-HHS-HRSA-HEALTH-WORKFORCE (its printed "
+            "subtotal includes it; the HRSA sum passes)",
+        "graduate medical education": "not an account: a program line inside ACC-HHS-HRSA-HEALTH-WORKFORCE (its printed "
+            "subtotal includes it; the HRSA sum passes)",
+        "national practitioner data bank. 0": "not an account: a program line inside ACC-HHS-HRSA-HEALTH-WORKFORCE (its "
+            "printed subtotal includes it; the HRSA sum passes)"}},
+    # labels H.Rept. 116-62 abbreviates: (stage, account) -> (cleaned label, why)
+    "override": {(st, "ACC-HHS-ACF-TOTAL"): ("total, acf", "H.Rept. 116-62 p.349 prints the ACF agency total as "
+                                                           "'Total, ACF' (the later tables: 'Total, Administration for "
+                                                           "Children and Families')")
+                 for st in ("House Reported", "President's Budget")}
+                | {(st, aid): (label, why) for st in ("House Reported", "President's Budget") for aid, label, why in (
+                    ("ACC-HHS-CDC-TOTAL", "total, centers for disease control",
+                     "H.Rept. 116-62 p.335: 'Total, Centers for Disease Control' (later: '... and Prevention')"),
+                    ("ACC-HHS-HRSA-PRIMARY-CARE", "total, primary health care (excluding mandatory funds)",
+                     "H.Rept. 116-62 p.327: 'Total, Primary Health Care (excluding mandatory funds)', the FY2021 scope"),
+                    ("ACC-HHS-HRSA-HEALTH-SYSTEMS", "total, health care systems",
+                     "H.Rept. 116-62 p.331: 'Total, Health Care Systems' (former name 'Health Care Systems')"),
+                    ("ACC-HHS-ACF-HEAD-START", "programs for children, youth and families head start",
+                     "H.Rept. 116-62 p.347 prints the heading 'Programs for Children, Youth and Families' on Head "
+                     "Start's line"),
+                    ("ACC-HHS-OS-OMHA", "office of medicare hearings and appeals",
+                     "H.Rept. 116-62 p.354: 'Office of Medicare Hearings and Appeals' (later: 'Medicare Hearings and "
+                     "Appeals')"),
+                    ("ACC-HHS-TITLE-II-TOTAL", "total, title ii, health and human services",
+                     "H.Rept. 116-62 p.358: 'Total, Title II, Health and Human Services'"),
+                    ("ACC-HHS-CMS-TRUST-FUND-PAYMENTS", "total, payments to trust funds, program level",
+                     "H.Rept. 116-62 p.343: 'Total, Payments to Trust Funds, Program Level' -- the same scope as the "
+                     "later 'Total, Payments to Trust Funds': H.Rept. 116-450 prints FY2020 Enacted's as 410,796,100, "
+                     "the figure this line prints in the House column"),
+                    ("ACC-HHS-AHRQ-TOTAL", "total, ahrq (federal funds)",
+                     "H.Rept. 116-62 p.342: 'Total, AHRQ (Federal funds)' (footnote 3: AHRQ's PHS evaluation funding is "
+                     "outside it)"),
+                    ("ACC-HHS-CDC-BIRTH-DEFECTS", "birth defects, developmental disabilities di sabi 1 it i es and health",
+                     "H.Rept. 116-62 p.334: 'Birth Defects, Developmental Disabilities, Disabilities and Health', the "
+                     "text layer splitting 'Disabilities' ('Di sabi 1 it i es')"),
+                    ("ACC-HHS-NIH-CURES", "total, cures act",
+                     "H.Rept. 116-62 p.358: 'Total, CURES Act' after the Title II total -- the sum of the four 'NIH "
+                     "Innovation Account, CURES Act' lines printed under the institutes (pp.336-338)"))},
+    # H.Rept. 116-62 prints these accounts' current year and new advance, not 'available in this bill': the headline
+    # is their sum -- exactly how H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print
+    # it (Foster Care 5,744,000 + 3,000,000 = 8,744,000; Family Support 2,890,000 + 1,400,000 = 4,290,000)
+    "sum_lines": {
+        "ACC-HHS-ACF-FOSTER-CARE": {
+            "agency": "ACF", "after": "total, payments to states",
+            "lines": [r"total, payments, current year", r"new advance, 1st quarter, fy ####"],
+            "why": "'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and "
+                   "the FY2021 Senate draft's 2020 column print it: the current year + the new advance"},
+        "ACC-HHS-ACF-CHILD-SUPPORT": {
+            "agency": "ACF", "after": "total, family support payments program level",
+            "lines": [r"total, family support payments, current year", r"new advance, 1st quarter, fy ####"],
+            "why": "'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column "
+                   "and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"},
+    },
+    "cross": [
+        ("Enacted", "MANUAL-LHHS-FY2021-SenateReported-explanatory_statement-6c401e04", "2020 appropriation",
+         "SRC-EXPL-LHHS-FY2021-SENATE"),
+    ],
+    "also_covers": {"SRC-CRPT-116HRPT450": "FY2020 Enacted", "SRC-EXPL-LHHS-FY2021-SENATE": "FY2020 Enacted"},
+    "docs": [
+        {"document_id": "SRC-CRPT-116HRPT62", "source_agency": "House Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "document_type": "committee_report", "congress_session": "116-1", "fiscal_year": 2020,
+         "publication_date": "2019-05-16 00:00:00", "stage": "House Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "327-358",
+         "also_covers": "FY2020 President's Budget",
+         "notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). "
+                  "Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) "
+                  "is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by "
+                  "vision where it failed the table's arithmetic (14 from transcriptions already on file)."},
+    ],
+    "brr": [
+        {"reference_id": "BR-LHHS-FY2020-HOUSE", "stage": "House Reported", "bill_id": "H.R.2740",
+         "report_id": "H.Rept.116-62",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2020-SENATE", "stage": "Senate Reported", "bill_id": "N/A", "report_id": "N/A",
+         "bill_url": "N/A", "report_jes_url": "N/A",
+         "notes": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and "
+                  "released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
+         "draft": "FALSE", "not_reported": "TRUE"},
+        {"reference_id": "BR-LHHS-FY2020-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2020/APP",
+         "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "report_jes_url": "N/A", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2020-ENACTED", "stage": "Enacted", "bill_id": "P.L.116-94", "report_id": "N/A",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 1865", "division": "A", "enactment_date": "2019-12-20",
+         "funding_type": "omnibus", "draft": "FALSE"},
+    ],
+}
+
 def load_extraction(pkg):
     x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
     recs = collections.defaultdict(list)
@@ -411,6 +546,14 @@ def main(argv=None):
             pool = (rows_for(sections, col, "TAIL") if anywhere else
                     [f for a_, rs in sections[col] if a_ == "TAIL" for f in rs])
             hits = [f for f in pool if f["_clean"] in facts[key]["labels"]]
+        if key[2] and hits and not acct[aid].get("total_scope"):
+            # a component line ('Evaluation Tap Funding' under ONC) is the one printed just after its own account's
+            # headline row -- a generic label recurs under other programs (Teen Pregnancy Prevention's)
+            head = [f for f in pool if f["_clean"] in facts.get((aid, key[1], ""), {"labels": {}})["labels"]
+                    and not f.get("is_memo")]
+            if head:
+                hits = [h for h in hits if any(0 < h["node_id"] - g["node_id"] <= 3 for g in head)] or \
+                       ([] if len(head) == 1 else hits)
         if len({h["amount"] for h in hits}) > 1:
             for _, _, lab in sorted(r for r in facts[key]["rank"] if r[0] == (chamber if chamber != "N/A" else "House")):
                 pick = [h for h in hits if h["_clean"] == lab]
@@ -448,6 +591,7 @@ def main(argv=None):
     ext_by_src = {}
     explained = []                                       # (stage, total, items) of the short sums
     absences = []                                        # confirmed absences (absent_before)
+    undecided = []
     for stage, chamber, pkg, col, src in cfg["stages"]:
         x, sections = ext(pkg)
         ext_by_src[src] = x["observations"]
@@ -458,7 +602,10 @@ def main(argv=None):
             if ov and key[1:] == ("budget authority", ""):
                 hits = [f for f in rows_for(sections, col, "TAIL") if f["_clean"] == ov[0]]
             fb = cfg.get("fallback", {}).get(stage)
-            if fb and (not hits or any(h["amount"] is None for h in hits)):
+            # never for a headline this table's own lines derive (derived_headlines.RULES: Medicaid) -- its views
+            # must cite the same document as their headline
+            derivable = key[0] in DH.RULES and key[1:] == ("budget authority", "")
+            if fb and not derivable and (not hits or any(h["amount"] is None for h in hits)):
                 fx, _ = ext(fb[0])
                 ext_by_src[fb[2]] = fx["observations"]
                 fhits = find(key, fb[0], fb[1], "Senate")
@@ -480,8 +627,9 @@ def main(argv=None):
             lines = {k[1:]: found[k]["amount"] or 0 for k in found if k[0] == aid}
             d = DH.derive(aid, lines, lambda k: clean_label(found[(aid, *k)]), lambda k: found[(aid, *k)]["source_page"])
             if d is None:
-                raise SystemExit(f"{stage} {aid}: its headline isn't printed and can't be derived exactly "
+                undecided.append(f"{stage} {aid}: its headline isn't printed and can't be derived exactly "
                                  f"({sorted(lines)}); the owner decides (no printed total)")
+                continue
             ka = (aid, *DH.RULES[aid][0])
             pages = sorted({str(found[(aid, *k)]["source_page"]) for k in DH.RULES[aid]})
             found[(aid, "budget authority", "")] = dict(found[ka], amount=d[0], source_page="-".join(pages),
@@ -509,6 +657,32 @@ def main(argv=None):
                      f"{total // 1000:,} as recorded")
             found[key] = dict(parts[0], amount=total, source_page="-".join(pages), account_name_as_written="", _records=[],
                               _parts=parts, _row=parts[0])
+            derived[key] = (total, note, arith)
+            report.append([stage, aid, "budget authority", "", "derived", total, "-".join(pages), note])
+        # a headline the year's table prints only as its lines (cfg 'sum_lines'): their sum, where the same column of
+        # another table on file prints the headline as exactly that sum (the check named in the rule)
+        for aid, rule in cfg.get("sum_lines", {}).items():
+            key = (aid, "budget authority", "")
+            if aid not in acct or key in found or col not in sections:
+                continue
+            pool = [f for f in rows_for(sections, col, rule["agency"]) if not f.get("is_memo")]
+            parts = []
+            for rx in rule["lines"]:
+                hit = [f for f in pool if re.fullmatch(rx, f["_clean"]) and (not rule.get("after")
+                       or any(g["_clean"] == rule["after"] and g["node_id"] < f["node_id"] for g in pool))]
+                hit = [f for f in hit if f["node_id"] == min(h["node_id"] for h in hit)] if hit else []
+                parts += hit[:1]
+            if len(parts) != len(rule["lines"]):
+                continue
+            total = sum(f["amount"] or 0 for f in parts)
+            pages = sorted({str(f["source_page"]) for f in parts})
+            note = ("derived, not a printed line: " + " + ".join(
+                        f"'{clean_label(f)}' {(f['amount'] or 0) // 1000:,} (p.{f['source_page']})" for f in parts)
+                    + f" = {total // 1000:,} (thousands); {rule['why']}")
+            arith = ("headline = " + " + ".join(f"{(f['amount'] or 0) // 1000:,}" for f in parts)
+                     + f" = {total // 1000:,} (thousands)", f"{total // 1000:,} as recorded")
+            found[key] = dict(parts[0], amount=total, source_page="-".join(pages), account_name_as_written="",
+                              _records=[], _parts=parts, _row=parts[0])
             derived[key] = (total, note, arith)
             report.append([stage, aid, "budget authority", "", "derived", total, "-".join(pages), note])
         # NIH Office of the Director where no OD subtotal is printed: the OD line + Gabriella Miller Kids First, the
@@ -596,6 +770,9 @@ def main(argv=None):
         # sum checks
         sum_checks(acct, by_key, found, new_val, sections=sections, col=col, cfg=cfg, explained=explained, stage=stage,
                    comps=comps)
+
+    if undecided:                                        # every one at once, not the first
+        raise SystemExit("\n".join(undecided))
 
     # 3. cross-document
     cross = []
@@ -831,7 +1008,7 @@ def main(argv=None):
                    "report_jes_url": r["report_jes_url"], "lookup_key": f"LHHS-{fy}-{r['stage']}", "notes": r.get("notes", ""),
                    "vehicle_bill_id": r.get("vehicle_bill_id", ""), "division": r.get("division", ""),
                    "enactment_date": r.get("enactment_date", ""), "funding_type": r.get("funding_type", ""),
-                   "draft": r["draft"]}
+                   "draft": r["draft"], "not_reported": r.get("not_reported", "")}
             data["bill_report_refs"].append(row)
         data["components"] += [c for c in cfg.get("components", [])
                                if c["component_id"] not in {x["component_id"] for x in data["components"]}]
@@ -1017,16 +1194,23 @@ def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, 
                     and key[2] not in [c for c in comps if comps[c]["kind"] == "view"]:
                 items.append((f["amount"] or 0, "inside", f"'{clean_label(f)}' (p.{f['source_page']}): recorded as a "
                                                        f"{key[2]} line inside {tot_id}"))
+        return items + listed_items(tot_id, rows)
+
+    def listed_items(tot_id, rows):
+        """The year's listed lines for a total's sum (cfg 'sum_items'): a memo line only where the item says so
+        ('memo': True), signed by its 'sign' (-1: a line inside one of the summed figures the total leaves out)."""
+        out = []
         for it in cfg.get("sum_items", []):
             if it["total"] != tot_id:
                 continue
             for f in rows:
-                if f.get("is_memo") or not re.fullmatch(it["label"], f["_clean"]) or it.get("path", "") not in f["account_path"] \
-                        or not f["amount"]:
+                if (f.get("is_memo") and not it.get("memo")) or not re.fullmatch(it["label"], f["_clean"]) \
+                        or it.get("path", "") not in f["account_path"] or not f["amount"]:
                     continue
                 why = it.get("why") or it["proposal"]
-                items.append((f["amount"] or 0, it["kind"], f"'{clean_label(f)}' (p.{f['source_page']}): {why}"))
-        return items
+                out.append((it.get("sign", 1) * (f["amount"] or 0), it["kind"],
+                            f"'{clean_label(f)}' (p.{f['source_page']}): {why}"))
+        return out
 
     for tot_id, x_ in acct.items():
         if x_.get("total_scope") != "agency" or (tot_id, "budget authority", "") not in by_key:
@@ -1064,6 +1248,7 @@ def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, 
             items = ([(cures, "inside", "ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside "
                                        "the NIH total (the table prints no line taking them out)")]
                      if cures and cfg.get("title_counts_cures") else [])
+            items += listed_items(title_id, rows_for(sections, col, "TAIL")) if col in sections else []
             explain(title_id, short, items)
 
 if __name__ == "__main__":

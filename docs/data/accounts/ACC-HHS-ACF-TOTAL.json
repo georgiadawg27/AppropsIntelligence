@@ -14,6 +14,514 @@
        "missing": false,
        "observations": [
         {
+         "amount": 39522672000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-94",
+         "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2862",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "418",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Familiies' [FY 2020 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "the parser placed this total's lines by the printed total; the account sum check on the same figure (our accounts) matches it",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11812"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11813"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11814"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11815"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11816"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-12119"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-12131"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 39522672000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-94",
+         "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": "OBS-LHHS-2862",
+         "observation_id": "OBS-LHHS-2863",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "418",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2020 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11817"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11818"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11819"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11820"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 43054238000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.2740",
+         "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2676",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "H.Rept.116-62",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "349",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Bill] -- H.Rept. 116-62 p.349 prints the ACF agency total as 'Total, ACF' (the later tables: 'Total, Administration for Children and Families')",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11092"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11093"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11094"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11095"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11096"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11097"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11460"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 43054238000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.2740",
+         "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": "OBS-LHHS-2676",
+         "observation_id": "OBS-LHHS-2677",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "H.Rept.116-62",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "349",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11098"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11099"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11100"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11101"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11102"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 31506316000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2768",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "349",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2020 Request] -- H.Rept. 116-62 p.349 prints the ACF agency total as 'Total, ACF' (the later tables: 'Total, Administration for Children and Families')",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11486"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11487"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11488"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11489"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11490"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11777"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 31506316000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": "OBS-LHHS-2768",
+         "observation_id": "OBS-LHHS-2769",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "349",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2020 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-11491"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11492"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11493"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11494"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 41190068000,
          "amount_type": "budget authority",
          "bill_id": "P.L.116-260",
@@ -4724,6 +5232,18 @@
   "coverage": {
    "cells": [
     [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
      2021,
      "Enacted"
     ],
@@ -4828,11 +5348,429 @@
      "President's Budget"
     ]
    ],
-   "enacted_through": 2026
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
   },
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 31506316000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2768",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "349",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2020 Request] -- H.Rept. 116-62 p.349 prints the ACF agency total as 'Total, ACF' (the later tables: 'Total, Administration for Children and Families')",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11486"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11487"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11488"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11489"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11490"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11777"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 31506316000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": "OBS-LHHS-2768",
+    "observation_id": "OBS-LHHS-2769",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "349",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2020 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11491"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11492"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11493"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11494"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 43054238000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.2740",
+    "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2676",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "H.Rept.116-62",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "349",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Bill] -- H.Rept. 116-62 p.349 prints the ACF agency total as 'Total, ACF' (the later tables: 'Total, Administration for Children and Families')",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11092"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11093"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11094"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11095"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11096"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11097"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11460"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 43054238000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.2740",
+    "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": "OBS-LHHS-2676",
+    "observation_id": "OBS-LHHS-2677",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "H.Rept.116-62",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "349",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11098"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11099"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11100"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11101"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11102"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 39522672000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-94",
+    "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2862",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "418",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Administration for Children and Familiies' [FY 2020 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "the parser placed this total's lines by the printed total; the account sum check on the same figure (our accounts) matches it",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11812"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11813"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11814"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11815"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11816"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-12119"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-12131"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 39522672000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-94",
+    "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": "OBS-LHHS-2862",
+    "observation_id": "OBS-LHHS-2863",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "418",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2020 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the table prints no lines under this total, so the sum check has nothing to compare",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-11817"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11818"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11819"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11820"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 34993812000,
     "amount_type": "budget authority",
@@ -8671,6 +9609,10 @@
   ],
   "open_cells": [
    [
+    2020,
+    "Senate Reported"
+   ],
+   [
     2027,
     "Senate Reported"
    ],
@@ -8681,6 +9623,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
    "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"

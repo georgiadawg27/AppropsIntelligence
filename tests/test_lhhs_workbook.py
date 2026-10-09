@@ -26,6 +26,15 @@ def rows(name):
     return list(csv.DictReader(open(WB / f"lhhs_{name}.csv", newline="")))
 
 
+def staged_count(account_id, headline=True):
+    """How many observations of an account data/staged.json holds (its headline only, by default): the Title II
+    and CURES counts grow with each backfill year."""
+    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    return sum(1 for o in data["observations"] if o["canonical_account_id"] == account_id
+               and (not headline or (not o["component"] and o["amount_type"] == "budget authority"))
+               and o.get("verification_status") != "superseded")
+
+
 class LhhsRowsLoad(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -64,12 +73,13 @@ class LhhsRowsLoad(unittest.TestCase):
         # with the General Provisions lines as accounts, every recorded Title II total is its agency
         # totals + the General Provisions lines (a rescission signed) - CURES, from the store alone
         cells = self.report["title_ii"]
-        self.assertEqual(len(cells), 26)                              # v33: + FY2023 PB, House, Senate; + FY2024 House draft; + FY2022; + FY2021
+        self.assertEqual(len(cells), staged_count("ACC-HHS-TITLE-II-TOTAL"))
         off = [r for r in cells if r["reconciles_through_rollups"] != "yes"]
-        # the one known exception: ACL's FY2023 request total includes (Evaluation Tap Funding) 27,503
-        # (FY2023 Senate draft p.416), a line no agency total outside ACL's carries
+        # the known exceptions, both a PHS evaluation-tap line inside an agency total and outside the title's:
+        # ACL's FY2023 request total includes (Evaluation Tap Funding) 27,503 (FY2023 Senate draft p.416); H.Rept.
+        # 116-62's 'Total, AHRQ (Federal funds)' includes AHRQ's Evaluation Tap funding 18,408 (FY2020 House, p.342)
         self.assertEqual([(r["fiscal_year"], r["stage"], r["through_rollups_differs_by_thousands"]) for r in off],
-                         [(2023, "President's Budget", -27_503)])
+                         [(2020, "House Reported", -18_408), (2023, "President's Budget", -27_503)])
 
     def test_senate_rescissions_are_bill_level(self):
         # the Senate reports print the HHS rescissions after the grand total, outside Title II
@@ -217,16 +227,17 @@ class CuresAsItsOwnAccount(unittest.TestCase):
             # the re-homed rows: the CURES account's, no CURES component left anywhere
             self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = 'CURES'").fetchone()[0], 0)
             self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation "
-                                          "WHERE canonical_account_id = 'ACC-HHS-NIH-CURES'").fetchone()[0], 26)
+                                          "WHERE canonical_account_id = 'ACC-HHS-NIH-CURES'").fetchone()[0],
+                             staged_count("ACC-HHS-NIH-CURES", headline=False))
             cells = conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE canonical_account_id = "
                                  "'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL").fetchall()
             got = {(fy, st): T.reconcile(conn, [{"fiscal_year": fy, "stage": st, "printed_total_title_iii_thousands": a // 1000}],
                                          title="Title II", subcommittee="LHHS")[0]["reconciles_through_rollups"]
                    for fy, st, a in cells}
             conn.close()
-        self.assertEqual(len(got), 26)                                # + FY2024 House (the subcommittee draft); + FY2022; + FY2021
-        # every cell but FY2023 President's Budget (ACL's Evaluation Tap Funding, 27,503: see LhhsRowsLoad)
-        self.assertEqual({k for k, v in got.items() if v != "yes"}, {(2023, "President's Budget")})
+        self.assertEqual(len(got), staged_count("ACC-HHS-TITLE-II-TOTAL"))
+        # every cell but the two evaluation-tap exceptions (see LhhsRowsLoad)
+        self.assertEqual({k for k, v in got.items() if v != "yes"}, {(2020, "House Reported"), (2023, "President's Budget")})
 
 if __name__ == "__main__":
     unittest.main()

@@ -113,6 +113,8 @@ CREATE TABLE bill_report_reference (
     funding_type    TEXT CHECK (funding_type IN ('standalone', 'minibus', 'omnibus', 'full_year_cr')),
     -- the stage's document is a committee draft: the full committee never reported the bill
     draft           INTEGER CHECK (draft IN (0, 1)),
+    -- the committee never reported a bill or released a draft for this stage: the grid's 'not reported' state
+    not_reported    INTEGER CHECK (not_reported IN (0, 1)),
     CHECK (stage = 'Enacted' OR (vehicle_bill_id IS NULL AND division IS NULL AND enactment_date IS NULL
                                  AND funding_type IS NULL)),
     UNIQUE (subcommittee, fiscal_year, stage)

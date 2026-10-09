@@ -551,7 +551,9 @@ class CompareBrowser(CompareTest):
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.page.click("#expand-all")
-        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)]
+        # every enacted year on file (the backfill adds one each PR), then FY2027's request and House
+        enacted = [y for y in self.lhhs["fiscal_years"] if y < 2027]
+        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in enacted]
                                                      + [(2027, "President's Budget"), (2027, "House Reported")]))
         self.open("static", "?view=compare&sc=LHHS&grid=years&a=2024&b=2026")
         self.page.click("#expand-all")
@@ -828,8 +830,10 @@ class CompareBrowser(CompareTest):
         self.page.select_option("#basis", "0")
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
+        enacted = [y for y in self.lhhs["fiscal_years"] if y < 2027]
         self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
-                                   ["FY2021", "FY2022", "FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY21 → FY26"]])
+                                   [f"FY{y}" + (" (CR)" if y == 2025 else "") for y in enacted]
+                                   + ["Request", "House", f"FY{enacted[0] % 100} → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
     def test_reviewer_mode_dots(self):

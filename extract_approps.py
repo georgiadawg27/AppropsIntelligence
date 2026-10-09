@@ -96,6 +96,33 @@ OUT_DIR = Path("./extractions")
 MIN_CONTENT_CHARS = 80
 PLACEHOLDER_RE = re.compile(r"insert\s+offset\s+folio", re.I)
 
+# Text first: a page is read from its text layer whenever it has one; a page image goes to vision only where the
+# page has no usable text layer, or where the text reading fails the table's own arithmetic. Every run has a hard
+# cap on page images sent (classify, transcribe and re-read calls alike, each rendering counted): reaching it stops
+# the run and reports. APPROPS_MAX_PAGE_IMAGES or --max-page-images sets it.
+MAX_PAGE_IMAGES = int(os.environ.get("APPROPS_MAX_PAGE_IMAGES", "80"))
+
+
+class PageImageCapReached(SystemExit):
+    """The run's page-image cap is spent: the run stops here and says so."""
+
+
+class PageImageBudget:
+    def __init__(self, cap):
+        self.cap, self.used, self.pages = cap, 0, []
+
+    def spend(self, page_label):
+        if self.used >= self.cap:
+            raise PageImageCapReached(
+                f"page-image cap reached: {self.used} of {self.cap} page images sent this run "
+                f"({', '.join(self.pages)}); stopped before {page_label}. Raise --max-page-images "
+                f"(or APPROPS_MAX_PAGE_IMAGES) only with the owner's approval.")
+        self.used += 1
+        self.pages.append(page_label)
+
+
+_BUDGET = None            # the running extraction's PageImageBudget (run() sets it)
+
 # The typesetting slug GPO stamps on every page of a committee report. None of
 # it is content, so it can't count toward "does this page have a text layer".
 SLUG_LINE_RES = [re.compile(p) for p in (
@@ -198,8 +225,12 @@ def content_text(raw):
 def route_page(page):
     raw = page.get_text()
     content = content_text(raw)
-    if PLACEHOLDER_RE.search(raw):
+    if PLACEHOLDER_RE.search(raw) and len(content) < MIN_CONTENT_CHARS:
         route, reason = "vision", "gpo_offset_folio_placeholder"
+    elif PLACEHOLDER_RE.search(raw) and not ocr_tables.has_ocr_layer(page):
+        # GPO's offset-folio placeholder beside a real text layer (H.Rept. 116-62's comparative statement): text
+        # first; run() sends the page to vision only if the text holds no table or fails its arithmetic
+        route, reason = "text", "text_layer_present (offset folio placeholder)"
     elif len(content) >= MIN_CONTENT_CHARS and ocr_tables.has_ocr_layer(page):
         # a scan with an invisible OCR text layer: read that text for free,
         # with a vision re-read only for pages that fail the arithmetic gate
@@ -338,7 +369,9 @@ def _client():
     return anthropic.Anthropic(api_key=key)
 
 
-def _call_json(client, model, system, content, schema, effort, max_tokens, use_fallbacks):
+def _call_json(client, model, system, content, schema, effort, max_tokens, use_fallbacks, page_label="page"):
+    if _BUDGET is not None:
+        _BUDGET.spend(page_label)          # one page image per call; stops the run at the cap
     kwargs = dict(
         model=model,
         max_tokens=max_tokens,
@@ -382,7 +415,7 @@ def classify_page(client, model, page, use_fallbacks):
     png, _ = render_png(page, dpi=110, rotation=0)
     result, usage = _call_json(client, model, None, [_image_block(png), {"type": "text", "text": CLASSIFY_PROMPT}],
                                CLASSIFY_SCHEMA, effort="low", max_tokens=4000,
-                               use_fallbacks=use_fallbacks)
+                               use_fallbacks=use_fallbacks, page_label=f"p{page.number + 1} classify")
     return result, usage
 
 
@@ -398,7 +431,8 @@ def transcribe_page(client, model, page, rotation, dpi, use_fallbacks):
             result, usage = _call_json(
                 client, model, TRANSCRIBE_SYSTEM,
                 [_image_block(png), {"type": "text", "text": TRANSCRIBE_PROMPT}],
-                TRANSCRIBE_SCHEMA, effort="high", max_tokens=48000, use_fallbacks=use_fallbacks)
+                TRANSCRIBE_SCHEMA, effort="high", max_tokens=48000, use_fallbacks=use_fallbacks,
+                page_label=f"p{page.number + 1} transcribe (rotation {rot})")
         except VisionError as e:
             # count this attempt and any earlier wrong-way-up one
             for k in total:
@@ -1310,7 +1344,18 @@ def source_document_fields(package_id, pdf_sha, doc, manifest_entry, page_texts)
 
 def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=False,
         dpi=200, out_dir=OUT_DIR, use_fallbacks=True, verbose=True, live=False, manifest_path=None,
-        subcommittee=None, single_division=False):
+        subcommittee=None, single_division=False, max_page_images=None):
+    global _BUDGET
+    _BUDGET = PageImageBudget(MAX_PAGE_IMAGES if max_page_images is None else max_page_images)
+    try:
+        return _run(pdf_path, title, model, cache_dir, offline, dpi, out_dir, use_fallbacks, verbose, live,
+                    manifest_path, subcommittee, single_division)
+    finally:
+        _BUDGET = None
+
+
+def _run(pdf_path, title, model, cache_dir, offline, dpi, out_dir, use_fallbacks, verbose, live, manifest_path,
+         subcommittee, single_division):
     pdf_path = Path(pdf_path)
     data = pdf_path.read_bytes()
     pdf_sha = hashlib.sha256(data).hexdigest()
@@ -1342,8 +1387,20 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     vision_pages = [r["page"] for r in routes if r["route"] == "vision" and in_scope(r["page"])]
     text_table_pages = text_tables.find_table_pages(doc_pdf, [r["page"] for r in routes
                                                               if r["route"] == "text" and in_scope(r["page"])])
+    # a placeholder page whose text layer holds no table the text path can read: its table is an image, so vision
+    for r in routes:
+        if r["route"] == "text" and "offset folio placeholder" in r["reason"] and in_scope(r["page"]) \
+                and r["page"] not in text_table_pages:
+            r["route"], r["reason"] = "vision", "gpo_offset_folio_placeholder (text layer holds no table)"
+            vision_pages.append(r["page"])
+    vision_pages.sort()
     ocr_page_list = [r["page"] for r in routes if r["route"] == "ocr" and in_scope(r["page"])]
     ocr_table_pages = ocr_tables.find_table_pages(doc_pdf, ocr_page_list) if ocr_page_list else []
+    # the table already found in the text or OCR layer: an image-only page far from it (front matter) can't be part
+    # of it -- only the pages next to the table are worth an image
+    found = text_table_pages + ocr_table_pages
+    if found:
+        vision_pages[:] = [p for p in vision_pages if min(found) - 2 <= p <= max(found) + 2]
     log(f"{package_id}: {len(routes)} pages, {len(routes) - len(vision_pages) - len(ocr_page_list)} text, "
         f"{len(ocr_page_list)} scanned with an OCR layer, {len(vision_pages)} image-only -> vision")
     if text_table_pages:
@@ -1429,12 +1486,17 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     done = [p for p in table_pages if ensure_transcribed(p)]
 
     def vision_reread(p, table_headers):
-        """Re-read an OCR page with a vision call (cached like any other).
-        -> a new entry, or a string saying why the OCR reading is kept."""
+        """Re-read an OCR or text-layer page with a vision call (cached like any other: a transcription already
+        on file, from an earlier vision run of the page, costs no new page image).
+        -> a new entry, or a string saying why the free reading is kept."""
         entry = None if live else cache.load(p)
         if entry and entry["meta"].get("fallback_failed"):
             return f"vision re-read failed on an earlier run, not retried ({entry['meta']['fallback_failed']})"
-        if not (entry and entry.get("transcription") and entry["meta"].get("fallback_from") == "ocr_text"):
+        cached = entry and entry.get("transcription") and (entry["meta"].get("fallback_from") == "ocr_text"
+                                                           or entry["meta"].get("transcribed_at"))
+        if not cached and not offline and not os.environ.get("ANTHROPIC_API_KEY"):
+            return "vision unavailable (no ANTHROPIC_API_KEY)"
+        if not cached:
             page = doc_pdf[p - 1]
             # the text's direction is in the page's unrotated space; the
             # rendering already applies the page's own /Rotate
@@ -1607,7 +1669,8 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
     #     unparseable cell, a header with the wrong column count) or whose
     #     numbers fail the table's own arithmetic is re-read once by vision.
     ocr_fallback = {}
-    if ocr_table_pages:
+    gated = set(ocr_table_pages) | set(text_trs)       # text-read pages: vision only where the arithmetic fails
+    if gated:
         in_selection = {n.page for n in built["selected"]}
         failing = {p: "; ".join(iss) for p, iss in ocr_issues.items() if iss and p in in_selection}
         # Only failures a page's own reading can cause: a row on it that fails
@@ -1618,7 +1681,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
         for rec in built["records"]:
             p = page_of.get(rec["observation_id"])
             if rec["result"] == "fail" and rec["rule_applied"] in ("structural", "table_total") \
-                    and p in ocr_issues and p not in failing:
+                    and p in gated and p not in failing:
                 failing[p] = "arithmetic check failed on this page"
         replaced = False
         for p, reason in sorted(failing.items()):
@@ -1626,8 +1689,9 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             if isinstance(got, str):
                 ocr_fallback[p] = {"reason": reason, "result": f"kept OCR: {got}"}
                 continue
+            source = "text_layer" if p in text_trs else "ocr_text"
             entries[p] = got
-            entries[p]["meta"].update(fallback_from="ocr_text", fallback_reason=reason)
+            entries[p]["meta"].update(fallback_from=source, fallback_reason=reason)
             ocr_fallback[p] = {"reason": reason, "result": "re-read by vision"}
             replaced = True
         if replaced:
@@ -1658,6 +1722,7 @@ def run(pdf_path, title=None, model=DEFAULT_MODEL, cache_dir=CACHE_DIR, offline=
             "page_sources": {str(p): {k: v for k, v in m.items()} for p, m in page_meta.items()},
             "vision_calls_this_run": [{"pass": k, "page": p, **u} for k, p, u in usage_log],
             "vision_spend": vision_spend(usage_log),
+            "page_images_this_run": {"used": _BUDGET.used, "cap": _BUDGET.cap, "pages": list(_BUDGET.pages)},
             "text_table_pages": text_table_pages,
             "ocr_table_pages": ocr_table_pages,
             "ocr_fallback": {str(p): f for p, f in ocr_fallback.items()},
@@ -1870,12 +1935,15 @@ def main():
     ap.add_argument("--ground-truth", help="JSON of expected dollar figures to diff against")
     ap.add_argument("--single-division", action="store_true",
                     help="a one-subcommittee document whose text quotes other acts' DIVISION headings: read it whole")
+    ap.add_argument("--max-page-images", type=int, default=None,
+                    help=f"hard cap on page images sent to vision this run (default {MAX_PAGE_IMAGES}, "
+                         "APPROPS_MAX_PAGE_IMAGES); reaching it stops the run")
     args = ap.parse_args()
 
     result = run(args.pdf, title=args.title, model=args.model, cache_dir=args.cache_dir,
                  offline=args.offline, dpi=args.dpi, out_dir=args.out_dir,
                  use_fallbacks=not args.no_fallbacks, live=args.live, subcommittee=args.subcommittee,
-                 single_division=args.single_division)
+                 single_division=args.single_division, max_page_images=args.max_page_images)
     gt_ok, gt_rows = (True, None)
     if args.ground_truth:
         gt_ok, gt_rows = compare_ground_truth(result, args.ground_truth)

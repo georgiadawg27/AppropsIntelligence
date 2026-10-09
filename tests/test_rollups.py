@@ -17,6 +17,8 @@ so they run offline.
 
 import sys
 import tempfile
+from unittest import mock
+import os
 import unittest
 from collections import Counter
 from pathlib import Path
@@ -274,7 +276,10 @@ class SenateTables(unittest.TestCase):
         for pid, n in (("CRPT-119srpt44", 4), ("CRPT-118srpt62", 4)):
             if not (STORE / f"{pid}.pdf").exists():
                 self.skipTest(f"{pid}.pdf not present")
-            with tempfile.TemporaryDirectory() as out:
+            # text first: a page whose text fails its arithmetic would go to vision -- never from a test
+            env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+            with tempfile.TemporaryDirectory() as out, mock.patch.dict(os.environ, env, clear=True), \
+                    mock.patch.object(ex, "_client", side_effect=AssertionError("no API call from a test")):
                 r = ex.run(STORE / f"{pid}.pdf", live=True, out_dir=out, verbose=False)
             rows = {(o["source_page"], o["account_path"]) for o in r["observations"]
                     if o["account_name_as_written"] == "Direct appropriation"}

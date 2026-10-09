@@ -67,12 +67,12 @@ DRAFT_NOTE = ("House subcommittee draft; the full committee never reported a FY2
 AGENCY_TOTALS = [  # (agency key, regex on the cleaned label)
     ("AHA", r"^total, administration for a healthy america$"),
     ("HRSA", r"^total, health resources and services administration$"),
-    ("CDC", r"^total, centers for disease control and prevention$"),
+    ("CDC", r"^total, centers for disease control( and prevention)?$"),       # H.Rept. 116-62: '... Control' 
     ("NIH", r"^total, national institutes of health( \(?with cures act funding\)?)?$"),
     ("SAMHSA", r"^total, (samhsa|substance abuse and mental health services administration)$"),
-    ("AHRQ", r"^total, (ahrq|agency for healthcare research and quality)( program level)?$"),
+    ("AHRQ", r"^total, (ahrq|agency for healthcare research and quality)( program level| \(federal funds\))?$"),
     ("CMS", r"^total, centers for medicare (and|&) medicaid services$"),
-    ("ACF", r"^total, administration for children and famili+es$"),
+    ("ACF", r"^total, (administration for children and famili+es|acf)$"),      # H.Rept. 116-62: 'Total, ACF' 
     ("ACL", r"^total, administration for community living$"),
     ("ASPR", r"^total, (administration|office of the assistant secretary) for (strategic )?preparedness and response$"),
     ("OS", r"^total, office of the secretary$"),
