@@ -14,6 +14,353 @@
        "missing": false,
        "observations": [
         {
+         "amount": 899197404000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-245",
+         "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3329",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "358",
+         "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [FY 2019 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13701 (the printed change column [Bill vs. Enacted])",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13700"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13701"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13702"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-13703"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13711"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 897996649000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.6470",
+         "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3046",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "H.Rept.115-862",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12680 (the printed change column [Bill vs, Enacted]); VAL-LHHS-12681 (the printed change column [Bill vs. Request])",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-12679"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-12680"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-12681"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-12682"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-12683"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-12691"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 895412883000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2019/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2019-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3142",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [FY 2019 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13006 (the printed change column [Bill vs. Request]); VAL-LHHS-13796 (another document prints it)",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13005"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13006"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13007"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-13008"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13016"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-13796"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 899211952000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3158",
+         "bill_report_reference_id": "BR-LHHS-FY2019-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf",
+         "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "S.Rept. 115-289 (S. 3158). sha256 9da7803651e40f6f... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3236",
+         "offsetting_collections": 0,
+         "publication_date": "2018-06-28",
+         "report_id": "S.Rept.115-289",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115SRPT289",
+         "source_page": "259",
+         "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13383 (the printed change column [Senate Committee recommendation compared with (+ or -) 2018 appropriation]); VAL-LHHS-13384 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13382"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13383"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13384"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13385"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-13386"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-13394"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2019
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 934832279000,
          "amount_type": "budget authority",
          "bill_id": "P.L.116-94",
@@ -3323,6 +3670,22 @@
   "coverage": {
    "cells": [
     [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
      2020,
      "Enacted"
     ],
@@ -3450,6 +3813,292 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 895412883000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2019/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2019-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3142",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [FY 2019 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13006 (the printed change column [Bill vs. Request]); VAL-LHHS-13796 (another document prints it)",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13005"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13006"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13007"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-13008"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13016"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-13796"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 897996649000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.6470",
+    "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3046",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "H.Rept.115-862",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12680 (the printed change column [Bill vs, Enacted]); VAL-LHHS-12681 (the printed change column [Bill vs. Request])",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-12679"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-12680"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-12681"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-12682"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-12683"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-12691"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 899211952000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3158",
+    "bill_report_reference_id": "BR-LHHS-FY2019-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "S.Rept. 115-289 (S. 3158). sha256 9da7803651e40f6f... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3236",
+    "offsetting_collections": 0,
+    "publication_date": "2018-06-28",
+    "report_id": "S.Rept.115-289",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT289",
+    "source_page": "259",
+    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13383 (the printed change column [Senate Committee recommendation compared with (+ or -) 2018 appropriation]); VAL-LHHS-13384 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13382"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13383"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13384"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13385"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-13386"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13394"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 899197404000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3329",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "358",
+    "source_table_or_section": "Title II, Department of Health and Human Services -- printed as 'Total, Title II, Health and Human Services' [FY 2019 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-13701 (the printed change column [Bill vs. Enacted])",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13700"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13701"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13702"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-13703"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 711,000 (thousands) is exactly: +711,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-13711"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": 916139593000,
     "amount_type": "budget authority",

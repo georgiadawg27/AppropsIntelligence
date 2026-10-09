@@ -1060,7 +1060,8 @@ def classify_columns(headers, bill_fy, doc_stage):
             col["kind"] = "delta"
             # "Bill vs. Enacted"; "Senate Committee recommendation compared
             # with (+ or -) 2025 appropriation"
-            parts = re.split(r"\s+(?:vs\.?|compared\s+with)\s+", hn, flags=re.I)
+            # (a scanned page's text layer can read the period as a comma: "Bill vs, Enacted")
+            parts = re.split(r"\s+(?:vs[.,]?|compared\s+with)\s+", hn, flags=re.I)
             parts = [re.sub(r"^\([^)]*\)\s*", "", x).strip() for x in parts]
             col["minuend"], col["subtrahend"] = (parts + [None])[:2]
         else:
