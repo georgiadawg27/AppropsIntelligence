@@ -13,8 +13,8 @@ or status changes.
 2. A provision with no stated amount gets 'no printed total' plus a note -- never a confirmed absence, never an
    estimate (owner, 2026-10-09). H.R. 5926 sec. 226 terminates the Nonrecurring Expenses Fund and rescinds its
    entire unobligated balance with no dollar amount; H.Rept. 114-699's table does print a figure on the
-   'Nonrecurring expenses fund (rescission)' line, so that figure is recorded as usual (build_year) and cites both
-   the table and sec. 226. No other FY2017 text holds an NEF provision: the Senate bill, the request's language and
+   'Nonrecurring expenses fund (rescission)' line (p.285, in the table's Title V part: Bill -200,000), so that
+   figure is recorded as usual and cites both the table and sec. 226. No other FY2017 text holds an NEF provision: the Senate bill, the request's language and
    P.L. 115-31 are confirmed absences.
 """
 
@@ -96,12 +96,13 @@ FOUND = [
 ]
 # The House bill's NEF provision states no amount (sec. 226, p.99). Standing rule (owner, 2026-10-09): a provision
 # with no stated amount gets 'no printed total' plus a note -- never a confirmed absence, never an estimate. Here
-# H.Rept. 114-699's table does print a figure on the line, so the figure is recorded as usual (build_year) and cites
-# both the table and sec. 226.
+# H.Rept. 114-699's table does print a figure on the line (p.285), so the figure is recorded as usual and cites both
+# the table and sec. 226.
 NEF_SEC226 = (99, r"Nonrecurring expenses fund.{0,200}is terminated.{0,300}unobligated balance of amounts available "
                   r"in such Fund is rescinded",
               "H.R. 5926 sec. 226 (p.99) terminates the Nonrecurring Expenses Fund and rescinds its entire unobligated "
               "balance; no dollar amount is printed in the bill")
+NEF_TABLE_PAGE = 285
 MEDOPS_NONE = {
     "House Reported": "H.R. 5926 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers "
                       "for Medicare and Medicaid Services, Program Management' (whole text searched for /may transfer "
@@ -241,16 +242,21 @@ def main(argv=None):
                f"{RESCISSIONS[doc]}.")
         absent(CCPF, st, "budget authority", "", CCPF_NONE[st])
 
-    # the House NEF line: H.Rept. 114-699's table prints its figure (build_year recorded it); it cites sec. 226 too
+    # the House NEF line: H.Rept. 114-699's table prints it in its Title V (General Provisions) part, outside the
+    # Title II pages build_year reads -- p.285, read from the page image (the OCR layer misreads the request
+    # comparison's sign): FY 2016 Enacted '---', FY 2017 Request '---', Bill -200,000, Bill vs. Enacted -200,000,
+    # Bill vs. Request -200,000. Recorded as printed, citing both the table and sec. 226.
     page, _, why = NEF_SEC226
-    nef = [o for o in obs if o["canonical_account_id"] == NEF and o["fiscal_year"] == FY and o["stage"] == "House Reported"
-           and not o["component"] and o["verification_status"] != "superseded"]
-    assert len(nef) == 1, nef
-    o = nef[0]
-    if "sec. 226" not in o["source_table_or_section"]:
-        o["source_table_or_section"] += f"; {why}: the figure is the table's [H.R. 5926 sec. 226, {DOCS[TEXT['House Reported']]['label']} p.{page}]"
-        # (no source_text record: the bill states no amount, so there is nothing in it to check the figure against)
-        print("cited sec. 226 on", o["observation_id"], f"{o['amount']:,}")
+    o = observation(NEF, "House Reported", -200_000_000, "rescission", "SRC-CRPT-114HRPT699", NEF_TABLE_PAGE,
+                    "Title V, General Provisions -- printed as 'Nonrecurring expenses fund (rescission)' [Bill] "
+                    f"(H.Rept. 114-699 p.{NEF_TABLE_PAGE}); {why} [H.R. 5926 sec. 226, p.{page}]",
+                    method="AI-extracted", confidence=0.95)
+    new_val.append({"observation_id": o["observation_id"], "rule_applied": "structural",
+                    "expected_result": f"H.Rept. 114-699 p.{NEF_TABLE_PAGE} 'Nonrecurring expenses fund (rescission)': "
+                                       "Bill vs. Enacted -200,000 = Bill -200,000 - FY 2016 Enacted '---' (0); Bill vs. "
+                                       "Request -200,000 = Bill -200,000 - FY 2017 Request '---' (0)",
+                    "observed_result": "-200,000 (thousands) as recorded", "result": "pass"})
+    print("recorded NEF FY2017 House -200,000,000 (table p.285; sec. 226 cited)", o["observation_id"])
 
     for v in new_val:
         v.update({"validation_id": next(vids), "human_review_status": "", "reviewer": "", "resolution": ""})

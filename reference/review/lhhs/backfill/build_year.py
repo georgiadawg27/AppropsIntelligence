@@ -60,7 +60,7 @@ def clean(label):
     s = re.sub(r"(?<!part)(?<=[a-z\)\./])[\s\.]+[dm]$", "", s)
     s = re.sub(r"(?<=[a-z\)])\d{1,2}/$", "", s)    # a footnote mark glued to the word ('CURES Act2/', 'Federal funds)3/')
     s = re.sub(r"(?<=[a-z\)])\. 0$", "", s)       # the same marker as GPO's layer reads it: 'National Institute on Aging. 0'
-    s = re.sub(r"\s+,\s*", ", ", s)                # 'Total ,Medical Benefits' (GPO's layer)
+    s = re.sub(r"\s+,\s*|,(?=[a-z])", ", ", s)    # 'Total ,Medical Benefits' (GPO's layer), 'Total,Medical Benefits' (vision)
     s = re.sub(r"(?<=[a-z\)])[\s.,'`]*'[\s.,'`]*$", "", s)   # leader ink read as quote marks: 'Federal Funds. \'\'\'\''
 
     return re.sub(r"(?<=[a-z]) \d$", "", s)
@@ -1048,6 +1048,13 @@ def main(argv=None):
                 derived[key] = (total, note, arith)
                 found[(NIH_OD, "budget authority", "kids_first")] = kf
                 report.append([stage, *key, "derived", total, od["source_page"], note])
+            # a table that prints Kids First as a non-add line (S.Rept. 114-274: 'Gabriella Miller Kids First Research
+            # Act (Common Fund) (non-add)') has it inside the printed 'Office of the Director' already: the headline
+            # stays as printed, Kids First is its contained line
+            kf = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*"
+                                                                             r"\(non-add\)", f["_clean"]) and f.get("is_memo")]
+            if len(kf) == 1 and kf[0]["amount"] and (NIH_OD, "budget authority", "kids_first") not in found:
+                found[(NIH_OD, "budget authority", "kids_first")] = kf[0]
         for pp in cfg.get("proposal_parts", []):
             hits = [f for f in rows_for(sections, col, pp["agency"]) if re.fullmatch(pp["label"], f["_clean"])
                     and pp.get("path", "") in f["account_path"] and not f.get("is_memo") and f["amount"]] \
