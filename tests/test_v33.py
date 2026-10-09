@@ -213,7 +213,7 @@ class V33Store(unittest.TestCase):
         to_side = {r["relationship_id"]: r for r in S.history(self.conn, "ACC-HHS-AHA-TOTAL")["relationships"]}
         r = from_side["REL-LHHS-0011"]
         self.assertEqual((r["direction"], r["relationship_type"], r["other_account_id"]),
-                         ("from", "moved_reclassified", "ACC-HHS-AHA-TOTAL"))
+                         ("from", "proposed_move", "ACC-HHS-AHA-TOTAL"))
         self.assertEqual(r["cites"], [{"document_id": "SRC-CJ-AHA-FY2026",
                                        "url": "https://www.hhs.gov/sites/default/files/fy-2026-aha-cj.pdf",
                                        "pages": ["p.11", "p.13"]}])

@@ -87,12 +87,30 @@ def expected_headline(row, fy, stage):
                 "amount": None, "outside": False}
     lines = cell["lines"]
     if not lines:
+        # (a cell outside the account's life is blank, without the outside-history mark)
         return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": "",
-                "amount": None, "outside": cell["outside_history"]}
+                "amount": None, "outside": cell["outside_history"] and not cell.get("outside_life")}
     h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), lines[0])
     return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": h["state"],
             "amount": thousands(h["observations"][0]["amount"]) if h["state"] == "value" else None,
             "outside": cell["outside_history"]}
+
+
+def in_view(row, pairs, view="stages"):
+    """The page's rowShown with the default 'Accounts shown': a proposed-only account only outside Enacted history,
+    and only where a column in view falls inside its life."""
+    if row.get("lifecycle", {}).get("type") == "proposed_only" and view == "history":
+        return False
+    return any(row["cells"].get(f"{y}|{st}") and not row["cells"][f"{y}|{st}"].get("outside_life") for y, st in pairs)
+
+
+def shown_rows(grid, pairs, view="stages"):
+    """The rows the page shows (everything open): title totals, then rows in view; an agency with any of its
+    accounts in view."""
+    keep = {r["account"]["canonical_account_id"] for r in grid["rows"] if in_view(r, pairs, view)}
+    keep |= {r["member_of"] for r in grid["rows"] if r["member_of"] and r["account"]["canonical_account_id"] in keep}
+    return [t["total"] for t in grid["titles"] if t["total"]] + \
+        [r for r in grid["rows"] if r["account"]["canonical_account_id"] in keep]
 
 
 def series_text(l):
@@ -534,9 +552,17 @@ class CompareBrowser(CompareTest):
         self.assertEqual(len(keyed), len(cells))
         return keyed
 
-    def expected(self, grid, pairs):
-        rows = grid["rows"] + [t["total"] for t in grid["titles"] if t["total"]]
-        return {(r["account"]["canonical_account_id"], y, st): expected_headline(r, y, st) for r in rows for y, st in pairs}
+    # the default view: Compare stages, FY2026 (its prior-year enacted, then the four stages)
+    DEFAULT = [(2025, "Enacted")] + [(2026, st) for st in ("President's Budget", "House Reported", "Senate Reported", "Enacted")]
+
+    def members_in_view(self, total, pairs=None):
+        """An agency's accounts the default view shows: those with a column in view inside their life."""
+        return [r["account"]["canonical_account_id"] for r in self.lhhs["rows"]
+                if r["member_of"] == total and in_view(r, pairs or self.DEFAULT)]
+
+    def expected(self, grid, pairs, view="stages"):
+        return {(r["account"]["canonical_account_id"], y, st): expected_headline(r, y, st)
+                for r in shown_rows(grid, pairs, view) for y, st in pairs}
 
     # ---- the cells are the store's -------------------------------------------------------
 
@@ -554,7 +580,7 @@ class CompareBrowser(CompareTest):
         # every enacted year on file (the backfill adds one each PR), then FY2027's request and House
         enacted = [y for y in self.lhhs["fiscal_years"] if y < 2027]
         self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in enacted]
-                                                     + [(2027, "President's Budget"), (2027, "House Reported")]))
+                                                     + [(2027, "President's Budget"), (2027, "House Reported")], "history"))
         self.open("static", "?view=compare&sc=LHHS&grid=years&a=2024&b=2026")
         self.page.click("#expand-all")
         self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, st) for y in (2024, 2026) for st in FOUR]))
@@ -565,12 +591,14 @@ class CompareBrowser(CompareTest):
 
     def test_grid_state_counts_are_unchanged(self):
         # the published grid's counts (tests/fixtures/grid_counts.json, scripts/grid_counts.py): the page shows them
-        want = json.loads((ROOT / "tests" / "fixtures" / "grid_counts.json").read_text())["state_counts"]
-        for sc, counts in want.items():
+        fixture = json.loads((ROOT / "tests" / "fixtures" / "grid_counts.json").read_text())
+        for sc, counts in fixture["state_counts"].items():
             for grid in ("stages", "years", "history"):
                 self.open("static", f"?view=compare&sc={sc}&grid={grid}")
                 got = {s.get_attribute("data-state"): int(s.inner_text().split()[0].replace(",", ""))
                        for s in self.page.locator("[data-testid=state-counts] [data-state]").all()}
+                # the blank cells outside an account's life, counted on their own (never missing)
+                self.assertEqual(got.pop("outside_life"), fixture["outside_life_cells"][sc], (sc, grid))
                 self.assertEqual(got, counts, (sc, grid))
 
     def test_static_renders_exactly_what_live_renders(self):
@@ -607,11 +635,13 @@ class CompareBrowser(CompareTest):
         self.assertNotIn("(agency total)", text)
         self.assertNotIn("agency total · printed, not added", text)
         # NIH open (the agency with the most accounts), its 33 accounts beneath it
+        # (the accounts in view: the proposed NIH Substance Use institute is FY2027's alone, outside its life here)
         nih = next(i for i, r in enumerate(rows) if r["account"] == "ACC-HHS-NIH-TOTAL")
-        kids = [r["account"] for r in rows[nih + 1:nih + 34]]
-        self.assertEqual(kids, [r["account"]["canonical_account_id"] for r in self.lhhs["rows"]
-                                if r["member_of"] == "ACC-HHS-NIH-TOTAL"])
-        self.assertEqual({r["cls"] for r in rows[nih + 1:nih + 34]}, {"child", "child last"})
+        want = self.members_in_view("ACC-HHS-NIH-TOTAL")
+        self.assertNotIn("ACC-HHS-NIH-SUBSTANCE-USE", want)
+        kids = [r["account"] for r in rows[nih + 1:nih + 1 + len(want)]]
+        self.assertEqual(kids, want)
+        self.assertEqual({r["cls"] for r in rows[nih + 1:nih + 1 + len(want)]}, {"child", "child last"})
         # general provisions under their own heading, after the agencies
         gp = next(i for i, r in enumerate(rows) if r["cls"] == "group")
         self.assertEqual(rows[gp]["name"], "General provisions (Title II)")
@@ -648,7 +678,7 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS")
         chev = lambda: self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=chevron]")
         members = self.page.locator("tr[data-member-of=ACC-HHS-NIH-TOTAL]")
-        self.assertEqual(members.count(), len(self.lrow("ACC-HHS-NIH-TOTAL")["rollup_members"]))
+        self.assertEqual(members.count(), len(self.members_in_view("ACC-HHS-NIH-TOTAL")))
         self.assertEqual((chev().get_attribute("aria-expanded"), chev().inner_text()), ("true", "▾"))
         chev().focus()
         self.page.keyboard.press("Enter")                           # keyboard-operable; focus stays on it
@@ -656,7 +686,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.page.evaluate("document.activeElement.dataset.for"), "ACC-HHS-NIH-TOTAL")
         self.assertEqual(members.count(), 0)
         self.page.keyboard.press("Enter")
-        self.assertEqual(members.count(), 33)
+        self.assertEqual(members.count(), len(self.members_in_view("ACC-HHS-NIH-TOTAL")))
 
     def test_aha_opens_to_its_seven_incoming_relationships(self):
         self.open("static", "?view=compare&sc=LHHS")
@@ -687,13 +717,83 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS")
         self.page.click("#expand-all")
         tag = lambda aid: [t.inner_text() for t in self.page.locator(f"tr[data-account={aid}] [data-testid=tag]").all()]
-        self.assertEqual(tag("ACC-HHS-NIH-SUBSTANCE-USE"), ["proposed in request"])
+        self.assertEqual(tag("ACC-HHS-NIH-NEUROSCIENCE"), ["proposed in request"])
         self.assertEqual(tag("ACC-HHS-HRSA-HEALTH-CENTERS"), ["inside the line above · not added"])
         self.assertEqual(tag("ACC-HHS-NIH-NCI"), [])
         self.assertEqual(self.page.locator("tr[data-account=ACC-HHS-HRSA-HEALTH-CENTERS] td.acct.lvl2").count(), 1)
         ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
         self.assertEqual(ids[ids.index("ACC-HHS-HRSA-PRIMARY-CARE") + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
         self.assertNotIn("single appropriation heading", self.page.inner_text("#compare-grid").lower())
+
+    # ---- the account lifecycle (owner, 2026-10-09) ----------------------------------------
+
+    def rows_shown(self):
+        return [r.get_attribute("data-account") for r in self.page.locator("tr[data-testid=compare-row]").all()]
+
+    def test_aha_only_in_its_requests_never_in_enacted_history(self):
+        # proposed in the FY2026 and FY2027 requests, never enacted: its row shows where a request column is in
+        # view; Enacted cells blank; not in Enacted history unless 'proposed-only accounts' is ticked
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        self.assertIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
+        self.assertEqual(self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").get_attribute("data-state"), "value")
+        enacted = self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted")
+        self.assertEqual((enacted.get_attribute("data-state"), enacted.get_attribute("data-outside-life"), enacted.inner_text()),
+                         ("", "outside", ""))
+        note = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").locator("[data-testid=cell-note]")
+        self.assertEqual(note.get_attribute("title"), "Proposed in the FY2026 request; never enacted.")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025")
+        self.assertNotIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
+        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.assertFalse(self.page.locator("[data-testid=show-proposed]").is_checked())
+        self.assertNotIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
+        self.page.check("[data-testid=show-proposed]")
+        self.assertIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
+        self.assertIn("show=proposed", self.page.url)
+        self.assertEqual(self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted").get_attribute("data-outside-life"), "outside")
+        # the filter defaults on in the two compare views
+        for grid in ("stages", "years"):
+            self.open("static", f"?view=compare&sc=LHHS&grid={grid}")
+            self.assertTrue(self.page.locator("[data-testid=show-proposed]").is_checked(), grid)
+
+    def test_arpa_h_appears_from_fy2022(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2021")
+        self.assertNotIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
+        # 'new accounts before their first year': the row, blank
+        self.page.check("[data-testid=show-created]")
+        self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
+        for st in FOUR:
+            c = self.cell("ACC-HHS-NIH-ARPA-H", 2021, st)
+            self.assertEqual((c.get_attribute("data-outside-life"), c.inner_text()), ("before", ""), st)
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2022")
+        self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
+        self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2022, "Enacted").locator("[data-testid=cell-note]").get_attribute("title"),
+                         "Created FY2022.")
+        # in Enacted history its row shows, blank before FY2022
+        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
+        self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2021, "Enacted").get_attribute("data-outside-life"), "before")
+        self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2022, "Enacted").get_attribute("data-state"), "value")
+
+    def test_a_created_note_links_its_predecessor(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2024")
+        self.page.click("#expand-all")
+        n = self.cell("ACC-HHS-ASPR-TOTAL", 2024, "Enacted").locator("a[data-testid=cell-note]")
+        self.assertEqual(n.get_attribute("data-link"), "ACC-HHS-OS-PHSSEF")
+        self.assertIn("Created FY2024 (from Public Health and Social Services Emergency Fund).", n.get_attribute("title"))
+
+    def test_a_renamed_account_keeps_one_row(self):
+        # HRSA's 'Program Management' (through FY2022) is ACC-HHS-HRSA-PROGRAM-SUPPORT: one row, every enacted year
+        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.page.click("#expand-all")
+        self.assertEqual(self.rows_shown().count("ACC-HHS-HRSA-PROGRAM-SUPPORT"), 1)
+        for y in (2017, 2022, 2023, 2026):
+            self.assertEqual(self.cell("ACC-HHS-HRSA-PROGRAM-SUPPORT", y, "Enacted").get_attribute("data-state"), "value", y)
+
+    def test_a_missing_cell_inside_a_life_still_shows_a_question_mark(self):
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025")
+        self.page.click("#expand-all")
+        c = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2025, "House Reported")
+        self.assertEqual((c.get_attribute("data-state"), c.locator("[data-testid=token-missing]").inner_text()), ("missing", "?"))
 
     def test_tiles_show_the_printed_title_total(self):
         total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
@@ -931,10 +1031,10 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS")
         self.page.click("#collapse-all")
         shown = [r.get_attribute("data-account") for r in self.page.locator("tr[data-testid=compare-row]").all()]
-        self.assertEqual(sorted(shown), sorted([r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if not r["member_of"]]
-                                               + ["ACC-HHS-TITLE-II-TOTAL"]))
+        every = shown_rows(self.lhhs, self.DEFAULT)              # the rows with a column in view inside their life
+        self.assertEqual(sorted(shown), sorted(r["account"]["canonical_account_id"] for r in every if not r.get("member_of")))
         self.page.click("#expand-all")
-        self.assertEqual(self.page.locator("tr[data-testid=compare-row]").count(), len(self.lhhs["rows"]) + 1)
+        self.assertEqual(self.page.locator("tr[data-testid=compare-row]").count(), len(every))
         self.assertEqual({c.get_attribute("aria-expanded") for c in self.page.locator("[data-testid=chevron]").all()}, {"true"})
         self.assertEqual(self.page.locator("tr[data-testid=rel-note]").count(), 7)
 
@@ -1036,7 +1136,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.page.locator("tr.agency > td.num").first.evaluate(
             "e => getComputedStyle(e).borderTopWidth + ' ' + getComputedStyle(e).borderTopColor"), "1px rgb(185, 188, 178)")
         # every row inside an open total: the guide line; the group's last row: the closing rule
-        nih = [r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if r["member_of"] == "ACC-HHS-NIH-TOTAL"]
+        nih = self.members_in_view("ACC-HHS-NIH-TOTAL")
         guides = self.page.eval_on_selector_all("tr[data-member-of=ACC-HHS-NIH-TOTAL] > td.acct", "ts => ts.map(t => getComputedStyle(t).backgroundImage)")
         self.assertEqual(len(guides), len(nih))
         self.assertTrue(all("linear-gradient(rgb(196, 198, 190)" in g for g in guides), set(guides))
@@ -1133,8 +1233,9 @@ class CompareBrowser(CompareTest):
         # law, S.Rept. 118-84's restatement in their corner (owner, 2026-10-09)
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
+        # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.')
         self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
-                                          "S.Rept. 118-84 restates FY2023")) for x in titles), titles)
+                                          "S.Rept. 118-84 restates FY2023", "Created FY2022")) for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
@@ -1201,7 +1302,8 @@ class CompareBrowser(CompareTest):
             with self.subTest(sc=sc, view=q):
                 self.open("static", f"?view=compare&sc={sc}&grid={q}")
                 self.page.click("#expand-all")
-                rows = grid["rows"] + [t["total"] for t in grid["titles"] if t["total"]]
+                # the rows the view shows (the lifecycle: Enacted history leaves out the proposed-only accounts)
+                rows = shown_rows(grid, pairs, "history" if q == "history" else "stages")
                 want = {}
                 for r in rows:
                     for y, st in pairs:

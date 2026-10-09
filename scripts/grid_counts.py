@@ -31,10 +31,11 @@ def headline_observations(g):
 
 def counts():
     out = {"note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged.json changes "
-                   "on purpose", "state_counts": {}, "flagged_cells": {}}
+                   "on purpose", "state_counts": {}, "outside_life_cells": {}, "flagged_cells": {}}
     for code in json.loads((DOCS / "data" / "subcommittees.json").read_text())["subcommittees"]:
         g = json.loads((DOCS / "data" / "subcommittees" / f"{code}.json").read_text())
         out["state_counts"][code] = g["state_counts"]
+        out["outside_life_cells"][code] = g.get("outside_life_cells", 0)       # blank: outside an account's life
         out["flagged_cells"][code] = sum(1 for _, _, o in headline_observations(g) if o["verification_status"] == "flagged")
     return out
 

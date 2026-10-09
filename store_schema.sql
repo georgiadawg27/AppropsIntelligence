@@ -208,7 +208,7 @@ CREATE TABLE account_relationship (
     from_account_id       TEXT NOT NULL REFERENCES account (canonical_account_id),
     to_account_id         TEXT NOT NULL REFERENCES account (canonical_account_id),
     relationship_type     TEXT NOT NULL CHECK (relationship_type IN ('same', 'renamed', 'split_from', 'merged_into',
-                                                                      'consolidated', 'moved_reclassified', 'uncertain')),
+                                                                      'moved', 'proposed_move', 'uncertain')),
     effective_fiscal_year INTEGER,
     evidence              TEXT NOT NULL,
     confidence            REAL NOT NULL CHECK (confidence BETWEEN 0 AND 1),

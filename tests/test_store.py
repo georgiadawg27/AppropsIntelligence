@@ -623,11 +623,16 @@ class GridStates(StoreTest):
         # FY2025 Enacted is covered for Labor-HHS (H.Rept. 119-271 also_covers it); v32 recorded NIH's figure
         # there, and the Medicare limitation general provision has none yet
         self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "value")
-        # (its confirmed absences, which rested on the tables' silence, were retired 2026-10-08: the cells before
-        # its first figure, FY2026, read missing in the subcommittee grid)
-        row = next(r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]
-                   if r["account"]["canonical_account_id"] == "ACC-HHS-GP-MEDICARE-LIMITATION")
-        self.assertEqual(S.headline_state(row["cells"]["2025|Enacted"]["lines"]), "missing")
+        rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
+        # inside an account's life a gap stays missing (CDC Program Support, FY2025 House)
+        self.assertEqual(S.headline_state(rows["ACC-HHS-CDC-PROGRAM-SUPPORT"]["cells"]["2025|House Reported"]["lines"]),
+                         "missing")
+        # the Medicare limitation general provision's first evidence is FY2026 (its absences that rested on the
+        # tables' silence were retired 2026-10-08): a new account, its cells before FY2026 blank (the lifecycle)
+        row = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]
+        self.assertEqual((row["lifecycle"]["type"], row["lifecycle"]["created"]), ("new", 2026))
+        self.assertEqual((row["cells"]["2025|Enacted"]["outside_life"], row["cells"]["2025|Enacted"]["lines"]),
+                         ("before", []))
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
         # no Labor-HHS document on file covers FY2027 Senate Reported (no Senate FY2027 bill is on file; the
@@ -653,7 +658,9 @@ class GridStates(StoreTest):
             counts = g["state_counts"]
             self.assertEqual(set(counts), set(S.CELL_STATES))
             n_rows = self.conn.execute("SELECT count(*) FROM account WHERE subcommittee = ?", (sub,)).fetchone()[0]
-            self.assertEqual(sum(counts.values()), n_rows * len(g["fiscal_years"]) * len(g["stages"]))
+            # every cell is in one state, or blank outside its account's life (counted on its own)
+            self.assertEqual(sum(counts.values()) + g["outside_life_cells"],
+                             n_rows * len(g["fiscal_years"]) * len(g["stages"]))
             self.assertTrue(all(counts[st] > 0 for st in ("value", "not_funded", "missing", "not_collected", "not_enacted")))
 
 
@@ -792,6 +799,33 @@ class AfterLastRecord(StoreCopyTest):
         self.assertEqual(max(y for y, _ in h["missing_cells"]), 2027)
 
 
+class Lifecycle(StoreTest):
+    """The account lifecycle (owner, 2026-10-09): derived from figures and confirmed absences, never hand-entered."""
+
+    def life(self, sub="LHHS"):
+        return {r["account"]["canonical_account_id"]: r["lifecycle"] for r in S.subcommittee_grid(self.conn, sub)["rows"]}
+
+    def test_types(self):
+        L = self.life()
+        self.assertEqual(L["ACC-HHS-AHA-TOTAL"]["type"], "proposed_only")
+        self.assertIsNone(L["ACC-HHS-AHA-TOTAL"]["enacted"])
+        self.assertEqual((L["ACC-HHS-AHA-TOTAL"]["proposed"]["first"], L["ACC-HHS-AHA-TOTAL"]["proposed"]["last"]), (2026, 2027))
+        self.assertEqual((L["ACC-HHS-NIH-ARPA-H"]["type"], L["ACC-HHS-NIH-ARPA-H"]["created"]), ("new", 2022))
+        self.assertEqual((L["ACC-HHS-ASPR-RDP"]["type"], L["ACC-HHS-ASPR-RDP"]["created"], L["ACC-HHS-ASPR-RDP"]["predecessor"]),
+                         ("new", 2024, "ACC-HHS-OS-PHSSEF"))
+        self.assertEqual((L["ACC-HHS-NIH-TOTAL"]["type"], L["ACC-HHS-NIH-TOTAL"]["first_label"]), ("ongoing", "before FY2017"))
+        # an account with confirmed absences back to FY2017 existed then, unfunded: ongoing, not new
+        self.assertEqual(L["ACC-HHS-HRSA-CCPF"]["type"], "ongoing")
+        # an active account whose enacted figures aren't collected yet stays ongoing, its life open (gaps stay missing)
+        cjs = self.life("CJS")
+        self.assertEqual({v["type"] for v in cjs.values()}, {"ongoing"})
+        self.assertTrue(cjs["ACC-NOAA-ORF"]["enacted_not_collected"])
+
+    def test_relationship_types_are_explicit(self):
+        types = {r[0] for r in self.conn.execute("SELECT relationship_type FROM account_relationship")}
+        self.assertLessEqual(types, {"renamed", "merged_into", "split_from", "moved", "proposed_move"})
+
+
 class NoPrintedTotal(StoreCopyTest):
     """A confirmed absence where the document still prints the account -- the
     account is a total (total_scope), or the same cell holds another of its
@@ -866,14 +900,17 @@ class NoPrintedTotal(StoreCopyTest):
                          "House proposed Diaper Grants under this heading (not enacted).")
 
     def test_no_figure_before_a_proposed_accounts_first_figure(self):
-        # a proposed account (AHA, the NIH consolidation) has no figure before the request that proposed it:
-        # 'no figure for this year', not missing; an active account's empty cell stays missing
+        # a proposed account (AHA, the NIH consolidation) before the request that proposed it is outside its life
+        # (the lifecycle, 2026-10-09): blank, never missing; 'no figure' stays for a program a document funds inside
+        # another account (ASPR's FY2023 House cell)
         rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
         state = lambda account, key: S.headline_state(rows[account]["cells"][key]["lines"])
         for account in ("ACC-HHS-AHA-TOTAL", "ACC-HHS-NIH-NEUROSCIENCE"):
             for stage in ("House Reported", "Enacted"):
-                self.assertEqual(state(account, f"2022|{stage}"), "no_figure", (account, stage))
+                self.assertTrue(rows[account]["cells"][f"2022|{stage}"]["outside_life"], (account, stage))
+                self.assertIsNone(state(account, f"2022|{stage}"), (account, stage))
         self.assertEqual(state("ACC-HHS-AHA-TOTAL", "2026|President's Budget"), "value")
+        self.assertEqual(state("ACC-HHS-ASPR-TOTAL", "2023|House Reported"), "no_figure")
         self.assertIn("no_figure", S.CELL_STATES)
 
     def test_a_rescission_line_with_nothing_beside_it_is_still_none(self):
