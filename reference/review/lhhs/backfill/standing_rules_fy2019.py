@@ -54,12 +54,13 @@ DOCS = {
         url="https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf",
         notes="S. 3158 as reported and placed on the calendar (BILLS-115s3158pcs): the FY2019 Senate Labor-HHS bill "
               "(S.Rept. 115-289); Title II is PDF pp. 48-112."),
-    "SRC-BUDGET-APP-FY2019": dict(
+    "SRC-BUDGET-APP-FY2019-HHS": dict(
         file="BUDGET-2019-APP.pdf", label="the FY2019 Budget Appendix", publication_date="2018-02-12",
         stage="President's Budget", congress_session="", document_type="budget_appendix", source_page="419-489",
         source_agency="Office of Management and Budget", sha="ecc31a5d851b4882",
         url="https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
-        notes="Budget of the U.S. Government, FY2019, Appendix (whole volume); the HHS chapter is PDF pp. 419-489. "
+        notes="Budget of the U.S. Government, FY2019, Appendix (whole volume; SRC-BUDGET-APP-FY2019 is the CJS part "
+              "file); the HHS chapter is PDF pp. 419-489. "
               "Proposed appropriations language: bracketed text is enacted language proposed for deletion."),
     "SRC-PLAW-115PUBL245": dict(
         file="PLAW-115publ245.pdf", label="P.L. 115-245", publication_date="2018-09-28", stage="Enacted",
@@ -70,16 +71,16 @@ DOCS = {
               "Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116."),
 }
 TEXT = {"House Reported": "SRC-BILLS-115HR6470RH", "Senate Reported": "SRC-BILLS-115S3158PCS",
-        "President's Budget": "SRC-BUDGET-APP-FY2019", "Enacted": "SRC-PLAW-115PUBL245"}
+        "President's Budget": "SRC-BUDGET-APP-FY2019-HHS", "Enacted": "SRC-PLAW-115PUBL245"}
 WHERE = {"SRC-BILLS-115HR6470RH": "the whole bill (Title II pp. 48-114, Title V pp. 157-176)",
          "SRC-BILLS-115S3158PCS": "the whole bill (Title II pp. 48-112)",
-         "SRC-BUDGET-APP-FY2019": "the HHS chapter's proposed language (pp. 419-489, bracketed text excluded)",
+         "SRC-BUDGET-APP-FY2019-HHS": "the HHS chapter's proposed language (pp. 419-489, bracketed text excluded)",
          "SRC-PLAW-115PUBL245": "Division B (pp. 68-142; Title II pp. 88-116)"}
 RESCISSIONS = {
     "SRC-BILLS-115HR6470RH": "Title V sec. 530 (Nonrecurring Expenses Fund, $400,000,000, p.173), sec. 529 (CHIP "
                              "balances, p.173) and sec. 531 (Child Enrollment Contingency Fund, p.173)",
     "SRC-BILLS-115S3158PCS": "sec. 230 (Nonrecurring Expenses Fund, $350,000,000, p.111)",
-    "SRC-BUDGET-APP-FY2019": "none in the HHS chapter's proposed language",
+    "SRC-BUDGET-APP-FY2019-HHS": "none in the HHS chapter's proposed language",
     "SRC-PLAW-115PUBL245": "sec. 228 (Nonrecurring Expenses Fund, $400,000,000, p.114)",
 }
 # (account, stage, amount, amount_type, page, section, quote checked on the page)
@@ -170,7 +171,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     data = json.loads(STAGED.read_text())
     obs = data["observations"]
-    assert "SRC-PLAW-115PUBL245" not in {d["document_id"] for d in data["source_docs"]}, "already applied"
+    assert not set(DOCS) & {d["document_id"] for d in data["source_docs"]}, "already applied (or an ID in use)"
     print("text checks:", check_texts())
     retired = json.loads(RETIRED.read_text())
 
