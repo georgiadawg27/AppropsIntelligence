@@ -37,7 +37,7 @@ STAGED = ROOT / "data" / "staged.json"
 XML_DIR = ROOT / "document_store" / "enrolled_xml"
 OUT = HERE / "law_text_comparison.csv"
 SOURCES = HERE / "law_text_sources.csv"
-YEARS = {"LHHS": range(2019, 2027), "CJS": range(2017, 2027)}
+YEARS = {"LHHS": range(2018, 2027), "CJS": range(2017, 2027)}
 
 # the agency each account's heading sits under, as words of the enclosing headers (title, major, intermediate)
 AGENCY_WORDS = {

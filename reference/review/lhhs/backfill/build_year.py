@@ -60,6 +60,8 @@ def clean(label):
     s = re.sub(r"(?<!part)(?<=[a-z\)\./])[\s\.]+[dm]$", "", s)
     s = re.sub(r"(?<=[a-z\)])\d{1,2}/$", "", s)    # a footnote mark glued to the word ('CURES Act2/', 'Federal funds)3/')
     s = re.sub(r"(?<=[a-z\)])\. 0$", "", s)       # the same marker as GPO's layer reads it: 'National Institute on Aging. 0'
+    s = re.sub(r"\s+,\s*", ", ", s)                # 'Total ,Medical Benefits' (GPO's layer)
+    s = re.sub(r"(?<=[a-z\)])[\s.,'`]*'[\s.,'`]*$", "", s)   # leader ink read as quote marks: 'Federal Funds. \'\'\'\''
 
     return re.sub(r"(?<=[a-z]) \d$", "", s)
 
@@ -581,6 +583,103 @@ YEARS[2019] = {
 }
 
 
+YEARS[2018] = {
+    "stages": [
+        ("House Reported", "House", "CRPT-115hrpt244", "Bill", "SRC-CRPT-115HRPT244"),
+        ("President's Budget", "N/A", "CRPT-115hrpt244", "FY 2018 Request", "SRC-CRPT-115HRPT244"),
+        ("Senate Reported", "Senate", "CRPT-115srpt150", "Committee recommendation", "SRC-CRPT-115SRPT150"),
+        ("Enacted", "N/A", "CRPT-115hrpt862", "FY 2018 Enacted", "SRC-CRPT-115HRPT862"),
+    ],
+    "fallback": {"Enacted": ("CRPT-115srpt289", "2018 appropriation", "SRC-CRPT-115SRPT289")},
+    "historical_names": [],
+    # (not the AHRQ evaluation-tap item: the FY2018 tables' AHRQ totals are its budget-authority lines alone)
+    "sum_items": [it for it in YEARS[2019]["sum_items"][:len(YEARS[2020]["sum_items"])]
+                  if it["label"] != r"evaluation tap funding"] + [
+        {"total": "ACC-HHS-OS-TOTAL", "label": r"account for the state response to the opioid abuse crisis, cures act",
+         "kind": "other_law", "why": "another law's line: the 21st Century Cures Act's State Response to the Opioid "
+         "Abuse Crisis (P.L. 114-255 sec. 1003), printed under the Office of the Secretary and counted in its total"}],
+    "proposal_parts": YEARS[2021]["proposal_parts"],
+    "components": [],
+    "title_counts_cures": True,
+    "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
+    "proposals": {**YEARS[2019]["proposals"], **{
+        "nursing workforce development": "not an account: a heading line inside ACC-HHS-HRSA-HEALTH-WORKFORCE (the "
+            "HRSA sum passes)",
+        "hrsa administrative expenses tf": "not an account: a line inside ACC-HHS-HRSA-VICTF (Vaccine Injury "
+            "Compensation Program Trust Fund)",
+        "~~w~~~~~~\u00a5w~~": "not an account: a wavy printed rule read as text (H.Rept. 115-244 p.213), printed 0",
+        "centers for medicare and medicaid services tf": "not an account: a Health Care Fraud and Abuse Control line "
+            "inside ACC-HHS-CMS-HCFAC",
+        "hhs office of inspector general tf": "not an account: a Health Care Fraud and Abuse Control line inside "
+            "ACC-HHS-CMS-HCFAC",
+        "medicaid/chip tf": "not an account: a Health Care Fraud and Abuse Control line inside ACC-HHS-CMS-HCFAC",
+        "department of justice tf": "not an account: a Health Care Fraud and Abuse Control line inside "
+            "ACC-HHS-CMS-HCFAC",
+        "screening for treatment for material depression": "not an account: a program line inside "
+            "ACC-HHS-HRSA-HEALTH-WORKFORCE (Interdisciplinary Community-Based Linkages; 'maternal' printed 'material')",
+        "total, phssef program level": "not an account: a program-level view of ACC-HHS-OS-PHSSEF"}},
+    # the NIH Innovation Account's own line: the FY2018 tables print no 'Total, CURES Act' (H.Rept. 115-862's FY2018
+    # column's total adds the Office of the Secretary's CURES opioid line, another account's money)
+    "cures_line": r"nih innovation account, cures act(?:21|2/?)?",
+    "rederive": {("Senate Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "S.Rept. 115-150 p.230 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + "
+                 "the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is "
+                 "the budget-authority lines alone, so the headline is",
+                 ("House Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities and Program Support' 263,570 as the "
+                 "Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the "
+                 "later tables' subtotal is the budget-authority lines alone, so the headline is"},
+    # the Enacted column is H.Rept. 115-862's: its labels as FY2019's House and request columns read them
+    "override": {("Enacted", aid): v for (st, aid), v in YEARS[2019]["override"].items() if st == "House Reported"}
+                | {(st, "ACC-HHS-AHRQ-TOTAL"): ("total, ahrq (federal funds)", "H.Rept. 115-244 p.219: 'Total, AHRQ "
+                                                "(Federal funds)'") for st in ("House Reported", "President's Budget")},
+    "sum_lines": YEARS[2019]["sum_lines"],
+    "cross": [
+        ("Enacted", "CRPT-115srpt289", "2018 appropriation", "SRC-CRPT-115SRPT289"),
+        ("President's Budget", "CRPT-115srpt150", "Budget estimate", "SRC-CRPT-115SRPT150"),
+    ],
+    "also_covers": {"SRC-CRPT-115HRPT862": "FY2018 Enacted", "SRC-CRPT-115SRPT289": "FY2018 Enacted"},
+    "docs": [
+        {"document_id": "SRC-CRPT-115HRPT244", "source_agency": "House Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "document_type": "committee_report", "congress_session": "115-1", "fiscal_year": 2018,
+         "publication_date": "2017-07-24 00:00:00", "stage": "House Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "206-235",
+         "also_covers": "FY2018 President's Budget",
+         "notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). "
+                  "Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned "
+                  "with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed "
+                  "the table's arithmetic."},
+        {"document_id": "SRC-CRPT-115SRPT150", "source_agency": "Senate Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "document_type": "committee_report", "congress_session": "115-1", "fiscal_year": 2018,
+         "publication_date": "2017-09-07 00:00:00", "stage": "Senate Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "225-242",
+         "also_covers": "FY2018 President's Budget",
+         "notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). "
+                  "Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic "
+                  "gate (the failures were the table's hierarchy, not the reading: the text reading was kept)."},
+    ],
+    "brr": [
+        {"reference_id": "BR-LHHS-FY2018-HOUSE", "stage": "House Reported", "bill_id": "H.R.3358",
+         "report_id": "H.Rept.115-244",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2018-SENATE", "stage": "Senate Reported", "bill_id": "S.1771",
+         "report_id": "S.Rept.115-150",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2018-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2018/APP",
+         "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+         "report_jes_url": "N/A", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2018-ENACTED", "stage": "Enacted", "bill_id": "P.L.115-141", "report_id": "N/A",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 1625", "division": "H", "enactment_date": "2018-03-23",
+         "funding_type": "omnibus", "draft": "FALSE"},
+    ],
+}
+
+
 def load_extraction(pkg):
     x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
     recs = collections.defaultdict(list)
@@ -716,6 +815,11 @@ def main(argv=None):
                 hits = [h for h in hits if any(0 < h["node_id"] - g["node_id"] <= 3 for g in head)] or \
                        ([] if len(head) == 1 else hits)
         if len({h["amount"] for h in hits}) > 1:
+            # a generic label ('Federal Funds') printed under several headings: the one under the account's own name
+            own = [h for h in hits if clean(acct[aid]["canonical_name"]) in clean(h["account_path"])]
+            if own and len({h["amount"] for h in own}) == 1:
+                hits = own
+        if len({h["amount"] for h in hits}) > 1:
             for _, _, lab in sorted(r for r in facts[key]["rank"] if r[0] == (chamber if chamber != "N/A" else "House")):
                 pick = [h for h in hits if h["_clean"] == lab]
                 if pick:
@@ -758,17 +862,28 @@ def main(argv=None):
         ext_by_src[src] = x["observations"]
         found, origin = {}, {}
         for key in sorted(facts):
+            if key[2].startswith(("chamber_proposal", "request_proposal")):
+                continue                    # a one-off line: only where the year's proposal_parts names it
             hits = find(key, pkg, col, chamber)
             if key[1:] == ("budget authority", "") and (stage, key[0]) in cfg.get("rederive", {}):
                 hits = []                          # printed with another scope: derived below (cfg 'rederive')
             ov = cfg.get("override", {}).get((stage, key[0]))
             if ov and key[1:] == ("budget authority", ""):
                 hits = [f for f in rows_for(sections, col, "TAIL") if f["_clean"] == ov[0]]
+            if cfg.get("cures_line") and key == ("ACC-HHS-NIH-CURES", "budget authority", ""):
+                hits = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(cfg["cures_line"], f["_clean"])
+                        and not f.get("is_memo")]
+                if len({h["amount"] for h in hits}) > 1:
+                    # the per-institute CURES lines printed 0 in this column (H.Rept. 115-862 pp.364-366): the account's
+                    # own line is the one with the amount
+                    hits = [h for h in hits if h["amount"]]
             fb = cfg.get("fallback", {}).get(stage)
             # never for a headline this table's own lines derive (derived_headlines.RULES: Medicaid) -- its views
             # must cite the same document as their headline
-            derivable = key[0] in DH.RULES and key[1:] == ("budget authority", "")
-            if fb and not derivable and (not hits or any(h["amount"] is None for h in hits)):
+            derivable = (key[0] in DH.RULES or key[0] in DH.SUM_RULES) and key[1:] == ("budget authority", "")
+            # nor for a view or line of a headline read from this stage's own table: it cites the headline's document
+            own_head = key[2] and (key[0], "budget authority", "") in found and (key[0], "budget authority", "") not in origin
+            if fb and not derivable and not own_head and (not hits or any(h["amount"] is None for h in hits)):
                 fx, _ = ext(fb[0])
                 ext_by_src[fb[2]] = fx["observations"]
                 fhits = find(key, fb[0], fb[1], "Senate")
@@ -880,7 +995,8 @@ def main(argv=None):
                                hits[0]["source_page"], hits[0]["account_name_as_written"]])
         # a proposal line (a chamber's or the request's one-off line) printed at zero -- another year's column of the
         # report that proposed it -- is not a figure
-        for key in [k for k in found if k[2] in ("chamber_proposal", "request_proposal") and not (found[k]["amount"] or 0)]:
+        for key in [k for k in found if k[2].startswith(("chamber_proposal", "request_proposal"))
+                    and not (found[k]["amount"] or 0)]:
             found.pop(key)
         # an account a printed dash/zero shows did not exist yet (absent_before): a confirmed absence, not a figure
         for aid, first in cfg.get("absent_before", {}).items():

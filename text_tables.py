@@ -238,6 +238,9 @@ def _clean_value(text):
     return s, ("number" if NUMERIC_CELL_RE.fullmatch(s) else "other")
 
 
+FOOTNOTE_LINE_RE = re.compile(r"^\s*\d{1,2}\s+[A-Z][a-z]")
+
+
 def read_rows(geo, seps, body_top):
     cols = _columns(seps)
     body = [l for l in geo["lines"] if l["v0"] >= body_top - COL_TOL]
@@ -261,6 +264,10 @@ def read_rows(geo, seps, body_top):
                 label_parts.append(l)
                 continue
             hit = _overlapping(cols, l["u0"], l["u1"])
+            if len(hit) > 1 and FOOTNOTE_LINE_RE.match(l["text"]) and len(l["text"].split()) >= 6:
+                # a table footnote set across the value columns ('3 Fiscal year 2018 budget request proposes ...',
+                # S.Rept. 115-150): text, not a row
+                continue
             if len(hit) != 1:
                 raise TextTableError(f"text {l['text']!r} straddles value columns {hit}")
             i = hit[0]
