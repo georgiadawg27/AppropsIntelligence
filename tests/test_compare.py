@@ -1192,7 +1192,7 @@ class CompareBrowser(CompareTest):
 
     def test_other_lines_marker_on_every_cell_that_has_them(self):
         lhhs_pairs = {"stages&fy=2026": [(2025, "Enacted")] + [(2026, st) for st in FOUR],
-                      "history": [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
+                      "history": [(y, "Enacted") for y in self.lhhs["fiscal_years"] if y < 2027] + [(2027, "President's Budget"), (2027, "House Reported")],
                       "years&a=2024&b=2026": [(y, st) for y in (2024, 2026) for st in FOUR]}
         cases = [("LHHS", q, p, self.lhhs) for q, p in lhhs_pairs.items()]
         cases.append(("CJS", "stages&fy=2024", [(2023, "Enacted")] + [(2024, st) for st in FOUR], self.grid))
