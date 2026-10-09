@@ -14,6 +14,334 @@
        "missing": false,
        "observations": [
         {
+         "amount": 2847458000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2642",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "495",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2021 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10742"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10743"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10744"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10745"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-10872"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-11038"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2827458000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.7614",
+         "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+         "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2349",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "H.Rept.116-450",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "426",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09635"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09636"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09637"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09638"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09639"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2641465000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2021/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2447",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "426",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2021 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09991"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09992"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09993"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09994"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-10960"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 2739458000,
+         "amount_type": "budget authority",
+         "bill_id": "Senate chair's draft, FY2021",
+         "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+         "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2544",
+         "offsetting_collections": 0,
+         "publication_date": "2020-11-10",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+         "source_page": "262",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-10391 (the printed change column [Senate Committee recommendation compared with (+ or -) 2020 appropriation]); VAL-LHHS-10392 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10390"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10391"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10392"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10393"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10394"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 3199678000,
          "amount_type": "budget authority",
          "bill_id": "P.L.117-103",
@@ -1289,6 +1617,22 @@
   "coverage": {
    "cells": [
     [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
      2022,
      "Enacted"
     ],
@@ -1415,6 +1759,273 @@
    ]
   ],
   "observations": [
+   {
+    "amount": 2641465000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2021/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2447",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "426",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2021 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09991"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09992"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09993"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09994"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-10960"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2827458000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.7614",
+    "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2349",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "H.Rept.116-450",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "426",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09635"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09636"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09637"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09638"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09639"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 2739458000,
+    "amount_type": "budget authority",
+    "bill_id": "Senate chair's draft, FY2021",
+    "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+    "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2544",
+    "offsetting_collections": 0,
+    "publication_date": "2020-11-10",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+    "source_page": "262",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-10391 (the printed change column [Senate Committee recommendation compared with (+ or -) 2020 appropriation]); VAL-LHHS-10392 (the printed change column [Senate Committee recommendation compared with (+ or -) Budget estimate])",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10390"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10391"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10392"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10393"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10394"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 2847458000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2642",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "495",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2021 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10742"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10743"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10744"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10745"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-10872"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-11038"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 3523116000,
     "amount_type": "budget authority",
@@ -2355,12 +2966,12 @@
   ],
   "relationships": [
    {
-    "confidence": 0.5,
+    "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
     "from_account_id": "ACC-HHS-ASPR-RDP",
-    "human_reviewed": 0,
+    "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-RDP",
     "other_fiscal_years": [
      2023,
@@ -2370,16 +2981,16 @@
     "other_observations": 15,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0009",
-    "relationship_type": "uncertain",
+    "relationship_type": "split_from",
     "to_account_id": "ACC-HHS-OS-PHSSEF"
    },
    {
-    "confidence": 0.5,
+    "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211).",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
     "from_account_id": "ACC-HHS-ASPR-OPER",
-    "human_reviewed": 0,
+    "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-OPER",
     "other_fiscal_years": [
      2023,
@@ -2389,11 +3000,31 @@
     "other_observations": 15,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0010",
-    "relationship_type": "uncertain",
+    "relationship_type": "split_from",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   },
+   {
+    "confidence": 1.0,
+    "direction": "to",
+    "effective_fiscal_year": 2024,
+    "evidence": "ASPR's agency total, split from PHSSEF with its two accounts (REL-LHHS-0009, REL-LHHS-0010). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "from_account_id": "ACC-HHS-ASPR-TOTAL",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-ASPR-TOTAL",
+    "other_fiscal_years": [
+     2023,
+     2027
+    ],
+    "other_name": "Administration for Strategic Preparedness and Response (agency total)",
+    "other_observations": 15,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0016",
+    "relationship_type": "split_from",
     "to_account_id": "ACC-HHS-OS-PHSSEF"
    }
   ],
   "stage_notes": {
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

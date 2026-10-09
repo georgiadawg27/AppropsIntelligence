@@ -14,6 +14,169 @@
        "missing": false,
        "observations": [
         {
+         "amount": 0,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+         "cell_note": "No CCPF appropriation in Division H; Division M (Coronavirus Response and Relief Supplemental Appropriations Act, 2021) lets its PHSSEF funds be transferred to the fund (134 Stat. 1917).",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2594",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "471",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Countermeasures Injury Compensation Trust Fund' [FY 2021 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10585"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10586"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10587"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-11053"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0047",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 7614 has no 'Covered Countermeasures Process Fund' heading or appropriation (whole text searched); its only mention is authority to transfer funds from another heading to the fund (p.203).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-07-15",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-116HR7614RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0057",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2021 Budget Appendix proposes no appropriations language for the Covered Countermeasure Process Fund: its HHS entry (p.443) is a program and financing schedule only.",
+        "fiscal_year": 2021,
+        "publication_date": "2020-02-10",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2021",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0052",
+        "confirmed_date": "2026-10-08",
+        "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "The Senate chair's draft bill for FY2021 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+        "fiscal_year": 2021,
+        "publication_date": "2020-11-10",
+        "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+        "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 5000000,
          "amount_type": "budget authority",
          "bill_id": "P.L.117-103",
@@ -1438,7 +1601,56 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0047",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 7614 has no 'Covered Countermeasures Process Fund' heading or appropriation (whole text searched); its only mention is authority to transfer funds from another heading to the fund (p.203).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-07-15",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR7614RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0057",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "Budget of the U.S. Government, FY2021, Appendix (whole volume). Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 3c490c8fce7d2664... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2021 Budget Appendix proposes no appropriations language for the Covered Countermeasure Process Fund: its HHS entry (p.443) is a program and financing schedule only.",
+    "fiscal_year": 2021,
+    "publication_date": "2020-02-10",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2021",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0052",
+    "confirmed_date": "2026-10-08",
+    "document_notes": "The Senate chair's draft Labor-HHS bill for FY2021, released 2020-11-10 with the explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE); never introduced. sha256 f7f91278ec09cd06... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "The Senate chair's draft bill for FY2021 never mentions the Covered Countermeasures Process Fund (whole text searched).",
+    "fiscal_year": 2021,
+    "publication_date": "2020-11-10",
+    "source_agency": "Senate Committee on Appropriations (chair's draft bill)",
+    "source_document_id": "SRC-BILL-LHHS-FY2021-SENATE",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf"
+   }
+  ],
   "account": {
    "agency": "Health Resources and Services Administration",
    "bureau": "Covered Countermeasures Process Fund",
@@ -1457,6 +1669,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
     [
      2022,
      "Enacted"
@@ -1564,6 +1792,66 @@
    ]
   ],
   "observations": [
+   {
+    "amount": 0,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-CCPF",
+    "cell_note": "No CCPF appropriation in Division H; Division M (Coronavirus Response and Relief Supplemental Appropriations Act, 2021) lets its PHSSEF funds be transferred to the fund (134 Stat. 1917).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2594",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "471",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Countermeasures Injury Compensation Trust Fund' [FY 2021 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10585"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10586"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10587"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-11053"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 5000000,
     "amount_type": "budget authority",
@@ -2648,6 +2936,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

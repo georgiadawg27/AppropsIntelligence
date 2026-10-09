@@ -334,6 +334,7 @@ class Browser(BrowserBase):
     def test_every_absence_renders(self):
         conn = S.connect(self.db)
         accts = [r[0] for r in conn.execute("SELECT DISTINCT canonical_account_id FROM confirmed_absence")]
+        absences = conn.execute("SELECT count(*) FROM confirmed_absence").fetchone()[0]
         conn.close()
         n = 0
         for acct in accts:
@@ -345,7 +346,7 @@ class Browser(BrowserBase):
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
             self.assertEqual(self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                             "cs => cs.filter(c => !c.title).length"), 0, acct)
-        self.assertEqual(n, 230)                         # v33: CJS's 197 + Labor-HHS's 37; + 2 for FY2024 House; - 6 Medicaid (FY2023, FY2024)
+        self.assertEqual(n, absences)                    # every confirmed absence renders, once
 
 
 

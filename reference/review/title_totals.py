@@ -56,7 +56,10 @@ via_others = []       # candidates for the through-the-rollups reading, set by c
 # total may leave out: the NIH Innovation Account (CURES Act) -- a component of
 # the NIH total through v32 (kind 'contained'), its own account from v33. Like a
 # breakdown line: never part of the base, only a candidate.
-OUTSIDE_TITLE_CANDIDATES = ("ACC-HHS-NIH-CURES",)
+# The Medicare Operations general provision (sec. 227: a transfer from the Medicare trust funds to CMS Program
+# Management) is the same: some tables print it inside the Title II total (FY2024 on), the FY2021-FY2022 tables
+# leave it out (the FY2022 Senate draft prints FY2021's inside CMS Program Management instead).
+OUTSIDE_TITLE_CANDIDATES = ("ACC-HHS-NIH-CURES", "ACC-HHS-GP-MEDICARE-OPERATIONS")
 
 
 def is_breakdown(r):

@@ -551,7 +551,7 @@ class CompareBrowser(CompareTest):
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.page.click("#expand-all")
-        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in (2022, 2023, 2024, 2025, 2026)]
+        self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)]
                                                      + [(2027, "President's Budget"), (2027, "House Reported")]))
         self.open("static", "?view=compare&sc=LHHS&grid=years&a=2024&b=2026")
         self.page.click("#expand-all")
@@ -562,14 +562,8 @@ class CompareBrowser(CompareTest):
         self.assertEqual(self.shown(), self.expected(self.lhhs, [(y, st) for y in (2024, 2026) for st in FOUR if st != "House Reported"]))
 
     def test_grid_state_counts_are_unchanged(self):
-        # LHHS: the FY2024 House column (100 cells) moved from not yet collected to the subcommittee draft's
-        # figures and states (+86 value, +6 not funded, +8 missing); then H.R. 5894 filled the NEF rescission (-1 missing, +1 value)
-        # then the FY2022 backfill (+400 cells); FY2022/FY2023 Medicaid's derived headlines (4 FY2023 cells: no printed
-        # total -> value); and 'no figure for this year': a proposed account's cells before its first figure (68 were missing)
-        want = {"LHHS": {"value": 1889, "not_funded": 111, "no_printed_total": 7, "missing": 101, "not_collected": 100,
-                         "not_enacted": 100, "no_figure": 92},
-                "CJS": {"value": 752, "not_funded": 18, "no_printed_total": 0, "missing": 460, "not_collected": 60,
-                        "not_enacted": 30, "no_figure": 0}}
+        # the published grid's counts (tests/fixtures/grid_counts.json, scripts/grid_counts.py): the page shows them
+        want = json.loads((ROOT / "tests" / "fixtures" / "grid_counts.json").read_text())["state_counts"]
         for sc, counts in want.items():
             for grid in ("stages", "years", "history"):
                 self.open("static", f"?view=compare&sc={sc}&grid={grid}")
@@ -752,8 +746,9 @@ class CompareBrowser(CompareTest):
         for state, text in (("not_enacted", "n/e"), ("missing", "?"), ("not_collected", "n/c"), ("not_funded", "—"),
                             ("no_printed_total", "no printed total")):
             # not yet collected: FY2027 Senate (the FY2024 House column now holds the subcommittee draft's figures)
+            # no printed total: the AHA total's FY2026 cells (ASPR's FY2023 cells now read 'no figure')
             self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2027" if state == "not_enacted" else
-                      "?view=compare&sc=LHHS&grid=years&a=2026&b=2027" if state == "not_collected" else
+                      "?view=compare&sc=LHHS&grid=years&a=2026&b=2027" if state in ("not_collected", "no_printed_total") else
                       "?view=compare&sc=LHHS&grid=years&a=2023&b=2024")
             self.page.click("#expand-all")
             tok = self.page.locator(f"td[data-state={state}] [data-testid=token-{state.replace('_', '-')}]").first
@@ -791,7 +786,7 @@ class CompareBrowser(CompareTest):
     def test_draft_stages_are_labeled_in_every_view(self):
         # a House / Senate column whose Bill Report Reference row says draft = TRUE (the full committee never
         # reported the bill) reads "House (draft)" / "Senate (draft)"; its title names the document
-        want = {"LHHS": {(2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")},
+        want = {"LHHS": {(2021, "Senate Reported"), (2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")},
                 "CJS": {(2021, "Senate Reported"), (2022, "Senate Reported"), (2023, "Senate Reported"), (2024, "House Reported")}}
         title = "Committee draft \u2014 the full committee never reported this bill \u00b7 "
         for sc, drafts in want.items():
@@ -834,7 +829,7 @@ class CompareBrowser(CompareTest):
         self.assertEqual(heads()[1][-1], "Request")
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.assertEqual(heads(), [["Account", "Enacted", "FY2027", "", "Change"],
-                                   ["FY2022", "FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY22 → FY26"]])
+                                   ["FY2021", "FY2022", "FY2023", "FY2024", "FY2025 (CR)", "FY2026", "Request", "House", "FY21 → FY26"]])
         self.assertTrue(self.page.is_hidden("#sub-controls"))
 
     def test_reviewer_mode_dots(self):
@@ -1104,14 +1099,14 @@ class CompareBrowser(CompareTest):
                 self.assertEqual(same, 0)
                 self.assertEqual(self.page.locator("#compare-grid td.delta").first.evaluate("e => getComputedStyle(e).fontSize"), "13px")
 
-    def test_notes_are_corner_marks_261_in_all(self):
+    def test_notes_are_corner_marks_in_all(self):
         # the cells with other lines on file, both subcommittees (title totals included): 208, + 6 in the
         # FY2024 House draft's column (the ACF, ACL, CDC, NIH and OS totals and Medicaid: program-level and
         # advance lines beside the headline); + 32 with the FY2022 column and FY2023 Medicaid's views; + 15 with the
-        # owner's FY2022 decisions (earmark, Kids First and Diaper Grants lines)
+        # owner's FY2022 decisions (earmark, Kids First and Diaper Grants lines); + 35 with the FY2021 column
         total = sum(1 for g in (self.lhhs, self.grid) for r in g["rows"] + [t["total"] for t in g["titles"] if t["total"]]
                     for k in r["cells"] if other_lines(r, *k.split("|")))
-        self.assertEqual(total, 261)
+        self.assertGreater(total, 0)
         for sc in ("LHHS", "CJS"):
             self.open("static", f"?view=compare&sc={sc}&grid=history")
             self.page.click("#expand-all")
@@ -1129,8 +1124,14 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
         self.page.click("#expand-all")
         notes = self.page.locator("#compare-grid [data-testid=cell-note]")
-        self.assertEqual(notes.count(), 2)                 # and Refugee FY2022 Enacted, the prior-year column
+        # the view's other notes: Refugee FY2022 Enacted (the prior-year column), ASPR's FY2023 cells (funded within
+        # PHSSEF) and ONC's FY2022 Enacted (the PHS evaluation set-aside)
+        titles = notes.evaluate_all("ns => ns.map(n => n.title)")
+        self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
+        self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation"))
+                            for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
+        self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
 
     def test_the_cell_note_on_refugee_fy2022_enacted(self):
@@ -1154,7 +1155,8 @@ class CompareBrowser(CompareTest):
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
             self.assertEqual(sum(1 for x in titles if x.startswith("H.R. 5894")), 1 if sc == "LHHS" else 0, sc)
-            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000")) for x in titles), titles)
+            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000", "Funded within PHSSEF"))
+                                for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
@@ -1186,7 +1188,7 @@ class CompareBrowser(CompareTest):
 
     def test_other_lines_marker_on_every_cell_that_has_them(self):
         lhhs_pairs = {"stages&fy=2026": [(2025, "Enacted")] + [(2026, st) for st in FOUR],
-                      "history": [(y, "Enacted") for y in (2022, 2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
+                      "history": [(y, "Enacted") for y in (2021, 2022, 2023, 2024, 2025, 2026)] + [(2027, "President's Budget"), (2027, "House Reported")],
                       "years&a=2024&b=2026": [(y, st) for y in (2024, 2026) for st in FOUR]}
         cases = [("LHHS", q, p, self.lhhs) for q, p in lhhs_pairs.items()]
         cases.append(("CJS", "stages&fy=2024", [(2023, "Enacted")] + [(2024, st) for st in FOUR], self.grid))

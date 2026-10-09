@@ -101,7 +101,7 @@ class PageLinks(Store):
         # v36: the eight Labor-HHS report/JES links point at PDFs, not govinfo's app/details pages
         # (bill_url isn't cited at a page; twelve Labor-HHS bill_url values are still landing pages)
         rows = self.conn.execute("SELECT reference_id, report_jes_url FROM bill_report_reference").fetchall()
-        self.assertEqual(len(rows), 63)                  # + the four FY2022 Labor-HHS rows
+        self.assertEqual(len(rows), 67)                  # + the four FY2022 and four FY2021 Labor-HHS rows
         self.assertEqual([r[0] for r in rows if "govinfo.gov/app/details" in (r[1] or "")], [])
 
 

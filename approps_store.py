@@ -1117,6 +1117,39 @@ def relationship_cites(conn, evidence):
     return {"cites": out} if out else {}
 
 
+def split_before(rel):
+    """A confirmed (human-reviewed) split_from relationship read from the new account's side: before its first
+    figure the account's money was inside the other account (ASPR's inside PHSSEF), so those years have no figure
+    of their own -- never missing."""
+    return rel.get("direction") == "from" and rel["relationship_type"] == "split_from" and bool(rel["human_reviewed"])
+
+
+def old_structure(h, first, cells):
+    """'No figure' wherever a document funds the program inside another account (the old structure): every cell
+    before a confirmed split's effective year (split_before) with no figure of the account's own -- missing, or a
+    confirmed absence of the new heading -- reads no_figure. From the account's first figure on (a later document
+    restating that year in the new structure), such a cell carries the note 'Funded within <account> in this
+    document.' (ASPR's FY2023 House, request and Senate cells: their documents fund it inside PHSSEF)."""
+    split = [r for r in h["relationships"] if split_before(r) and r.get("effective_fiscal_year")]
+    if not split:
+        return
+    eff = min(int(r["effective_fiscal_year"]) for r in split)
+    m = next((re.search(r"Funded within (.+?) before FY\d{4}\.", r["evidence"] or "") for r in split), None)
+    inside = m.group(1) if m else next(r["other_name"] for r in split)
+    for key, cell in cells.items():
+        y = int(key.split("|")[0])
+        if y >= eff:
+            continue
+        lines = []
+        for l in cell["lines"]:
+            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total"):
+                l = dict(l, state="no_figure", missing=False)
+                if first is not None and y >= first:
+                    l["note"] = f"Funded within {inside} in this document."
+            lines.append(l)
+        cell["lines"] = lines
+
+
 def history(conn, account_id):
     """An account's full record: the account, its former names, its account
     relationships (each way), and every observation with its source document
@@ -1172,6 +1205,11 @@ def history(conn, account_id):
         # a law_text match combined across divisions of the law: "Includes $X from Division Y (...) of P.L. ..."
         notes += [(v["observed_result"] or "")[(v["observed_result"] or "").index("Includes $"):] for v in recs
                   if v["rule_applied"] == "law_text" and "Includes $" in (v["observed_result"] or "")]
+        # a law_text check's own note, only on a 0 figure the law confirms (no such appropriation in the bill's
+        # division) -- where the money came from instead (CCPF FY2021: "No CCPF appropriation in Division H; ...")
+        notes += [(v["observed_result"] or "").split("Note: ", 1)[1] for v in recs
+                  if v["rule_applied"] == "law_text" and r["amount"] == 0 and v["result"] == "pass"
+                  and (v["observed_result"] or "").startswith("0 as recorded. Note: ")]
         # a resolved cross-document difference the owner asked to show (its resolution ends "Note: ...")
         notes += [v["resolution"][v["resolution"].index("Note: ") + 6:] for v in recs
                   if v["rule_applied"] == "cross_document" and v["human_review_status"] == "resolved"
@@ -1191,6 +1229,28 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
+    # a 0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
+    # the program is funded, just not by new budget authority
+    for rec in obs:
+        if rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"] \
+                or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or ""):
+            continue
+        head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
+        if head and head["amount"] == 0:
+            note = f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+            if note not in (head.get("cell_note") or ""):
+                head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
+    # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the
+    # account's first-year headline cells
+    current = [x for x in obs if x["verification_status"] != "superseded"]
+    for r in rels:
+        if split_before(r) and "Note: " in (r["evidence"] or "") and current:
+            note = r["evidence"][r["evidence"].index("Note: ") + 6:]
+            y0 = min(x["fiscal_year"] for x in current)
+            for x in current:
+                if x["fiscal_year"] == y0 and x["amount_type"] == "budget authority" and x["component"] is None \
+                        and note not in (x.get("cell_note") or ""):
+                    x["cell_note"] = " ".join(n for n in (x.get("cell_note"), note) if n)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     absences = [dict(r) for r in conn.execute(
@@ -1238,7 +1298,8 @@ def history(conn, account_id):
 #                     yet: a proposed account (Account.status 'proposed': it exists only as
 #                     a request), or one a document shows did not exist yet (a confirmed absence
 #                     before its first figure whose evidence says so, e.g. ARPA-H's FY2021
-#                     Enacted); not counted as missing
+#                     Enacted), or one a confirmed split_from relationship carves out of another
+#                     account (ASPR's accounts before FY2023: split_before); not counted as missing
 CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure")
 
 
@@ -1340,7 +1401,9 @@ def history_grid(h):
     parallel total's printed scope) is listed only where recorded, next to
     the headline it names (headline_observation_id), and marked
     adds_to_headline False: it is never added to anything (additive_lines).
-    Where a document prints no such scope there is nothing missing.
+    Where a document prints no such scope there is nothing missing. A chamber's
+    one-off proposal line (accounts.PROPOSAL_COMPONENTS: House Diaper Grants)
+    is likewise listed only where recorded: no other cell is missing it.
     -> {"stages", "series": [{"amount_type", "component", "component_kind", "component_label"}],
         "rows": [{"fiscal_year", "cells": {stage: [...]}}]}
     """
@@ -1367,7 +1430,8 @@ def history_grid(h):
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
                 k, label = kind.get(c, (None, None))
-                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED) and not found and not absence:
+                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS) \
+                        and not found and not absence:
                     continue
                 state = cell_state(found, absence, y, st, h["coverage"])
                 if absence and t == "budget authority" and c is None and (scoped or any(k[:2] == (y, st) for k in by)):
@@ -1517,12 +1581,14 @@ def subcommittee_grid(conn, subcommittee):
     def row_of(a):
         _, h, g = grids[a["canonical_account_id"]]
         own = {r["fiscal_year"]: r["cells"] for r in g["rows"]}
-        # the years before the account existed: before its first figure, for a proposed account, or for one a
-        # document shows did not exist yet (a confirmed absence before its first figure, e.g. ARPA-H in FY2021)
+        # the years before the account existed: before its first figure, for a proposed account, for one a
+        # document shows did not exist yet (a confirmed absence before its first figure, e.g. ARPA-H in FY2021),
+        # or for one a confirmed relationship splits from another account (ASPR's from PHSSEF: split_before)
         figures = [o["fiscal_year"] for o in h["observations"] if o.get("verification_status") != "superseded"]
         first = min(figures) if figures else None
         before = first is not None and (a.get("status") == "proposed" or any(
-            x["fiscal_year"] < first and "did not exist" in (x.get("evidence") or "") for x in h["absences"]))
+            x["fiscal_year"] < first and "did not exist" in (x.get("evidence") or "") for x in h["absences"])
+            or any(split_before(r) for r in h["relationships"]))
         cells = {}
         for y in years:
             for st in stages:
@@ -1534,7 +1600,8 @@ def subcommittee_grid(conn, subcommittee):
                 else:
                     lines = []
                     for s in g["series"]:
-                        if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st:
+                        if s["component_kind"] in NOT_ADDED or A.COMPONENT_STAGE.get(s["component"], st) != st \
+                                or s["component"] in A.PROPOSAL_COMPONENTS:
                             continue                     # as in history_grid: only where it can exist / is recorded
                         state = cell_state([], None, y, st, h["coverage"])
                         if state == "missing" and before and y < first:
@@ -1544,6 +1611,7 @@ def subcommittee_grid(conn, subcommittee):
                                       "adds_to_headline": True, "state": state, "missing": state == "missing",
                                       "observations": [], "absence": None})
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": lines}
+        old_structure(h, first, cells)
         return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",

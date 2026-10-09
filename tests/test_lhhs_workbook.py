@@ -7,6 +7,7 @@ Run:  python -m unittest tests.test_lhhs_workbook -v
 
 import csv
 import io
+import json
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -35,8 +36,9 @@ class LhhsRowsLoad(unittest.TestCase):
         self.assertEqual(self.report["warnings"], [])
         # v33 carries every row of these CSVs (the account list and the FY2023 rows came after them, outside
         # these files): merging them adds no observation or account the workbook doesn't already have
-        self.assertEqual(self.report["rows"]["account"], 130)
-        self.assertEqual(self.report["rows"]["appropriations_observation"], 3131)
+        staged = json.loads((ROOT / "data" / "staged.json").read_text())
+        self.assertEqual(self.report["rows"]["account"], len(staged["accounts"]))
+        self.assertEqual(self.report["rows"]["appropriations_observation"], len(staged["observations"]))
         ids = {o["observation_id"] for o in rows("observation")}
         import openpyxl
         wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
@@ -62,7 +64,7 @@ class LhhsRowsLoad(unittest.TestCase):
         # with the General Provisions lines as accounts, every recorded Title II total is its agency
         # totals + the General Provisions lines (a rescission signed) - CURES, from the store alone
         cells = self.report["title_ii"]
-        self.assertEqual(len(cells), 22)                              # v33: + FY2023 PB, House, Senate; + FY2024 House draft; + FY2022
+        self.assertEqual(len(cells), 26)                              # v33: + FY2023 PB, House, Senate; + FY2024 House draft; + FY2022; + FY2021
         off = [r for r in cells if r["reconciles_through_rollups"] != "yes"]
         # the one known exception: ACL's FY2023 request total includes (Evaluation Tap Funding) 27,503
         # (FY2023 Senate draft p.416), a line no agency total outside ACL's carries
@@ -215,14 +217,14 @@ class CuresAsItsOwnAccount(unittest.TestCase):
             # the re-homed rows: the CURES account's, no CURES component left anywhere
             self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = 'CURES'").fetchone()[0], 0)
             self.assertEqual(conn.execute("SELECT count(*) FROM appropriations_observation "
-                                          "WHERE canonical_account_id = 'ACC-HHS-NIH-CURES'").fetchone()[0], 22)
+                                          "WHERE canonical_account_id = 'ACC-HHS-NIH-CURES'").fetchone()[0], 26)
             cells = conn.execute("SELECT fiscal_year, stage, amount FROM appropriations_observation WHERE canonical_account_id = "
                                  "'ACC-HHS-TITLE-II-TOTAL' AND component IS NULL").fetchall()
             got = {(fy, st): T.reconcile(conn, [{"fiscal_year": fy, "stage": st, "printed_total_title_iii_thousands": a // 1000}],
                                          title="Title II", subcommittee="LHHS")[0]["reconciles_through_rollups"]
                    for fy, st, a in cells}
             conn.close()
-        self.assertEqual(len(got), 22)                                # + FY2024 House (the subcommittee draft); + FY2022
+        self.assertEqual(len(got), 26)                                # + FY2024 House (the subcommittee draft); + FY2022; + FY2021
         # every cell but FY2023 President's Budget (ACL's Evaluation Tap Funding, 27,503: see LhhsRowsLoad)
         self.assertEqual({k for k, v in got.items() if v != "yes"}, {(2023, "President's Budget")})
 

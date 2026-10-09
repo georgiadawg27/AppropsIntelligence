@@ -1,17 +1,17 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions)",
- "data_sha256": "29ea1b573155d5a17455c79c2154d85fa3a65648c55451ed946e356bd0413251",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions)",
+ "data_sha256": "e19dc95bdd67b6d7a9c963971806408c2bcae3beb51b0a3e8b3b1e1ac830f06a",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 70,
    "columns": 1,
-   "sha256": "eb23fc57830e6b92e65aa797ea1ac4e89ccd8843672b25b8e2f9e7edfb93f213"
+   "sha256": "086820abc8c3ba195e8c1f7e91a53621bfac415c47d893185dd739454b9f77c7"
   },
   "Account": {
    "rows": 131,
    "columns": 15,
-   "sha256": "5b6ae20a28375fd37fe539abb92d70f91ad504837aca3d3981e34402d08105e4"
+   "sha256": "72a03997465e8931c9c75c4f755d4185c155289224ea9d7c01e7b8846765230d"
   },
   "Historical Name": {
    "rows": 15,
@@ -19,39 +19,39 @@
    "sha256": "5280c762898a168716127cff5255b07808a6b7462d5ef2131a9679601cdf6926"
   },
   "Confirmed Absence": {
-   "rows": 231,
+   "rows": 248,
    "columns": 9,
-   "sha256": "60d6b8c98df7930a4ad16c9be3f7fd9ddebeb395d954b6cb64e02e56172a9c52"
+   "sha256": "8ff9334f9984815d9a59112bd37554386c504a4caa9d5da6322e2773ea3aacc3"
   },
   "Appropriations Observation": {
-   "rows": 3132,
+   "rows": 3537,
    "columns": 22,
-   "sha256": "05ea9c0417024c679dfcde614a806dbfdff3513d3af3614ba34114e1fd30e2ce"
+   "sha256": "44a60f5b4ddf765fb31eb9b1e0b4ed05ef72d1c2663d9f656aef30971190541b"
   },
   "Account Relationship": {
-   "rows": 12,
+   "rows": 13,
    "columns": 8,
-   "sha256": "9bee5a4ae71ece3731c92ad088ffcc88729cd9e2cf8709c014d5fbf4ed563a9e"
+   "sha256": "cf65d61d4b7143b183ef6dc87cbdc3fce7cd1cda3655e6f106dc65eb5d202eaf"
   },
   "Source Document": {
-   "rows": 40,
+   "rows": 50,
    "columns": 12,
-   "sha256": "4ffd772e01010659dc77d3e8397c0ad5b80fa0f314dc72b54020278c8ccb2466"
+   "sha256": "a0d24c4c236122f2cb10919e7094e4742acac444375c33d250223afd5130a9d3"
   },
   "Bill Report Reference": {
-   "rows": 64,
+   "rows": 68,
    "columns": 15,
-   "sha256": "87dba35c33a94a403602bfa289c9adbbe1d968e206adb7bdaefdf837dc65194e"
+   "sha256": "d4af9d4de40193df692e4376e0b7692e04e146b9b6797cfb48d1a4070a655ca9"
   },
   "Validation Record": {
-   "rows": 9497,
+   "rows": 11300,
    "columns": 9,
-   "sha256": "02c7b81c198b953ced1a0af2428f7561697fc95389063ee8f9783f2ae88973eb"
+   "sha256": "bfc9de5e8fefb807654d32b44f07095a5855b9091134348c7758c796c5b72a6e"
   },
   "Component": {
-   "rows": 23,
+   "rows": 24,
    "columns": 4,
-   "sha256": "0f04d37dd4f042dcd02b9a4648f912b7965d9e5a140f856c80fc284603a1d14b"
+   "sha256": "6303e0ebb1e8c1556a7078e0cb66ac1b9f194b739484f06cc64658d2f0473c39"
   }
  }
 }

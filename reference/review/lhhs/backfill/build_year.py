@@ -65,6 +65,7 @@ SENATE_TABLES = ["SRC-CRPT-119SRPT55", "SRC-CRPT-118SRPT207", "SRC-CRPT-118SRPT8
                  "SRC-EXPL-LHHS-FY2022-SENATE", "SRC-EXPL-LHHS-FY2021-SENATE", "SRC-CRPT-115SRPT289",
                  "SRC-CRPT-115SRPT150", "SRC-CRPT-114SRPT274"]
 TRIAGE_REVIEWER = "triage rules"
+NIH_OD = "ACC-HHS-NIH-OD"
 OWNER_RULE = "owner rules (2026-10-08)"
 
 # ---- the years ---------------------------------------------------------------------------------------------
@@ -223,17 +224,25 @@ YEARS[2021] = {
     "fallback": {"Enacted": ("MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17", "2021 appropriation",
                              "SRC-EXPL-LHHS-FY2022-SENATE")},
     "historical_names": [],
-    "sum_items": [it for it in YEARS[2022]["sum_items"] if it["kind"] != "other_law"] + [
-        {"total": "ACC-HHS-NIH-TOTAL", "label": r"national institute for research on safety and quality.*", "kind": "outside",
-         "proposal": "money outside our accounts: the FY2021 request moves AHRQ into NIH as NIRSQ (the request's AHRQ "
-                     "lines are 0) -- proposed: record it as ACC-HHS-AHRQ-TOTAL's FY2021 request with a relationship note "
-                     "(AHRQ proposed as an NIH institute), or a new proposed account; the owner decides"}],
+    "sum_items": [it for it in YEARS[2022]["sum_items"] if it["kind"] == "inside"],
+    # one-off proposals under another heading (owner's standing rule): a part line of the account, with a note
+    "proposal_parts": [
+        {"account": "ACC-HHS-NIH-TOTAL", "agency": "NIH", "label": r"national institute for research on safety and quality.*",
+         "component": "request_proposal",
+         "note": "The President's request proposed moving AHRQ into NIH as the National Institute for Research on Safety "
+                 "and Quality (NIRSQ), printed inside NIH's total (not enacted); AHRQ's own request lines are 0."}],
+    "components": [{"component_id": "request_proposal", "label": "National Institute for Research on Safety and Quality (NIRSQ)",
+                    "kind": "contained", "description": "a line the President's request proposed, printed inside the "
+                                                        "account's total (not enacted); the cell shows it as a note"}],
     "title_counts_cures": True,
     # accounts that did not exist yet: a printed dash/zero in this year's column is a confirmed absence, not a figure
     "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
     "request_appendix": {"stage": "President's Budget", "other": "SRC-EXPL-LHHS-FY2021-SENATE",
                          "appendix": "document_store/BUDGET-2021-APP.pdf"},
-    "proposals": YEARS[2022]["proposals"],
+    "proposals": {**YEARS[2022]["proposals"], **{'304b drug pricing': "not an account: the OCR's '304B' for '340B Drug Pricing', a line of the Health Care Systems group (inside ACC-HHS-HRSA-HEALTH-SYSTEMS)", 'subtotal, health care systems, program level': 'not an account: a program-level view of ACC-HHS-HRSA-HEALTH-SYSTEMS (with its PHS evaluation funding)',
+        'total, nih, program level with title vi emergency funding': "not an account: a program-level view of ACC-HHS-NIH-TOTAL (with the House bill's Title VI emergency funding)", 'total, ryan white hiv/aids program level': 'not an account: a program-level view of ACC-HHS-HRSA-RYAN-WHITE',
+        'transfers from nonrecurring expenses fund': 'not an account: a transfer from the Nonrecurring Expenses Fund, not new budget authority in this title',
+        'total, payments for foster care and permanency': "not an account: another scope of ACC-HHS-ACF-FOSTER-CARE (its lines, before the advance adjustments; the headline is 'Total, Payments to States, available in this bill' on the same page)"}},
     "cross": [
         ("Enacted", "MANUAL-LHHS-FY2022-SenateReported-explanatory_statement-b033ae17", "2021 appropriation",
          "SRC-EXPL-LHHS-FY2022-SENATE"),
@@ -341,7 +350,7 @@ def main(argv=None):
     fy, cfg = a.fy, YEARS[a.fy]
     data = json.loads(STAGED.read_text())
     acct = {x["canonical_account_id"]: x for x in data["accounts"] if x["subcommittee"] == "LHHS"}
-    comps = {c["component_id"]: c for c in data["components"]}
+    comps = {c["component_id"]: c for c in data["components"] + cfg.get("components", [])}
     lhhs_obs = [o for o in data["observations"] if o["canonical_account_id"] in acct]
     have = {(o["canonical_account_id"], o["fiscal_year"], o["stage"]) for o in lhhs_obs}
     assert not any(k[1] == fy for k in have), f"FY{fy} already has Labor-HHS observations"
@@ -425,7 +434,11 @@ def main(argv=None):
     ids = {}
 
     def next_id(prefix, rows, field, width):
-        n = max(int(r[field][len(prefix):]) for r in rows if r[field].startswith(prefix) and r[field][len(prefix):].isdigit())
+        # never reuse an ID: continue after the highest live or retired one (reference/review/lhhs/retired_ids.json)
+        retired = [i for ids_ in json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text()).values()
+                   if isinstance(ids_, dict) for i in ids_]
+        n = max(int(i[len(prefix):]) for i in [r[field] for r in rows] + retired
+                if i.startswith(prefix) and i[len(prefix):].isdigit())
         while True:
             n += 1
             yield f"{prefix}{n:0{width}d}"
@@ -498,6 +511,38 @@ def main(argv=None):
                               _parts=parts, _row=parts[0])
             derived[key] = (total, note, arith)
             report.append([stage, aid, "budget authority", "", "derived", total, "-".join(pages), note])
+        # NIH Office of the Director where no OD subtotal is printed: the OD line + Gabriella Miller Kids First, the
+        # later tables' 'Subtotal, Office of the Director' (owner, 2026-10-08); Kids First also a contained line
+        key = (NIH_OD, "budget authority", "")
+        if key in found and found[key]["_clean"] == "office of the director" and col in sections:
+            kf = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*",
+                                                                             f["_clean"]) and not f.get("is_memo")]
+            if len(kf) == 1 and kf[0]["amount"]:
+                od, kf = found[key], kf[0]
+                total = (od["amount"] or 0) + kf["amount"]
+                note = (f"derived, not a printed line: 'Office of the Director' {(od['amount'] or 0) // 1000:,} "
+                        f"(p.{od['source_page']}) + '{clean_label(kf)}' {kf['amount'] // 1000:,} (p.{kf['source_page']}) = "
+                        f"{total // 1000:,} (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the "
+                        "Director' as the lines under the heading")
+                arith = (f"headline = 'Office of the Director' + Gabriella Miller Kids First: {(od['amount'] or 0) // 1000:,} + "
+                         f"{kf['amount'] // 1000:,} = {total // 1000:,} (thousands)", f"{total // 1000:,} as recorded")
+                found[key] = dict(od, amount=total, account_name_as_written="", _records=[], _row=od)
+                derived[key] = (total, note, arith)
+                found[(NIH_OD, "budget authority", "kids_first")] = kf
+                report.append([stage, *key, "derived", total, od["source_page"], note])
+        for pp in cfg.get("proposal_parts", []):
+            hits = [f for f in rows_for(sections, col, pp["agency"]) if re.fullmatch(pp["label"], f["_clean"])
+                    and not f.get("is_memo") and f["amount"]] if col in sections else []
+            if len(hits) == 1:
+                found[(pp["account"], "budget authority", pp.get("component", "chamber_proposal"))] = dict(
+                    hits[0], _note=pp["note"], _row=hits[0])
+                report.append([stage, pp["account"], "budget authority", pp.get("component", "chamber_proposal"), "found",
+                               hits[0]["amount"],
+                               hits[0]["source_page"], hits[0]["account_name_as_written"]])
+        # a proposal line (a chamber's or the request's one-off line) printed at zero -- another year's column of the
+        # report that proposed it -- is not a figure
+        for key in [k for k in found if k[2] in ("chamber_proposal", "request_proposal") and not (found[k]["amount"] or 0)]:
+            found.pop(key)
         # an account a printed dash/zero shows did not exist yet (absent_before): a confirmed absence, not a figure
         for aid, first in cfg.get("absent_before", {}).items():
             key = (aid, "budget authority", "")
@@ -526,7 +571,8 @@ def main(argv=None):
                                              f"Title II, {acct[aid]['agency']} -- printed as {f['account_name_as_written'].strip()!r} [{f_col}]"
                                              + (f" -- {cfg['override'][(stage, aid)][1]}" if (stage, aid) in cfg.get("override", {}) and key[1:] == ("budget authority", "") else "")
                                              + (f" -- {src}'s column has no readable row for it" if key in origin else "")
-                                             + (advance_note(fy, f["account_name_as_written"], f_col) if amount_type == "advance" else "")),
+                                             + (advance_note(fy, f["account_name_as_written"], f_col) if amount_type == "advance" else "")
+                                             + (f" -- Note: {f['_note']}" if f.get("_note") else "")),
                  "extraction_method": "derived" if key in derived else (f.get("extraction_method") or "AI-extracted"),
                  "confidence": f.get("extraction_confidence") or 0.95, "verification_status": ""}
             by_key[key] = o
@@ -548,7 +594,8 @@ def main(argv=None):
         by_stage[stage] = (by_key, found)
         other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg)
         # sum checks
-        sum_checks(acct, by_key, found, new_val, sections=sections, col=col, cfg=cfg, explained=explained, stage=stage)
+        sum_checks(acct, by_key, found, new_val, sections=sections, col=col, cfg=cfg, explained=explained, stage=stage,
+                   comps=comps)
 
     # 3. cross-document
     cross = []
@@ -559,6 +606,24 @@ def main(argv=None):
                 cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "same document"])
                 continue
             hits = find(key, pkg, col, "Senate" if "Senate" in pkg or "SRPT" in pkg.upper() else "House", anywhere=False)
+            if o["extraction_method"] == "derived" and key[0] in DH.SUM_RULES and not key[2]:
+                # the other document's lines under the same heading, the same derivation
+                ag_, heading, _ = DH.SUM_RULES[key[0]]
+                _, osecs = ext(pkg)
+                parts = DH.lines_under(rows_for(osecs, col, ag_), heading) if col in osecs else []
+                hits = [dict(parts[0], amount=sum(f["amount"] or 0 for f in parts),
+                             account_name_as_written=f"the lines under '{heading}'")] if parts else []
+            elif o["extraction_method"] == "derived":
+                if key != (NIH_OD, "budget authority", ""):
+                    cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "derived"])
+                    continue
+                # the other document's OD line + its Kids First line, the same derivation
+                _, osecs = ext(pkg)
+                kf = [f for f in rows_for(osecs, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*",
+                                                                             f["_clean"]) and not f.get("is_memo")]
+                hits = [dict(h, amount=(h["amount"] or 0) + kf[0]["amount"],
+                             account_name_as_written=f"{h['account_name_as_written'].strip()}' + '{clean_label(kf[0])}")
+                        for h in hits if h["_clean"] == "office of the director"] if len(kf) == 1 else []
             vals = {h["amount"] or 0 for h in hits}
             if len(vals) != 1:
                 cross.append([stage, *key, o["observation_id"], o["amount"], "", "", "not printed" if not hits else "ambiguous"])
@@ -580,7 +645,7 @@ def main(argv=None):
     # language prints "[$<prior>] $<request>"), or, for a total, when its whole difference is such verified accounts'
     ra = cfg.get("request_appendix")
     if ra:
-        flat = re.sub(r"\s+", " ", subprocess.run(["pdftotext", "-layout", str(ROOT / ra["appendix"]), "-"],
+        flat = re.sub(r"\s+", " ", subprocess.run(["pdftotext", str(ROOT / ra["appendix"]), "-"],
                                                   capture_output=True, text=True).stdout)
         diffs = {}
         for v in new_val:
@@ -595,10 +660,19 @@ def main(argv=None):
         for (aid, comp), (v, o, other) in diffs.items():
             if acct[aid].get("total_scope") or comp:
                 continue
-            if re.search(r"\] \$" + re.escape(f"{o['amount']:,}") + r"\b(?!,\d)", flat):
+            # the account's own appropriation language: its name, then '[$<prior>] $<request>' within a few lines
+            # (a bare amount elsewhere in the appendix proves nothing)
+            printed = PRINTED.search(o["source_table_or_section"])
+            label = printed.group(2) if printed else DH.SUM_RULES.get(aid, (None, ""))[1]
+            name = re.sub(r"^(national (institute|center) (of|on|for) |office of the )", "",
+                          re.sub(r"\s*\([^)]*\)", "", label).lower()).strip()
+            if not name:
+                continue
+            amt_re = r"\[\$[\d,]+\] \$" + re.escape(f"{o['amount']:,}") + r"\b(?!,\d)"
+            if any(re.search(amt_re, flat[m.end():m.end() + 400]) for m in re.finditer(re.escape(name), flat, re.I)):
                 ok[aid] = o["amount"] - other
                 v["_resolve"] = (f"The House report's request column prints {o['amount'] // 1000:,}, the budget appendix's "
-                                 f"own request for this account (its appropriation language: ${o['amount']:,}); the Senate "
+                                 f"own request for this account (its appropriation language for '{name}': ${o['amount']:,}); the Senate "
                                  f"draft's budget estimate prints {other // 1000:,}, another baseline. Kept the House "
                                  f"report's request column (owner's rule 5, 2026-10-08). Note: The Senate draft prints this "
                                  f"request as {other // 1000:,} thousand; the budget appendix requests "
@@ -646,6 +720,22 @@ def main(argv=None):
             v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER,
                       "resolution": "the parser placed this total's lines by the printed total; the account sum check "
                                     "on the same figure (our accounts) matches it"})
+            continue
+        if v["rule_applied"] == "structural" and "by model-read indent" in (v["expected_result"] or "") \
+                and o["extraction_method"] != "derived" and o["component"] in ("", "kids_first", "chamber_proposal"):
+            # the vision read nested a line under this one by its indent; the parent's figure is its own printed line
+            # and the nested line is recorded on its own (Kids First, a proposal) or is not a figure of this account
+            v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER,
+                      "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and "
+                                    "the nested line is recorded on its own where it belongs to the account"})
+            continue
+        m = re.match(r"memo breakdown \[([^\]]+)\] sums to", v["expected_result"] or "")
+        if v["rule_applied"] == "structural" and m and re.search(r"eval|transfer|non-add|separated families", m.group(1), re.I):
+            # a memo line printed under the account -- an evaluation-tap transfer, a non-add amount -- is not a
+            # breakdown of the figure; the agency sums (our accounts) confirm the figure without it
+            v.update({"human_review_status": "resolved", "reviewer": TRIAGE_REVIEWER,
+                      "resolution": f"parse note: '{m.group(1)}' is a memo line printed under the account (a transfer "
+                                    "or non-add amount), not a breakdown of its figure"})
             continue
         if v.get("_resolve"):                            # the owner's rules 3 and 5 (2026-10-08)
             v.update({"human_review_status": "resolved", "reviewer": OWNER_RULE, "resolution": v["_resolve"]})
@@ -743,6 +833,8 @@ def main(argv=None):
                    "enactment_date": r.get("enactment_date", ""), "funding_type": r.get("funding_type", ""),
                    "draft": r["draft"]}
             data["bill_report_refs"].append(row)
+        data["components"] += [c for c in cfg.get("components", [])
+                               if c["component_id"] not in {x["component_id"] for x in data["components"]}]
         hn_ids = next_id("HN-LHHS-", data["historical_names_tab"], "historical_name_id", 4)
         for h in cfg.get("historical_names", []):
             if any(x["canonical_account_id"] == h["canonical_account_id"] and x["former_name"] == h["former_name"]
@@ -853,12 +945,12 @@ def other_law_notes(stage, col, sections, by_key, found, src, new_val, cfg):
         pending, block = [], []
 
 
-def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, explained=None, stage=None):
+def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, explained=None, stage=None, comps=None):
     """The agency totals = their member accounts; the Title II total = agency totals + department-wide lines - CURES
     (as build_rows.py). A short sum is explained, line by line, by the printed lines that make up the difference
     (explain_shortfall): resolved when they add up to it exactly and each one's money is inside an existing account
     (or is another law's line); otherwise it stays pending, naming them."""
-    cfg = cfg or {}
+    cfg, comps = cfg or {}, comps or {}
 
     def amt(aid, component=""):
         o = by_key.get((aid, "budget authority", component))
@@ -915,10 +1007,16 @@ def sum_checks(acct, by_key, found, new_val, sections=None, col=None, cfg=None, 
                                                   f"table, p.{f['source_page']}, and counted in that agency's total)"))
         for key, f in found.items():                      # another agency's account printed in this section
             a_ = acct.get(key[0], {})
-            if key[1:] == ("budget authority", "") and row_of(f) in nodes and not a_.get("total_scope") \
+            if key[1] == "budget authority" and key[2] in ("", "chamber_proposal") and row_of(f) in nodes \
+                    and (not a_.get("total_scope") or key[2] == "chamber_proposal") \
                     and a_.get("agency") != x_["agency"]:
-                items.append((by_key[key]["amount"], "inside", f"{key[0]} (an existing account of {a_['agency']} "
+                items.append((by_key[key]["amount"], "inside", f"{key[0]}{' ' + key[2] + ' line' if key[2] else ''} (an existing account of {a_['agency']} "
                                                               f"printed in this section, p.{f['source_page']})"))
+        for key, f in found.items():                      # a line recorded inside the total itself (a request proposal)
+            if key[0] == tot_id and key[2] and comps.get(key[2], {}).get("kind") == "contained" and row_of(f) in nodes \
+                    and key[2] not in [c for c in comps if comps[c]["kind"] == "view"]:
+                items.append((f["amount"] or 0, "inside", f"'{clean_label(f)}' (p.{f['source_page']}): recorded as a "
+                                                       f"{key[2]} line inside {tot_id}"))
         for it in cfg.get("sum_items", []):
             if it["total"] != tot_id:
                 continue

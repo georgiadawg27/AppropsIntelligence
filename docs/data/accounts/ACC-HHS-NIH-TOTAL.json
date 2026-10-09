@@ -14,6 +14,744 @@
        "missing": false,
        "observations": [
         {
+         "amount": 41437495000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2634",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "477",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2021 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10712"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10713"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10714"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10715"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10716"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10784"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-10865"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 42709000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": "OBS-LHHS-2634",
+         "observation_id": "OBS-LHHS-2635",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT96",
+         "source_page": "477",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2021 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10717"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10718"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10719"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10720"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 40617687000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.7614",
+         "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2341",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "H.Rept.116-450",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "408",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-09599 (the printed change column [Bill vs. Enacted]); VAL-LHHS-09600 (the printed change column [Bill vs. Request])",
+           "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09597"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09598"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09599"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09600"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09601"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09602"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09687"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 41959000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.7614",
+         "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": "OBS-LHHS-2341",
+         "observation_id": "OBS-LHHS-2342",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "H.Rept.116-450",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "408",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09603"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09604"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09605"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09606"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09607"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 37630491000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2021/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "cell_note": "The Senate draft prints this request 439,584 thousand higher, from accounts whose budget appendix requests are the House report's. The President's request proposed moving AHRQ into NIH as the National Institute for Research on Safety and Quality (NIRSQ), printed inside NIH's total (not enacted); AHRQ's own request lines are 0.",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2438",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "408",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2021 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09958"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09959"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09960"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09961"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09962"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 256,660 (thousands) is exactly: +256,660 'National Institute for Research on Safety and Quality (NIRSQ)' (p.407): recorded as a request_proposal line inside ACC-HHS-NIH-TOTAL. Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10033"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The difference is exactly the differences of its accounts, each the budget appendix's own request in the House report's column: ACC-HHS-NIH-NIAID -439,584. Kept the House report's request column (owner's rule 5, 2026-10-08). Note: The Senate draft prints this request 439,584 thousand higher, from accounts whose budget appendix requests are the House report's.",
+           "result": "flag",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-10953"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 38371491000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2021/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": "OBS-LHHS-2438",
+         "observation_id": "OBS-LHHS-2439",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "408",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2021 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-09963"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09964"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09965"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09966"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "request_proposal",
+       "component_kind": "contained",
+       "component_label": "National Institute for Research on Safety and Quality (NIRSQ)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 256660000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2021/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "N/A",
+         "component": "request_proposal",
+         "component_kind": "contained",
+         "component_label": "National Institute for Research on Safety and Quality (NIRSQ)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": "OBS-LHHS-2438",
+         "observation_id": "OBS-LHHS-2440",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "407",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute for Research on Safety and Quality (NIRSQ)' [FY 2021 Request] -- Note: The President's request proposed moving AHRQ into NIH as the National Institute for Research on Safety and Quality (NIRSQ), printed inside NIH's total (not enacted); AHRQ's own request lines are 0.",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-09967"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-09968"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-09969"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 41869153000,
+         "amount_type": "budget authority",
+         "bill_id": "Senate chair's draft, FY2021",
+         "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+         "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2536",
+         "offsetting_collections": 0,
+         "publication_date": "2020-11-10",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+         "source_page": "251",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10358"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10359"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10360"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10361"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10362"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10363"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10440"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 43455000000,
+         "amount_type": "budget authority",
+         "bill_id": "Senate chair's draft, FY2021",
+         "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+         "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": "OBS-LHHS-2536",
+         "observation_id": "OBS-LHHS-2537",
+         "offsetting_collections": 0,
+         "publication_date": "2020-11-10",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+         "source_page": "252",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-10364"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10365"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-10366"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-10367"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-10368"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 43649687000,
          "amount_type": "budget authority",
          "bill_id": "P.L.117-103",
@@ -4337,6 +5075,12 @@
     "component": "program_level_with_cures_and_phs_evaluation_act_funding",
     "component_kind": "view",
     "component_label": "program level (with CURES and PHS Evaluation Act Funding)"
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "request_proposal",
+    "component_kind": "contained",
+    "component_label": "National Institute for Research on Safety and Quality (NIRSQ)"
    }
   ],
   "stages": [
@@ -4366,6 +5110,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
     [
      2022,
      "Enacted"
@@ -4460,6 +5220,623 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 37630491000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2021/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "cell_note": "The Senate draft prints this request 439,584 thousand higher, from accounts whose budget appendix requests are the House report's. The President's request proposed moving AHRQ into NIH as the National Institute for Research on Safety and Quality (NIRSQ), printed inside NIH's total (not enacted); AHRQ's own request lines are 0.",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2438",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "408",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2021 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09958"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09959"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09960"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09961"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09962"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 256,660 (thousands) is exactly: +256,660 'National Institute for Research on Safety and Quality (NIRSQ)' (p.407): recorded as a request_proposal line inside ACC-HHS-NIH-TOTAL. Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10033"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The difference is exactly the differences of its accounts, each the budget appendix's own request in the House report's column: ACC-HHS-NIH-NIAID -439,584. Kept the House report's request column (owner's rule 5, 2026-10-08). Note: The Senate draft prints this request 439,584 thousand higher, from accounts whose budget appendix requests are the House report's.",
+      "result": "flag",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-10953"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 38371491000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2021/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": "OBS-LHHS-2438",
+    "observation_id": "OBS-LHHS-2439",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "408",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2021 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09963"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09964"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09965"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09966"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 256660000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2021/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2021-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "request_proposal",
+    "component_kind": "contained",
+    "component_label": "National Institute for Research on Safety and Quality (NIRSQ)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": "OBS-LHHS-2438",
+    "observation_id": "OBS-LHHS-2440",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "407",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'National Institute for Research on Safety and Quality (NIRSQ)' [FY 2021 Request] -- Note: The President's request proposed moving AHRQ into NIH as the National Institute for Research on Safety and Quality (NIRSQ), printed inside NIH's total (not enacted); AHRQ's own request lines are 0.",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09967"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09968"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09969"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 40617687000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.7614",
+    "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2341",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "H.Rept.116-450",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "408",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-09599 (the printed change column [Bill vs. Enacted]); VAL-LHHS-09600 (the printed change column [Bill vs. Request])",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09597"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09598"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09599"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09600"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09601"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09602"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09687"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 41959000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.7614",
+    "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": "OBS-LHHS-2341",
+    "observation_id": "OBS-LHHS-2342",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "H.Rept.116-450",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "408",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-09603"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09604"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-09605"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-09606"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-09607"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 41869153000,
+    "amount_type": "budget authority",
+    "bill_id": "Senate chair's draft, FY2021",
+    "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+    "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2536",
+    "offsetting_collections": 0,
+    "publication_date": "2020-11-10",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+    "source_page": "251",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10358"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10359"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10360"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10361"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10362"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10363"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10440"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 43455000000,
+    "amount_type": "budget authority",
+    "bill_id": "Senate chair's draft, FY2021",
+    "bill_report_reference_id": "BR-LHHS-FY2021-SENATE",
+    "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY2021.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "Senate chair's draft explanatory statement for FY2021, released 2020-11-10 with the chair's draft bill (LHHSFY2021.pdf), which was never introduced. sha256 6c401e044f6cb1bb... (the file at the link). Text layer; page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": "OBS-LHHS-2536",
+    "observation_id": "OBS-LHHS-2537",
+    "offsetting_collections": 0,
+    "publication_date": "2020-11-10",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
+    "source_page": "252",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSRept.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10364"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10365"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10366"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10367"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10368"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 41437495000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2634",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "477",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, National Institutes of Health (NIH)' [FY 2021 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10712"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10713"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10714"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10715"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10716"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10784"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-10865"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 42709000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": "OBS-LHHS-2634",
+    "observation_id": "OBS-LHHS-2635",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT96",
+    "source_page": "477",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Total, NIH Program Level' [FY 2021 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-10717"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-10718"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-10719"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-10720"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 50461208000,
     "amount_type": "budget authority",
@@ -8000,6 +9377,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },

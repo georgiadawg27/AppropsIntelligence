@@ -5,291 +5,6 @@
     "cells": {
      "Enacted": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0015",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2023 Enacted.",
-        "fiscal_year": 2023,
-        "publication_date": "2023-07-27",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT84",
-        "stage": "Enacted",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ],
-     "House Reported": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "President's Budget": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "Senate Reported": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0036",
-        "confirmed_date": "2026-10-06",
-        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
-        "document_type": "explanatory_statement",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Title XVIII/; the Title II table pp. 399-419 and the table's end p.437 included).",
-        "fiscal_year": 2023,
-        "publication_date": "2022-07-28",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ]
-    },
-    "fiscal_year": 2023
-   },
-   {
-    "cells": {
-     "Enacted": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0012",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2024 Enacted.",
-        "fiscal_year": 2024,
-        "publication_date": "2024-08-01",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT207",
-        "stage": "Enacted",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ],
-     "House Reported": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0041",
-        "confirmed_date": "2026-10-08",
-        "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
-        "document_type": "explanatory_statement",
-        "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Limitation for Title XVIII of the Social Security Act' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Title XVIII|1834\\(l\\)/) provides none either.",
-        "fiscal_year": 2024,
-        "publication_date": "2023-11-02",
-        "source_agency": "House Committee on Appropriations",
-        "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
-        "stage": "House Reported",
-        "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ],
-     "President's Budget": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0016",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 President's Budget.",
-        "fiscal_year": 2024,
-        "publication_date": "2023-07-27",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT84",
-        "stage": "President's Budget",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ],
-     "Senate Reported": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0017",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 Senate Reported.",
-        "fiscal_year": 2024,
-        "publication_date": "2023-07-27",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT84",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ]
-    },
-    "fiscal_year": 2024
-   },
-   {
-    "cells": {
-     "Enacted": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "House Reported": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "President's Budget": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0013",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 President's Budget.",
-        "fiscal_year": 2025,
-        "publication_date": "2024-08-01",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT207",
-        "stage": "President's Budget",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ],
-     "Senate Reported": [
-      {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0014",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 Senate Reported.",
-        "fiscal_year": 2025,
-        "publication_date": "2024-08-01",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-118SRPT207",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-       },
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [],
-       "state": "not_funded"
-      }
-     ]
-    },
-    "fiscal_year": 2025
-   },
-   {
-    "cells": {
-     "Enacted": [
-      {
        "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
@@ -370,29 +85,15 @@
      ],
      "Senate Reported": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0018",
-        "confirmed_date": "2026-09-28",
-        "document_type": "committee_report",
-        "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.119-55 (whole text layer searched for /Title XVIII/, the Title II table pp. 426-442; 450 and the bill-level sections after the grand total included) for FY2026 Senate Reported.",
-        "fiscal_year": 2026,
-        "publication_date": "2025-08-01",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-119SRPT55",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_funded"
+       "state": "missing"
       }
      ]
     },
@@ -584,145 +285,7 @@
   ]
  },
  "history": {
-  "absences": [
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0015",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2023 Enacted.",
-    "fiscal_year": 2023,
-    "publication_date": "2023-07-27",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "stage": "Enacted",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0036",
-    "confirmed_date": "2026-10-06",
-    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
-    "document_type": "explanatory_statement",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in the Senate draft explanatory statement for FY2023 (whole text layer, 437 pages, searched for /Title XVIII/; the Title II table pp. 399-419 and the table's end p.437 included).",
-    "fiscal_year": 2023,
-    "publication_date": "2022-07-28",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0012",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2024 Enacted.",
-    "fiscal_year": 2024,
-    "publication_date": "2024-08-01",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "stage": "Enacted",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0041",
-    "confirmed_date": "2026-10-08",
-    "document_notes": "House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 (introduced 2023); the July 14, 2023 subcommittee mark is an earlier version. sha256 408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d. Page citations are PDF page numbers (the Title II comparative statement is PDF pp. 250-284, image-only, read by vision).",
-    "document_type": "explanatory_statement",
-    "evidence": "The House subcommittee draft's explanatory materials for H.R. 5894: the Title II comparative table, PDF pp. 250-284, and the bill-wide sections after it (pp. 312-313: the Disaster Relief Supplemental Appropriations Act, 2023 and the grand total), searched in full for a 'Limitation for Title XVIII of the Social Security Act' line in every column: none (the table pages are image-only, read by vision; pp. 312-313 read from the page images). H.R. 5894 as introduced (govinfo BILLS-118hr5894ih, text searched for /Title XVIII|1834\\(l\\)/) provides none either.",
-    "fiscal_year": 2024,
-    "publication_date": "2023-11-02",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-EXPL-LHHS-FY2024-HOUSE",
-    "stage": "House Reported",
-    "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-LHHS-Explanatory-Materials.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0016",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 President's Budget.",
-    "fiscal_year": 2024,
-    "publication_date": "2023-07-27",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "stage": "President's Budget",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0017",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-84 (whole text layer searched for /Title XVIII/, the Title II table pp. 366-392 and the bill-level sections after the grand total included) for FY2024 Senate Reported.",
-    "fiscal_year": 2024,
-    "publication_date": "2023-07-27",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0013",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 President's Budget.",
-    "fiscal_year": 2025,
-    "publication_date": "2024-08-01",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "stage": "President's Budget",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0014",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.118-207 (whole text layer searched for /Title XVIII/, the Title II table pp. 430-452; 467 and the bill-level sections after the grand total included) for FY2025 Senate Reported.",
-    "fiscal_year": 2025,
-    "publication_date": "2024-08-01",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT207",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt207/CRPT-118srpt207.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-GP-MEDICARE-LIMITATION",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0018",
-    "confirmed_date": "2026-09-28",
-    "document_type": "committee_report",
-    "evidence": "No 'Limitation for Title XVIII of the Social Security Act' line anywhere in S.Rept.119-55 (whole text layer searched for /Title XVIII/, the Title II table pp. 426-442; 450 and the bill-level sections after the grand total included) for FY2026 Senate Reported.",
-    "fiscal_year": 2026,
-    "publication_date": "2025-08-01",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-119SRPT55",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf"
-   }
-  ],
+  "absences": [],
   "account": {
    "agency": "Department of Health and Human Services",
    "bureau": "General Provisions",
@@ -732,7 +295,7 @@
    "fund_type": "general",
    "historical_identifiers": null,
    "historical_names": null,
-   "notes": "A general-provision line printed only for FY2026 Enacted (the JES and H.Rept. 119-696 p.392, 2,000; '---' in the FY2027 columns). The provision of P.L. 119-75 it reflects is not identified here -- the Title II general provisions carry no section naming title XVIII with that figure; to be confirmed. Vision read H.Rept. 119-696's label as 'mitation ...' (the page image prints 'Limitation ...').",
+   "notes": "A general-provision line printed only for FY2026 Enacted (the JES and H.Rept. 119-696 p.392, 2,000; '---' in the FY2027 columns). The provision of P.L. 119-75 it reflects is not identified here -- the Title II general provisions carry no section naming title XVIII with that figure; to be confirmed. Vision read H.Rept. 119-696's label as 'mitation ...' (the page image prints 'Limitation ...'). The FY2026 line is P.L. 119-75 Division B sec. 241 (PDF p.120, 140 Stat. 293): CMS shall not apply the distance requirements of SSA sec. 1820(c)(2)(B)(i)(I) to certain critical access hospitals -- a title XVIII provision the FY2026 explanatory statement lists as 'a new provision related to title XVIII of the Social Security Act' (p.245) and its table scores at 2,000 (p.296). Not in the FY2021 or FY2022 bills, Budget Appendix language or laws (searched for '1820(c)(2)(B)' and 'distance requirement'). Its confirmed absences, which rested on tables' silence, were retired 2026-10-08 (owner).",
    "parent_account_id": null,
    "status": "active",
    "subcommittee": "LHHS",
@@ -741,6 +304,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
     [
      2022,
      "Enacted"
@@ -835,28 +414,16 @@
   "historical_names": [],
   "missing_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2025,
-    "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
-   ],
-   [
     2026,
     "President's Budget"
    ],
    [
     2026,
     "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
    ]
   ],
   "observations": [
@@ -1013,28 +580,16 @@
   ],
   "open_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2025,
-    "House Reported"
-   ],
-   [
-    2025,
-    "Enacted"
-   ],
-   [
     2026,
     "President's Budget"
    ],
    [
     2026,
     "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
    ],
    [
     2027,
@@ -1047,6 +602,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
   },
