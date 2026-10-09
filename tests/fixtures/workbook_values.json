@@ -1,6 +1,6 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill)",
- "data_sha256": "2afd88826ceff182edc92d06d3820b30af97bb599a759abb694a55a7848168f6",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types)",
+ "data_sha256": "361eaf570b72452485853490ee6e809684527644933247d5d11b2a8aa978d7ed",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
@@ -31,7 +31,7 @@
   "Account Relationship": {
    "rows": 15,
    "columns": 8,
-   "sha256": "42e3eec5ecf7239f0763620b58d0d148a3e506542c9e7614813b234e5426f3cb"
+   "sha256": "9e6a751ce383ad3fb262359986ae4c796db27857f36b83a94dc48418d5399715"
   },
   "Source Document": {
    "rows": 73,

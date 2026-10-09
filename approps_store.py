@@ -1586,6 +1586,152 @@ def title_rank(title):
     return (0, sum(-v if v < n else v for v, n in zip(vals, vals[1:] + [0])), title)
 
 
+# Account lifecycle, derived from the evidence (never hand-entered; v33 removed the hand-entered effective
+# dates). Two stage groups: the proposals (request, House, Senate) and Enacted. Relationship types that end or
+# begin an account (Account Relationship.relationship_type, made explicit 2026-10-09):
+LIFECYCLE_TYPES = ("ongoing", "new", "proposed_only", "ended_eliminated", "ended_merged", "renamed", "split", "moved")
+PROPOSAL_STAGES = ("President's Budget", "House Reported", "Senate Reported", "House Passed", "Senate Passed")
+STAGE_PHRASE = {"President's Budget": "request", "House Reported": "House bill", "Senate Reported": "Senate bill",
+                "House Passed": "House-passed bill", "Senate Passed": "Senate-passed bill"}
+
+
+def lifecycle(h, first_year, latest_enacted):
+    """One account's life, from its figures (observations not superseded) and confirmed absences -- an absence
+    whose evidence says the account 'did not exist' marks a year outside its life, not inside. Per stage group
+    (proposed: request, House, Senate; enacted): the first and last fiscal year with any evidence; a group with no
+    figure of its own has no life (a never-enacted account's Enacted absences say it was never enacted). The start
+    is open ("before FY<first_year>") when the account's first evidence is in the first fiscal year on file, and
+    for every group of such an account, so a gap there stays a real gap. The end is open unless the account ended
+    (or was only ever proposed).
+    -> {"type", "proposed": {"first", "last", "start", "end"} or None, "enacted": ... or None,
+        "first_label", "predecessor", "successor"}"""
+    aid = h["account"]["canonical_account_id"]
+    obs = [o for o in h["observations"] if o.get("verification_status") != "superseded"]
+    absent = [x for x in h.get("absences", []) if "did not exist" not in (x.get("evidence") or "")]
+    group = lambda st: "enacted" if st == "Enacted" else "proposed"
+    figs, ev = {"proposed": set(), "enacted": set()}, {"proposed": set(), "enacted": set()}
+    for o in obs:
+        figs[group(o["stage"])].add(o["fiscal_year"])
+        ev[group(o["stage"])].add(o["fiscal_year"])
+    for x in absent:
+        ev[group(x["stage"])].add(x["fiscal_year"])
+    every = ev["proposed"] | ev["enacted"]
+    rels = h["relationships"]
+    out_of = lambda types: next((r for r in rels if r["direction"] == "from" and r["relationship_type"] in types), None)
+    into = lambda types: next((r for r in rels if r["direction"] == "to" and r["relationship_type"] in types), None)
+    first_e = min(figs["enacted"]) if figs["enacted"] else None
+    last_e = max(figs["enacted"]) if figs["enacted"] else None
+    later = {y for y in figs["proposed"] if last_e is not None and y > last_e}
+    before = bool(every) and min(every) <= first_year
+    pred = succ = None
+    uncollected = False
+    if not obs:
+        kind = "no_evidence"
+    elif first_e is None:
+        # never enacted -- only for an account recorded as a proposal (Account.status 'proposed'); an active
+        # account with no Enacted figure on file yet is one whose enacted figures aren't collected: its life is
+        # left open, so its gaps stay missing
+        kind = "proposed_only" if h["account"].get("status") == "proposed" else "ongoing"
+        uncollected = kind == "ongoing"
+    elif latest_enacted is not None and last_e < latest_enacted and not later:
+        r = out_of(("merged_into",)) or out_of(("renamed",)) or out_of(("moved",)) or into(("split_from",))
+        kind = {"merged_into": "ended_merged", "renamed": "renamed", "moved": "moved",
+                "split_from": "split"}[r["relationship_type"]] if r else "ended_eliminated"
+        if r:
+            succ = r["other_account_id"]
+    elif not before:
+        kind = "new"
+        r = out_of(("split_from",)) or into(("moved", "renamed", "merged_into"))
+        if r:
+            pred = r["other_account_id"]
+    else:
+        kind = "ongoing"
+    ended = kind not in ("ongoing", "new")
+
+    def span(g):
+        if uncollected:
+            return {"first": min(ev[g]) if ev[g] else None, "last": max(ev[g]) if ev[g] else None,
+                    "start": None, "end": None}
+        if not figs[g]:
+            return None
+        return {"first": min(ev[g]), "last": max(ev[g]), "start": None if before else min(ev[g]),
+                "end": max(ev[g]) if ended else None}
+    life = {"type": kind, "proposed": span("proposed"), "enacted": span("enacted"),
+            "first_label": (f"before FY{first_year}" if before else f"FY{min(every)}") if every else None}
+    if kind == "new":
+        life["created"] = first_e
+    if uncollected:
+        life["enacted_not_collected"] = True
+    if pred:
+        life["predecessor"] = pred
+    if succ:
+        life["successor"] = succ
+    return life
+
+
+def in_life(life, fiscal_year, stage):
+    """'before' / 'after' where the fiscal year and stage fall outside the account's life, else None."""
+    s = life and life.get("enacted" if stage == "Enacted" else "proposed")
+    if not s:
+        return "outside"
+    if s["start"] is not None and fiscal_year < s["start"]:
+        return "before"
+    if s["end"] is not None and fiscal_year > s["end"]:
+        return "after"
+    return None
+
+
+def add_cell_note(cell, text, link=None):
+    """A corner note on a grid cell: on its headline observation (a cell with a figure), else on its headline line."""
+    lines = cell["lines"]
+    i = next((k for k, l in enumerate(lines) if l["amount_type"] == "budget authority" and not l["component"]), 0 if lines else None)
+    if i is None:
+        return
+    l = dict(lines[i])
+    if l["observations"]:
+        o = dict(l["observations"][0])
+        o["cell_note"] = f"{o['cell_note']} {text}" if o.get("cell_note") else text
+        l["observations"] = [o] + l["observations"][1:]
+    else:
+        l["note"] = f"{l['note']} {text}" if l.get("note") else text
+    cell["lines"] = lines[:i] + [l] + lines[i + 1:]
+    if link:
+        cell["note_link"] = link
+
+
+def life_cells(life, cells, names):
+    """The grid's lifecycle rule (owner, 2026-10-09): a cell outside the account's life for its stage is blank --
+    no lines, no state, never missing -- and says which side it is on ("before" its first year, "after" its last,
+    or "outside": a stage group the account never had, a never-enacted account's Enacted). A cell with a figure, or
+    with a note of its own (the old structure's 'Funded within ...', a relationship's cell note), stays. Inside the
+    life, gaps keep their real state. The lifecycle's notes go in the corners: 'Created FY<n>' on a new account's
+    first enacted year (with its predecessor), 'Merged into <X> in FY<n>' / 'Moved to <X>' on an ended account's last,
+    'Proposed in the FY<n> request; never enacted' on a proposed-only account's first proposal."""
+    for key, cell in cells.items():
+        y, st = int(key.split("|")[0]), key.split("|")[1]
+        side = in_life(life, y, st)
+        if not side or any(l["observations"] or l.get("note") for l in cell["lines"]):
+            continue
+        cells[key] = {"lines": [], "outside_history": True, "outside_life": side}
+    kind, name = life["type"], lambda aid: names.get(aid, aid)
+    if kind == "new" and f"{life['created']}|Enacted" in cells:
+        pred = life.get("predecessor")
+        add_cell_note(cells[f"{life['created']}|Enacted"],
+                      f"Created FY{life['created']}" + (f" (from {name(pred)})." if pred else "."), pred)
+    elif kind in ("ended_merged", "moved", "renamed", "split") and life.get("enacted"):
+        last, succ = life["enacted"]["last"], life.get("successor")
+        text = {"ended_merged": f"Merged into {name(succ)} in FY{last + 1}.", "moved": f"Moved to {name(succ)}.",
+                "renamed": f"Renamed {name(succ)} in FY{last + 1}.", "split": f"Split into {name(succ)} in FY{last + 1}."}[kind]
+        if f"{last}|Enacted" in cells:
+            add_cell_note(cells[f"{last}|Enacted"], text, succ)
+    elif kind == "proposed_only":
+        first = min(((int(k.split("|")[0]), STAGE_ORDER.index(k.split("|")[1]), k) for k, c in cells.items()
+                     if any(l["observations"] for l in c["lines"])), default=None)
+        if first:
+            st = first[2].split("|")[1]
+            add_cell_note(cells[first[2]], f"Proposed in the FY{first[0]} {STAGE_PHRASE.get(st, st)}; never enacted.")
+
+
 def subcommittee_grid(conn, subcommittee):
     """
     Every account of one subcommittee side by side, for comparison: each
@@ -1634,6 +1780,10 @@ def subcommittee_grid(conn, subcommittee):
         grids[a["canonical_account_id"]] = (a, h, history_grid(h))
     years = sorted({r["fiscal_year"] for _, _, g in grids.values() for r in g["rows"]})
     stages = [s for s in STAGE_ORDER if any(s in g["stages"] for _, _, g in grids.values())]
+    # the account lifecycle (lifecycle): the first fiscal year on file, and the last with an enacted figure
+    first_year = years[0] if years else None
+    latest_enacted = max((o["fiscal_year"] for _, h, _ in grids.values() for o in h["observations"]
+                          if o["stage"] == "Enacted" and o.get("verification_status") != "superseded"), default=None)
 
     def row_of(a):
         _, h, g = grids[a["canonical_account_id"]]
@@ -1670,7 +1820,9 @@ def subcommittee_grid(conn, subcommittee):
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": lines}
         old_structure(h, first, cells)
         relationship_notes(h, cells)
-        return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
+        life = lifecycle(h, first_year, latest_enacted)
+        life_cells(life, cells, names)
+        return {"account": a, "lifecycle": life, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",
                                                      "to_account_id", "effective_fiscal_year", "confidence",
@@ -1679,6 +1831,7 @@ def subcommittee_grid(conn, subcommittee):
                 "fiscal_year_span": [g["rows"][0]["fiscal_year"], g["rows"][-1]["fiscal_year"]] if g["rows"] else None,
                 "cells": cells}
 
+    names = {a["canonical_account_id"]: a["canonical_name"] for a in accts}
     rows = {a["canonical_account_id"]: row_of(a) for a in accts}
     # within a title: display_order, then (for accounts not yet placed) agency and name, as before
     within = lambda r: (r["account"]["display_order"] is None, r["account"]["display_order"] or 0, r["account"]["agency"],
@@ -1731,14 +1884,19 @@ def subcommittee_grid(conn, subcommittee):
         out_rows += ordered
         out_titles.append({"title": title, "total": total, "rows": [r["account"]["canonical_account_id"] for r in ordered]})
     # every account's cells (totals included), by each cell's one state
+    # a cell outside an account's life (life_cells) is blank: in no state, never missing; counted on its own
     state_counts = {st: 0 for st in CELL_STATES}
+    outside = 0
     for r in rows.values():
         for c in r["cells"].values():
+            if c.get("outside_life"):
+                outside += 1
+                continue
             st = headline_state(c["lines"])
             if st:
                 state_counts[st] += 1
     return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
-            "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts,
+            "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts, "outside_life_cells": outside,
             **({"stage_notes": notes} if (notes := stage_notes(conn, subcommittee)) else {}),
             **({"enactments": e} if (e := enactments(conn, subcommittee)) else {}),
             **({"drafts": dr} if (dr := draft_stages(conn, subcommittee)) else {})}

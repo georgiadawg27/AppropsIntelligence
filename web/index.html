@@ -129,6 +129,8 @@
   button.nm:hover, button.nm:focus-visible { border-top-color: #1F4E8C; outline: none; }
   /* a note in the top-left corner: the documents disagree about this figure (pending review), or the law gives it in two divisions */
   span.cn { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; cursor: help; }
+  a.cn { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; }
+  .tok.blank { min-width: 14px; border: 1px dashed #C9CDD4; background: transparent; }
   .cn-legend { display: inline-block; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; vertical-align: 2px; margin-right: 4px; }
   .nm-legend { display: inline-block; width: 0; height: 0; border-top: 9px solid #8A93A3; border-left: 9px solid transparent; vertical-align: 2px; margin-right: 4px; }
   .namecell { display: flex; align-items: flex-start; gap: 6px; }
@@ -262,6 +264,7 @@
           <label class="chk"><input type="checkbox" id="reviewer" data-testid="reviewer"> Reviewer mode <span style="color:#6A7180">(verification marks)</span></label>
         </div>
         <div class="subrow" id="sub-controls"></div>
+        <div class="subrow" id="show-controls" data-testid="accounts-shown" style="align-items:center"></div>
       </div>
       <div class="tablebox" id="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table></div>
       <footer class="gfooter" id="grid-legend" data-testid="legend">
@@ -270,6 +273,7 @@
         <span><span class="tok">&mdash;</span> not funded / no such line</span>
         <span><span class="tok">no printed total</span> the document prints the account, not this line</span>
         <span><span class="tok">n/c</span> not yet collected</span>
+        <span><span class="tok blank">&nbsp;</span> blank: outside the account's life (before it was created, after it ended, or a stage it never had)</span>
         <span><span class="tok miss">?</span> document on file, figure not yet extracted</span>
         <span><span class="tok">n/e</span> not yet enacted</span>
         <span><span class="tok">no figure</span> no figure for this year (a proposed account before its first request, or a program the document funds inside another account)</span>
@@ -458,10 +462,11 @@ function showAccount(data) {
 // An Account Relationship, as it reads from this account's side (each relationship shows on
 // both accounts' pages): "FY2026 request: moved to Administration for a Healthy America
 // (proposed, not enacted)", the other account a link, the evidence's documents cited.
-const REL_FROM = { moved_reclassified: "moved to", consolidated: "consolidated into", merged_into: "merged into",
+// (a proposed move reads "moved to ... (proposed, not enacted)": the evidence's own words mark the proposal)
+const REL_FROM = { moved: "moved to", proposed_move: "moved to", merged_into: "merged into",
                    split_from: "split from", renamed: "renamed as", same: "the same account as",
                    uncertain: "relationship uncertain with" };
-const REL_TO = { moved_reclassified: "moved in from", consolidated: "consolidates", merged_into: "absorbs",
+const REL_TO = { moved: "moved in from", proposed_move: "moved in from", merged_into: "absorbs",
                  split_from: "split off", renamed: "renamed from", same: "the same account as",
                  uncertain: "relationship uncertain with" };
 function relationshipNote(rel) {
@@ -658,7 +663,10 @@ let scNames = null;
 let scLabels = {};
 let dataVersion = "";
 const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true, true, true, true], basis: 3,
-            units: "k", reviewer: false };
+            units: "k", reviewer: false,
+            // "Accounts shown" (the account lifecycle): proposed-only accounts per view, ended accounts after
+            // their last year, new accounts before their first year
+            show: { proposed: { stages: true, years: true, history: false }, ended: false, created: false } };
 const NAME_OF = new Map();      // account id -> name, for the rows being rendered
 const STATUS_OF = new Map();    // account id -> status
 const ROW_OF = new Map();       // account id -> grid row
@@ -692,6 +700,30 @@ function headOf(row, y, st) {
   if (!cell) return null;
   const lines = cell.lines;
   return { cell, lines, h: lines.find(isHeadline) || lines[0] || null };
+}
+// ---- the account lifecycle (row.lifecycle, derived in the store from figures and confirmed absences)
+const ENDED = ["ended_eliminated", "ended_merged", "renamed", "split", "moved"];
+const lifeOf = (row) => row.lifecycle || { type: "ongoing" };
+function lifeText(row, y, st) {
+  const L = lifeOf(row), side = (row.cells[y + "|" + st] || {}).outside_life;
+  if (L.type === "proposed_only") return `Outside the account's life: proposed only, never enacted (FY${y} ${st}).`;
+  if (side === "before") return `Outside the account's life: FY${y} ${st} is before its first year (${L.first_label}).`;
+  if (side === "after") return `Outside the account's life: FY${y} ${st} is after its last year.`;
+  return `Outside the account's life: the account has no ${st} figures (FY${y}).`;
+}
+// a row shows when a column in view falls inside its life; the "Accounts shown" filters add proposed-only
+// accounts (per view), ended accounts after their last year and new accounts before their first year
+function rowShown(row, cols) {
+  const L = lifeOf(row);
+  if (L.type === "proposed_only" && !G.show.proposed[G.grid]) return false;
+  return cols.some((c) => {
+    if (!c.fig) return false;
+    const cell = row.cells[c.fig[0] + "|" + STAGES4[c.fig[1]]];
+    if (!cell) return false;
+    const side = cell.outside_life;
+    return !side || (side === "after" && G.show.ended && ENDED.includes(L.type))
+      || (side === "before" && G.show.created && L.type === "new");
+  });
 }
 // the headline's printed figure (a printed zero is 0), or null where nothing is printed
 function figure(row, y, st) {
@@ -744,6 +776,11 @@ const tileMoney = (v, units) => v == null ? "—" : (v < 0 ? "−$" : "$") + Gri
 function figureCell(row, y, st, cls) {
   const td = el("td", { class: "num " + cls, dataset: { fy: y, stage: st, testid: "compare-cell" } });
   const x = headOf(row, y, st);
+  if (x && x.cell.outside_life) {                                // outside the account's life: blank, no token
+    td.dataset.state = ""; td.dataset.outsideLife = x.cell.outside_life;
+    td.title = lifeText(row, y, st);
+    return td;
+  }
   if (!x || !x.h) { td.dataset.state = ""; return td; }        // nothing that can exist in this cell
   const h = x.h;
   td.dataset.state = h.state;
@@ -760,7 +797,13 @@ function figureCell(row, y, st, cls) {
   if (more) td.append(more);
   // the corner note: the headline observation's, or (a cell with no figure) its line's own
   const note = (o && o.cell_note) || h.note;
-  if (note)
+  if (note && x.cell.note_link) {
+    // a lifecycle note naming another account (Created FY2024 from PHSSEF): the corner opens that account
+    const a = el("a", { class: "cn", role: "note", "data-testid": "cell-note", href: "?account=" + encodeURIComponent(x.cell.note_link),
+                        title: note, "aria-label": note, "data-link": x.cell.note_link });
+    a.addEventListener("click", (e) => { e.preventDefault(); openAccount(x.cell.note_link); });
+    td.append(a);
+  } else if (note)
     td.append(el("span", { class: "cn", role: "note", "data-testid": "cell-note", title: note, "aria-label": note }));
   // Reviewer mode: the mark is the observation's stored verification_status (flagged / not yet
   // confirmed); what is still open for a person comes from its validation records'
@@ -927,6 +970,7 @@ function emptyRow(cls, name, ncols, testidName) {
 
 function buildRows(grid, cols) {
   const out = [];
+  const shown = (r) => rowShown(r, cols);
   const ncols = spanOf(cols);
   const TOTAL = { cls: "total", text: "total", testid: "total", title: "printed total of the accounts indented below it, not added again" };
   for (const group of grid.titles) {
@@ -937,11 +981,13 @@ function buildRows(grid, cols) {
     } else {
       out.push(emptyRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
     }
-    const agencies = ids.filter((r) => r.rollup === "agency");
+    // an agency shows with itself or any of its accounts in view
+    const agencies = ids.filter((r) => r.rollup === "agency"
+      && (shown(r) || ids.some((m) => m.member_of === r.account.canonical_account_id && shown(m))));
     agencies.sort((x, y) => (x.account.status === "proposed") - (y.account.status === "proposed"));
     for (const r of agencies) {
       const a = r.account, id = a.canonical_account_id, abbr = abbrOf(id);
-      const members = ids.filter((m) => m.member_of === id);
+      const members = ids.filter((m) => m.member_of === id && shown(m));
       const incoming = a.status === "proposed" ? r.relationships.filter((x) => x.to_account_id === id) : [];
       const kids = members.length + incoming.length > 0, isOpen = kids && open.has(id);
       // TOTAL marks a row that sums the accounts indented beneath it; a proposed agency's rows beneath
@@ -957,7 +1003,7 @@ function buildRows(grid, cols) {
       out.push(...inside);
     }
     // accounts outside an agency: a heading where two or more share a bureau, else a row of their own
-    const loose = ids.filter((r) => !r.rollup && !r.member_of);
+    const loose = ids.filter((r) => !r.rollup && !r.member_of && shown(r));
     const bureaus = new Map();
     for (const r of loose) {
       const b = r.account.parent_account_id ? ROW_OF.get(r.account.parent_account_id).account.bureau : r.account.bureau;
@@ -1131,7 +1177,9 @@ function renderCompare(grid) {
                  ["missing", "missing"], ["not_collected", "not yet collected"], ["not_enacted", "not yet enacted"],
                  ["no_figure", "no figure for this year"], ["not_reported", "not reported"]];
   $("#grid-counts").replaceChildren(el("span", { text: `Cells in ${label} (every account, every year and stage on file):` }),
-    ...parts.map(([k, l]) => el("span", { dataset: { state: k }, text: `${(c[k] || 0).toLocaleString("en-US")} ${l}` })));
+    ...parts.map(([k, l]) => el("span", { dataset: { state: k }, text: `${(c[k] || 0).toLocaleString("en-US")} ${l}` })),
+    el("span", { dataset: { state: "outside_life" },
+                 text: `${(grid.outside_life_cells || 0).toLocaleString("en-US")} blank, outside an account's life (never missing)` }));
   const shown = cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`);
   const notes = Object.entries(grid.stage_notes || {}).filter(([k]) => shown.includes(k));
   $("#grid-notes").replaceChildren(...notes.map(([k, n]) => {
@@ -1165,8 +1213,12 @@ function compareURL() {
   }
   if (G.units !== "k") q.set("units", G.units);
   if (G.reviewer) q.set("rev", "1");
+  // "Accounts shown", where it differs from the view's defaults: the list of what is shown
+  if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
+    q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
   return "?" + q.toString();
 }
+const SHOW_PROPOSED = { stages: true, years: true, history: false };
 function defaultYear(grid) {
   const ys = grid.fiscal_years;
   return [...ys].reverse().find((y) => grid.rows.some((r) => figure(r, y, "Enacted") != null)) || ys[ys.length - 1];
@@ -1179,6 +1231,13 @@ function settle(grid, want) {
     G.grid = want.grid === "enacted" ? "history" : ["stages", "years", "history"].includes(want.grid) ? want.grid : "stages";
     G.units = want.units === "m" ? "m" : "k";
     G.reviewer = want.rev === "1";
+    G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
+    if (want.show) {
+      const on = String(want.show).split(",");
+      G.show.proposed[G.grid] = on.includes("proposed");
+      G.show.ended = on.includes("ended");
+      G.show.created = on.includes("new");
+    }
     // an old link's "fy=2017-2026" / "fy=2019,2021" reads as its last year
     const fy = String(want.fy || "").split(/[,-]/).filter(Boolean).pop();
     G.fy = pickYear(fy, defaultYear(grid));
@@ -1208,6 +1267,21 @@ function renderControls(grid) {
     s.addEventListener("change", () => { G[key] = Number(s.value); redraw(); });
     return el("label", { class: "field" }, label, s);
   };
+  // "Accounts shown": the lifecycle filters, in every view
+  const showBox = (key, label, title) => {
+    const c = el("input", { type: "checkbox", dataset: { show: key }, "data-testid": "show-" + key });
+    c.checked = key === "proposed" ? G.show.proposed[G.grid] : G.show[key];
+    c.addEventListener("change", () => {
+      if (key === "proposed") G.show.proposed[G.grid] = c.checked; else G.show[key] = c.checked;
+      redraw();
+    });
+    return el("label", { class: "chk", title }, c, label);
+  };
+  $("#show-controls").replaceChildren(
+    el("span", { style: "font-size:12px;color:#4A515E", text: "Accounts shown" }),
+    showBox("proposed", "proposed-only accounts", "Accounts proposed in a request or bill and never enacted"),
+    showBox("ended", "ended accounts after their last year", "An account that ended (eliminated, merged, moved): its row after its last year, blank"),
+    showBox("created", "new accounts before their first year", "An account created after FY2017: its row before its first year, blank"));
   const box = $("#sub-controls");
   box.replaceChildren();
   box.hidden = G.grid === "history";
@@ -1309,7 +1383,8 @@ const params = new URLSearchParams(location.search);
 const initial = params.get("q");
 if (params.get("view") === "compare") {
   showCompare({ sc: params.get("sc"), grid: params.get("grid"), fy: params.get("fy"), a: params.get("a"), b: params.get("b"),
-                stages: params.get("stages"), basis: params.get("basis"), units: params.get("units"), rev: params.get("rev") });
+                stages: params.get("stages"), basis: params.get("basis"), units: params.get("units"), rev: params.get("rev"),
+                show: params.get("show") });
 } else if (params.get("account")) {
   openAccount(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
 } else if (initial) { $("#q").value = initial; runSearch(initial); }

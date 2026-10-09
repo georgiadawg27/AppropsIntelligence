@@ -65,12 +65,12 @@ class OldStructure(unittest.TestCase):
             cells = self.rows[aid]["cells"]
             for key, cell in cells.items():
                 y, st = int(key.split("|")[0]), key.split("|")[1]
-                h = head(cell)
                 if y < 2023:
-                    # (a stage no committee reported -- FY2020 Senate -- reads 'not reported': no document at all)
-                    self.assertIn((h["state"], h.get("note")), (("no_figure", None), ("not_reported", None)), (aid, key))
-                    self.assertTrue(h["state"] == "no_figure" or (y, st) == (2020, "Senate Reported"), (aid, key))
-                elif y == 2023 and st != "Enacted":
+                    # before the account's life (the lifecycle, 2026-10-09): blank -- no state, never missing
+                    self.assertEqual((cell.get("outside_life"), cell["lines"]), ("before", []), (aid, key))
+                    continue
+                h = head(cell)
+                if y == 2023 and st != "Enacted":
                     self.assertEqual((h["state"], h.get("note")), ("no_figure", "Funded within PHSSEF in this document."),
                                      (aid, key))
             enacted = head(cells["2023|Enacted"])
@@ -80,7 +80,10 @@ class OldStructure(unittest.TestCase):
                                               f"{restated[aid]} thousand (p.{389 if aid.endswith('RDP') else 390}).")
             first = head(cells["2024|Enacted"])
             self.assertEqual(first["state"], "value")
-            self.assertEqual(first["observations"][0]["cell_note"], "Funded within PHSSEF before FY2024.")
+            # its first enacted year: the split's note and the lifecycle's, the corner linking the predecessor
+            self.assertEqual(first["observations"][0]["cell_note"], "Funded within PHSSEF before FY2024. Created FY2024 "
+                                                                    "(from Public Health and Social Services Emergency Fund).")
+            self.assertEqual(cells["2024|Enacted"]["note_link"], "ACC-HHS-OS-PHSSEF")
         # PHSSEF's FY2023 Enacted is the law's: its four paragraphs
         o = head(self.rows["ACC-HHS-OS-PHSSEF"]["cells"]["2023|Enacted"])["observations"][0]
         self.assertEqual(o["amount"], 3_767_569_000)
@@ -118,8 +121,7 @@ class StagesAsTheirDocumentsPrint(unittest.TestCase):
                               head(cells[f"2020|{st}"])["observations"][0]["cell_note"], (aid, st))
         rels = {r["relationship_id"]: r for r in self.rows["ACC-HHS-CDC-PREPAREDNESS"]["relationships"]}
         self.assertEqual({(r["relationship_type"], r["effective_fiscal_year"]) for r in rels.values()
-                          if r["to_account_id"] == "ACC-HHS-OS-PHSSEF"}, {("moved_reclassified", 2019),
-                                                                           ("moved_reclassified", 2020)})
+                          if r["to_account_id"] == "ACC-HHS-OS-PHSSEF"}, {("proposed_move", 2019), ("moved", 2020)})
 
 
 class Fy2017(unittest.TestCase):
@@ -220,10 +222,13 @@ class NotReported(unittest.TestCase):
 
     def test_fy2020_senate(self):
         rows = published()
-        states = {line["state"] for r in rows.values() for line in r["cells"].get("2020|Senate Reported", {}).get("lines", [])}
+        cells = [r["cells"].get("2020|Senate Reported", {}) for r in rows.values()]
+        # (a cell outside an account's life -- AHA, ARPA-H before FY2022 -- is blank instead)
+        living = [c for c in cells if not c.get("outside_life")]
+        states = {line["state"] for c in living for line in c.get("lines", [])}
         self.assertEqual(states, {"not_reported"})
         counts = json.loads((ROOT / "docs" / "data" / "subcommittees" / "LHHS.json").read_text())["state_counts"]
-        self.assertGreaterEqual(counts["not_reported"], len(rows))           # (and the Title II total row)
+        self.assertGreaterEqual(counts["not_reported"], len(living))         # (and the Title II total row)
 
 
 if __name__ == "__main__":
