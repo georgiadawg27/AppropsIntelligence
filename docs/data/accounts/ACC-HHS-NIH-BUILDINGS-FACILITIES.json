@@ -16,6 +16,297 @@
         {
          "amount": 200000000,
          "amount_type": "budget authority",
+         "bill_id": "P.L.115-245",
+         "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3283",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "338",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [FY 2019 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13549"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13550"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-13551"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-13838"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 200000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.6470",
+         "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3001",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "H.Rept.115-862",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "366",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-12487"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-12488"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-12489"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-12490"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 200000000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2019/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2019-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3094",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "366",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [FY 2019 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-12848"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-12849"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-12850"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-13750"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 200000000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3158",
+         "bill_report_reference_id": "BR-LHHS-FY2019-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2019,
+         "document_notes": "S.Rept. 115-289 (S. 3158). sha256 9da7803651e40f6f... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3191",
+         "offsetting_collections": 0,
+         "publication_date": "2018-06-28",
+         "report_id": "S.Rept.115-289",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115SRPT289",
+         "source_page": "248",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-13202"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13203"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-13204"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2019
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 200000000,
+         "amount_type": "budget authority",
          "bill_id": "P.L.116-94",
          "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
@@ -2169,6 +2460,22 @@
   "coverage": {
    "cells": [
     [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
      2020,
      "Enacted"
     ],
@@ -2296,6 +2603,236 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 200000000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2019/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2019-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3094",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "366",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [FY 2019 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-12848"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-12849"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-12850"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-13750"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 200000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.6470",
+    "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3001",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "H.Rept.115-862",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "366",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-12487"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-12488"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-12489"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-12490"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 200000000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3158",
+    "bill_report_reference_id": "BR-LHHS-FY2019-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2019,
+    "document_notes": "S.Rept. 115-289 (S. 3158). sha256 9da7803651e40f6f... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3191",
+    "offsetting_collections": 0,
+    "publication_date": "2018-06-28",
+    "report_id": "S.Rept.115-289",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT289",
+    "source_page": "248",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt289/pdf/CRPT-115srpt289.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13202"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13203"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-13204"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 200000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-BUILDINGS-FACILITIES",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3283",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "338",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Buildings and Facilities' [FY 2019 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-13549"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13550"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-13551"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-13838"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 200000000,
     "amount_type": "budget authority",

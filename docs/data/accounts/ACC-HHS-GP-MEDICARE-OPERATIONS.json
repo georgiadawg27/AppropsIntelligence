@@ -16,6 +16,150 @@
         {
          "amount": 305000000,
          "amount_type": "budget authority",
+         "bill_id": "P.L.115-245",
+         "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2019,
+         "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2019,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3330",
+         "offsetting_collections": 0,
+         "publication_date": "2018-09-28",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-115PUBL245",
+         "source_page": "114",
+         "source_table_or_section": "Division B, Title II, General Provisions, sec. 227 (Medicare Operations; 132 Stat. 3094) -- 'may transfer up to $305,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-13797"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0088",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 6470 as reported (BILLS-115hr6470rh): the FY2019 House Labor-HHS bill (H.Rept. 115-862); Title II is PDF pp. 48-114, Title V (General Provisions) pp. 157-176. sha256 e8057d59fb43fc5e... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 6470 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/).",
+        "fiscal_year": 2019,
+        "publication_date": "2018-07-23",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-115HR6470RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0096",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2019, Appendix (whole volume; SRC-BUDGET-APP-FY2019 is the CJS part file); the HHS chapter is PDF pp. 419-489. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 ecc31a5d851b4882... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2019 Budget Appendix's proposed HHS language has no section letting the Secretary transfer Medicare trust fund amounts to CMS Program Management (pp. 419-489, bracketed text excluded).",
+        "fiscal_year": 2019,
+        "publication_date": "2018-02-12",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2019-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0092",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "S. 3158 as reported and placed on the calendar (BILLS-115s3158pcs): the FY2019 Senate Labor-HHS bill (S.Rept. 115-289); Title II is PDF pp. 48-112. sha256 d2a208ae844d62e1... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3158 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/).",
+        "fiscal_year": 2019,
+        "publication_date": "2018-06-28",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-115S3158PCS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2019
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 305000000,
+         "amount_type": "budget authority",
          "bill_id": "P.L.116-94",
          "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
@@ -1416,6 +1560,54 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0088",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 6470 as reported (BILLS-115hr6470rh): the FY2019 House Labor-HHS bill (H.Rept. 115-862); Title II is PDF pp. 48-114, Title V (General Provisions) pp. 157-176. sha256 e8057d59fb43fc5e... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 6470 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/).",
+    "fiscal_year": 2019,
+    "publication_date": "2018-07-23",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-115HR6470RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0096",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2019, Appendix (whole volume; SRC-BUDGET-APP-FY2019 is the CJS part file); the HHS chapter is PDF pp. 419-489. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 ecc31a5d851b4882... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2019 Budget Appendix's proposed HHS language has no section letting the Secretary transfer Medicare trust fund amounts to CMS Program Management (pp. 419-489, bracketed text excluded).",
+    "fiscal_year": 2019,
+    "publication_date": "2018-02-12",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2019-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0092",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "S. 3158 as reported and placed on the calendar (BILLS-115s3158pcs): the FY2019 Senate Labor-HHS bill (S.Rept. 115-289); Title II is PDF pp. 48-112. sha256 d2a208ae844d62e1... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3158 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to $... to such account from the Federal Hospital/).",
+    "fiscal_year": 2019,
+    "publication_date": "2018-06-28",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-115S3158PCS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115s3158pcs/pdf/BILLS-115s3158pcs.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0076",
     "confirmed_date": "2026-10-09",
     "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
@@ -1559,6 +1751,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
     [
      2020,
      "Enacted"
@@ -1708,6 +1916,47 @@
    ]
   ],
   "observations": [
+   {
+    "amount": 305000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2019,
+    "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3330",
+    "offsetting_collections": 0,
+    "publication_date": "2018-09-28",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL245",
+    "source_page": "114",
+    "source_table_or_section": "Division B, Title II, General Provisions, sec. 227 (Medicare Operations; 132 Stat. 3094) -- 'may transfer up to $305,000,000' to 'Centers for Medicare & Medicaid Services, Program Management' from the Medicare trust funds [law text]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-13797"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": 305000000,
     "amount_type": "budget authority",
