@@ -77888,11 +77888,11 @@
    "headline_observation_id": "",
    "offsetting_collections": "FALSE",
    "transfer_link_account_id": "",
-   "source_document_id": "SRC-EXPL-LHHS-FY2021-SENATE",
-   "source_page": "254",
-   "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed as 'Total, Grants to States for Medicaid' [2020 appropriation] -- SRC-CRPT-116HRPT450's column has no readable row for it",
-   "extraction_method": "text-extracted",
-   "confidence": 0.5,
+   "source_document_id": "SRC-CRPT-116HRPT450",
+   "source_page": "412",
+   "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- derived, not a printed line: 'Total, Grants to States for Medicaid, appropriated in this bill' 413,091,553 (p.412) - 'New advance, 1st quarter, FY 2022' 139,903,075 (p.412) = 273,188,478 (thousands); the FY2024-FY2027 tables print the headline as exactly this difference",
+   "extraction_method": "derived",
+   "confidence": 0.95,
    "verification_status": "auto-validated"
   },
   {
@@ -213352,49 +213352,16 @@
   {
    "validation_id": "VAL-LHHS-11888",
    "observation_id": "OBS-LHHS-2885",
-   "rule_applied": "table_total",
-   "expected_result": "413,091,553 = sum of [Medicaid Current Law Benefits; State and Local Administration; Vaccines for Children; New advance, 1st quarter, fiscal year 2022; Less appropriations provided in prior years] (thousands)",
-   "observed_result": "273,188,478 (thousands) as printed",
-   "result": "fail",
-   "human_review_status": "resolved",
-   "reviewer": "triage rules",
-   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-11889 (the printed change column [Senate Committee recommendation compared with (+ or -) 2020 appropriation])"
+   "rule_applied": "structural",
+   "expected_result": "headline = appropriated in this bill - the new advance for the next fiscal year: 413,091,553 - 139,903,075 = 273,188,478 (thousands)",
+   "observed_result": "273,188,478 as recorded",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
   },
   {
    "validation_id": "VAL-LHHS-11889",
-   "observation_id": "OBS-LHHS-2885",
-   "rule_applied": "structural",
-   "expected_result": "[Senate Committee recommendation compared with (+ or -) 2020 appropriation] = 313,904,099 - 273,188,478 = 40,715,621",
-   "observed_result": "40,715,621 as printed in [Senate Committee recommendation compared with (+ or -) 2020 appropriation]",
-   "result": "pass",
-   "human_review_status": "",
-   "reviewer": "",
-   "resolution": ""
-  },
-  {
-   "validation_id": "VAL-LHHS-11890",
-   "observation_id": "OBS-LHHS-2885",
-   "rule_applied": "source_text",
-   "expected_result": "amount '273,188,478' and label 'Total, Grants to States for Medicaid' in the transcribed row",
-   "observed_result": "Total, Grants to States for Medicaid 273,188,478 313,904,099 313,904,099 +40,715,621 ....",
-   "result": "pass",
-   "human_review_status": "",
-   "reviewer": "",
-   "resolution": ""
-  },
-  {
-   "validation_id": "VAL-LHHS-11891",
-   "observation_id": "OBS-LHHS-2885",
-   "rule_applied": "unit",
-   "expected_result": "thousands (applied, x1,000 to dollars)",
-   "observed_result": "page 254 declares '[In thousands of dollars]'",
-   "result": "pass",
-   "human_review_status": "",
-   "reviewer": "",
-   "resolution": ""
-  },
-  {
-   "validation_id": "VAL-LHHS-11892",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 148,732,315 - 139,903,075 = 8,829,240",
@@ -213405,7 +213372,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11893",
+   "validation_id": "VAL-LHHS-11890",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "structural",
    "expected_result": "nested under 'Vaccines for Children' by model-read indent: the parent equals the sum of its indented lines [New advance, 1st quarter, FY 2022]",
@@ -213416,7 +213383,7 @@
    "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account"
   },
   {
-   "validation_id": "VAL-LHHS-11894",
+   "validation_id": "VAL-LHHS-11891",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "source_text",
    "expected_result": "amount '139,903,075' and label 'New advance, 1st quarter, FY 2022' in the transcribed row",
@@ -213427,7 +213394,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11895",
+   "validation_id": "VAL-LHHS-11892",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213438,7 +213405,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11896",
+   "validation_id": "VAL-LHHS-11893",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "semantic",
    "expected_result": "amount_type fits the row label (advance)",
@@ -213449,7 +213416,7 @@
    "resolution": "routine: the amount_type matches the printed label ('New advance, 1st quarter, FY 2022')"
   },
   {
-   "validation_id": "VAL-LHHS-11897",
+   "validation_id": "VAL-LHHS-11894",
    "observation_id": "OBS-LHHS-2887",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = -139,903,075 - -137,931,797 = -1,971,278",
@@ -213460,7 +213427,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11898",
+   "validation_id": "VAL-LHHS-11895",
    "observation_id": "OBS-LHHS-2887",
    "rule_applied": "source_text",
    "expected_result": "amount '-137,931,797' and label 'Less appropriations provided in prior years.' in the transcribed row",
@@ -213471,7 +213438,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11899",
+   "validation_id": "VAL-LHHS-11896",
    "observation_id": "OBS-LHHS-2887",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213482,7 +213449,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11900",
+   "validation_id": "VAL-LHHS-11897",
    "observation_id": "OBS-LHHS-2887",
    "rule_applied": "semantic",
    "expected_result": "amount_type fits the row label (prior_year_advance)",
@@ -213493,7 +213460,7 @@
    "resolution": "routine: the amount_type matches the printed label ('Less appropriations provided in prior years.')"
   },
   {
-   "validation_id": "VAL-LHHS-11901",
+   "validation_id": "VAL-LHHS-11898",
    "observation_id": "OBS-LHHS-2888",
    "rule_applied": "table_total",
    "expected_result": "413,091,553 = sum of [Medicaid Current Law Benefits; State and Local Administration; Vaccines for Children; New advance, 1st quarter, FY 2022; Less appropriations provided in prior years.] (thousands)",
@@ -213504,7 +213471,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11902",
+   "validation_id": "VAL-LHHS-11899",
    "observation_id": "OBS-LHHS-2888",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 462,636,414 - 413,091,553 = 49,544,861",
@@ -213515,7 +213482,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11903",
+   "validation_id": "VAL-LHHS-11900",
    "observation_id": "OBS-LHHS-2888",
    "rule_applied": "source_text",
    "expected_result": "amount '413,091,553' and label 'Total, Grants to States for Medicaid, appropriated in this bill' in the transcribed row",
@@ -213526,7 +213493,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11904",
+   "validation_id": "VAL-LHHS-11901",
    "observation_id": "OBS-LHHS-2888",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213537,7 +213504,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11905",
+   "validation_id": "VAL-LHHS-11902",
    "observation_id": "OBS-LHHS-2889",
    "rule_applied": "table_total",
    "expected_result": "411,120,275 = sum of [Medicaid Current Law Benefits; State and Local Administration; Vaccines for Children] (thousands)",
@@ -213548,7 +213515,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11906",
+   "validation_id": "VAL-LHHS-11903",
    "observation_id": "OBS-LHHS-2889",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 453,807,174 - 411,120,275 = 42,686,899",
@@ -213559,7 +213526,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11907",
+   "validation_id": "VAL-LHHS-11904",
    "observation_id": "OBS-LHHS-2889",
    "rule_applied": "source_text",
    "expected_result": "amount '411,120,275' and label 'Total, Medicaid Program Level, available this fiscal year' in the transcribed row",
@@ -213570,7 +213537,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11908",
+   "validation_id": "VAL-LHHS-11905",
    "observation_id": "OBS-LHHS-2889",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213581,7 +213548,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11909",
+   "validation_id": "VAL-LHHS-11906",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "table_total",
    "expected_result": "3,669,744 = sum of [Research, Demonstration, Evaluation; Program Operations; State Survey and Certification; Federal Administration] (thousands)",
@@ -213592,7 +213559,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11910",
+   "validation_id": "VAL-LHHS-11907",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 3,984,744 - 3,669,744 = 315,000",
@@ -213603,7 +213570,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11911",
+   "validation_id": "VAL-LHHS-11908",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "source_text",
    "expected_result": "amount '3,669,744' and label 'Total, Program management' in the transcribed row",
@@ -213614,7 +213581,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11912",
+   "validation_id": "VAL-LHHS-11909",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213625,7 +213592,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11913",
+   "validation_id": "VAL-LHHS-11910",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "table_total",
    "expected_result": "828,343,397 = sum of [Total, Grants to States for Medicaid, appropriated in this bill; Total, Payments to Trust Funds; Total, Program management; Total, Health Care Fraud and Abuse Control (Trust funds)] (thousands)",
@@ -213636,7 +213603,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11914",
+   "validation_id": "VAL-LHHS-11911",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 906,942,158 - 828,343,397 = 78,598,761",
@@ -213647,7 +213614,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11915",
+   "validation_id": "VAL-LHHS-11912",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "source_text",
    "expected_result": "amount '828,343,397' and label 'Total, Centers for Medicare and Medicaid Services' in the transcribed row",
@@ -213658,7 +213625,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11916",
+   "validation_id": "VAL-LHHS-11913",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213669,7 +213636,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11917",
+   "validation_id": "VAL-LHHS-11914",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "table_total",
    "expected_result": "410,796,100 = sum of [Supplemental Medical Insurance; Federal Uninsured Payment; Program Management; General Revenue for Part D Benefit; General Revenue for Part D Administration; HCFAC Reimbursement; State Low-Income Determination for Part D] (thousands)",
@@ -213680,7 +213647,7 @@
    "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure"
   },
   {
-   "validation_id": "VAL-LHHS-11918",
+   "validation_id": "VAL-LHHS-11915",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 439,514,000 - 410,796,100 = 28,717,900",
@@ -213691,7 +213658,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11919",
+   "validation_id": "VAL-LHHS-11916",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "source_text",
    "expected_result": "amount '410,796,100' and label 'Total, Payments to Trust Funds' in the transcribed row",
@@ -213702,7 +213669,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11920",
+   "validation_id": "VAL-LHHS-11917",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213713,7 +213680,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11921",
+   "validation_id": "VAL-LHHS-11918",
    "observation_id": "OBS-LHHS-2893",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 286,479 - 286,479 = 0",
@@ -213724,7 +213691,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11922",
+   "validation_id": "VAL-LHHS-11919",
    "observation_id": "OBS-LHHS-2893",
    "rule_applied": "source_text",
    "expected_result": "amount '286,479' and label 'Family Planning' in the transcribed row",
@@ -213735,7 +213702,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11923",
+   "validation_id": "VAL-LHHS-11920",
    "observation_id": "OBS-LHHS-2893",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213746,7 +213713,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11924",
+   "validation_id": "VAL-LHHS-11921",
    "observation_id": "OBS-LHHS-2894",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,650,522 - 1,625,522 = 25,000",
@@ -213757,7 +213724,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11925",
+   "validation_id": "VAL-LHHS-11922",
    "observation_id": "OBS-LHHS-2894",
    "rule_applied": "source_text",
    "expected_result": "amount '1,625,522' and label 'Community Health Centers' in the transcribed row",
@@ -213768,7 +213735,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11926",
+   "validation_id": "VAL-LHHS-11923",
    "observation_id": "OBS-LHHS-2894",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213779,7 +213746,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11927",
+   "validation_id": "VAL-LHHS-11924",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "structural",
    "expected_result": "3,456,158 = sum of [Total, Maternal and Child Health; Total, Ryan White HIV/AIDS program; Total, Organ Transplantation; National Cord Blood Inventory; C.W. Bill Young Cell Transplantation; 340B Drug Pricing program/Office of Pharmacy Affairs; 304B Drug Pricing; User Fees; Poison Control Centers; Hansen's Disease Program; Hansen's Disease Program - Buildings and Facilities; Payment to Hawaii, Treatment of Hansen's] (thousands)",
@@ -213787,10 +213754,10 @@
    "result": "fail",
    "human_review_status": "resolved",
    "reviewer": "triage rules",
-   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-11929 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12162 (another document prints it)"
+   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-11926 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12159 (another document prints it)"
   },
   {
-   "validation_id": "VAL-LHHS-11928",
+   "validation_id": "VAL-LHHS-11925",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [PHS Eval Funding] sums to 0",
@@ -213801,7 +213768,7 @@
    "resolution": "parse note: 'PHS Eval Funding' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-11929",
+   "validation_id": "VAL-LHHS-11926",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 131,093 - 123,593 = 7,500",
@@ -213812,7 +213779,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11930",
+   "validation_id": "VAL-LHHS-11927",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "source_text",
    "expected_result": "amount '123,593' and label 'Subtotal, Health Care Systems Bureau, appropriation' in the transcribed row",
@@ -213823,7 +213790,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11931",
+   "validation_id": "VAL-LHHS-11928",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213834,7 +213801,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11932",
+   "validation_id": "VAL-LHHS-11929",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "table_total",
    "expected_result": "1,194,506 = sum of [National Health Service Corps; Subtotal, Health Professions Education and Training; Total, Nursing programs; Children's Hospitals Graduate Medical Education; Medical Student Education; National Practitioner Data Bank; User Fees] (thousands)",
@@ -213845,7 +213812,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11933",
+   "validation_id": "VAL-LHHS-11930",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,242,505 - 1,194,506 = 47,999",
@@ -213856,7 +213823,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11934",
+   "validation_id": "VAL-LHHS-11931",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "source_text",
    "expected_result": "amount '1,194,506' and label 'Total, Health Workforce' in the transcribed row",
@@ -213867,7 +213834,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11935",
+   "validation_id": "VAL-LHHS-11932",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213878,7 +213845,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11936",
+   "validation_id": "VAL-LHHS-11933",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "table_total",
    "expected_result": "943,784 = sum of [Maternal and Child Health Block Grant; Sickle Cell Disease Treatment Program; Autism and Other Developmental Disabilities; Heritable Disorders in Newborns and Children; Healthy Start; Universal Newborn Hearing Screening; Emergency Medical Services for Children; Screening and Treatment for Maternal Depression; Pediatric Mental Health Care Access] (thousands)",
@@ -213889,7 +213856,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11937",
+   "validation_id": "VAL-LHHS-11934",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 980,784 - 943,784 = 37,000",
@@ -213900,7 +213867,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11938",
+   "validation_id": "VAL-LHHS-11935",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "source_text",
    "expected_result": "amount '943,784' and label 'Total, Maternal and Child Health' in the transcribed row",
@@ -213911,7 +213878,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11939",
+   "validation_id": "VAL-LHHS-11936",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213922,7 +213889,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11940",
+   "validation_id": "VAL-LHHS-11937",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "table_total",
    "expected_result": "1,626,522 = sum of [Community Health Centers; Free Clinics Medical Malpractice] (thousands)",
@@ -213933,7 +213900,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11941",
+   "validation_id": "VAL-LHHS-11938",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,651,522 - 1,626,522 = 25,000",
@@ -213944,7 +213911,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11942",
+   "validation_id": "VAL-LHHS-11939",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "source_text",
    "expected_result": "amount '1,626,522' and label 'Total, Primary Health Care' in the transcribed row",
@@ -213955,7 +213922,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11943",
+   "validation_id": "VAL-LHHS-11940",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213966,7 +213933,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11944",
+   "validation_id": "VAL-LHHS-11941",
    "observation_id": "OBS-LHHS-2899",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 155,300 - 155,300 = 0",
@@ -213977,7 +213944,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11945",
+   "validation_id": "VAL-LHHS-11942",
    "observation_id": "OBS-LHHS-2899",
    "rule_applied": "source_text",
    "expected_result": "amount '155,300' and label 'Program Management' in the transcribed row",
@@ -213988,7 +213955,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11946",
+   "validation_id": "VAL-LHHS-11943",
    "observation_id": "OBS-LHHS-2899",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -213999,7 +213966,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11947",
+   "validation_id": "VAL-LHHS-11944",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "table_total",
    "expected_result": "318,294 = sum of [Rural Outreach Grants; Rural Health Research/Policy Development; Rural Hospital Flexibility Grants; State Offices of Rural Health; Black Lung Clinics; Radiation Exposure Screening and Education Program; Telehealth; Rural Communities Opioid Response; Rural Residency Program] (thousands)",
@@ -214010,7 +213977,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11948",
+   "validation_id": "VAL-LHHS-11945",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 334,294 - 318,294 = 16,000",
@@ -214021,7 +213988,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11949",
+   "validation_id": "VAL-LHHS-11946",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "source_text",
    "expected_result": "amount '318,294' and label 'Total, Rural Health' in the transcribed row",
@@ -214032,7 +213999,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11950",
+   "validation_id": "VAL-LHHS-11947",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214043,7 +214010,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11951",
+   "validation_id": "VAL-LHHS-11948",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "table_total",
    "expected_result": "2,388,781 = sum of [Emergency Assistance (Part A); Comprehensive Care Programs (Part B); Early Intervention Program (Part C); Children, Youth, Women, and Families (Part D); AIDS Dental Services (Part F); Education and Training Centers (Part F); Special Projects of National Significance; Domestic HIV/AIDS Initative] (thousands)",
@@ -214054,7 +214021,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11952",
+   "validation_id": "VAL-LHHS-11949",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 2,413,781 - 2,388,781 = 25,000",
@@ -214065,7 +214032,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11953",
+   "validation_id": "VAL-LHHS-11950",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "source_text",
    "expected_result": "amount '2,388,781' and label 'Total, Ryan White HIV/AIDS program' in the transcribed row",
@@ -214076,7 +214043,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11954",
+   "validation_id": "VAL-LHHS-11951",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214087,7 +214054,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11955",
+   "validation_id": "VAL-LHHS-11952",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "table_total",
    "expected_result": "7,333,059 = sum of [Total, Health resources and services (HRS); Total, Vaccine Injury Compensation Trust Fund] (thousands)",
@@ -214098,7 +214065,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11956",
+   "validation_id": "VAL-LHHS-11953",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [(Evaluation Tap Funding)] sums to 0",
@@ -214109,7 +214076,7 @@
    "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-11957",
+   "validation_id": "VAL-LHHS-11954",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 7,471,558 - 7,333,059 = 138,499",
@@ -214120,7 +214087,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11958",
+   "validation_id": "VAL-LHHS-11955",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "source_text",
    "expected_result": "amount '7,333,059' and label 'Total, Health Resources and Services Administration' in the transcribed row",
@@ -214131,7 +214098,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11959",
+   "validation_id": "VAL-LHHS-11956",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214142,7 +214109,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11960",
+   "validation_id": "VAL-LHHS-11957",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "table_total",
    "expected_result": "295,800 = sum of [Post-FY 1988 Claims; HRSA Administrative expenses] (thousands)",
@@ -214153,7 +214120,7 @@
    "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure"
   },
   {
-   "validation_id": "VAL-LHHS-11961",
+   "validation_id": "VAL-LHHS-11958",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 275,800 - 295,800 = -20,000",
@@ -214164,7 +214131,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11962",
+   "validation_id": "VAL-LHHS-11959",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "source_text",
    "expected_result": "amount '295,800' and label 'Total, Vaccine Injury Compensation Trust Fund' in the transcribed row",
@@ -214175,7 +214142,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11963",
+   "validation_id": "VAL-LHHS-11960",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214186,7 +214153,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11964",
+   "validation_id": "VAL-LHHS-11961",
    "observation_id": "OBS-LHHS-2904",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 200,000 - 200,000 = 0",
@@ -214197,7 +214164,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11965",
+   "validation_id": "VAL-LHHS-11962",
    "observation_id": "OBS-LHHS-2904",
    "rule_applied": "source_text",
    "expected_result": "amount '200,000' and label 'Buildings and Facilities' in the transcribed row",
@@ -214208,7 +214175,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11966",
+   "validation_id": "VAL-LHHS-11963",
    "observation_id": "OBS-LHHS-2904",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214219,7 +214186,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11967",
+   "validation_id": "VAL-LHHS-11964",
    "observation_id": "OBS-LHHS-2905",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 404,000 - 492,000 = -88,000",
@@ -214230,7 +214197,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11968",
+   "validation_id": "VAL-LHHS-11965",
    "observation_id": "OBS-LHHS-2905",
    "rule_applied": "source_text",
    "expected_result": "amount '(492,000)' and label 'CURES Act2/' in the transcribed row",
@@ -214241,7 +214208,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11969",
+   "validation_id": "VAL-LHHS-11966",
    "observation_id": "OBS-LHHS-2905",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214252,7 +214219,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11970",
+   "validation_id": "VAL-LHHS-11967",
    "observation_id": "OBS-LHHS-2906",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 86,455 - 80,760 = 5,695",
@@ -214263,7 +214230,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11971",
+   "validation_id": "VAL-LHHS-11968",
    "observation_id": "OBS-LHHS-2906",
    "rule_applied": "source_text",
    "expected_result": "amount '80,760' and label 'John E. Fogarty International Center (FIC)' in the transcribed row",
@@ -214274,7 +214241,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11972",
+   "validation_id": "VAL-LHHS-11969",
    "observation_id": "OBS-LHHS-2906",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214285,7 +214252,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11973",
+   "validation_id": "VAL-LHHS-11970",
    "observation_id": "OBS-LHHS-2907",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 840,051 - 832,888 = 7,163",
@@ -214296,7 +214263,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11974",
+   "validation_id": "VAL-LHHS-11971",
    "observation_id": "OBS-LHHS-2907",
    "rule_applied": "source_text",
    "expected_result": "amount '832,888' and label 'National Center for Advancing Translational Sciences (NCATS)' in the transcribed row",
@@ -214307,7 +214274,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11975",
+   "validation_id": "VAL-LHHS-11972",
    "observation_id": "OBS-LHHS-2907",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214318,7 +214285,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11976",
+   "validation_id": "VAL-LHHS-11973",
    "observation_id": "OBS-LHHS-2908",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 153,045 - 151,740 = 1,305",
@@ -214329,7 +214296,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11977",
+   "validation_id": "VAL-LHHS-11974",
    "observation_id": "OBS-LHHS-2908",
    "rule_applied": "source_text",
    "expected_result": "amount '151,740' and label 'National Center for Complementary and Integrative Health (NCCIH)' in the transcribed row",
@@ -214340,7 +214307,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11978",
+   "validation_id": "VAL-LHHS-11975",
    "observation_id": "OBS-LHHS-2908",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214351,7 +214318,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11979",
+   "validation_id": "VAL-LHHS-11976",
    "observation_id": "OBS-LHHS-2909",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 6,299,155 - 6,245,442 = 53,713",
@@ -214362,7 +214329,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11980",
+   "validation_id": "VAL-LHHS-11977",
    "observation_id": "OBS-LHHS-2909",
    "rule_applied": "source_text",
    "expected_result": "amount '6,245,442' and label 'National Cancer Institute (NCI)' in the transcribed row",
@@ -214373,7 +214340,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11981",
+   "validation_id": "VAL-LHHS-11978",
    "observation_id": "OBS-LHHS-2909",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214384,7 +214351,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11982",
+   "validation_id": "VAL-LHHS-11979",
    "observation_id": "OBS-LHHS-2910",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 831,177 - 824,090 = 7,087",
@@ -214395,7 +214362,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11983",
+   "validation_id": "VAL-LHHS-11980",
    "observation_id": "OBS-LHHS-2910",
    "rule_applied": "source_text",
    "expected_result": "amount '824,090' and label 'National Eye Institute (NEI)' in the transcribed row",
@@ -214406,7 +214373,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11984",
+   "validation_id": "VAL-LHHS-11981",
    "observation_id": "OBS-LHHS-2910",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214417,7 +214384,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11985",
+   "validation_id": "VAL-LHHS-11982",
    "observation_id": "OBS-LHHS-2911",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 611,564 - 606,349 = 5,215",
@@ -214428,7 +214395,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11986",
+   "validation_id": "VAL-LHHS-11983",
    "observation_id": "OBS-LHHS-2911",
    "rule_applied": "source_text",
    "expected_result": "amount '606,349' and label 'National Human Genome Research Institute (NHGRI)' in the transcribed row",
@@ -214439,7 +214406,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11987",
+   "validation_id": "VAL-LHHS-11984",
    "observation_id": "OBS-LHHS-2911",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214450,7 +214417,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11988",
+   "validation_id": "VAL-LHHS-11985",
    "observation_id": "OBS-LHHS-2912",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 3,655,428 - 3,624,258 = 31,170",
@@ -214461,7 +214428,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11989",
+   "validation_id": "VAL-LHHS-11986",
    "observation_id": "OBS-LHHS-2912",
    "rule_applied": "source_text",
    "expected_result": "amount '3,624,258' and label 'National Heart, Lung, and Blood Institute (NHLBI)' in the transcribed row",
@@ -214472,7 +214439,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11990",
+   "validation_id": "VAL-LHHS-11987",
    "observation_id": "OBS-LHHS-2912",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214483,7 +214450,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11991",
+   "validation_id": "VAL-LHHS-11988",
    "observation_id": "OBS-LHHS-2913",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 3,609,150 - 3,543,673 = 65,477",
@@ -214494,7 +214461,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11992",
+   "validation_id": "VAL-LHHS-11989",
    "observation_id": "OBS-LHHS-2913",
    "rule_applied": "source_text",
    "expected_result": "amount '3,543,673' and label 'National Institute on Aging (NIA)' in the transcribed row",
@@ -214505,7 +214472,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11993",
+   "validation_id": "VAL-LHHS-11990",
    "observation_id": "OBS-LHHS-2913",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214516,7 +214483,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11994",
+   "validation_id": "VAL-LHHS-11991",
    "observation_id": "OBS-LHHS-2914",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 550,063 - 545,373 = 4,690",
@@ -214527,7 +214494,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11995",
+   "validation_id": "VAL-LHHS-11992",
    "observation_id": "OBS-LHHS-2914",
    "rule_applied": "source_text",
    "expected_result": "amount '545,373' and label 'National Institute on Alcohol Abuse and Alcoholism (NIAAA)' in the transcribed row",
@@ -214538,7 +214505,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11996",
+   "validation_id": "VAL-LHHS-11993",
    "observation_id": "OBS-LHHS-2914",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214549,7 +214516,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11997",
+   "validation_id": "VAL-LHHS-11994",
    "observation_id": "OBS-LHHS-2915",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 6,013,087 - 5,885,470 = 127,617",
@@ -214560,7 +214527,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11998",
+   "validation_id": "VAL-LHHS-11995",
    "observation_id": "OBS-LHHS-2915",
    "rule_applied": "source_text",
    "expected_result": "amount '5,885,470' and label 'National Institute of Allergy and Infectious Diseases (NIAID)' in the transcribed row",
@@ -214571,7 +214538,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-11999",
+   "validation_id": "VAL-LHHS-11996",
    "observation_id": "OBS-LHHS-2915",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214582,7 +214549,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12000",
+   "validation_id": "VAL-LHHS-11997",
    "observation_id": "OBS-LHHS-2916",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 630,263 - 624,889 = 5,374",
@@ -214593,7 +214560,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12001",
+   "validation_id": "VAL-LHHS-11998",
    "observation_id": "OBS-LHHS-2916",
    "rule_applied": "source_text",
    "expected_result": "amount '624,889' and label 'National Institute of Arthritis and Musculoskeletal and Skin Diseases (NIAMS)' in the transcribed row",
@@ -214604,7 +214571,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12002",
+   "validation_id": "VAL-LHHS-11999",
    "observation_id": "OBS-LHHS-2916",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214615,7 +214582,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12003",
+   "validation_id": "VAL-LHHS-12000",
    "observation_id": "OBS-LHHS-2917",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 407,109 - 403,638 = 3,471",
@@ -214626,7 +214593,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12004",
+   "validation_id": "VAL-LHHS-12001",
    "observation_id": "OBS-LHHS-2917",
    "rule_applied": "source_text",
    "expected_result": "amount '403,638' and label 'National Institute of Biomedical Imaging and Bioengineering (NIBIB)' in the transcribed row",
@@ -214637,7 +214604,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12005",
+   "validation_id": "VAL-LHHS-12002",
    "observation_id": "OBS-LHHS-2917",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214648,7 +214615,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12006",
+   "validation_id": "VAL-LHHS-12003",
    "observation_id": "OBS-LHHS-2918",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,570,269 - 1,556,879 = 13,390",
@@ -214659,7 +214626,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12007",
+   "validation_id": "VAL-LHHS-12004",
    "observation_id": "OBS-LHHS-2918",
    "rule_applied": "source_text",
    "expected_result": "amount '1,556,879' and label 'National Institute of Child Health and Human Development (NICHD)' in the transcribed row",
@@ -214670,7 +214637,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12008",
+   "validation_id": "VAL-LHHS-12005",
    "observation_id": "OBS-LHHS-2918",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214681,7 +214648,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12009",
+   "validation_id": "VAL-LHHS-12006",
    "observation_id": "OBS-LHHS-2919",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,474,590 - 1,462,016 = 12,574",
@@ -214692,7 +214659,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12010",
+   "validation_id": "VAL-LHHS-12007",
    "observation_id": "OBS-LHHS-2919",
    "rule_applied": "source_text",
    "expected_result": "amount '1,462,016' and label 'National Institute on Drug Abuse (NIDA)' in the transcribed row",
@@ -214703,7 +214670,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12011",
+   "validation_id": "VAL-LHHS-12008",
    "observation_id": "OBS-LHHS-2919",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214714,7 +214681,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12012",
+   "validation_id": "VAL-LHHS-12009",
    "observation_id": "OBS-LHHS-2920",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 494,912 - 490,692 = 4,220",
@@ -214725,7 +214692,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12013",
+   "validation_id": "VAL-LHHS-12010",
    "observation_id": "OBS-LHHS-2920",
    "rule_applied": "source_text",
    "expected_result": "amount '490,692' and label 'National Institute on Deafness and Other Communication Disorders (NIDCD)' in the transcribed row",
@@ -214736,7 +214703,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12014",
+   "validation_id": "VAL-LHHS-12011",
    "observation_id": "OBS-LHHS-2920",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214747,7 +214714,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12015",
+   "validation_id": "VAL-LHHS-12012",
    "observation_id": "OBS-LHHS-2921",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 481,535 - 477,429 = 4,106",
@@ -214758,7 +214725,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12016",
+   "validation_id": "VAL-LHHS-12013",
    "observation_id": "OBS-LHHS-2921",
    "rule_applied": "source_text",
    "expected_result": "amount '477,429' and label 'National Institute of Dental and Craniofacial Research (NIDCR)' in the transcribed row",
@@ -214769,7 +214736,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12017",
+   "validation_id": "VAL-LHHS-12014",
    "observation_id": "OBS-LHHS-2921",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214780,7 +214747,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12018",
+   "validation_id": "VAL-LHHS-12015",
    "observation_id": "OBS-LHHS-2922",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 2,132,498 - 2,114,314 = 18,184",
@@ -214791,7 +214758,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12019",
+   "validation_id": "VAL-LHHS-12016",
    "observation_id": "OBS-LHHS-2922",
    "rule_applied": "source_text",
    "expected_result": "amount '2,114,314' and label 'National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK)' in the transcribed row",
@@ -214802,7 +214769,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12020",
+   "validation_id": "VAL-LHHS-12017",
    "observation_id": "OBS-LHHS-2922",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214813,7 +214780,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12021",
+   "validation_id": "VAL-LHHS-12018",
    "observation_id": "OBS-LHHS-2923",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 809,501 - 802,598 = 6,903",
@@ -214824,7 +214791,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12022",
+   "validation_id": "VAL-LHHS-12019",
    "observation_id": "OBS-LHHS-2923",
    "rule_applied": "source_text",
    "expected_result": "amount '802,598' and label 'National Institute of Environmental Health Sciences (NIEHS)' in the transcribed row",
@@ -214835,7 +214802,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12023",
+   "validation_id": "VAL-LHHS-12020",
    "observation_id": "OBS-LHHS-2923",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214846,7 +214813,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12024",
+   "validation_id": "VAL-LHHS-12021",
    "observation_id": "OBS-LHHS-2924",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,631,166 - 1,706,397 = -75,231",
@@ -214857,7 +214824,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12025",
+   "validation_id": "VAL-LHHS-12022",
    "observation_id": "OBS-LHHS-2924",
    "rule_applied": "source_text",
    "expected_result": "amount '1,706,397' and label 'National Institute of General Medical Sciences (NIGMS)' in the transcribed row",
@@ -214868,7 +214835,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12026",
+   "validation_id": "VAL-LHHS-12023",
    "observation_id": "OBS-LHHS-2924",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214879,7 +214846,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12027",
+   "validation_id": "VAL-LHHS-12024",
    "observation_id": "OBS-LHHS-2925",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 2,005,303 - 1,968,374 = 36,929",
@@ -214890,7 +214857,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12028",
+   "validation_id": "VAL-LHHS-12025",
    "observation_id": "OBS-LHHS-2925",
    "rule_applied": "source_text",
    "expected_result": "amount '1,968,374' and label 'National Institute of Mental Health (NIMH)' in the transcribed row",
@@ -214901,7 +214868,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12029",
+   "validation_id": "VAL-LHHS-12026",
    "observation_id": "OBS-LHHS-2925",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214912,7 +214879,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12030",
+   "validation_id": "VAL-LHHS-12027",
    "observation_id": "OBS-LHHS-2926",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 343,700 - 335,812 = 7,888",
@@ -214923,7 +214890,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12031",
+   "validation_id": "VAL-LHHS-12028",
    "observation_id": "OBS-LHHS-2926",
    "rule_applied": "source_text",
    "expected_result": "amount '335,812' and label 'National Institute on Minority Health and Health Disparities (NIMHD)' in the transcribed row",
@@ -214934,7 +214901,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12032",
+   "validation_id": "VAL-LHHS-12029",
    "observation_id": "OBS-LHHS-2926",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214945,7 +214912,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12033",
+   "validation_id": "VAL-LHHS-12030",
    "observation_id": "OBS-LHHS-2927",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 2,415,110 - 2,374,687 = 40,423",
@@ -214956,7 +214923,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12034",
+   "validation_id": "VAL-LHHS-12031",
    "observation_id": "OBS-LHHS-2927",
    "rule_applied": "source_text",
    "expected_result": "amount '2,374,687' and label 'National Institute of Neurological Disorders and Stroke (NINDS)' in the transcribed row",
@@ -214967,7 +214934,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12035",
+   "validation_id": "VAL-LHHS-12032",
    "observation_id": "OBS-LHHS-2927",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -214978,7 +214945,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12036",
+   "validation_id": "VAL-LHHS-12033",
    "observation_id": "OBS-LHHS-2928",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 170,567 - 169,113 = 1,454",
@@ -214989,7 +214956,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12037",
+   "validation_id": "VAL-LHHS-12034",
    "observation_id": "OBS-LHHS-2928",
    "rule_applied": "source_text",
    "expected_result": "amount '169,113' and label 'National Institute of Nursing Research (NINR)' in the transcribed row",
@@ -215000,7 +214967,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12038",
+   "validation_id": "VAL-LHHS-12035",
    "observation_id": "OBS-LHHS-2928",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215011,7 +214978,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12039",
+   "validation_id": "VAL-LHHS-12036",
    "observation_id": "OBS-LHHS-2929",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 460,841 - 456,911 = 3,930",
@@ -215022,7 +214989,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12040",
+   "validation_id": "VAL-LHHS-12037",
    "observation_id": "OBS-LHHS-2929",
    "rule_applied": "source_text",
    "expected_result": "amount '456,911' and label 'National Library of Medicine (NLM)' in the transcribed row",
@@ -215033,7 +215000,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12041",
+   "validation_id": "VAL-LHHS-12038",
    "observation_id": "OBS-LHHS-2929",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215044,7 +215011,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12042",
+   "validation_id": "VAL-LHHS-12039",
    "observation_id": "OBS-LHHS-2930",
    "rule_applied": "structural",
    "expected_result": "headline = 'Office of the Director' + Gabriella Miller Kids First: 2,239,787 + 12,600 = 2,252,387 (thousands)",
@@ -215055,7 +215022,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12043",
+   "validation_id": "VAL-LHHS-12040",
    "observation_id": "OBS-LHHS-2931",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 12,600 - 12,600 = 0",
@@ -215066,7 +215033,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12044",
+   "validation_id": "VAL-LHHS-12041",
    "observation_id": "OBS-LHHS-2931",
    "rule_applied": "structural",
    "expected_result": "nested under 'Office of the Director' by model-read indent: the parent equals the sum of its indented lines [Gabriella Miller Kids First Research Act (Common Fund add)]",
@@ -215077,7 +215044,7 @@
    "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account"
   },
   {
-   "validation_id": "VAL-LHHS-12045",
+   "validation_id": "VAL-LHHS-12042",
    "observation_id": "OBS-LHHS-2931",
    "rule_applied": "source_text",
    "expected_result": "amount '12,600' and label 'Gabriella Miller Kids First Research Act (Common Fund add)' in the transcribed row",
@@ -215088,7 +215055,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12046",
+   "validation_id": "VAL-LHHS-12043",
    "observation_id": "OBS-LHHS-2931",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215099,7 +215066,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12047",
+   "validation_id": "VAL-LHHS-12044",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "table_total",
    "expected_result": "40,228,179 = sum of [Subtotal, NCI; National Heart, Lung, and Blood Institute (NHLBI); National Institute of Dental and Craniofacial Research (NIDCR); National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK); Subtotal, NINDS; National Institute of Allergy and Infectious Diseases (NIAID); National Institute of General Medical Sciences (NIGMS); National Institute of Child Health and Human Development (NICHD); National Eye Institute (NEI); National Institute of Environmental Health Sciences (NIEHS); National Institute on Aging (NIA); National Institute of Arthritis and Musculoskeletal and Skin Diseases (NIAMS); National Institute on Deafness and Other Communication Disorders (NIDCD); National Institute of Nursing Research (NINR); National Institute on Alcohol Abuse and Alcoholism (NIAAA); National Institute on Drug Abuse (NIDA); Subtotal, NIMH; National Human Genome Research Institute (NHGRI); National Institute of Biomedical Imaging and Bioengineering (NIBIB); National Center for Complementary and Integrative Health (NCCIH); National Institute on Minority Health and Health Disparities (NIMHD); John E. Fogarty International Center (FIC); National Library of Medicine (NLM); National Institute for Research on Safety and Quality (NIRSQ); National Center for Advancing Translational Sciences (NCATS); Office of the Director; Gabriella Miller Kids First Research Act (Common Fund add); NIH Innovation Account, CURES Act2/; Buildings and Facilities] (thousands)",
@@ -215110,7 +215077,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12048",
+   "validation_id": "VAL-LHHS-12045",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [(Evaluation Tap Funding)] sums to 1,230,821",
@@ -215121,7 +215088,7 @@
    "resolution": "parse note: '(Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-12049",
+   "validation_id": "VAL-LHHS-12046",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 40,617,687 - 40,228,179 = 389,508",
@@ -215132,7 +215099,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12050",
+   "validation_id": "VAL-LHHS-12047",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "source_text",
    "expected_result": "amount '40,228,179' and label 'Total, National Institutes of Health (NIH)' in the transcribed row",
@@ -215143,7 +215110,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12051",
+   "validation_id": "VAL-LHHS-12048",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215154,7 +215121,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12052",
+   "validation_id": "VAL-LHHS-12049",
    "observation_id": "OBS-LHHS-2933",
    "rule_applied": "table_total",
    "expected_result": "parallel total (Program Level) of 'Total, National Institutes of Health (NIH)' 40,228,179 + 'Evaluation Tap Funding'",
@@ -215165,7 +215132,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12053",
+   "validation_id": "VAL-LHHS-12050",
    "observation_id": "OBS-LHHS-2933",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 41,959,000 - 41,459,000 = 500,000",
@@ -215176,7 +215143,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12054",
+   "validation_id": "VAL-LHHS-12051",
    "observation_id": "OBS-LHHS-2933",
    "rule_applied": "source_text",
    "expected_result": "amount '41,459,000' and label 'Total, NIH Program Level' in the transcribed row",
@@ -215187,7 +215154,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12055",
+   "validation_id": "VAL-LHHS-12052",
    "observation_id": "OBS-LHHS-2933",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215198,7 +215165,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12056",
+   "validation_id": "VAL-LHHS-12053",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "table_total",
    "expected_result": "623,591 = sum of [Retirement Payments; Survivors Benefits; Dependents' Medical Care] (thousands)",
@@ -215209,7 +215176,7 @@
    "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure"
   },
   {
-   "validation_id": "VAL-LHHS-12057",
+   "validation_id": "VAL-LHHS-12054",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 653,023 - 623,591 = 29,432",
@@ -215220,7 +215187,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12058",
+   "validation_id": "VAL-LHHS-12055",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "source_text",
    "expected_result": "amount '623,591' and label 'Total, Benefits for Commissioned Officers' in the transcribed row",
@@ -215231,7 +215198,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12059",
+   "validation_id": "VAL-LHHS-12056",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215242,7 +215209,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12060",
+   "validation_id": "VAL-LHHS-12057",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "table_total",
    "expected_result": "479,629 = sum of [General Departmental Management, Federal Funds; Teen Pregnancy Prevention Community Grants; Sexual Risk Avoidance; Health Care Workforce Commission; Office of Minority Health; Office on Women's Health; Minority HIV/AIDS prevention and treatment; Embryo Adoption Awareness Campaign] (thousands)",
@@ -215253,7 +215220,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12061",
+   "validation_id": "VAL-LHHS-12058",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [Federal Funds; (Evaluation Tap Funding)] sums to 544,457",
@@ -215264,7 +215231,7 @@
    "resolution": "parse note: 'Federal Funds; (Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-12062",
+   "validation_id": "VAL-LHHS-12059",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 457,959 - 479,629 = -21,670",
@@ -215275,7 +215242,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12063",
+   "validation_id": "VAL-LHHS-12060",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "source_text",
    "expected_result": "amount '479,629' and label 'Total, General Departmental Management' in the transcribed row",
@@ -215286,7 +215253,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12064",
+   "validation_id": "VAL-LHHS-12061",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215297,7 +215264,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12065",
+   "validation_id": "VAL-LHHS-12062",
    "observation_id": "OBS-LHHS-2936",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 38,798 - 38,798 = 0",
@@ -215308,7 +215275,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12066",
+   "validation_id": "VAL-LHHS-12063",
    "observation_id": "OBS-LHHS-2936",
    "rule_applied": "source_text",
    "expected_result": "amount '38,798' and label 'Federal Funds' in the transcribed row",
@@ -215319,7 +215286,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12067",
+   "validation_id": "VAL-LHHS-12064",
    "observation_id": "OBS-LHHS-2936",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215330,7 +215297,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12068",
+   "validation_id": "VAL-LHHS-12065",
    "observation_id": "OBS-LHHS-2937",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 80,000 - 80,000 = 0",
@@ -215341,7 +215308,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12069",
+   "validation_id": "VAL-LHHS-12066",
    "observation_id": "OBS-LHHS-2937",
    "rule_applied": "source_text",
    "expected_result": "amount '80,000' and label 'Inspector General Federal Funds' in the transcribed row",
@@ -215352,7 +215319,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12070",
+   "validation_id": "VAL-LHHS-12067",
    "observation_id": "OBS-LHHS-2937",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215363,7 +215330,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12071",
+   "validation_id": "VAL-LHHS-12068",
    "observation_id": "OBS-LHHS-2938",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 191,881 - 191,881 = 0",
@@ -215374,7 +215341,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12072",
+   "validation_id": "VAL-LHHS-12069",
    "observation_id": "OBS-LHHS-2938",
    "rule_applied": "source_text",
    "expected_result": "amount '191,881' and label 'Medicare Hearings and Appeals' in the transcribed row",
@@ -215385,7 +215352,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12073",
+   "validation_id": "VAL-LHHS-12070",
    "observation_id": "OBS-LHHS-2938",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215396,7 +215363,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12074",
+   "validation_id": "VAL-LHHS-12071",
    "observation_id": "OBS-LHHS-2939",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 60,367 - 60,367 = 0",
@@ -215407,7 +215374,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12075",
+   "validation_id": "VAL-LHHS-12072",
    "observation_id": "OBS-LHHS-2939",
    "rule_applied": "source_text",
    "expected_result": "amount '60,367' and label 'Office of the National Coordinator for Health Information Technology' in the transcribed row",
@@ -215418,7 +215385,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12076",
+   "validation_id": "VAL-LHHS-12073",
    "observation_id": "OBS-LHHS-2939",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215429,7 +215396,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12077",
+   "validation_id": "VAL-LHHS-12074",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "table_total",
    "expected_result": "2,737,458 = sum of [Operations; Preparedness and Emergency Operations; National Disaster Medical System; Formula Grants; Biomedical Advanced Research and Development Authority (BARDA); Policy and Planning; Project BioShield; Strategic National Stockpile; Medical Reserve Corps; Preparedness and Response Innovation; Assistant Secretary for Administration, Cybersecurity.; Office of Security and Strategic Information; Office of the Assistant Secretary of Health; Pandemic Influenza Preparedness] (thousands)",
@@ -215440,7 +215407,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12078",
+   "validation_id": "VAL-LHHS-12075",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 2,827,458 - 2,737,458 = 90,000",
@@ -215451,7 +215418,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12079",
+   "validation_id": "VAL-LHHS-12076",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "source_text",
    "expected_result": "amount '2,737,458' and label 'Total, PHSSEF' in the transcribed row",
@@ -215462,7 +215429,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12080",
+   "validation_id": "VAL-LHHS-12077",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215473,7 +215440,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12081",
+   "validation_id": "VAL-LHHS-12078",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "table_total",
    "expected_result": "4,211,724 = sum of [Total, General Departmental Management; Medicare Hearings and Appeals; Office of the National Coordinator for Health Information Technology; Inspector General Federal Funds; Federal Funds; Total, Benefits for Commissioned Officers; Total, PHSSEF] (thousands)",
@@ -215484,7 +215451,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12082",
+   "validation_id": "VAL-LHHS-12079",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 4,309,486 - 4,211,724 = 97,762",
@@ -215495,7 +215462,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12083",
+   "validation_id": "VAL-LHHS-12080",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "source_text",
    "expected_result": "amount '4,211,724' and label 'Total, Office of the Secretary' in the transcribed row",
@@ -215506,7 +215473,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12084",
+   "validation_id": "VAL-LHHS-12081",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215517,7 +215484,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12085",
+   "validation_id": "VAL-LHHS-12082",
    "observation_id": "OBS-LHHS-2942",
    "rule_applied": "table_total",
    "expected_result": "parallel total (Program Level) of 'Total, Office of the Secretary' 4,211,724 + '(Evaluation Tap Funding)'",
@@ -215528,7 +215495,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12086",
+   "validation_id": "VAL-LHHS-12083",
    "observation_id": "OBS-LHHS-2942",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 4,374,314 - 4,276,552 = 97,762",
@@ -215539,7 +215506,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12087",
+   "validation_id": "VAL-LHHS-12084",
    "observation_id": "OBS-LHHS-2942",
    "rule_applied": "source_text",
    "expected_result": "amount '4,276,552' and label 'Total, Office of the Secretary Program Level' in the transcribed row",
@@ -215550,7 +215517,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12088",
+   "validation_id": "VAL-LHHS-12085",
    "observation_id": "OBS-LHHS-2942",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215561,7 +215528,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12089",
+   "validation_id": "VAL-LHHS-12086",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "structural",
    "expected_result": "1,644,974 = sum of [Programs of Regional and National Significance; Community Mental Health Services Block Grant (MHBG); Certified Community Behavioral Health Clinics; National Child Traumatic Stress Initiative; Children's Mental Health Services; Projects for Assistance in Transition from Homelessness (PATH); Protection and Advocacy for Individuals with Mental Illness (PAIMI)] (thousands)",
@@ -215572,7 +215539,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12090",
+   "validation_id": "VAL-LHHS-12087",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [(Evaluation Tap Funding); (Prevention and Public Health Fund 1/); Subtotal, Mental Health program level] sums to 1,711,052",
@@ -215583,7 +215550,7 @@
    "resolution": "parse note: '(Evaluation Tap Funding); (Prevention and Public Health Fund 1/); Subtotal, Mental Health program level' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-12091",
+   "validation_id": "VAL-LHHS-12088",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,727,974 - 1,644,974 = 83,000",
@@ -215594,7 +215561,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12092",
+   "validation_id": "VAL-LHHS-12089",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "source_text",
    "expected_result": "amount '1,644,974' and label 'Subtotal, Mental Health' in the transcribed row",
@@ -215605,7 +215572,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12093",
+   "validation_id": "VAL-LHHS-12090",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215616,7 +215583,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12094",
+   "validation_id": "VAL-LHHS-12091",
    "observation_id": "OBS-LHHS-2944",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 209,469 - 206,469 = 3,000",
@@ -215627,7 +215594,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12095",
+   "validation_id": "VAL-LHHS-12092",
    "observation_id": "OBS-LHHS-2944",
    "rule_applied": "source_text",
    "expected_result": "amount '206,469' and label 'Programs of Regional and National Significance' in the transcribed row",
@@ -215638,7 +215605,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12096",
+   "validation_id": "VAL-LHHS-12093",
    "observation_id": "OBS-LHHS-2944",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215649,7 +215616,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12097",
+   "validation_id": "VAL-LHHS-12094",
    "observation_id": "OBS-LHHS-2945",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 128,830 - 128,830 = 0",
@@ -215660,7 +215627,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12098",
+   "validation_id": "VAL-LHHS-12095",
    "observation_id": "OBS-LHHS-2945",
    "rule_applied": "source_text",
    "expected_result": "amount '128,830' and label 'Health Surveillance and Program Support' in the transcribed row",
@@ -215671,7 +215638,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12099",
+   "validation_id": "VAL-LHHS-12096",
    "observation_id": "OBS-LHHS-2945",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215682,7 +215649,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12100",
+   "validation_id": "VAL-LHHS-12097",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "table_total",
    "expected_result": "160,258 = sum of [Subtotal] (thousands)",
@@ -215690,10 +215657,10 @@
    "result": "fail",
    "human_review_status": "resolved",
    "reviewer": "triage rules",
-   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12102 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12120 (a printed sum)"
+   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12099 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12117 (a printed sum)"
   },
   {
-   "validation_id": "VAL-LHHS-12101",
+   "validation_id": "VAL-LHHS-12098",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [(Evaluation Tap Funding); (Prevention and Public Health Fund 1/); Total, SAMHSA Program Level] sums to 6,028,163",
@@ -215704,7 +215671,7 @@
    "resolution": "parse note: '(Evaluation Tap Funding); (Prevention and Public Health Fund 1/); Total, SAMHSA Program Level' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-12102",
+   "validation_id": "VAL-LHHS-12099",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 5,832,829 - 5,736,829 = 96,000",
@@ -215715,7 +215682,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12103",
+   "validation_id": "VAL-LHHS-12100",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "source_text",
    "expected_result": "amount '5,736,829' and label 'Total, SAMHSA' in the transcribed row",
@@ -215726,7 +215693,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12104",
+   "validation_id": "VAL-LHHS-12101",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215737,7 +215704,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12105",
+   "validation_id": "VAL-LHHS-12102",
    "observation_id": "OBS-LHHS-2947",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 5,978,496 - 5,882,496 = 96,000",
@@ -215748,7 +215715,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12106",
+   "validation_id": "VAL-LHHS-12103",
    "observation_id": "OBS-LHHS-2947",
    "rule_applied": "source_text",
    "expected_result": "amount '(5,882,496)' and label 'Total, SAMHSA Program Level' in the transcribed row",
@@ -215759,7 +215726,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12107",
+   "validation_id": "VAL-LHHS-12104",
    "observation_id": "OBS-LHHS-2947",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215770,7 +215737,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12108",
+   "validation_id": "VAL-LHHS-12105",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "structural",
    "expected_result": "3,756,556 = sum of [Programs of Regional and National Significance; Substance Abuse Prevention and Treatment Block Grant; State Opioid Response grants] (thousands)",
@@ -215781,7 +215748,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12109",
+   "validation_id": "VAL-LHHS-12106",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "structural",
    "expected_result": "memo breakdown [(Evaluation Tap Funding); Subtotal, Program level] sums to 3,918,956",
@@ -215792,7 +215759,7 @@
    "resolution": "parse note: '(Evaluation Tap Funding); Subtotal, Program level' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure"
   },
   {
-   "validation_id": "VAL-LHHS-12110",
+   "validation_id": "VAL-LHHS-12107",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 3,766,556 - 3,756,556 = 10,000",
@@ -215803,7 +215770,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12111",
+   "validation_id": "VAL-LHHS-12108",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "source_text",
    "expected_result": "amount '3,756,556' and label 'Subtotal, Substance Abuse Treatment' in the transcribed row",
@@ -215814,7 +215781,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12112",
+   "validation_id": "VAL-LHHS-12109",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215825,7 +215792,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12113",
+   "validation_id": "VAL-LHHS-12110",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "table_total",
    "expected_result": "1,846,721,314 = sum of [Total, Primary Health Care; Total, Health Workforce; Subtotal, Health Care Systems Bureau, appropriation; Total, Health Resources and Services Administration; Immunization and Respiratory Diseases; Subtotal; Chronic Disease Prevention and Health Promotion; Subtotal; Subtotal; Subtotal; Buildings and Facilities; Total, Centers for Disease Control and Prevention; Discretionary; Total, National Institutes of Health (NIH); Total, SAMHSA; Federal Funds; Federal Funds; Total, Public Health Service (PHS) appropriation; Total, Centers for Medicare and Medicaid Services; Federal funds; Trust Funds; Subtotal; Subtotal, Child Support Enforcement; New advance, 1st quarter, FY 2022; Less appropriations provided in prior years.; Total, Administration for Children and Familiies; Subtotal; Subtotal, Caregivers; Subtotal; Total, Administration for Community Living; Total, Office of the Secretary; Federal Funds; Trust Funds] (thousands)",
@@ -215833,10 +215800,10 @@
    "result": "fail",
    "human_review_status": "resolved",
    "reviewer": "triage rules",
-   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12114 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12215 (another document prints it)"
+   "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-12111 (the printed change column [Bill vs. Enacted]); VAL-LHHS-12212 (another document prints it)"
   },
   {
-   "validation_id": "VAL-LHHS-12114",
+   "validation_id": "VAL-LHHS-12111",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "structural",
    "expected_result": "[Bill vs. Enacted] = 1,015,977,806 - 934,832,279 = 81,145,527",
@@ -215847,7 +215814,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12115",
+   "validation_id": "VAL-LHHS-12112",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "source_text",
    "expected_result": "amount '934,832,279' and label 'Total, Title II, Department of Health and Human Services' in the transcribed row",
@@ -215858,7 +215825,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12116",
+   "validation_id": "VAL-LHHS-12113",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "unit",
    "expected_result": "thousands (applied, x1,000 to dollars)",
@@ -215869,7 +215836,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12117",
+   "validation_id": "VAL-LHHS-12114",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "table_total",
    "expected_result": "the 9 Health Resources and Services Administration accounts = 7,333,059 (thousands): ACC-HHS-HRSA-PRIMARY-CARE 1,626,522 + ACC-HHS-HRSA-VICTF 295,800 + ACC-HHS-HRSA-HEALTH-WORKFORCE 1,194,506 + ACC-HHS-HRSA-MCH 943,784 + ACC-HHS-HRSA-RYAN-WHITE 2,388,781 + ACC-HHS-HRSA-HEALTH-SYSTEMS 123,593 + ACC-HHS-HRSA-RURAL-HEALTH 318,294 + ACC-HHS-HRSA-FAMILY-PLANNING 286,479 + ACC-HHS-HRSA-PROGRAM-SUPPORT 155,300; not printed in this table, so not in the sum: ACC-HHS-HRSA-CCPF",
@@ -215880,7 +215847,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12118",
+   "validation_id": "VAL-LHHS-12115",
    "observation_id": "OBS-LHHS-2882",
    "rule_applied": "table_total",
    "expected_result": "the 14 Centers for Disease Control and Prevention accounts = 6,895,304 (thousands): ACC-HHS-CDC-IMMUNIZATION 433,105 + ACC-HHS-CDC-HIV-HEPATITIS-STD-TB 1,273,556 + ACC-HHS-CDC-EMERGING-ZOONOTIC 570,372 + ACC-HHS-CDC-CHRONIC-DISEASE 984,964 + ACC-HHS-CDC-BIRTH-DEFECTS 160,810 + ACC-HHS-CDC-SCIENTIFIC-SERVICES 555,497 + ACC-HHS-CDC-ENVIRONMENTAL-HEALTH 196,850 + ACC-HHS-CDC-INJURY-PREVENTION 677,379 + ACC-HHS-CDC-NIOSH 342,800 + ACC-HHS-CDC-EEOICP 55,358 + ACC-HHS-CDC-GLOBAL-HEALTH 570,843 + ACC-HHS-CDC-PREPAREDNESS 850,200 + ACC-HHS-CDC-BUILDINGS-FACILITIES 25,000 + ACC-HHS-CDC-PROGRAM-SUPPORT 198,570",
@@ -215891,7 +215858,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12119",
+   "validation_id": "VAL-LHHS-12116",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "table_total",
    "expected_result": "the NIH institutes and other NIH accounts (27) = 40,228,179 (thousands): ACC-HHS-NIH-NCI 6,245,442 + ACC-HHS-NIH-NHLBI 3,624,258 + ACC-HHS-NIH-NIDCR 477,429 + ACC-HHS-NIH-NIDDK 2,114,314 + ACC-HHS-NIH-NINDS 2,374,687 + ACC-HHS-NIH-NIAID 5,885,470 + ACC-HHS-NIH-NIGMS 1,706,397 + ACC-HHS-NIH-NICHD 1,556,879 + ACC-HHS-NIH-NEI 824,090 + ACC-HHS-NIH-NIEHS 802,598 + ACC-HHS-NIH-NIA 3,543,673 + ACC-HHS-NIH-NIAMS 624,889 + ACC-HHS-NIH-NIDCD 490,692 + ACC-HHS-NIH-NINR 169,113 + ACC-HHS-NIH-NIAAA 545,373 + ACC-HHS-NIH-NIDA 1,462,016 + ACC-HHS-NIH-NIMH 1,968,374 + ACC-HHS-NIH-NHGRI 606,349 + ACC-HHS-NIH-NIBIB 403,638 + ACC-HHS-NIH-NCCIH 151,740 + ACC-HHS-NIH-NIMHD 335,812 + ACC-HHS-NIH-FIC 80,760 + ACC-HHS-NIH-NLM 456,911 + ACC-HHS-NIH-NCATS 832,888 + ACC-HHS-NIH-OD 2,252,387 + ACC-HHS-NIH-BUILDINGS-FACILITIES 200,000 + ACC-HHS-NIH-CURES 492,000; not printed in this table, so not in the sum: ACC-HHS-NIH-ARPA-H, ACC-HHS-NIH-BODY-SYSTEMS, ACC-HHS-NIH-NEUROSCIENCE, ACC-HHS-NIH-CHILD-WOMEN-SENSORY, ACC-HHS-NIH-BEHAVIORAL-HEALTH, ACC-HHS-NIH-SUBSTANCE-USE",
@@ -215902,7 +215869,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12120",
+   "validation_id": "VAL-LHHS-12117",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "table_total",
    "expected_result": "the 4 Substance Abuse and Mental Health Services Administration accounts = 5,736,829 (thousands): ACC-HHS-SAMHSA-MENTAL-HEALTH 1,644,974 + ACC-HHS-SAMHSA-TREATMENT 3,756,556 + ACC-HHS-SAMHSA-PREVENTION 206,469 + ACC-HHS-SAMHSA-PROGRAM-SUPPORT 128,830",
@@ -215913,7 +215880,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12121",
+   "validation_id": "VAL-LHHS-12118",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "table_total",
    "expected_result": "the 4 Centers for Medicare & Medicaid Services accounts = 828,343,397 (thousands): ACC-HHS-CMS-MEDICAID 413,091,553 + ACC-HHS-CMS-TRUST-FUND-PAYMENTS 410,796,100 + ACC-HHS-CMS-PROGRAM-MANAGEMENT 3,669,744 + ACC-HHS-CMS-HCFAC 786,000",
@@ -215924,7 +215891,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12122",
+   "validation_id": "VAL-LHHS-12119",
    "observation_id": "OBS-LHHS-2862",
    "rule_applied": "table_total",
    "expected_result": "the 8 Administration for Children and Families accounts = 39,522,672 (thousands): ACC-HHS-ACF-LIHEAP 3,740,304 + ACC-HHS-ACF-CHILD-SUPPORT 4,290,000 + ACC-HHS-ACF-REFUGEE 1,908,201 + ACC-HHS-ACF-CCDBG 5,826,000 + ACC-HHS-ACF-SSBG 1,700,000 + ACC-HHS-ACF-CFSP 12,876,652 + ACC-HHS-ACF-PSSF 437,515 + ACC-HHS-ACF-FOSTER-CARE 8,744,000",
@@ -215935,7 +215902,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12123",
+   "validation_id": "VAL-LHHS-12120",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "table_total",
    "expected_result": "the 7 Office of the Secretary accounts = 4,211,724 (thousands): ACC-HHS-OS-GDM 479,629 + ACC-HHS-OS-OMHA 191,881 + ACC-HHS-OS-ONC 60,367 + ACC-HHS-OS-OIG 80,000 + ACC-HHS-OS-OCR 38,798 + ACC-HHS-OS-COMMISSIONED-OFFICERS 623,591 + ACC-HHS-OS-PHSSEF 2,737,458",
@@ -215946,7 +215913,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12124",
+   "validation_id": "VAL-LHHS-12121",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "table_total",
    "expected_result": "the agency totals + the department-wide lines - the CURES Act line = 934,340,279 (thousands): ACC-HHS-HRSA-TOTAL 7,333,059 + ACC-HHS-CDC-TOTAL 6,895,304 + ACC-HHS-NIH-TOTAL 40,228,179 + ACC-HHS-SAMHSA-TOTAL 5,736,829 + ACC-HHS-AHRQ-TOTAL 338,000 + ACC-HHS-CMS-TOTAL 828,343,397 + ACC-HHS-ACF-TOTAL 39,522,672 + ACC-HHS-ACL-TOTAL 2,223,115 + ACC-HHS-OS-TOTAL 4,211,724 + minus ACC-HHS-NIH-CURES -492,000",
@@ -215957,7 +215924,7 @@
    "resolution": "The shortfall 492,000 (thousands) is exactly: +492,000 ACC-HHS-NIH-CURES: this year's Title II total counts the CURES Act lines inside the NIH total (the table prints no line taking them out). Every other line of the section is inside an account: with these the sum equals the printed total."
   },
   {
-   "validation_id": "VAL-LHHS-12125",
+   "validation_id": "VAL-LHHS-12122",
    "observation_id": "OBS-LHHS-2853",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.257 prints 5,826,000 (text-extracted, 'Payments to States for the Child Care and Development Block Grant' [2020 appropriation])",
@@ -215968,7 +215935,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12126",
+   "validation_id": "VAL-LHHS-12123",
    "observation_id": "OBS-LHHS-2854",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.257 prints 12,876,652 (text-extracted, 'Total, Children and Families Services Programs' [2020 appropriation])",
@@ -215979,7 +215946,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12127",
+   "validation_id": "VAL-LHHS-12124",
    "observation_id": "OBS-LHHS-2855",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.256 prints 4,290,000 (text-extracted, 'Total, Family Support Payments, available in this bill' [2020 appropriation])",
@@ -215990,7 +215957,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12128",
+   "validation_id": "VAL-LHHS-12125",
    "observation_id": "OBS-LHHS-2856",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.258 prints 8,744,000 (text-extracted, 'Total, Payments to States, available in this bill' [2020 appropriation])",
@@ -216001,7 +215968,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12129",
+   "validation_id": "VAL-LHHS-12126",
    "observation_id": "OBS-LHHS-2857",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.257 prints 10,613,095 (text-extracted, 'Head Start' [2020 appropriation])",
@@ -216012,7 +215979,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12130",
+   "validation_id": "VAL-LHHS-12127",
    "observation_id": "OBS-LHHS-2858",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.256 prints 3,740,304 (text-extracted, 'Formula Grants' [2020 appropriation])",
@@ -216023,7 +215990,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12131",
+   "validation_id": "VAL-LHHS-12128",
    "observation_id": "OBS-LHHS-2859",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.257 prints 437,515 (text-extracted, 'Total, Promoting Safe and Stable Families' [2020 appropriation])",
@@ -216034,7 +216001,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12132",
+   "validation_id": "VAL-LHHS-12129",
    "observation_id": "OBS-LHHS-2860",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.256 prints 1,908,201 (text-extracted, 'Total, Refugee and Entrant Assistance' [2020 appropriation])",
@@ -216045,7 +216012,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12133",
+   "validation_id": "VAL-LHHS-12130",
    "observation_id": "OBS-LHHS-2861",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.257 prints 1,700,000 (text-extracted, 'Social Services Block Grant (Title XX)' [2020 appropriation])",
@@ -216056,7 +216023,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12134",
+   "validation_id": "VAL-LHHS-12131",
    "observation_id": "OBS-LHHS-2862",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.258 prints 39,522,672 (text-extracted, 'Total, Administration for Children and Familiies' [2020 appropriation])",
@@ -216067,7 +216034,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12135",
+   "validation_id": "VAL-LHHS-12132",
    "observation_id": "OBS-LHHS-2864",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.260 prints 2,223,115 (text-extracted, 'Total, Administration for Community Living' [2020 appropriation])",
@@ -216078,7 +216045,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12136",
+   "validation_id": "VAL-LHHS-12133",
    "observation_id": "OBS-LHHS-2866",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.254 prints 338,000 (text-extracted, 'Federal funds 3' [2020 appropriation])",
@@ -216089,7 +216056,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12137",
+   "validation_id": "VAL-LHHS-12134",
    "observation_id": "OBS-LHHS-2867",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.254 prints 338,000 (text-extracted, 'Total, AHRQ Program Level 3' [2020 appropriation])",
@@ -216100,7 +216067,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12138",
+   "validation_id": "VAL-LHHS-12135",
    "observation_id": "OBS-LHHS-2868",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 160,810 (text-extracted, 'Birth Defects, Developmental Disabilities, Disabilities and Health' [2020 appropriation])",
@@ -216111,7 +216078,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12139",
+   "validation_id": "VAL-LHHS-12136",
    "observation_id": "OBS-LHHS-2869",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 25,000 (text-extracted, 'Buildings and Facilities' [2020 appropriation])",
@@ -216122,7 +216089,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12140",
+   "validation_id": "VAL-LHHS-12137",
    "observation_id": "OBS-LHHS-2870",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 984,964 (text-extracted, 'Chronic Disease Prevention and Health Promotion' [2020 appropriation])",
@@ -216133,7 +216100,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12141",
+   "validation_id": "VAL-LHHS-12138",
    "observation_id": "OBS-LHHS-2871",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 55,358 (text-extracted, 'Energy Employees Occupational Illness Compensation Program' [2020 appropriation])",
@@ -216144,7 +216111,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12142",
+   "validation_id": "VAL-LHHS-12139",
    "observation_id": "OBS-LHHS-2872",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 570,372 (text-extracted, 'Emerging and Zoonotic Infectious Diseases' [2020 appropriation])",
@@ -216155,7 +216122,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12143",
+   "validation_id": "VAL-LHHS-12140",
    "observation_id": "OBS-LHHS-2873",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 196,850 (text-extracted, 'Environmental Health' [2020 appropriation])",
@@ -216166,7 +216133,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12144",
+   "validation_id": "VAL-LHHS-12141",
    "observation_id": "OBS-LHHS-2874",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 570,843 (text-extracted, 'Global Health' [2020 appropriation])",
@@ -216177,7 +216144,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12145",
+   "validation_id": "VAL-LHHS-12142",
    "observation_id": "OBS-LHHS-2875",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 1,273,556 (text-extracted, 'HIV/AIDS, Viral Hepatitis, Sexually Transmitted Diseases, and Tuberculosis Prevention' [2020 appropriation])",
@@ -216188,7 +216155,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12146",
+   "validation_id": "VAL-LHHS-12143",
    "observation_id": "OBS-LHHS-2876",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 433,105 (text-extracted, 'Immunization and Respiratory Diseases' [2020 appropriation])",
@@ -216199,7 +216166,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12147",
+   "validation_id": "VAL-LHHS-12144",
    "observation_id": "OBS-LHHS-2877",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 677,379 (text-extracted, 'Injury Prevention and Control' [2020 appropriation])",
@@ -216210,7 +216177,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12148",
+   "validation_id": "VAL-LHHS-12145",
    "observation_id": "OBS-LHHS-2878",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 342,800 (text-extracted, 'National Institute for Occupational Safety and Health' [2020 appropriation])",
@@ -216221,7 +216188,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12149",
+   "validation_id": "VAL-LHHS-12146",
    "observation_id": "OBS-LHHS-2879",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 850,200 (text-extracted, 'Public Health Preparedness and Response' [2020 appropriation])",
@@ -216232,7 +216199,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12150",
+   "validation_id": "VAL-LHHS-12147",
    "observation_id": "OBS-LHHS-2880",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 198,570 (text-extracted, 'the lines under 'CDC-Wide Activities and Program Support'' [2020 appropriation])",
@@ -216243,7 +216210,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12151",
+   "validation_id": "VAL-LHHS-12148",
    "observation_id": "OBS-LHHS-2881",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.247 prints 555,497 (text-extracted, 'Public Health Scientific Services' [2020 appropriation])",
@@ -216254,7 +216221,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12152",
+   "validation_id": "VAL-LHHS-12149",
    "observation_id": "OBS-LHHS-2882",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.248 prints 6,895,304 (text-extracted, 'Total, Centers for Disease Control and Prevention' [2020 appropriation])",
@@ -216265,7 +216232,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12153",
+   "validation_id": "VAL-LHHS-12150",
    "observation_id": "OBS-LHHS-2884",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.255 prints 786,000 (text-extracted, 'Total, Health Care Fraud and Abuse Control (Trust funds)' [2020 appropriation])",
@@ -216276,7 +216243,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12154",
+   "validation_id": "VAL-LHHS-12151",
    "observation_id": "OBS-LHHS-2886",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.254 prints 139,903,075 (text-extracted, 'New advance, 1st quarter, fiscal year 2022' [2020 appropriation])",
@@ -216287,7 +216254,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12155",
+   "validation_id": "VAL-LHHS-12152",
    "observation_id": "OBS-LHHS-2888",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.254 prints 413,091,553 (text-extracted, 'Total, Grants to States for Medicaid, appropriated in this bill' [2020 appropriation])",
@@ -216298,7 +216265,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12156",
+   "validation_id": "VAL-LHHS-12153",
    "observation_id": "OBS-LHHS-2887",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.254 prints -137,931,797 (text-extracted, 'Less appropriations provided in prior years' [2020 appropriation])",
@@ -216309,7 +216276,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12157",
+   "validation_id": "VAL-LHHS-12154",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.255 prints 3,669,744 (text-extracted, 'Total, Program management' [2020 appropriation])",
@@ -216320,7 +216287,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12158",
+   "validation_id": "VAL-LHHS-12155",
    "observation_id": "OBS-LHHS-2891",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.255 prints 828,343,397 (text-extracted, 'Total, Centers for Medicare and Medicaid Services' [2020 appropriation])",
@@ -216331,7 +216298,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12159",
+   "validation_id": "VAL-LHHS-12156",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.255 prints 410,796,100 (text-extracted, 'Total, Payments to Trust Funds' [2020 appropriation])",
@@ -216342,7 +216309,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12160",
+   "validation_id": "VAL-LHHS-12157",
    "observation_id": "OBS-LHHS-2893",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.246 prints 286,479 (text-extracted, 'Family Planning' [2020 appropriation])",
@@ -216353,7 +216320,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12161",
+   "validation_id": "VAL-LHHS-12158",
    "observation_id": "OBS-LHHS-2894",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.243 prints 1,625,522 (text-extracted, 'Community Health Centers' [2020 appropriation])",
@@ -216364,7 +216331,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12162",
+   "validation_id": "VAL-LHHS-12159",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.245 prints 123,593 (text-extracted, 'Subtotal, Health Care Systems Bureau, appropriation' [2020 appropriation])",
@@ -216375,7 +216342,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12163",
+   "validation_id": "VAL-LHHS-12160",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.244 prints 1,194,506 (text-extracted, 'Total, Health Workforce' [2020 appropriation])",
@@ -216386,7 +216353,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12164",
+   "validation_id": "VAL-LHHS-12161",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.245 prints 943,784 (text-extracted, 'Total, Maternal and Child Health' [2020 appropriation])",
@@ -216397,7 +216364,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12165",
+   "validation_id": "VAL-LHHS-12162",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.243 prints 1,626,522 (text-extracted, 'Total, Primary Health Care' [2020 appropriation])",
@@ -216408,7 +216375,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12166",
+   "validation_id": "VAL-LHHS-12163",
    "observation_id": "OBS-LHHS-2899",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.246 prints 155,300 (text-extracted, 'Program Management' [2020 appropriation])",
@@ -216419,7 +216386,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12167",
+   "validation_id": "VAL-LHHS-12164",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.246 prints 318,294 (text-extracted, 'Total, Rural Health' [2020 appropriation])",
@@ -216430,7 +216397,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12168",
+   "validation_id": "VAL-LHHS-12165",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.245 prints 2,388,781 (text-extracted, 'Total, Ryan White HIV/AIDS program' [2020 appropriation])",
@@ -216441,7 +216408,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12169",
+   "validation_id": "VAL-LHHS-12166",
    "observation_id": "OBS-LHHS-2902",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.246 prints 7,333,059 (text-extracted, 'Total, Health Resources and Services Administration' [2020 appropriation])",
@@ -216452,7 +216419,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12170",
+   "validation_id": "VAL-LHHS-12167",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.246 prints 295,800 (text-extracted, 'Total, Vaccine Injury Compensation Trust Fund' [2020 appropriation])",
@@ -216463,7 +216430,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12171",
+   "validation_id": "VAL-LHHS-12168",
    "observation_id": "OBS-LHHS-2904",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 200,000 (text-extracted, 'Buildings and Facilities' [2020 appropriation])",
@@ -216474,7 +216441,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12172",
+   "validation_id": "VAL-LHHS-12169",
    "observation_id": "OBS-LHHS-2905",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.263 prints 492,000 (text-extracted, 'CURES Act 2' [2020 appropriation])",
@@ -216485,7 +216452,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12173",
+   "validation_id": "VAL-LHHS-12170",
    "observation_id": "OBS-LHHS-2906",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 80,827 (text-extracted, 'John E Fogarty International Center (FIC)' [2020 appropriation])",
@@ -216493,10 +216460,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12258, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 80,827 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $80,760,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12255, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 80,827 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $80,760,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12174",
+   "validation_id": "VAL-LHHS-12171",
    "observation_id": "OBS-LHHS-2907",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 832,888 (text-extracted, 'National Center for Advancing Translational Sciences (NCATS)' [2020 appropriation])",
@@ -216507,7 +216474,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12175",
+   "validation_id": "VAL-LHHS-12172",
    "observation_id": "OBS-LHHS-2908",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 151,877 (text-extracted, 'National Center for Complementary and Integrative Health (NCCIH)' [2020 appropriation])",
@@ -216515,10 +216482,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12260, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 151,877 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $151,740,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12257, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 151,877 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $151,740,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12176",
+   "validation_id": "VAL-LHHS-12173",
    "observation_id": "OBS-LHHS-2909",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 6,245,438 (text-extracted, 'National Cancer Institute (NCI)' [2020 appropriation])",
@@ -216526,10 +216493,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12261, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 6,245,438 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $6,245,442,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12258, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 6,245,438 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $6,245,442,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12177",
+   "validation_id": "VAL-LHHS-12174",
    "observation_id": "OBS-LHHS-2910",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 823,325 (text-extracted, 'National Eye Institute (NEI)' [2020 appropriation])",
@@ -216537,10 +216504,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12262, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 823,325 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $824,090,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12259, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 823,325 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $824,090,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12178",
+   "validation_id": "VAL-LHHS-12175",
    "observation_id": "OBS-LHHS-2911",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 604,118 (text-extracted, 'National Human Genome Research Institute (NHGRI)' [2020 appropriation])",
@@ -216548,10 +216515,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12263, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 604,118 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $606,349,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12260, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 604,118 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $606,349,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12179",
+   "validation_id": "VAL-LHHS-12176",
    "observation_id": "OBS-LHHS-2912",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 3,625,258 (text-extracted, 'National Heart, Lung, and Blood Institute (NHLBI)' [2020 appropriation])",
@@ -216559,10 +216526,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12264, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,625,258 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,624,258,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12261, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,625,258 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,624,258,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12180",
+   "validation_id": "VAL-LHHS-12177",
    "observation_id": "OBS-LHHS-2913",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 3,545,869 (text-extracted, 'National Institute on Aging (NIA)' [2020 appropriation])",
@@ -216570,10 +216537,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12265, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,545,869 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,543,673,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12262, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,545,869 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,543,673,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12181",
+   "validation_id": "VAL-LHHS-12178",
    "observation_id": "OBS-LHHS-2914",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 546,696 (text-extracted, 'National Institute on Alcohol Abuse and Alcoholism (NIAAA)' [2020 appropriation])",
@@ -216581,10 +216548,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12266, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 546,696 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $545,373,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12263, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 546,696 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $545,373,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12182",
+   "validation_id": "VAL-LHHS-12179",
    "observation_id": "OBS-LHHS-2915",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 5,876,195 (text-extracted, 'National Institute of Allergy and Infectious Diseases (NIAID)' [2020 appropriation])",
@@ -216592,10 +216559,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12267, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 5,876,195 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $5,885,470,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12264, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 5,876,195 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $5,885,470,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12183",
+   "validation_id": "VAL-LHHS-12180",
    "observation_id": "OBS-LHHS-2916",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 624,889 (text-extracted, 'National Institute of Arthritis and Musculoskeletal and Skin Diseases (NIAMS)' [2020 appropriation])",
@@ -216606,7 +216573,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12184",
+   "validation_id": "VAL-LHHS-12181",
    "observation_id": "OBS-LHHS-2917",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 404,638 (text-extracted, 'National Institute of Biomedical Imaging and Bioengineering (NIBIB)' [2020 appropriation])",
@@ -216614,10 +216581,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12269, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 404,638 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $403,638,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12266, law_text pass); the FY2021 Senate draft (p.251) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 404,638 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $403,638,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12185",
+   "validation_id": "VAL-LHHS-12182",
    "observation_id": "OBS-LHHS-2918",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 1,556,909 (text-extracted, 'National Institute of Child Health and Human Development (NICHD)' [2020 appropriation])",
@@ -216625,10 +216592,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12270, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,556,909 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,556,879,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12267, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,556,909 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,556,879,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12186",
+   "validation_id": "VAL-LHHS-12183",
    "observation_id": "OBS-LHHS-2919",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 1,457,724 (text-extracted, 'National Institute on Drug Abuse (NIDA)' [2020 appropriation])",
@@ -216636,10 +216603,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12271, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,457,724 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,462,016,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12268, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,457,724 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,462,016,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12187",
+   "validation_id": "VAL-LHHS-12184",
    "observation_id": "OBS-LHHS-2920",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 490,692 (text-extracted, 'National Institute on Deafness and Other Communication Disorders (NIDCD)' [2020 appropriation])",
@@ -216650,7 +216617,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12188",
+   "validation_id": "VAL-LHHS-12185",
    "observation_id": "OBS-LHHS-2921",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 477,679 (text-extracted, 'National Institute of Dental and Craniofacial Research (NIDCR)' [2020 appropriation])",
@@ -216658,10 +216625,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12273, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 477,679 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $477,429,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12270, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 477,679 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $477,429,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12189",
+   "validation_id": "VAL-LHHS-12186",
    "observation_id": "OBS-LHHS-2922",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 2,115,146 (text-extracted, 'National Institute of Diabetes and Digestive and Kidney Diseases [NIDDK]' [2020 appropriation])",
@@ -216669,10 +216636,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12274, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 2,115,146 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $2,114,314,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12271, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 2,115,146 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $2,114,314,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12190",
+   "validation_id": "VAL-LHHS-12187",
    "observation_id": "OBS-LHHS-2923",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 802,598 (text-extracted, 'National Institute of Environmental Health Sciences (NIEHS)' [2020 appropriation])",
@@ -216683,7 +216650,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12191",
+   "validation_id": "VAL-LHHS-12188",
    "observation_id": "OBS-LHHS-2924",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 1,706,397 (text-extracted, 'National Institute of General Medical Sciences (NIGMS)' [2020 appropriation])",
@@ -216694,7 +216661,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12192",
+   "validation_id": "VAL-LHHS-12189",
    "observation_id": "OBS-LHHS-2925",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 1,972,966 (text-extracted, 'National Institute of Mental Health (NIMH)' [2020 appropriation])",
@@ -216702,10 +216669,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12277, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,972,966 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,968,374,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12274, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,972,966 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,968,374,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12193",
+   "validation_id": "VAL-LHHS-12190",
    "observation_id": "OBS-LHHS-2926",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 335,812 (text-extracted, 'National Institute on Minority Health and Health Disparities (NIMHD)' [2020 appropriation])",
@@ -216716,7 +216683,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12194",
+   "validation_id": "VAL-LHHS-12191",
    "observation_id": "OBS-LHHS-2927",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.249 prints 2,376,577 (text-extracted, 'National Institute of Neurological Disorders and Stroke (NINDS)' [2020 appropriation])",
@@ -216724,10 +216691,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12279, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 2,376,577 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $2,374,687,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12276, law_text pass); the FY2021 Senate draft (p.249) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 2,376,577 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $2,374,687,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12195",
+   "validation_id": "VAL-LHHS-12192",
    "observation_id": "OBS-LHHS-2928",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.250 prints 172,363 (text-extracted, 'National Institute of Nursing Research (NINR)' [2020 appropriation])",
@@ -216735,10 +216702,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12280, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 172,363 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $169,113,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12277, law_text pass); the FY2021 Senate draft (p.250) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 172,363 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $169,113,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12196",
+   "validation_id": "VAL-LHHS-12193",
    "observation_id": "OBS-LHHS-2929",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 456,911 (text-extracted, 'National Library of Medicine (NLM)' [2020 appropriation])",
@@ -216749,7 +216716,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12197",
+   "validation_id": "VAL-LHHS-12194",
    "observation_id": "OBS-LHHS-2930",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 2,252,387 (text-extracted, 'Office of the Director' + 'Gabriella Miller Kids First Research Act (Common Fund add)' [2020 appropriation])",
@@ -216760,7 +216727,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12198",
+   "validation_id": "VAL-LHHS-12195",
    "observation_id": "OBS-LHHS-2931",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 12,600 (text-extracted, 'Gabriella Miller Kids First Research Act (Common Fund add)' [2020 appropriation])",
@@ -216771,7 +216738,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12199",
+   "validation_id": "VAL-LHHS-12196",
    "observation_id": "OBS-LHHS-2932",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.251 prints 40,228,179 (text-extracted, 'Total, National Institutes of Health (NIH)' [2020 appropriation])",
@@ -216782,7 +216749,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12200",
+   "validation_id": "VAL-LHHS-12197",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.261 prints 623,591 (text-extracted, 'Total, Benefits for Commissioned Officers' [2020 appropriation])",
@@ -216793,7 +216760,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12201",
+   "validation_id": "VAL-LHHS-12198",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.260 prints 479,629 (text-extracted, 'Total, General Departmental Management' [2020 appropriation])",
@@ -216804,7 +216771,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12202",
+   "validation_id": "VAL-LHHS-12199",
    "observation_id": "OBS-LHHS-2936",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.261 prints 38,798 (text-extracted, 'Federal Funds' [2020 appropriation])",
@@ -216815,7 +216782,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12203",
+   "validation_id": "VAL-LHHS-12200",
    "observation_id": "OBS-LHHS-2937",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.261 prints 80,000 (text-extracted, 'Inspector General Federal Funds' [2020 appropriation])",
@@ -216826,7 +216793,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12204",
+   "validation_id": "VAL-LHHS-12201",
    "observation_id": "OBS-LHHS-2938",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.261 prints 191,881 (text-extracted, 'Medicare Hearings and Appeals' [2020 appropriation])",
@@ -216837,7 +216804,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12205",
+   "validation_id": "VAL-LHHS-12202",
    "observation_id": "OBS-LHHS-2939",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.261 prints 60,367 (text-extracted, 'Office of the National Coordinator for Health Information Technology' [2020 appropriation])",
@@ -216848,7 +216815,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12206",
+   "validation_id": "VAL-LHHS-12203",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.262 prints 2,737,458 (text-extracted, 'Total, PHSSEF' [2020 appropriation])",
@@ -216859,7 +216826,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12207",
+   "validation_id": "VAL-LHHS-12204",
    "observation_id": "OBS-LHHS-2941",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.262 prints 4,211,724 (text-extracted, 'Total, Office of the Secretary' [2020 appropriation])",
@@ -216870,7 +216837,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12208",
+   "validation_id": "VAL-LHHS-12205",
    "observation_id": "OBS-LHHS-2942",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.262 prints 4,276,552 (text-extracted, 'Total, Office of the Secretary Program Level' [2020 appropriation])",
@@ -216881,7 +216848,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12209",
+   "validation_id": "VAL-LHHS-12206",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.252 prints 1,642,974 (text-extracted, 'Subtotal, Mental Health' [2020 appropriation])",
@@ -216889,10 +216856,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12290, law_text pass); the FY2021 Senate draft (p.252) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,642,974 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,644,974,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12287, law_text pass); the FY2021 Senate draft (p.252) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 1,642,974 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $1,644,974,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12210",
+   "validation_id": "VAL-LHHS-12207",
    "observation_id": "OBS-LHHS-2944",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.253 prints 206,469 (text-extracted, 'Programs of Regional and National Significance' [2020 appropriation])",
@@ -216903,7 +216870,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12211",
+   "validation_id": "VAL-LHHS-12208",
    "observation_id": "OBS-LHHS-2945",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.253 prints 128,830 (text-extracted, 'Health Surveillance and Program Support' [2020 appropriation])",
@@ -216914,7 +216881,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12212",
+   "validation_id": "VAL-LHHS-12209",
    "observation_id": "OBS-LHHS-2946",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.253 prints 5,736,829 (text-extracted, 'Total, SAMHSA' [2020 appropriation])",
@@ -216925,7 +216892,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12213",
+   "validation_id": "VAL-LHHS-12210",
    "observation_id": "OBS-LHHS-2947",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.253 prints 5,882,496 (text-extracted, 'Total, SAMHSA Program Level' [2020 appropriation])",
@@ -216936,7 +216903,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12214",
+   "validation_id": "VAL-LHHS-12211",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.253 prints 3,758,556 (text-extracted, 'Subtotal, Substance Abuse Treatment' [2020 appropriation])",
@@ -216944,10 +216911,10 @@
    "result": "flag",
    "human_review_status": "resolved",
    "reviewer": "owner rules (2026-10-08)",
-   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12293, law_text pass); the FY2021 Senate draft (p.253) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,758,556 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,756,556,000, as recorded."
+   "resolution": "Our figure equals P.L. 116-94 Division A's appropriation exactly (VAL-LHHS-12290, law_text pass); the FY2021 Senate draft (p.253) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: The FY2021 Senate draft's 2020 column prints 3,758,556 thousand: a different split of the same FY2020 money among the accounts (the agency total agrees); the law appropriates $3,756,556,000, as recorded."
   },
   {
-   "validation_id": "VAL-LHHS-12215",
+   "validation_id": "VAL-LHHS-12212",
    "observation_id": "OBS-LHHS-2949",
    "rule_applied": "cross_document",
    "expected_result": "SRC-EXPL-LHHS-FY2021-SENATE p.263 prints 934,832,279 (text-extracted, 'Total, Title II, Department of Health and Human Services' [2020 appropriation])",
@@ -216958,7 +216925,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12216",
+   "validation_id": "VAL-LHHS-12213",
    "observation_id": "OBS-LHHS-2950",
    "rule_applied": "source_text",
    "expected_result": "P.L. 116-94 p.51: 'may transfer up to $305,000,000'",
@@ -216969,7 +216936,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12217",
+   "validation_id": "VAL-LHHS-12214",
    "observation_id": "OBS-LHHS-2951",
    "rule_applied": "source_text",
    "expected_result": "the FY2020 Budget Appendix p.490: 'Of the unobligated balances available in the \"Nonrecurring Expenses Fund\" ..., $400,000,000 are hereby permanently cancelled'",
@@ -216980,7 +216947,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12218",
+   "validation_id": "VAL-LHHS-12215",
    "observation_id": "OBS-LHHS-2952",
    "rule_applied": "source_text",
    "expected_result": "P.L. 116-94 p.54: 'Of the unobligated balances in the \"Nonrecurring Expenses Fund\" ..., $350,000,000 are hereby rescinded'",
@@ -216991,7 +216958,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12219",
+   "validation_id": "VAL-LHHS-12216",
    "observation_id": "OBS-LHHS-2953",
    "rule_applied": "structural",
    "expected_result": "request = Bill - (Bill vs. Request): 3,840,304 - 3,840,304 = 0 (thousands), H.Rept. 116-62 p.346 'Formula Grants' (LIHEAP)",
@@ -217002,7 +216969,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12220",
+   "validation_id": "VAL-LHHS-12217",
    "observation_id": "OBS-LHHS-2953",
    "rule_applied": "source_text",
    "expected_result": "the vision transcription of H.Rept. 116-62 p.346 on file (extraction cache) reads the FY 2020 Request cell of 'Formula Grants' as '---'",
@@ -217013,7 +216980,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12221",
+   "validation_id": "VAL-LHHS-12218",
    "observation_id": "OBS-LHHS-2853",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Payments to states for the child care and development block grant': first amount $5,826,000,000",
@@ -217024,7 +216991,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12222",
+   "validation_id": "VAL-LHHS-12219",
    "observation_id": "OBS-LHHS-2854",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Children and families services programs': first amount no dollar amount",
@@ -217035,7 +217002,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12223",
+   "validation_id": "VAL-LHHS-12220",
    "observation_id": "OBS-LHHS-2855",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Payments to states for child support enforcement and family support programs': first amount $2,890,000,000",
@@ -217046,7 +217013,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12224",
+   "validation_id": "VAL-LHHS-12221",
    "observation_id": "OBS-LHHS-2856",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Payments for foster care and permanency': first amount $5,744,000,000",
@@ -217057,7 +217024,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12225",
+   "validation_id": "VAL-LHHS-12222",
    "observation_id": "OBS-LHHS-2858",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Low income home energy assistance': first amount $3,740,304,000",
@@ -217068,7 +217035,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12226",
+   "validation_id": "VAL-LHHS-12223",
    "observation_id": "OBS-LHHS-2859",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Promoting Safe and Stable Families': first amount $345,000,000",
@@ -217079,7 +217046,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12227",
+   "validation_id": "VAL-LHHS-12224",
    "observation_id": "OBS-LHHS-2860",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Refugee and entrant assistance': first amount no dollar amount",
@@ -217090,7 +217057,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12228",
+   "validation_id": "VAL-LHHS-12225",
    "observation_id": "OBS-LHHS-2861",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Social services block grant': first amount $1,700,000,000",
@@ -217101,7 +217068,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12229",
+   "validation_id": "VAL-LHHS-12226",
    "observation_id": "OBS-LHHS-2868",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Birth defects, developmental disabilities, disabilities and health': first amount $160,810,000",
@@ -217112,7 +217079,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12230",
+   "validation_id": "VAL-LHHS-12227",
    "observation_id": "OBS-LHHS-2869",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Buildings and facilities': first amount $25,000,000",
@@ -217123,7 +217090,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12231",
+   "validation_id": "VAL-LHHS-12228",
    "observation_id": "OBS-LHHS-2870",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Chronic disease prevention and health promotion': first amount $984,964,000",
@@ -217134,7 +217101,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12232",
+   "validation_id": "VAL-LHHS-12229",
    "observation_id": "OBS-LHHS-2871",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Energy employees occupational illness compensation program': first amount $55,358,000",
@@ -217145,7 +217112,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12233",
+   "validation_id": "VAL-LHHS-12230",
    "observation_id": "OBS-LHHS-2872",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Emerging and zoonotic infectious diseases': first amount $570,372,000",
@@ -217156,7 +217123,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12234",
+   "validation_id": "VAL-LHHS-12231",
    "observation_id": "OBS-LHHS-2873",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Environmental health': first amount $196,850,000",
@@ -217167,7 +217134,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12235",
+   "validation_id": "VAL-LHHS-12232",
    "observation_id": "OBS-LHHS-2874",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Global health': first amount $570,843,000",
@@ -217178,7 +217145,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12236",
+   "validation_id": "VAL-LHHS-12233",
    "observation_id": "OBS-LHHS-2875",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'HIV/AIDS, viral hepatitis, sexually transmitted diseases, and tuberculosis prevention': first amount $1,273,556,000",
@@ -217189,7 +217156,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12237",
+   "validation_id": "VAL-LHHS-12234",
    "observation_id": "OBS-LHHS-2876",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Immunization and respiratory diseases': first amount $433,105,000",
@@ -217200,7 +217167,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12238",
+   "validation_id": "VAL-LHHS-12235",
    "observation_id": "OBS-LHHS-2877",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Injury prevention and control': first amount $677,379,000",
@@ -217211,7 +217178,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12239",
+   "validation_id": "VAL-LHHS-12236",
    "observation_id": "OBS-LHHS-2878",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'National Institute for Occupational Safety and Health': first amount $342,800,000",
@@ -217222,7 +217189,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12240",
+   "validation_id": "VAL-LHHS-12237",
    "observation_id": "OBS-LHHS-2879",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'public health preparedness and response': first amount $850,200,000",
@@ -217233,7 +217200,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12241",
+   "validation_id": "VAL-LHHS-12238",
    "observation_id": "OBS-LHHS-2880",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'cdc-wide activities and program support': first amount $198,570,000",
@@ -217244,7 +217211,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12242",
+   "validation_id": "VAL-LHHS-12239",
    "observation_id": "OBS-LHHS-2881",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Public Health Scientific Services': first amount $555,497,000",
@@ -217255,7 +217222,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12243",
+   "validation_id": "VAL-LHHS-12240",
    "observation_id": "OBS-LHHS-2884",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Health care fraud and abuse control account': first amount $786,000,000",
@@ -217266,7 +217233,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12244",
+   "validation_id": "VAL-LHHS-12241",
    "observation_id": "OBS-LHHS-2885",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Grants to states for medicaid': first amount $273,188,478,000",
@@ -217277,7 +217244,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12245",
+   "validation_id": "VAL-LHHS-12242",
    "observation_id": "OBS-LHHS-2890",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Program management': first amount $3,669,744,000",
@@ -217288,7 +217255,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12246",
+   "validation_id": "VAL-LHHS-12243",
    "observation_id": "OBS-LHHS-2892",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Payments to the health care trust funds': first amount $410,796,100,000",
@@ -217299,7 +217266,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12247",
+   "validation_id": "VAL-LHHS-12244",
    "observation_id": "OBS-LHHS-2893",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Family Planning': first amount $286,479,000",
@@ -217310,7 +217277,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12248",
+   "validation_id": "VAL-LHHS-12245",
    "observation_id": "OBS-LHHS-2895",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'health care systems': first amount $123,593,000",
@@ -217321,7 +217288,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12249",
+   "validation_id": "VAL-LHHS-12246",
    "observation_id": "OBS-LHHS-2896",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Health workforce': first amount $1,194,506,000",
@@ -217332,7 +217299,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12250",
+   "validation_id": "VAL-LHHS-12247",
    "observation_id": "OBS-LHHS-2897",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Maternal and child health': first amount $943,784,000",
@@ -217343,7 +217310,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12251",
+   "validation_id": "VAL-LHHS-12248",
    "observation_id": "OBS-LHHS-2898",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Primary health care': first amount $1,626,522,000",
@@ -217354,7 +217321,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12252",
+   "validation_id": "VAL-LHHS-12249",
    "observation_id": "OBS-LHHS-2899",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'program management': first amount $155,300,000",
@@ -217365,7 +217332,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12253",
+   "validation_id": "VAL-LHHS-12250",
    "observation_id": "OBS-LHHS-2900",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Rural health': first amount $318,294,000",
@@ -217376,7 +217343,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12254",
+   "validation_id": "VAL-LHHS-12251",
    "observation_id": "OBS-LHHS-2901",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Ryan white HIV/AIDS program': first amount $2,388,781,000",
@@ -217387,7 +217354,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12255",
+   "validation_id": "VAL-LHHS-12252",
    "observation_id": "OBS-LHHS-2903",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Vaccine injury compensation program trust fund': first amount $10,200,000",
@@ -217398,7 +217365,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12256",
+   "validation_id": "VAL-LHHS-12253",
    "observation_id": "OBS-LHHS-2904",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Buildings and facilities': first amount $200,000,000",
@@ -217409,7 +217376,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12257",
+   "validation_id": "VAL-LHHS-12254",
    "observation_id": "OBS-LHHS-2905",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'NIH Innovation Account, CURES Act': first amount $492,000,000",
@@ -217420,7 +217387,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12258",
+   "validation_id": "VAL-LHHS-12255",
    "observation_id": "OBS-LHHS-2906",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'john e. fogarty international center': first amount $80,760,000",
@@ -217431,7 +217398,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12259",
+   "validation_id": "VAL-LHHS-12256",
    "observation_id": "OBS-LHHS-2907",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national center for advancing translational sciences': first amount $832,888,000",
@@ -217442,7 +217409,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12260",
+   "validation_id": "VAL-LHHS-12257",
    "observation_id": "OBS-LHHS-2908",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national center for complementary and integrative health': first amount $151,740,000",
@@ -217453,7 +217420,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12261",
+   "validation_id": "VAL-LHHS-12258",
    "observation_id": "OBS-LHHS-2909",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national cancer institute': first amount $6,245,442,000",
@@ -217464,7 +217431,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12262",
+   "validation_id": "VAL-LHHS-12259",
    "observation_id": "OBS-LHHS-2910",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national eye institute': first amount $824,090,000",
@@ -217475,7 +217442,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12263",
+   "validation_id": "VAL-LHHS-12260",
    "observation_id": "OBS-LHHS-2911",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national human genome research institute': first amount $606,349,000",
@@ -217486,7 +217453,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12264",
+   "validation_id": "VAL-LHHS-12261",
    "observation_id": "OBS-LHHS-2912",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national heart, lung, and blood institute': first amount $3,624,258,000",
@@ -217497,7 +217464,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12265",
+   "validation_id": "VAL-LHHS-12262",
    "observation_id": "OBS-LHHS-2913",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute on aging': first amount $3,543,673,000",
@@ -217508,7 +217475,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12266",
+   "validation_id": "VAL-LHHS-12263",
    "observation_id": "OBS-LHHS-2914",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute on alcohol abuse and alcoholism': first amount $545,373,000",
@@ -217519,7 +217486,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12267",
+   "validation_id": "VAL-LHHS-12264",
    "observation_id": "OBS-LHHS-2915",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of allergy and infectious diseases': first amount $5,885,470,000",
@@ -217530,7 +217497,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12268",
+   "validation_id": "VAL-LHHS-12265",
    "observation_id": "OBS-LHHS-2916",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of arthritis and musculoskeletal and skin diseases': first amount $624,889,000",
@@ -217541,7 +217508,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12269",
+   "validation_id": "VAL-LHHS-12266",
    "observation_id": "OBS-LHHS-2917",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of biomedical imaging and bioengineering': first amount $403,638,000",
@@ -217552,7 +217519,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12270",
+   "validation_id": "VAL-LHHS-12267",
    "observation_id": "OBS-LHHS-2918",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'eunice kennedy shriver national institute of child health and human development': first amount $1,556,879,000",
@@ -217563,7 +217530,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12271",
+   "validation_id": "VAL-LHHS-12268",
    "observation_id": "OBS-LHHS-2919",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'National institute on drug abuse': first amount $1,462,016,000",
@@ -217574,7 +217541,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12272",
+   "validation_id": "VAL-LHHS-12269",
    "observation_id": "OBS-LHHS-2920",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute on deafness and other communication disorders': first amount $490,692,000",
@@ -217585,7 +217552,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12273",
+   "validation_id": "VAL-LHHS-12270",
    "observation_id": "OBS-LHHS-2921",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of dental and craniofacial research': first amount $477,429,000",
@@ -217596,7 +217563,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12274",
+   "validation_id": "VAL-LHHS-12271",
    "observation_id": "OBS-LHHS-2922",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of diabetes and digestive and kidney diseases': first amount $2,114,314,000",
@@ -217607,7 +217574,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12275",
+   "validation_id": "VAL-LHHS-12272",
    "observation_id": "OBS-LHHS-2923",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of environmental health sciences': first amount $802,598,000",
@@ -217618,7 +217585,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12276",
+   "validation_id": "VAL-LHHS-12273",
    "observation_id": "OBS-LHHS-2924",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of general medical sciences': first amount $2,937,218,000",
@@ -217629,7 +217596,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12277",
+   "validation_id": "VAL-LHHS-12274",
    "observation_id": "OBS-LHHS-2925",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of mental health': first amount $1,968,374,000",
@@ -217640,7 +217607,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12278",
+   "validation_id": "VAL-LHHS-12275",
    "observation_id": "OBS-LHHS-2926",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute on minority health and health disparities': first amount $335,812,000",
@@ -217651,7 +217618,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12279",
+   "validation_id": "VAL-LHHS-12276",
    "observation_id": "OBS-LHHS-2927",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'National institute of neurological disorders and stroke': first amount $2,374,687,000",
@@ -217662,7 +217629,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12280",
+   "validation_id": "VAL-LHHS-12277",
    "observation_id": "OBS-LHHS-2928",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national institute of nursing research': first amount $169,113,000",
@@ -217673,7 +217640,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12281",
+   "validation_id": "VAL-LHHS-12278",
    "observation_id": "OBS-LHHS-2929",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'national library of medicine': first amount $456,911,000",
@@ -217684,7 +217651,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12282",
+   "validation_id": "VAL-LHHS-12279",
    "observation_id": "OBS-LHHS-2930",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'office of the director': first amount no dollar amount",
@@ -217695,7 +217662,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12283",
+   "validation_id": "VAL-LHHS-12280",
    "observation_id": "OBS-LHHS-2934",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Retirement pay and medical benefits for commissioned officers': first amount no dollar amount",
@@ -217706,7 +217673,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12284",
+   "validation_id": "VAL-LHHS-12281",
    "observation_id": "OBS-LHHS-2935",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'General departmental management': first amount no dollar amount",
@@ -217717,7 +217684,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12285",
+   "validation_id": "VAL-LHHS-12282",
    "observation_id": "OBS-LHHS-2936",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Office for civil rights': first amount $38,798,000",
@@ -217728,7 +217695,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12286",
+   "validation_id": "VAL-LHHS-12283",
    "observation_id": "OBS-LHHS-2937",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Office of inspector general': first amount $80,000,000",
@@ -217739,7 +217706,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12287",
+   "validation_id": "VAL-LHHS-12284",
    "observation_id": "OBS-LHHS-2938",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Medicare hearings and appeals': first amount $191,881,000",
@@ -217750,7 +217717,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12288",
+   "validation_id": "VAL-LHHS-12285",
    "observation_id": "OBS-LHHS-2939",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Office of the national coordinator for health information technology': first amount $60,367,000",
@@ -217761,7 +217728,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12289",
+   "validation_id": "VAL-LHHS-12286",
    "observation_id": "OBS-LHHS-2940",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'Public health and social services emergency fund': first amount no dollar amount",
@@ -217772,7 +217739,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12290",
+   "validation_id": "VAL-LHHS-12287",
    "observation_id": "OBS-LHHS-2943",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'MENTAL HEALTH': first amount $1,644,974,000",
@@ -217783,7 +217750,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12291",
+   "validation_id": "VAL-LHHS-12288",
    "observation_id": "OBS-LHHS-2944",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'SUBSTANCE ABUSE PREVENTION': first amount $206,469,000",
@@ -217794,7 +217761,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12292",
+   "validation_id": "VAL-LHHS-12289",
    "observation_id": "OBS-LHHS-2945",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'HEALTH SURVEILLANCE AND PROGRAM SUPPORT': first amount $128,830,000",
@@ -217805,7 +217772,7 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-LHHS-12293",
+   "validation_id": "VAL-LHHS-12290",
    "observation_id": "OBS-LHHS-2948",
    "rule_applied": "law_text",
    "expected_result": "H.R. 1865 (enrolled) div. A, 'SUBSTANCE ABUSE TREATMENT': first amount $3,756,556,000",
