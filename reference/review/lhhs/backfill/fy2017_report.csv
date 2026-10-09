@@ -348,7 +348,6 @@ Senate Reported,ACC-HHS-NIH-NINDS,budget authority,,found,1803306000,237,Nationa
 Senate Reported,ACC-HHS-NIH-NINR,budget authority,,found,151965000,238,National Institute of Nursing Research
 Senate Reported,ACC-HHS-NIH-NLM,budget authority,,found,412097000,238,National Library of Medicine [NLM]
 Senate Reported,ACC-HHS-NIH-OD,budget authority,,found,1443752000,238,Office of the Director
-Senate Reported,ACC-HHS-NIH-OD,budget authority,kids_first,not printed,,,
 Senate Reported,ACC-HHS-NIH-SUBSTANCE-USE,budget authority,,not printed,,,
 Senate Reported,ACC-HHS-NIH-TOTAL,budget authority,,found,32927000000,238,"Total, National Institutes of Health [NIH]"
 Senate Reported,ACC-HHS-NIH-TOTAL,budget authority,program_level,found,34084000000,239,"Total, NIH Program Level"
@@ -375,6 +374,7 @@ Senate Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printe
 Senate Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,derived,113570000,237,"S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.237) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)"
 Senate Reported,ACC-HHS-ACF-FOSTER-CARE,budget authority,,derived,8264000000,245,"derived, not a printed line: 'Total, payments, current year' 5,764,000 (p.245) + 'New Advance, 1st quarter, fiscal year 2018' 2,500,000 (p.245) = 8,264,000 (thousands); 'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 Senate Reported,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,derived,4410631000,243,"derived, not a printed line: 'Total, Family Support Payments, current year' 3,010,631 (p.243) + 'New advance, 1st quarter, fiscal year 2018' 1,400,000 (p.243) = 4,410,631 (thousands); 'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
+Senate Reported,ACC-HHS-NIH-OD,budget authority,kids_first,found,12600000,238,Gabriella Miller Kids First Research Act (Common Fund) (non-add)
 Enacted,ACC-HHS-ACF-CCDBG,budget authority,,found,2856000000,224,Payments to States for the Child Care and Development Block Grant
 Enacted,ACC-HHS-ACF-CFSP,budget authority,,found,11294368000,225,"Total, Children and Families Services Programs"
 Enacted,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,not printed,,,

@@ -1108,10 +1108,14 @@ def main(argv=None):
             # a table that prints Kids First as a non-add line (S.Rept. 114-274: 'Gabriella Miller Kids First Research
             # Act (Common Fund) (non-add)') has it inside the printed 'Office of the Director' already: the headline
             # stays as printed, Kids First is its contained line
-            kf = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*"
-                                                                             r"\(non-add\)", f["_clean"]) and f.get("is_memo")]
+            kf = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*",
+                                                                             f["_clean"]) and f.get("is_memo")
+                  and "(non-add)" in f["account_name_as_written"]]      # (clean drops the '(non-add)')
             if len(kf) == 1 and kf[0]["amount"] and (NIH_OD, "budget authority", "kids_first") not in found:
                 found[(NIH_OD, "budget authority", "kids_first")] = kf[0]
+                report[:] = [r for r in report if r[:5] != [stage, NIH_OD, "budget authority", "kids_first", "not printed"]]
+                report.append([stage, NIH_OD, "budget authority", "kids_first", "found", kf[0]["amount"],
+                               kf[0]["source_page"], kf[0]["account_name_as_written"]])
         for pp in cfg.get("proposal_parts", []):
             hits = [f for f in rows_for(sections, col, pp["agency"]) if re.fullmatch(pp["label"], f["_clean"])
                     and pp.get("path", "") in f["account_path"] and not f.get("is_memo") and f["amount"]] \
