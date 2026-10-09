@@ -314,7 +314,8 @@ TABS = [
         ("stage", to_text, True), ("bill_id", to_text, False), ("report_id", to_text, False),
         ("bill_url", to_text, False), ("report_jes_url", to_text, False), ("lookup_key", to_text, True),
         ("notes", to_text, False), ("vehicle_bill_id", to_text, False), ("division", to_text, False),
-        ("enactment_date", to_date, False), ("funding_type", to_funding_type, False), ("draft", to_bool, False)]),
+        ("enactment_date", to_date, False), ("funding_type", to_funding_type, False), ("draft", to_bool, False),
+        ("not_reported", to_bool, False)]),
     ("Component", "component", [
         ("component_id", to_text, True), ("label", to_text, False), ("kind", to_text, True),
         ("description", to_text, True)]),
@@ -358,7 +359,7 @@ OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                     "Source Document": {"notes"},
                     # v37: how an Enacted year was enacted (vehicle bill, division, date, funding type)
                     "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
-                                              "draft"}}
+                                              "draft", "not_reported"}}
 # Columns a workbook may still carry but the store no longer has: read past,
 # never loaded. Account.effective_start / effective_end (removed in v33): each
 # value was the first year of data on file, not a real start or end date --
@@ -1300,7 +1301,8 @@ def history(conn, account_id):
 #                     before its first figure whose evidence says so, e.g. ARPA-H's FY2021
 #                     Enacted), or one a confirmed split_from relationship carves out of another
 #                     account (ASPR's accounts before FY2023: split_before); not counted as missing
-CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure")
+CELL_STATES = ("value", "not_funded", "no_printed_total", "missing", "not_collected", "not_enacted", "no_figure",
+               "not_reported")
 
 
 def stage_notes(conn, subcommittee):
@@ -1358,7 +1360,15 @@ def coverage(conn, subcommittee):
             " JOIN account a USING (canonical_account_id) WHERE a.subcommittee = ?)", (subcommittee, subcommittee)):
         cells |= covered_cells(dict(d))[0]
     enacted = [y for y, st in cells if st == "Enacted"]
-    return {"cells": sorted([y, st] for y, st in cells), "enacted_through": max(enacted) if enacted else None}
+    # a stage whose committee never reported a bill or released a draft (Bill Report Reference.not_reported)
+    try:
+        nr = sorted([r[0], r[1]] for r in conn.execute(
+            "SELECT fiscal_year, stage FROM bill_report_reference WHERE subcommittee = ? AND not_reported = 1",
+            (subcommittee,)))
+    except sqlite3.OperationalError:          # a store built before the column
+        nr = []
+    return {"cells": sorted([y, st] for y, st in cells), "enacted_through": max(enacted) if enacted else None,
+            "not_reported": nr}
 
 
 def cell_state(found, absence, fiscal_year, stage, cov):
@@ -1367,6 +1377,8 @@ def cell_state(found, absence, fiscal_year, stage, cov):
         return "value" if any(o["amount"] for o in found) else "not_funded"
     if absence:
         return "not_funded"
+    if [fiscal_year, stage] in cov.get("not_reported", []):
+        return "not_reported"
     if [fiscal_year, stage] in cov["cells"] or (fiscal_year, stage) in {tuple(c) for c in cov["cells"]}:
         return "missing"
     if stage == "Enacted" and (cov["enacted_through"] is None or fiscal_year > cov["enacted_through"]):

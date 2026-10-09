@@ -31,7 +31,7 @@ from collections import Counter
 
 import text_tables as tt
 
-NUM_TOKEN = re.compile(r"^[\(\)\+\-−\d,\.·•]+$")
+NUM_TOKEN = re.compile(r"^[\(\)\+\-−\d,\.·•']+$")
 RULE_ROW = re.compile(r"^[\s\-=_·•.,:]+$")
 TITLE_OCR_RE = re.compile(r"^\s*T\s*I\s*T\s*L\s*E\s+([IVXLCl1|\s]+?)\s*[-—–:]\s*(.+)$")
 UNITS_RE = re.compile(r"\(\s*amounts?\s+in\s+[a-z ]+\)|\[\s*in\s+[a-z ]+\]", re.I)
@@ -54,10 +54,16 @@ def words_printed(page):
     if geo is None:
         return []
     tf = tt._transform(geo["direction"])
+    boxes = [(tt._box(tf, w[:4]), w[4]) for w in page.get_text("words")]
+    # GPO's slug ("VerDate Sep 11 2014", "Jkt 036295", "PO 00000", ...) is printed across the table's direction in a
+    # narrow band at the page edge: its long words mark the band, and every word in it is dropped (a short one too)
+    slug = [(u0, u1) for (u0, v0, u1, v1), t in boxes
+            if len(t) >= 3 and re.search(r"[A-Za-z0-9]", t) and (v1 - v0) > 1.5 * (u1 - u0)]
     out = []
-    for w in page.get_text("words"):
-        u0, v0, u1, v1 = tt._box(tf, w[:4])
-        out.append({"t": w[4], "u0": u0, "u1": u1, "v0": v0, "v1": v1, "vc": (v0 + v1) / 2})
+    for (u0, v0, u1, v1), t in boxes:
+        if any(u0 >= a - 2 and u1 <= b + 2 for a, b in slug):
+            continue
+        out.append({"t": t, "u0": u0, "u1": u1, "v0": v0, "v1": v1, "vc": (v0 + v1) / 2})
     return out
 
 
@@ -134,9 +140,12 @@ def repair_title(label):
 
 
 def norm_amount(tokens):
-    s = "".join(tokens).replace("−", "-").replace(" ", "")
+    s = "".join(tokens).replace("−", "-").replace(" ", "").replace("'", ",")   # GPO's layer: 1'505'522
     s = re.sub(r"[-=_]{2,}", "", s)          # a printed rule that skew put on this line; a minus is one character
-    s = re.sub(r"(?<=\d)\.(?=\d{3}(\D|$))", ",", s)
+    s = re.sub(r"[·•]+", "", s)              # rule ink / dot leaders read as bullets
+    s = re.sub(r"\.{2,}", "", s)             # dot leaders
+    s = re.sub(r"(?<=[\d\)])[-\.]+$", "", s)  # leader / rule ink after the figure
+    s = re.sub(r"(?<=\d)\.{1,2}(?=\d{3}(\D|$))", ",", s)
     s = re.sub(r"^[\.,]+|[\.,]+$", "", s)
     return s, bool(re.fullmatch(r"\(?[+-]?\d{1,3}(,\d{3})*\)?", s))
 
@@ -162,9 +171,17 @@ def page_rows(page, cols_hint=None):
     bounds = [centers[0] - max(first_w, centers[1] - centers[0] if len(cols) > 1 else first_w) / 2 - 20] + \
              [(centers[i] + centers[i + 1]) / 2 for i in range(len(cols) - 1)] + [float("inf")]
     out, issues = [], []
+    # GPO's discretionary / mandatory marker: a lone D or M that lines up in one column on the page, just left of the
+    # figures (at least three rows share the position)
+    lone = Counter(round(w["u0"] / 3) for r in rows[start:] for w in r["w"]
+                   if w["t"] in ("D", "M") and (w["u0"] + w["u1"]) / 2 < bounds[0])
+    marker_u = next((k * 3 for k, n in lone.most_common(1) if n >= 3), None)
     for r in rows[start:]:
-        if RULE_ROW.match(r["text"]):
-            continue                                  # a rule printed as dashes
+        if re.search(r"insert\s+offset\s+folio", r["text"], re.I):
+            continue                                  # GPO's placeholder for the scanned page, not a row
+        if RULE_ROW.match(r["text"]) or re.fullmatch(r"[~\-—–_=•·*wWMmAa\s]+", r["text"]) \
+                and re.search(r"[~*]|(\b[WM]\b.*){2,}", r["text"]):
+            continue                                  # a rule printed as dashes (GPO's layer reads a wavy rule as ~~WW~)
         label_w, cells = [], [[] for _ in cols]
         for w in r["w"]:
             ctr = (w["u0"] + w["u1"]) / 2
@@ -177,18 +194,28 @@ def page_rows(page, cols_hint=None):
                 continue
             i = next(i for i in range(len(cols)) if bounds[i] <= ctr < bounds[i + 1])
             cells[i].append(w["t"])
+        if marker_u is not None and len(label_w) > 1 and label_w[-1]["t"] in ("D", "M") \
+                and abs(label_w[-1]["u0"] - marker_u) <= em:
+            label_w = label_w[:-1]                    # GPO's discretionary / mandatory marker column
         label = " ".join(w["t"] for w in label_w)
         label = re.sub(r"(\s*[\.·,:]\s*){2,}.*$", "", label)       # dot leaders and what OCR made of them
         label = re.sub(r"[\s\.,·:]+$", "", label).strip()
+        label = re.sub(r"(?<=[\.\)])\s*[DM]$", "", label).strip()  # GPO's discretionary / mandatory marker column
         label = repair_title(label)
+        if re.fullmatch(r"[WMwm~\-—–_=•·*\s]+", label or "x") and len(label) > 2:
+            continue                                  # a wavy printed rule read as letters ('M M M W M')
         values, states = [], []
         for c in cells:
             if not c:
                 values.append("")
                 states.append("absent")
                 continue
+            if label and re.fullmatch(r"[-—–]{2,4}", "".join(c).replace("−", "-")):
+                values.append("---")                  # GPO's printed dash in a line's column: zero (parse_cell)
+                states.append("dash")
+                continue
             s, ok = norm_amount(c)
-            if not s:                                 # only rule ink in this cell
+            if not re.search(r"\d", s):              # only rule ink in this cell
                 values.append("")
                 states.append("absent")
                 continue
@@ -198,6 +225,8 @@ def page_rows(page, cols_hint=None):
                 issues.append(f"unparsed cell {''.join(c)!r} in {label[:40]!r}")
         if not label and all(s == "absent" for s in states):
             continue
+        if not label and not any(re.search(r"\d", v) for v in values):
+            continue                                  # leader / rule ink on a line of its own
         out.append({"label": label, "u_start": label_w[0]["u0"] if label_w else None, "em": em,
                     "values": values, "cell_states": states,
                     "raw_text": " ".join([label] + [v for v in values if v]),
@@ -259,7 +288,9 @@ def extract_table(doc_pdf, pages):
         keys = tuple(header_key(c["header"]) for c in cols) if cols else ()
         if len(keys) != len(canon_keys):
             issues.append(f"header parsed to {len(keys)} columns, table has {len(canon_keys)}")
-        elif keys != canon_keys:
+        elif keys != canon_keys and sum(a != b for a, b in zip(keys, canon_keys)) > 1:
+            # one header misread with the column count right ('Bi' for 'Bill'): the columns still sit where the
+            # page's own header puts them -- not an issue; more than one is
             issues.append(f"header {[c['header'] for c in cols]} doesn't match the table's {canon}")
         for r in rows:
             r["indent"] = 0 if r["u_start"] is None else round((r["u_start"] - left) / (r["em"] or 7.0))

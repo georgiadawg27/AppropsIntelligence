@@ -14,6 +14,243 @@
        "missing": false,
        "observations": [
         {
+         "amount": 433105000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.116-94",
+         "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2021,
+         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2876",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-15",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT450",
+         "source_page": "398",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases' [FY 2020 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11860"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11861"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11862"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-12143"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-12234"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 499758000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.2740",
+         "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2688",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "H.Rept.116-62",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "333",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases D' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11144"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11145"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11146"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11147"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 577386000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2020,
+         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2780",
+         "offsetting_collections": 0,
+         "publication_date": "2019-05-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT62",
+         "source_page": "333",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases D' [FY 2020 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-11527"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-11528"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-11529"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 448805000,
          "amount_type": "budget authority",
          "bill_id": "P.L.116-260",
@@ -1958,6 +2195,18 @@
   "coverage": {
    "cells": [
     [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
      2021,
      "Enacted"
     ],
@@ -2062,11 +2311,194 @@
      "President's Budget"
     ]
    ],
-   "enacted_through": 2026
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
   },
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 577386000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2780",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "333",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases D' [FY 2020 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11527"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11528"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11529"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 499758000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.2740",
+    "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2688",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "H.Rept.116-62",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "333",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases D' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11144"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11145"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11146"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11147"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 433105000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-94",
+    "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-IMMUNIZATION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2876",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT450",
+    "source_page": "398",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Immunization and Respiratory Diseases' [FY 2020 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-11860"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-11861"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-11862"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-12143"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-12234"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 527160000,
     "amount_type": "budget authority",
@@ -3565,6 +3997,10 @@
   ],
   "open_cells": [
    [
+    2020,
+    "Senate Reported"
+   ],
+   [
     2027,
     "Senate Reported"
    ],
@@ -3575,6 +4011,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
    "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"

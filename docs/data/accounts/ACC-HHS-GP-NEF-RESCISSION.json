@@ -14,6 +14,251 @@
        "missing": false,
        "observations": [
         {
+         "amount": -350000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.116-94",
+         "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_notes": "Further Consolidated Appropriations Act, 2020; Division A (Labor-HHS) is PDF pp. 5-79, its Title II pp. 24-54. sha256 d724cc183016bdd5... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2952",
+         "offsetting_collections": 0,
+         "publication_date": "2019-12-20",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-116PUBL94",
+         "source_page": "54",
+         "source_table_or_section": "Division A, Title II, General Provisions, sec. 240 (RESCISSION; 133 Stat. 2586) -- 'Of the unobligated balances in the \"Nonrecurring Expenses Fund\" ..., $350,000,000 are hereby rescinded' [law text]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-12215"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0085",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Further Consolidated Appropriations Act, 2020; Division A (Labor-HHS) is PDF pp. 5-79, its Title II pp. 24-54. sha256 d724cc183016bdd5... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 116-94: no emergency-designated rescission of Nonrecurring Expenses Fund balances in Division A, Title II (pp. 24-54). Its Title II rescissions: sec. 240 (Nonrecurring Expenses Fund, $350,000,000, p.54); none is designated an emergency requirement.",
+        "fiscal_year": 2020,
+        "publication_date": "2019-12-20",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-116PUBL94",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0077",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 2740 (reported): no rescission of Nonrecurring Expenses Fund balances in Title II (pp. 42-116). Its Title II rescissions: sec. 230 (P.L. 114-10 sec. 301(b)(3) balances, $4,300,000,000, p.110).",
+        "fiscal_year": 2020,
+        "publication_date": "2019-05-16",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-116HR2740RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0078",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 2740 (reported): no emergency-designated rescission of Nonrecurring Expenses Fund balances in Title II (pp. 42-116). Its Title II rescissions: sec. 230 (P.L. 114-10 sec. 301(b)(3) balances, $4,300,000,000, p.110); none is designated an emergency requirement.",
+        "fiscal_year": 2020,
+        "publication_date": "2019-05-16",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-116HR2740RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -400000000,
+         "amount_type": "rescission",
+         "bill_id": "PREX 2.8:2020/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_notes": "Budget of the U.S. Government, FY2020, Appendix (whole volume); the HHS chapter is PDF pp. 421-491. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 9e32719df3802c25... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "President's Budget",
+         "document_type": "budget_appendix",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-2951",
+         "offsetting_collections": 0,
+         "publication_date": "2019-03-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Office of Management and Budget",
+         "source_document_id": "SRC-BUDGET-APP-FY2020",
+         "source_page": "490",
+         "source_table_or_section": "HHS General Provisions (proposed), sec. 219 (CANCELLATION) -- 'Of the unobligated balances available in the \"Nonrecurring Expenses Fund\" ..., $400,000,000 are hereby permanently cancelled' [Budget Appendix language]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-12214"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0082",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2020, Appendix (whole volume); the HHS chapter is PDF pp. 421-491. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 9e32719df3802c25... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2020 Budget Appendix: no emergency-designated rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 421-491, bracketed text excluded). Its Title II rescissions: sec. 219 (Nonrecurring Expenses Fund, $400,000,000 cancelled, p.490); none is designated an emergency requirement.",
+        "fiscal_year": 2020,
+        "publication_date": "2019-03-11",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2020",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": -375000000,
          "amount_type": "rescission",
          "bill_id": "P.L.116-260",
@@ -2239,6 +2484,70 @@
     "amount_type": "rescission",
     "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
     "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0085",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Further Consolidated Appropriations Act, 2020; Division A (Labor-HHS) is PDF pp. 5-79, its Title II pp. 24-54. sha256 d724cc183016bdd5... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 116-94: no emergency-designated rescission of Nonrecurring Expenses Fund balances in Division A, Title II (pp. 24-54). Its Title II rescissions: sec. 240 (Nonrecurring Expenses Fund, $350,000,000, p.54); none is designated an emergency requirement.",
+    "fiscal_year": 2020,
+    "publication_date": "2019-12-20",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-116PUBL94",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0077",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 2740 (reported): no rescission of Nonrecurring Expenses Fund balances in Title II (pp. 42-116). Its Title II rescissions: sec. 230 (P.L. 114-10 sec. 301(b)(3) balances, $4,300,000,000, p.110).",
+    "fiscal_year": 2020,
+    "publication_date": "2019-05-16",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR2740RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0078",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 2740 (reported): no emergency-designated rescission of Nonrecurring Expenses Fund balances in Title II (pp. 42-116). Its Title II rescissions: sec. 230 (P.L. 114-10 sec. 301(b)(3) balances, $4,300,000,000, p.110); none is designated an emergency requirement.",
+    "fiscal_year": 2020,
+    "publication_date": "2019-05-16",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR2740RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0082",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2020, Appendix (whole volume); the HHS chapter is PDF pp. 421-491. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 9e32719df3802c25... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2020 Budget Appendix: no emergency-designated rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 421-491, bracketed text excluded). Its Title II rescissions: sec. 219 (Nonrecurring Expenses Fund, $400,000,000 cancelled, p.490); none is designated an emergency requirement.",
+    "fiscal_year": 2020,
+    "publication_date": "2019-03-11",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2020",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
     "confirmed_absence_id": "CA-LHHS-0058",
     "confirmed_date": "2026-10-08",
     "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
@@ -2414,6 +2723,18 @@
   "coverage": {
    "cells": [
     [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
      2021,
      "Enacted"
     ],
@@ -2518,7 +2839,13 @@
      "President's Budget"
     ]
    ],
-   "enacted_through": 2026
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
   },
   "historical_names": [],
   "missing_cells": [
@@ -2528,6 +2855,88 @@
    ]
   ],
   "observations": [
+   {
+    "amount": -400000000,
+    "amount_type": "rescission",
+    "bill_id": "PREX 2.8:2020/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2020-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "Budget of the U.S. Government, FY2020, Appendix (whole volume); the HHS chapter is PDF pp. 421-491. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 9e32719df3802c25... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "President's Budget",
+    "document_type": "budget_appendix",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2951",
+    "offsetting_collections": 0,
+    "publication_date": "2019-03-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2020",
+    "source_page": "490",
+    "source_table_or_section": "HHS General Provisions (proposed), sec. 219 (CANCELLATION) -- 'Of the unobligated balances available in the \"Nonrecurring Expenses Fund\" ..., $400,000,000 are hereby permanently cancelled' [Budget Appendix language]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-12214"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": -350000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.116-94",
+    "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "Further Consolidated Appropriations Act, 2020; Division A (Labor-HHS) is PDF pp. 5-79, its Title II pp. 24-54. sha256 d724cc183016bdd5... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-2952",
+    "offsetting_collections": 0,
+    "publication_date": "2019-12-20",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-116PUBL94",
+    "source_page": "54",
+    "source_table_or_section": "Division A, Title II, General Provisions, sec. 240 (RESCISSION; 133 Stat. 2586) -- 'Of the unobligated balances in the \"Nonrecurring Expenses Fund\" ..., $350,000,000 are hereby rescinded' [law text]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-12215"
+     }
+    ],
+    "verification_status": "unverified"
+   },
    {
     "amount": -500000000,
     "amount_type": "rescission",
@@ -3857,6 +4266,10 @@
   ],
   "open_cells": [
    [
+    2020,
+    "Senate Reported"
+   ],
+   [
     2023,
     "Senate Reported"
    ],
@@ -3871,6 +4284,7 @@
   ],
   "relationships": [],
   "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
    "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"

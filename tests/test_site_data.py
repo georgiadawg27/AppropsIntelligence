@@ -136,7 +136,9 @@ class DraftStages(unittest.TestCase):
         import openpyxl
         wb = openpyxl.load_workbook(S.reference_workbook(), read_only=True)
         head = next(wb["Bill Report Reference"].iter_rows(max_row=1, values_only=True))
-        self.assertEqual(head[-1], "draft")
+        self.assertEqual(head[-2:], ("draft", "not_reported"))     # not_reported after draft (FY2020 Senate)
+        self.assertEqual(sorted(r["reference_id"] for r in data["bill_report_refs"] if r.get("not_reported") == "TRUE"),
+                         ["BR-LHHS-FY2020-SENATE"])
 
     def test_fy2024_house_reference(self):
         data = json.loads(S.STAGED.read_text())

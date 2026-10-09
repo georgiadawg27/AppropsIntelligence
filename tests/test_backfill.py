@@ -34,7 +34,7 @@ class FormerNamesByYear(unittest.TestCase):
         heads = [o for o in self.data["observations"] if o["canonical_account_id"] == "ACC-HHS-HRSA-PROGRAM-SUPPORT"
                  and not o["component"] and o["verification_status"] != "superseded"]
         printed_pm = {o["fiscal_year"] for o in heads if "printed as 'Program Management'" in o["source_table_or_section"]}
-        self.assertEqual(printed_pm, {2021, 2022})
+        self.assertEqual(printed_pm, {y for y in {o["fiscal_year"] for o in heads} if y <= 2022})
         self.assertFalse([o["observation_id"] for o in heads if o["fiscal_year"] >= 2023
                           and "'Program Management'" in o["source_table_or_section"]])
 
@@ -65,7 +65,9 @@ class OldStructure(unittest.TestCase):
                 y, st = int(key.split("|")[0]), key.split("|")[1]
                 h = head(cell)
                 if y < 2023:
-                    self.assertEqual((h["state"], h.get("note")), ("no_figure", None), (aid, key))
+                    # (a stage no committee reported -- FY2020 Senate -- reads 'not reported': no document at all)
+                    self.assertIn((h["state"], h.get("note")), (("no_figure", None), ("not_reported", None)), (aid, key))
+                    self.assertTrue(h["state"] == "no_figure" or (y, st) == (2020, "Senate Reported"), (aid, key))
                 elif y == 2023 and st != "Enacted":
                     self.assertEqual((h["state"], h.get("note")), ("no_figure", "Funded within PHSSEF in this document."),
                                      (aid, key))
@@ -106,6 +108,18 @@ class RetiredIds(unittest.TestCase):
         # the Title XVIII limitation's absences are retired: its cells before FY2026 read missing
         self.assertFalse([x for x in data["confirmed_absences"]
                           if x["canonical_account_id"] == "ACC-HHS-GP-MEDICARE-LIMITATION"])
+
+
+class NotReported(unittest.TestCase):
+    """A stage no committee reported -- no bill, no report, no draft (Bill Report Reference not_reported, FY2020
+    Senate) -- reads 'not reported' in every account's cell, never missing."""
+
+    def test_fy2020_senate(self):
+        rows = published()
+        states = {line["state"] for r in rows.values() for line in r["cells"].get("2020|Senate Reported", {}).get("lines", [])}
+        self.assertEqual(states, {"not_reported"})
+        counts = json.loads((ROOT / "docs" / "data" / "subcommittees" / "LHHS.json").read_text())["state_counts"]
+        self.assertGreaterEqual(counts["not_reported"], len(rows))           # (and the Title II total row)
 
 
 if __name__ == "__main__":

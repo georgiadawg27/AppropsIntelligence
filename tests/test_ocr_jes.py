@@ -11,6 +11,7 @@ workbook, keyed by canonical account; the Title III total from H.Rept.
 (recorded live 2026-09-25), so nothing here calls the API.
 """
 
+import os
 import json
 import shutil
 import sys
@@ -184,7 +185,9 @@ class VisionFallbackMechanics(unittest.TestCase):
                 err = ex.VisionError("no upright rendering")
                 err.usage = {"input_tokens": 10, "output_tokens": 5, "seconds": 0.1, "model": "m", "attempts": 2}
                 raise err
-            with mock.patch.object(ex, "_client", return_value=object()), \
+            # a stand-in key: the client and the page call are mocked, so nothing is sent
+            with mock.patch.dict(os.environ, {"ANTHROPIC_API_KEY": "test-not-a-key"}), \
+                    mock.patch.object(ex, "_client", return_value=object()), \
                     mock.patch.object(ex, "transcribe_page", side_effect=fail):
                 r1 = ex.run(pdf, cache_dir=d / "cache", out_dir=d / "out", verbose=False)
                 r2 = ex.run(pdf, cache_dir=d / "cache", out_dir=d / "out", verbose=False)

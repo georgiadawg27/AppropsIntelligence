@@ -148,6 +148,18 @@
   "coverage": {
    "cells": [
     [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
      2021,
      "Enacted"
     ],
@@ -252,7 +264,13 @@
      "President's Budget"
     ]
    ],
-   "enacted_through": 2026
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
   },
   "historical_names": [],
   "missing_cells": [
@@ -339,11 +357,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-NIH-NIDA",
     "other_fiscal_years": [
-     2021,
+     2020,
      2027
     ],
     "other_name": "National Institute on Drug Abuse",
-    "other_observations": 26,
+    "other_observations": 29,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0005",
     "relationship_type": "consolidated",
@@ -358,11 +376,11 @@
     "human_reviewed": 0,
     "other_account_id": "ACC-HHS-NIH-NIAAA",
     "other_fiscal_years": [
-     2021,
+     2020,
      2027
     ],
     "other_name": "National Institute on Alcohol Abuse and Alcoholism",
-    "other_observations": 26,
+    "other_observations": 29,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0006",
     "relationship_type": "consolidated",
@@ -370,6 +388,7 @@
    }
   ],
   "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
    "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
    "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
    "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"

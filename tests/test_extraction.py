@@ -219,7 +219,7 @@ class VisionOrchestration(unittest.TestCase):
                     for f in (FIXTURES / "CRPT-119hrpt652").glob("p*.json")}
         calls = []
 
-        def fake_call(client, model, system, content, schema, effort, max_tokens, use_fallbacks):
+        def fake_call(client, model, system, content, schema, effort, max_tokens, use_fallbacks, page_label="page"):
             # which page? the fake client carries it
             page = client.current_page
             kind = "transcribe" if schema is ex.TRANSCRIBE_SCHEMA else "classify"
