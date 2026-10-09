@@ -42,11 +42,11 @@ MEDOPS, NEF, ADOPT, CCPF, LIHEAP = ("ACC-HHS-GP-MEDICARE-OPERATIONS", "ACC-HHS-G
 DOCS = {
     "SRC-BILLS-115HR6470RH": dict(
         file="BILLS-115hr6470rh.pdf", label="H.R. 6470 (reported)", publication_date="2018-07-23",
-        stage="House Reported", congress_session="115-2", document_type="bill", source_page="48-114",
+        stage="House Reported", congress_session="115-2", document_type="bill", source_page="48-114; 173",
         source_agency="U.S. House of Representatives (bill; govinfo BILLS collection)", sha="e8057d59fb43fc5e",
         url="https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
         notes="H.R. 6470 as reported (BILLS-115hr6470rh): the FY2019 House Labor-HHS bill (H.Rept. 115-862); Title II "
-              "is PDF pp. 48-114, Title V (General Provisions) pp. 157-176."),
+              "is PDF pp. 48-114, Title V (General Provisions) pp. 157-176; p.173 holds sec. 530 (the NEF rescission)."),
     "SRC-BILLS-115S3158PCS": dict(
         file="BILLS-115s3158pcs.pdf", label="S. 3158 (placed on calendar)", publication_date="2018-06-28",
         stage="Senate Reported", congress_session="115-2", document_type="bill", source_page="48-112",
