@@ -769,8 +769,9 @@ YEARS[2017] = {
          "also_covers": "FY2017 President's Budget",
          "notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). "
                   "Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. "
-                  "231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), PAGES_H re-read by vision "
-                  "where it failed the table's arithmetic."},
+                  "231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read "
+                  "by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring "
+                  "expenses fund (rescission)') read from its page image."},
         {"document_id": "SRC-CRPT-114SRPT274", "source_agency": "Senate Committee on Appropriations",
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
          "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
@@ -778,8 +779,9 @@ YEARS[2017] = {
          "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "233-249",
          "also_covers": "FY2017 President's Budget",
          "notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). "
-                  "Text layer; page citations are PDF page numbers. PAGES_S Title II pages sent to vision by the "
-                  "arithmetic gate."},
+                  "Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the "
+                  "arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column "
+                  "headers)."},
     ],
     "brr": [
         {"reference_id": "BR-LHHS-FY2017-HOUSE", "stage": "House Reported", "bill_id": "H.R.5926",
