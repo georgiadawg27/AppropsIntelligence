@@ -641,25 +641,26 @@
        "missing": false,
        "observations": [
         {
-         "amount": 6533241000,
+         "amount": 7143241000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+         "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 6,533,241 thousand (p.335).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
-         "confidence": 0.5,
+         "confidence": 0.95,
          "document_fiscal_year": 2020,
          "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
          "document_stage": "House Reported",
          "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "extraction_method": "derived",
          "fiscal_year": 2019,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-3264",
+         "observation_id": "OBS-LHHS-3715",
          "offsetting_collections": 0,
          "publication_date": "2019-05-16",
          "report_id": "N/A",
@@ -667,44 +668,19 @@
          "source_agency": "House Committee on Appropriations",
          "source_document_id": "SRC-CRPT-116HRPT62",
          "source_page": "335",
-         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control' [FY 2019 Enacted]",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- derived, not a printed line: H.Rept. 116-62 p.335 6,533,241 + the Strategic National Stockpile's 610,000 (thousands; P.L. 115-245 p.93 appropriates it to CDC) -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 6,533,241 thousand (p.335).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
          "validation": [
           {
-           "human_review_status": "resolved",
-           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
-           "result": "flag",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13478"
-          },
-          {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13479"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13480"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13481"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13705"
+           "validation_id": "VAL-LHHS-15534"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -719,7 +695,7 @@
        "missing": false,
        "observations": [
         {
-         "amount": 7337741000,
+         "amount": 7947741000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
@@ -734,10 +710,10 @@
          "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
          "document_stage": "House Reported",
          "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "extraction_method": "derived",
          "fiscal_year": 2019,
-         "headline_observation_id": "OBS-LHHS-3264",
-         "observation_id": "OBS-LHHS-3265",
+         "headline_observation_id": "OBS-LHHS-3715",
+         "observation_id": "OBS-LHHS-3716",
          "offsetting_collections": 0,
          "publication_date": "2019-05-16",
          "report_id": "N/A",
@@ -745,7 +721,7 @@
          "source_agency": "House Committee on Appropriations",
          "source_document_id": "SRC-CRPT-116HRPT62",
          "source_page": "335",
-         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control Program Level' [FY 2019 Enacted]",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- derived, not a printed line: H.Rept. 116-62 p.335 program level 7,337,741 + 610,000 (the Strategic National Stockpile, P.L. 115-245 p.93)",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
@@ -754,19 +730,7 @@
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13482"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13483"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13484"
+           "validation_id": "VAL-LHHS-15535"
           }
          ],
          "verification_status": "auto-validated"
@@ -6799,6 +6763,7 @@
     "source_page": "335",
     "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3715",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -6834,7 +6799,49 @@
       "validation_id": "VAL-LHHS-13705"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 7143241000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 6,533,241 thousand (p.335).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3715",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "335",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- derived, not a printed line: H.Rept. 116-62 p.335 6,533,241 + the Strategic National Stockpile's 610,000 (thousands; P.L. 115-245 p.93 appropriates it to CDC) -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 6,533,241 thousand (p.335).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15534"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 7337741000,
@@ -6865,6 +6872,7 @@
     "source_page": "335",
     "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Total, Centers for Disease Control Program Level' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3716",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -6885,6 +6893,47 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-13484"
+     }
+    ],
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 7947741000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2019,
+    "headline_observation_id": "OBS-LHHS-3715",
+    "observation_id": "OBS-LHHS-3716",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "335",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- derived, not a printed line: H.Rept. 116-62 p.335 program level 7,337,741 + 610,000 (the Strategic National Stockpile, P.L. 115-245 p.93)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15535"
      }
     ],
     "verification_status": "auto-validated"

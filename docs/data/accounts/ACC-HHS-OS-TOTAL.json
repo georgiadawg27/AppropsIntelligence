@@ -675,25 +675,26 @@
        "missing": false,
        "observations": [
         {
-         "amount": 4102842000,
+         "amount": 3492842000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 4,102,842 thousand (p.357).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
-         "confidence": 0.5,
+         "confidence": 0.95,
          "document_fiscal_year": 2020,
          "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
          "document_stage": "House Reported",
          "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "extraction_method": "derived",
          "fiscal_year": 2019,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-3321",
+         "observation_id": "OBS-LHHS-3717",
          "offsetting_collections": 0,
          "publication_date": "2019-05-16",
          "report_id": "N/A",
@@ -701,44 +702,19 @@
          "source_agency": "House Committee on Appropriations",
          "source_document_id": "SRC-CRPT-116HRPT62",
          "source_page": "357",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2019 Enacted]",
+         "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.Rept. 116-62 p.357 4,102,842 - the Strategic National Stockpile's 610,000 (thousands; P.L. 115-245 p.93 appropriates it to CDC) -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 4,102,842 thousand (p.357).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
          "validation": [
           {
-           "human_review_status": "resolved",
-           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
-           "result": "flag",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13668"
-          },
-          {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13669"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13670"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13671"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13710"
+           "validation_id": "VAL-LHHS-15536"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -753,7 +729,7 @@
        "missing": false,
        "observations": [
         {
-         "amount": 4167670000,
+         "amount": 3557670000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
@@ -768,10 +744,10 @@
          "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
          "document_stage": "House Reported",
          "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "extraction_method": "derived",
          "fiscal_year": 2019,
-         "headline_observation_id": "OBS-LHHS-3321",
-         "observation_id": "OBS-LHHS-3322",
+         "headline_observation_id": "OBS-LHHS-3717",
+         "observation_id": "OBS-LHHS-3718",
          "offsetting_collections": 0,
          "publication_date": "2019-05-16",
          "report_id": "N/A",
@@ -779,7 +755,7 @@
          "source_agency": "House Committee on Appropriations",
          "source_document_id": "SRC-CRPT-116HRPT62",
          "source_page": "357",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary Program Level' [FY 2019 Enacted]",
+         "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.Rept. 116-62 p.357 program level 4,167,670 - 610,000 (the Strategic National Stockpile, P.L. 115-245 p.93)",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
@@ -787,26 +763,8 @@
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13672"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13673"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13674"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13675"
+           "validation_id": "VAL-LHHS-15537"
           }
          ],
          "verification_status": "auto-validated"
@@ -3255,24 +3213,25 @@
        "missing": false,
        "observations": [
         {
-         "amount": 1708161000,
+         "amount": 5337838000,
          "amount_type": "budget authority",
          "bill_id": "P.L.117-328",
          "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
          "canonical_account_id": "ACC-HHS-OS-TOTAL",
+         "cell_note": "S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 1,708,161 thousand (p.392).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
-         "confidence": 0.5,
+         "confidence": 0.95,
          "document_fiscal_year": 2024,
          "document_stage": "Senate Reported",
          "document_type": "committee_report",
-         "extraction_method": "text-extracted",
+         "extraction_method": "derived",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-0386",
+         "observation_id": "OBS-LHHS-3720",
          "offsetting_collections": 0,
          "publication_date": "2023-07-27",
          "report_id": "N/A",
@@ -3280,45 +3239,19 @@
          "source_agency": "Senate Committee on Appropriations",
          "source_document_id": "SRC-CRPT-118SRPT84",
          "source_page": "392",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2023 appropriation]",
+         "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: S.Rept. 118-84 p.392 1,708,161 + ASPR's restated 3,629,677 (p.390), funded under the Office of the Secretary's PHSSEF heading in P.L. 117-328 -- Note: S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 1,708,161 thousand (p.392).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
          "validation": [
           {
-           "human_review_status": "resolved",
-           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
-           "result": "flag",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-01590"
-          },
-          {
-           "human_review_status": "resolved",
-           "resolution": "informational: the funding split printed under this total (Federal Funds + Trust Funds) sums exactly to it; the flag comes from the 'of which' lines in the same memo list",
-           "result": "flag",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01591"
-          },
-          {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-01592"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-01593"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-01594"
+           "validation_id": "VAL-LHHS-15540"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -7110,6 +7043,7 @@
     "source_page": "357",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3717",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -7145,7 +7079,49 @@
       "validation_id": "VAL-LHHS-13710"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 3492842000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 4,102,842 thousand (p.357).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3717",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "357",
+    "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.Rept. 116-62 p.357 4,102,842 - the Strategic National Stockpile's 610,000 (thousands; P.L. 115-245 p.93 appropriates it to CDC) -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 4,102,842 thousand (p.357).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15536"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 4167670000,
@@ -7176,6 +7152,7 @@
     "source_page": "357",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary Program Level' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3718",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -7202,6 +7179,47 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-13675"
+     }
+    ],
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 3557670000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2019,
+    "headline_observation_id": "OBS-LHHS-3717",
+    "observation_id": "OBS-LHHS-3718",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT62",
+    "source_page": "357",
+    "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.Rept. 116-62 p.357 program level 4,167,670 - 610,000 (the Strategic National Stockpile, P.L. 115-245 p.93)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15537"
      }
     ],
     "verification_status": "auto-validated"
@@ -9109,6 +9127,7 @@
     "source_page": "392",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, Office of the Secretary' [2023 appropriation]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3720",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
@@ -9145,7 +9164,48 @@
       "validation_id": "VAL-LHHS-01594"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 5337838000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-HHS-OS-TOTAL",
+    "cell_note": "S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 1,708,161 thousand (p.392).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3720",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "392",
+    "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: S.Rept. 118-84 p.392 1,708,161 + ASPR's restated 3,629,677 (p.390), funded under the Office of the Secretary's PHSSEF heading in P.L. 117-328 -- Note: S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 1,708,161 thousand (p.392).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15540"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 2096130000,

@@ -1118,6 +1118,23 @@ def relationship_cites(conn, evidence):
     return {"cites": out} if out else {}
 
 
+# a relationship's evidence can name cells whose corner shows a note (owner, 2026-10-09: a proposed move's stages, the
+# first year after an actual move, a year a later report restates): 'Cell note (<account> FY<year> <stage>): <text>'
+CELL_NOTE_RE = re.compile(r"Cell note \((ACC-[A-Z0-9-]+) FY(\d{4}) ([^)]+)\): (.+?)(?= Cell note \(|$)")
+
+
+def relationship_cell_notes(rels, account_id):
+    """-> {(fiscal_year, stage): [note, ...]} for one account, from its relationships' evidence."""
+    out = {}
+    for r in rels:
+        for aid, y, st, note in CELL_NOTE_RE.findall(r.get("evidence") or ""):
+            if aid == account_id:
+                out.setdefault((int(y), st.strip()), [])
+                if note.strip() not in out[(int(y), st.strip())]:
+                    out[(int(y), st.strip())].append(note.strip())
+    return out
+
+
 def split_before(rel):
     """A confirmed (human-reviewed) split_from relationship read from the new account's side: before its first
     figure the account's money was inside the other account (ASPR's inside PHSSEF), so those years have no figure
@@ -1137,18 +1154,39 @@ def old_structure(h, first, cells):
     eff = min(int(r["effective_fiscal_year"]) for r in split)
     m = next((re.search(r"Funded within (.+?) before FY\d{4}\.", r["evidence"] or "") for r in split), None)
     inside = m.group(1) if m else next(r["other_name"] for r in split)
+    # a year a later document restates in the new structure (its figure retired for the law's structure, a cell note
+    # saying so) counts as the first year the documents speak of the account
+    noted = [y for y, _ in relationship_cell_notes(split, h["account"]["canonical_account_id"])]
+    first = min([y for y in [first] + noted if y is not None], default=None)
     for key, cell in cells.items():
         y = int(key.split("|")[0])
         if y >= eff:
             continue
         lines = []
         for l in cell["lines"]:
-            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total"):
+            if not l["observations"] and l["state"] in ("missing", "not_funded", "no_printed_total", "no_figure"):
                 l = dict(l, state="no_figure", missing=False)
                 if first is not None and y >= first:
                     l["note"] = f"Funded within {inside} in this document."
             lines.append(l)
         cell["lines"] = lines
+
+
+def relationship_notes(h, cells):
+    """The relationship cell notes (relationship_cell_notes) on a cell with no figure of its own: on its headline
+    line (a cell with a figure carries them on the observation, history())."""
+    notes = relationship_cell_notes(h["relationships"], h["account"]["canonical_account_id"])
+    for (y, st), ns in notes.items():
+        cell = cells.get(f"{y}|{st}")
+        if not cell:
+            continue
+        for i, l in enumerate(cell["lines"]):
+            if l["observations"] or l["amount_type"] != "budget authority" or l["component"] is not None:
+                continue
+            have = l.get("note") or ""
+            add = [n for n in ns if n not in have]
+            if add:
+                cell["lines"][i] = dict(l, note=" ".join([have] + add if have else add))
 
 
 def history(conn, account_id):
@@ -1246,12 +1284,19 @@ def history(conn, account_id):
     current = [x for x in obs if x["verification_status"] != "superseded"]
     for r in rels:
         if split_before(r) and "Note: " in (r["evidence"] or "") and current:
-            note = r["evidence"][r["evidence"].index("Note: ") + 6:]
+            note = r["evidence"][r["evidence"].index("Note: ") + 6:].split(" Cell note (")[0]
             y0 = min(x["fiscal_year"] for x in current)
             for x in current:
                 if x["fiscal_year"] == y0 and x["amount_type"] == "budget authority" and x["component"] is None \
                         and note not in (x.get("cell_note") or ""):
                     x["cell_note"] = " ".join(n for n in (x.get("cell_note"), note) if n)
+    for (y, st), ns in relationship_cell_notes(rels, account_id).items():
+        head = next((x for x in current if (x["fiscal_year"], x["stage"]) == (y, st)
+                     and x["amount_type"] == "budget authority" and x["component"] is None), None)
+        if head:
+            for n in ns:
+                if n not in (head.get("cell_note") or ""):
+                    head["cell_note"] = " ".join(x for x in (head.get("cell_note"), n) if x)
     obs.sort(key=lambda o: (o["fiscal_year"], stage_rank[o["stage"]], o["amount_type"] != "budget authority",
                             o["amount_type"], o["component"] is not None, o["component"] or "", o["observation_id"]))
     absences = [dict(r) for r in conn.execute(
@@ -1624,6 +1669,7 @@ def subcommittee_grid(conn, subcommittee):
                                       "observations": [], "absence": None})
                     cells[f"{y}|{st}"] = {"outside_history": True, "lines": lines}
         old_structure(h, first, cells)
+        relationship_notes(h, cells)
         return {"account": a, "rollup": scope[a["canonical_account_id"]], "rollup_members": [], "member_of": None,
                 "historical_names": [n["former_name"] for n in h["historical_names"]],
                 "relationships": [{k: r[k] for k in ("relationship_id", "from_account_id", "relationship_type",

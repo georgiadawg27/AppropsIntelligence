@@ -30,6 +30,11 @@ TABS = {"Account": "account", "Historical Name": "historical_name", "Source Docu
         "Validation Record": "validation_record", "Component": "component"}
 
 
+# IDs the owner retired (reference/review/lhhs/retired_ids.json): an older CSV row under one never comes back
+RETIRED = {i for v in __import__("json").loads((HERE.parent / "retired_ids.json").read_text()).values()
+           if isinstance(v, dict) for i in v}
+
+
 def merged(workbook, out):
     import openpyxl
     # values, not formulas: v28's bill_id / URL columns are lookups whose cached
@@ -54,7 +59,7 @@ def merged(workbook, out):
         # never duplicated or overwritten: v30 on already carries these rows, v28 didn't
         have = {str(ws.cell(row=i, column=1).value) for i in range(2, ws.max_row + 1)}
         for r in rows:
-            if r[head[0]] not in have:
+            if r[head[0]] not in have and r[head[0]] not in RETIRED:
                 ws.append([convert(r.get(h)) for h in head])
     wb.save(out)
 

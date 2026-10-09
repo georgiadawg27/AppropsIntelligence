@@ -345,66 +345,55 @@
        "missing": false,
        "observations": [
         {
-         "amount": 2631458000,
+         "amount": 2021458000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 2,631,458 thousand (p.357).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
-         "document_fiscal_year": 2020,
-         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_fiscal_year": 2019,
+         "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
          "fiscal_year": 2019,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-3320",
+         "observation_id": "OBS-LHHS-3714",
          "offsetting_collections": 0,
-         "publication_date": "2019-05-16",
+         "publication_date": "2018-09-28",
          "report_id": "N/A",
          "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-116HRPT62",
-         "source_page": "357",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2019 Enacted]",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-115PUBL245",
+         "source_page": "108-109",
+         "source_table_or_section": "Division B, Title II, Office of the Secretary, 'Public Health and Social Services Emergency Fund' (132 Stat. 3088-3089) -- its three paragraphs $1,026,458,000 + $735,000,000 + $260,000,000 = $2,021,458,000 [law text] -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 2,631,458 thousand (p.357).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-13664"
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15532"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13665"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13666"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13667"
+           "validation_id": "VAL-LHHS-15533"
           },
           {
            "human_review_status": null,
            "result": "info",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-13871"
+           "validation_id": "VAL-LHHS-15542"
           }
          ],
          "verification_status": "auto-validated"
@@ -430,6 +419,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -510,6 +500,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2019-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -675,6 +666,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -760,6 +752,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -839,6 +832,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -1573,65 +1567,55 @@
        "missing": false,
        "observations": [
         {
-         "amount": 137892000,
+         "amount": 3767569000,
          "amount_type": "budget authority",
          "bill_id": "P.L.117-328",
          "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
          "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+         "cell_note": "S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): PHSSEF 137,892 + ASPR 3,629,677 thousand (pp.389-392).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
-         "document_fiscal_year": 2024,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
+         "document_fiscal_year": 2023,
+         "document_notes": "Consolidated Appropriations Act, 2023; Division H (Labor-HHS) is PDF pp. 376-454; the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading is pp. 419-420. sha256 6e063f9299ced827... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
          "extraction_method": "text-extracted",
          "fiscal_year": 2023,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-1655",
+         "observation_id": "OBS-LHHS-3719",
          "offsetting_collections": 0,
-         "publication_date": "2023-07-27",
+         "publication_date": "2022-12-29",
          "report_id": "N/A",
          "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT84",
-         "source_page": "392",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [2023 appropriation]",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-117PUBL328",
+         "source_page": "419-420",
+         "source_table_or_section": "Division H, Title II, Office of the Secretary, 'Public Health and Social Services Emergency Fund' (136 Stat. 4877-4878) -- its four paragraphs $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000 [law text] -- Note: S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): PHSSEF 137,892 + ASPR 3,629,677 thousand (pp.389-392).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-06361"
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15538"
           },
           {
            "human_review_status": null,
            "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-06362"
+           "validation_id": "VAL-LHHS-15539"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-06363"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-06364"
-          },
-          {
-           "human_review_status": null,
-           "result": "info",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-07246"
+           "validation_id": "VAL-LHHS-15543"
           }
          ],
          "verification_status": "auto-validated"
@@ -2996,6 +2980,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2019-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
     "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -3062,6 +3047,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
     "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -3216,6 +3202,7 @@
     "source_page": "357",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3714",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -3250,6 +3237,60 @@
       "validation_id": "VAL-LHHS-13871"
      }
     ],
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 2021458000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 2,631,458 thousand (p.357).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2019,
+    "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3714",
+    "offsetting_collections": 0,
+    "publication_date": "2018-09-28",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL245",
+    "source_page": "108-109",
+    "source_table_or_section": "Division B, Title II, Office of the Secretary, 'Public Health and Social Services Emergency Fund' (132 Stat. 3088-3089) -- its three paragraphs $1,026,458,000 + $735,000,000 + $260,000,000 = $2,021,458,000 [law text] -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 2,631,458 thousand (p.357).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15532"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15533"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-15542"
+     }
+    ],
     "verification_status": "auto-validated"
    },
    {
@@ -3259,6 +3300,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
     "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -3318,6 +3360,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
     "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -3383,6 +3426,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
     "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
     "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -4198,6 +4242,7 @@
     "source_page": "392",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, PHSSEF' [2023 appropriation]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3719",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
     "validation": [
@@ -4230,6 +4275,60 @@
       "result": "info",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-07246"
+     }
+    ],
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 3767569000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-HHS-OS-PHSSEF",
+    "cell_note": "S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): PHSSEF 137,892 + ASPR 3,629,677 thousand (pp.389-392).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "Consolidated Appropriations Act, 2023; Division H (Labor-HHS) is PDF pp. 376-454; the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading is pp. 419-420. sha256 6e063f9299ced827... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3719",
+    "offsetting_collections": 0,
+    "publication_date": "2022-12-29",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-117PUBL328",
+    "source_page": "419-420",
+    "source_table_or_section": "Division H, Title II, Office of the Secretary, 'Public Health and Social Services Emergency Fund' (136 Stat. 4877-4878) -- its four paragraphs $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000 [law text] -- Note: S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): PHSSEF 137,892 + ASPR 3,629,677 thousand (pp.389-392).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15538"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15539"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-15543"
      }
     ],
     "verification_status": "auto-validated"
@@ -4661,16 +4760,16 @@
     "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Through FY2023 ASPR's programs were funded within PHSSEF: P.L. 117-328 appropriates them under its PHSSEF heading (owner, 2026-10-09: Enacted follows the law; ASPR's FY2023 Enacted figures, S.Rept. 118-84's restatement, retired). Note: Funded within PHSSEF before FY2024. Cell note (ACC-HHS-ASPR-RDP FY2023 Enacted): S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 3,062,991 thousand (p.389).",
     "from_account_id": "ACC-HHS-ASPR-RDP",
     "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-RDP",
     "other_fiscal_years": [
-     2023,
+     2024,
      2027
     ],
     "other_name": "Research, Development, and Procurement",
-    "other_observations": 15,
+    "other_observations": 14,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0009",
     "relationship_type": "split_from",
@@ -4680,16 +4779,16 @@
     "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Through FY2023 ASPR's programs were funded within PHSSEF: P.L. 117-328 appropriates them under its PHSSEF heading (owner, 2026-10-09: Enacted follows the law; ASPR's FY2023 Enacted figures, S.Rept. 118-84's restatement, retired). Note: Funded within PHSSEF before FY2024. Cell note (ACC-HHS-ASPR-OPER FY2023 Enacted): S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 566,686 thousand (p.390).",
     "from_account_id": "ACC-HHS-ASPR-OPER",
     "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-OPER",
     "other_fiscal_years": [
-     2023,
+     2024,
      2027
     ],
     "other_name": "Operations, Preparedness, and Emergency Response",
-    "other_observations": 15,
+    "other_observations": 14,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0010",
     "relationship_type": "split_from",
@@ -4699,19 +4798,57 @@
     "confidence": 1.0,
     "direction": "to",
     "effective_fiscal_year": 2024,
-    "evidence": "ASPR's agency total, split from PHSSEF with its two accounts (REL-LHHS-0009, REL-LHHS-0010). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "evidence": "ASPR's agency total, split from PHSSEF with its two accounts (REL-LHHS-0009, REL-LHHS-0010). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Through FY2023 ASPR's programs were funded within PHSSEF: P.L. 117-328 appropriates them under its PHSSEF heading (owner, 2026-10-09: Enacted follows the law; ASPR's FY2023 Enacted figures, S.Rept. 118-84's restatement, retired). Note: Funded within PHSSEF before FY2024. Cell note (ACC-HHS-ASPR-TOTAL FY2023 Enacted): S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 3,629,677 thousand (p.390).",
     "from_account_id": "ACC-HHS-ASPR-TOTAL",
     "human_reviewed": 1,
     "other_account_id": "ACC-HHS-ASPR-TOTAL",
     "other_fiscal_years": [
-     2023,
+     2024,
      2027
     ],
     "other_name": "Administration for Strategic Preparedness and Response (agency total)",
-    "other_observations": 15,
+    "other_observations": 14,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0016",
     "relationship_type": "split_from",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   },
+   {
+    "confidence": 1.0,
+    "direction": "to",
+    "effective_fiscal_year": 2019,
+    "evidence": "Proposed, not enacted (FY2019 President's Budget and House bill). The request moved the Strategic National Stockpile from CDC's 'Public Health Preparedness and Response' to PHSSEF/ASPR (H.Rept. 115-862 p.384: 575,000; CDC PHPR 800,000, p.363); H.R. 6470 did too ($710,000,000 under PHSSEF, p.93; H.Rept. 115-862 p.384). S. 3158 (p.57: $1,470,000,000, of which $610,000,000 for the SNS) and P.L. 115-245 (p.93: $1,465,200,000, of which $610,000,000) kept it in CDC. Recorded by the owner's rule (2026-10-09): stages of one year with different structures. Cell note (ACC-HHS-CDC-PREPAREDNESS FY2019 President's Budget): Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-OS-PHSSEF FY2019 President's Budget): Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-CDC-PREPAREDNESS FY2019 House Reported): Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-OS-PHSSEF FY2019 House Reported): Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
+    "from_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "other_fiscal_years": [
+     2018,
+     2027
+    ],
+    "other_name": "Public Health Preparedness and Response",
+    "other_observations": 38,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0017",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   },
+   {
+    "confidence": 1.0,
+    "direction": "to",
+    "effective_fiscal_year": 2020,
+    "evidence": "The Strategic National Stockpile moved from CDC's 'Public Health Preparedness and Response' to PHSSEF (ASPR) in FY2020: P.L. 116-94 div. A appropriates it under PHSSEF ('For expenses necessary to carry out section 319F-2(a) of the PHS Act, $705,000,000', p.45), and every FY2020 document prints it there (H.Rept. 116-62 p.356). Through FY2019 the law appropriated it to CDC (P.L. 115-245 p.93). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 Enacted): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 House Reported): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 President's Budget): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 Enacted): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 House Reported): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 President's Budget): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
+    "from_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "other_fiscal_years": [
+     2018,
+     2027
+    ],
+    "other_name": "Public Health Preparedness and Response",
+    "other_observations": 38,
+    "other_status": "active",
+    "relationship_id": "REL-LHHS-0018",
+    "relationship_type": "moved_reclassified",
     "to_account_id": "ACC-HHS-OS-PHSSEF"
    }
   ],

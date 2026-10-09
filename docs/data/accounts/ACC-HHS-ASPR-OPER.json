@@ -14,137 +14,13 @@
        "missing": false,
        "observations": [
         {
-         "amount": 566686000,
-         "amount_type": "budget authority",
-         "bill_id": "P.L.117-328",
-         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
-         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
-         "canonical_account_id": "ACC-HHS-ASPR-OPER",
-         "cell_note": "Funded within PHSSEF before FY2023.",
-         "chamber": "N/A",
-         "component": null,
-         "component_kind": null,
-         "component_label": null,
-         "confidence": 0.5,
-         "document_fiscal_year": 2024,
-         "document_stage": "Senate Reported",
-         "document_type": "committee_report",
-         "extraction_method": "text-extracted",
-         "fiscal_year": 2023,
-         "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-0704",
-         "offsetting_collections": 0,
-         "publication_date": "2023-07-27",
-         "report_id": "N/A",
-         "report_jes_url": "N/A",
-         "source_agency": "Senate Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-118SRPT84",
-         "source_page": "390",
-         "source_table_or_section": "Title II, Administration for Strategic Preparedness and Response -- printed as 'Subtotal, Operations and Emergency Response' [2023 appropriation]",
-         "stage": "Enacted",
-         "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
-         "validation": [
-          {
-           "human_review_status": "resolved",
-           "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02884 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
-           "result": "fail",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-02883"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-02884"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-02885"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-02886"
-          },
-          {
-           "human_review_status": "resolved",
-           "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
-           "result": "flag",
-           "rule_applied": "semantic",
-           "validation_id": "VAL-LHHS-02887"
-          }
-         ],
-         "verification_status": "unverified"
-        }
-       ],
-       "state": "value"
-      }
-     ],
-     "House Reported": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "President's Budget": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ],
-     "Senate Reported": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
-      }
-     ]
-    },
-    "fiscal_year": 2023
-   },
-   {
-    "cells": {
-     "Enacted": [
-      {
-       "absence": null,
-       "adds_to_headline": true,
-       "amount_type": "budget authority",
-       "component": null,
-       "component_kind": null,
-       "component_label": null,
-       "missing": false,
-       "observations": [
-        {
          "amount": 499606000,
          "amount_type": "budget authority",
          "bill_id": "P.L.118-47",
          "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-118publ47/pdf/PLAW-118publ47.pdf",
          "canonical_account_id": "ACC-HHS-ASPR-OPER",
+         "cell_note": "Funded within PHSSEF before FY2024.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -236,6 +112,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
          "canonical_account_id": "ACC-HHS-ASPR-OPER",
+         "cell_note": "Funded within PHSSEF before FY2024.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -322,6 +199,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2024-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
          "canonical_account_id": "ACC-HHS-ASPR-OPER",
+         "cell_note": "Funded within PHSSEF before FY2024.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -402,6 +280,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
          "canonical_account_id": "ACC-HHS-ASPR-OPER",
+         "cell_note": "Funded within PHSSEF before FY2024.",
          "chamber": "Senate",
          "component": null,
          "component_kind": null,
@@ -1529,88 +1408,8 @@
    ]
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
-   {
-    "amount": 566686000,
-    "amount_type": "budget authority",
-    "bill_id": "P.L.117-328",
-    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
-    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
-    "canonical_account_id": "ACC-HHS-ASPR-OPER",
-    "cell_note": "Funded within PHSSEF before FY2023.",
-    "chamber": "N/A",
-    "component": null,
-    "component_kind": null,
-    "component_label": null,
-    "confidence": 0.5,
-    "document_fiscal_year": 2024,
-    "document_stage": "Senate Reported",
-    "document_type": "committee_report",
-    "extraction_method": "text-extracted",
-    "fiscal_year": 2023,
-    "headline_observation_id": null,
-    "observation_id": "OBS-LHHS-0704",
-    "offsetting_collections": 0,
-    "publication_date": "2023-07-27",
-    "report_id": "N/A",
-    "report_jes_url": "N/A",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-118SRPT84",
-    "source_page": "390",
-    "source_table_or_section": "Title II, Administration for Strategic Preparedness and Response -- printed as 'Subtotal, Operations and Emergency Response' [2023 appropriation]",
-    "stage": "Enacted",
-    "transfer_link_account_id": null,
-    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
-    "validation": [
-     {
-      "human_review_status": "resolved",
-      "resolution": "parse artifact: the lines grouped under this total do not match the printed table's structure; the figure is confirmed by VAL-LHHS-02884 (the printed change column [Senate Committee recommendation compared with (+ or -) 2023 appropriation])",
-      "result": "fail",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-02883"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "structural",
-      "validation_id": "VAL-LHHS-02884"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "source_text",
-      "validation_id": "VAL-LHHS-02885"
-     },
-     {
-      "human_review_status": null,
-      "result": "pass",
-      "rule_applied": "unit",
-      "validation_id": "VAL-LHHS-02886"
-     },
-     {
-      "human_review_status": "resolved",
-      "resolution": "routine: budget authority on the 'Subtotal, Operations and Emergency Response' row that defines this account",
-      "result": "flag",
-      "rule_applied": "semantic",
-      "validation_id": "VAL-LHHS-02887"
-     }
-    ],
-    "verification_status": "unverified"
-   },
    {
     "amount": 656790000,
     "amount_type": "budget authority",
@@ -1618,6 +1417,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2024-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP.pdf",
     "canonical_account_id": "ACC-HHS-ASPR-OPER",
+    "cell_note": "Funded within PHSSEF before FY2024.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -1684,6 +1484,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2024-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr5894ih/pdf/BILLS-118hr5894ih.pdf",
     "canonical_account_id": "ACC-HHS-ASPR-OPER",
+    "cell_note": "Funded within PHSSEF before FY2024.",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -1756,6 +1557,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
     "canonical_account_id": "ACC-HHS-ASPR-OPER",
+    "cell_note": "Funded within PHSSEF before FY2024.",
     "chamber": "Senate",
     "component": null,
     "component_kind": null,
@@ -1828,6 +1630,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2024-ENACTED",
     "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-118publ47/pdf/PLAW-118publ47.pdf",
     "canonical_account_id": "ACC-HHS-ASPR-OPER",
+    "cell_note": "Funded within PHSSEF before FY2024.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -2581,18 +2384,6 @@
   ],
   "open_cells": [
    [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Senate Reported"
-   ],
-   [
     2027,
     "Senate Reported"
    ],
@@ -2606,7 +2397,7 @@
     "confidence": 1.0,
     "direction": "from",
     "effective_fiscal_year": 2024,
-    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Before FY2023 ASPR's programs were funded within PHSSEF. Note: Funded within PHSSEF before FY2023.",
+    "evidence": "Not confirmed (owner, 2026-10-06). Proposed type, from explicit text: split_from -- FY2024 Budget Appendix (BUDGET-2024-APP, HHS chapter granule BUDGET-2024-APP-1-10, PDF pp. 59 and 64): 'The 2024 Budget requests resources for the Administration for Strategic Preparedness and Response (ASPR) in a new account, separate from PHSSEF where funding has historically been appropriated.' P.L. 117-328 (FY2023) funds the preparedness programs under the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading (p.419); P.L. 118-47 (FY2024) has no such heading and an 'Administration for Strategic Preparedness and Response' with this heading (p.211). Confirmed by the owner's test (2026-10-08), run on the first restated year: the FY2023 reports' FY2022 column prints no ASPR structure ('Total, PHSSEF' 3,199,678: H.Rept. 117-403 p.836; the FY2023 Senate draft p.419), so the FY2024 report's FY2023 column was used: S.Rept. 118-84 restates FY2023 as ASPR 3,629,677 (Research, Development, and Procurement 3,062,991 + Operations, Preparedness, and Emergency Response 566,686; pp.389-390) + a residual PHSSEF 137,892 (p.392) = 3,767,569 (thousands), exactly the FY2023 law's PHSSEF paragraphs (P.L. 117-328 div. H: $1,647,569,000 + $820,000,000 + $965,000,000 + $335,000,000 = $3,767,569,000). Through FY2023 ASPR's programs were funded within PHSSEF: P.L. 117-328 appropriates them under its PHSSEF heading (owner, 2026-10-09: Enacted follows the law; ASPR's FY2023 Enacted figures, S.Rept. 118-84's restatement, retired). Note: Funded within PHSSEF before FY2024. Cell note (ACC-HHS-ASPR-OPER FY2023 Enacted): S.Rept. 118-84 restates FY2023 in the FY2024 structure (ASPR separate from PHSSEF): 566,686 thousand (p.390).",
     "from_account_id": "ACC-HHS-ASPR-OPER",
     "human_reviewed": 1,
     "other_account_id": "ACC-HHS-OS-PHSSEF",
@@ -2615,7 +2406,7 @@
      2025
     ],
     "other_name": "Public Health and Social Services Emergency Fund",
-    "other_observations": 29,
+    "other_observations": 31,
     "other_status": "inactive",
     "relationship_id": "REL-LHHS-0010",
     "relationship_type": "split_from",

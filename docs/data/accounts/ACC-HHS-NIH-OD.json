@@ -52,7 +52,8 @@
            "validation_id": "VAL-LHHS-15197"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "The explanatory statement for P.L. 115-141 (Congressional Record, 2018-03-22, House book 3, p.H2735, https://www.govinfo.gov/content/pkg/CREC-2018-03-22/pdf/CREC-2018-03-22-house-bk3.pdf PDF p.39, GPO's text layer) prints the Final Bill column 'Office of the Director' 1,803,293 + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 = 1,815,893 (thousands): our figure (H.Rept. 115-862's FY 2018 Enacted column). S.Rept. 115-289's 2018 appropriation column prints another split of NIH (1,814,745).",
            "result": "flag",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-15348"
@@ -64,7 +65,7 @@
            "validation_id": "VAL-LHHS-15519"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -4472,7 +4473,8 @@
       "validation_id": "VAL-LHHS-15197"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "The explanatory statement for P.L. 115-141 (Congressional Record, 2018-03-22, House book 3, p.H2735, https://www.govinfo.gov/content/pkg/CREC-2018-03-22/pdf/CREC-2018-03-22-house-bk3.pdf PDF p.39, GPO's text layer) prints the Final Bill column 'Office of the Director' 1,803,293 + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 = 1,815,893 (thousands): our figure (H.Rept. 115-862's FY 2018 Enacted column). S.Rept. 115-289's 2018 appropriation column prints another split of NIH (1,814,745).",
       "result": "flag",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-15348"
@@ -4484,7 +4486,7 @@
       "validation_id": "VAL-LHHS-15519"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 12600000,

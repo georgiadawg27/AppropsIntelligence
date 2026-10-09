@@ -311,63 +311,52 @@
        "missing": false,
        "observations": [
         {
-         "amount": 855200000,
+         "amount": 1465200000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
          "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 855,200 thousand (p.335).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
-         "confidence": 0.5,
-         "document_fiscal_year": 2020,
-         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "confidence": 0.95,
+         "document_fiscal_year": 2019,
+         "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
          "fiscal_year": 2019,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-3261",
+         "observation_id": "OBS-LHHS-3713",
          "offsetting_collections": 0,
-         "publication_date": "2019-05-16",
+         "publication_date": "2018-09-28",
          "report_id": "N/A",
          "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-116HRPT62",
-         "source_page": "335",
-         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Public Health Preparedness and Response' [FY 2019 Enacted]",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-115PUBL245",
+         "source_page": "93",
+         "source_table_or_section": "Division B, Title II, Centers for Disease Control and Prevention, 'Public Health Preparedness and Response' (132 Stat. 3073) -- $1,465,200,000, of which $610,000,000 for the Strategic National Stockpile [law text] -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 855,200 thousand (p.335).",
          "stage": "Enacted",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-13471"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-13472"
+           "validation_id": "VAL-LHHS-15531"
           },
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-13473"
-          },
-          {
-           "human_review_status": null,
-           "result": "info",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-13822"
+           "validation_id": "VAL-LHHS-15541"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -390,6 +379,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -463,6 +453,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2019-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -614,6 +605,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -693,6 +685,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "House",
          "component": null,
          "component_kind": null,
@@ -766,6 +759,7 @@
          "bill_report_reference_id": "BR-LHHS-FY2020-PB",
          "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
          "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+         "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
@@ -3197,6 +3191,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2019-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf",
     "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -3256,6 +3251,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2019-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr6470rh/pdf/BILLS-115hr6470rh.pdf",
     "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -3396,6 +3392,7 @@
     "source_page": "335",
     "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Public Health Preparedness and Response' [FY 2019 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-3713",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -3424,7 +3421,55 @@
       "validation_id": "VAL-LHHS-13822"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 1465200000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-245",
+    "bill_report_reference_id": "BR-LHHS-FY2019-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 855,200 thousand (p.335).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2019,
+    "document_notes": "Department of Defense and Labor, Health and Human Services, and Education Appropriations Act, 2019 and Continuing Appropriations Act, 2019; Division B (Labor-HHS) is PDF pp. 68-142, its Title II pp. 88-116. sha256 011a80ff7a5f45cc... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2019,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3713",
+    "offsetting_collections": 0,
+    "publication_date": "2018-09-28",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL245",
+    "source_page": "93",
+    "source_table_or_section": "Division B, Title II, Centers for Disease Control and Prevention, 'Public Health Preparedness and Response' (132 Stat. 3073) -- $1,465,200,000, of which $610,000,000 for the Strategic National Stockpile [law text] -- Note: H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under PHSSEF): 855,200 thousand (p.335).",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ245/pdf/PLAW-115publ245.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15531"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-15541"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 825000000,
@@ -3433,6 +3478,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-PB",
     "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf",
     "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -3486,6 +3532,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
     "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
     "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "House",
     "component": null,
     "component_kind": null,
@@ -3545,6 +3592,7 @@
     "bill_report_reference_id": "BR-LHHS-FY2020-ENACTED",
     "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ94/pdf/PLAW-116publ94.pdf",
     "canonical_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "cell_note": "The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
     "chamber": "N/A",
     "component": null,
     "component_kind": null,
@@ -5119,7 +5167,46 @@
     "Enacted"
    ]
   ],
-  "relationships": [],
+  "relationships": [
+   {
+    "confidence": 1.0,
+    "direction": "from",
+    "effective_fiscal_year": 2019,
+    "evidence": "Proposed, not enacted (FY2019 President's Budget and House bill). The request moved the Strategic National Stockpile from CDC's 'Public Health Preparedness and Response' to PHSSEF/ASPR (H.Rept. 115-862 p.384: 575,000; CDC PHPR 800,000, p.363); H.R. 6470 did too ($710,000,000 under PHSSEF, p.93; H.Rept. 115-862 p.384). S. 3158 (p.57: $1,470,000,000, of which $610,000,000 for the SNS) and P.L. 115-245 (p.93: $1,465,200,000, of which $610,000,000) kept it in CDC. Recorded by the owner's rule (2026-10-09): stages of one year with different structures. Cell note (ACC-HHS-CDC-PREPAREDNESS FY2019 President's Budget): Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-OS-PHSSEF FY2019 President's Budget): Proposed moving the Strategic National Stockpile ($575,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-CDC-PREPAREDNESS FY2019 House Reported): Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC. Cell note (ACC-HHS-OS-PHSSEF FY2019 House Reported): Proposed moving the Strategic National Stockpile ($710,000,000) to PHSSEF/ASPR; the Senate and the enacted law kept it in CDC.",
+    "from_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-OS-PHSSEF",
+    "other_fiscal_years": [
+     2018,
+     2025
+    ],
+    "other_name": "Public Health and Social Services Emergency Fund",
+    "other_observations": 31,
+    "other_status": "inactive",
+    "relationship_id": "REL-LHHS-0017",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   },
+   {
+    "confidence": 1.0,
+    "direction": "from",
+    "effective_fiscal_year": 2020,
+    "evidence": "The Strategic National Stockpile moved from CDC's 'Public Health Preparedness and Response' to PHSSEF (ASPR) in FY2020: P.L. 116-94 div. A appropriates it under PHSSEF ('For expenses necessary to carry out section 319F-2(a) of the PHS Act, $705,000,000', p.45), and every FY2020 document prints it there (H.Rept. 116-62 p.356). Through FY2019 the law appropriated it to CDC (P.L. 115-245 p.93). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 Enacted): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 House Reported): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-CDC-PREPAREDNESS FY2020 President's Budget): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 Enacted): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 House Reported): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000). Cell note (ACC-HHS-OS-PHSSEF FY2020 President's Budget): The Strategic National Stockpile moved from CDC to PHSSEF/ASPR from FY2020 (P.L. 116-94: $705,000,000).",
+    "from_account_id": "ACC-HHS-CDC-PREPAREDNESS",
+    "human_reviewed": 1,
+    "other_account_id": "ACC-HHS-OS-PHSSEF",
+    "other_fiscal_years": [
+     2018,
+     2025
+    ],
+    "other_name": "Public Health and Social Services Emergency Fund",
+    "other_observations": 31,
+    "other_status": "inactive",
+    "relationship_id": "REL-LHHS-0018",
+    "relationship_type": "moved_reclassified",
+    "to_account_id": "ACC-HHS-OS-PHSSEF"
+   }
+  ],
   "stage_notes": {
    "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
    "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",

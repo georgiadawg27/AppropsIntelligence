@@ -50,15 +50,17 @@ def head(cell):
 
 class OldStructure(unittest.TestCase):
     """ASPR's accounts split from PHSSEF (REL-LHHS-0009/0010/0016, confirmed 2026-10-08): a document that funds the
-    programs inside PHSSEF -- every one before the split's effective year, FY2024 -- has no ASPR figure. Before the
-    first figure (FY2023 Enacted, restated by S.Rept. 118-84) the cells read 'no figure'; the FY2023 House, request
-    and Senate cells too, with the note 'Funded within PHSSEF in this document.'"""
+    programs inside PHSSEF -- every one before the split's effective year, FY2024 -- has no ASPR figure. Enacted follows
+    the enacting law (owner, 2026-10-09): P.L. 117-328 funds ASPR inside PHSSEF, so FY2023 Enacted reads 'no figure'
+    too, S.Rept. 118-84's restated figure in its corner; the FY2023 House, request and Senate cells carry 'Funded
+    within PHSSEF in this document.'; the first figure is FY2024's, 'Funded within PHSSEF before FY2024.'"""
 
     @classmethod
     def setUpClass(cls):
         cls.rows = published()
 
     def test_aspr(self):
+        restated = {"ACC-HHS-ASPR-TOTAL": "3,629,677", "ACC-HHS-ASPR-RDP": "3,062,991", "ACC-HHS-ASPR-OPER": "566,686"}
         for aid in ("ACC-HHS-ASPR-TOTAL", "ACC-HHS-ASPR-RDP", "ACC-HHS-ASPR-OPER"):
             cells = self.rows[aid]["cells"]
             for key, cell in cells.items():
@@ -71,11 +73,53 @@ class OldStructure(unittest.TestCase):
                 elif y == 2023 and st != "Enacted":
                     self.assertEqual((h["state"], h.get("note")), ("no_figure", "Funded within PHSSEF in this document."),
                                      (aid, key))
-            first = head(cells["2023|Enacted"])
+            enacted = head(cells["2023|Enacted"])
+            self.assertEqual(enacted["state"], "no_figure", aid)
+            self.assertEqual(enacted["note"], "Funded within PHSSEF in this document. S.Rept. 118-84 restates FY2023 in "
+                                              "the FY2024 structure (ASPR separate from PHSSEF): "
+                                              f"{restated[aid]} thousand (p.{389 if aid.endswith('RDP') else 390}).")
+            first = head(cells["2024|Enacted"])
             self.assertEqual(first["state"], "value")
-            self.assertEqual(first["observations"][0]["cell_note"], "Funded within PHSSEF before FY2023.")
-        # the account it split from is untouched
+            self.assertEqual(first["observations"][0]["cell_note"], "Funded within PHSSEF before FY2024.")
+        # PHSSEF's FY2023 Enacted is the law's: its four paragraphs
+        o = head(self.rows["ACC-HHS-OS-PHSSEF"]["cells"]["2023|Enacted"])["observations"][0]
+        self.assertEqual(o["amount"], 3_767_569_000)
+        self.assertIn("S.Rept. 118-84 restates FY2023", o["cell_note"])
         self.assertEqual(head(self.rows["ACC-HHS-OS-PHSSEF"]["cells"]["2022|Enacted"])["state"], "value")
+
+
+class StagesAsTheirDocumentsPrint(unittest.TestCase):
+    """Each stage as its own documents print it; Enacted follows the enacting law; stages of one year with different
+    structures are a proposed relationship with cell notes (owner, 2026-10-09: the FY2019 Strategic National
+    Stockpile, under PHSSEF in the request and the House bill, in CDC in the Senate bill and P.L. 115-245)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.rows = published()
+
+    def test_fy2019_enacted_follows_the_law(self):
+        cdc = head(self.rows["ACC-HHS-CDC-PREPAREDNESS"]["cells"]["2019|Enacted"])["observations"][0]
+        ps = head(self.rows["ACC-HHS-OS-PHSSEF"]["cells"]["2019|Enacted"])["observations"][0]
+        self.assertEqual((cdc["amount"], ps["amount"]), (1_465_200_000, 2_021_458_000))
+        for o, printed in ((cdc, "855,200"), (ps, "2,631,458")):
+            self.assertTrue(o["cell_note"].startswith("H.Rept. 116-62 restates FY2019 in the FY2020 structure (SNS under "
+                                                      f"PHSSEF): {printed} thousand"), o["cell_note"])
+
+    def test_proposed_and_actual_moves(self):
+        for aid in ("ACC-HHS-CDC-PREPAREDNESS", "ACC-HHS-OS-PHSSEF"):
+            cells = self.rows[aid]["cells"]
+            for st, x in (("President's Budget", "575,000,000"), ("House Reported", "710,000,000")):
+                note = head(cells[f"2019|{st}"])["observations"][0]["cell_note"]
+                self.assertEqual(note, f"Proposed moving the Strategic National Stockpile (${x}) to PHSSEF/ASPR; the "
+                                       "Senate and the enacted law kept it in CDC.", (aid, st))
+            self.assertIsNone(head(cells["2019|Senate Reported"])["observations"][0].get("cell_note"), aid)
+            for st in ("President's Budget", "House Reported", "Enacted"):
+                self.assertIn("moved from CDC to PHSSEF/ASPR from FY2020",
+                              head(cells[f"2020|{st}"])["observations"][0]["cell_note"], (aid, st))
+        rels = {r["relationship_id"]: r for r in self.rows["ACC-HHS-CDC-PREPAREDNESS"]["relationships"]}
+        self.assertEqual({(r["relationship_type"], r["effective_fiscal_year"]) for r in rels.values()
+                          if r["to_account_id"] == "ACC-HHS-OS-PHSSEF"}, {("moved_reclassified", 2019),
+                                                                           ("moved_reclassified", 2020)})
 
 
 class PhsEvaluationSetAside(unittest.TestCase):
