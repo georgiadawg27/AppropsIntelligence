@@ -14,6 +14,542 @@
        "missing": false,
        "observations": [
         {
+         "amount": 1815893000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-141",
+         "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3688",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "366",
+         "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,803,293 (p.366) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.366) = 1,815,893 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15197"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-15348"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-15519"
+          }
+         ],
+         "verification_status": "flagged"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "kids_first",
+       "component_kind": "contained",
+       "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 12600000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-141",
+         "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "N/A",
+         "component": "kids_first",
+         "component_kind": "contained",
+         "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+         "confidence": 0.5,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": "OBS-LHHS-3688",
+         "observation_id": "OBS-LHHS-3689",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "366",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [FY 2018 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15198"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15199"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15200"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15201"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-15349"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1717848000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.3358",
+         "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3408",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "H.Rept.115-244",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,705,248 (p.216) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.216) = 1,717,848 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14176"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "kids_first",
+       "component_kind": "contained",
+       "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 12600000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.3358",
+         "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "House",
+         "component": "kids_first",
+         "component_kind": "contained",
+         "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": "OBS-LHHS-3408",
+         "observation_id": "OBS-LHHS-3409",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "H.Rept.115-244",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14177"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14178"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14179"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-14180"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-14181"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1342433000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2018/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3500",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,329,833 (p.216) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.216) = 1,342,433 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14509"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-15431"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "kids_first",
+       "component_kind": "contained",
+       "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 12600000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2018/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "N/A",
+         "component": "kids_first",
+         "component_kind": "contained",
+         "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": "OBS-LHHS-3500",
+         "observation_id": "OBS-LHHS-3501",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [FY 2018 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14510"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+           "result": "flag",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14511"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-14512"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-14513"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-15432"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 1809570000,
+         "amount_type": "budget authority",
+         "bill_id": "S.1771",
+         "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3595",
+         "offsetting_collections": 0,
+         "publication_date": "2017-09-07",
+         "report_id": "S.Rept.115-150",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115SRPT150",
+         "source_page": "231",
+         "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,796,970 (p.231) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.231) = 1,809,570 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-14872"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "kids_first",
+       "component_kind": "contained",
+       "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 12600000,
+         "amount_type": "budget authority",
+         "bill_id": "S.1771",
+         "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-OD",
+         "chamber": "Senate",
+         "component": "kids_first",
+         "component_kind": "contained",
+         "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": "OBS-LHHS-3595",
+         "observation_id": "OBS-LHHS-3596",
+         "offsetting_collections": 0,
+         "publication_date": "2017-09-07",
+         "report_id": "S.Rept.115-150",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115SRPT150",
+         "source_page": "231",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-14873"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-14874"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2018
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 1921675000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-245",
@@ -3430,6 +3966,22 @@
   "coverage": {
    "cells": [
     [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
      2019,
      "Enacted"
     ],
@@ -3573,6 +4125,433 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 1342433000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2018/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3500",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,329,833 (p.216) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.216) = 1,342,433 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14509"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-15431"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 12600000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2018/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "N/A",
+    "component": "kids_first",
+    "component_kind": "contained",
+    "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": "OBS-LHHS-3500",
+    "observation_id": "OBS-LHHS-3501",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [FY 2018 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14510"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14511"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-14512"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-14513"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-15432"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1717848000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.3358",
+    "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3408",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "H.Rept.115-244",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,705,248 (p.216) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.216) = 1,717,848 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14176"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 12600000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.3358",
+    "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "House",
+    "component": "kids_first",
+    "component_kind": "contained",
+    "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": "OBS-LHHS-3408",
+    "observation_id": "OBS-LHHS-3409",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "H.Rept.115-244",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14177"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14178"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14179"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-14180"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-14181"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 1809570000,
+    "amount_type": "budget authority",
+    "bill_id": "S.1771",
+    "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3595",
+    "offsetting_collections": 0,
+    "publication_date": "2017-09-07",
+    "report_id": "S.Rept.115-150",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT150",
+    "source_page": "231",
+    "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,796,970 (p.231) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.231) = 1,809,570 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-14872"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 12600000,
+    "amount_type": "budget authority",
+    "bill_id": "S.1771",
+    "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "Senate",
+    "component": "kids_first",
+    "component_kind": "contained",
+    "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": "OBS-LHHS-3595",
+    "observation_id": "OBS-LHHS-3596",
+    "offsetting_collections": 0,
+    "publication_date": "2017-09-07",
+    "report_id": "S.Rept.115-150",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115SRPT150",
+    "source_page": "231",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-14873"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-14874"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 1815893000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-141",
+    "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3688",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "366",
+    "source_table_or_section": "Title II, National Institutes of Health -- derived, not a printed line: 'Office of the Director' 1,803,293 (p.366) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.366) = 1,815,893 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15197"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-15348"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-15519"
+     }
+    ],
+    "verification_status": "flagged"
+   },
+   {
+    "amount": 12600000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-141",
+    "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-OD",
+    "chamber": "N/A",
+    "component": "kids_first",
+    "component_kind": "contained",
+    "component_label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+    "confidence": 0.5,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": "OBS-LHHS-3688",
+    "observation_id": "OBS-LHHS-3689",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "366",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'Gabriella Miller Kids First Research Act (Common Fund add)' [FY 2018 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15198"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "parse note: a line nested by indent; this figure is the printed line itself, and the nested line is recorded on its own where it belongs to the account",
+      "result": "flag",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15199"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15200"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15201"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-15349"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 1808306000,
     "amount_type": "budget authority",
