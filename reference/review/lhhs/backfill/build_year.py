@@ -881,7 +881,9 @@ def main(argv=None):
             # never for a headline this table's own lines derive (derived_headlines.RULES: Medicaid) -- its views
             # must cite the same document as their headline
             derivable = (key[0] in DH.RULES or key[0] in DH.SUM_RULES) and key[1:] == ("budget authority", "")
-            if fb and not derivable and (not hits or any(h["amount"] is None for h in hits)):
+            # nor for a view or line of a headline read from this stage's own table: it cites the headline's document
+            own_head = key[2] and (key[0], "budget authority", "") in found and (key[0], "budget authority", "") not in origin
+            if fb and not derivable and not own_head and (not hits or any(h["amount"] is None for h in hits)):
                 fx, _ = ext(fb[0])
                 ext_by_src[fb[2]] = fx["observations"]
                 fhits = find(key, fb[0], fb[1], "Senate")
