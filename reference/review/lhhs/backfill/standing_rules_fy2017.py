@@ -37,6 +37,13 @@ TODAY = "2026-10-09"
 FY = 2017
 MEDOPS, NEF, ADOPT, CCPF = ("ACC-HHS-GP-MEDICARE-OPERATIONS", "ACC-HHS-GP-NEF-RESCISSION",
                             "ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", "ACC-HHS-HRSA-CCPF")
+CURES = "ACC-HHS-NIH-CURES"
+# the NIH Innovation Account came with the 21st Century Cures Act (P.L. 114-255, 2016-12-13): the FY2017 House and
+# Senate bills (2016-06/07) and the FY2017 request (2016-02) predate it. Its first figure is FY2017 Enacted (H.Rept.
+# 115-244's FY 2017 Enacted column; the money itself was appropriated by P.L. 114-254 sec. 194, which P.L. 115-31
+# cites). As ARPA-H's FY2021 Enacted: a confirmed absence whose evidence says the account did not exist yet.
+CURES_BEFORE = ("House Reported", "Senate Reported", "President's Budget")
+CURES_RE = r"(?i)innovation account|cures act|114[–-]255"
 
 DOCS = {
     "SRC-BILLS-114HR5926RH": dict(
@@ -164,6 +171,9 @@ def check_texts():
         if doc.startswith("SRC-BUDGET"):
             assert not re.search(r"(?i)nonrecurring expenses? fund[^.]{0,300}rescind", txt), st
         n += 5
+        if st in CURES_BEFORE:
+            assert not re.search(CURES_RE, " ".join(body)), st
+            n += 1
     page, pat, _ = NEF_SEC226
     if TEXT["House Reported"] in cache:
         assert re.search(pat, cache[TEXT["House Reported"]][page - 1]), "sec. 226"
@@ -241,6 +251,11 @@ def main(argv=None):
                f"'adoption' in the same sentence as a rescission or cancellation: none). Its Title II rescissions: "
                f"{RESCISSIONS[doc]}.")
         absent(CCPF, st, "budget authority", "", CCPF_NONE[st])
+        if st in CURES_BEFORE:
+            absent(CURES, st, "budget authority", "",
+                   f"{name} ({DOCS[doc]['publication_date']}) has no NIH Innovation Account and no 21st Century Cures Act "
+                   f"funding ({where} searched): the account did not exist yet -- the 21st Century Cures Act (P.L. "
+                   "114-255, 2016-12-13) created it after this document; its first figure is FY2017 Enacted.")
 
     # the House NEF line: H.Rept. 114-699's table prints it in its Title V (General Provisions) part, outside the
     # Title II pages build_year reads -- p.285, read from the page image (the OCR layer misreads the request
