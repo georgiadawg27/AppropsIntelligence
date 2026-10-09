@@ -9,6 +9,254 @@
         "amount_type": "rescission",
         "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
         "component": null,
+        "confirmed_absence_id": "CA-LHHS-0136",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 115-31: no rescission of Nonrecurring Expenses Fund balances in Division H (pp. 368-433; Title II pp. 385-409). Its Title II rescissions: none in Division H, Title II.",
+        "fiscal_year": 2017,
+        "publication_date": "2017-05-05",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-115PUBL31",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0137",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "public_law",
+        "evidence": "P.L. 115-31: no emergency-designated rescission of Nonrecurring Expenses Fund balances in Division H (pp. 368-433; Title II pp. 385-409). Its Title II rescissions: none in Division H, Title II; none is designated an emergency requirement.",
+        "fiscal_year": 2017,
+        "publication_date": "2017-05-05",
+        "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+        "source_document_id": "SRC-PLAW-115PUBL31",
+        "stage": "Enacted",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": -200000000,
+         "amount_type": "rescission",
+         "bill_id": "H.R.5926",
+         "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4100",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "H.Rept.114-699",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "285",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'Nonrecurring expenses fund (rescission)' [Bill] (H.Rept. 114-699 p.285); H.R. 5926 sec. 226 (p.99) terminates the Nonrecurring Expenses Fund and rescinds its entire unobligated balance; no dollar amount is printed in the bill [H.R. 5926 sec. 226, p.99]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-17169"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0121",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "H.R. 5926 (reported): no emergency-designated rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 40-102, Title V pp. 142-170). Its Title II rescissions: sec. 226 (Nonrecurring Expenses Fund: terminated, its unobligated balance rescinded, no amount stated, p.99); none is designated an emergency requirement.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-07-22",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114HR5926RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0131",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2017 Budget Appendix: no rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 447-519, bracketed text excluded). Its Title II rescissions: none in the HHS chapter's proposed language.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-02-09",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0132",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "budget_appendix",
+        "evidence": "the FY2017 Budget Appendix: no emergency-designated rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 447-519, bracketed text excluded). Its Title II rescissions: none in the HHS chapter's proposed language; none is designated an emergency requirement.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-02-09",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0125",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3040 (placed on calendar): no rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 43-103). Its Title II rescissions: none in Title II.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-09",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114S3040PCS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      },
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": "emergency",
+        "confirmed_absence_id": "CA-LHHS-0126",
+        "confirmed_date": "2026-10-09",
+        "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+        "document_type": "bill",
+        "evidence": "S. 3040 (placed on calendar): no emergency-designated rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 43-103). Its Title II rescissions: none in Title II; none is designated an emergency requirement.",
+        "fiscal_year": 2017,
+        "publication_date": "2016-06-09",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-114S3040PCS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": "emergency",
+       "component_kind": "part",
+       "component_label": "(emergency)",
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": {
+        "amount_type": "rescission",
+        "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+        "component": null,
         "confirmed_absence_id": "CA-LHHS-0116",
         "confirmed_date": "2026-10-09",
         "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
@@ -3061,6 +3309,118 @@
     "amount_type": "rescission",
     "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0136",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 115-31: no rescission of Nonrecurring Expenses Fund balances in Division H (pp. 368-433; Title II pp. 385-409). Its Title II rescissions: none in Division H, Title II.",
+    "fiscal_year": 2017,
+    "publication_date": "2017-05-05",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL31",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0137",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "public_law",
+    "evidence": "P.L. 115-31: no emergency-designated rescission of Nonrecurring Expenses Fund balances in Division H (pp. 368-433; Title II pp. 385-409). Its Title II rescissions: none in Division H, Title II; none is designated an emergency requirement.",
+    "fiscal_year": 2017,
+    "publication_date": "2017-05-05",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL31",
+    "stage": "Enacted",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0121",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "H.R. 5926 as reported (BILLS-114hr5926rh): the FY2017 House Labor-HHS bill (H.Rept. 114-699); Title II is PDF pp. 40-102, Title V (General Provisions) pp. 142-170; p.99 holds sec. 226 (the Nonrecurring Expenses Fund's termination and the rescission of its unobligated balance, no amount stated). sha256 186f44858ca42f09... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "H.R. 5926 (reported): no emergency-designated rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 40-102, Title V pp. 142-170). Its Title II rescissions: sec. 226 (Nonrecurring Expenses Fund: terminated, its unobligated balance rescinded, no amount stated, p.99); none is designated an emergency requirement.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-07-22",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114HR5926RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0131",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2017 Budget Appendix: no rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 447-519, bracketed text excluded). Its Title II rescissions: none in the HHS chapter's proposed language.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-02-09",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0132",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "Budget of the U.S. Government, FY2017, Appendix (whole volume); the HHS chapter is PDF pp. 447-519. Proposed appropriations language: bracketed text is enacted language proposed for deletion. sha256 36c3cf59cc1f22a3... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "budget_appendix",
+    "evidence": "the FY2017 Budget Appendix: no emergency-designated rescission of Nonrecurring Expenses Fund balances in the HHS chapter's proposed language (pp. 447-519, bracketed text excluded). Its Title II rescissions: none in the HHS chapter's proposed language; none is designated an emergency requirement.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-02-09",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2017-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0125",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3040 (placed on calendar): no rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 43-103). Its Title II rescissions: none in Title II.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-09",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114S3040PCS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": "emergency",
+    "confirmed_absence_id": "CA-LHHS-0126",
+    "confirmed_date": "2026-10-09",
+    "document_notes": "S. 3040 as reported and placed on the calendar (BILLS-114s3040pcs): the FY2017 Senate Labor-HHS bill (S.Rept. 114-274); Title II is PDF pp. 43-103. sha256 60e4abc840988a22... (the file at the link). Page citations are PDF page numbers.",
+    "document_type": "bill",
+    "evidence": "S. 3040 (placed on calendar): no emergency-designated rescission of Nonrecurring Expenses Fund balances in the whole bill (Title II pp. 43-103). Its Title II rescissions: none in Title II; none is designated an emergency requirement.",
+    "fiscal_year": 2017,
+    "publication_date": "2016-06-09",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-114S3040PCS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf"
+   },
+   {
+    "amount_type": "rescission",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0116",
     "confirmed_date": "2026-10-09",
     "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
@@ -3476,6 +3836,22 @@
   "coverage": {
    "cells": [
     [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
      2018,
      "Enacted"
     ],
@@ -3640,6 +4016,47 @@
    ]
   ],
   "observations": [
+   {
+    "amount": -200000000,
+    "amount_type": "rescission",
+    "bill_id": "H.R.5926",
+    "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+    "canonical_account_id": "ACC-HHS-GP-NEF-RESCISSION",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4100",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "H.Rept.114-699",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "285",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'Nonrecurring expenses fund (rescission)' [Bill] (H.Rept. 114-699 p.285); H.R. 5926 sec. 226 (p.99) terminates the Nonrecurring Expenses Fund and rescinds its entire unobligated balance; no dollar amount is printed in the bill [H.R. 5926 sec. 226, p.99]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-17169"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": -560000000,
     "amount_type": "rescission",

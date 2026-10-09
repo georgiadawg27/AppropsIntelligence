@@ -16,6 +16,261 @@
         {
          "amount": 113570000,
          "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4031",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "213",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities' 273,570 in its FY 2017 Enacted column as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.213) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16756"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17014"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-17190"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 413570000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5926",
+         "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3748",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "H.Rept.114-699",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "238",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- H.Rept. 114-699 p.238 prints 'Subtotal, CDC-Wide Activities' 713,570 as the Office of the Director + the Infectious Diseases Rapid Response Reserve (300,000) + the Prevention and Public Health Fund transfer (300,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Infectious Diseases Rapid Response Reserve (Sec.231)' 300,000 (p.238) + 'Office of the Director' 113,570 (p.238) = 413,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15655"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 113570000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2017/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3845",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "238",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Subtotal, CDC-Wide Activities' [FY 2017 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16053"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16054"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16055"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17103"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 113570000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3040",
+         "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "derived",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3939",
+         "offsetting_collections": 0,
+         "publication_date": "2016-06-09",
+         "report_id": "S.Rept.114-274",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114SRPT274",
+         "source_page": "237",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.237) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16393"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 113570000,
+         "amount_type": "budget authority",
          "bill_id": "P.L.115-141",
          "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
@@ -2514,6 +2769,22 @@
   "coverage": {
    "cells": [
     [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
      2018,
      "Enacted"
     ],
@@ -2678,6 +2949,200 @@
    ]
   ],
   "observations": [
+   {
+    "amount": 113570000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2017/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3845",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "238",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed as 'Subtotal, CDC-Wide Activities' [FY 2017 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16053"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16054"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16055"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17103"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 413570000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5926",
+    "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3748",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "H.Rept.114-699",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "238",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- H.Rept. 114-699 p.238 prints 'Subtotal, CDC-Wide Activities' 713,570 as the Office of the Director + the Infectious Diseases Rapid Response Reserve (300,000) + the Prevention and Public Health Fund transfer (300,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Infectious Diseases Rapid Response Reserve (Sec.231)' 300,000 (p.238) + 'Office of the Director' 113,570 (p.238) = 413,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15655"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 113570000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3040",
+    "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3939",
+    "offsetting_collections": 0,
+    "publication_date": "2016-06-09",
+    "report_id": "S.Rept.114-274",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114SRPT274",
+    "source_page": "237",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.237) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16393"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 113570000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "derived",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4031",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "213",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities' 273,570 in its FY 2017 Enacted column as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.213) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16756"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17014"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-17190"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 105000000,
     "amount_type": "budget authority",

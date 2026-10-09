@@ -122,6 +122,66 @@ class StagesAsTheirDocumentsPrint(unittest.TestCase):
                                                                            ("moved_reclassified", 2020)})
 
 
+class Fy2017(unittest.TestCase):
+    """FY2017 under the standing rules (owner, 2026-10-09)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.data = json.loads((ROOT / "data" / "staged.json").read_text())
+        cls.obs = [o for o in cls.data["observations"] if o["fiscal_year"] == 2017
+                   and o["verification_status"] != "superseded"]
+
+    def one(self, aid, stage, component=""):
+        hits = [o for o in self.obs if (o["canonical_account_id"], o["stage"], o["component"] or "") == (aid, stage, component)]
+        self.assertEqual(len(hits), 1, (aid, stage, component))
+        return hits[0]
+
+    def test_nef_prints_an_amount_and_cites_sec_226(self):
+        # the table prints the line (H.Rept. 114-699 p.285), so the figure is recorded and cites the bill's provision,
+        # which itself states no amount; no other FY2017 text holds an NEF provision: confirmed absences
+        o = self.one("ACC-HHS-GP-NEF-RESCISSION", "House Reported")
+        self.assertEqual((o["amount"], o["amount_type"], o["source_page"]), (-200_000_000, "rescission", "285"))
+        self.assertIn("H.R. 5926 sec. 226 (p.99) terminates the Nonrecurring Expenses Fund", o["source_table_or_section"])
+        gone = {(x["stage"], x["component"]) for x in self.data["confirmed_absences"]
+                if x["canonical_account_id"] == "ACC-HHS-GP-NEF-RESCISSION" and x["fiscal_year"] == 2017}
+        self.assertNotIn(("House Reported", ""), gone)
+        self.assertTrue({("Senate Reported", ""), ("President's Budget", ""), ("Enacted", "")} <= gone)
+
+    def test_cures_did_not_exist_before_the_act(self):
+        gone = {x["stage"]: x["evidence"] for x in self.data["confirmed_absences"]
+                if x["canonical_account_id"] == "ACC-HHS-NIH-CURES" and x["fiscal_year"] == 2017}
+        self.assertEqual(set(gone), {"House Reported", "Senate Reported", "President's Budget"})
+        self.assertTrue(all("did not exist yet" in e and "P.L. 114-255" in e for e in gone.values()))
+        self.assertEqual(self.one("ACC-HHS-NIH-CURES", "Enacted")["amount"], 352_000_000)
+
+    def test_senate_kids_first_is_inside_the_printed_od(self):
+        # S.Rept. 114-274 prints Kids First '(non-add)': the OD line already holds it, so the headline is not derived
+        od = self.one("ACC-HHS-NIH-OD", "Senate Reported")
+        self.assertEqual(od["amount"], 1_443_752_000)
+        self.assertNotEqual(od["extraction_method"], "derived")
+        self.assertEqual(self.one("ACC-HHS-NIH-OD", "Senate Reported", "kids_first")["amount"], 12_600_000)
+
+    def test_one_off_proposals_are_lines_with_notes(self):
+        for aid, stage, comp, amount in (
+                ("ACC-HHS-SAMHSA-PREVENTION", "House Reported", "chamber_proposal_opioid_response", 500_000_000),
+                ("ACC-HHS-ACF-SSBG", "President's Budget", "request_proposal_ssbg_research", 18_500_000),
+                ("ACC-HHS-ACF-TOTAL", "President's Budget", "request_proposal_childrens_research", 10_000_000)):
+            o = self.one(aid, stage, comp)
+            self.assertEqual(o["amount"], amount, comp)
+            self.assertIn("(not enacted)", o["source_table_or_section"], comp)
+
+    def test_cdc_wide_subtotals_rederived(self):
+        for stage, amount in (("House Reported", 413_570_000), ("Senate Reported", 113_570_000),
+                              ("Enacted", 113_570_000), ("President's Budget", 113_570_000)):
+            self.assertEqual(self.one("ACC-HHS-CDC-PROGRAM-SUPPORT", stage)["amount"], amount, stage)
+
+    def test_nothing_left_open(self):
+        ids = {o["observation_id"] for o in self.obs}
+        self.assertFalse([v["validation_id"] for v in self.data["validations"]
+                          if v["observation_id"] in ids and v["human_review_status"] == "pending"])
+        self.assertFalse([o["observation_id"] for o in self.obs if o["verification_status"] == "flagged"])
+
+
 class PhsEvaluationSetAside(unittest.TestCase):
     """A 0 headline with a program-level line from the PHS evaluation set-aside carries the note (ONC FY2022)."""
 

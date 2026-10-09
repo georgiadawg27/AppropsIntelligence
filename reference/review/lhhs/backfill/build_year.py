@@ -60,7 +60,7 @@ def clean(label):
     s = re.sub(r"(?<!part)(?<=[a-z\)\./])[\s\.]+[dm]$", "", s)
     s = re.sub(r"(?<=[a-z\)])\d{1,2}/$", "", s)    # a footnote mark glued to the word ('CURES Act2/', 'Federal funds)3/')
     s = re.sub(r"(?<=[a-z\)])\. 0$", "", s)       # the same marker as GPO's layer reads it: 'National Institute on Aging. 0'
-    s = re.sub(r"\s+,\s*", ", ", s)                # 'Total ,Medical Benefits' (GPO's layer)
+    s = re.sub(r"\s+,\s*|,(?=[a-z])", ", ", s)    # 'Total ,Medical Benefits' (GPO's layer), 'Total,Medical Benefits' (vision)
     s = re.sub(r"(?<=[a-z\)])[\s.,'`]*'[\s.,'`]*$", "", s)   # leader ink read as quote marks: 'Federal Funds. \'\'\'\''
 
     return re.sub(r"(?<=[a-z]) \d$", "", s)
@@ -680,6 +680,128 @@ YEARS[2018] = {
 }
 
 
+YEARS[2017] = {
+    "stages": [
+        ("House Reported", "House", "CRPT-114hrpt699", "Bill", "SRC-CRPT-114HRPT699"),
+        ("President's Budget", "N/A", "CRPT-114hrpt699", "FY 2017 Request", "SRC-CRPT-114HRPT699"),
+        ("Senate Reported", "Senate", "CRPT-114srpt274", "Committee recommendation", "SRC-CRPT-114SRPT274"),
+        ("Enacted", "N/A", "CRPT-115hrpt244", "FY 2017 Enacted", "SRC-CRPT-115HRPT244"),
+    ],
+    "fallback": {"Enacted": ("CRPT-115srpt150", "2017 appropriation", "SRC-CRPT-115SRPT150")},
+    "historical_names": [],
+    "sum_items": YEARS[2018]["sum_items"] + [
+        {"total": "ACC-HHS-CDC-TOTAL", "label": r"childhood lead poisoning prevention \(pl 114-254\)",
+         "kind": "other_law", "why": "another law's line (P.L. 114-254, the December 2016 continuing resolution's "
+         "Childhood Lead Poisoning Prevention funding) printed under Environmental Health and counted in the CDC total"},
+        {"total": "ACC-HHS-SAMHSA-TOTAL", "label": r"comprehensive opioid response grants",
+         "path": "Substance Abuse Prevention", "kind": "inside",
+         "why": "the House bill's one-off Comprehensive Opioid Response Grants, printed under Substance Abuse "
+                "Prevention and counted in the SAMHSA total; recorded as a chamber_proposal_opioid_response line of "
+                "ACC-HHS-SAMHSA-PREVENTION (not enacted)"},
+        {"total": "ACC-HHS-ACF-TOTAL", "label": r"social services block grant research/evaluation",
+         "path": "Social Services Block", "kind": "inside",
+         "why": "the request's one-off SSBG Research/Evaluation, printed under Social Services Block Grant and counted "
+                "in the ACF total; recorded as a request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG (not enacted)"}],
+    # the year's one-off lines (owner's standing rule): a line of the account, with a note -- never a new account
+    "proposal_parts": YEARS[2018]["proposal_parts"] + [
+        {"account": "ACC-HHS-SAMHSA-PREVENTION", "agency": "SAMHSA", "label": r"comprehensive opioid response grants",
+         "path": "Substance Abuse Prevention", "component": "chamber_proposal_opioid_response",
+         "note": "The House bill proposed $500 million of Comprehensive Opioid Response Grants under Substance Abuse "
+                 "Prevention, counted in the SAMHSA total (not enacted)."},
+        {"account": "ACC-HHS-ACF-SSBG", "agency": "ACF", "label": r"social services block grant research/evaluation",
+         "path": "Social Services Block", "component": "request_proposal_ssbg_research",
+         "note": "The President's request proposed $18.5 million for Social Services Block Grant Research/Evaluation, "
+                 "printed under Social Services Block Grant and counted in the ACF total (not enacted)."},
+        {"account": "ACC-HHS-ACF-TOTAL", "agency": "ACF", "label": r"systems innovation center and other expenses",
+         "path": "Children", "component": "request_proposal_childrens_research",
+         "note": "The President's request proposed $10 million of new budget authority for Children's Research and "
+                 "Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total "
+                 "(not enacted)."}],
+    "components": [
+        {"component_id": "request_proposal_childrens_research", "label": "Children's research and technical assistance",
+         "kind": "contained", "description": "a line the President's request proposed, printed inside the account's "
+                                             "total (not enacted); the cell shows it as a note"},
+        {"component_id": "chamber_proposal_opioid_response", "label": "Comprehensive Opioid Response Grants",
+         "kind": "part", "description": "a one-off line a chamber proposed under the account's heading, not in the "
+                                        "account's own line (the cell shows it as a note)"},
+        {"component_id": "request_proposal_ssbg_research", "label": "Social Services Block Grant Research/Evaluation",
+         "kind": "part", "description": "a one-off line the President's request proposed under the account's heading, "
+                                        "not in the account's own line (the cell shows it as a note)"}],
+    "title_counts_cures": True,
+    "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
+    "proposals": {**YEARS[2018]["proposals"], **{
+        "comprehensive opioid response grants": "not an account: the House bill's one-off line, recorded as a "
+            "chamber_proposal_opioid_response line of ACC-HHS-SAMHSA-PREVENTION",
+        "social services block grant research/evaluation": "not an account: the request's one-off line, recorded as a "
+            "request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG",
+        "systems innovation center and other expenses": "not an account: the request's one-off line, recorded as a "
+            "request_proposal_childrens_research line inside ACC-HHS-ACF-TOTAL",
+        "childhood lead poisoning prevention (pl 114-254)": "not an account: another law's line (P.L. 114-254) "
+            "printed under Environmental Health, counted in the CDC total"}},
+    "cures_line": YEARS[2018]["cures_line"],
+    "rederive": {("House Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "H.Rept. 114-699 p.238 prints 'Subtotal, CDC-Wide Activities' 713,570 as the Office of the Director + "
+                 "the Infectious Diseases Rapid Response Reserve (300,000) + the Prevention and Public Health Fund "
+                 "transfer (300,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so "
+                 "the headline is",
+                 ("Senate Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + "
+                 "the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is "
+                 "the budget-authority lines alone, so the headline is",
+                 ("Enacted", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities' 273,570 in its FY 2017 Enacted column "
+                 "as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo "
+                 "line); the later tables' subtotal is the budget-authority lines alone, so the headline is"},
+    # the Enacted column is H.Rept. 115-244's: its labels as FY2018's House and request columns read them
+    "override": {("Enacted", aid): v for (st, aid), v in YEARS[2018]["override"].items() if st == "House Reported"},
+    "sum_lines": YEARS[2018]["sum_lines"],
+    "cross": [
+        ("Enacted", "CRPT-115srpt150", "2017 appropriation", "SRC-CRPT-115SRPT150"),
+        ("President's Budget", "CRPT-114srpt274", "Budget estimate", "SRC-CRPT-114SRPT274"),
+    ],
+    "also_covers": {"SRC-CRPT-115HRPT244": "FY2017 Enacted", "SRC-CRPT-115SRPT150": "FY2017 Enacted"},
+    "docs": [
+        {"document_id": "SRC-CRPT-114HRPT699", "source_agency": "House Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
+         "publication_date": "2016-07-22 00:00:00", "stage": "House Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "231-262; 285",
+         "also_covers": "FY2017 President's Budget",
+         "notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). "
+                  "Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. "
+                  "231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read "
+                  "by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring "
+                  "expenses fund (rescission)') read from its page image."},
+        {"document_id": "SRC-CRPT-114SRPT274", "source_agency": "Senate Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
+         "publication_date": "2016-06-09 00:00:00", "stage": "Senate Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "233-249",
+         "also_covers": "FY2017 President's Budget",
+         "notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). "
+                  "Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the "
+                  "arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column "
+                  "headers)."},
+    ],
+    "brr": [
+        {"reference_id": "BR-LHHS-FY2017-HOUSE", "stage": "House Reported", "bill_id": "H.R.5926",
+         "report_id": "H.Rept.114-699",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-SENATE", "stage": "Senate Reported", "bill_id": "S.3040",
+         "report_id": "S.Rept.114-274",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2017/APP",
+         "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "report_jes_url": "N/A", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-ENACTED", "stage": "Enacted", "bill_id": "P.L.115-31", "report_id": "N/A",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 244", "division": "H", "enactment_date": "2017-05-05",
+         "funding_type": "omnibus", "draft": "FALSE"},
+    ],
+}
+
 def load_extraction(pkg):
     x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
     recs = collections.defaultdict(list)
@@ -983,6 +1105,17 @@ def main(argv=None):
                 derived[key] = (total, note, arith)
                 found[(NIH_OD, "budget authority", "kids_first")] = kf
                 report.append([stage, *key, "derived", total, od["source_page"], note])
+            # a table that prints Kids First as a non-add line (S.Rept. 114-274: 'Gabriella Miller Kids First Research
+            # Act (Common Fund) (non-add)') has it inside the printed 'Office of the Director' already: the headline
+            # stays as printed, Kids First is its contained line
+            kf = [f for f in rows_for(sections, col, "NIH") if re.fullmatch(r"gabriella miller kids first research act.*",
+                                                                             f["_clean"]) and f.get("is_memo")
+                  and "(non-add)" in f["account_name_as_written"]]      # (clean drops the '(non-add)')
+            if len(kf) == 1 and kf[0]["amount"] and (NIH_OD, "budget authority", "kids_first") not in found:
+                found[(NIH_OD, "budget authority", "kids_first")] = kf[0]
+                report[:] = [r for r in report if r[:5] != [stage, NIH_OD, "budget authority", "kids_first", "not printed"]]
+                report.append([stage, NIH_OD, "budget authority", "kids_first", "found", kf[0]["amount"],
+                               kf[0]["source_page"], kf[0]["account_name_as_written"]])
         for pp in cfg.get("proposal_parts", []):
             hits = [f for f in rows_for(sections, col, pp["agency"]) if re.fullmatch(pp["label"], f["_clean"])
                     and pp.get("path", "") in f["account_path"] and not f.get("is_memo") and f["amount"]] \

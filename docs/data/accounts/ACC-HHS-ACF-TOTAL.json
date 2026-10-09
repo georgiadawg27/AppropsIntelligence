@@ -14,6 +14,745 @@
        "missing": false,
        "observations": [
         {
+         "amount": 33974759000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4014",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "226",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2017 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16703"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16704"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16705"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16706"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16707"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16989"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-16999"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33974759000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": "OBS-LHHS-4014",
+         "observation_id": "OBS-LHHS-4015",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "226",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2017 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16708"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16709"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16710"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16711"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34128287000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5926",
+         "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3730",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "H.Rept.114-699",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "253",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-15577"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15578"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15579"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15580"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15581"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15582"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-15958"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34128287000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5926",
+         "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "House",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": "OBS-LHHS-3730",
+         "observation_id": "OBS-LHHS-3731",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "H.Rept.114-699",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "253",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-15583"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15584"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15585"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15586"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15587"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34746289000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2017/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "cell_note": "The President's request proposed $10 million of new budget authority for Children's Research and Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total (not enacted).",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3826",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "253",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2017 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-15990"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15991"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15992"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15993"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15994"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "The shortfall 28,500 (thousands) is exactly: +10,000 'Systems Innovation Center and other expenses' (p.252): recorded as a request_proposal_childrens_research line inside ACC-HHS-ACF-TOTAL; +18,500 'Social Services Block Grant Research/Evaluation' (p.250): the request's one-off SSBG Research/Evaluation, printed under Social Services Block Grant and counted in the ACF total; recorded as a request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG (not enacted). Every other line of the section is inside an account: with these the sum equals the printed total.",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16289"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17087"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 34761289000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2017/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": "OBS-LHHS-3826",
+         "observation_id": "OBS-LHHS-3827",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "253",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2017 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-15995"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15996"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15997"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15998"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "request_proposal_childrens_research",
+       "component_kind": "contained",
+       "component_label": "Children's research and technical assistance",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 10000000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2017/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "N/A",
+         "component": "request_proposal_childrens_research",
+         "component_kind": "contained",
+         "component_label": "Children's research and technical assistance",
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": "OBS-LHHS-3826",
+         "observation_id": "OBS-LHHS-3828",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "252",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Systems Innovation Center and other expenses' [FY 2017 Request] -- Note: The President's request proposed $10 million of new budget authority for Children's Research and Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total (not enacted).",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15999"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16000"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16001"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33825326000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3040",
+         "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2017,
+         "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3921",
+         "offsetting_collections": 0,
+         "publication_date": "2016-06-09",
+         "report_id": "S.Rept.114-274",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114SRPT274",
+         "source_page": "245",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16322"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16323"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16324"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16325"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16326"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16327"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16675"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": false,
+       "amount_type": "budget authority",
+       "component": "program_level",
+       "component_kind": "view",
+       "component_label": "program level",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 33825326000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3040",
+         "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+         "chamber": "Senate",
+         "component": "program_level",
+         "component_kind": "view",
+         "component_label": "program level",
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": "OBS-LHHS-3921",
+         "observation_id": "OBS-LHHS-3922",
+         "offsetting_collections": 0,
+         "publication_date": "2016-06-09",
+         "report_id": "S.Rept.114-274",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114SRPT274",
+         "source_page": "245",
+         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "validation": [
+          {
+           "human_review_status": "resolved",
+           "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-16328"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16329"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16330"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16331"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16332"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 38218630000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-141",
@@ -6530,6 +7269,12 @@
     "component": "program_level",
     "component_kind": "view",
     "component_label": "program level"
+   },
+   {
+    "amount_type": "budget authority",
+    "component": "request_proposal_childrens_research",
+    "component_kind": "contained",
+    "component_label": "Children's research and technical assistance"
    }
   ],
   "stages": [
@@ -6559,6 +7304,22 @@
   },
   "coverage": {
    "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
     [
      2018,
      "Enacted"
@@ -6719,6 +7480,624 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 34746289000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2017/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "cell_note": "The President's request proposed $10 million of new budget authority for Children's Research and Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total (not enacted).",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3826",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "253",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2017 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-15990"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15991"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15992"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15993"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15994"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "The shortfall 28,500 (thousands) is exactly: +10,000 'Systems Innovation Center and other expenses' (p.252): recorded as a request_proposal_childrens_research line inside ACC-HHS-ACF-TOTAL; +18,500 'Social Services Block Grant Research/Evaluation' (p.250): the request's one-off SSBG Research/Evaluation, printed under Social Services Block Grant and counted in the ACF total; recorded as a request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG (not enacted). Every other line of the section is inside an account: with these the sum equals the printed total.",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16289"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17087"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 34761289000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2017/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": "OBS-LHHS-3826",
+    "observation_id": "OBS-LHHS-3827",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "253",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2017 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-15995"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15996"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15997"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15998"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 10000000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2017/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "request_proposal_childrens_research",
+    "component_kind": "contained",
+    "component_label": "Children's research and technical assistance",
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": "OBS-LHHS-3826",
+    "observation_id": "OBS-LHHS-3828",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "252",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Systems Innovation Center and other expenses' [FY 2017 Request] -- Note: The President's request proposed $10 million of new budget authority for Children's Research and Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total (not enacted).",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15999"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16000"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16001"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 34128287000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5926",
+    "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3730",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "H.Rept.114-699",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "253",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-15577"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15578"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15579"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15580"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15581"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15582"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-15958"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 34128287000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5926",
+    "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "House",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": "OBS-LHHS-3730",
+    "observation_id": "OBS-LHHS-3731",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "H.Rept.114-699",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "253",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-15583"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15584"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15585"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15586"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15587"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 33825326000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3040",
+    "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2017,
+    "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3921",
+    "offsetting_collections": 0,
+    "publication_date": "2016-06-09",
+    "report_id": "S.Rept.114-274",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114SRPT274",
+    "source_page": "245",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16322"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16323"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16324"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16325"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16326"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16327"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16675"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 33825326000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3040",
+    "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "Senate",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": "OBS-LHHS-3921",
+    "observation_id": "OBS-LHHS-3922",
+    "offsetting_collections": 0,
+    "publication_date": "2016-06-09",
+    "report_id": "S.Rept.114-274",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114SRPT274",
+    "source_page": "245",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: a parallel total of the family's main total; no one printed set of rows explains the difference in every column, so it cannot confirm the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16328"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16329"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16330"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16331"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16332"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 33974759000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4014",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "226",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF' [FY 2017 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": "resolved",
+      "resolution": "informational: the parser could not place every printed line under this total, so the sum was not checked; no check disagrees with the figure",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16703"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16704"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16705"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16706"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16707"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16989"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-16999"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 33974759000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-TOTAL",
+    "chamber": "N/A",
+    "component": "program_level",
+    "component_kind": "view",
+    "component_label": "program level",
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": "OBS-LHHS-4014",
+    "observation_id": "OBS-LHHS-4015",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "226",
+    "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, ACF Program Level' [FY 2017 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-16708"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16709"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16710"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16711"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 28147099000,
     "amount_type": "budget authority",

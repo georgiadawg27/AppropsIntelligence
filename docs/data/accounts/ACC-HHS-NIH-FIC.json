@@ -14,6 +14,311 @@
        "missing": false,
        "observations": [
         {
+         "amount": 72213000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-FIC",
+         "cell_note": "S.Rept. 115-150's 2017 appropriation column prints 72,014 thousand: a different split of the same FY2017 money among the accounts (the agency total agrees); the law appropriates $72,213,000, as recorded.",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4054",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "216",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [FY 2017 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16838"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16839"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16840"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "Our figure equals P.L. 115-31 Division H's appropriation exactly (VAL-LHHS-17206, law_text pass); S.Rept. 115-150 (p.231) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: S.Rept. 115-150's 2017 appropriation column prints 72,014 thousand: a different split of the same FY2017 money among the accounts (the agency total agrees); the law appropriates $72,213,000, as recorded.",
+           "result": "flag",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17036"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-LHHS-17206"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 72141000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.5926",
+         "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-FIC",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3770",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "H.Rept.114-699",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "241",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15756"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-15757"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-15758"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-15759"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 69175000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2017/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-FIC",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3867",
+         "offsetting_collections": 0,
+         "publication_date": "2016-07-22",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114HRPT699",
+         "source_page": "241",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [FY 2017 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16135"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16136"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16137"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17125"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 73026000,
+         "amount_type": "budget authority",
+         "bill_id": "S.3040",
+         "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "canonical_account_id": "ACC-HHS-NIH-FIC",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2017,
+         "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-3961",
+         "offsetting_collections": 0,
+         "publication_date": "2016-06-09",
+         "report_id": "S.Rept.114-274",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-114SRPT274",
+         "source_page": "238",
+         "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16484"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-16485"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-LHHS-16486"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-LHHS-16487"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
          "amount": 75733000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-141",
@@ -2771,6 +3076,22 @@
   "coverage": {
    "cells": [
     [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
      2018,
      "Enacted"
     ],
@@ -2930,6 +3251,250 @@
   "historical_names": [],
   "missing_cells": [],
   "observations": [
+   {
+    "amount": 69175000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2017/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2017-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-FIC",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3867",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "241",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [FY 2017 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16135"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16136"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16137"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17125"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 72141000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.5926",
+    "bill_report_reference_id": "BR-LHHS-FY2017-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-FIC",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. 231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), all 32 Title II pages re-read by vision where it failed the table's arithmetic; p.285 (the table's Title V line 'Nonrecurring expenses fund (rescission)') read from its page image.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3770",
+    "offsetting_collections": 0,
+    "publication_date": "2016-07-22",
+    "report_id": "H.Rept.114-699",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114HRPT699",
+    "source_page": "241",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15756"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-15757"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-15758"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-15759"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 73026000,
+    "amount_type": "budget authority",
+    "bill_id": "S.3040",
+    "bill_report_reference_id": "BR-LHHS-FY2017-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-FIC",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2017,
+    "document_notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers).",
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-3961",
+    "offsetting_collections": 0,
+    "publication_date": "2016-06-09",
+    "report_id": "S.Rept.114-274",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-114SRPT274",
+    "source_page": "238",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16484"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16485"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16486"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16487"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 72213000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-NIH-FIC",
+    "cell_note": "S.Rept. 115-150's 2017 appropriation column prints 72,014 thousand: a different split of the same FY2017 money among the accounts (the agency total agrees); the law appropriates $72,213,000, as recorded.",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4054",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "216",
+    "source_table_or_section": "Title II, National Institutes of Health -- printed as 'John E. Fogarty International Center' [FY 2017 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-16838"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-LHHS-16839"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-LHHS-16840"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "Our figure equals P.L. 115-31 Division H's appropriation exactly (VAL-LHHS-17206, law_text pass); S.Rept. 115-150 (p.231) prints another split of the same money -- the differences net to zero within the agency and its total agrees. Kept the figure the law matches (the owner's FY2021 CMS precedent, 2026-10-08). Note: S.Rept. 115-150's 2017 appropriation column prints 72,014 thousand: a different split of the same FY2017 money among the accounts (the agency total agrees); the law appropriates $72,213,000, as recorded.",
+      "result": "flag",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17036"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-LHHS-17206"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
    {
     "amount": 0,
     "amount_type": "budget authority",
