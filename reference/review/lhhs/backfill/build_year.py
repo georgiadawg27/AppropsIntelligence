@@ -765,7 +765,7 @@ YEARS[2017] = {
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
          "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
          "publication_date": "2016-07-22 00:00:00", "stage": "House Reported",
-         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "231-262",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "231-262; 285",
          "also_covers": "FY2017 President's Budget",
          "notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). "
                   "Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. "
