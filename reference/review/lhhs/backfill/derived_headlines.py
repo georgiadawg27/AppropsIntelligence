@@ -97,6 +97,10 @@ def check_sum_rule(columns, aid):
             if not re.match(label, " ".join(f["account_name_as_written"].lower().split()).replace("\u2013", "-")):
                 continue
             parts = lines_under(rows[:i], SUM_RULES[aid][1])
+            pphf = [g for g in rows[max(0, i - 3):i] if g.get("is_memo")
+                    and "prevention and public health fund" in g["account_name_as_written"].lower()]
+            if pphf and sum(g["amount"] or 0 for g in parts + pphf) == (f["amount"] or 0):
+                continue    # a subtotal printed with the PPHF transfer in it (S.Rept. 115-289): another scope, not checked
             checked += 1
             if sum(g["amount"] or 0 for g in parts) != (f["amount"] or 0):
                 bad.append((name, f["amount"], [(g["account_name_as_written"], g["amount"]) for g in parts]))
