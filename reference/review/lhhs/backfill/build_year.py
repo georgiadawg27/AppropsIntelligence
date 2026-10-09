@@ -680,6 +680,71 @@ YEARS[2018] = {
 }
 
 
+YEARS[2017] = {
+    "stages": [
+        ("House Reported", "House", "CRPT-114hrpt699", "Bill", "SRC-CRPT-114HRPT699"),
+        ("President's Budget", "N/A", "CRPT-114hrpt699", "FY 2017 Request", "SRC-CRPT-114HRPT699"),
+        ("Senate Reported", "Senate", "CRPT-114srpt274", "Committee recommendation", "SRC-CRPT-114SRPT274"),
+        ("Enacted", "N/A", "CRPT-115hrpt244", "FY 2017 Enacted", "SRC-CRPT-115HRPT244"),
+    ],
+    "fallback": {"Enacted": ("CRPT-115srpt150", "2017 appropriation", "SRC-CRPT-115SRPT150")},
+    "historical_names": [],
+    "sum_items": YEARS[2018]["sum_items"],
+    "proposal_parts": YEARS[2018]["proposal_parts"],
+    "components": [],
+    "title_counts_cures": True,
+    "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
+    "proposals": YEARS[2018]["proposals"],
+    "cures_line": YEARS[2018]["cures_line"],
+    "rederive": {},
+    # the Enacted column is H.Rept. 115-244's: its labels as FY2018's House and request columns read them
+    "override": {("Enacted", aid): v for (st, aid), v in YEARS[2018]["override"].items() if st == "House Reported"},
+    "sum_lines": YEARS[2018]["sum_lines"],
+    "cross": [
+        ("Enacted", "CRPT-115srpt150", "2017 appropriation", "SRC-CRPT-115SRPT150"),
+        ("President's Budget", "CRPT-114srpt274", "Budget estimate", "SRC-CRPT-114SRPT274"),
+    ],
+    "also_covers": {"SRC-CRPT-115HRPT244": "FY2017 Enacted", "SRC-CRPT-115SRPT150": "FY2017 Enacted"},
+    "docs": [
+        {"document_id": "SRC-CRPT-114HRPT699", "source_agency": "House Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf",
+         "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
+         "publication_date": "2016-07-22 00:00:00", "stage": "House Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "231-262",
+         "also_covers": "FY2017 President's Budget",
+         "notes": "H.Rept. 114-699 (H.R. 5926). sha256 09e7d9265eb16e2a... (the govinfo content PDF at the link). "
+                  "Page citations are PDF page numbers; the comparative statement (pp. 215-285, Title II pp. "
+                  "231-262) is image-only: read from a tesseract text layer (ocr_pdf.py), PAGES_H re-read by vision "
+                  "where it failed the table's arithmetic."},
+        {"document_id": "SRC-CRPT-114SRPT274", "source_agency": "Senate Committee on Appropriations",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf",
+         "document_type": "committee_report", "congress_session": "114-2", "fiscal_year": 2017,
+         "publication_date": "2016-06-09 00:00:00", "stage": "Senate Reported",
+         "retrieval_timestamp": "2026-10-09 00:00:00", "source_page": "233-249",
+         "also_covers": "FY2017 President's Budget",
+         "notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). "
+                  "Text layer; page citations are PDF page numbers. PAGES_S Title II pages sent to vision by the "
+                  "arithmetic gate."},
+    ],
+    "brr": [
+        {"reference_id": "BR-LHHS-FY2017-HOUSE", "stage": "House Reported", "bill_id": "H.R.5926",
+         "report_id": "H.Rept.114-699",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114hr5926rh/pdf/BILLS-114hr5926rh.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt699/pdf/CRPT-114hrpt699.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-SENATE", "stage": "Senate Reported", "bill_id": "S.3040",
+         "report_id": "S.Rept.114-274",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-114s3040pcs/pdf/BILLS-114s3040pcs.pdf",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-114srpt274/pdf/CRPT-114srpt274.pdf", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-PB", "stage": "President's Budget", "bill_id": "PREX 2.8:2017/APP",
+         "report_id": "N/A", "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2017-APP/pdf/BUDGET-2017-APP.pdf",
+         "report_jes_url": "N/A", "draft": "FALSE"},
+        {"reference_id": "BR-LHHS-FY2017-ENACTED", "stage": "Enacted", "bill_id": "P.L.115-31", "report_id": "N/A",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "report_jes_url": "N/A", "vehicle_bill_id": "H.R. 244", "division": "H", "enactment_date": "2017-05-05",
+         "funding_type": "omnibus", "draft": "FALSE"},
+    ],
+}
+
 def load_extraction(pkg):
     x = json.loads((ROOT / "extractions" / f"{pkg}.title-ii.json").read_text())
     recs = collections.defaultdict(list)
