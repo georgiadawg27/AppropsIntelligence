@@ -80,6 +80,9 @@ def memo_family(v, o, ext):
     split = [l for l in labs if not l.startswith("(") and not l.lower().startswith(("total", "subtotal"))]
     # 'of which' lines printed without parentheses
     split = [l for l in split if l not in ("Program integrity (cap adjustment)", "NIH Innovation Account, CURES Act")]
+    # program-level additions printed without parentheses (S.Rept. 114-274 p.237, under 'Total, Centers for Disease
+    # Control'): added to reach the program level, never parts of the budget-authority total
+    split = [l for l in split if not l.startswith(("Pandemic Flu balances", "Prevention and Public Health Fund"))]
     if not split:
         return "memo-of-which", {}
     tot = next((x for x in ext.get(o["source_document_id"], [])

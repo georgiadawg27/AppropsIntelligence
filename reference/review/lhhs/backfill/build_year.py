@@ -689,14 +689,69 @@ YEARS[2017] = {
     ],
     "fallback": {"Enacted": ("CRPT-115srpt150", "2017 appropriation", "SRC-CRPT-115SRPT150")},
     "historical_names": [],
-    "sum_items": YEARS[2018]["sum_items"],
-    "proposal_parts": YEARS[2018]["proposal_parts"],
-    "components": [],
+    "sum_items": YEARS[2018]["sum_items"] + [
+        {"total": "ACC-HHS-CDC-TOTAL", "label": r"childhood lead poisoning prevention \(pl 114-254\)",
+         "kind": "other_law", "why": "another law's line (P.L. 114-254, the December 2016 continuing resolution's "
+         "Childhood Lead Poisoning Prevention funding) printed under Environmental Health and counted in the CDC total"},
+        {"total": "ACC-HHS-SAMHSA-TOTAL", "label": r"comprehensive opioid response grants",
+         "path": "Substance Abuse Prevention", "kind": "inside",
+         "why": "the House bill's one-off Comprehensive Opioid Response Grants, printed under Substance Abuse "
+                "Prevention and counted in the SAMHSA total; recorded as a chamber_proposal_opioid_response line of "
+                "ACC-HHS-SAMHSA-PREVENTION (not enacted)"},
+        {"total": "ACC-HHS-ACF-TOTAL", "label": r"social services block grant research/evaluation",
+         "path": "Social Services Block", "kind": "inside",
+         "why": "the request's one-off SSBG Research/Evaluation, printed under Social Services Block Grant and counted "
+                "in the ACF total; recorded as a request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG (not enacted)"}],
+    # the year's one-off lines (owner's standing rule): a line of the account, with a note -- never a new account
+    "proposal_parts": YEARS[2018]["proposal_parts"] + [
+        {"account": "ACC-HHS-SAMHSA-PREVENTION", "agency": "SAMHSA", "label": r"comprehensive opioid response grants",
+         "path": "Substance Abuse Prevention", "component": "chamber_proposal_opioid_response",
+         "note": "The House bill proposed $500 million of Comprehensive Opioid Response Grants under Substance Abuse "
+                 "Prevention, counted in the SAMHSA total (not enacted)."},
+        {"account": "ACC-HHS-ACF-SSBG", "agency": "ACF", "label": r"social services block grant research/evaluation",
+         "path": "Social Services Block", "component": "request_proposal_ssbg_research",
+         "note": "The President's request proposed $18.5 million for Social Services Block Grant Research/Evaluation, "
+                 "printed under Social Services Block Grant and counted in the ACF total (not enacted)."},
+        {"account": "ACC-HHS-ACF-TOTAL", "agency": "ACF", "label": r"systems innovation center and other expenses",
+         "path": "Children", "component": "request_proposal_childrens_research",
+         "note": "The President's request proposed $10 million of new budget authority for Children's Research and "
+                 "Technical Assistance ('Systems Innovation Center and other expenses'), printed inside the ACF total "
+                 "(not enacted)."}],
+    "components": [
+        {"component_id": "request_proposal_childrens_research", "label": "Children's research and technical assistance",
+         "kind": "contained", "description": "a line the President's request proposed, printed inside the account's "
+                                             "total (not enacted); the cell shows it as a note"},
+        {"component_id": "chamber_proposal_opioid_response", "label": "Comprehensive Opioid Response Grants",
+         "kind": "part", "description": "a one-off line a chamber proposed under the account's heading, not in the "
+                                        "account's own line (the cell shows it as a note)"},
+        {"component_id": "request_proposal_ssbg_research", "label": "Social Services Block Grant Research/Evaluation",
+         "kind": "part", "description": "a one-off line the President's request proposed under the account's heading, "
+                                        "not in the account's own line (the cell shows it as a note)"}],
     "title_counts_cures": True,
     "absent_before": {"ACC-HHS-NIH-ARPA-H": 2022},
-    "proposals": YEARS[2018]["proposals"],
+    "proposals": {**YEARS[2018]["proposals"], **{
+        "comprehensive opioid response grants": "not an account: the House bill's one-off line, recorded as a "
+            "chamber_proposal_opioid_response line of ACC-HHS-SAMHSA-PREVENTION",
+        "social services block grant research/evaluation": "not an account: the request's one-off line, recorded as a "
+            "request_proposal_ssbg_research line of ACC-HHS-ACF-SSBG",
+        "systems innovation center and other expenses": "not an account: the request's one-off line, recorded as a "
+            "request_proposal_childrens_research line inside ACC-HHS-ACF-TOTAL",
+        "childhood lead poisoning prevention (pl 114-254)": "not an account: another law's line (P.L. 114-254) "
+            "printed under Environmental Health, counted in the CDC total"}},
     "cures_line": YEARS[2018]["cures_line"],
-    "rederive": {},
+    "rederive": {("House Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "H.Rept. 114-699 p.238 prints 'Subtotal, CDC-Wide Activities' 713,570 as the Office of the Director + "
+                 "the Infectious Diseases Rapid Response Reserve (300,000) + the Prevention and Public Health Fund "
+                 "transfer (300,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so "
+                 "the headline is",
+                 ("Senate Reported", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + "
+                 "the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is "
+                 "the budget-authority lines alone, so the headline is",
+                 ("Enacted", "ACC-HHS-CDC-PROGRAM-SUPPORT"):
+                 "H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities' 273,570 in its FY 2017 Enacted column "
+                 "as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo "
+                 "line); the later tables' subtotal is the budget-authority lines alone, so the headline is"},
     # the Enacted column is H.Rept. 115-244's: its labels as FY2018's House and request columns read them
     "override": {("Enacted", aid): v for (st, aid), v in YEARS[2018]["override"].items() if st == "House Reported"},
     "sum_lines": YEARS[2018]["sum_lines"],

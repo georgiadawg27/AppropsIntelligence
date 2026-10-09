@@ -33,7 +33,7 @@ House Reported,ACC-HHS-CDC-IMMUNIZATION,budget authority,,found,410766000,236,Im
 House Reported,ACC-HHS-CDC-INJURY-PREVENTION,budget authority,,found,261059000,237,Injury Prevention and Control
 House Reported,ACC-HHS-CDC-NIOSH,budget authority,,found,329100000,237,National Institute for Occupational Safety and Health.
 House Reported,ACC-HHS-CDC-PREPAREDNESS,budget authority,,found,1485800000,238,Public Health Preparedness and Response
-House Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,found,713570000,238,"Subtotal, CDC-Wide Activities"
+House Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,not printed,,,
 House Reported,ACC-HHS-CDC-SCIENTIFIC-SERVICES,budget authority,,found,485397000,237,Public Health Scientific Services
 House Reported,ACC-HHS-CDC-TOTAL,budget authority,,found,6930502000,238,"Total, Centers for Disease Control"
 House Reported,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,7838802000,238,"Total, Centers for Disease Control Program Level"
@@ -120,9 +120,11 @@ House Reported,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,4211103
 House Reported,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,2108202000,243,"Subtotal, Substance Abuse Treatment"
 House Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,779197712000,262,"Total, Title II, Health and Human Services"
 House Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
+House Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,derived,413570000,238,"H.Rept. 114-699 p.238 prints 'Subtotal, CDC-Wide Activities' 713,570 as the Office of the Director + the Infectious Diseases Rapid Response Reserve (300,000) + the Prevention and Public Health Fund transfer (300,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Infectious Diseases Rapid Response Reserve (Sec.231)' 300,000 (p.238) + 'Office of the Director' 113,570 (p.238) = 413,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)"
 House Reported,ACC-HHS-ACF-FOSTER-CARE,budget authority,,derived,8264000000,253,"derived, not a printed line: 'Total, payments, current year' 5,764,000 (p.253) + 'New Advance, 1st quarter, FY 2018' 2,500,000 (p.253) = 8,264,000 (thousands); 'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 House Reported,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,derived,4410631000,248,"derived, not a printed line: 'Total, Family Support Payments, current year' 3,010,631 (p.248) + 'New advance, 1st quarter, FY 2018' 1,400,000 (p.248) = 4,410,631 (thousands); 'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 House Reported,ACC-HHS-NIH-OD,budget authority,,derived,1688767000,241,"derived, not a printed line: 'Office of the Director' 1,676,167 (p.241) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.241) = 1,688,767 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading"
+House Reported,ACC-HHS-SAMHSA-PREVENTION,budget authority,chamber_proposal_opioid_response,found,500000000,244,Comprehensive Opioid Response Grants
 President's Budget,ACC-HHS-ACF-CCDBG,budget authority,,found,2961672000,250,Payments to States for the Child Care and Development Block Grant
 President's Budget,ACC-HHS-ACF-CFSP,budget authority,,found,11725057000,251,"Total, Children and Families Services Programs"
 President's Budget,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,not printed,,,
@@ -247,6 +249,8 @@ President's Budget,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not pri
 President's Budget,ACC-HHS-ACF-FOSTER-CARE,budget authority,,derived,8264000000,253,"derived, not a printed line: 'Total, payments, current year' 5,764,000 (p.253) + 'New Advance, 1st quarter, FY 2018' 2,500,000 (p.253) = 8,264,000 (thousands); 'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 President's Budget,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,derived,4410631000,248,"derived, not a printed line: 'Total, Family Support Payments, current year' 3,010,631 (p.248) + 'New advance, 1st quarter, FY 2018' 1,400,000 (p.248) = 4,410,631 (thousands); 'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 President's Budget,ACC-HHS-NIH-OD,budget authority,,derived,1445459000,241,"derived, not a printed line: 'Office of the Director' 1,432,859 (p.241) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.241) = 1,445,459 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading"
+President's Budget,ACC-HHS-ACF-SSBG,budget authority,request_proposal_ssbg_research,found,18500000,250,Social Services Block Grant Research/Evaluation
+President's Budget,ACC-HHS-ACF-TOTAL,budget authority,request_proposal_childrens_research,found,10000000,252,Systems Innovation Center and other expenses
 Senate Reported,ACC-HHS-ACF-CCDBG,budget authority,,found,2786000000,243,Payments to States for the Child Care and Development Block Grant
 Senate Reported,ACC-HHS-ACF-CFSP,budget authority,,found,11214935000,244,"Total, Children and Families Services Programs"
 Senate Reported,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,not printed,,,
@@ -281,7 +285,7 @@ Senate Reported,ACC-HHS-CDC-IMMUNIZATION,budget authority,,found,459055000,236,I
 Senate Reported,ACC-HHS-CDC-INJURY-PREVENTION,budget authority,,found,264059000,237,Injury Prevention and Control
 Senate Reported,ACC-HHS-CDC-NIOSH,budget authority,,found,334121000,237,National Institute for Occupational Safety and Health
 Senate Reported,ACC-HHS-CDC-PREPAREDNESS,budget authority,,found,1396800000,237,Public Health Preparedness and Response
-Senate Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,found,273570000,237,"Subtotal, CDC-Wide Activities"
+Senate Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,not printed,,,
 Senate Reported,ACC-HHS-CDC-SCIENTIFIC-SERVICES,budget authority,,found,485000000,236,Public Health Scientific Services
 Senate Reported,ACC-HHS-CDC-TOTAL,budget authority,,found,6208806000,237,"Total, Centers for Disease Control"
 Senate Reported,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,7115106000,237,"Total, Centers for Disease Control Program Level"
@@ -368,6 +372,7 @@ Senate Reported,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,373807
 Senate Reported,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,2113363000,239,"Subtotal, Substance Abuse Treatment"
 Senate Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,778872440000,249,"Total, Title II, Health and Human Services"
 Senate Reported,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
+Senate Reported,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,derived,113570000,237,"S.Rept. 114-274 p.237 prints 'Subtotal, CDC-Wide Activities' 273,570 as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.237) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)"
 Senate Reported,ACC-HHS-ACF-FOSTER-CARE,budget authority,,derived,8264000000,245,"derived, not a printed line: 'Total, payments, current year' 5,764,000 (p.245) + 'New Advance, 1st quarter, fiscal year 2018' 2,500,000 (p.245) = 8,264,000 (thousands); 'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 Senate Reported,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,derived,4410631000,243,"derived, not a printed line: 'Total, Family Support Payments, current year' 3,010,631 (p.243) + 'New advance, 1st quarter, fiscal year 2018' 1,400,000 (p.243) = 4,410,631 (thousands); 'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 Enacted,ACC-HHS-ACF-CCDBG,budget authority,,found,2856000000,224,Payments to States for the Child Care and Development Block Grant
@@ -404,7 +409,7 @@ Enacted,ACC-HHS-CDC-IMMUNIZATION,budget authority,,found,455000000,211,Immunizat
 Enacted,ACC-HHS-CDC-INJURY-PREVENTION,budget authority,,found,286059000,212,Injury Prevention and Control
 Enacted,ACC-HHS-CDC-NIOSH,budget authority,,found,335200000,212,National Institute for Occupational Safety and Health
 Enacted,ACC-HHS-CDC-PREPAREDNESS,budget authority,,found,1405000000,213,Public Health Preparedness and Response
-Enacted,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,found,273570000,213,"Subtotal, CDC-Wide Activities. '"
+Enacted,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,not printed,,,
 Enacted,ACC-HHS-CDC-SCIENTIFIC-SERVICES,budget authority,,found,489397000,212,Public Health Scientific Services
 Enacted,ACC-HHS-CDC-TOTAL,budget authority,,found,6348861000,213,"Total, Centers for Disease Control"
 Enacted,ACC-HHS-CDC-TOTAL,budget authority,program_level,found,7255161000,213,"Total, Centers for Disease Control Program Level"
@@ -491,6 +496,7 @@ Enacted,ACC-HHS-SAMHSA-TOTAL,budget authority,program_level,found,3765020000,219
 Enacted,ACC-HHS-SAMHSA-TREATMENT,budget authority,,found,2131306000,218,"Subtotal, Substance Abuse Treatment"
 Enacted,ACC-HHS-TITLE-II-TOTAL,budget authority,,found,780155146000,235,"Total, Title II, Health and Human Services"
 Enacted,ACC-HHS-TITLE-II-TOTAL,budget authority,discretionary,not printed,,,
+Enacted,ACC-HHS-CDC-PROGRAM-SUPPORT,budget authority,,derived,113570000,213,"H.Rept. 115-244 p.213 prints 'Subtotal, CDC-Wide Activities' 273,570 in its FY 2017 Enacted column as the Office of the Director + the Prevention and Public Health Fund transfer (160,000, a memo line); the later tables' subtotal is the budget-authority lines alone, so the headline is derived, not a printed line: the sum of the lines printed under 'CDC-Wide Activities and Program Support': 'Office of the Director' 113,570 (p.213) = 113,570 (thousands); the later tables print 'CDC-Wide Activities' subtotals as exactly this sum (a Prevention and Public Health Fund transfer is a memo, not in it)"
 Enacted,ACC-HHS-ACF-FOSTER-CARE,budget authority,,derived,8264000000,226,"derived, not a printed line: 'Total, payments, current year' 5,764,000 (p.226) + 'New Advance, 1st quarter, FY 2019' 2,500,000 (p.226) = 8,264,000 (thousands); 'Total, Payments to States, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 Enacted,ACC-HHS-ACF-CHILD-SUPPORT,budget authority,,derived,4410631000,222,"derived, not a printed line: 'Total, Family Support Payments, current year' 3,010,631 (p.222) + 'New advance, 1st quarter, FY 2019' 1,400,000 (p.222) = 4,410,631 (thousands); 'Total, Family Support Payments, available in this bill' as H.Rept. 116-450's FY2020 Enacted column and the FY2021 Senate draft's 2020 column print it: the current year + the new advance"
 Enacted,ACC-HHS-NIH-OD,budget authority,,derived,1677783000,216,"derived, not a printed line: 'Office of the Director' 1,665,183 (p.216) + 'Gabriella Miller Kids First Research Act (Common Fund add)' 12,600 (p.216) = 1,677,783 (thousands); the FY2023-FY2026 tables print 'Subtotal, Office of the Director' as the lines under the heading"
