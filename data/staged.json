@@ -101009,7 +101009,7 @@
    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in H.R. 5894 under 'Global Health': $370,772,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: The House subcommittee draft's explanatory table prints 'Global Health' 370,722 thousand (SRC-EXPL-LHHS-FY2024-HOUSE p.258), $50,000 less than the bill.",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified"
+   "verification_status": "resolved-by-rule"
   },
   {
    "observation_id": "OBS-LHHS-4102",
@@ -101028,7 +101028,7 @@
    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed in H.R. 7614 under 'Grants to States for Medicaid': $313,904,098,000 (the first-quarter FY2022 advance, $148,732,315,000, is its own line); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 116-450 p.412 gives 313,904,099 thousand ('appropriated in this bill' 462,636,414 - the new advance 148,732,315), $1,000 more than the bill.",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-4103",
@@ -101047,7 +101047,7 @@
    "source_table_or_section": "Title II, Centers for Medicare & Medicaid Services -- printed in the FY2021 Senate chair's draft under 'Grants to States for Medicaid': $313,904,098,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: The FY2021 Senate explanatory statement p.254 prints 'Total, Grants to States for Medicaid' 313,904,099 thousand, $1,000 more than the bill.",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified"
+   "verification_status": "auto-validated"
   },
   {
    "observation_id": "OBS-LHHS-4104",
@@ -101266,7 +101266,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed in H.R. 4502 under 'Program Management': 'of the amount made available under this heading, $367,415,000 shall be used for the projects financing the construction and renovation (including equipment) of health care and other facilities, and for the projects financing one-time grants' (inside the headline)",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "congressionally_directed_spending",
    "headline_observation_id": "OBS-LHHS-4113"
   },
@@ -101308,7 +101308,7 @@
    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed in S. 3062 under 'Program Management': 'of the amount made available under this heading, $727,956,000 shall be used for the projects financing the construction and renovation (including equipment) of health care and other facilities, and for the projects financing one-time grants' (inside the headline)",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "congressionally_directed_spending",
    "headline_observation_id": "OBS-LHHS-4115"
   }
@@ -325332,6 +325332,50 @@
    "expected_result": "S. 3062 (introduced in Senate; BILLS-117s3062is, bill xml), TITLE II, 'DEPARTMENT OF HEALTH AND HUMAN SERVICES > HEALTH RESOURCES AND SERVICES ADMINISTRATION > PROGRAM MANAGEMENT' (TITLE II, heading 34; P0034): $893,127,000 (the paragraph's main appropriated amount)",
    "observed_result": "$893,127,000 as recorded (SRC-BILLS-117S3062IS p.61) -- the same document as the figure's source, so not a second document",
    "result": "info",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-17254",
+   "observation_id": "OBS-LHHS-4102",
+   "rule_applied": "table_total",
+   "expected_result": "H.Rept. 116-450 p.412 (SRC-CRPT-116HRPT450), a difference it computes, not a printed line: 'appropriated in this bill' 462,636,414 - the first-quarter FY2022 advance 148,732,315: computed = 313,904,099 thousand",
+   "observed_result": "313,904,098,000 in H.R. 7614 p.78: $1,000 apart, one unit of the table's $ thousands; within rounding",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-17255",
+   "observation_id": "OBS-LHHS-4103",
+   "rule_applied": "table_total",
+   "expected_result": "FY2021 Senate explanatory statement p.254 (SRC-EXPL-LHHS-FY2021-SENATE), its 'Total, Grants to States for Medicaid', a total it computes from the lines above it, not a printed line amount: computed = 313,904,099 thousand",
+   "observed_result": "313,904,098,000 in the FY2021 Senate chair's draft p.77: $1,000 apart, one unit of the table's $ thousands; within rounding",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-17256",
+   "observation_id": "OBS-LHHS-4114",
+   "rule_applied": "cross_document",
+   "expected_result": "H.Rept. 117-96 p.71 (SRC-CRPT-117HRPT96), 'Community Project Funding', the total of the report's project table: 'The Committee includes $367,415,000 for projects financing the construction and renovation (including equipment) of health care and other facilities and for one-time grants ...'",
+   "observed_result": "367,415,000 as recorded (H.R. 4502 p.55): the same amount",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-LHHS-17257",
+   "observation_id": "OBS-LHHS-4116",
+   "rule_applied": "cross_document",
+   "expected_result": "FY2022 Senate explanatory statement (SRC-EXPL-LHHS-FY2022-SENATE) p.75: 'The Committee provides $893,127,000 for program management activities. Within the total, $165,171,000 is provided for program management' and '$727,956,000 for projects ... specified in the table at the end of this explanatory statement'; p.346 prints 'Community Projects/Congressionally Directed Spending' (727,956) under Program Management",
+   "observed_result": "727,956,000 as recorded (S. 3062 p.62): the same amount; 893,127,000 - 727,956,000 = 165,171,000, the statement's program management amount",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""

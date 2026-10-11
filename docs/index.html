@@ -150,6 +150,7 @@
   .dot.pend { background: transparent; box-shadow: inset 0 0 0 1.5px #B7791F; }
   .dot.unv { border: 1.5px solid #8A93A3; width: 5px; height: 5px; }
   .dot.res { background: #C9CED6; width: 5px; height: 5px; }
+  .dot.rule { border: 1.5px dashed #5D6472; width: 5px; height: 5px; }
   .up { color: #1A7339; } .down { color: #A8460C; } .flat { color: #5D6472; }
   .pct { display: block; font-size: 12px; }
   .chev { appearance: none; border: 0; background: none; padding: 0; width: 20px; height: 20px; flex: 0 0 20px; cursor: pointer;
@@ -283,7 +284,7 @@
         <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
         <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span>
         <span><span class="tag total" style="margin-left:0">total</span> printed total of the accounts indented below it, not added again</span>
-        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></span>
+        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot rule"></span> resolved by rule: bill or law text controls <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></span>
       </footer>
       <footer class="gfooter" id="grid-counts" data-testid="state-counts"></footer>
       <footer class="gfooter" id="grid-notes"></footer>
@@ -593,7 +594,7 @@ function renderLine(l, showSeries) {
     if (l.state === "value") line.append(el("div", { class: "amt", "data-testid": "amount", text: money(o.amount) }));
     line.append(cite(o));
     if (o.verification_status !== "human-verified" && o.verification_status !== "auto-validated")
-      line.append(el("div", { class: "flag", text: o.verification_status }));
+      line.append(el("div", { class: "flag", text: o.status_text || o.verification_status }));
   }
   return line;
 }
@@ -765,7 +766,7 @@ function numberLink(o, units) {
   const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
   const href = sourceHref(o);
   const text = GridMath.number(o.amount, units);
-  const title = `${label} · ${o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
+  const title = `${label} · ${o.status_text || o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
   const cls = o.amount === 0 ? "zero" : "";
   return href ? el("a", { class: cls, "data-testid": "amount", href, target: "_blank", rel: "noopener", title,
                           "data-source": label, text })
@@ -814,8 +815,10 @@ function figureCell(row, y, st, cls) {
   const resolved = o ? resolvedReview(o) : [];
   if (G.reviewer && o && (!validated(o.verification_status) || pending.length || resolved.length)) {
     const flagged = o.verification_status === "flagged";
-    const kind = flagged ? "flag" : !validated(o.verification_status) ? "unv" : pending.length ? "pend" : "res";
+    const kind = flagged ? "flag" : o.verification_status === "resolved-by-rule" ? "rule"
+      : !validated(o.verification_status) ? "unv" : pending.length ? "pend" : "res";
     const what = { flag: "Flagged for review", unv: "Not yet confirmed by a sum or second document",
+                   rule: o.status_text || "Resolved by rule: bill or law text controls",
                    pend: "Verified, with a record still pending review",
                    res: "Verified, with records resolved by a person" }[kind];
     const open = pending.length ? ` \u2014 ${pending.length} pending review: ` +

@@ -560,7 +560,7 @@ def statuses(data, validations):
         if o["verification_status"] in ("human-verified", "provisional", "superseded"):
             out[o["observation_id"]] = o["verification_status"]
         else:
-            out[o["observation_id"]] = V.verification_status(o["confidence"], checks[o["observation_id"]])
+            out[o["observation_id"]] = V.observation_status(o, checks[o["observation_id"]])
     return out
 
 

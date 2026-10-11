@@ -1737,8 +1737,15 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
-         "validation": [],
-         "verification_status": "unverified"
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17256"
+          }
+         ],
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1911,8 +1918,15 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf",
-         "validation": [],
-         "verification_status": "unverified"
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17257"
+          }
+         ],
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5542,8 +5556,15 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr4502rh/pdf/BILLS-117hr4502rh.pdf",
-    "validation": [],
-    "verification_status": "unverified"
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17256"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 893127000,
@@ -5677,8 +5698,15 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s3062is/pdf/BILLS-117s3062is.pdf",
-    "validation": [],
-    "verification_status": "unverified"
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17257"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 1213196000,

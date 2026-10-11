@@ -3211,12 +3211,18 @@
          "validation": [
           {
            "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-17254"
+          },
+          {
+           "human_review_status": null,
            "result": "info",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-4102"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -3968,12 +3974,18 @@
          "validation": [
           {
            "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-17255"
+          },
+          {
+           "human_review_status": null,
            "result": "info",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-4103"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -14914,12 +14926,18 @@
     "validation": [
      {
       "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-17254"
+     },
+     {
+      "human_review_status": null,
       "result": "info",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-4102"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 462636414000,
@@ -15299,12 +15317,18 @@
     "validation": [
      {
       "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-17255"
+     },
+     {
+      "human_review_status": null,
       "result": "info",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-4103"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 462636414000,

@@ -85,7 +85,12 @@ only), and the table's figure stays as a note on the new one (`-- Note:` in its 
 corner). Where the table prints a line beside the account that the text appropriates inside it (congressionally
 directed spending under SAMHSA's Health Surveillance and Program Support), the account counts it inside, and the
 agency total's sum check counts that line once, inside the account. A difference of scope -- the table and the
-text describing different things -- is resolved with the reason instead, and the figure stays. CI fails when a document at a bill or
+text describing different things -- is resolved with the reason instead, and the figure stays.
+A figure the rule decides is confirmed like any other, by a sum or another document; a report table's computed
+total or difference in $ thousands that is at most one unit ($1,000) from the text confirms it as a `table_total`
+record marked "within rounding" (never a printed line amount). With nothing to confirm it, its status is
+`resolved-by-rule`, shown as "Resolved by rule: bill text controls (explanatory table prints ...)" rather than
+unverified. CI fails when a document at a bill or
 law stage has no text file and no exemption, when an exemption is stale or has no reason, when a text file
 was parsed by another parser version, or when `data/staged.json` is not up to date with the check. The job
 summary prints matched / mismatched / ambiguous / no paragraph / exempt and the change since the base branch.
