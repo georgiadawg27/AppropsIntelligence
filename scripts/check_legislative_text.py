@@ -22,6 +22,18 @@ a transfer, a limitation, an allowance or an advance for a later year. Where we 
   ambiguous     result flag, pending review: several plausible amounts; counts neither as a pass nor a fail
   no paragraph  result info: informational only (the program may be funded inside another account); never a
                 failure and never a confirmed absence
+  component match
+                result info: like with like (accounting views, phase 1). The paragraph states no figure for the
+                headline, but it prints the amount of a component recorded inside it from another source (the
+                Vaccine Injury Compensation trust-fund limitation, read from the report's table): the text
+                confirms that component, not the headline, so it neither confirms nor flags the figure
+
+Like with like: the components recorded with a headline independently of this text (data/staged.json
+observation_components with tag_method retagged, table_line or carried_forward -- never the auto_text ones,
+which were themselves fitted to this paragraph) also give the text's figure: the headline plus the components
+beside it that the paragraph prints inside its main amount, less the ones the headline includes that the
+paragraph prints beside it (ONC: no new budget authority, the paragraph's whole amount is the section 241
+transfer recorded beside the headline).
 
 The check never changes a figure: a disagreement only goes to review. Its records are VAL-TXT-<observation>,
 one per observation, rewritten only when the comparison itself changes (a person's resolution stays while
@@ -49,8 +61,11 @@ sys.path.insert(0, str(ROOT))
 import legislative_text as L  # noqa: E402
 import validate_approps as V  # noqa: E402
 
-RESULTS = ("match", "mismatch", "ambiguous", "no paragraph")
-RESULT_CODE = {"match": "pass", "mismatch": "fail", "ambiguous": "flag", "no paragraph": "info"}
+RESULTS = ("match", "mismatch", "ambiguous", "no paragraph", "component match")
+RESULT_CODE = {"match": "pass", "mismatch": "fail", "ambiguous": "flag", "no paragraph": "info",
+               "component match": "info"}
+# components recorded independently of the text (accounting.TAG_METHODS less auto_text)
+INDEPENDENT = ("retagged", "table_line", "carried_forward")
 PREFIX = "VAL-TXT-"
 
 
@@ -298,15 +313,53 @@ def derivations(para, main, recorded_extra, cell, provisions=()):
     return out
 
 
-def compare(o, para, recorded_extra, cell=(), provisions=()):
+def like_with_like(o, main, every, comps):
+    """-> (text figure, how) or None: the headline read through the components recorded with it independently
+    of the text, whose amounts the paragraph prints (module docstring)."""
+    mine = [c for c in comps if c.get("tag_method") in INDEPENDENT and abs(c["amount"]) in every
+            and c["component_type"] != "earmark"]
+    beside = [c for c in mine if c["in_headline"] == "FALSE"]
+    inside = [c for c in mine if c["in_headline"] == "TRUE"]
+    if not beside and not inside:
+        return None
+    figure = o["amount"] + sum(abs(c["amount"]) for c in beside) - sum(abs(c["amount"]) for c in inside)
+    if figure != main:
+        return None
+    how = f"like with like: the main amount ${main:,} = the headline ${o['amount']:,}"
+    how += "".join(f" + the {c['component_type']} component {c['component_id']} ${abs(c['amount']):,} recorded "
+                   "beside it" for c in beside)
+    how += "".join(f" - the {c['component_type']} component {c['component_id']} ${abs(c['amount']):,} recorded "
+                   "inside it" for c in inside)
+    return o["amount"], how
+
+
+def component_match(main, every, comps):
+    """-> (amount, how) or None: with no main amount, a trust-fund limitation the paragraph prints that equals the
+    limitation component recorded inside the headline from another source."""
+    for c in comps:
+        if (c.get("tag_method") in INDEPENDENT and c["component_type"] == "trust_fund_limitation"
+                and c["in_headline"] == "TRUE" and c["amount"] in every):
+            return c["amount"], (f"like with like: the paragraph's trust-fund limitation ${c['amount']:,} equals the "
+                                 f"trust_fund_limitation component {c['component_id']} recorded inside the headline "
+                                 f"({c['source_document_id']}, {c['source_location']}); the rest of the headline "
+                                 "the text appropriates as such sums as may be necessary, so the text confirms the "
+                                 "component, not the headline")
+    return None
+
+
+def compare(o, para, recorded_extra, cell=(), provisions=(), comps=()):
     """-> (result, text figure, how) for one observation against its paragraph. cell: the account's other
-    recorded lines at the same year and stage, as (observation_id, component, kind, amount)."""
+    recorded lines at the same year and stage, as (observation_id, component, kind, amount). comps: the
+    observation's own component records (observation_components)."""
     ours = o["amount"]
     every = [a["amount"] for a in para["amounts"]]
     if not every:
         return "no paragraph", None, "the paragraph states no dollar amount (such sums as may be necessary)"
     main, how = main_amount(para)
     if main is None:
+        cm = component_match(main, every, comps)
+        if cm:
+            return "component match", cm[0], cm[1]
         tap = [a["amount"] for a in para["amounts"] if TAP_241.search(split_phrase(a)[1])]
         if tap and ours == 0 and len(tap) == len(every):
             return "match", 0, (f"no new budget authority: the paragraph's {money(tap)} is all from section 241 "
@@ -321,6 +374,9 @@ def compare(o, para, recorded_extra, cell=(), provisions=()):
     for amt, why in derivations(para, main, recorded_extra, cell, provisions):
         if amt == ours:
             return "match", ours, why
+    lw = like_with_like(o, main["amount"], every, comps)
+    if lw:
+        return "match", main["amount"], lw[1]
     for c in cell:
         if c[2] in ("view", "contained") and c[3] == main["amount"]:
             return "ambiguous", main["amount"], (f"the paragraph's main amount is this account's recorded {c[1]} line "
@@ -397,6 +453,9 @@ def check(data, texts, exempt):
     agencies = collections.defaultdict(set)
     for x in data["accounts"]:
         agencies[x["subcommittee"]].add(agency_words(x))
+    comps = collections.defaultdict(list)
+    for c in data.get("observation_components", []):
+        comps[c["observation_id"]].append(c)
     out = {}
     for o in data["observations"]:
         a = acc[o["canonical_account_id"]]
@@ -464,13 +523,13 @@ def check(data, texts, exempt):
                 and x["amount_type"] == "budget authority" and x["verification_status"] != "superseded"]
         prov = provision_amounts(a, names, paras)
         extra = other_law_amounts(vals[o["observation_id"]])
-        outcomes = [(compare(o, p, extra, cell, prov), p) for p in hits]
+        outcomes = [(compare(o, p, extra, cell, prov, comps[o['observation_id']]), p) for p in hits]
         if len(hits) > 1 and not any(x[0] == "match" for x, _ in outcomes):
             # every appropriation paragraph under the same heading, together (a second paragraph 'For an
             # additional amount for prize competitions, $10,000,000')
             together = dict(hits[0], amounts=[dict(x, block=x["block"] + 1000 * i) for i, p in enumerate(hits)
                                              for x in p["amounts"]], paragraph_id="+".join(p["paragraph_id"] for p in hits))
-            x = compare(o, together, extra, cell, prov)
+            x = compare(o, together, extra, cell, prov, comps[o['observation_id']])
             if x[0] == "match":
                 outcomes = [((x[0], x[1], x[2] + f" (the {len(hits)} paragraphs under the heading together)"), hits[0])]
         if len({(r, amt) for (r, amt, _), _ in outcomes}) > 1:
@@ -501,6 +560,9 @@ def record_for(res):
             f"{res['cite']}, {where(para)}: {res['how']}"
         observed = ours + "; informational only -- the program may be funded inside another account; " \
                           "not a confirmed absence"
+    elif res["result"] == "component match":
+        expected = f"{res['cite']}, {where(para)}: ${res['text_amount']:,} ({res['how']})"
+        observed = ours + " -- the text confirms the component inside it, not the headline; informational"
     elif res["result"] == "match":
         expected = f"{res['cite']}, {where(para)}: ${res['text_amount']:,} ({res['how']})"
         observed = ours + (" -- the same document as the figure's source, so not a second document"
@@ -636,7 +698,7 @@ def counts(outcomes):
     return c
 
 
-ORDER = ("match", "mismatch", "ambiguous", "no paragraph", "exempt", "no text", "no reference")
+ORDER = ("match", "mismatch", "ambiguous", "component match", "no paragraph", "exempt", "no text", "no reference")
 
 
 def summary(outcomes, base=None, problems=(), moved=None, pending_added=None):

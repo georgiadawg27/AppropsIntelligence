@@ -113,6 +113,20 @@ cached downloads and checks their sha256; commit the diff. The network test
 `RUN_NETWORK_TESTS=1 python -m pytest tests/test_legislative_text.py -m network` downloads every document
 again and checks the sha256 and the parse against the committed files.
 
+**Components and accounting views (phase 1).** Every figure keeps its As-printed headline. Its tagged
+components (advances, designations, transfers, trust-fund limitations, fees and offsets, rescissions, defense
+portions, other laws, earmarks) are records beside it, so later views are sums: see
+[reference/ACCOUNTING_RULES.md](reference/ACCOUNTING_RULES.md) for the types, the views and the owner's
+defaults. After changing data or text, run in this order and commit `data/staged.json`:
+
+1. `python scripts/tag_components.py --write` (re-tags held lines, reads the table lines and the pilot's bill
+   and law text; IDs are kept and never reused)
+2. `python scripts/check_legislative_text.py --write` (like with like: uses the components)
+3. `python scripts/measure_reconcile.py --write` (headline = base + included components; printed view totals
+   against the computed views; differences go to review, no figure changes)
+
+CI runs all three with `--ci` and fails when `data/staged.json` is not up to date.
+
 **Review statuses.** Two fields, never inferred from wording on the page:
 
 - `verification_status` (each observation): `auto-validated` only with confidence

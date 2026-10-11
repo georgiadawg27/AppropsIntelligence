@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11)",
- "data_sha256": "ecfee1f1acbe3283df9382f49f847e5f5057b3c374912b884ff615c6e9ef7579",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11)",
+ "data_sha256": "b3a761661014255c6d3c57e3f8f87438a57c22346eba83fb2feffa7caa8e62be",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
-   "rows": 71,
+   "rows": 76,
    "columns": 1,
-   "sha256": "d855ed80df075b0f3103d55132ba483a53ff6fe60100407b48fde6c4f11a81eb"
+   "sha256": "a0243bf0c30386213720ddd12234fdbf8d236fd6a1bd6ba4fe4b7d4ce8af9604"
   },
   "Account": {
    "rows": 131,
@@ -26,7 +26,7 @@
   "Appropriations Observation": {
    "rows": 4984,
    "columns": 22,
-   "sha256": "b4f3142a9439f7955b8265ff17783a6c1ca46735ab0b0fbc757e3278966022df"
+   "sha256": "8df2e625e15607b6ffdf2b6bdb14b5d3d60e384a733e3d8b31b634c028e176f3"
   },
   "Account Relationship": {
    "rows": 15,
@@ -44,14 +44,24 @@
    "sha256": "1947917600e4ed957dc6a1015f2a4897dcd61b7f308e738ebab126357e3366b7"
   },
   "Validation Record": {
-   "rows": 20233,
+   "rows": 20587,
    "columns": 9,
-   "sha256": "7721ece0afbc0035cb78136976bd939ff7a3cd2b05424e033c8c48b59fa2a8ab"
+   "sha256": "ab5c09d9bf76e82ee43d4758fb349b3a46cc513a31eaf0297299727b71f3dd7a"
   },
   "Component": {
    "rows": 30,
    "columns": 4,
    "sha256": "b7511e0ec768d15ff57d0561c2be8c3aad2b35d13805d2730c10b7ee34aabc23"
+  },
+  "Observation Component": {
+   "rows": 302,
+   "columns": 15,
+   "sha256": "fca33e9f06dce4b2210de178df6c4fd55c4b39ae68c7e4f1fce94d3539e341be"
+  },
+  "Account Attribute": {
+   "rows": 1,
+   "columns": 8,
+   "sha256": "b9fe13e51b6da7994671996f4e3fdd4660ba37a6cad247e3409a859572bdd8f7"
   }
  }
 }

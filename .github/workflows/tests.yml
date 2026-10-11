@@ -110,6 +110,14 @@ jobs:
             args="--base-dir $RUNNER_TEMP/base"
           fi
           python scripts/check_legislative_text.py --ci $args
+      - name: Components and measure_reconcile (offline)
+        if: needs.changes.outputs.data == 'true'
+        # accounting views, phase 1 (reference/ACCOUNTING_RULES.md): the tagged components in data/staged.json
+        # are what scripts/tag_components.py gives from the committed data and text, and the measure_reconcile
+        # records are up to date; each writes its summary to the job summary
+        run: |
+          python scripts/tag_components.py --ci
+          python scripts/measure_reconcile.py --ci
       - name: Install LibreOffice (headless recalculation)
         if: needs.changes.outputs.data == 'true'
         run: |

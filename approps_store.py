@@ -342,11 +342,23 @@ TABS = [
         ("validation_id", to_text, True), ("observation_id", to_text, True), ("rule_applied", to_text, True),
         ("expected_result", to_text, False), ("observed_result", to_text, False), ("result", to_text, True),
         ("human_review_status", to_text, False), ("reviewer", to_text, False), ("resolution", to_text, False)]),
+    # accounting views, phase 1 (accounting.py): a headline's tagged components, and account attributes
+    ("Observation Component", "observation_component", [
+        ("component_id", to_text, True), ("observation_id", to_text, True), ("component_type", to_text, True),
+        ("designation", to_text, False), ("transfer_from", to_text, False), ("amount", to_int, True),
+        ("in_headline", to_bool, True), ("source_document_id", to_text, True), ("source_location", to_text, True),
+        ("quoted_text", to_text, True), ("tag_method", to_text, True), ("tag_rule", to_text, True),
+        ("source_observation_id", to_text, False), ("carried_from_component_id", to_text, False),
+        ("notes", to_text, False)]),
+    ("Account Attribute", "account_attribute", [
+        ("account_attribute_id", to_text, True), ("canonical_account_id", to_text, True),
+        ("fiscal_year", to_int, True), ("attribute", to_text, True), ("value", to_text, True),
+        ("source_document_id", to_text, True), ("source_location", to_text, False), ("evidence", to_text, True)]),
 ]
 
 # Tabs a workbook may not have yet (loaded as empty; the load report says so).
 # A workbook without a Component tab gets accounts.COMPONENT_KINDS.
-OPTIONAL_TABS = {"Confirmed Absence", "Component"}
+OPTIONAL_TABS = {"Confirmed Absence", "Component", "Observation Component", "Account Attribute"}
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
 OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                                                    # the Dictionary's; no workbook carries it yet (v33)
@@ -972,6 +984,22 @@ def api_key_urls(rows):
     return out
 
 
+def accounting_errors(rows):
+    """The Observation Component and Account Attribute rows checked as the workbook build checks them
+    (accounting.component_errors / attribute_errors)."""
+    import accounting as AC
+    def plain(r):
+        r = {k: ("" if v is None else v) for k, v in r.items() if k != "_row"}
+        if "in_headline" in r and r["in_headline"] in (0, 1):
+            r["in_headline"] = "TRUE" if r["in_headline"] else "FALSE"
+        return r
+    obs = {o["observation_id"]: plain(o) for o in rows["Appropriations Observation"]}
+    docs = {d["document_id"] for d in rows["Source Document"]}
+    accs = {a["canonical_account_id"] for a in rows["Account"]}
+    return (AC.component_errors([plain(c) for c in rows["Observation Component"]], obs, docs)
+            + AC.attribute_errors([plain(r) for r in rows["Account Attribute"]], accs, docs))
+
+
 def load(workbook, db_path, waive=()):
     """Build a fresh database at db_path from the workbook. -> load report."""
     unknown = set(waive) - set(WAIVABLE)
@@ -990,7 +1018,8 @@ def load(workbook, db_path, waive=()):
         rows["Component"] = [{"component_id": c, "label": A.COMPONENT_LABELS[c][0], "kind": k, "description": d}
                              for c, k, d in A.COMPONENT_KINDS]
         report["component_kinds_from"] = "accounts.COMPONENT_KINDS (no Component rows in the workbook)"
-    problems = check_bill_report_lookups(tabs, rows) + api_key_urls(rows) + check_start_basis(rows)
+    problems = (check_bill_report_lookups(tabs, rows) + api_key_urls(rows) + check_start_basis(rows)
+                + accounting_errors(rows))
     for name, check in WAIVABLE.items():
         found = check(rows)
         if name in waive:

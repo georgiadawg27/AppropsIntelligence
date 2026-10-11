@@ -75,6 +75,10 @@ OTHER_DOCUMENT_RULES = ("cross_document", "law_text", "bill_text")
 # the bill and law text checks: their 'flag' (several plausible amounts in the paragraph) goes to review but
 # counts neither as a pass nor as a fail
 TEXT_RULES = ("bill_text", "law_text")
+# accounting views (scripts/measure_reconcile.py): a printed view total the components don't reproduce goes to
+# review as a 'flag' that counts neither way (the tagging may be incomplete; the figure is not in question); a
+# negative base is a 'fail'. Its pass never confirms a figure (it is not in CONFIRMING_RULES).
+NEUTRAL_FLAG_RULES = TEXT_RULES + ("measure_reconcile",)
 
 
 # The routine semantic flag validate() puts on every line that isn't plain budget authority (an
@@ -133,7 +137,7 @@ def verification_status(confidence, checks):
     # an 'info' record (law_text's known differences: program level, advances, transfers) neither fails nor confirms
     # and a bill / law text 'flag' (ambiguous: several plausible amounts) neither, while it waits for review
     checks = [c[:3] for c in checks if not is_resolved(c[3], c[4]) and c[1] != "info"
-              and not (c[0] in TEXT_RULES and c[1] == "flag")]
+              and not (c[0] in NEUTRAL_FLAG_RULES and c[1] == "flag")]
     results = [r for _, r, _ in checks]
     if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"
