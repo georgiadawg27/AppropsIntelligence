@@ -312,7 +312,7 @@ CREATE TABLE observation_component (
     source_location           TEXT NOT NULL,
     quoted_text               TEXT NOT NULL,
     tag_method                TEXT NOT NULL CHECK (tag_method IN ('retagged', 'table_line', 'auto_text',
-                                                                  'carried_forward')),
+                                                                  'carried_forward', 'cr_anomaly')),
     tag_rule                  TEXT NOT NULL,
     source_observation_id     TEXT REFERENCES appropriations_observation (observation_id),
     carried_from_component_id TEXT REFERENCES observation_component (component_id) DEFERRABLE INITIALLY DEFERRED,

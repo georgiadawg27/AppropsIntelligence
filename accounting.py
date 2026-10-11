@@ -31,7 +31,8 @@ DESIGNATIONS = ["emergency", "disaster", "cap_adjustment", "other"]
 # table_line: a line the figure's own table prints (the observation's document), read for this component
 # auto_text: tagged from the committed bill or law text (data/legislative_text) by a phrase rule
 # carried_forward: FY2025 full-year CR -- the FY2024 Enacted component, continued (carried_from_component_id)
-TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward"]
+# cr_anomaly: FY2025 full-year CR -- what an anomaly's text states in place of an FY2024 component it changes
+TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward", "cr_anomaly"]
 NEGATIVE_TYPES = ("rescission", "transfer_out", "fees_offsets")
 BOOL = ("TRUE", "FALSE")
 

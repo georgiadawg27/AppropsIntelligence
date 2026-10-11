@@ -51,30 +51,59 @@ import check_legislative_text as CT  # noqa: E402
 import legislative_text as L  # noqa: E402
 
 TABLE_LINES = ROOT / "reference" / "review" / "accounting" / "table_lines.csv"
+PPHF_TABLE = ROOT / "reference" / "review" / "accounting" / "pphf_table.csv"
+PPHF = "the Prevention and Public Health Fund (section 4002 of the PPACA)"
 TEXT_STAGES = ("House Reported", "Senate Reported", "Enacted")
 PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | {("CJS", 2026, st) for st in TEXT_STAGES}
 CR_YEAR = ("LHHS", 2025, "Enacted")
-# P.L. 119-4 div. A (the FY2025 full-year CR) names these accounts we hold; their FY2024 components do not carry
-# forward (each to be read from the CR itself). Sec. 1111 ends every FY2024 earmark (no carry forward for earmarks).
-# P.L. 119-4 anomalies that name an account we hold -> (the section, the components its text changes). Every
-# other component of the account continues from FY2024 (owner, 2026-10-11): only what an anomaly changes is
-# dropped. A selector is a component type, or (type, designation).
+# P.L. 119-4 div. A (the FY2025 full-year CR) anomalies that name an account we hold -> (the section, the
+# components its text changes, the components its text states in their place). Every other component of the account
+# continues from FY2024 (owner, 2026-10-11). Where the anomaly states the new amount, a new FY2025 component is
+# recorded from its text (tag_method cr_anomaly); a changed component is dropped with nothing in its place only when
+# the anomaly ends the item (CDS to $0; sec. 1111 for every earmark). A selector is a component type, or
+# (type, designation). A stated component: (type, designation, amount, in_headline, the anomaly's words, within:
+# the type of the stated component it is part of).
+CR_SOURCE = "SRC-PLAW-119PUBL4"
 CR_ANOMALIES = {
-    "ACC-HHS-CMS-MEDICAID": ("P.L. 119-4 div. A sec. 1109(b)(2) (the advance for the first quarter of FY2026)",
-                             ("advance_enacted",)),
-    "ACC-HHS-ACF-CHILD-SUPPORT": ("P.L. 119-4 div. A sec. 1109(b)(3) (the advance for the first quarter of FY2026)",
-                                  ("advance_enacted",)),
-    "ACC-HHS-ACF-FOSTER-CARE": ("P.L. 119-4 div. A sec. 1109(b)(4) (the advance for the first quarter of FY2026)",
-                                ("advance_enacted",)),
-    "ACC-HHS-CMS-HCFAC": ("P.L. 119-4 div. A sec. 1902(b) (level $941,000,000; cap adjustment $630,000,000)",
-                          ("trust_fund_limitation", ("designated", "cap_adjustment"))),
+    "ACC-HHS-CMS-MEDICAID": ("P.L. 119-4 div. A sec. 1109(b)(2)", ("advance_enacted",), [
+        ("advance_enacted", "", 261063820000, "FALSE",
+         "the following amounts shall be available for the following accounts for advance payments for the first "
+         "quarter of fiscal year 2026: ... (2) \u201cDepartment of Health and Human Services\u2014Centers for "
+         "Medicare & Medicaid Services\u2014Grants to States for Medicaid\u201d, ... $261,063,820,000", None)]),
+    "ACC-HHS-ACF-CHILD-SUPPORT": ("P.L. 119-4 div. A sec. 1109(b)(3)", ("advance_enacted",), [
+        ("advance_enacted", "", 1600000000, "TRUE",
+         "the following amounts shall be available for the following accounts for advance payments for the first "
+         "quarter of fiscal year 2026: ... (3) \u201cDepartment of Health and Human Services\u2014Administration "
+         "for Children and Families\u2014Payments to States for Child Support Enforcement and Family Support "
+         "Programs\u201d, ... $1,600,000,000", None)]),
+    "ACC-HHS-ACF-FOSTER-CARE": ("P.L. 119-4 div. A sec. 1109(b)(4)", ("advance_enacted",), [
+        ("advance_enacted", "", 3600000000, "TRUE",
+         "the following amounts shall be available for the following accounts for advance payments for the first "
+         "quarter of fiscal year 2026: ... (4) \u201cDepartment of Health and Human Services\u2014Administration "
+         "for Children and Families\u2014Payments for Foster Care and Permanency\u201d, ... $3,600,000,000", None)]),
+    "ACC-HHS-CMS-HCFAC": ("P.L. 119-4 div. A sec. 1902(b)", ("trust_fund_limitation", ("designated", "cap_adjustment")), [
+        ("trust_fund_limitation", "", 941000000, "TRUE",
+         "Notwithstanding section 1101, the level for \u201cDepartment of Health and Human Services\u2014Centers "
+         "for Medicare & Medicaid Services\u2014Health Care Fraud and Abuse Control Account\u201d shall be "
+         "$941,000,000", None),
+        ("designated", "cap_adjustment", 630000000, "TRUE",
+         "of the funds made available by section 1101 under such heading, $630,000,000 is additional new budget "
+         "authority specified for purposes of section 251(b)(2)(C) of the Balanced Budget and Emergency Deficit "
+         "Control Act of 1985", "trust_fund_limitation")]),
     "ACC-HHS-HRSA-HEALTH-SYSTEMS": ("P.L. 119-4 div. A sec. 1904 (OPTN registration fees credited to the account)",
-                                    ("fees_offsets",)),
-    "ACC-HHS-NIH-CURES": ("P.L. 119-4 div. A sec. 1905 ($127,000,000 for $407,000,000)", (("designated", "other"),)),
-    "ACC-HHS-HRSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(2) (CDS $890,788,000 -> $0)", ("earmark",)),
-    "ACC-HHS-SAMHSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(3) (CDS $72,090,000 -> $0)", ("earmark",)),
-    "ACC-HHS-ACF-CFSP": ("P.L. 119-4 div. A sec. 1908(4) (CDS $40,011,000 -> $0)", ("earmark",)),
+                                    ("fees_offsets",), []),
+    "ACC-HHS-NIH-CURES": ("P.L. 119-4 div. A sec. 1905", (("designated", "other"),), [
+        ("designated", "other", 127000000, "TRUE",
+         "the level for \u201cDepartment of Health and Human Services\u2014National Institutes of Health\u2014NIH "
+         "Innovation Account, CURES Act\u201d shall be applied by substituting \u201c$127,000,000\u201d for "
+         "\u201c$407,000,000\u201d", None)]),
+    "ACC-HHS-HRSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(2) (CDS $890,788,000 -> $0)", ("earmark",), []),
+    "ACC-HHS-SAMHSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(3) (CDS $72,090,000 -> $0)", ("earmark",), []),
+    "ACC-HHS-ACF-CFSP": ("P.L. 119-4 div. A sec. 1908(4) (CDS $40,011,000 -> $0)", ("earmark",), []),
 }
+# P.L. 119-4 div. A sec. 1906: the FY2025 Fund transferred "in the amounts specified ... in subsection (a) of section
+# 222 of division D of Public Law 118-47" -- the FY2024 allocation, continued
+CR_PPHF = "P.L. 119-4 div. A sec. 1906: the FY2024 Prevention and Public Health Fund allocation (P.L. 118-47 div. D sec. 222(a))"
 CR_EARMARKS = "P.L. 119-4 div. A sec. 1111: FY2024 earmark language has no legal effect for FY2025"
 
 # ------------------------------------------------------------------------------------------------ phrase rules
@@ -379,6 +408,41 @@ def table_lines(data, heads):
     return out
 
 
+def pphf_table(data, heads, report):
+    """The Prevention and Public Health Fund allocation (pphf_table.csv): the general provision (sec. 222) transfers
+    the Fund "to the accounts specified, in the amounts specified" in the report's table; each row is a transfer_in
+    beside the receiving account's headline. A row for an account we don't hold (ACL) is reported, not recorded."""
+    out = []
+    if not PPHF_TABLE.exists():
+        return out
+    with open(PPHF_TABLE) as f:
+        for r in csv.DictReader(f):
+            fy = int(r["fiscal_year"])
+            if not r["account_id"]:
+                report["pphf_not_held"].append(f"FY{fy} {r['stage']} {r['account_printed']}: {r['activity']} "
+                                               f"{AC.money(int(r['amount']))}")
+                continue
+            h = heads[(r["account_id"], fy, r["stage"])]
+            h = pick_headline(h, r["source_document_id"]) if h else None
+            if h is None:
+                report["pphf_no_headline"].append(f"FY{fy} {r['stage']} {r['account_id']}: {r['activity']}")
+                continue
+            table = ("the Prevention and Public Health Fund allocation table" if r["table"] == "allocation"
+                     else f"the comparative table ({r['table'].split(', ', 1)[1]})")
+            out.append({"observation_id": h["observation_id"], "component_type": "transfer_in", "designation": "",
+                        "transfer_from": PPHF, "amount": int(r["amount"]), "in_headline": "FALSE",
+                        "source_document_id": r["source_document_id"],
+                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'; "
+                                           f"{r['bill_document_id']} {r['bill_section']}",
+                        "quoted_text": f"{r['account_printed']} | {r['printed_line']}",
+                        "tag_method": "table_line",
+                        "tag_rule": f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
+                                    f"the amounts the report's table specifies ({r['read_from']})",
+                        "source_observation_id": "", "carried_from_component_id": "",
+                        "notes": "beside the headline: the Fund's money is transferred in, not appropriated here"})
+    return out
+
+
 def autotag(data, heads, held, report):
     """The pilot: each headline's own paragraph, amount by amount."""
     texts, exempt = CT.load_texts(L.TEXT_DIR), CT.load_exempt(L.TEXT_DIR)
@@ -495,38 +559,74 @@ def autotag(data, heads, held, report):
 
 
 def carry_forward(data, heads, records, report):
-    """FY2025 Enacted (Labor-HHS): the FY2024 Enacted components, continued."""
+    """FY2025 Enacted (Labor-HHS): the FY2024 Enacted components, continued; where an anomaly changes one, what the
+    anomaly's text states in its place (CR_ANOMALIES). report["cr_list"] lists each one: dropped, replaced (old ->
+    new) or carried forward."""
     obs = {o["observation_id"]: o for o in data["observations"]}
     out = []
     by_obs = collections.defaultdict(list)
     for c in records:
         by_obs[c["observation_id"]].append(c)
+    replaced = collections.defaultdict(list)
     for c in records:
         o = obs[c["observation_id"]]
         a = o["canonical_account_id"]
         if not (int(o["fiscal_year"]) == 2024 and o["stage"] == "Enacted" and a.startswith("ACC-HHS-")):
             continue
+        what = f"{c['component_id']} {c['component_type']}{'/' + c['designation'] if c.get('designation') else ''} " \
+               f"{AC.money(c['amount'])} ({a})"
         h = pick_headline(heads[(a, 2025, "Enacted")], None) if heads[(a, 2025, "Enacted")] else None
         if h is None:
-            report["carry_no_headline"].append(f"{c['component_id']} ({a})")
+            report["carry_no_headline"].append(what)
+            report["cr_list"].append(("not carried: no FY2025 Enacted headline", what, ""))
             continue
         if a in CR_ANOMALIES and AC._selected(c, CR_ANOMALIES[a][1]):
-            report["carry_anomaly"].append(f"{c['component_id']} {c['component_type']}"
-                                           f"{'/' + c['designation'] if c.get('designation') else ''} "
-                                           f"{AC.money(c['amount'])} ({a}): {CR_ANOMALIES[a][0]}")
+            section, _, stated = CR_ANOMALIES[a]
+            report["carry_anomaly"].append(f"{what}: {section}")
+            if stated:
+                replaced[(a, h["observation_id"])].append(c)
+            else:
+                report["cr_list"].append(("dropped", what, f"{section} ends it"))
             continue
         if c["component_type"] == "earmark":
-            report["carry_anomaly"].append(f"{c['component_id']} earmark ({a}): {CR_EARMARKS}")
+            report["carry_anomaly"].append(f"{what}: {CR_EARMARKS}")
+            report["cr_list"].append(("dropped", what, CR_EARMARKS))
             continue
         if any(x["component_type"] == c["component_type"] for x in by_obs[h["observation_id"]]):
             report["carry_already_held"].append(f"{c['component_id']} -> {h['observation_id']}")
+            report["cr_list"].append(("not carried: FY2025 already holds the type", what, h["observation_id"]))
             continue
-        out.append(dict(c, observation_id=h["observation_id"], tag_method="carried_forward",
-                        tag_rule="FY2025 full-year CR (P.L. 119-4 div. A sec. 1101: FY2024 levels, authority and "
-                                 "conditions); no anomaly names the account",
+        rule = (CR_PPHF if c.get("transfer_from") == PPHF else
+                "FY2025 full-year CR (P.L. 119-4 div. A sec. 1101: FY2024 levels, authority and conditions); no "
+                "anomaly changes it")
+        out.append(dict(c, observation_id=h["observation_id"], tag_method="carried_forward", tag_rule=rule,
                         carried_from_component_id=c["component_id"], source_observation_id="",
                         notes=c.get("notes", "") + " | carried forward from FY2024 Enacted "
                                                    f"({c['observation_id']}); in_headline as there"))
+        report["cr_list"].append(("carried forward", what, rule.split(":")[0]))
+    for (a, hid), old in sorted(replaced.items()):
+        section, _, stated = CR_ANOMALIES[a]
+        olds = ", ".join(f"{c['component_id']} {c['component_type']}"
+                         f"{'/' + c['designation'] if c.get('designation') else ''} {AC.money(c['amount'])}" for c in old)
+        for typ, des, amount, inside, words, within in stated:
+            new = f"{typ}{'/' + des if des else ''} {AC.money(amount)}"
+            held = [x for x in by_obs[hid] if x["component_type"] == typ and x.get("designation", "") == des
+                    and int(x["amount"]) == amount]
+            if held:
+                report["cr_list"].append(("replaced", f"{olds} ({a})",
+                                          f"-> {new}, {section}; already held as {held[0]['component_id']} "
+                                          f"({held[0]['tag_method']}), which equals the anomaly's amount"))
+                continue
+            out.append({"observation_id": hid, "component_type": typ, "designation": des, "transfer_from": "",
+                        "amount": amount, "in_headline": inside, "source_document_id": CR_SOURCE,
+                        "source_location": section.replace("P.L. 119-4 ", ""), "quoted_text": words,
+                        "tag_method": "cr_anomaly",
+                        "tag_rule": f"FY2025 full-year CR anomaly: {section} states the amount in place of the "
+                                    "FY2024 component",
+                        "source_observation_id": "", "carried_from_component_id": "",
+                        "notes": f"replaces {olds} (FY2024 Enacted)",
+                        "within_component_id": ("cr", within) if within else ""})
+            report["cr_list"].append(("replaced", f"{olds} ({a})", f"-> {new}, {section}"))
     return out
 
 
@@ -578,6 +678,7 @@ def build(data):
     obs = {o["observation_id"]: o for o in data["observations"]}
     first = retag(data, heads, report)
     first += table_lines(data, heads)
+    first += pphf_table(data, heads, report)
     held = collections.defaultdict(list)
     for c in first:
         held[c["observation_id"]].append(c)
@@ -597,6 +698,12 @@ def build(data):
     for c in records:
         if c["tag_method"] == "carried_forward" and c.get("within_component_id"):
             c["within_component_id"] = copy_of.get((c["within_component_id"], c["observation_id"]), "")
+    # a stated anomaly component within another names the stated component of that type on the same headline
+    stated = {(c["observation_id"], c["component_type"]): c["component_id"] for c in records
+              if c["tag_method"] == "cr_anomaly"}
+    for c in records:
+        if isinstance(c.get("within_component_id"), tuple) and c["within_component_id"][0] == "cr":
+            c["within_component_id"] = stated[(c["observation_id"], c["within_component_id"][1])]
     records.sort(key=lambda c: (not c["component_id"].startswith("CMP-LHHS-"), number(c["component_id"])))
     return records, retired, report
 
@@ -611,7 +718,7 @@ def summarize(records, data, report):
             c["tag_method"])] += 1
     lines = ["## Components", "", f"{len(records)} records: " + ", ".join(
         f"{m} {sum(1 for c in records if c['tag_method'] == m)}" for m in AC.TAG_METHODS), ""]
-    lines += ["| subcommittee | FY | type | retagged | table_line | auto_text | carried_forward |", "|---" * 7 + "|"]
+    lines += ["| subcommittee | FY | type | " + " | ".join(AC.TAG_METHODS) + " |", "|---" * (3 + len(AC.TAG_METHODS)) + "|"]
     for k in sorted({k[:3] for k in by}):
         lines.append(f"| {k[0]} | {k[1]} | {k[2]} | " + " | ".join(str(by[k + (m,)]) for m in AC.TAG_METHODS) + " |")
     lines += ["", f"Pilot headlines read: {report['pilot_headlines']}; no paragraph or no single paragraph: "
@@ -624,7 +731,13 @@ def summarize(records, data, report):
               f"{len(report['retag_no_headline'])}",
               f"FY2025 CR carry-forward: carried {sum(1 for c in records if c['tag_method'] == 'carried_forward')}; "
               f"not carried (anomaly or sec. 1111) {len(report['carry_anomaly'])}; already held "
-              f"{len(report['carry_already_held'])}; no FY2025 headline {len(report['carry_no_headline'])}", ""]
+              f"{len(report['carry_already_held'])}; no FY2025 headline {len(report['carry_no_headline'])}; "
+              f"stated by an anomaly {sum(1 for c in records if c['tag_method'] == 'cr_anomaly')}", ""]
+    lines += ["### FY2025 full-year CR: each FY2024 Enacted component", "",
+              "| outcome | FY2024 component | why / in its place |", "|---|---|---|"]
+    lines += [f"| {k} | {w} | {x} |" for k, w, x in sorted(report["cr_list"])]
+    lines += ["", "PPHF rows for an account we don't hold: " + str(len(report["pphf_not_held"])) +
+              "; PPHF rows with no headline in their cell: " + (", ".join(report["pphf_no_headline"]) or "none"), ""]
     return "\n".join(lines)
 
 

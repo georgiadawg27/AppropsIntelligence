@@ -65,7 +65,7 @@ RESULTS = ("match", "mismatch", "ambiguous", "no paragraph", "component match")
 RESULT_CODE = {"match": "pass", "mismatch": "fail", "ambiguous": "flag", "no paragraph": "info",
                "component match": "info"}
 # components recorded independently of the text (accounting.TAG_METHODS less auto_text)
-INDEPENDENT = ("retagged", "table_line", "carried_forward")
+INDEPENDENT = ("retagged", "table_line", "carried_forward", "cr_anomaly")
 PREFIX = "VAL-TXT-"
 
 
