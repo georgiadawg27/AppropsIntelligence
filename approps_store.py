@@ -299,7 +299,7 @@ TABS = [
         ("fund_type", to_text, True), ("historical_names", to_text, False), ("historical_identifiers", to_text, False),
         ("subcommittee", to_text, True), ("notes", to_text, False), ("title", to_text, False),
         ("display_order", to_int, False), ("total_scope", to_total_scope, False),
-        ("parent_account_id", to_text, False)]),
+        ("parent_account_id", to_text, False), ("start_basis", to_text, False), ("start_basis_reason", to_text, False)]),
     ("Historical Name", "historical_name", [
         ("historical_name_id", to_text, True), ("canonical_account_id", to_text, True), ("former_name", to_text, True),
         ("evidence", to_text, True), ("approved_date", to_date, False), ("confidence", to_real, True),
@@ -353,7 +353,8 @@ OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                                                    "superseded_by_observation_id"},
                     # v33: a program line's heading account (Health Centers -> Primary Health Care); agency
                     # reconciliation leaves such an account out (its figure is inside its parent's)
-                    "Account": {"parent_account_id"},
+                    # 2026-10-11: a lifecycle override ('unidentified' start) and its required reason
+                    "Account": {"parent_account_id", "start_basis", "start_basis_reason"},
                     # v33: a document's / a stage's note (the FY2023 Senate draft: "committee draft
                     # released 2022-07-28; S. 4659 introduced and referred, never reported")
                     "Source Document": {"notes"},
@@ -469,6 +470,21 @@ def check_historical_names(rows):
                if h["canonical_account_id"] == a["canonical_account_id"]]
         if display != tab:
             problems.append(f"{a['canonical_account_id']}: Account.historical_names {display} != Historical Name {tab}")
+    return problems
+
+
+def check_start_basis(rows):
+    """Account.start_basis (a lifecycle override) is never set without its written reason, and a reason never
+    stands without it."""
+    problems = []
+    for a in rows["Account"]:
+        basis, reason = a.get("start_basis"), (a.get("start_basis_reason") or "").strip()
+        if basis and basis not in START_BASES:
+            problems.append(f"{a['canonical_account_id']}: Account.start_basis {basis!r} is not one of {START_BASES}")
+        if basis and not reason:
+            problems.append(f"{a['canonical_account_id']}: Account.start_basis {basis!r} has no start_basis_reason")
+        if reason and not basis:
+            problems.append(f"{a['canonical_account_id']}: Account.start_basis_reason without a start_basis")
     return problems
 
 
@@ -974,7 +990,7 @@ def load(workbook, db_path, waive=()):
         rows["Component"] = [{"component_id": c, "label": A.COMPONENT_LABELS[c][0], "kind": k, "description": d}
                              for c, k, d in A.COMPONENT_KINDS]
         report["component_kinds_from"] = "accounts.COMPONENT_KINDS (no Component rows in the workbook)"
-    problems = check_bill_report_lookups(tabs, rows) + api_key_urls(rows)
+    problems = check_bill_report_lookups(tabs, rows) + api_key_urls(rows) + check_start_basis(rows)
     for name, check in WAIVABLE.items():
         found = check(rows)
         if name in waive:
@@ -1590,6 +1606,9 @@ def title_rank(title):
 # dates). Two stage groups: the proposals (request, House, Senate) and Enacted. Relationship types that end or
 # begin an account (Account Relationship.relationship_type, made explicit 2026-10-09):
 LIFECYCLE_TYPES = ("ongoing", "new", "proposed_only", "ended_eliminated", "ended_merged", "renamed", "split", "moved")
+# Account.start_basis: 'unidentified' -- the first year with evidence is not the account's start (the earlier
+# provision is not yet identified), so the lifecycle never starts there: the years before stay inside its life
+START_BASES = ("unidentified",)
 PROPOSAL_STAGES = ("President's Budget", "House Reported", "Senate Reported", "House Passed", "Senate Passed")
 STAGE_PHRASE = {"President's Budget": "request", "House Reported": "House bill", "Senate Reported": "Senate bill",
                 "House Passed": "House-passed bill", "Senate Passed": "Senate-passed bill"}
@@ -1623,6 +1642,10 @@ def lifecycle(h, first_year, latest_enacted):
     last_e = max(figs["enacted"]) if figs["enacted"] else None
     later = {y for y in figs["proposed"] if last_e is not None and y > last_e}
     before = bool(every) and min(every) <= first_year
+    # the lifecycle override: a start not yet identified is never the first year with evidence
+    unidentified = h["account"].get("start_basis") == "unidentified"
+    if unidentified:
+        before = True
     pred = succ = None
     uncollected = False
     if not obs:
@@ -1657,7 +1680,11 @@ def lifecycle(h, first_year, latest_enacted):
         return {"first": min(ev[g]), "last": max(ev[g]), "start": None if before else min(ev[g]),
                 "end": max(ev[g]) if ended else None}
     life = {"type": kind, "proposed": span("proposed"), "enacted": span("enacted"),
-            "first_label": (f"before FY{first_year}" if before else f"FY{min(every)}") if every else None}
+            "first_label": ("start not identified" if unidentified else f"before FY{first_year}" if before
+                            else f"FY{min(every)}") if every else None}
+    if unidentified:
+        life["start_basis"] = "unidentified"
+        life["start_basis_reason"] = h["account"].get("start_basis_reason")
     if kind == "new":
         life["created"] = first_e
     if uncollected:

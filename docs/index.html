@@ -464,10 +464,10 @@ function showAccount(data) {
 // both accounts' pages): "FY2026 request: moved to Administration for a Healthy America
 // (proposed, not enacted)", the other account a link, the evidence's documents cited.
 // (a proposed move reads "moved to ... (proposed, not enacted)": the evidence's own words mark the proposal)
-const REL_FROM = { moved: "moved to", proposed_move: "moved to", merged_into: "merged into",
+const REL_FROM = { moved: "moved to", proposed_move: "moved to", proposed_consolidation: "consolidated into", merged_into: "merged into",
                    split_from: "split from", renamed: "renamed as", same: "the same account as",
                    uncertain: "relationship uncertain with" };
-const REL_TO = { moved: "moved in from", proposed_move: "moved in from", merged_into: "absorbs",
+const REL_TO = { moved: "moved in from", proposed_move: "moved in from", proposed_consolidation: "consolidates", merged_into: "absorbs",
                  split_from: "split off", renamed: "renamed from", same: "the same account as",
                  uncertain: "relationship uncertain with" };
 function relationshipNote(rel) {
@@ -942,7 +942,8 @@ function moveLine(r) {
   const id = r.account.canonical_account_id;
   const rel = r.relationships.find((x) => x.from_account_id === id && STATUS_OF.get(x.to_account_id) === "proposed");
   if (!rel) return "";
-  return `FY${rel.effective_fiscal_year} request: moved to ${plainName(NAME_OF.get(rel.to_account_id) || rel.to_account_id)} (proposed)`;
+  const verb = rel.relationship_type === "proposed_consolidation" ? "consolidated into" : "moved to";
+  return `FY${rel.effective_fiscal_year} request: ${verb} ${plainName(NAME_OF.get(rel.to_account_id) || rel.to_account_id)} (proposed)`;
 }
 function accountRow(r, cols, cls, lvl) {
   const a = r.account, id = a.canonical_account_id;

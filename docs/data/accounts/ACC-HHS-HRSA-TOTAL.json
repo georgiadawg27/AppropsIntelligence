@@ -3486,6 +3486,8 @@
    "historical_names": null,
    "notes": "Derived rollup -- HRSA's agency total as the Title II table prints it; kept as a reference row, not an independent funding decision. Includes the Vaccine Injury Compensation trust fund and the Covered Countermeasures Process Fund; 'Total, Health Resources and Services' (no 'Administration') is a smaller subtotal.",
    "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
    "status": "active",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -6498,7 +6500,7 @@
     "other_observations": 4,
     "other_status": "proposed",
     "relationship_id": "REL-LHHS-0001",
-    "relationship_type": "proposed_move",
+    "relationship_type": "proposed_consolidation",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    }
   ],

@@ -519,6 +519,8 @@
    "historical_names": null,
    "notes": "Proposed in the FY2026 and FY2027 budget requests only; never reported by a committee or enacted (P.L. 119-75 has no such heading). The committee tables print it only in the request column, as the request's funding 'not displayed under other HHS accounts below' (H.Rept. 119-271 p.334 footnote 1/): the tables show most of the proposed AHA under HRSA, SAMHSA and the other legacy lines. Derived rollup (agency). H.Rept. 119-696 prints no plain total, only 'Administration for a Healthy America, Discretionary 1/', recorded as the headline there.",
    "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
    "status": "proposed",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -965,7 +967,7 @@
     "other_observations": 41,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0001",
-    "relationship_type": "proposed_move",
+    "relationship_type": "proposed_consolidation",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    },
    {
@@ -993,7 +995,7 @@
     "other_observations": 78,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0002",
-    "relationship_type": "proposed_move",
+    "relationship_type": "proposed_consolidation",
     "to_account_id": "ACC-HHS-AHA-TOTAL"
    },
    {
