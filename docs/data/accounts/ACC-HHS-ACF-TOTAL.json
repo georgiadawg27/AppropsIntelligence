@@ -5574,6 +5574,12 @@
            "human_review_status": "pending",
            "result": "flag",
            "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRC-UNEXPLAINED"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0037"
           }
          ],
@@ -6390,8 +6396,8 @@
            "validation_id": "VAL-LHHS-00189"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0046"
           }
@@ -11961,6 +11967,12 @@
       "human_review_status": "pending",
       "result": "flag",
       "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRC-UNEXPLAINED"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0037"
      }
     ],
@@ -12751,8 +12763,8 @@
       "validation_id": "VAL-LHHS-00189"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0046"
      }
