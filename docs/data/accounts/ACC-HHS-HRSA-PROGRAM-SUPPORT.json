@@ -1471,8 +1471,8 @@
            "validation_id": "VAL-LHHS-10232"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-2503"
           }
@@ -5364,8 +5364,8 @@
       "validation_id": "VAL-LHHS-10232"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-2503"
      }
