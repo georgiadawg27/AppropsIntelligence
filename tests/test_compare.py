@@ -707,7 +707,8 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=LHHS")
         move = lambda aid: [m.inner_text() for m in self.page.locator(f"tr[data-account={aid}] [data-testid=move-note]").all()]
         self.assertEqual(move("ACC-HHS-NIH-NIEHS"), ["FY2026 request: moved to Administration for a Healthy America (proposed)"])
-        self.assertEqual(move("ACC-HHS-NIH-NIDA"), ["FY2027 request: moved to National Institute of Substance Use and Addiction Research (proposed)"])
+        # a proposed consolidation (REL-LHHS-0005, proposed_consolidation since 2026-10-11) says so
+        self.assertEqual(move("ACC-HHS-NIH-NIDA"), ["FY2027 request: consolidated into National Institute of Substance Use and Addiction Research (proposed)"])
         self.page.click("#expand-all")
         self.assertEqual(move("ACC-HHS-HRSA-TOTAL"), [])                # a whole agency: only AHA's notes say so
         self.assertEqual(move("ACC-HHS-ASPR-RDP"), [])                  # into an account that is not proposed

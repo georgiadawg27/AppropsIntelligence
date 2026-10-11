@@ -1,6 +1,6 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; the bill and law text check)",
- "data_sha256": "6ffa246360ec7d212e7f0e0243fbd6bc38b3b80322abff7031e58817d04e8ebe",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11)",
+ "data_sha256": "f366f3a7581666564af356aef3eb8d4732ab0b64fe6be20ed52163f8fa0bb452",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
@@ -10,8 +10,8 @@
   },
   "Account": {
    "rows": 131,
-   "columns": 15,
-   "sha256": "72a03997465e8931c9c75c4f755d4185c155289224ea9d7c01e7b8846765230d"
+   "columns": 17,
+   "sha256": "68b71cf98f609dd64bcefd47320bbbd391262319b8a228383ab2f020da4e761e"
   },
   "Historical Name": {
    "rows": 15,
@@ -31,7 +31,7 @@
   "Account Relationship": {
    "rows": 15,
    "columns": 8,
-   "sha256": "9e6a751ce383ad3fb262359986ae4c796db27857f36b83a94dc48418d5399715"
+   "sha256": "4ae56c525b9a9ea28ca2cc91f1ac36ad985ddb714ced78aeeff522deb52a7c94"
   },
   "Source Document": {
    "rows": 108,
