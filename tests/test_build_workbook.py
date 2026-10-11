@@ -51,7 +51,8 @@ class BuiltWorkbook(unittest.TestCase):
         self.assertEqual(W.compare(W.digest(self.path), want), [])
         self.assertEqual(list(want), ["Read Me", "Account", "Historical Name", "Confirmed Absence",
                                       "Appropriations Observation", "Account Relationship", "Source Document",
-                                      "Bill Report Reference", "Validation Record", "Component"])
+                                      "Bill Report Reference", "Validation Record", "Component",
+                                      "Observation Component", "Account Attribute"])
 
     def test_the_digest_sees_a_single_changed_value(self):
         with tempfile.TemporaryDirectory() as d:

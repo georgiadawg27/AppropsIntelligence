@@ -1439,6 +1439,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0333"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-0333"
           }
@@ -3733,6 +3739,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0208"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0333"
      },
      {
       "human_review_status": null,

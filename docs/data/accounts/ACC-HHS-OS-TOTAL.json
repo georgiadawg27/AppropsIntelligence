@@ -4538,6 +4538,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-01605"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0388"
           }
          ],
          "verification_status": "auto-validated"
@@ -4708,6 +4714,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-07135"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-1826"
           }
          ],
          "verification_status": "auto-validated"
@@ -4987,6 +4999,12 @@
            "result": "flag",
            "rule_applied": "semantic",
            "validation_id": "VAL-LHHS-01951"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0485"
           }
          ],
          "verification_status": "unverified"
@@ -5148,6 +5166,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01627"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0392"
           }
          ],
          "verification_status": "auto-validated"
@@ -5472,6 +5496,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01649"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0396"
           }
          ],
          "verification_status": "auto-validated"
@@ -5583,6 +5613,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-01651"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0398"
           }
          ],
          "verification_status": "auto-validated"
@@ -5745,6 +5781,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01662"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0400"
           }
          ],
          "verification_status": "auto-validated"
@@ -6033,6 +6075,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01678"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0404"
           }
          ],
          "verification_status": "auto-validated"
@@ -10638,6 +10686,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-07135"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-1826"
      }
     ],
     "verification_status": "auto-validated"
@@ -10846,6 +10900,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-01605"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0388"
      }
     ],
     "verification_status": "auto-validated"
@@ -11117,6 +11177,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01627"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0392"
      }
     ],
     "verification_status": "auto-validated"
@@ -11253,6 +11319,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01649"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0396"
      }
     ],
     "verification_status": "auto-validated"
@@ -11335,6 +11407,12 @@
       "result": "flag",
       "rule_applied": "semantic",
       "validation_id": "VAL-LHHS-01951"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0485"
      }
     ],
     "verification_status": "unverified"
@@ -11595,6 +11673,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01662"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0400"
      }
     ],
     "verification_status": "auto-validated"
@@ -11707,6 +11791,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01678"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0404"
      }
     ],
     "verification_status": "auto-validated"
@@ -11787,6 +11877,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-01651"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0398"
      }
     ],
     "verification_status": "auto-validated"
