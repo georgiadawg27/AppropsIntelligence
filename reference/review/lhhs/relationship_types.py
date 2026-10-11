@@ -1,6 +1,7 @@
 """
-Make every Account Relationship's type explicit (owner, 2026-10-09): renamed, merged_into, split_from, moved or
-proposed_move. Appends nothing; changes only relationship_type, never an ID, figure or status.
+Make every Account Relationship's type explicit (owner, 2026-10-09; proposed_consolidation added 2026-10-11):
+renamed, merged_into, split_from, moved, proposed_move or proposed_consolidation. Appends nothing; changes only
+relationship_type, never an ID, figure or status.
 
     python reference/review/lhhs/relationship_types.py           # what would change
     python reference/review/lhhs/relationship_types.py --write   # apply
@@ -9,8 +10,10 @@ The old types were 'moved_reclassified' and 'consolidated'. A type is mapped onl
 evidence decides it:
   moved_reclassified, evidence 'Proposed, not enacted ...'   -> proposed_move
   moved_reclassified, enacted (the law moved it)              -> moved
-  consolidated, evidence 'Proposed, not enacted ...'          -> proposed_move (the list's only proposal type;
-                                                                 a proposed consolidation is a proposed move)
+  consolidated, evidence 'Proposed, not enacted ...'          -> proposed_consolidation (a proposal folding one or
+                                                                 more whole accounts or agencies into a new or
+                                                                 existing body; enacted, it is merged_into)
+proposed_move stays for a single program's proposed move.
 Anything else with an old type is reported as ambiguous and left unchanged.
 """
 
@@ -20,7 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 STAGED = ROOT / "data" / "staged.json"
-TYPES = ("renamed", "merged_into", "split_from", "moved", "proposed_move")
+TYPES = ("renamed", "merged_into", "split_from", "moved", "proposed_move", "proposed_consolidation")
 PROPOSED = "Proposed, not enacted"
 # the one enacted move: the law itself moves it (REL-LHHS-0018, the Strategic National Stockpile, P.L. 116-94)
 ENACTED_MOVE = "appropriates it under"
@@ -32,7 +35,9 @@ def explicit(r):
     if t in TYPES:
         return t, "already explicit"
     proposed = ev.startswith(PROPOSED) or (ev.startswith("As REL-") and t == "consolidated")
-    if t in ("moved_reclassified", "consolidated") and proposed:
+    if t == "consolidated" and proposed:
+        return "proposed_consolidation", f"{t}; its evidence: 'Proposed, not enacted'"
+    if t == "moved_reclassified" and proposed:
         return "proposed_move", f"{t}; its evidence: 'Proposed, not enacted'"
     if t == "moved_reclassified" and ENACTED_MOVE in ev:
         return "moved", f"{t}; its evidence: the law '{ENACTED_MOVE}' the new heading"

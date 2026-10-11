@@ -6,7 +6,9 @@ Every account's derived lifecycle (approps_store.lifecycle), from the published 
 Columns: subcommittee, account, name, lifecycle type, first (the first evidence: 'before FY2017' when it is the
 first year on file), proposed first-last and enacted first-last (each from figures and confirmed absences), the
 year created (a new account's first enacted figure), predecessor / successor, enacted figures not yet collected,
-and the cells blank outside the account's life.
+the start_basis override and its reason (an 'unidentified' start: the years before the first evidence stay
+missing), the account's relationships (id, type, other account; each listed on its 'from' side), and the cells
+blank outside the account's life.
 """
 
 import csv
@@ -29,6 +31,9 @@ def rows():
                    "enacted": span(L["enacted"]), "created": L.get("created", ""),
                    "predecessor": L.get("predecessor", ""), "successor": L.get("successor", ""),
                    "enacted_not_collected": "yes" if L.get("enacted_not_collected") else "",
+                   "start_basis": L.get("start_basis", ""), "start_basis_reason": L.get("start_basis_reason") or "",
+                   "relationships": "; ".join(f"{x['relationship_id']} {x['relationship_type']} -> {x['to_account_id']}"
+                                              for x in r["relationships"] if x["from_account_id"] == a["canonical_account_id"]),
                    "blank_cells": sum(1 for c in r["cells"].values() if c.get("outside_life"))}
 
 

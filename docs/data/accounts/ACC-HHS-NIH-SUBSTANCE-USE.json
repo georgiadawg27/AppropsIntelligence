@@ -140,6 +140,8 @@
    "historical_names": null,
    "notes": "FY2027 request only: H.Rept. 119-696 p.375 request column 2,097,238 (NIDA and NIAAA '---'); FY2027 Budget Appendix line 0032.",
    "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
    "status": "proposed",
    "subcommittee": "LHHS",
    "title": "Title II",
@@ -412,7 +414,7 @@
     "other_observations": 41,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0005",
-    "relationship_type": "proposed_move",
+    "relationship_type": "proposed_consolidation",
     "to_account_id": "ACC-HHS-NIH-SUBSTANCE-USE"
    },
    {
@@ -431,7 +433,7 @@
     "other_observations": 41,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0006",
-    "relationship_type": "proposed_move",
+    "relationship_type": "proposed_consolidation",
     "to_account_id": "ACC-HHS-NIH-SUBSTANCE-USE"
    }
   ],

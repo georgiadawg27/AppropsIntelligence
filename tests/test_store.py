@@ -627,12 +627,11 @@ class GridStates(StoreTest):
         # inside an account's life a gap stays missing (CDC Program Support, FY2025 House)
         self.assertEqual(S.headline_state(rows["ACC-HHS-CDC-PROGRAM-SUPPORT"]["cells"]["2025|House Reported"]["lines"]),
                          "missing")
-        # the Medicare limitation general provision's first evidence is FY2026 (its absences that rested on the
-        # tables' silence were retired 2026-10-08): a new account, its cells before FY2026 blank (the lifecycle)
+        # the Medicare limitation general provision's first evidence is FY2026, but its start is not identified
+        # (Account.start_basis 'unidentified', 2026-10-11): its cells before FY2026 read missing again, not blank
         row = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]
-        self.assertEqual((row["lifecycle"]["type"], row["lifecycle"]["created"]), ("new", 2026))
-        self.assertEqual((row["cells"]["2025|Enacted"]["outside_life"], row["cells"]["2025|Enacted"]["lines"]),
-                         ("before", []))
+        self.assertEqual(S.headline_state(row["cells"]["2025|Enacted"]["lines"]), "missing")
+        self.assertNotIn("outside_life", row["cells"]["2025|Enacted"])
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
         # no Labor-HHS document on file covers FY2027 Senate Reported (no Senate FY2027 bill is on file; the
@@ -822,8 +821,45 @@ class Lifecycle(StoreTest):
         self.assertTrue(cjs["ACC-NOAA-ORF"]["enacted_not_collected"])
 
     def test_relationship_types_are_explicit(self):
-        types = {r[0] for r in self.conn.execute("SELECT relationship_type FROM account_relationship")}
-        self.assertLessEqual(types, {"renamed", "merged_into", "split_from", "moved", "proposed_move"})
+        types = dict(self.conn.execute("SELECT relationship_id, relationship_type FROM account_relationship"))
+        self.assertLessEqual(set(types.values()), {"renamed", "merged_into", "split_from", "moved", "proposed_move",
+                                                   "proposed_consolidation"})
+        # proposals folding whole accounts or agencies into another body (2026-10-11); single-program moves stay
+        # proposed_move
+        self.assertEqual({k for k, v in types.items() if v == "proposed_consolidation"},
+                         {"REL-LHHS-0001", "REL-LHHS-0002", "REL-LHHS-0005", "REL-LHHS-0006"})
+        self.assertEqual(types["REL-LHHS-0011"], "proposed_move")
+
+    def test_an_unidentified_start_leaves_no_blank_cell_before_the_first_evidence(self):
+        # Account.start_basis 'unidentified': the first year with evidence is not the start -- no cell before it
+        # is outside the life; the gaps read missing
+        rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
+        overridden = [a for (a,) in self.conn.execute("SELECT canonical_account_id FROM account "
+                                                      "WHERE start_basis = 'unidentified'")]
+        self.assertEqual(overridden, ["ACC-HHS-GP-MEDICARE-LIMITATION"])
+        for aid in overridden:
+            L = rows[aid]["lifecycle"]
+            self.assertEqual((L["type"], L["start_basis"], L["first_label"]), ("ongoing", "unidentified", "start not identified"))
+            self.assertEqual(L["start_basis_reason"], "FY2026 provision not yet identified; earlier years unknown.")
+            first = min(L["enacted"]["first"], L["proposed"]["first"])
+            before = {k: c for k, c in rows[aid]["cells"].items() if int(k.split("|")[0]) < first}
+            self.assertTrue(before)
+            self.assertFalse([k for k, c in before.items() if c.get("outside_life")], aid)
+        missing = [k for k, c in rows["ACC-HHS-GP-MEDICARE-LIMITATION"]["cells"].items()
+                   if S.headline_state(c["lines"]) == "missing"]
+        self.assertEqual(len(missing), 38)
+
+    def test_the_load_refuses_a_start_basis_without_a_reason(self):
+        import openpyxl
+        with tempfile.TemporaryDirectory() as d:
+            wb = openpyxl.load_workbook(S.reference_workbook(), data_only=True)
+            ws = wb["Account"]
+            head = [c.value for c in ws[1]]
+            row = next(r for r in ws.iter_rows(min_row=2) if r[head.index("start_basis")].value == "unidentified")
+            row[head.index("start_basis_reason")].value = None
+            wb.save(Path(d) / "no_reason.xlsx")
+            with self.assertRaisesRegex(S.LoadError, "has no start_basis_reason"):
+                S.load(Path(d) / "no_reason.xlsx", Path(d) / "x.db")
 
 
 class NoPrintedTotal(StoreCopyTest):
