@@ -1225,82 +1225,59 @@
        "missing": false,
        "observations": [
         {
-         "amount": 485169000,
+         "amount": 484169000,
          "amount_type": "budget authority",
          "bill_id": "H.R.2740",
          "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
          "canonical_account_id": "ACC-HHS-OS-GDM",
+         "cell_note": "H.Rept. 116-62 p.354 prints 'Total, General Departmental Management' 485,169 thousand; its lines (pp.353-354) exceed the bill by $1,000,000, and no general provision of the bill appropriates it.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
          "document_fiscal_year": 2020,
-         "document_notes": "H.Rept. 116-62 (H.R. 2740). sha256 574f0f86674e3e70... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 311-384; Title II pp. 327-358) is scanned with GPO's invisible text layer: read from that layer, 18 Title II pages re-read by vision where it failed the table's arithmetic (14 from transcriptions already on file).",
+         "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
          "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_type": "bill",
+         "extraction_method": "derived",
          "fiscal_year": 2020,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2744",
+         "observation_id": "OBS-LHHS-4106",
          "offsetting_collections": 0,
          "publication_date": "2019-05-16",
          "report_id": "H.Rept.116-62",
          "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-116HRPT62",
-         "source_page": "354",
-         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, General Departmental Management' [Bill]",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-116HR2740RH",
+         "source_page": "89-91",
+         "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.R. 2740 'General Departmental Management' $474,169,000 + the paragraph 'For an additional amount for prize competitions' $10,000,000 = $484,169,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 116-62 p.354 prints 'Total, General Departmental Management' 485,169 thousand; its lines (pp.353-354) exceed the bill by $1,000,000, and no general provision of the bill appropriates it.",
          "stage": "House Reported",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-11379"
+           "rule_applied": "structural",
+           "validation_id": "VAL-LHHS-17244"
           },
           {
            "human_review_status": "resolved",
-           "resolution": "parse note: 'Federal Funds; (Evaluation Tap Funding)' is a memo line printed under the account (a transfer or non-add amount), not a breakdown of its figure",
-           "result": "flag",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-11380"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-11381"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-11382"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-11383"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-11384"
-          },
-          {
-           "human_review_status": "pending",
+           "resolution": "bill text controls (484,169,000); the table's lines exceed the bill by $1,000,000 (H.Rept. 116-62 pp.353-354)",
            "result": "fail",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-LHHS-17245"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "bill_text",
-           "validation_id": "VAL-TXT-LHHS-2744"
+           "validation_id": "VAL-TXT-LHHS-4106"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -4992,6 +4969,7 @@
     "source_page": "354",
     "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, General Departmental Management' [Bill]",
     "stage": "House Reported",
+    "superseded_by_observation_id": "OBS-LHHS-4106",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
     "validation": [
@@ -5033,13 +5011,69 @@
       "validation_id": "VAL-LHHS-11384"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Superseded by OBS-LHHS-4106 (484,169,000): the bill text controls; the table figure stays here and as a note on the new figure.",
       "result": "fail",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-2744"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 484169000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.2740",
+    "bill_report_reference_id": "BR-LHHS-FY2020-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+    "canonical_account_id": "ACC-HHS-OS-GDM",
+    "cell_note": "H.Rept. 116-62 p.354 prints 'Total, General Departmental Management' 485,169 thousand; its lines (pp.353-354) exceed the bill by $1,000,000, and no general provision of the bill appropriates it.",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_notes": "H.R. 2740 as reported (BILLS-116hr2740rh): the FY2020 House Labor-HHS bill (H.Rept. 116-62); Title II is PDF pp. 42-116. sha256 574ef8fe18076696... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "derived",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4106",
+    "offsetting_collections": 0,
+    "publication_date": "2019-05-16",
+    "report_id": "H.Rept.116-62",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt62/pdf/CRPT-116hrpt62.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR2740RH",
+    "source_page": "89-91",
+    "source_table_or_section": "Title II, Office of the Secretary -- derived, not a printed line: H.R. 2740 'General Departmental Management' $474,169,000 + the paragraph 'For an additional amount for prize competitions' $10,000,000 = $484,169,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 116-62 p.354 prints 'Total, General Departmental Management' 485,169 thousand; its lines (pp.353-354) exceed the bill by $1,000,000, and no general provision of the bill appropriates it.",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr2740rh/pdf/BILLS-116hr2740rh.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-17244"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "bill text controls (484,169,000); the table's lines exceed the bill by $1,000,000 (H.Rept. 116-62 pp.353-354)",
+      "result": "fail",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-LHHS-17245"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-4106"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 479629000,

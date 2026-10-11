@@ -146,6 +146,63 @@ def verification_status(confidence, checks):
     return "unverified"
 
 
+# A figure decided by the owner's rule that bill or law text controls over the report table for the same scope
+# (2026-10-11): its section text carries this phrase, and its table figure is kept as a note.
+TEXT_RULE_MARK = "bill or law text controls over the report table"
+RESOLVED_BY_RULE = "resolved-by-rule"
+# A table_total record that confirms a figure within rounding: a computed total or difference in $ thousands that
+# differs from the bill or law text by at most one unit. Never a printed line amount.
+WITHIN_ROUNDING = "within rounding"
+ROUNDING_UNIT = 1_000
+
+
+def observation_status(o, checks):
+    """verification_status for an observation the rule sets: verification_status() above, except that a figure
+    decided by the bill-text rule (TEXT_RULE_MARK) that nothing else confirms is 'resolved-by-rule', not
+    'unverified'. Once another document or a sum confirms it, it is auto-validated like any other figure."""
+    status = verification_status(o["confidence"], checks)
+    if status == "unverified" and TEXT_RULE_MARK in (o.get("source_table_or_section") or ""):
+        return RESOLVED_BY_RULE
+    return status
+
+
+def rule_status_text(o, doc_types=None):
+    """The words shown for a 'resolved-by-rule' figure: 'Resolved by rule: bill text controls (explanatory table
+    prints 370,722,000)', read from the figure's own note (the table figure, in thousands, and its document)."""
+    text = o.get("source_table_or_section") or ""
+    note = text.split(" -- Note: ", 1)[1] if " -- Note: " in text else ""
+    kind = "law text" if (o.get("source_document_id") or "").startswith("SRC-PLAW-") else "bill text"
+    m = re.search(r"(?:prints|gives)\b[^.]*?(-?[\d,]+) thousand", note)
+    if not m:
+        return f"Resolved by rule: {kind} controls"
+    doc = re.search(r"\b(SRC-[A-Z0-9-]+)\b", note)
+    table = "report table"
+    if doc and (doc_types or {}).get(doc.group(1)) == "explanatory_statement" or "explanatory" in note[:m.start()]:
+        table = "explanatory table"
+    amount = int(m.group(1).replace(",", "")) * 1000
+    return f"Resolved by rule: {kind} controls ({table} prints {amount:,})"
+
+
+def rounding_errors(observations, validations):
+    """Problems with the 'within rounding' confirmations: each must be a passing table_total record, its
+    expected_result a computed total or difference ('computed ... = N thousand'), and N thousand at most one
+    unit ($1,000) from the figure, and not equal to it (an exact match needs no rounding)."""
+    amount = {o["observation_id"]: o["amount"] for o in observations}
+    errs = []
+    for v in validations:
+        if WITHIN_ROUNDING not in (v.get("observed_result") or ""):
+            continue
+        m = re.search(r"\bcomputed\b.*= (-?[\d,]+) thousand", v.get("expected_result") or "")
+        if v["rule_applied"] != "table_total" or v["result"] != "pass":
+            errs.append(f"{v['validation_id']}: '{WITHIN_ROUNDING}' only on a passing table_total record")
+        elif not m:
+            errs.append(f"{v['validation_id']}: '{WITHIN_ROUNDING}' needs a computed total or difference "
+                        f"('computed ... = N thousand'), never a printed line amount")
+        elif not 0 < abs(int(m.group(1).replace(",", "")) * 1000 - amount[v["observation_id"]]) <= ROUNDING_UNIT:
+            errs.append(f"{v['validation_id']}: the computed figure is not within one unit ($1,000) of the figure")
+    return errs
+
+
 def _cell_value(node, col_index):
     if col_index is None or col_index >= len(node.cells):
         return None

@@ -15,7 +15,7 @@ with open("data/staged.json") as f:
 STAGE_ALL = ["President's Budget", "House Reported", "Senate Reported", "Enacted", "House Passed", "Senate Passed"]
 AMOUNT_TYPE = ["budget authority", "obligation", "outlay", "rescission", "transfer", "offsetting_collection", "supplemental", "advance", "prior_year_advance", "other"]
 EXTRACTION = ["AI-extracted", "human-entered", "hybrid", "text-extracted", "derived"]
-VERIFICATION = ["unverified", "auto-validated", "human-verified", "flagged", "provisional", "superseded"]
+VERIFICATION = ["unverified", "auto-validated", "human-verified", "flagged", "provisional", "superseded", "resolved-by-rule"]
 ACCOUNT_STATUS = ["active", "inactive", "superseded", "proposed"]
 FUND_TYPE = ["general", "trust", "special", "revolving", "working_capital", "no_year"]
 REL_TYPE = ["same", "renamed", "split_from", "merged_into", "moved", "proposed_move", "proposed_consolidation", "uncertain"]
@@ -151,9 +151,10 @@ def _check_status_rule():
     for o in data["observations"]:
         if o["verification_status"] in ("human-verified", "provisional", "superseded"):
             continue
-        want = V.verification_status(o["confidence"], checks[o["observation_id"]])
+        want = V.observation_status(o, checks[o["observation_id"]])
         if o["verification_status"] != want:
             errs.append(f"{o['observation_id']}: verification_status {o['verification_status']!r}, the rule gives {want!r}")
+    errs += V.rounding_errors(data["observations"], data["validations"])
     if errs:
         raise SystemExit("BUILD STOPPED: verification_status rule\n  " + "\n  ".join(errs[:50])
                          + (f"\n  ... {len(errs)} total" if len(errs) > 50 else ""))
@@ -529,6 +530,11 @@ rows = [
     ("\u2022 Labor-HHS rows keep their pipeline provenance (extraction_method text-extracted / AI-extracted / "
      "human_entered; verification_status auto-validated / unverified / flagged). Flagged observations are shaded pink; "
      "failed validations are shaded darker red \u2014 all current fails are table_total checks on rollup rows.", NOTE_FONT),
+    ("\u2022 verification_status resolved-by-rule (2026-10-11): a figure decided by the rule that bill or law text "
+     "controls over the report table for the same scope, with no other document to confirm it. The table's figure is "
+     "kept as a note. A table_total record marked 'within rounding' confirms a figure when a computed total or "
+     "difference in $ thousands differs from the text by at most one unit ($1,000); never a printed line amount.",
+     NOTE_FONT),
     ("\u2022 New column V on Appropriations Observation: superseded_by_observation_id. A superseded observation "
      "(verification_status superseded) names the observation that replaced it; nothing is deleted (NIH Office of "
      "the Director FY2022, re-derived as the Office of the Director + Gabriella Miller Kids First).", NOTE_FONT),

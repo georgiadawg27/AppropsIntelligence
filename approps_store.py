@@ -1271,6 +1271,11 @@ def history(conn, account_id):
                   and "Note: " in (v["resolution"] or "")]
         if notes:
             rec["cell_note"] = " ".join(notes)
+        # a figure decided by the bill-text rule with nothing else to confirm it shows that, with the table's figure
+        if rec["verification_status"] == "resolved-by-rule":
+            import validate_approps as V
+            doc_types = dict(conn.execute("SELECT document_id, document_type FROM source_document").fetchall())
+            rec["status_text"] = V.rule_status_text(rec, doc_types)
         obs.append(rec)
     # a line recorded with a note ('... -- Note: House proposed ...', a chamber's one-off proposal) shows it in its
     # cell's corner: on the cell's headline, else on the line itself

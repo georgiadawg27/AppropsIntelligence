@@ -352,7 +352,7 @@ def write(data, recs, updates=()):
     for o in data["observations"]:
         if o["verification_status"] in ("human-verified", "provisional", "superseded"):
             continue
-        new = V.verification_status(o["confidence"], by_obs[o["observation_id"]])
+        new = V.observation_status(o, by_obs[o["observation_id"]])
         if new != o["verification_status"]:
             moved[(o["canonical_account_id"].split("-")[1] if o["observation_id"].startswith("OBS-LHHS") else "CJS",
                    o["fiscal_year"], o["verification_status"], new)] += 1

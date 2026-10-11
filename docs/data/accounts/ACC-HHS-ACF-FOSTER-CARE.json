@@ -986,81 +986,52 @@
        "missing": false,
        "observations": [
         {
-         "amount": 10011537000,
+         "amount": 10012000000,
          "amount_type": "budget authority",
          "bill_id": "P.L.116-260",
          "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
          "canonical_account_id": "ACC-HHS-ACF-FOSTER-CARE",
+         "cell_note": "H.Rept. 117-96 p.488 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand [FY 2021 Enacted], $463,000 less than the text.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
-         "document_fiscal_year": 2022,
-         "document_notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic.",
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_fiscal_year": 2021,
+         "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "derived",
          "fiscal_year": 2021,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2557",
+         "observation_id": "OBS-LHHS-4105",
          "offsetting_collections": 0,
-         "publication_date": "2021-07-19",
+         "publication_date": "2020-12-27",
          "report_id": "N/A",
          "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-117HRPT96",
-         "source_page": "488",
-         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Payments to States, available in this bill' [FY 2021 Enacted]",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-116PUBL260",
+         "source_page": "405",
+         "source_table_or_section": "Title II, Administration for Children and Families -- derived, not a printed line: P.L. 116-260 div. H (134 Stat. 1585) 'Payments for Foster Care and Permanency' $7,012,000,000 + the first-quarter FY2022 advance $3,000,000,000 = $10,012,000,000, the table's scope ('available in this bill'); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 117-96 p.488 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand [FY 2021 Enacted], $463,000 less than the text.",
          "stage": "Enacted",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-10457"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-10458"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-10459"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-10460"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-10793"
+           "validation_id": "VAL-LHHS-17243"
           },
           {
            "human_review_status": null,
            "result": "info",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-10973"
-          },
-          {
-           "human_review_status": "pending",
-           "result": "fail",
-           "rule_applied": "law_text",
-           "validation_id": "VAL-TXT-LHHS-2557"
+           "validation_id": "VAL-TXT-LHHS-4105"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -1077,75 +1048,52 @@
        "missing": false,
        "observations": [
         {
-         "amount": 10011537000,
+         "amount": 10012000000,
          "amount_type": "budget authority",
          "bill_id": "H.R.7614",
          "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
          "canonical_account_id": "ACC-HHS-ACF-FOSTER-CARE",
+         "cell_note": "H.Rept. 116-450 p.418 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand, $463,000 less than the text.",
          "chamber": "House",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
          "document_fiscal_year": 2021,
-         "document_notes": "H.Rept. 116-450 (H.R. 7614). sha256 98cbfd0bd79f3822... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 393-426) is image-only: read from a tesseract text layer (400 dpi), re-read by vision where the OCR failed the table's arithmetic.",
+         "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
          "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_type": "bill",
+         "extraction_method": "derived",
          "fiscal_year": 2021,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-2265",
+         "observation_id": "OBS-LHHS-4104",
          "offsetting_collections": 0,
          "publication_date": "2020-07-15",
          "report_id": "H.Rept.116-450",
          "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-116HRPT450",
-         "source_page": "418",
-         "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Payments to States, available in this bill' [Bill]",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-116HR7614RH",
+         "source_page": "92",
+         "source_table_or_section": "Title II, Administration for Children and Families -- derived, not a printed line: H.R. 7614 'Payments for Foster Care and Permanency' $7,012,000,000 + the first-quarter FY2022 advance $3,000,000,000 = $10,012,000,000, the table's scope ('available in this bill'); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 116-450 p.418 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand, $463,000 less than the text.",
          "stage": "House Reported",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-09270"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09271"
+           "validation_id": "VAL-LHHS-17242"
           },
           {
            "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-09272"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-09273"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-09274"
-          },
-          {
-           "human_review_status": "pending",
-           "result": "fail",
+           "result": "info",
            "rule_applied": "bill_text",
-           "validation_id": "VAL-TXT-LHHS-2265"
+           "validation_id": "VAL-TXT-LHHS-4104"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -4162,6 +4110,7 @@
     "source_page": "418",
     "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Payments to States, available in this bill' [Bill]",
     "stage": "House Reported",
+    "superseded_by_observation_id": "OBS-LHHS-4104",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
     "validation": [
@@ -4196,13 +4145,62 @@
       "validation_id": "VAL-LHHS-09274"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Superseded by OBS-LHHS-4104 (10,012,000,000): the bill text controls; the table figure stays here and as a note on the new figure.",
       "result": "fail",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-2265"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 10012000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.7614",
+    "bill_report_reference_id": "BR-LHHS-FY2021-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-FOSTER-CARE",
+    "cell_note": "H.Rept. 116-450 p.418 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand, $463,000 less than the text.",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "H.R. 7614 as reported (BILLS-116hr7614rh): the FY2021 House Labor-HHS bill (H.Rept. 116-450). sha256 86944d5feceb1c77... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "derived",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4104",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-15",
+    "report_id": "H.Rept.116-450",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt450/pdf/CRPT-116hrpt450.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-116HR7614RH",
+    "source_page": "92",
+    "source_table_or_section": "Title II, Administration for Children and Families -- derived, not a printed line: H.R. 7614 'Payments for Foster Care and Permanency' $7,012,000,000 + the first-quarter FY2022 advance $3,000,000,000 = $10,012,000,000, the table's scope ('available in this bill'); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 116-450 p.418 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand, $463,000 less than the text.",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-116hr7614rh/pdf/BILLS-116hr7614rh.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-17242"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-4104"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 10012000000,
@@ -4304,6 +4302,7 @@
     "source_page": "488",
     "source_table_or_section": "Title II, Administration for Children and Families -- printed as 'Total, Payments to States, available in this bill' [FY 2021 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-4105",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt96/pdf/CRPT-117hrpt96.pdf",
     "validation": [
@@ -4344,13 +4343,62 @@
       "validation_id": "VAL-LHHS-10973"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Superseded by OBS-LHHS-4105 (10,012,000,000): the bill text controls; the table figure stays here and as a note on the new figure.",
       "result": "fail",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-LHHS-2557"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 10012000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-LHHS-FY2021-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-HHS-ACF-FOSTER-CARE",
+    "cell_note": "H.Rept. 117-96 p.488 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand [FY 2021 Enacted], $463,000 less than the text.",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_notes": "Consolidated Appropriations Act, 2021; Division H (Labor-HHS) is PDF pp. 367-447. sha256 32285d91badb98bb... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "derived",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4105",
+    "offsetting_collections": 0,
+    "publication_date": "2020-12-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-116PUBL260",
+    "source_page": "405",
+    "source_table_or_section": "Title II, Administration for Children and Families -- derived, not a printed line: P.L. 116-260 div. H (134 Stat. 1585) 'Payments for Foster Care and Permanency' $7,012,000,000 + the first-quarter FY2022 advance $3,000,000,000 = $10,012,000,000, the table's scope ('available in this bill'); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 117-96 p.488 prints 'Total, Payments to States, available in this bill' 10,011,537 thousand [FY 2021 Enacted], $463,000 less than the text.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-116publ260/pdf/PLAW-116publ260.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-17243"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-4105"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 10163000000,

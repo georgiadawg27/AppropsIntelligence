@@ -178,10 +178,12 @@ class V33Store(unittest.TestCase):
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
-        for oid, conf, status in self.conn.execute(
-                "SELECT observation_id, confidence, verification_status FROM appropriations_observation "
+        for oid, conf, status, section in self.conn.execute(
+                "SELECT observation_id, confidence, verification_status, source_table_or_section "
+                "FROM appropriations_observation "
                 "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
-            self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
+            o = {"confidence": conf, "source_table_or_section": section}
+            self.assertEqual(V.observation_status(o, self.checks(oid)), status, oid)
             n += 1
         self.assertGreater(n, 0)
 
@@ -356,6 +358,30 @@ class VerificationStatusRule(unittest.TestCase):
         self.assertEqual(V.verification_status(0.95, [("source_text", "pass"), ("unit", "pass")]), "unverified")
         self.assertEqual(V.verification_status(0.95, []), "unverified")
         self.assertEqual(V.verification_status(0.95, [("cross_document", "pass")]), "auto-validated")
+
+    def test_a_figure_decided_by_the_bill_text_rule(self):
+        o = {"confidence": 0.95, "source_document_id": "SRC-BILLS-118HR5894IH",
+             "source_table_or_section": "printed in H.R. 5894 under 'Global Health'; " + V.TEXT_RULE_MARK
+             + " (owner 2026-10-11) -- Note: The explanatory table prints 'Global Health' 370,722 thousand "
+               "(SRC-EXPL-LHHS-FY2024-HOUSE p.258), $50,000 less than the bill."}
+        self.assertEqual(V.observation_status(o, [("bill_text", "info")]), "resolved-by-rule")
+        # once a sum or another document confirms it, it is auto-validated like any other figure
+        self.assertEqual(V.observation_status(o, [("cross_document", "pass")]), "auto-validated")
+        self.assertEqual(V.observation_status(o, [("structural", "fail")]), "flagged")
+        self.assertEqual(V.observation_status({**o, "source_table_or_section": "printed"}, []), "unverified")
+        self.assertEqual(V.rule_status_text(o, {"SRC-EXPL-LHHS-FY2024-HOUSE": "explanatory_statement"}),
+                         "Resolved by rule: bill text controls (explanatory table prints 370,722,000)")
+
+    def test_within_rounding_only_on_a_computed_figure_one_unit_off(self):
+        obs = [{"observation_id": "O", "amount": 313_904_098_000}]
+        def rec(exp, got="$1,000 apart; within rounding", rule="table_total", result="pass"):
+            return {"validation_id": "V", "observation_id": "O", "rule_applied": rule, "result": result,
+                    "expected_result": exp, "observed_result": got}
+        self.assertEqual(V.rounding_errors(obs, [rec("462,636,414 - 148,732,315: computed = 313,904,099 thousand")]), [])
+        self.assertTrue(V.rounding_errors(obs, [rec("prints 'Grants to States' 313,904,099 thousand")]))   # a printed line
+        self.assertTrue(V.rounding_errors(obs, [rec("computed = 313,904,100 thousand")]))                 # two units off
+        self.assertTrue(V.rounding_errors(obs, [rec("computed = 313,904,098 thousand")]))                 # exact: no rounding
+        self.assertTrue(V.rounding_errors(obs, [rec("computed = 313,904,099 thousand", rule="cross_document")]))
 
 
 class DownloadCleansTheKey(unittest.TestCase):

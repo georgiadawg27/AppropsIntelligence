@@ -178,10 +178,13 @@ CREATE TABLE appropriations_observation (
                                                                         'text-extracted', 'derived')),
     confidence               REAL NOT NULL CHECK (confidence BETWEEN 0 AND 1),
     -- provisional: an unconfirmed advance copy that passed every check;
-    -- superseded: replaced by the official document's value (reconcile.py)
+    -- superseded: replaced by the official document's value (reconcile.py);
+    -- resolved-by-rule: decided by the rule that bill or law text controls over the report table, with no
+    -- other document to confirm it (validate_approps.observation_status)
     verification_status      TEXT NOT NULL CHECK (verification_status IN ('unverified', 'auto-validated',
                                                                           'human-verified', 'flagged',
-                                                                          'provisional', 'superseded')),
+                                                                          'provisional', 'superseded',
+                                                                          'resolved-by-rule')),
     -- The workbook derives bill_id / report_id / bill_url / report_jes_url by
     -- looking up (account.subcommittee, fiscal_year, stage) in Bill Report
     -- Reference. Stored as a real key; the loader checks bill_id / report_id
