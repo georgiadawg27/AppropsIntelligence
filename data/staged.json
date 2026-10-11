@@ -19974,7 +19974,7 @@
    "source_table_or_section": "Title I, United States Patent and Trademark Office -- printed as 'Offsetting fee collections' [Bill]",
    "extraction_method": "AI-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -19995,7 +19995,7 @@
    "source_table_or_section": "Title I, United States Patent and Trademark Office -- printed as '(by transfer to OIG)' [Bill]",
    "extraction_method": "AI-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -20163,7 +20163,7 @@
    "source_table_or_section": "Title I, National Oceanic and Atmospheric Administration -- printed as 'Promote and Develop Fund (transfer out)' [Bill]",
    "extraction_method": "AI-extracted",
    "confidence": 0.95,
-   "verification_status": "unverified",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -324653,6 +324653,39 @@
    "expected_result": "CBO cost estimate for H.R. 8845 (SRC-CBO-HR8845-FY2027 p.1-14), the figure's earlier source, prints -659,000,000 (rounded to the nearest million)",
    "observed_result": "Re-sourced 2026-10-11 to H.Rept. 119-652's comparative statement (SRC-CRPT-119HRPT652 p.160), which prints -659,190 thousand = -659,190,000; the figure is now the report's. The CBO amount is kept here as a note.",
    "result": "info",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0252",
+   "observation_id": "OBS-0981",
+   "rule_applied": "structural",
+   "expected_result": "The Promote and Develop Fisheries transfer-out should equal the Operations, Research, and Facilities transfer-in, validating transfer_link_account_id",
+   "observed_result": "-659,190,000 (PDF) matches +659,190,000 (ORF, OBS-0979) exactly (H.Rept. 119-652 p.160)",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0253",
+   "observation_id": "OBS-0972",
+   "rule_applied": "structural",
+   "expected_result": "Fee collections should fully offset gross spending, net of the small transfer to OIG",
+   "observed_result": "5,160,250,000 + (-5,160,250,000) + (-2,450,000) = -2,450,000, matches the bill's stated account total exactly (H.Rept. 119-652 p.159)",
+   "result": "pass",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0254",
+   "observation_id": "OBS-0973",
+   "rule_applied": "structural",
+   "expected_result": "Fee collections should fully offset gross spending, net of the small transfer to OIG",
+   "observed_result": "5,160,250,000 + (-5,160,250,000) + (-2,450,000) = -2,450,000, matches the bill's stated account total exactly (H.Rept. 119-652 p.159)",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
