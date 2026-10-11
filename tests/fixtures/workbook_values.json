@@ -1,6 +1,6 @@
 {
  "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; the bill and law text check; CJS FY2027 House re-sourced to H.Rept. 119-652)",
- "data_sha256": "e8f0fcc3b699e523b4e71e48711eba08bd6535d396bcbbd877ee0a125e2be9ab",
+ "data_sha256": "4397b1298fe045a5bc98a87f6dd622e68412fca3f6119a5a2fd541de36ad670e",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
@@ -36,7 +36,7 @@
   "Source Document": {
    "rows": 108,
    "columns": 12,
-   "sha256": "d7d945341082b24f116b033305413beb90234b0d920aa20a2bb729752eea1252"
+   "sha256": "f84052e15f3cda1a67e620e06bbb655494b38a5fef4505a4386ecfb852f190c3"
   },
   "Bill Report Reference": {
    "rows": 84,
