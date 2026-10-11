@@ -806,8 +806,8 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-11T19:42:40+00:00",
-  "data_sha256": "c23ca802345909c0e70d65c701e69a0c98f154c7cac62c606a096e31a037502a",
+  "data_committed": "2026-10-11T19:55:51+00:00",
+  "data_sha256": "66f53330109cc5b3a2570707f3872a0c1a5034112d6d5f82feaddc2ed4121fa7",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
@@ -821,9 +821,7 @@
    "validation_record": 20215
   },
   "version": "v38",
-  "warnings": [
-   "observation OBS-LHHS-4101: source_page '59' is outside SRC-BILLS-118HR5894IH's table pages '118'"
-  ],
+  "warnings": [],
   "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
  }
 }
