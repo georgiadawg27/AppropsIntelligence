@@ -27,7 +27,7 @@
        "missing": false,
        "observations": [
         {
-         "amount": -659000000,
+         "amount": -659190000,
          "amount_type": "transfer",
          "bill_id": "H.R.8845",
          "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
@@ -37,28 +37,40 @@
          "component": null,
          "component_kind": null,
          "component_label": null,
-         "confidence": 1.0,
+         "confidence": 0.95,
          "document_fiscal_year": 2027,
-         "document_notes": "CBO cost estimate for H.R. 8845 (FY2027 House CJS bill). Cited by 22 CJS observations, all outside Title III (Titles I, II and V: DOJ, USPTO, NOAA transfers, rescissions and offsetting collections); each was hand-drafted and verified by the owner against an internal document (human-verified). cbo.gov refuses automated downloads, so no stored file. Interim source: when the rest of CJS is ingested, re-source these figures to the FY2027 House committee report (H.Rpt. 119-652) or the bill, and retire this citation.",
          "document_stage": "House Reported",
-         "document_type": "cbo_cost_estimate",
-         "extraction_method": "human-entered",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
          "fiscal_year": 2027,
          "headline_observation_id": null,
          "observation_id": "OBS-0981",
          "offsetting_collections": 0,
-         "publication_date": "2026-05-26",
+         "publication_date": "2026-05-15",
          "report_id": "H.Rept.119-652",
          "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
-         "source_agency": "Congressional Budget Office",
-         "source_document_id": "SRC-CBO-HR8845-FY2027",
-         "source_page": "1-14",
-         "source_table_or_section": "Title I, Transfer to NOAA ORF",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT652",
+         "source_page": "160",
+         "source_table_or_section": "Title I, National Oceanic and Atmospheric Administration -- printed as 'Promote and Develop Fund (transfer out)' [Bill]",
          "stage": "House Reported",
          "transfer_link_account_id": "ACC-NOAA-ORF",
-         "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
-         "validation": [],
-         "verification_status": "human-verified"
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-0251"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-0252"
+          }
+         ],
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -303,7 +315,7 @@
   "missing_cells": [],
   "observations": [
    {
-    "amount": -659000000,
+    "amount": -659190000,
     "amount_type": "transfer",
     "bill_id": "H.R.8845",
     "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
@@ -313,28 +325,40 @@
     "component": null,
     "component_kind": null,
     "component_label": null,
-    "confidence": 1.0,
+    "confidence": 0.95,
     "document_fiscal_year": 2027,
-    "document_notes": "CBO cost estimate for H.R. 8845 (FY2027 House CJS bill). Cited by 22 CJS observations, all outside Title III (Titles I, II and V: DOJ, USPTO, NOAA transfers, rescissions and offsetting collections); each was hand-drafted and verified by the owner against an internal document (human-verified). cbo.gov refuses automated downloads, so no stored file. Interim source: when the rest of CJS is ingested, re-source these figures to the FY2027 House committee report (H.Rpt. 119-652) or the bill, and retire this citation.",
     "document_stage": "House Reported",
-    "document_type": "cbo_cost_estimate",
-    "extraction_method": "human-entered",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
     "fiscal_year": 2027,
     "headline_observation_id": null,
     "observation_id": "OBS-0981",
     "offsetting_collections": 0,
-    "publication_date": "2026-05-26",
+    "publication_date": "2026-05-15",
     "report_id": "H.Rept.119-652",
     "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
-    "source_agency": "Congressional Budget Office",
-    "source_document_id": "SRC-CBO-HR8845-FY2027",
-    "source_page": "1-14",
-    "source_table_or_section": "Title I, Transfer to NOAA ORF",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT652",
+    "source_page": "160",
+    "source_table_or_section": "Title I, National Oceanic and Atmospheric Administration -- printed as 'Promote and Develop Fund (transfer out)' [Bill]",
     "stage": "House Reported",
     "transfer_link_account_id": "ACC-NOAA-ORF",
-    "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
-    "validation": [],
-    "verification_status": "human-verified"
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-0251"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-0252"
+     }
+    ],
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [
