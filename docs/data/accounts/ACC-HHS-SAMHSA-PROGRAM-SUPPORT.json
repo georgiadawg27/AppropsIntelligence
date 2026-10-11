@@ -3025,13 +3025,14 @@
            "validation_id": "VAL-LHHS-06608"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "Scope difference, not an error (owner, 2026-10-11): S.Rept. 119-55 p.436 prints Health Surveillance and Program Support 121,255 and, as its own line, Congressionally Directed Spending 54,611 (thousands); S. 2587's paragraph appropriates both together ($175,866,000 = 121,255,000 + 54,611,000, 'in the amounts specified in the table under this heading'). The figure is the HSPS line without the congressionally directed spending; section 241 evaluation funding (31,428) is outside both.",
            "result": "fail",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-1712"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -5785,13 +5786,14 @@
       "validation_id": "VAL-LHHS-06608"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Scope difference, not an error (owner, 2026-10-11): S.Rept. 119-55 p.436 prints Health Surveillance and Program Support 121,255 and, as its own line, Congressionally Directed Spending 54,611 (thousands); S. 2587's paragraph appropriates both together ($175,866,000 = 121,255,000 + 54,611,000, 'in the amounts specified in the table under this heading'). The figure is the HSPS line without the congressionally directed spending; section 241 evaluation funding (31,428) is outside both.",
       "result": "fail",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-1712"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 117255000,

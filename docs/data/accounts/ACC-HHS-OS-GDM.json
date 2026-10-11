@@ -2482,13 +2482,13 @@
            "validation_id": "VAL-LHHS-06100"
           },
           {
-           "human_review_status": "pending",
-           "result": "fail",
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-1582"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -5956,13 +5956,13 @@
       "validation_id": "VAL-LHHS-06100"
      },
      {
-      "human_review_status": "pending",
-      "result": "fail",
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-1582"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 537144000,
