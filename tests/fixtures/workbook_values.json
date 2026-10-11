@@ -1,6 +1,6 @@
 {
  "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, 2026-10-11)",
- "data_sha256": "c23ca802345909c0e70d65c701e69a0c98f154c7cac62c606a096e31a037502a",
+ "data_sha256": "66f53330109cc5b3a2570707f3872a0c1a5034112d6d5f82feaddc2ed4121fa7",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
@@ -26,7 +26,7 @@
   "Appropriations Observation": {
    "rows": 4984,
    "columns": 22,
-   "sha256": "61cf821baa741950d9b94c5d67f4f50cdde8e155ddbeee575a4ad443d92096b1"
+   "sha256": "41d98ade5240f88beabc19bad1e1cd87e8c0d98eb244956949f0847839e8b903"
   },
   "Account Relationship": {
    "rows": 15,
@@ -36,7 +36,7 @@
   "Source Document": {
    "rows": 109,
    "columns": 12,
-   "sha256": "07ae094aa7535f1adeb68512b75b58a3c7a666e6f47b1737b44d364649876ac7"
+   "sha256": "64a86cad0d73b415caf8f8ac9bf053e282d78fe4a35664f0bf7ff0a6c75aef35"
   },
   "Bill Report Reference": {
    "rows": 84,

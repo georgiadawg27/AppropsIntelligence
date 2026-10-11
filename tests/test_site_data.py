@@ -85,13 +85,18 @@ class SiteReadsData(unittest.TestCase):
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
                          ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
-                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912", "VAL-LHHS-07178"]
+                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912"]
                          + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
                             and (v["observation_id"] in fy2022 or v["validation_id"].startswith("VAL-TXT-"))])
+        # the owner's text-over-table corrections (2026-10-11) close the records on the figures they replace
+        # (VAL-LHHS-07178 among them) and resolve the GDM FY2020 House sum check on its replacement
+        corrected = {o["observation_id"] for o in data["observations"] if o["verification_status"] == "superseded"
+                     and o["observation_id"].startswith("OBS-LHHS-")} | {"OBS-LHHS-4106"}
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
                 self.assertIn(v["reviewer"], ("owner (2026-10-11)",) if v["validation_id"].startswith("VAL-TXT-")
+                              or (v["observation_id"] in corrected and v["reviewer"] == "owner (2026-10-11)")
                               else ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
                               else ("owner (group approval 2026-10-08)",))
                 self.assertIn(v["result"], ("fail", "flag"))
@@ -113,6 +118,8 @@ class SiteReadsData(unittest.TestCase):
             if r["id"] in retired:
                 continue                                 # retired by an owner decision (retired_ids.json)
             v = by_id[r["id"]]
+            if v["reviewer"] == "owner (2026-10-11)" and v["resolution"].startswith("Superseded by "):
+                continue                                 # its figure was replaced (owner's corrections, 2026-10-11)
             if r["proposed_disposition"] == "A":
                 self.assertEqual((v["human_review_status"], v["resolution"]), ("resolved", r["reason"]), r["id"])
             elif r["family"] == "cr-estimate":

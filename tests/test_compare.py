@@ -1256,24 +1256,25 @@ class CompareBrowser(CompareTest):
         self.assertEqual(n.get_attribute("title"), note)
 
     def test_the_one_cell_note_global_health_fy2024_house(self):
-        # a pending cross_document flag against bill text shows as a note in the cell's corner:
-        # VAL-LHHS-07178 on OBS-LHHS-1757 (the FY2024 view's FY2023 Enacted column may carry LIHEAP's note)
-        note = ("H.R. 5894 bill text prints $370,772,000; the explanatory materials' table "
-                "(and its change column) print 370,722 thousand.")
+        # the bill text controls over the report table (owner, 2026-10-11): the figure is H.R. 5894's, and the
+        # table's figure stays as the cell's note (the FY2024 view's FY2023 Enacted column may carry LIHEAP's note)
+        note = ("The House subcommittee draft's explanatory table prints 'Global Health' 370,722 thousand "
+                "(SRC-EXPL-LHHS-FY2024-HOUSE p.258), $50,000 less than the bill.")
         for sc in ("CJS", "LHHS"):
             self.open("static", f"?view=compare&sc={sc}&grid=stages&fy=2024")
             self.page.click("#expand-all")
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
-            self.assertEqual(sum(1 for x in titles if x.startswith("H.R. 5894")), 1 if sc == "LHHS" else 0, sc)
-            self.assertTrue(all(x.startswith(("H.R. 5894", "Includes $2,500,000,000", "Funded within PHSSEF",
-                                              "S.Rept. 118-84 restates FY2023")) for x in titles), titles)
+            self.assertEqual(sum(1 for x in titles if x == note), 1 if sc == "LHHS" else 0, sc)
+            self.assertTrue(all(x.startswith(("The House subcommittee draft's", "Includes $2,500,000,000",
+                                              "Funded within PHSSEF", "S.Rept. 118-84 restates FY2023",
+                                              "The table prints 'Health Surveillance")) for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
         self.assertEqual(n.get_attribute("title"), note)
         self.assertEqual(n.get_attribute("aria-label"), note)
-        self.assertIn("370,722", cell.inner_text())             # the figure kept
+        self.assertIn("370,772", cell.inner_text())             # the bill's figure
 
     def test_account_name_opens_the_single_account_view(self):
         self.open("live")
