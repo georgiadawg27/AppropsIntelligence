@@ -440,7 +440,7 @@ for row in ws.iter_rows(min_row=2, max_row=n, min_col=4, max_col=4):
 import accounting as _AC
 ws = wb.create_sheet("Observation Component")
 oc_rows = data.get("observation_components", [])
-write_rows(ws, _AC.COMPONENT_COLUMNS, oc_rows, [16, 16, 22, 14, 30, 16, 11, 22, 40, 60, 15, 40, 16, 16, 50])
+write_rows(ws, _AC.COMPONENT_COLUMNS, oc_rows, [16, 16, 22, 14, 30, 16, 11, 22, 40, 60, 15, 40, 16, 16, 50, 16])
 n = max(len(oc_rows) + 1, 2)
 add_dropdown(ws, "C", _AC.COMPONENT_TYPES, 2, n)
 add_dropdown(ws, "D", _AC.DESIGNATIONS, 2, n)

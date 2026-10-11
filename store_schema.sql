@@ -317,6 +317,8 @@ CREATE TABLE observation_component (
     source_observation_id     TEXT REFERENCES appropriations_observation (observation_id),
     carried_from_component_id TEXT REFERENCES observation_component (component_id) DEFERRABLE INITIALLY DEFERRED,
     notes                     TEXT,
+    -- part of another component of the same headline (accounting.component_errors checks the rest)
+    within_component_id       TEXT REFERENCES observation_component (component_id) DEFERRABLE INITIALLY DEFERRED,
     CHECK ((component_type = 'designated') = (designation IS NOT NULL)),
     CHECK ((component_type = 'transfer_in') = (transfer_from IS NOT NULL)),
     CHECK (CASE WHEN component_type IN ('rescission', 'transfer_out', 'fees_offsets') THEN amount <= 0

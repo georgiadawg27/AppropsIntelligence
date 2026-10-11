@@ -77,7 +77,7 @@ class SiteReadsData(unittest.TestCase):
         # rules 3 and 5 (2026-10-08) resolve 13 more (short sums explained exactly, the request baseline) and 16 sums
         # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending. The bill and law text
         # check's mismatches and ambiguous results (VAL-TXT-) wait for review too, and so do measure_reconcile's
-        # failed bases and printed views that differ from the computed ones (VAL-MR-, VAL-MRV-)
+        # failed bases and printed views that differ from the computed ones (VAL-MR-; one VAL-MRC- item per cause of the printed views that differ)
         data = json.loads(S.STAGED.read_text())
         # the backfill years (FY2022 and earlier), whose records the triage and owner rules resolve
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] <= 2022
@@ -89,7 +89,7 @@ class SiteReadsData(unittest.TestCase):
                                  "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912"]
                                 + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
                                    and (v["observation_id"] in fy2022
-                                        or v["validation_id"].startswith(("VAL-TXT-", "VAL-MR-", "VAL-MRV-")))]))
+                                        or v["validation_id"].startswith(("VAL-TXT-", "VAL-MR-", "VAL-MRV-", "VAL-MRC-")))]))
         # the owner's text-over-table corrections (2026-10-11) close the records on the figures they replace
         # (VAL-LHHS-07178 among them) and resolve the GDM FY2020 House sum check on its replacement
         corrected = {o["observation_id"] for o in data["observations"] if o["verification_status"] == "superseded"

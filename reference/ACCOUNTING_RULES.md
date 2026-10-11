@@ -46,7 +46,8 @@ Amounts are signed as their effect on budget authority: `rescission`, `transfer_
 negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (Labor-HHS). An ID is never
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
 stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text` or
-`carried_forward`.
+`carried_forward`. `within_component_id` names the component this one is part of (HCFAC's cap adjustment inside
+the amount transferred from the trust funds): the base subtracts only the outer one, and a view never counts both.
 
 The workbook build (`scripts/build_workbook.py`) stops on any record that breaks these rules, and the store
 loader (`approps_store.load`) refuses it.
@@ -73,11 +74,18 @@ Discretionary needs each account's `budget_class` (phase 2) and is not computed 
 ## Defaults (the owner's decisions)
 
 1. **Advances count when available (CBO)** by default.
-2. **FY2025 full-year CR** (P.L. 119-4): components continue from FY2024 unless an anomaly names the account.
-   The anomalies that name accounts we hold: sec. 1109(b)(2)-(4) (Medicaid, Child Support, Foster Care
-   advances), 1902(b) (HCFAC), 1904 (HRSA Health Systems fees), 1905 (NIH CURES), 1908(2)-(4) (CDS for HRSA
-   Program Support, SAMHSA Health Surveillance and Program Support, ACF Children and Families Services
-   Programs). Earmarks do not continue (sec. 1111: FY2024 earmark language has no legal effect).
+2. **FY2025 full-year CR** (P.L. 119-4): components continue from FY2024. Where an anomaly names the account,
+   only what its text changes is dropped; every other component of the account continues (owner, 2026-10-11):
+
+   | account | section | dropped |
+   |---|---|---|
+   | Medicaid, Child Support, Foster Care | 1109(b)(2), (3), (4) | the advance for the first quarter of FY2026 (`advance_enacted`) |
+   | HCFAC | 1902(b): level $941,000,000, cap adjustment $630,000,000 | the trust-fund amount and the cap adjustment |
+   | HRSA Health Systems | 1904: OPTN registration fees | `fees_offsets` |
+   | NIH Innovation Account (CURES) | 1905: $127,000,000 for $407,000,000 | the CURES amount (`designated`/`other`) |
+   | HRSA Program Support, SAMHSA Health Surveillance and Program Support, ACF Children and Families Services Programs | 1908(2), (3), (4): CDS to $0 | `earmark` |
+
+   Earmarks do not continue anywhere (sec. 1111: FY2024 earmark language has no legal effect).
 3. **Draft committee stages** are tagged like reported stages.
 4. **Earmarks are included in every view** by default. An earmark counts inside the account whose paragraph
    appropriates it.
@@ -102,8 +110,23 @@ amount in the headline's paragraph is read by its own clause:
 | "derived by transfer" / "available under section 241" | `transfer_in` |
 | "the following amounts shall be available under section 241: (1) $X ...; and (2) $Y" | `transfer_in`, each item |
 | "not to exceed $X ... from the ... Trust Fund" | `trust_fund_limitation` |
+| "transferred (in appropriate part) from the ... Trust Fund(s)" (HCFAC, Medicare hearings and appeals) | `trust_fund_limitation` |
+| "additional new budget authority specified for purposes of section 251(b)(2)(C)" | `designated` / `cap_adjustment` |
+| "section 1001(b)(4) of the 21st Century Cures Act" (NIH Innovation Account) | `designated` / `other` |
+| "from the 10-year Pediatric Research Initiative Fund" | `transfer_in` (from PRIF) |
+| "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
+| "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
+
+**Not a component** (never tagged, never reported as a phrase no rule tagged): set-asides ("shall be for Indian
+tribes", "amounts required to be reserved"); sub-allocations ("not less than $X for", "of such amount: (1)",
+"from amounts made available under this heading"); program tables ("for the purposes and in the amounts specified
+in the table"); the 251(b)(2)(C)(ii) base ("is provided to meet the terms of section 251(b)(2)(C)(ii)"); and the
+headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline.
+
+When the paragraph's main amount is itself a component (HCFAC: all of it transferred from the trust funds), each
+of-which component on the same side of the headline is within it.
 
 A component's amount is always printed in the text or table, never fitted. Only `in_headline` is decided by
 arithmetic for an auto-tagged component: the paragraph's main amount, less the of-which parts left out, plus the
@@ -117,7 +140,19 @@ of-which inside, an "in addition" amount beside) and the record's note says so.
 2. **Printed views**: a printed parallel total that a computed view stands for (appropriated in this bill,
    available this fiscal year, program level, excluding emergencies) must equal the computed view exactly. An
    agency total's view adds what the view changes on each of its accounts. A difference is a `flag`, pending
-   review, on the printed view line: the tagging may be incomplete, and the figure is not in question.
+   review: the tagging may be incomplete, and the figure is not in question. Differences are grouped by cause,
+   with one review item per cause (`VAL-MRC-<cause>`, listing every cell) and an info record on each printed view
+   line naming its cause:
+
+   | cause | meaning |
+   |---|---|
+   | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA) |
+   | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on |
+   | `cr_anomaly_dropped` | a component a P.L. 119-4 anomaly changed is missing from FY2025 and explains the difference exactly |
+   | `unexplained` | anything else |
+
+   `account_not_held` (the money is in an account we don't hold: ACL program level) is not a failure; the view
+   counts as not checked.
 
 The check never adjusts a figure and never confirms one: it is not a confirming rule, and a flag counts neither
 way in the verification status.

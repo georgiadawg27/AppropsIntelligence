@@ -24,7 +24,7 @@ Four sources, in this order (a later one never records money an earlier one alre
   auto_text        the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026; House, Senate and Enacted): each amount in
                    the headline's own bill or law paragraph, read by the phrase rules below
   carried_forward  Labor-HHS FY2025 Enacted (the full-year CR, P.L. 119-4): the FY2024 Enacted components continue,
-                   unless an anomaly names the account (CR_ANOMALIES) or the CR ends the item (earmarks, sec. 1111)
+                   except what an anomaly naming the account changes (CR_ANOMALIES) or the CR ends (earmarks, sec. 1111)
 
 A component is never fitted to a figure: its amount is printed in the text or the table. Only in_headline -- is
 the money inside the printed headline or beside it -- is decided by arithmetic for an auto_text component: the
@@ -56,16 +56,24 @@ PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | 
 CR_YEAR = ("LHHS", 2025, "Enacted")
 # P.L. 119-4 div. A (the FY2025 full-year CR) names these accounts we hold; their FY2024 components do not carry
 # forward (each to be read from the CR itself). Sec. 1111 ends every FY2024 earmark (no carry forward for earmarks).
+# P.L. 119-4 anomalies that name an account we hold -> (the section, the components its text changes). Every
+# other component of the account continues from FY2024 (owner, 2026-10-11): only what an anomaly changes is
+# dropped. A selector is a component type, or (type, designation).
 CR_ANOMALIES = {
-    "ACC-HHS-CMS-MEDICAID": "P.L. 119-4 div. A sec. 1109(b)(2) (the advance for the first quarter of FY2026)",
-    "ACC-HHS-ACF-CHILD-SUPPORT": "P.L. 119-4 div. A sec. 1109(b)(3) (the advance for the first quarter of FY2026)",
-    "ACC-HHS-ACF-FOSTER-CARE": "P.L. 119-4 div. A sec. 1109(b)(4) (the advance for the first quarter of FY2026)",
-    "ACC-HHS-CMS-HCFAC": "P.L. 119-4 div. A sec. 1902(b) (level $941,000,000; cap adjustment $630,000,000)",
-    "ACC-HHS-HRSA-HEALTH-SYSTEMS": "P.L. 119-4 div. A sec. 1904 (OPTN registration fees credited to the account)",
-    "ACC-HHS-NIH-CURES": "P.L. 119-4 div. A sec. 1905 ($127,000,000 for $407,000,000)",
-    "ACC-HHS-HRSA-PROGRAM-SUPPORT": "P.L. 119-4 div. A sec. 1908(2) (CDS $890,788,000 -> $0)",
-    "ACC-HHS-SAMHSA-PROGRAM-SUPPORT": "P.L. 119-4 div. A sec. 1908(3) (CDS $72,090,000 -> $0)",
-    "ACC-HHS-ACF-CFSP": "P.L. 119-4 div. A sec. 1908(4) (CDS $40,011,000 -> $0)",
+    "ACC-HHS-CMS-MEDICAID": ("P.L. 119-4 div. A sec. 1109(b)(2) (the advance for the first quarter of FY2026)",
+                             ("advance_enacted",)),
+    "ACC-HHS-ACF-CHILD-SUPPORT": ("P.L. 119-4 div. A sec. 1109(b)(3) (the advance for the first quarter of FY2026)",
+                                  ("advance_enacted",)),
+    "ACC-HHS-ACF-FOSTER-CARE": ("P.L. 119-4 div. A sec. 1109(b)(4) (the advance for the first quarter of FY2026)",
+                                ("advance_enacted",)),
+    "ACC-HHS-CMS-HCFAC": ("P.L. 119-4 div. A sec. 1902(b) (level $941,000,000; cap adjustment $630,000,000)",
+                          ("trust_fund_limitation", ("designated", "cap_adjustment"))),
+    "ACC-HHS-HRSA-HEALTH-SYSTEMS": ("P.L. 119-4 div. A sec. 1904 (OPTN registration fees credited to the account)",
+                                    ("fees_offsets",)),
+    "ACC-HHS-NIH-CURES": ("P.L. 119-4 div. A sec. 1905 ($127,000,000 for $407,000,000)", (("designated", "other"),)),
+    "ACC-HHS-HRSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(2) (CDS $890,788,000 -> $0)", ("earmark",)),
+    "ACC-HHS-SAMHSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(3) (CDS $72,090,000 -> $0)", ("earmark",)),
+    "ACC-HHS-ACF-CFSP": ("P.L. 119-4 div. A sec. 1908(4) (CDS $40,011,000 -> $0)", ("earmark",)),
 }
 CR_EARMARKS = "P.L. 119-4 div. A sec. 1111: FY2024 earmark language has no legal effect for FY2025"
 
@@ -77,7 +85,30 @@ EMERGENCY = re.compile(r"designated by the Congress as (?:being )?for an emergen
 ADVANCE_BEFORE = re.compile(r"first quarter of fiscal year \d{4},?\s*$", re.I)
 ADVANCE_AFTER = re.compile(r"^\s*,?\s*(?:to remain available until expended,? )?(?:which )?shall become available on "
                            r"October 1", re.I)
-TRANSFER = re.compile(r"derived by transfer|available under section 241", re.I)
+TRANSFER = re.compile(r"derived by transfer|available under section 241|from (?:amounts|funds) made available under"
+                      r"|from (?:amounts|funds) made ava[\w ]*$", re.I)
+FROM_MADE_AVAILABLE = re.compile(r"from (?:amounts|funds) made ava\w*(?:\s+under)?", re.I)
+THIS_HEADING = re.compile(r"from (?:amounts|funds) made available (?:under|in) this (?:heading|Act)", re.I)
+# 'to be transferred (in appropriate part) from the Federal Hospital Insurance Trust Fund and the Federal
+# Supplementary Medical Insurance Trust Fund' (HCFAC, Medicare hearings and appeals); the phrase window may end
+# inside the fund's name
+TRUST_TRANSFER = re.compile(r"transferred (?:in appropriate part )?from(?: the)?(?: Fed| [^$;:]{0,80}Trust Funds?|\s*$)",
+                            re.I)
+CAP_ADJUSTMENT = re.compile(r"is additional new budget authority specified for purposes of section 251\(b\)\(2\)\(C\)",
+                            re.I)
+CURES = re.compile(r"section 1001\(b\)\(4\) of the 21st Century Cures Act", re.I)
+PRIF = re.compile(r"from the 10-year Pediatric Research Initiative Fund", re.I)
+TO_OIG = re.compile(r"transferred to and merged with the appropriation for the\W{0,3}Office of Inspector General", re.I)
+# phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported
+NOT_COMPONENT = [
+    ("set-aside", re.compile(r"shall be for Indian tribes|amounts required to be reserved|set[- ]aside", re.I), "both"),
+    ("sub-allocation", re.compile(r"(?:not|no) less than\s*$|of (?:such|that|the) amounts?[^$]{0,60}?:\s*\(\d+\)\s*$", re.I),
+     "before"),
+    ("program table", re.compile(r"for the purposes and in the amounts specified in the table", re.I), "after"),
+    ("sub-allocation", THIS_HEADING, "after"),
+    ("cap-adjustment base", re.compile(r"is provided to meet the terms of section 251\(b\)\(2\)\(C\)\(ii\)", re.I),
+     "after"),
+]
 NOT_TO_EXCEED = re.compile(r"not to exceed\s*$", re.I)
 TRUST_FUND = re.compile(r"trust fund", re.I)
 # a phrase that looks like a component though no rule above tags it (reported, never tagged)
@@ -137,12 +168,30 @@ def classify(a):
                                            else "shall become available on October 1")
     if NOT_TO_EXCEED.search(seg_b) and TRUST_FUND.search(seg_a + seg_b):
         return "trust_fund_limitation", "", "", "not to exceed ... from the ... Trust Fund"
+    if TRUST_TRANSFER.search(seg_a):
+        return "trust_fund_limitation", "", "", "transferred from the ... Trust Fund(s)"
+    if CAP_ADJUSTMENT.search(seg_a):
+        return ("designated", "cap_adjustment", "",
+                "additional new budget authority specified for purposes of section 251(b)(2)(C)")
+    if CURES.search(seg_b):
+        return "designated", "other", "", "21st Century Cures (NIH Innovation Account, sec. 1001(b)(4))"
+    if PRIF.search(seg_a):
+        return "transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", PRIF.search(seg_a).group(0)
+    if TO_OIG.search(seg_a):
+        return "transfer_out", "", "", "transferred to and merged with the appropriation for the Office of Inspector General"
     t = TRANSFER.search(both)
+    if t and THIS_HEADING.search(seg_a):
+        return None                     # part of this heading's own amounts, not a transfer
     if t and SUB_ALLOCATION.search(seg_b):
         return None                     # a part of an amount from section 241, already tagged with it
     if t:
-        if "241" in t.group(0):
+        rest = after_text(a)
+        if "241" in t.group(0) or (t.group(0).lower().startswith("from") and re.match(r"\W*section 241", rest)):
             src = "section 241 of the PHS Act (evaluation funds)"
+        elif t.group(0).lower().startswith("from"):
+            src = ("the Prevention and Public Health Fund (section 4002 of the PPACA)"
+                   if re.match(r"\W*section 4002|\W*the Prevention and Public Health Fund", rest, re.I)
+                   else "not named in the phrase")
         else:
             m = re.search(r"derived by transfer from (?:the )?([^,;:$]+)", both, re.I)
             src = m.group(1).strip() if m else "not named in the phrase"
@@ -150,10 +199,34 @@ def classify(a):
     return None
 
 
+def after_text(a):
+    """The words right after a 'from amounts made available under' phrase, read on into the next amount's window
+    when this one ends (the transfer's source)."""
+    _, after = CT.split_phrase(a)
+    m = FROM_MADE_AVAILABLE.search(after)
+    rest = after[m.end():] if m else ""
+    nxt = a.get("_next")
+    if nxt and len(rest) < 40:
+        b, _ = CT.split_phrase(nxt)
+        k = b.find(after[-30:].strip()) if after.strip() else -1
+        if k >= 0:
+            rest = rest + b[k + len(after[-30:].strip()):]
+    return rest
+
+
+def not_a_component(a):
+    """-> the owner's 'not a component' kind for a phrase, or None."""
+    seg_b, seg_a = segments(a)
+    for kind, rx, where_ in NOT_COMPONENT:
+        if (where_ in ("before", "both") and rx.search(seg_b)) or (where_ in ("after", "both") and rx.search(seg_a)):
+            return kind
+    return None
+
+
 def relation(a, main):
     """How an amount sits to the paragraph's main amount: 'main' (it is the main amount), 'separate' (beside it:
     'in addition', 'together with', an advance) or 'of_which' (part of it)."""
-    if main is not None and a is main:
+    if main is not None and a["phrase"] == main["phrase"] and a["amount"] == main["amount"]:
         return "main"
     seg_b, _ = segments(a)
     return "separate" if SEPARATE.search(seg_b) else "of_which"
@@ -340,7 +413,9 @@ def autotag(data, heads, held, report):
                                                 "no main amount in the paragraph")
         tagged = []
         open_list = False
-        for x in para["amounts"]:
+        own = [x["amount"] for x in CT.appropriating(para)] + ([main["amount"]] if main else [])
+        for i, x in enumerate(para["amounts"]):
+            x = dict(x, _next=para["amounts"][i + 1] if i + 1 < len(para["amounts"]) else None)
             item, open_list = list_241(x, open_list)
             if item:
                 tagged.append((x, ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)",
@@ -350,7 +425,10 @@ def autotag(data, heads, held, report):
             cl = classify(x)
             if cl is None:
                 seg_b, seg_a = segments(x)
-                if LOOKS_LIKE.search(seg_b + " " + seg_a):
+                kind = not_a_component(x) or ("the headline's own appropriation" if x["amount"] in own else None)
+                if kind and LOOKS_LIKE.search(seg_b + " " + seg_a):
+                    report["not_a_component"][kind] += 1
+                elif LOOKS_LIKE.search(seg_b + " " + seg_a):
                     report["untagged"].append({"observation_id": oid, "document": doc, "where": CT.where(para),
                                                "amount": x["amount"], "phrase": x["phrase"]})
                 continue
@@ -405,6 +483,13 @@ def autotag(data, heads, held, report):
                               "arithmetic -- no single assignment turns the paragraph into the headline "
                               f"{AC.money(o['amount'])}")
                 report["auto_default"].append(f"{oid} {c['component_type']} {AC.money(c['amount'])}")
+        # the paragraph's main amount is itself a component (HCFAC: all of it transferred from the trust funds):
+        # each of-which component on the same side of the headline is within it
+        outer = next((c for c, rel in comps if rel == "main"), None)
+        if outer is not None:
+            for c, rel in comps:
+                if rel == "of_which" and c["in_headline"] == outer["in_headline"] and abs(c["amount"]) <= abs(outer["amount"]):
+                    c["within_component_id"] = ("KEY", key(outer))
         out += [c for c, _ in comps]
     return out
 
@@ -425,8 +510,10 @@ def carry_forward(data, heads, records, report):
         if h is None:
             report["carry_no_headline"].append(f"{c['component_id']} ({a})")
             continue
-        if a in CR_ANOMALIES:
-            report["carry_anomaly"].append(f"{c['component_id']} {c['component_type']} ({a}): {CR_ANOMALIES[a]}")
+        if a in CR_ANOMALIES and AC._selected(c, CR_ANOMALIES[a][1]):
+            report["carry_anomaly"].append(f"{c['component_id']} {c['component_type']}"
+                                           f"{'/' + c['designation'] if c.get('designation') else ''} "
+                                           f"{AC.money(c['amount'])} ({a}): {CR_ANOMALIES[a][0]}")
             continue
         if c["component_type"] == "earmark":
             report["carry_anomaly"].append(f"{c['component_id']} earmark ({a}): {CR_EARMARKS}")
@@ -485,6 +572,7 @@ def assign_ids(data, proposed, obs):
 def build(data):
     """-> (records, retired IDs, report)"""
     report = collections.defaultdict(list)
+    report["not_a_component"] = collections.Counter()
     report["pilot_headlines"] = 0
     heads = headline_of(data)
     obs = {o["observation_id"]: o for o in data["observations"]}
@@ -497,8 +585,18 @@ def build(data):
     records = first + auto
     # IDs for everything but the carried components first, so a carried one can name what it continues
     records, _ = assign_ids(data, records, obs)
+    ids = {key(c): c["component_id"] for c in records}
+    for c in records:
+        if isinstance(c.get("within_component_id"), tuple):
+            c["within_component_id"] = ids[c["within_component_id"][1]]
     carried = carry_forward(data, heads, records, report)
     records, retired = assign_ids(data, records + carried, obs)
+    # a carried component within another names the carried copy of that one (or nothing, when it wasn't carried)
+    copy_of = {(c["carried_from_component_id"], c["observation_id"]): c["component_id"] for c in records
+               if c["carried_from_component_id"]}
+    for c in records:
+        if c["tag_method"] == "carried_forward" and c.get("within_component_id"):
+            c["within_component_id"] = copy_of.get((c["within_component_id"], c["observation_id"]), "")
     records.sort(key=lambda c: (not c["component_id"].startswith("CMP-LHHS-"), number(c["component_id"])))
     return records, retired, report
 
@@ -519,7 +617,9 @@ def summarize(records, data, report):
     lines += ["", f"Pilot headlines read: {report['pilot_headlines']}; no paragraph or no single paragraph: "
               f"{len(report['pilot_no_paragraph'])}; auto tags already held from a line: "
               f"{len(report['auto_already_held'])}; auto tags with in_headline by default (not by arithmetic): "
-              f"{len(report['auto_default'])}; component-like phrases no rule tagged: {len(report['untagged'])}",
+              f"{len(report['auto_default'])}; component-like phrases no rule tagged: {len(report['untagged'])}; "
+              "not a component (owner's list): " + (", ".join(f"{k} {n}" for k, n in sorted(report["not_a_component"].items()))
+                                                    or "none"),
               f"Re-tag: zero lines skipped {len(report['retag_zero'])}; lines with no headline in their cell "
               f"{len(report['retag_no_headline'])}",
               f"FY2025 CR carry-forward: carried {sum(1 for c in records if c['tag_method'] == 'carried_forward')}; "

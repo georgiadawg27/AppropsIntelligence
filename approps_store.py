@@ -349,7 +349,7 @@ TABS = [
         ("in_headline", to_bool, True), ("source_document_id", to_text, True), ("source_location", to_text, True),
         ("quoted_text", to_text, True), ("tag_method", to_text, True), ("tag_rule", to_text, True),
         ("source_observation_id", to_text, False), ("carried_from_component_id", to_text, False),
-        ("notes", to_text, False)]),
+        ("notes", to_text, False), ("within_component_id", to_text, False)]),
     ("Account Attribute", "account_attribute", [
         ("account_attribute_id", to_text, True), ("canonical_account_id", to_text, True),
         ("fiscal_year", to_int, True), ("attribute", to_text, True), ("value", to_text, True),
