@@ -260,9 +260,10 @@ def derivations(para, main, recorded_extra, cell):
     parts = [c for c in cell if c[2] == "part" and c[1] != "supplemental_act"]
     for k in range(1, min(3, len(parts)) + 1):
         for combo in itertools.combinations(parts, k):
-            out.append((m - sum(c[3] for c in combo),
-                        f"derived as recorded: the main amount ${m:,} = this headline + "
-                        + " + ".join(f"the {c[1]} line ${c[3]:,} ({c[0]})" for c in combo)))
+            for (l, lw) in less:
+                out.append((m - sum(l) - sum(c[3] for c in combo),
+                            f"derived as recorded: the main amount ${m:,}{lw} = this headline + "
+                            + " + ".join(f"the {c[1]} line ${c[3]:,} ({c[0]})" for c in combo)))
     if recorded_extra:
         out.append((m + sum(recorded_extra), f"derived as recorded: the main amount ${m:,} + {money(recorded_extra)} "
                                              "from other laws printed within the figure"))
@@ -299,17 +300,22 @@ def compare(o, para, recorded_extra, cell=()):
     if ours in every:
         return "ambiguous", main["amount"], (f"${ours:,} is printed in the paragraph but is not its main amount "
                                              f"(${main['amount']:,}); several plausible amounts")
+    # another scope: the main amount less (or plus) one or two other amounts printed in the same paragraph
     rest = [x for x in every if x != main["amount"]][:15]
     for k in (1, 2):
         for combo in itertools.combinations(rest, k):
-            for sign in (1, -1):
-                if main["amount"] + sign * sum(combo) == ours:
-                    op = "+" if sign > 0 else "-"
+            for signs in itertools.product((-1, 1), repeat=k):
+                if main["amount"] + sum(sg * x for sg, x in zip(signs, combo)) == ours:
+                    terms = " ".join(f"{'+' if sg > 0 else '-'} ${x:,}" for sg, x in zip(signs, combo))
                     return "ambiguous", main["amount"], (
-                        f"${ours:,} = the main amount ${main['amount']:,} {op} "
-                        + f" {op} ".join(f"${x:,}" for x in combo) + " printed in the same paragraph; several "
-                                                                      "plausible amounts")
-    return "mismatch", main["amount"], how
+                        f"${ours:,} = the main amount ${main['amount']:,} {terms} printed in the same paragraph; "
+                        "several plausible amounts")
+    # a mismatch: say how far the nearest reading of the text is from ours
+    near = min([(main["amount"], how)] + derivations(para, main, recorded_extra, cell), key=lambda d: abs(ours - d[0]))
+    if near[0] != main["amount"]:
+        return "mismatch", main["amount"], (f"{how}; nearest reading {near[1]} = ${near[0]:,}, "
+                                            f"ours - that = {ours - near[0]:+,}")
+    return "mismatch", main["amount"], f"{how}; ours - the text = {ours - main['amount']:+,}"
 
 
 def cite(ref, doc, text):

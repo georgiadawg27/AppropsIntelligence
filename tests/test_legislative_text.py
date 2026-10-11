@@ -149,6 +149,28 @@ class Comparison(unittest.TestCase):
         self.assertEqual(res, "match")
         self.assertIn("derived as recorded", how)
 
+    def test_main_less_or_plus_other_amounts_is_ambiguous(self):
+        # another scope: the main amount less a transfer and plus an amount the paragraph also appropriates
+        p = para(amt(1000, "For research,", ", of which"), amt(300, "of which", "shall be derived by transfer from X"),
+                 amt(12, "In addition,", "is appropriated", proviso=True))
+        res, _, how = C.compare(self.obs(712), p, [])
+        self.assertEqual(res, "ambiguous")
+        self.assertIn("- $300 + $12", how)
+
+    def test_mismatch_reports_the_residual_after_the_advance(self):
+        p = para(amt(7012, "For carrying out title IV-E,", "."),
+                 amt(3000, "For carrying out title IV-E, for the first quarter of fiscal year 2022,", "."))
+        res, text, how = C.compare(self.obs(10011), p, [])
+        self.assertEqual((res, text), ("mismatch", 7012))
+        self.assertIn("next year's advance", how)
+        self.assertIn("ours - that = -1", how)
+
+    def test_emergency_and_recorded_part_together(self):
+        p = para(amt(7608, "For research;", ", to remain available"),
+                 amt(420, "Provided, That of the amounts made available under this heading,",
+                     "is designated by the Congress as being for an emergency requirement", proviso=True))
+        self.assertEqual(C.compare(self.obs(7086), p, [], [("OBS-X", "defense", "part", 102)])[0], "match")
+
     def test_ours_printed_but_not_main_is_ambiguous(self):
         p = para(amt(1000, "For research,", ", of which"), amt(77, "of which", "shall be for the Office of X"))
         self.assertEqual(C.compare(self.obs(77), p, [])[0], "ambiguous")
