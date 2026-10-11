@@ -53,7 +53,13 @@ CREATE TABLE account (
     -- v33: the heading account a program line sits under (Health Centers -> Primary Health
     -- Care); NULL for every other account. Agency reconciliation leaves a child out.
     parent_account_id       TEXT REFERENCES account (canonical_account_id) DEFERRABLE INITIALLY DEFERRED,
-    CHECK (parent_account_id IS NULL OR parent_account_id <> canonical_account_id)
+    -- a lifecycle override (2026-10-11): 'unidentified' when the first year with evidence is not the account's
+    -- start (its earlier provision not yet identified) -- the years before it stay missing, never blank. Its
+    -- written reason is required. Removed once the provision is identified.
+    start_basis             TEXT CHECK (start_basis IS NULL OR start_basis IN ('unidentified')),
+    start_basis_reason      TEXT,
+    CHECK (parent_account_id IS NULL OR parent_account_id <> canonical_account_id),
+    CHECK (start_basis IS NULL OR trim(ifnull(start_basis_reason, '')) <> '')
 ) STRICT;
 
 CREATE TABLE historical_name (
@@ -208,7 +214,8 @@ CREATE TABLE account_relationship (
     from_account_id       TEXT NOT NULL REFERENCES account (canonical_account_id),
     to_account_id         TEXT NOT NULL REFERENCES account (canonical_account_id),
     relationship_type     TEXT NOT NULL CHECK (relationship_type IN ('same', 'renamed', 'split_from', 'merged_into',
-                                                                      'moved', 'proposed_move', 'uncertain')),
+                                                                      'moved', 'proposed_move', 'proposed_consolidation',
+                                                                      'uncertain')),
     effective_fiscal_year INTEGER,
     evidence              TEXT NOT NULL,
     confidence            REAL NOT NULL CHECK (confidence BETWEEN 0 AND 1),

@@ -916,7 +916,9 @@
    "title": "Title II",
    "display_order": 24,
    "total_scope": "",
-   "parent_account_id": ""
+   "parent_account_id": "",
+   "start_basis": "unidentified",
+   "start_basis_reason": "FY2026 provision not yet identified; earlier years unknown."
   },
   {
    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
@@ -101299,7 +101301,7 @@
    "retrieval_timestamp": "2026-09-24",
    "source_page": "1-14",
    "also_covers": "",
-   "notes": "CBO cost estimate for H.R. 8845 (FY2027 House CJS bill). Cited by 22 CJS observations, all outside Title III (Titles I, II and V: DOJ, USPTO, NOAA transfers, rescissions and offsetting collections); each was hand-drafted and verified by the owner against an internal document (human-verified). cbo.gov refuses automated downloads, so no stored file. Interim source: when the rest of CJS is ingested, re-source these figures to the FY2027 House committee report (H.Rpt. 119-652) or the bill, and retire this citation. Re-sourced 2026-10-11: 18 of the 22 figures now cite H.Rept. 119-652's comparative statement (pp. 159-172); 4 stay here because the report's tables don't print them: the FY27 CHIMP rescission and its pop-up (Crime Victims Fund) and the zero direct appropriations of the DOJ Working Capital Fund and the OJP rescission account."
+   "notes": "CBO cost estimate for H.R. 8845 (FY2027 House CJS bill). Cited by 22 CJS observations, all outside Title III (Titles I, II and V: DOJ, USPTO, NOAA transfers, rescissions and offsetting collections); each was hand-drafted and verified by the owner against an internal document (human-verified). cbo.gov refuses automated downloads, so no stored file. Interim source: when the rest of CJS is ingested, re-source these figures to the FY2027 House committee report (H.Rpt. 119-652) or the bill, and retire this citation. Re-sourced 2026-10-11: 18 of the 22 figures now cite H.Rept. 119-652's comparative statement (pp. 159-172); 4 stay here because the report's tables don't print them: the FY27 CHIMP rescission and its pop-up (Crime Victims Fund) and the zero direct appropriations of the DOJ Working Capital Fund and the OJP rescission account. The CHIMP rescission (-2,670,000,000) and pop-up (0) are CBO estimates: H.R. 8845 sec. 510 states only the $1,950,000,000 obligation limit, and CBO scores the rescission and pop-up from it."
   },
   {
    "document_id": "SRC-BUDGET-APP-FY2019",
@@ -324689,6 +324691,28 @@
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0255",
+   "observation_id": "OBS-0966",
+   "rule_applied": "cross_document",
+   "expected_result": "The CHIMP rescission printed as an amount in the bill or the committee report",
+   "observed_result": "H.R. 8845 as reported (SRC-BILLS-119HR8845RH, title V sec. 510) sets the Crime Victims Fund obligation limit at $1,950,000,000 and prints no CHIMP rescission amount; H.Rept. 119-652's tables don't print it either. CBO estimate: -2,670,000,000 is CBO's score of that limit (SRC-CBO-HR8845-FY2027), not an amount stated in the bill, so the figure keeps the CBO citation.",
+   "result": "info",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-0256",
+   "observation_id": "OBS-0967",
+   "rule_applied": "cross_document",
+   "expected_result": "The CHIMP pop-up printed as an amount in the bill or the committee report",
+   "observed_result": "H.R. 8845 as reported (SRC-BILLS-119HR8845RH, title V sec. 510) sets the Crime Victims Fund obligation limit at $1,950,000,000 and prints no CHIMP pop-up amount; H.Rept. 119-652's tables don't print it either. CBO estimate: 0 is CBO's score of that limit (SRC-CBO-HR8845-FY2027), not an amount stated in the bill, so the figure keeps the CBO citation.",
+   "result": "info",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
   }
  ],
  "relationships": [
@@ -324696,7 +324720,7 @@
    "relationship_id": "REL-LHHS-0001",
    "from_account_id": "ACC-HHS-HRSA-TOTAL",
    "to_account_id": "ACC-HHS-AHA-TOTAL",
-   "relationship_type": "proposed_move",
+   "relationship_type": "proposed_consolidation",
    "effective_fiscal_year": "2026",
    "evidence": "Proposed, not enacted. FY2026 Budget Appendix (BUDGET-2026-APP) pp. 332, 338, 339, 346: 'In 2026 HRSA will be reorganized into the Agency [p.339: Administration] for a Healthy America to improve coordination of health resources for Americans.' Repeated for 2027 in the FY2027 Appendix (BUDGET-2027-APP) pp. 434, 439, 449. P.L. 119-75 keeps HRSA. Also FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)' -- names HRSA.",
    "confidence": 0.9,
@@ -324706,7 +324730,7 @@
    "relationship_id": "REL-LHHS-0002",
    "from_account_id": "ACC-HHS-SAMHSA-TOTAL",
    "to_account_id": "ACC-HHS-AHA-TOTAL",
-   "relationship_type": "proposed_move",
+   "relationship_type": "proposed_consolidation",
    "effective_fiscal_year": "2026",
    "evidence": "Proposed, not enacted. FY2026 Budget Appendix p.360: 'In 2026 SAMHSA will be reorganized into the Agency for a Healthy America to improve coordination of health resources for Americans.' FY2027 Appendix p.464 repeats it for 2027. P.L. 119-75 keeps SAMHSA. Also FY2026 AHA Congressional Justification (SRC-CJ-AHA-FY2026) p.11 (PDF p.1), Overview of Budget: 'the AHA Budget consolidates and streamlines chronic care and disease prevention programs across the Office of the Assistant Secretary for Health (OASH), Health Resources and Services Administration (HRSA), Substance Abuse and Mental Health Services Administration (SAMHSA), the National Institute of Environmental Health Sciences (NIEHS), and several centers and programs of the Centers for Disease Control and Prevention (CDC)' -- names SAMHSA.",
    "confidence": 0.9,
@@ -324716,7 +324740,7 @@
    "relationship_id": "REL-LHHS-0005",
    "from_account_id": "ACC-HHS-NIH-NIDA",
    "to_account_id": "ACC-HHS-NIH-SUBSTANCE-USE",
-   "relationship_type": "proposed_move",
+   "relationship_type": "proposed_consolidation",
    "effective_fiscal_year": "2027",
    "evidence": "Proposed, not enacted. FY2027 Budget Appendix (BUDGET-2027-APP, HHS chapter granule PDF p.29): 'The 2027 Budget proposes to ... consolidate the National Institute on Drug Abuse and the National Institute on Alcohol Abuse and Alcoholism into the National Institute of Substance Use and Addiction Research.'",
    "confidence": 0.9,
@@ -324726,7 +324750,7 @@
    "relationship_id": "REL-LHHS-0006",
    "from_account_id": "ACC-HHS-NIH-NIAAA",
    "to_account_id": "ACC-HHS-NIH-SUBSTANCE-USE",
-   "relationship_type": "proposed_move",
+   "relationship_type": "proposed_consolidation",
    "effective_fiscal_year": "2027",
    "evidence": "As REL-LHHS-0005.",
    "confidence": 0.9,

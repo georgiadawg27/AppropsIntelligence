@@ -22,6 +22,11 @@ on:
     branches: [main]
   workflow_call:
   workflow_dispatch:
+    inputs:
+      network:
+        description: "Run the network tests (tests/test_ingest.py Live*, which call api.govinfo.gov)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -153,10 +158,12 @@ jobs:
           else echo "::warning::Labor-HHS JES not fetched or not the ingested bytes -- its tests will skip"; rm -f "$jes"; fi
       - name: Run the data tests
         if: needs.changes.outputs.data == 'true'
-        # the four live govinfo API tests (tests/test_ingest.py Live*) run only when the
-        # repository has a GOVINFO_API_KEY secret; without it they skip, saying so
+        # the four live govinfo API tests (tests/test_ingest.py Live*, marked `network`) call an
+        # outside service, so they skip unless asked for: run this workflow by hand with
+        # "Run the network tests" ticked (they also need the GOVINFO_API_KEY secret)
         env:
           GOVINFO_API_KEY: ${{ secrets.GOVINFO_API_KEY }}
+          RUN_NETWORK_TESTS: ${{ inputs.network && '1' || '' }}
         run: >
           python -m pytest tests -v -rs -p no:cacheprovider -n auto --dist loadscope --durations=10
           --ignore=tests/test_web.py --ignore=tests/test_compare.py --ignore=tests/test_static.py

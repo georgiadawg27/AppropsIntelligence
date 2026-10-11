@@ -18,7 +18,10 @@ EXTRACTION = ["AI-extracted", "human-entered", "hybrid", "text-extracted", "deri
 VERIFICATION = ["unverified", "auto-validated", "human-verified", "flagged", "provisional", "superseded"]
 ACCOUNT_STATUS = ["active", "inactive", "superseded", "proposed"]
 FUND_TYPE = ["general", "trust", "special", "revolving", "working_capital", "no_year"]
-REL_TYPE = ["same", "renamed", "split_from", "merged_into", "moved", "proposed_move", "uncertain"]
+REL_TYPE = ["same", "renamed", "split_from", "merged_into", "moved", "proposed_move", "proposed_consolidation", "uncertain"]
+# Account.start_basis: a lifecycle override -- "unidentified" when the first year with evidence is not the
+# account's start (its earlier provision not yet identified); start_basis_reason is then required
+START_BASIS = ["unidentified"]
 DOC_TYPE = ["bill", "committee_report", "explanatory_statement", "public_law", "presidents_budget", "budget_appendix", "congressional_budget_justification", "cbo_cost_estimate", "crs_report", "omb_public_budget_database", "other"]
 RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text", "bill_text"]
 RESULT = ["pass", "fail", "flag", "info"]
@@ -36,6 +39,7 @@ def _check_enums():
     checks = [
         ("accounts", "status", ACCOUNT_STATUS), ("accounts", "fund_type", FUND_TYPE),
         ("accounts", "subcommittee", SUBCOMMITTEES), ("accounts", "total_scope", TOTAL_SCOPE),
+        ("accounts", "start_basis", START_BASIS),
         ("observations", "stage", STAGE_ALL), ("observations", "chamber", CHAMBER),
         ("observations", "amount_type", AMOUNT_TYPE), ("observations", "offsetting_collections", BOOL),
         ("observations", "extraction_method", EXTRACTION), ("observations", "verification_status", VERIFICATION),
@@ -75,6 +79,10 @@ def _check_integrity():
         for gone in ("effective_start", "effective_end"):
             if a.get(gone) not in (None, ""):
                 errs.append(f"account {a['canonical_account_id']}: {gone} is no longer a field")
+        if a.get("start_basis") and not (a.get("start_basis_reason") or "").strip():
+            errs.append(f"account {a['canonical_account_id']}: start_basis {a['start_basis']!r} needs a start_basis_reason")
+        if (a.get("start_basis_reason") or "").strip() and not a.get("start_basis"):
+            errs.append(f"account {a['canonical_account_id']}: start_basis_reason without a start_basis")
         p = a.get("parent_account_id") or ""
         if p:
             if p == a["canonical_account_id"]: errs.append(f"account {p}: parent is itself")
@@ -214,7 +222,8 @@ for _a in data["accounts"]:
 ws = wb.create_sheet("Account")
 headers = ["canonical_account_id", "canonical_name", "agency", "bureau", "treasury_account_symbol",
            "status", "historical_names", "historical_identifiers",
-           "fund_type", "subcommittee", "notes", "title", "display_order", "total_scope", "parent_account_id"]
+           "fund_type", "subcommittee", "notes", "title", "display_order", "total_scope", "parent_account_id",
+           "start_basis", "start_basis_reason"]
 # v33: effective_start / effective_end REMOVED (every value had been derived from our first year of data,
 # not a real start date, and no product feature used them; coverage is computed from observations instead).
 # parent_account_id (last column): set only when an account is a program line inside another account's
@@ -223,12 +232,17 @@ headers = ["canonical_account_id", "canonical_name", "agency", "bureau", "treasu
 # total_scope (column P, appended so no existing column moves): what a rollup account's printed total
 # covers -- agency / title / bill. Blank for every real funding account. Code reads THIS field for
 # scope, never the free-text notes (a note mentioning "grand total" once mislabeled Title II as a bill total).
-write_rows(ws, headers, data["accounts"], [22, 40, 35, 30, 18, 12, 40, 20, 16, 14, 55, 14, 14, 14, 24])
+# start_basis / start_basis_reason (the last two columns, appended so no existing column moves): a lifecycle
+# override. "unidentified": the first year with evidence is not the account's start, so the grid never blanks
+# the years before it (they stay missing); the reason is required (the build stops without one). Removed once
+# the earlier provision is identified -- the normal lifecycle rule then applies.
+write_rows(ws, headers, data["accounts"], [22, 40, 35, 30, 18, 12, 40, 20, 16, 14, 55, 14, 14, 14, 24, 14, 50])
 n = len(data["accounts"]) + 1
 _L = lambda h: get_column_letter(headers.index(h) + 1)
 add_dropdown(ws, _L("status"), ACCOUNT_STATUS, 2, n)
 add_dropdown(ws, _L("fund_type"), FUND_TYPE, 2, n)
 add_dropdown(ws, _L("total_scope"), TOTAL_SCOPE, 2, n)
+add_dropdown(ws, _L("start_basis"), START_BASIS, 2, n)
 n_acc = n
 ACC_SUB_COL = _L("subcommittee")
 

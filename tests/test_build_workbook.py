@@ -113,6 +113,18 @@ class BuildChecksStopTheBuild(unittest.TestCase):
         def bad(d): d["accounts"][0]["effective_start"] = 2017
         self.assertIn("effective_start is no longer a field", self.run_with(bad))
 
+    def test_a_start_basis_without_a_reason(self):
+        # the lifecycle override (Account.start_basis 'unidentified') is never set without its written reason
+        def bad(d):
+            a = next(a for a in d["accounts"] if a.get("start_basis"))
+            a["start_basis_reason"] = ""
+        self.assertIn("needs a start_basis_reason", self.run_with(bad))
+
+    def test_a_start_basis_outside_its_list(self):
+        def bad(d):
+            d["accounts"][0].update(start_basis="guessed", start_basis_reason="a reason")
+        self.assertIn("values outside the allowed lists", self.run_with(bad))
+
     def test_a_govinfo_landing_page(self):
         def bad(d): d["source_docs"][0]["url_or_identifier"] = "https://www.govinfo.gov/app/details/CRPT-119hrpt271"
         self.assertIn("govinfo landing page", self.run_with(bad))
