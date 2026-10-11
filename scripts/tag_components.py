@@ -246,8 +246,13 @@ def after_text(a):
 def not_a_component(a):
     """-> the owner's 'not a component' kind for a phrase, or None."""
     seg_b, seg_a = segments(a)
+    # a list's lead-in ("of such amount: (1)") sits before the clause break the colon makes
+    before = CT.split_phrase(a)[0]
+    ms = list(NUMBER.finditer(before))
+    raw_b = before[ms[-1].end():] if ms else before
     for kind, rx, where_ in NOT_COMPONENT:
-        if (where_ in ("before", "both") and rx.search(seg_b)) or (where_ in ("after", "both") and rx.search(seg_a)):
+        if ((where_ == "before" and rx.search(raw_b)) or (where_ == "both" and rx.search(seg_b))
+                or (where_ in ("after", "both") and rx.search(seg_a))):
             return kind
     return None
 
