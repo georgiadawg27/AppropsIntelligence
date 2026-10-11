@@ -490,12 +490,12 @@
           },
           {
            "human_review_status": "pending",
-           "result": "fail",
+           "result": "flag",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-3985"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "unverified"
         }
        ],
        "state": "value"
@@ -5132,12 +5132,12 @@
      },
      {
       "human_review_status": "pending",
-      "result": "fail",
+      "result": "flag",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-3985"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "unverified"
    },
    {
     "amount": 12600000,
