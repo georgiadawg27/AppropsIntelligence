@@ -23,7 +23,7 @@ REL_TYPE = ["same", "renamed", "split_from", "merged_into", "moved", "proposed_m
 # account's start (its earlier provision not yet identified); start_basis_reason is then required
 START_BASIS = ["unidentified"]
 DOC_TYPE = ["bill", "committee_report", "explanatory_statement", "public_law", "presidents_budget", "budget_appendix", "congressional_budget_justification", "cbo_cost_estimate", "crs_report", "omb_public_budget_database", "other"]
-RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text"]
+RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text", "bill_text"]
 RESULT = ["pass", "fail", "flag", "info"]
 REVIEW = ["pending", "resolved"]
 CHAMBER = ["House", "Senate", "N/A"]

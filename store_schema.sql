@@ -230,8 +230,10 @@ CREATE TABLE validation_record (
                                                               'historical', 'account_identity', 'unit', 'semantic',
                                                               -- reconcile.py: an advance copy against GPO's official version
                                                               'advance_copy_reconciliation',
-                                                              -- reference/review/law_text.py: an Enacted figure against the enrolled law
-                                                              'law_text')),
+                                                              -- reference/review/law_text.py: an Enacted figure against the enrolled law;
+                                                              -- scripts/check_legislative_text.py: a figure against its stage's
+                                                              -- bill (bill_text) or law (law_text) paragraph
+                                                              'law_text', 'bill_text')),
     expected_result     TEXT,
     observed_result     TEXT,
     -- info: a comparison recorded for the reader that neither fails nor confirms (law_text's known differences)

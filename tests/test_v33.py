@@ -137,17 +137,21 @@ class V33Store(unittest.TestCase):
         self.assertEqual(V.verification_status(0.95, [src, ("law_text", "info", "H.R. 2617 div. H ...")]), "unverified")
         self.assertEqual(V.verification_status(0.95, [("table_total", "pass"), ("law_text", "info")]), "auto-validated")
         self.assertEqual(V.verification_status(0.50, [src, ("law_text", "pass")]), "auto-validated")  # another document confirms below 0.90
+        # the enrolled-law records (reference/review/law_text.py); the bill and law text check's own VAL-TXT- records
+        # (scripts/check_legislative_text.py, tests/test_legislative_text.py) can fail or flag, pending review
         rows = self.conn.execute("SELECT result, count(*) FROM validation_record WHERE rule_applied = 'law_text' "
-                                 "GROUP BY result").fetchall()
+                                 "AND validation_id NOT LIKE 'VAL-TXT-%' GROUP BY result").fetchall()
         # + LIHEAP FY2023, matched across divisions H + N; + FY2022 (H.R. 2471 div. H) and FY2023 Medicaid's derived headline;
         # + Refugee FY2022's other-law note (an info law_text record from the table, not the law); PHSSEF FY2022 matches the sum
         # of its heading's four paragraphs; earlier records the paragraph sum now matches updated to pass (owner, 2026-10-08)
         staged = json.loads((ROOT / "data" / "staged.json").read_text())
-        want = collections.Counter(v["result"] for v in staged["validations"] if v["rule_applied"] == "law_text")
+        want = collections.Counter(v["result"] for v in staged["validations"] if v["rule_applied"] == "law_text"
+                                   and not v["validation_id"].startswith("VAL-TXT-"))
         self.assertEqual(dict(rows), dict(want))
         self.assertEqual(set(want), {"pass", "info"})
         # never pending: an info is a recorded difference, not a question
         self.assertEqual(self.conn.execute("SELECT count(*) FROM validation_record WHERE rule_applied = 'law_text' "
+                                           "AND validation_id NOT LIKE 'VAL-TXT-%' "
                                            "AND human_review_status IS NOT NULL AND human_review_status <> ''").fetchone()[0], 0)
 
     def test_another_document_confirms_below_the_threshold(self):

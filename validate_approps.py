@@ -65,10 +65,16 @@ NOT_RUN = {
 
 # checks that confirm the figure itself: a sum or difference it is part of, or another document
 # ("arithmetic": validate()'s own note that some printed sum confirmed the row, its own or a parent's)
-# ("law_text": the enrolled law's first dollar amount under the account's heading, reference/review/law_text.py)
-CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic", "law_text")
+# ("law_text": the enrolled law's first dollar amount under the account's heading, reference/review/law_text.py,
+#  and the law's paragraph for the account, scripts/check_legislative_text.py; "bill_text": the House or Senate
+#  bill's paragraph for the account, scripts/check_legislative_text.py -- a match from the same document as the
+#  figure's source is recorded as info, so a pass is always a second document)
+CONFIRMING_RULES = ("structural", "table_total", "cross_document", "arithmetic", "law_text", "bill_text")
 # the confirming checks read from a document other than the figure's own source
-OTHER_DOCUMENT_RULES = ("cross_document", "law_text")
+OTHER_DOCUMENT_RULES = ("cross_document", "law_text", "bill_text")
+# the bill and law text checks: their 'flag' (several plausible amounts in the paragraph) goes to review but
+# counts neither as a pass nor as a fail
+TEXT_RULES = ("bill_text", "law_text")
 
 
 # The routine semantic flag validate() puts on every line that isn't plain budget authority (an
@@ -125,7 +131,9 @@ def verification_status(confidence, checks):
     """
     checks = [tuple(c) + (None,) * (5 - len(c)) for c in checks]
     # an 'info' record (law_text's known differences: program level, advances, transfers) neither fails nor confirms
-    checks = [c[:3] for c in checks if not is_resolved(c[3], c[4]) and c[1] != "info"]
+    # and a bill / law text 'flag' (ambiguous: several plausible amounts) neither, while it waits for review
+    checks = [c[:3] for c in checks if not is_resolved(c[3], c[4]) and c[1] != "info"
+              and not (c[0] in TEXT_RULES and c[1] == "flag")]
     results = [r for _, r, _ in checks]
     if "fail" in results or any(review_flag(*c) for c in checks):
         return "flagged"

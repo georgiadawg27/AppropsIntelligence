@@ -58,11 +58,51 @@ Labor-HHS FY2023 Senate and FY2024 House). The grid labels those columns "House 
 The FY2024 House Labor-HHS rows were added by `reference/review/lhhs/fy2024_house/build_rows.py`
 (appends to `data/staged.json`; its bill-text and cross-document reports sit beside it).
 
+**Bill and law text.** Every House, Senate and Enacted figure is checked against the bill or law text for
+that same stage. `data/legislative_text/<document_id>.json` holds each bill or law's text parsed into
+appropriation paragraphs (heading path, account heading, every dollar amount in order with the phrase around
+it, and its section, Stat. page, PDF page or position), with the source URL, version, retrieval date and the
+sha256 of the raw download. Raw downloads are not committed. `scripts/check_legislative_text.py` (offline; CI,
+data job) finds each figure's paragraph through the account's names by year (former names included), compares
+the headline -- the paragraph's main appropriated amount, not an of-which, transfer, limitation or advance,
+or the headline as recorded (e.g. less a defense line or a section 241 transfer, plus the next year's
+advance) -- and writes one `VAL-TXT-` record per figure: `bill_text` for a bill, `law_text` for the law.
+
+| Result | Record | Effect |
+| --- | --- | --- |
+| match | `pass` | a confirming check when the text is another document than the figure's source (`info` when it is the same one) |
+| mismatch | `fail`, pending review, both figures and both locations | the figure goes to `flagged` |
+| ambiguous | `flag`, pending review | counts neither way |
+| no paragraph | `info` | never a failure, never a confirmed absence |
+
+The check never changes a figure; a disagreement only goes to review. CI fails when a document at a bill or
+law stage has no text file and no exemption, when an exemption is stale or has no reason, when a text file
+was parsed by another parser version, or when `data/staged.json` is not up to date with the check. The job
+summary prints matched / mismatched / ambiguous / no paragraph / exempt and the change since the base branch.
+Documents with no usable text are exempted, each with its reason, in one file:
+`data/legislative_text/exemptions.json`.
+
+**Adding a bill or law (ingestion steps).** After its Bill Report Reference or Source Document row is in
+`data/staged.json`:
+
+1. Fetch its text: `python scripts/fetch_legislative_text.py` (GOVINFO_API_KEY in the environment or `.env`),
+   or run the **Fetch bill and law text** workflow by hand on your branch (it uses the repository secret and
+   commits the result). It takes govinfo's USLM XML, else the bill XML, else its HTML text, else the PDF's
+   text layer (committee drafts: the PDF's text layer); never page images. It prints the API calls it made.
+2. `python scripts/check_legislative_text.py --write` writes the results into `data/staged.json`.
+3. Commit `data/legislative_text/` and `data/staged.json`. The check runs on the pull request.
+
+A document with no usable text is listed by the fetch: add it to `exemptions.json` with the reason. After a
+parser change (`legislative_text.py`), `python scripts/fetch_legislative_text.py --reparse` re-parses the
+cached downloads and checks their sha256; commit the diff. The network test
+`RUN_NETWORK_TESTS=1 python -m pytest tests/test_legislative_text.py -m network` downloads every document
+again and checks the sha256 and the parse against the committed files.
+
 **Review statuses.** Two fields, never inferred from wording on the page:
 
 - `verification_status` (each observation): `auto-validated` only with confidence
-  >= 0.90, every check passing and at least one check that confirms the figure (a sum
-  or a second document); `flagged` when a check fails or a person flagged it for review;
+  >= 0.90, every check passing and at least one check that confirms the figure (a sum,
+  a second document, or the bill or law text when it is not the figure's own source); `flagged` when a check fails or a person flagged it for review;
   otherwise `unverified`. `human-verified`, `provisional` and `superseded` are set by
   their own steps. Reviewer mode marks a flagged cell with a solid dot and an
   unverified one with an open dot.

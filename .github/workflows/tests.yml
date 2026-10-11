@@ -4,7 +4,8 @@
 #
 # Two jobs run side by side, each with pytest-xdist across the runner's CPUs:
 #   data     -- builds the workbook from data/staged.json (scripts/build_workbook.py, which stops on
-#               any failed check), recalculates it in LibreOffice and fails on any formula error,
+#               any failed check), runs the bill and law text check (scripts/check_legislative_text.py,
+#               offline), recalculates it in LibreOffice and fails on any formula error,
 #               checks the site's copy (lookup results stored) against LibreOffice's results,
 #               uploads it as an artifact, then runs the store, ingest, extraction and build tests
 #               (every module but the three below)
@@ -89,6 +90,26 @@ jobs:
         # the script runs its own checks first (allowed values, broken references, duplicate IDs,
         # effective dates, govinfo landing pages, enactment fields off Enacted rows) and stops on any
         run: mkdir -p build && python scripts/build_workbook.py
+      - name: Bill and law text check (offline)
+        if: needs.changes.outputs.data == 'true'
+        # every House, Senate and Enacted figure against its stage's committed bill or law text
+        # (data/legislative_text/); fails on a stage with no text and no exemption, a text file from another
+        # parser version, or check results in data/staged.json that are out of date. The summary (counts and the
+        # change since the base branch) goes to the job summary.
+        env:
+          EVENT: ${{ github.event_name }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PUSH_BEFORE: ${{ github.event.before }}
+        run: |
+          base=""
+          if [ "$EVENT" = "pull_request" ]; then base="$PR_BASE"; fi
+          if [ "$EVENT" = "push" ]; then base="$PUSH_BEFORE"; fi
+          args=""
+          if [ -n "$base" ] && git cat-file -e "$base^{commit}" 2>/dev/null; then
+            git worktree add --detach "$RUNNER_TEMP/base" "$(git merge-base "$base" HEAD)" >/dev/null
+            args="--base-dir $RUNNER_TEMP/base"
+          fi
+          python scripts/check_legislative_text.py --ci $args
       - name: Install LibreOffice (headless recalculation)
         if: needs.changes.outputs.data == 'true'
         run: |

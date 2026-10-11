@@ -985,14 +985,18 @@ class CompareBrowser(CompareTest):
         self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2027&rev=1")
         self.page.click("#expand-all")
         dots = self.page.locator("[data-testid=status-dot]")
-        self.assertEqual(dots.count(), 1)                    # CJS: no flagged or unconfirmed cell in view
-        d = dots.first
-        self.assertEqual(d.get_attribute("class"), "dot pend")
-        self.assertEqual(d.get_attribute("data-status"), "human-verified")
-        self.assertEqual(d.get_attribute("data-pending"), "1")
-        self.assertIn("VAL-0089 semantic flag", d.get_attribute("title"))
+        # CJS: no flagged or unconfirmed cell in view; five verified cells with a record pending: VAL-0089 and four
+        # House figures (CBO, owner-verified) the bill text disagrees with (VAL-TXT-, the bill and law text check)
+        self.assertEqual(dots.count(), 5)
+        for x in dots.all():
+            self.assertEqual(x.get_attribute("class"), "dot pend")
+            self.assertEqual(x.get_attribute("data-status"), "human-verified")
+            self.assertEqual(x.get_attribute("data-pending"), "1")
+        titles = [x.get_attribute("title") for x in dots.all()]
+        self.assertEqual(sum("VAL-0089 semantic flag" in t for t in titles), 1)
+        self.assertEqual(sum("VAL-TXT-" in t and "bill_text fail" in t for t in titles), 4)
         self.assertEqual(self.page.text_content("[data-testid=pending-count]"),
-                         "· 1 cell in view with records pending review")
+                         "· 5 cells in view with records pending review")
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
         self.page.click("#expand-all")
         for d in self.page.locator("[data-testid=status-dot][data-status=flagged]").all():

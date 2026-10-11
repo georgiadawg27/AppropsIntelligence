@@ -85,6 +85,12 @@
            "result": "pass",
            "rule_applied": "structural",
            "validation_id": "VAL-0083"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "fail",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0971"
           }
          ],
          "verification_status": "human-verified"
@@ -516,6 +522,12 @@
       "result": "pass",
       "rule_applied": "structural",
       "validation_id": "VAL-0083"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "fail",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0971"
      }
     ],
     "verification_status": "human-verified"
