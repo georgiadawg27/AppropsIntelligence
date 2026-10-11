@@ -4,8 +4,12 @@ Tests for govinfo_ingest.py's fetch stage.
 Run:  python -m unittest tests.test_ingest -v
 
 The Live* classes call api.govinfo.gov for real (GOVINFO_API_KEY from .env)
-and download into a temporary store, never document_store/. They're the
-regression test for committee reports: fetch_and_store itself has to
+and download into a temporary store, never document_store/. They're network
+tests: skipped unless RUN_NETWORK_TESTS=1 (and the key) is set, so a slow or
+failing outside service never fails an ordinary run. On request:
+    RUN_NETWORK_TESTS=1 python -m pytest tests/test_ingest.py -m network -v
+or, in CI, run the Tests workflow by hand with "Run the network tests" ticked.
+They're the regression test for committee reports: fetch_and_store itself has to
 download a CRPT package -- no hand-fetched file, no bypass.
 """
 
@@ -21,9 +25,21 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import govinfo_ingest as g  # noqa: E402
+try:
+    import pytest  # for the `network` marker (-m network); the file still runs under plain unittest
+except ImportError:
+    pytest = None
 
 KEY = g.clean_key(os.environ.get("GOVINFO_API_KEY"))
-needs_key = unittest.skipUnless(KEY, "GOVINFO_API_KEY not set (.env locally; a repository secret in CI) -- live govinfo API test")
+RUN_NETWORK = os.environ.get("RUN_NETWORK_TESTS") == "1"
+
+
+def network_test(cls):
+    """A network test: calls api.govinfo.gov. Runs only on request (RUN_NETWORK_TESTS=1) with a key."""
+    if pytest:
+        cls = pytest.mark.network(cls)
+    cls = unittest.skipUnless(KEY, "GOVINFO_API_KEY not set (.env locally; a repository secret in CI) -- live govinfo API test")(cls)
+    return unittest.skipUnless(RUN_NETWORK, "network test -- set RUN_NETWORK_TESTS=1 to run it")(cls)
 
 
 class KeyCleaning(unittest.TestCase):
@@ -62,7 +78,7 @@ class TempStore:
         self.tmp.cleanup()
 
 
-@needs_key
+@network_test
 class LiveCommitteeReportFetch(unittest.TestCase):
     """The regression: CRPT summaries have no pdfLink, and fetch_and_store
     used to return no_pdf_available for every committee report."""
@@ -87,7 +103,7 @@ class LiveCommitteeReportFetch(unittest.TestCase):
             self.assertEqual((store / f"{pid}.pdf").read_bytes(), data)
 
 
-@needs_key
+@network_test
 class LiveBillsAndPublicLawsStillUsePdfLink(unittest.TestCase):
     """Scope check: the CRPT fix mustn't change how BILLS / PLAW are fetched."""
 
@@ -349,7 +365,7 @@ class FetchFailuresAreVisible(unittest.TestCase):
         self.assertEqual(failed, [("BILLS-119s2354rs", "related_lookup_failed", c, 2) for c in g.RELATED_COLLECTIONS])
 
 
-@needs_key
+@network_test
 class LiveRelatedLookup(unittest.TestCase):
     """Tracked bill -> /related -> fetch_and_store, against the real API. Only
     the BILLS listing is stubbed (polling the whole collection takes minutes);
