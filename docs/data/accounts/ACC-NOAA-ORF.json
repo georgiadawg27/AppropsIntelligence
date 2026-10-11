@@ -79,7 +79,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": "pending",
+           "result": "fail",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0978"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -508,7 +515,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.cbo.gov/cost-estimates/hr/8845",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": "pending",
+      "result": "fail",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0978"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {

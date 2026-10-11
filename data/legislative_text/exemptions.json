@@ -1,0 +1,15 @@
+{
+ "about": "Bill or law stages with no usable text to check figures against, each with its reason. scripts/check_legislative_text.py fails CI on a bill or law stage that has neither a text file nor an entry here, and on an entry that is no longer needed. One entry per document_id (or Bill Report Reference id when no document exists).",
+ "exemptions": [
+  {
+   "id": "BR-LHHS-FY2020-SENATE",
+   "reason": "No bill text was ever published for this stage: the Senate Appropriations Committee neither reported nor released a FY2020 Labor-HHS bill (the Bill Report Reference names no bill or report).",
+   "proposed": "2026-10-11"
+  },
+  {
+   "id": "SRC-PLAW-119PUBL4",
+   "reason": "P.L. 119-4 division A is a full-year continuing resolution: it continues the FY2024 appropriations by reference and prints no appropriation paragraph under an account heading, so there is no paragraph to compare a FY2025 Enacted figure with (govinfo USLM read 2026-10-11: no appropriation paragraphs with a dollar amount in division A).",
+   "proposed": "2026-10-11"
+  }
+ ]
+}

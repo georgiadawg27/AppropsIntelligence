@@ -75,7 +75,8 @@ class SiteReadsData(unittest.TestCase):
         # triage (PR #29) resolved 452 of the 462 pending records; 10 stay pending. The FY2022 backfill adds 27 pending
         # (sum and cross-document questions) and 90 resolved at creation by the triage's standard reasons; the owner's
         # rules 3 and 5 (2026-10-08) resolve 13 more (short sums explained exactly, the request baseline) and 16 sums
-        # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending
+        # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending. The bill and law text
+        # check's mismatches and ambiguous results (VAL-TXT-) wait for review too
         data = json.loads(S.STAGED.read_text())
         # the backfill years (FY2022 and earlier), whose records the triage and owner rules resolve
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] <= 2022
@@ -86,7 +87,7 @@ class SiteReadsData(unittest.TestCase):
                          ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
                           "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912", "VAL-LHHS-07178"]
                          + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
-                            and v["observation_id"] in fy2022])
+                            and (v["observation_id"] in fy2022 or v["validation_id"].startswith("VAL-TXT-"))])
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
@@ -122,12 +123,22 @@ class SiteReadsData(unittest.TestCase):
     def test_the_one_verified_cell_with_a_pending_record(self):
         # CJS has no flagged cell; one verified cell still has a record pending review:
         # OBS-0966 (Crime Victims Fund, FY2027 House Reported), VAL-0089's CHIMP question
-        found = [(row["account"]["canonical_account_id"], key, o["observation_id"],
-                  [v["validation_id"] for v in o["validation"] if v["human_review_status"] == "pending"])
-                 for sc in ("LHHS", "CJS") for row, key, o in headline_observations(grid(sc))
-                 if o["verification_status"] in ("auto-validated", "human-verified")
-                 and any(v["human_review_status"] == "pending" for v in o["validation"])]
+        # The bill and law text check's pending records (VAL-TXT-) stand apart: on a verified cell each is an ambiguous
+        # result (a flag, which counts neither way) or a disagreement with a figure a person verified (the rule leaves
+        # human-verified alone)
+        def pending(o, text):
+            return [v["validation_id"] for v in o["validation"] if v["human_review_status"] == "pending"
+                    and v["validation_id"].startswith("VAL-TXT-") == text]
+        cells = [(row, key, o) for sc in ("LHHS", "CJS") for row, key, o in headline_observations(grid(sc))
+                 if o["verification_status"] in ("auto-validated", "human-verified")]
+        found = [(row["account"]["canonical_account_id"], key, o["observation_id"], pending(o, False))
+                 for row, key, o in cells if pending(o, False)]
         self.assertEqual(found, [("ACC-DOJ-CVF", "2027|House Reported", "OBS-0966", ["VAL-0089"])])
+        for row, key, o in cells:
+            for v in o["validation"]:
+                if v["validation_id"] in pending(o, True):
+                    self.assertTrue(v["result"] == "flag" or o["verification_status"] == "human-verified",
+                                    v["validation_id"])
 
 
 class DraftStages(unittest.TestCase):

@@ -49,6 +49,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0098"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0517"
           }
          ],
          "verification_status": "human-verified"
@@ -122,7 +128,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0519"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -266,7 +279,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0518"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -349,6 +369,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0114"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0513"
           }
          ],
          "verification_status": "human-verified"
@@ -422,7 +448,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0515"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -566,7 +599,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt139/pdf/CRPT-115srpt139.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0514"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -649,6 +689,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0131"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0509"
           }
          ],
          "verification_status": "human-verified"
@@ -722,7 +768,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt704/pdf/CRPT-115hrpt704.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0526"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -866,7 +919,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt275/pdf/CRPT-115srpt275.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0510"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -949,6 +1009,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0148"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0505"
           }
          ],
          "verification_status": "human-verified"
@@ -1022,7 +1088,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt101/pdf/CRPT-116hrpt101.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0507"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1166,7 +1239,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0506"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1249,6 +1329,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0165"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0501"
           }
          ],
          "verification_status": "human-verified"
@@ -1322,7 +1408,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0503"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1466,7 +1559,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0502"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1535,6 +1635,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0182"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0497"
           }
          ],
          "verification_status": "human-verified"
@@ -1608,7 +1714,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt97/pdf/CRPT-117hrpt97.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0499"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1752,7 +1865,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept_Final.PDF",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0498"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -1821,6 +1941,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0199"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0493"
           }
          ],
          "verification_status": "human-verified"
@@ -1894,7 +2020,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt395/pdf/CRPT-117hrpt395.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0495"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2038,7 +2171,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSFY23RPT.PDF",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0494"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2107,6 +2247,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0216"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0489"
           }
          ],
          "verification_status": "human-verified"
@@ -2180,7 +2326,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-CJS-Explanatory-Materials.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0491"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2310,7 +2463,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0490"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2459,7 +2619,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0487"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2623,7 +2790,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0486"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2726,6 +2900,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0233"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-0481"
           }
          ],
          "verification_status": "human-verified"
@@ -2799,7 +2979,14 @@
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0483"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -2943,7 +3130,14 @@
          "stage": "Senate Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-0482"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -3881,7 +4075,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114hrpt605/pdf/CRPT-114hrpt605.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0519"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -3914,7 +4115,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-114srpt239/pdf/CRPT-114srpt239.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0518"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -3953,6 +4161,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0098"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0517"
      }
     ],
     "verification_status": "human-verified"
@@ -4020,7 +4234,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt231/pdf/CRPT-115hrpt231.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0515"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4053,7 +4274,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt139/pdf/CRPT-115srpt139.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0514"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4092,6 +4320,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0114"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0513"
      }
     ],
     "verification_status": "human-verified"
@@ -4159,7 +4393,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt704/pdf/CRPT-115hrpt704.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0526"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4192,7 +4433,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115srpt275/pdf/CRPT-115srpt275.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0510"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4231,6 +4479,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0131"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0509"
      }
     ],
     "verification_status": "human-verified"
@@ -4298,7 +4552,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt101/pdf/CRPT-116hrpt101.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0507"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4331,7 +4592,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0506"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4370,6 +4638,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0148"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0505"
      }
     ],
     "verification_status": "human-verified"
@@ -4437,7 +4711,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0503"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4470,7 +4751,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0502"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4509,6 +4797,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0165"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0501"
      }
     ],
     "verification_status": "human-verified"
@@ -4576,7 +4870,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt97/pdf/CRPT-117hrpt97.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0499"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4609,7 +4910,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept_Final.PDF",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0498"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4648,6 +4956,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0182"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0497"
      }
     ],
     "verification_status": "human-verified"
@@ -4715,7 +5029,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt395/pdf/CRPT-117hrpt395.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0495"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4748,7 +5069,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSFY23RPT.PDF",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0494"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4787,6 +5115,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0199"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0493"
      }
     ],
     "verification_status": "human-verified"
@@ -4854,7 +5188,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://appropriations.house.gov/sites/evo-subsites/republicans-appropriations.house.gov/files/FY24-CJS-Explanatory-Materials.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0491"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4887,7 +5228,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0490"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -4926,6 +5274,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0216"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0489"
      }
     ],
     "verification_status": "human-verified"
@@ -5026,7 +5380,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0487"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -5059,7 +5420,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0486"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -5191,7 +5559,14 @@
     "stage": "House Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0483"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -5224,7 +5599,14 @@
     "stage": "Senate Reported",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-0482"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -5263,6 +5645,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0233"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-0481"
      }
     ],
     "verification_status": "human-verified"

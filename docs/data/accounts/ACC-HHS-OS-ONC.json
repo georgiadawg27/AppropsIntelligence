@@ -74,6 +74,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-17236"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-4087"
           }
          ],
          "verification_status": "auto-validated"
@@ -147,6 +153,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-15894"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3803"
           }
          ],
          "verification_status": "auto-validated"
@@ -424,9 +436,15 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-16618"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3994"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -508,6 +526,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-15525"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-3697"
           }
          ],
          "verification_status": "auto-validated"
@@ -575,9 +599,15 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-14215"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3417"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -709,6 +739,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-14906"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3604"
           }
          ],
          "verification_status": "auto-validated"
@@ -787,6 +823,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-13870"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-3318"
           }
          ],
          "verification_status": "auto-validated"
@@ -925,6 +967,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-12633"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3036"
           }
          ],
          "verification_status": "auto-validated"
@@ -1065,6 +1113,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-13337"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-3226"
           }
          ],
          "verification_status": "auto-validated"
@@ -1149,6 +1203,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-12285"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-2939"
           }
          ],
          "verification_status": "auto-validated"
@@ -1223,6 +1283,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-11400"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-2748"
           }
          ],
          "verification_status": "unverified"
@@ -1523,6 +1589,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-11037"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-2641"
           }
          ],
          "verification_status": "auto-validated"
@@ -1596,6 +1668,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-09634"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-2348"
           }
          ],
          "verification_status": "auto-validated"
@@ -1736,6 +1814,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-10389"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-2543"
           }
          ],
          "verification_status": "auto-validated"
@@ -1814,6 +1898,12 @@
            "result": "info",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-09206"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-2211"
           }
          ],
          "verification_status": "auto-validated"
@@ -1940,6 +2030,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-07781"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-1920"
           }
          ],
          "verification_status": "auto-validated"
@@ -2170,6 +2266,12 @@
            "result": "pass",
            "rule_applied": "source_text",
            "validation_id": "VAL-LHHS-11054"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-2662"
           }
          ],
          "verification_status": "unverified"
@@ -2313,6 +2415,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06337"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-1647"
           }
          ],
          "verification_status": "auto-validated"
@@ -2469,6 +2577,12 @@
            "result": "info",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-07322"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-1649"
           }
          ],
          "verification_status": "auto-validated"
@@ -2598,6 +2712,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06347"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-1650"
           }
          ],
          "verification_status": "auto-validated"
@@ -2754,6 +2874,12 @@
            "result": "info",
            "rule_applied": "law_text",
            "validation_id": "VAL-LHHS-07397"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-1652"
           }
          ],
          "verification_status": "auto-validated"
@@ -2883,6 +3009,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06357"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-1653"
           }
          ],
          "verification_status": "auto-validated"
@@ -3400,6 +3532,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-15894"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3803"
      }
     ],
     "verification_status": "auto-validated"
@@ -3512,9 +3650,15 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-16618"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3994"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 60367000,
@@ -3577,6 +3721,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-17236"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-4087"
      }
     ],
     "verification_status": "auto-validated"
@@ -3683,9 +3833,15 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-14215"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3417"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 60367000,
@@ -3736,6 +3892,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-14906"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3604"
      }
     ],
     "verification_status": "auto-validated"
@@ -3801,6 +3963,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-15525"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-3697"
      }
     ],
     "verification_status": "auto-validated"
@@ -3919,6 +4087,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-12633"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3036"
      }
     ],
     "verification_status": "auto-validated"
@@ -3972,6 +4146,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-13337"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-3226"
      }
     ],
     "verification_status": "auto-validated"
@@ -4031,6 +4211,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-13870"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-3318"
      }
     ],
     "verification_status": "auto-validated"
@@ -4250,6 +4436,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-11400"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-2748"
      }
     ],
     "verification_status": "unverified"
@@ -4374,6 +4566,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-12285"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-2939"
      }
     ],
     "verification_status": "auto-validated"
@@ -4492,6 +4690,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-09634"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-2348"
      }
     ],
     "verification_status": "auto-validated"
@@ -4545,6 +4749,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-10389"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-2543"
      }
     ],
     "verification_status": "auto-validated"
@@ -4610,6 +4820,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-11037"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-2641"
      }
     ],
     "verification_status": "auto-validated"
@@ -4765,6 +4981,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-07781"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-1920"
      }
     ],
     "verification_status": "auto-validated"
@@ -4848,6 +5070,12 @@
       "result": "pass",
       "rule_applied": "source_text",
       "validation_id": "VAL-LHHS-11054"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-2662"
      }
     ],
     "verification_status": "unverified"
@@ -4948,6 +5176,12 @@
       "result": "info",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-09206"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-2211"
      }
     ],
     "verification_status": "auto-validated"
@@ -5098,6 +5332,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06337"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-1647"
      }
     ],
     "verification_status": "auto-validated"
@@ -5156,6 +5396,12 @@
       "result": "info",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-07322"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-1649"
      }
     ],
     "verification_status": "auto-validated"
@@ -5266,6 +5512,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06347"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-1650"
      }
     ],
     "verification_status": "auto-validated"
@@ -5324,6 +5576,12 @@
       "result": "info",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-07397"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-1652"
      }
     ],
     "verification_status": "auto-validated"
@@ -5434,6 +5692,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06357"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-1653"
      }
     ],
     "verification_status": "auto-validated"
