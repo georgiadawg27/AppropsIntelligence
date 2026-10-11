@@ -197,6 +197,28 @@ def _keep_division(enum, divisions):
     return not divisions or enum in divisions
 
 
+ADDITIONAL = re.compile(r"\b(?:an additional|additional amount)\b", re.I)
+QUOTE_TAGS = ("quote", "quotedText", "quotedContent")
+GP = "GENERAL PROVISION"
+
+
+def provision_para(el, enum):
+    """A general provision that appropriates an additional amount under another heading ("In addition to amounts
+    otherwise appropriated by this Act under the heading 'Office of the Secretary--General Departmental
+    Management' there are hereby appropriated an additional $350,000,000"): kept as a paragraph headed
+    GENERAL PROVISION > SEC. n, the quoted headings in its heading notes; None for any other section."""
+    text = squash(html.unescape(_text(el)))
+    quotes = [squash(html.unescape(_text(q))) for q in el.iter() if _local(q.tag) in QUOTE_TAGS]
+    if not quotes or not ADDITIONAL.search(text) or not re.search(r"\bappropriated\b", text, re.I):
+        return None
+    amounts = amounts_in(text, 1)
+    if not amounts:
+        return None
+    sec = f"SEC. {enum}".rstrip(".")
+    return {"heading_path": [GP, sec], "account_heading": sec, "heading_notes": [f"under the heading: {q}" for q in quotes],
+            "blocks": 1, "amounts": amounts}
+
+
 def parse_uslm(raw, divisions=None):
     """USLM XML (govinfo PLAW and newer BILLS): nested <appropriations level=...> with <heading>, <subheading>,
     <content>; <page> markers give the Statutes at Large page."""
@@ -218,6 +240,21 @@ def parse_uslm(raw, divisions=None):
             keep = _keep_division(enum, divisions)
             for c in el:
                 walk(c, [], keep)
+            return
+        if tag == "section" and not any(_local(x.tag) == "appropriations" for x in el.iter()):
+            num = el.find("{*}num")
+            enum = ((num.get("value") if num is not None else "") or squash(_text(num) if num is not None else "")
+                    ).replace("SEC.", "").strip()
+            start_page = state["page"]
+            for pg in el.iter():
+                if _local(pg.tag) == "page":
+                    state["page"] = squash(pg.text or "")
+            p = provision_para(el, enum) if in_div else None
+            if p:
+                p.update(division=state["division"], title=state["title"],
+                         location={"stat_page": state["page"] if start_page in (None, state["page"])
+                                   else f"{start_page} - {state['page']}"})
+                paras.append(p)
             return
         if tag == "title":
             num, hd = el.find("{*}num"), el.find("{*}heading")
@@ -314,6 +351,16 @@ def parse_bill_xml(raw, divisions=None):
                 enum = "TITLE " + enum
             state.update(title=squash(" ".join(x for x in (enum, _heading(_text(h)) if h is not None else "") if x)),
                          major="", inter="", last=None)
+        elif tag == "section" and not any(_local(x.tag) in LEVEL for x in el.iter()):
+            e = el.find("enum")
+            p = provision_para(el, squash(_text(e)) if e is not None else "") if state["keep"] else None
+            if p:
+                state["n"] += 1
+                p.update(division=state["division"], title=state["title"],
+                         location={"position": f"{'div. ' + state['division'] + ', ' if state['division'] else ''}"
+                                               f"{state['title'] or 'no title'}, {p['account_heading']}"})
+                paras.append(p)
+            return
         elif tag in LEVEL:
             h = el.find("header")
             hdr = _heading(_text(h)) if h is not None else ""

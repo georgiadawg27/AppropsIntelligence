@@ -219,7 +219,29 @@ def money(xs):
 APPROPRIATED_HERE = re.compile(r"^\s*,?\s*(?:is|are) (?:hereby )?appropriated\b", re.I)
 
 
-def derivations(para, main, recorded_extra, cell):
+def provision_amounts(acc, names, paras):
+    """[(amount, where)] a general provision appropriates 'an additional' amount under this account's heading
+    ("under the heading 'Office of the Secretary--General Departmental Management' there are hereby appropriated
+    an additional $350,000,000")."""
+    out = []
+    for p in paras:
+        if p["heading_path"][:1] != [L.GP]:
+            continue
+        refs = [re.split(r"\s*[—–]\s*|--", n.split(": ", 1)[1]) for n in p["heading_notes"] if n.startswith("under the heading: ")]
+        def placed(r):
+            ctx = norm(" ".join(r[:-1]))
+            return (len(r) == 1 or ctx in (norm(acc["agency"]), norm(acc.get("bureau")))
+                    or set(agency_words(acc).split()) <= set(ctx.split()))
+        if not any(norm(r[-1]) in names and placed(r) for r in refs):
+            continue
+        for a in p["amounts"]:
+            before, _ = split_phrase(a)
+            if re.search(r"(?:an additional|additional amount[^$]{0,120})\s*$", before[-160:], re.I):
+                out.append((a["amount"], where(p)))
+    return out
+
+
+def derivations(para, main, recorded_extra, cell, provisions=()):
     """The text's figure, each way the headline may be derived from what the paragraph states -> [(amount, how)].
     Each is read from the text itself (or from a derivation recorded with the figure), never fitted to it:
       base   the main amount, or the sum of the paragraph's appropriating amounts
@@ -238,13 +260,19 @@ def derivations(para, main, recorded_extra, cell):
     bases = [(m, f"the main amount ${m:,}")]
     if len(ap) > 1:
         bases.append((sum(ap), f"the paragraph's {len(ap)} appropriating amounts {money(ap)}"))
-    plus = [((), "")]
+    terms = []
     if extra:
-        plus.append(((*extra,), f" + {money(extra)} a proviso appropriates"))
+        terms.append(((*extra,), f" + {money(extra)} a proviso appropriates"))
     if adv:
-        plus.append(((*adv,), f" + the next year's advance {money(adv)} (appropriated in this bill)"))
-    if extra and adv:
-        plus.append(((*extra, *adv), f" + {money(extra)} a proviso appropriates + the next year's advance {money(adv)}"))
+        terms.append(((*adv,), f" + the next year's advance {money(adv)} (appropriated in this bill)"))
+    if provisions:
+        gp = [x for x, _ in provisions]
+        terms.append(((*gp,), f" + {money(gp)} a general provision appropriates under the heading ("
+                              + "; ".join(w for _, w in provisions) + ")"))
+    plus = [((), "")]
+    for k in range(1, len(terms) + 1):
+        for combo in itertools.combinations(terms, k):
+            plus.append((tuple(x for t in combo for x in t[0]), "".join(t[1] for t in combo)))
     less = [((), "")]
     if tap:
         less.append(((*tap,), f" - {money(tap)} from section 241 (PHS evaluation funds, not new budget authority)"))
@@ -270,7 +298,7 @@ def derivations(para, main, recorded_extra, cell):
     return out
 
 
-def compare(o, para, recorded_extra, cell=()):
+def compare(o, para, recorded_extra, cell=(), provisions=()):
     """-> (result, text figure, how) for one observation against its paragraph. cell: the account's other
     recorded lines at the same year and stage, as (observation_id, component, kind, amount)."""
     ours = o["amount"]
@@ -290,7 +318,7 @@ def compare(o, para, recorded_extra, cell=()):
                                    "limit, transfer or advance")
     if ours == main["amount"]:
         return "match", ours, how
-    for amt, why in derivations(para, main, recorded_extra, cell):
+    for amt, why in derivations(para, main, recorded_extra, cell, provisions):
         if amt == ours:
             return "match", ours, why
     for c in cell:
@@ -311,7 +339,8 @@ def compare(o, para, recorded_extra, cell=()):
                         f"${ours:,} = the main amount ${main['amount']:,} {terms} printed in the same paragraph; "
                         "several plausible amounts")
     # a mismatch: say how far the nearest reading of the text is from ours
-    near = min([(main["amount"], how)] + derivations(para, main, recorded_extra, cell), key=lambda d: abs(ours - d[0]))
+    near = min([(main["amount"], how)] + derivations(para, main, recorded_extra, cell, provisions),
+               key=lambda d: abs(ours - d[0]))
     if near[0] != main["amount"]:
         return "mismatch", main["amount"], (f"{how}; nearest reading {near[1]} = ${near[0]:,}, "
                                             f"ours - that = {ours - near[0]:+,}")
@@ -433,7 +462,17 @@ def check(data, texts, exempt):
                 for x in by_acc[a["canonical_account_id"]]
                 if x["fiscal_year"] == o["fiscal_year"] and x["stage"] == stage and x.get("component")
                 and x["amount_type"] == "budget authority" and x["verification_status"] != "superseded"]
-        outcomes = [(compare(o, p, other_law_amounts(vals[o["observation_id"]]), cell), p) for p in hits]
+        prov = provision_amounts(a, names, paras)
+        extra = other_law_amounts(vals[o["observation_id"]])
+        outcomes = [(compare(o, p, extra, cell, prov), p) for p in hits]
+        if len(hits) > 1 and not any(x[0] == "match" for x, _ in outcomes):
+            # every appropriation paragraph under the same heading, together (a second paragraph 'For an
+            # additional amount for prize competitions, $10,000,000')
+            together = dict(hits[0], amounts=[dict(x, block=x["block"] + 1000 * i) for i, p in enumerate(hits)
+                                             for x in p["amounts"]], paragraph_id="+".join(p["paragraph_id"] for p in hits))
+            x = compare(o, together, extra, cell, prov)
+            if x[0] == "match":
+                outcomes = [((x[0], x[1], x[2] + f" (the {len(hits)} paragraphs under the heading together)"), hits[0])]
         if len({(r, amt) for (r, amt, _), _ in outcomes}) > 1:
             best = next(((x, p) for x, p in outcomes if x[0] == "match"), None)
             if best is None:

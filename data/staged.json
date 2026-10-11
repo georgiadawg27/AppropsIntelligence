@@ -52662,7 +52662,7 @@
    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Total, General Departmental Management' [Committee recommendation] Source: the Senate Committee's draft explanatory statement for FY2023 (S. 4659 never reported).",
    "extraction_method": "text-extracted",
    "confidence": 0.5,
-   "verification_status": "flagged",
+   "verification_status": "auto-validated",
    "component": "",
    "headline_observation_id": ""
   },
@@ -55393,7 +55393,7 @@
    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Health Surveillance and Program Support' [Committee recommendation]",
    "extraction_method": "text-extracted",
    "confidence": 0.95,
-   "verification_status": "flagged",
+   "verification_status": "unverified",
    "component": "",
    "headline_observation_id": ""
   },
@@ -308414,10 +308414,10 @@
    "validation_id": "VAL-TXT-LHHS-1582",
    "observation_id": "OBS-LHHS-1582",
    "rule_applied": "bill_text",
-   "expected_result": "S. 4659 (introduced in Senate; BILLS-117s4659is, bill xml), TITLE II, 'DEPARTMENT OF HEALTH AND HUMAN SERVICES > OFFICE OF THE SECRETARY > GENERAL DEPARTMENTAL MANAGEMENT' (TITLE II, heading 97; P0097): $565,394,000 (the paragraph's main appropriated amount; ours - the text = +350,000,000)",
-   "observed_result": "$915,394,000 as recorded (SRC-EXPL-LHHS-FY2023-SENATE p.417; Title II, Office of the Secretary -- printed as 'Total, General Departmental Management' [Committee recommendation] Source: the Senate Committee's draft explanatory statement for FY2023 (S. 4659 never reported).) -- differs from the text by $350,000,000; for review, the figure is unchanged",
-   "result": "fail",
-   "human_review_status": "pending",
+   "expected_result": "S. 4659 (introduced in Senate; BILLS-117s4659is, bill xml), TITLE II, 'DEPARTMENT OF HEALTH AND HUMAN SERVICES > OFFICE OF THE SECRETARY > GENERAL DEPARTMENTAL MANAGEMENT' (TITLE II, heading 97; P0097): $915,394,000 (the main amount $565,394,000 + $350,000,000 a general provision appropriates under the heading (TITLE II, 'GENERAL PROVISION > SEC. 243' (TITLE II, SEC. 243; P0104)))",
+   "observed_result": "$915,394,000 as recorded (SRC-EXPL-LHHS-FY2023-SENATE p.417) -- matches",
+   "result": "pass",
+   "human_review_status": "",
    "reviewer": "",
    "resolution": ""
   },
@@ -309330,9 +309330,9 @@
    "expected_result": "S. 2587 (reported in Senate; BILLS-119s2587rs, bill xml), TITLE II DEPARTMENT OF HEALTH AND HUMAN SERVICES, 'SUBSTANCE ABUSE AND MENTAL HEALTH SERVICES ADMINISTRATION > HEALTH SURVEILLANCE AND PROGRAM SUPPORT' (TITLE II DEPARTMENT OF HEALTH AND HUMAN SERVICES, heading 82; P0082): $175,866,000 (the paragraph's main appropriated amount; ours - the text = -54,611,000)",
    "observed_result": "$121,255,000 as recorded (SRC-CRPT-119SRPT55 p.436; Title II, Substance Abuse and Mental Health Services Administration -- printed as 'Health Surveillance and Program Support' [Committee recommendation]) -- differs from the text by $-54,611,000; for review, the figure is unchanged",
    "result": "fail",
-   "human_review_status": "pending",
-   "reviewer": "",
-   "resolution": ""
+   "human_review_status": "resolved",
+   "reviewer": "owner (2026-10-11)",
+   "resolution": "Scope difference, not an error (owner, 2026-10-11): S.Rept. 119-55 p.436 prints Health Surveillance and Program Support 121,255 and, as its own line, Congressionally Directed Spending 54,611 (thousands); S. 2587's paragraph appropriates both together ($175,866,000 = 121,255,000 + 54,611,000, 'in the amounts specified in the table under this heading'). The figure is the HSPS line without the congressionally directed spending; section 241 evaluation funding (31,428) is outside both."
   },
   {
    "validation_id": "VAL-TXT-LHHS-1713",

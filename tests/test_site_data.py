@@ -91,7 +91,8 @@ class SiteReadsData(unittest.TestCase):
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
-                self.assertIn(v["reviewer"], ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
+                self.assertIn(v["reviewer"], ("owner (2026-10-11)",) if v["validation_id"].startswith("VAL-TXT-")
+                              else ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
                               else ("owner (group approval 2026-10-08)",))
                 self.assertIn(v["result"], ("fail", "flag"))
                 self.assertTrue(v["resolution"])

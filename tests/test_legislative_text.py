@@ -51,6 +51,10 @@ transfer: <italic>Provided</italic>, That no more than $100,000 shall be availab
 </appropriations-intermediate>
 <appropriations-intermediate><header>(including transfer of funds)</header>
 <text>For more, $5,000.</text></appropriations-intermediate>
+<section><enum>243.</enum><text>In addition to amounts otherwise appropriated by this Act under the heading
+<quote>Office of the Secretary&#8212;General Departmental Management</quote> there are hereby appropriated an additional
+$350,000,000, to remain available until expended.</text></section>
+<section><enum>244.</enum><text>None of the funds may be used for X.</text></section>
 </title></division>
 <division><enum>A</enum><header>Defense</header>
 <title><enum>I</enum><header>MILITARY PERSONNEL</header>
@@ -87,6 +91,17 @@ class Parser(unittest.TestCase):
         self.assertTrue(p["title"].startswith("TITLE II"))
         # a "(including transfer of funds)" heading and its text belong to the heading before it, not a new account
         self.assertNotIn("(INCLUDING TRANSFER OF FUNDS)", [q["account_heading"] for q in paras])
+
+    def test_general_provision_appropriating_an_additional_amount(self):
+        paras = L.parse("bill_xml", BILL_XML, ["H"])
+        gp = [p for p in paras if p["heading_path"][:1] == [L.GP]]
+        self.assertEqual(len(gp), 1, "only the section that appropriates an additional amount")
+        self.assertEqual(gp[0]["account_heading"], "SEC. 243")
+        self.assertEqual(gp[0]["heading_notes"], ["under the heading: Office of the Secretary\u2014General Departmental Management"])
+        self.assertEqual([a["amount"] for a in gp[0]["amounts"]], [350000000])
+        acc = {"agency": "Department of Health and Human Services", "bureau": "Office of the Secretary"}
+        self.assertEqual([x for x, _ in C.provision_amounts(acc, {"general departmental management"}, paras)], [350000000])
+        self.assertEqual(C.provision_amounts(acc, {"buildings and facilities"}, paras), [])
 
     def test_uslm_paragraph_and_stat_page(self):
         paras = L.parse("uslm", USLM, ["D"])
