@@ -14,81 +14,105 @@
        "missing": false,
        "observations": [
         {
-         "amount": 863617000,
+         "amount": 848617000,
          "amount_type": "budget authority",
          "bill_id": "P.L.115-31",
          "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
          "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
          "canonical_account_id": "ACC-HHS-HRSA-MCH",
+         "cell_note": "H.Rept. 115-244 p.208 prints 'Total, Maternal and Child Health' 863,617 thousand [FY 2017 Enacted], which counts 'Healthy Start Initiative (PL 114-254)' 15,000; that amount is recorded as its own supplemental line.",
          "chamber": "N/A",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
-         "document_fiscal_year": 2018,
-         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
-         "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_fiscal_year": 2017,
+         "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
          "fiscal_year": 2017,
          "headline_observation_id": null,
-         "observation_id": "OBS-LHHS-4045",
+         "observation_id": "OBS-LHHS-4107",
          "offsetting_collections": 0,
-         "publication_date": "2017-07-24",
+         "publication_date": "2017-05-05",
          "report_id": "N/A",
          "report_jes_url": "N/A",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-115HRPT244",
-         "source_page": "208",
-         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Maternal and Child Health' [FY 2017 Enacted]",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-115PUBL31",
+         "source_page": "386",
+         "source_table_or_section": "Title II, Health Resources and Services Administration -- printed in P.L. 115-31 div. H under 'Maternal and Child Health': $848,617,000 (131 Stat. 520); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.208 prints 'Total, Maternal and Child Health' 863,617 thousand [FY 2017 Enacted], which counts 'Healthy Start Initiative (PL 114-254)' 15,000; that amount is recorded as its own supplemental line.",
          "stage": "Enacted",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-LHHS-16805"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "structural",
-           "validation_id": "VAL-LHHS-16806"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-LHHS-16807"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-LHHS-16808"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "cross_document",
-           "validation_id": "VAL-LHHS-17027"
+           "validation_id": "VAL-LHHS-17246"
           },
           {
            "human_review_status": null,
            "result": "info",
            "rule_applied": "law_text",
-           "validation_id": "VAL-LHHS-17199"
-          },
-          {
-           "human_review_status": "pending",
-           "result": "fail",
-           "rule_applied": "law_text",
-           "validation_id": "VAL-TXT-LHHS-4045"
+           "validation_id": "VAL-TXT-LHHS-4107"
           }
          ],
-         "verification_status": "flagged"
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 15000000,
+         "amount_type": "supplemental",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-HRSA-MCH",
+         "chamber": "N/A",
+         "component": "supplemental_act",
+         "component_kind": "part",
+         "component_label": "OTHER APPROPRIATIONS",
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "Further Continuing and Security Assistance Appropriations Act, 2017 (H.R. 2028). Division A, sec. 101(3) adds sec. 200 to the Continuing Appropriations Act, 2017: $15,000,000 for HRSA Maternal and Child Health, Healthy Start Initiative (130 Stat. 1022, PDF p.18). sha256 047b18027489232a... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4108",
+         "offsetting_collections": 0,
+         "publication_date": "2016-12-10",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-114PUBL254",
+         "source_page": "18",
+         "source_table_or_section": "P.L. 114-254 div. A sec. 101(3), adding sec. 200 to the Continuing Appropriations Act, 2017 (div. C of P.L. 114-223), 130 Stat. 1022: $15,000,000 in addition for 'Health Resources and Services Administration--Maternal and Child Health', for the Healthy Start Initiative (section 2204(b) of the Water and Waste Act of 2016), available until September 30, 2018",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-114publ254/pdf/PLAW-114publ254.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17247"
+          }
+         ],
+         "verification_status": "auto-validated"
         }
        ],
        "state": "value"
@@ -438,6 +462,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -777,6 +812,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1124,6 +1170,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1391,6 +1448,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1735,6 +1803,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -2073,6 +2152,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -2415,6 +2505,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -2733,6 +2834,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -3068,6 +3180,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -3314,6 +3437,17 @@
        "missing": false,
        "observations": [],
        "state": "not_enacted"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
       }
      ],
      "House Reported": [
@@ -3495,6 +3629,12 @@
     "component": null,
     "component_kind": null,
     "component_label": null
+   },
+   {
+    "amount_type": "supplemental",
+    "component": "supplemental_act",
+    "component_kind": "part",
+    "component_label": "OTHER APPROPRIATIONS"
    }
   ],
   "stages": [
@@ -3938,6 +4078,7 @@
     "source_page": "208",
     "source_table_or_section": "Title II, Health Resources and Services Administration -- printed as 'Total, Maternal and Child Health' [FY 2017 Enacted]",
     "stage": "Enacted",
+    "superseded_by_observation_id": "OBS-LHHS-4107",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
     "validation": [
@@ -3978,13 +4119,103 @@
       "validation_id": "VAL-LHHS-17199"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "Superseded by OBS-LHHS-4107 (848,617,000): the bill text controls; the table figure stays here and as a note on the new figure.",
       "result": "fail",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-LHHS-4045"
      }
     ],
-    "verification_status": "flagged"
+    "verification_status": "superseded"
+   },
+   {
+    "amount": 848617000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-MCH",
+    "cell_note": "H.Rept. 115-244 p.208 prints 'Total, Maternal and Child Health' 863,617 thousand [FY 2017 Enacted], which counts 'Healthy Start Initiative (PL 114-254)' 15,000; that amount is recorded as its own supplemental line.",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "Consolidated Appropriations Act, 2017; Division H (Labor-HHS) is PDF pp. 368-433, its Title II pp. 385-409. sha256 2800a8d34079a7d7... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4107",
+    "offsetting_collections": 0,
+    "publication_date": "2017-05-05",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL31",
+    "source_page": "386",
+    "source_table_or_section": "Title II, Health Resources and Services Administration -- printed in P.L. 115-31 div. H under 'Maternal and Child Health': $848,617,000 (131 Stat. 520); bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.208 prints 'Total, Maternal and Child Health' 863,617 thousand [FY 2017 Enacted], which counts 'Healthy Start Initiative (PL 114-254)' 15,000; that amount is recorded as its own supplemental line.",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-LHHS-17246"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-4107"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "amount": 15000000,
+    "amount_type": "supplemental",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-HRSA-MCH",
+    "chamber": "N/A",
+    "component": "supplemental_act",
+    "component_kind": "part",
+    "component_label": "OTHER APPROPRIATIONS",
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "Further Continuing and Security Assistance Appropriations Act, 2017 (H.R. 2028). Division A, sec. 101(3) adds sec. 200 to the Continuing Appropriations Act, 2017: $15,000,000 for HRSA Maternal and Child Health, Healthy Start Initiative (130 Stat. 1022, PDF p.18). sha256 047b18027489232a... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4108",
+    "offsetting_collections": 0,
+    "publication_date": "2016-12-10",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-114PUBL254",
+    "source_page": "18",
+    "source_table_or_section": "P.L. 114-254 div. A sec. 101(3), adding sec. 200 to the Continuing Appropriations Act, 2017 (div. C of P.L. 114-223), 130 Stat. 1022: $15,000,000 in addition for 'Health Resources and Services Administration--Maternal and Child Health', for the Healthy Start Initiative (section 2204(b) of the Water and Waste Act of 2016), available until September 30, 2018",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-114publ254/pdf/PLAW-114publ254.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17247"
+     }
+    ],
+    "verification_status": "auto-validated"
    },
    {
     "amount": 795290000,

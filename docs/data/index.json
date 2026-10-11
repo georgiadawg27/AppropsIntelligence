@@ -806,22 +806,24 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-11T18:42:23+00:00",
-  "data_sha256": "f366f3a7581666564af356aef3eb8d4732ab0b64fe6be20ed52163f8fa0bb452",
+  "data_committed": "2026-10-11T19:42:40+00:00",
+  "data_sha256": "c23ca802345909c0e70d65c701e69a0c98f154c7cac62c606a096e31a037502a",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
    "account_relationship": 14,
-   "appropriations_observation": 4967,
+   "appropriations_observation": 4983,
    "bill_report_reference": 83,
    "component": 29,
    "confirmed_absence": 311,
    "historical_name": 14,
-   "source_document": 107,
-   "validation_record": 20190
+   "source_document": 108,
+   "validation_record": 20215
   },
   "version": "v38",
-  "warnings": [],
+  "warnings": [
+   "observation OBS-LHHS-4101: source_page '59' is outside SRC-BILLS-118HR5894IH's table pages '118'"
+  ],
   "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
  }
 }
