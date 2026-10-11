@@ -40,7 +40,28 @@ import tag_components as TC  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RULE = "measure_reconcile"
-PREFIXES = ("VAL-MR-", "VAL-MRV-")
+PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-")
+
+# Why a printed view differs from the computed one (owner, 2026-10-11): one review item per cause, not one per
+# cell. account_not_held is no failure: the money sits in an account we don't hold, so the view is not checked.
+# Causes found from the data: member_no_headline (onc_no_headline for ONC), cr_anomaly_dropped. Causes known
+# from reading the documents (KNOWN_CAUSES). Anything else is unexplained.
+KNOWN_CAUSES = {
+    ("ACC-HHS-CDC-TOTAL", "program_level"): ("pphf_general_provision_table",
+        "Prevention and Public Health Fund transfers made through the general provisions' allocation table, which "
+        "no phrase rule reads (phase 1b)"),
+    ("ACC-HHS-SAMHSA-TOTAL", "program_level"): ("pphf_general_provision_table",
+        "Prevention and Public Health Fund transfers made through the general provisions' allocation table, which "
+        "no phrase rule reads (phase 1b)"),
+    ("ACC-HHS-ACL-TOTAL", "program_level"): ("account_not_held",
+        "the program-level money is in an ACL account we don't hold"),
+}
+CAUSE_TEXT = {
+    "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
+    "member_no_headline": "an account of the agency has no headline in the cell, so its components are missing",
+    "cr_anomaly_dropped": "a component a P.L. 119-4 anomaly changed was not carried into FY2025",
+    "unexplained": "not explained yet",
+}
 
 
 def suffix(oid):
@@ -137,19 +158,80 @@ def run(data):
             computed = h["amount"] + delta
             how = f"the headline {AC.money(h['amount'])} ({h['observation_id']})"
         ok = computed == v["amount"]
+        cause = None if ok else why(data, a, v, view, v["amount"] - computed, heads, comps)
+        if cause == "account_not_held":
+            outcomes.append(dict(base_out, result="not checked", detail="the money is in an account we don't hold "
+                                 "(account_not_held)"))
+            continue
         expected = (f"{AC.VIEWS[view]['label']}: {how}, less the included components the view leaves out, plus the "
                     f"components beside it the view counts ({describe(used)}) = {AC.money(computed)}")
         observed = (f"{AC.money(v['amount'])} printed ('{TC.printed(v)}', {v['source_document_id']} "
                     f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
                     f" -- differs by {AC.money(v['amount'] - computed)} (printed - computed); for review, no figure "
                     "changed"))
+        if cause:
+            observed += f"; cause: {cause} (reviewed once for every cell, VAL-MRC-{cause.upper().replace('_', '-')})"
         records.append({"validation_id": "VAL-MRV-" + suffix(v["observation_id"]), "observation_id": v["observation_id"],
                         "rule_applied": RULE, "expected_result": expected, "observed_result": observed,
-                        "result": "pass" if ok else "flag", "human_review_status": "" if ok else "pending",
+                        "result": "pass" if ok else "info", "human_review_status": "",
                         "reviewer": "", "resolution": ""})
-        outcomes.append(dict(base_out, result="pass" if ok else "fail", detail=f"computed {AC.money(computed)}, "
-                             f"printed {AC.money(v['amount'])}, difference {AC.money(v['amount'] - computed)}"))
+        outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
+                             detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
+                                    f"difference {AC.money(v['amount'] - computed)}"))
+    # one review item per cause, on the first cell it covers
+    by_cause = collections.defaultdict(list)
+    for o in outcomes:
+        if o.get("cause"):
+            by_cause[o["cause"]].append(o)
+    for cause, os_ in sorted(by_cause.items()):
+        os_ = sorted(os_, key=lambda o: o["observation_id"])
+        records.append({"validation_id": "VAL-MRC-" + cause.upper().replace("_", "-"),
+                        "observation_id": os_[0]["observation_id"], "rule_applied": RULE,
+                        "expected_result": f"printed view totals equal the views computed from the components; cause "
+                                           f"{cause}: {cause_text(cause)}",
+                        "observed_result": f"{len(os_)} printed view(s) differ: " + "; ".join(
+                            f"{o['observation_id']} {o['account']} FY{o['fy']} {o['stage']} [{o['view']}] "
+                            f"{o['detail'].rsplit('difference ', 1)[1]}" for o in os_)
+                            + " -- for review, no figure changed",
+                        "result": "flag", "human_review_status": "pending", "reviewer": "", "resolution": ""})
     return records, outcomes
+
+
+def cause_text(cause):
+    for k, (c, t) in KNOWN_CAUSES.items():
+        if c == cause:
+            return t
+    return CAUSE_TEXT[cause]
+
+
+def why(data, a, v, view, diff, heads, comps):
+    """The cause of a printed view's difference (KNOWN_CAUSES, CAUSE_TEXT)."""
+    fy, stage = int(v["fiscal_year"]), v["stage"]
+    sel = AC.VIEWS[view]
+    if a.get("total_scope") == "agency":
+        for m in members(data, a):
+            if heads[(m, fy, stage)]:
+                continue
+            uses = any(AC._selected(c, sel["add"]) or AC._selected(c, sel["remove"])
+                       for (acc, _, _), hs in heads.items() if acc == m for h in hs for c in comps[h["observation_id"]])
+            if uses:
+                return "onc_no_headline" if m == "ACC-HHS-OS-ONC" else "member_no_headline"
+        if (a["subcommittee"], fy, stage) == TC.CR_YEAR:
+            dropped = 0
+            for m in members(data, a):
+                if m not in TC.CR_ANOMALIES:
+                    continue
+                for h in heads[(m, fy - 1, "Enacted")]:
+                    for c in comps[h["observation_id"]]:
+                        if AC._selected(c, TC.CR_ANOMALIES[m][1]):
+                            if c["in_headline"] != "TRUE" and AC._selected(c, sel["add"]):
+                                dropped += c["amount"]
+                            if c["in_headline"] == "TRUE" and AC._selected(c, sel["remove"]):
+                                dropped -= c["amount"]
+            if dropped and dropped == diff:
+                return "cr_anomaly_dropped"
+    known = KNOWN_CAUSES.get((a["canonical_account_id"], view))
+    return known[0] if known else "unexplained"
 
 
 MACHINE = ("observation_id", "rule_applied", "expected_result", "observed_result", "result")
@@ -199,9 +281,14 @@ def summary(outcomes):
         lines += ["Not checked yet: " + "; ".join(f"{k} ({n})" for k, n in nc.most_common()), ""]
     fails = [o for o in outcomes if o["result"] == "fail"]
     if fails:
-        lines += ["**Failures (pending review)**", ""]
-        lines += [f"- {o['observation_id']} {o['account']} FY{o['fy']} {o['stage']}"
-                  + (f" [{o['view']}]" if o.get("view") else " [base]") + f": {o['detail']}" for o in fails]
+        lines += ["**Failures (pending review: one item per cause)**", ""]
+        groups = collections.defaultdict(list)
+        for o in fails:
+            groups[o.get("cause") or "base"].append(o)
+        for cause, os_ in sorted(groups.items()):
+            lines.append(f"- **{cause}** ({len(os_)}): " + ("" if cause == "base" else cause_text(cause)))
+            lines += [f"  - {o['observation_id']} {o['account']} FY{o['fy']} {o['stage']}"
+                      + (f" [{o['view']}]" if o.get("view") else " [base]") + f": {o['detail']}" for o in os_]
         lines.append("")
     return "\n".join(lines)
 

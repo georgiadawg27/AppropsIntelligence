@@ -101,6 +101,16 @@ class ComponentSchema(unittest.TestCase):
         self.assertTrue(errors(a, dict(b, amount=99), observations=obs))
         self.assertTrue(errors(a, dict(b, carried_from_component_id=""), observations=obs))
 
+    def test_a_component_within_another(self):
+        outer = comp(t="trust_fund_limitation", amount=900)
+        inner = comp(cid="CMP-LHHS-9002", t="designated", designation="cap_adjustment", amount=600,
+                     within_component_id="CMP-LHHS-9001")
+        self.assertEqual(errors(outer, inner), [])
+        self.assertEqual(AC.split(900, [outer, inner])[0], 0)
+        self.assertTrue(errors(outer, dict(inner, amount=901)))
+        self.assertTrue(errors(outer, dict(inner, in_headline="FALSE")))
+        self.assertTrue(errors(outer, dict(inner, within_component_id="CMP-LHHS-9999")))
+
     def test_the_committed_data_is_sound(self):
         self.assertEqual(AC.data_errors(STAGED), [])
 
@@ -200,6 +210,42 @@ class TaggingRules(unittest.TestCase):
                          ("earmark", ""))
         self.assertIsNone(TC.classify(amt(5, "Provided, That", "shall be for grants")))
 
+    def test_the_owners_rules_of_2026_10_11(self):
+        self.assertEqual(self.kind(amt(915, "program management,", ", to remain available through September 30, "
+                                   "2025, to be transferred from the Federal Hospital Insura")), ("trust_fund_limitation", ""))
+        self.assertEqual(self.kind(amt(604, "Act of 1985, and", "is additional new budget authority specified for "
+                                   "purposes of section 251(b)(2)(C) of such Act")), ("designated", "cap_adjustment"))
+        self.assertIsNone(TC.classify(amt(311, "Provided further, That of the amount provided under this heading,",
+                                          "is provided to meet the terms of section 251(b)(2)(C)(ii) of the Act")))
+        self.assertEqual(TC.not_a_component(amt(311, "Provided further, That", "is provided to meet the terms of "
+                                                "section 251(b)(2)(C)(ii) of the Act")), "cap-adjustment base")
+        self.assertEqual(self.kind(amt(407, "described in section 1001(b)(4) of the 21st Century Cures Act, in "
+                                   "addition to amounts available,", ", to remain available")), ("designated", "other"))
+        self.assertEqual(TC.classify(amt(12, "In addition,", "is appropriated from the 10-year Pediatric Research "
+                                     "Initiative Fund described in"))[:3],
+                         ("transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)"))
+        self.assertEqual(self.kind(amt(5, "Provided further, That", "shall be transferred to and merged with the "
+                                   "appropriation for the “Office of Inspector General”")), ("transfer_out", ""))
+        self.assertEqual(self.kind(amt(244, "Provided, That in addition to amounts provided under this heading,",
+                                   "shall be available for surveillance from amounts made available under section "
+                                   "4002 of the PPACA")), ("transfer_in", ""))
+        self.assertIsNone(TC.classify(amt(35, "the Secretary shall provide not less than", "from amounts made "
+                                           "available under this heading")))
+        self.assertEqual(TC.not_a_component(amt(285, "is provided, not less than", "is provided for HEAL")),
+                         "sub-allocation")
+        self.assertEqual(TC.not_a_component(amt(363, "health,", ", which shall be for the purposes and in the amounts "
+                                                "specified in the table under this heading")), "program table")
+
+    def test_the_cr_drops_only_what_an_anomaly_changes(self):
+        sections, changes = TC.CR_ANOMALIES["ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
+        self.assertTrue(AC._selected(comp(t="earmark"), changes))
+        self.assertFalse(AC._selected(comp(t="transfer_in", transfer_from="241"), changes))
+        carried = [c for c in STAGED["observation_components"] if c["tag_method"] == "carried_forward"]
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        self.assertIn(("ACC-HHS-SAMHSA-PROGRAM-SUPPORT", "transfer_in"),
+                      {(obs[c["observation_id"]]["canonical_account_id"], c["component_type"]) for c in carried})
+        self.assertNotIn("earmark", {c["component_type"] for c in carried})
+
     def test_a_241_list_tags_each_numbered_item(self):
         p = [amt(79, "in addition to amounts provided herein, the following amounts shall be available under "
                      "section 241 of the PHS Act: (1)", "to carry out subpart II"),
@@ -227,6 +273,15 @@ class MeasureReconcile(unittest.TestCase):
         self.assertEqual((r["result"], r["human_review_status"]), ("fail", "pending"))
         self.assertEqual(h["amount"], next(o for o in data["observations"]
                                            if o["observation_id"] == h["observation_id"])["amount"])
+
+    def test_one_review_item_per_cause(self):
+        records, outcomes = MR.run(STAGED)
+        causes = {o["cause"] for o in outcomes if o.get("cause")}
+        pending = [r for r in records if r["human_review_status"] == "pending" and r["validation_id"].startswith("VAL-MRC-")]
+        self.assertEqual(len(pending), len(causes))
+        self.assertFalse([r for r in records if r["validation_id"].startswith("VAL-MRV-") and r["result"] == "flag"])
+        self.assertNotIn("account_not_held", causes)
+        self.assertTrue(any("account_not_held" in o["detail"] for o in outcomes if o["result"] == "not checked"))
 
     def test_committed_records_are_up_to_date(self):
         records, _ = MR.run(STAGED)

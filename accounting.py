@@ -37,7 +37,10 @@ BOOL = ("TRUE", "FALSE")
 
 COMPONENT_COLUMNS = ["component_id", "observation_id", "component_type", "designation", "transfer_from", "amount",
                      "in_headline", "source_document_id", "source_location", "quoted_text", "tag_method", "tag_rule",
-                     "source_observation_id", "carried_from_component_id", "notes"]
+                     "source_observation_id", "carried_from_component_id", "notes",
+                     # a component that is part of another component of the same headline (HCFAC's cap adjustment
+                     # inside the amount transferred from the trust funds): the base counts only the outer one
+                     "within_component_id"]
 COMPONENT_REQUIRED = ["component_id", "observation_id", "component_type", "amount", "in_headline",
                       "source_document_id", "source_location", "quoted_text", "tag_method", "tag_rule"]
 COMPONENT_ID = re.compile(r"CMP-(?:LHHS-)?\d{4}")
@@ -159,6 +162,19 @@ def component_errors(components, observations, documents):
                 fo = observations.get(f.get("observation_id"))
                 if fo and fo["canonical_account_id"] != o["canonical_account_id"]:
                     errs.append(f"{cid}: carried from {cf}, another account")
+        w = c.get("within_component_id") or ""
+        if w:
+            outer = by_id.get(w)
+            if outer is None:
+                errs.append(f"{cid}: within unknown component {w}")
+            elif outer.get("observation_id") != c.get("observation_id"):
+                errs.append(f"{cid}: within {w}, a component of another headline")
+            elif outer.get("within_component_id"):
+                errs.append(f"{cid}: within {w}, which is itself within another component (one level only)")
+            elif c.get("in_headline") != outer.get("in_headline"):
+                errs.append(f"{cid}: within {w}, but one is inside the headline and the other beside it")
+            elif amt is not None and _int(outer.get("amount")) is not None and abs(amt) > abs(_int(outer["amount"])):
+                errs.append(f"{cid}: within {w}, but larger than it")
         key = (c.get("observation_id"), t, d, c.get("amount"), c.get("source_document_id"), c.get("source_location"),
                src)
         if key in keys:
@@ -270,10 +286,11 @@ def _selected(c, selectors):
 
 
 def split(headline_amount, components):
-    """-> (base, [included], [beside]) for one headline and its components."""
+    """-> (base, [included], [beside]) for one headline and its components. A component within another one is
+    already counted in it, so the base subtracts only the outer one."""
     inside = [c for c in components if c["in_headline"] == "TRUE"]
     beside = [c for c in components if c["in_headline"] != "TRUE"]
-    return headline_amount - sum(c["amount"] for c in inside), inside, beside
+    return headline_amount - sum(c["amount"] for c in inside if not c.get("within_component_id")), inside, beside
 
 
 def view_adjustment(components, view):
@@ -281,6 +298,9 @@ def view_adjustment(components, view):
     v = VIEWS[view]
     out = [c for c in components if c["in_headline"] == "TRUE" and _selected(c, v["remove"])]
     add = [c for c in components if c["in_headline"] != "TRUE" and _selected(c, v["add"])]
+    # a component within one the view already counts is not counted again
+    out = [c for c in out if c.get("within_component_id") not in {x["component_id"] for x in out}]
+    add = [c for c in add if c.get("within_component_id") not in {x["component_id"] for x in add}]
     return sum(c["amount"] for c in add) - sum(c["amount"] for c in out), out + add
 
 

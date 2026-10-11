@@ -4333,6 +4333,12 @@
            "human_review_status": "pending",
            "result": "flag",
            "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRC-PPHF-GENERAL-PROVISION-TABLE"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0127"
           }
          ],
@@ -4499,8 +4505,8 @@
            "validation_id": "VAL-LHHS-06860"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-1766"
           }
@@ -4805,8 +4811,8 @@
            "validation_id": "VAL-LHHS-00565"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0131"
           }
@@ -4922,8 +4928,8 @@
            "validation_id": "VAL-LHHS-01930"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0464"
           }
@@ -5083,8 +5089,8 @@
            "validation_id": "VAL-LHHS-00575"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0133"
           }
@@ -5401,8 +5407,8 @@
            "validation_id": "VAL-LHHS-00595"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0137"
           }
@@ -5518,8 +5524,8 @@
            "validation_id": "VAL-LHHS-00597"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0139"
           }
@@ -5679,8 +5685,8 @@
            "validation_id": "VAL-LHHS-00607"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0141"
           }
@@ -5959,8 +5965,8 @@
            "validation_id": "VAL-LHHS-00621"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
+           "human_review_status": null,
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0145"
           }
@@ -10324,8 +10330,8 @@
       "validation_id": "VAL-LHHS-06860"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-1766"
      }
@@ -10460,8 +10466,8 @@
       "validation_id": "VAL-LHHS-00565"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0131"
      }
@@ -10598,6 +10604,12 @@
      {
       "human_review_status": "pending",
       "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRC-PPHF-GENERAL-PROVISION-TABLE"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0127"
      }
@@ -10861,8 +10873,8 @@
       "validation_id": "VAL-LHHS-00575"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0133"
      }
@@ -10997,8 +11009,8 @@
       "validation_id": "VAL-LHHS-00595"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0137"
      }
@@ -11083,8 +11095,8 @@
       "validation_id": "VAL-LHHS-01930"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0464"
      }
@@ -11335,8 +11347,8 @@
       "validation_id": "VAL-LHHS-00607"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0141"
      }
@@ -11446,8 +11458,8 @@
       "validation_id": "VAL-LHHS-00621"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0145"
      }
@@ -11532,8 +11544,8 @@
       "validation_id": "VAL-LHHS-00597"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
+      "human_review_status": null,
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0139"
      }
