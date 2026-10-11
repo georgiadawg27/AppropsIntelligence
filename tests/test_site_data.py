@@ -265,7 +265,8 @@ class ReviewList(unittest.TestCase):
     def test_cbo_observations_tagged_interim(self):
         data = json.loads(S.STAGED.read_text())
         cbo = sorted(o["observation_id"] for o in data["observations"] if o["source_document_id"] == "SRC-CBO-HR8845-FY2027")
-        self.assertEqual(len(cbo), 22)
+        # 18 of the 22 were re-sourced to H.Rept. 119-652's tables (2026-10-11); these 4 the tables don't print
+        self.assertEqual(cbo, ["OBS-0966", "OBS-0967", "OBS-0970", "OBS-0983"])
         tagged = sorted(r["id"] for r in self.rows()
                         if r["reason"] == "interim source: re-source to H.Rpt. 119-652 when the rest of CJS is ingested")
         self.assertEqual(tagged, cbo)
