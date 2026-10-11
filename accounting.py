@@ -31,7 +31,8 @@ DESIGNATIONS = ["emergency", "disaster", "cap_adjustment", "other"]
 # table_line: a line the figure's own table prints (the observation's document), read for this component
 # auto_text: tagged from the committed bill or law text (data/legislative_text) by a phrase rule
 # carried_forward: FY2025 full-year CR -- the FY2024 Enacted component, continued (carried_from_component_id)
-TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward"]
+# cr_anomaly: FY2025 full-year CR -- what an anomaly's text states in place of an FY2024 component it changes
+TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward", "cr_anomaly"]
 NEGATIVE_TYPES = ("rescission", "transfer_out", "fees_offsets")
 BOOL = ("TRUE", "FALSE")
 
@@ -293,14 +294,20 @@ def split(headline_amount, components):
     return headline_amount - sum(c["amount"] for c in inside if not c.get("within_component_id")), inside, beside
 
 
+def counted(selected):
+    """The components a view counts from those its selectors picked: every top-level one, and a nested one
+    (within_component_id) only when the view splits its parent -- picks it without the parent, as a view leaving out
+    HCFAC's cap adjustment but keeping the trust-fund amount it sits inside would. A nested component and its parent
+    are never counted together."""
+    ids = {c["component_id"] for c in selected}
+    return [c for c in selected if not c.get("within_component_id") or c["within_component_id"] not in ids]
+
+
 def view_adjustment(components, view):
     """What a view changes on top of the headline: -> (delta, [the components it took out or added])."""
     v = VIEWS[view]
-    out = [c for c in components if c["in_headline"] == "TRUE" and _selected(c, v["remove"])]
-    add = [c for c in components if c["in_headline"] != "TRUE" and _selected(c, v["add"])]
-    # a component within one the view already counts is not counted again
-    out = [c for c in out if c.get("within_component_id") not in {x["component_id"] for x in out}]
-    add = [c for c in add if c.get("within_component_id") not in {x["component_id"] for x in add}]
+    out = counted([c for c in components if c["in_headline"] == "TRUE" and _selected(c, v["remove"])])
+    add = counted([c for c in components if c["in_headline"] != "TRUE" and _selected(c, v["add"])])
     return sum(c["amount"] for c in add) - sum(c["amount"] for c in out), out + add
 
 
