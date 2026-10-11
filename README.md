@@ -24,6 +24,9 @@ the store and the tests all read a build of `data/staged.json`.
 
 **How to rebuild.**
 
+Build with Python 3.11 (`.python-version`), the version CI uses: the Download workbook file is compared byte
+for byte, and another Python's zlib compresses the same workbook to different bytes.
+
 ```
 mkdir -p build && python scripts/build_workbook.py      # -> build/Approps_Pilot_Schema_Loaded.xlsx
 python export_static.py                                 # the site (docs/) and the Download workbook file
@@ -75,7 +78,14 @@ advance) -- and writes one `VAL-TXT-` record per figure: `bill_text` for a bill,
 | ambiguous | `flag`, pending review | counts neither way |
 | no paragraph | `info` | never a failure, never a confirmed absence |
 
-The check never changes a figure; a disagreement only goes to review. CI fails when a document at a bill or
+The check never changes a figure; a disagreement only goes to review. A person settles it, and one rule decides most of them
+(owner, 2026-10-11): **when the bill or law text and the report's table cover the same scope, the text controls.**
+The figure is replaced by a new observation at the text's amount (the old one is superseded, never edited; new IDs
+only), and the table's figure stays as a note on the new one (`-- Note:` in its section, shown in the cell's
+corner). Where the table prints a line beside the account that the text appropriates inside it (congressionally
+directed spending under SAMHSA's Health Surveillance and Program Support), the account counts it inside, and the
+agency total's sum check counts that line once, inside the account. A difference of scope -- the table and the
+text describing different things -- is resolved with the reason instead, and the figure stays. CI fails when a document at a bill or
 law stage has no text file and no exemption, when an exemption is stale or has no reason, when a text file
 was parsed by another parser version, or when `data/staged.json` is not up to date with the check. The job
 summary prints matched / mismatched / ambiguous / no paragraph / exempt and the change since the base branch.
