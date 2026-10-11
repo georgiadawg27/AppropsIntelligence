@@ -470,6 +470,16 @@ rows = [
     ("Built from your filled-in CJS_Title_III_Science_Pilot_Schema_Loaded workbook. Five tabs, matching the Data "
      "Dictionary in the scoping doc.", SUBTITLE_FONT),
     ("", BODY_FONT),
+    ("Accounting views, phase 1b (2026-10-11)", BOLD_NOTE),
+    ("\u2022 Prevention and Public Health Fund: each report's allocation table (the account, activity and amount the "
+     "general provision, sec. 222, transfers) is read into transfer_in components beside each receiving CDC and SAMHSA "
+     "account, Labor-HHS FY2024\u2013FY2026 (reference/review/accounting/pphf_table.csv). ONC: a $0 headline as the bill "
+     "text prints it, with its section 241 transfer beside it, in the six cells that had none. FY2025 full-year CR: "
+     "where an anomaly states the new amount (the FY2026 advances, HCFAC, the CURES Act account) a new FY2025 "
+     "component is read from P.L. 119-4 (tag_method cr_anomaly); earmarks the CR ends are dropped; every other "
+     "component continues. A nested component (within_component_id) counts in a view only when the view splits its "
+     "parent. No headline figure changed.", NOTE_FONT),
+    ("", BODY_FONT),
     ("Accounting views, phase 1: components (2026-10-11)", BOLD_NOTE),
     (f"\u2022 New Observation Component tab: {len(data.get('observation_components', []))} tagged components of "
      "headline figures (advances, designations, transfers, trust-fund limitations, fees and offsets, rescissions, "

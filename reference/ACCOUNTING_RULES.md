@@ -45,9 +45,12 @@ source, location and the quoted phrase that justifies it.
 Amounts are signed as their effect on budget authority: `rescission`, `transfer_out` and `fees_offsets` are
 negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (Labor-HHS). An ID is never
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
-stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text` or
-`carried_forward`. `within_component_id` names the component this one is part of (HCFAC's cap adjustment inside
-the amount transferred from the trust funds): the base subtracts only the outer one, and a view never counts both.
+stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text`,
+`carried_forward` or `cr_anomaly`. `within_component_id` names the component this one is part of (HCFAC's cap
+adjustment inside the amount transferred from the trust funds): the base subtracts only the outer one. Views add
+top-level components only; a nested component is used only when a view splits its parent (picks it without the
+parent, as a view leaving out the cap adjustment but keeping the trust-fund amount would), so no view ever counts a
+nested component and its parent together.
 
 The workbook build (`scripts/build_workbook.py`) stops on any record that breaks these rules, and the store
 loader (`approps_store.load`) refuses it.
@@ -75,17 +78,24 @@ Discretionary needs each account's `budget_class` (phase 2) and is not computed 
 
 1. **Advances count when available (CBO)** by default.
 2. **FY2025 full-year CR** (P.L. 119-4): components continue from FY2024. Where an anomaly names the account,
-   only what its text changes is dropped; every other component of the account continues (owner, 2026-10-11):
+   only what its text changes is affected; every other component of the account continues (owner, 2026-10-11).
+   Where the anomaly states the new amount, a new FY2025 component is recorded from its text (`cr_anomaly`, citing
+   the section); a changed component is dropped with nothing in its place only when the anomaly ends the item:
 
-   | account | section | dropped |
-   |---|---|---|
-   | Medicaid, Child Support, Foster Care | 1109(b)(2), (3), (4) | the advance for the first quarter of FY2026 (`advance_enacted`) |
-   | HCFAC | 1902(b): level $941,000,000, cap adjustment $630,000,000 | the trust-fund amount and the cap adjustment |
-   | HRSA Health Systems | 1904: OPTN registration fees | `fees_offsets` |
-   | NIH Innovation Account (CURES) | 1905: $127,000,000 for $407,000,000 | the CURES amount (`designated`/`other`) |
-   | HRSA Program Support, SAMHSA Health Surveillance and Program Support, ACF Children and Families Services Programs | 1908(2), (3), (4): CDS to $0 | `earmark` |
+   | account | section | FY2024 component | FY2025 |
+   |---|---|---|---|
+   | Medicaid | 1109(b)(2) | advance for Q1 FY2025, $245,580,414,000 | advance for Q1 FY2026, $261,063,820,000 (already held from the table line) |
+   | Child Support | 1109(b)(3) | advance $1,400,000,000 | advance $1,600,000,000 |
+   | Foster Care | 1109(b)(4) | advance $3,400,000,000 | advance $3,600,000,000 |
+   | HCFAC | 1902(b) | trust funds $915,000,000; cap adjustment $604,000,000 within it | level $941,000,000; cap adjustment $630,000,000 within it |
+   | NIH Innovation Account (CURES) | 1905 | $407,000,000 (`designated`/`other`) | $127,000,000 |
+   | HRSA Program Support, SAMHSA Health Surveillance and Program Support, ACF Children and Families Services Programs | 1908(2), (3), (4): CDS to $0 | `earmark` | dropped |
+   | HRSA Health Systems | 1904: OPTN registration fees | `fees_offsets` (none held for FY2024) | - |
 
-   Earmarks do not continue anywhere (sec. 1111: FY2024 earmark language has no legal effect).
+   Earmarks do not continue anywhere (sec. 1111: FY2024 earmark language has no legal effect). The Prevention and
+   Public Health Fund allocation continues under sec. 1906 (the FY2024 amounts of P.L. 118-47 div. D sec. 222(a)).
+   `scripts/tag_components.py` prints every FY2024 Enacted component's outcome: dropped, replaced (old -> new) or
+   carried forward.
 3. **Draft committee stages** are tagged like reported stages.
 4. **Earmarks are included in every view** by default. An earmark counts inside the account whose paragraph
    appropriates it.
@@ -99,6 +109,20 @@ supplemental and emergency lines, defense lines (NSF), the Medicaid advance line
 
 **Table lines**: the Vaccine Injury Compensation Trust Fund's "HRSA Administrative expenses" line, read from the
 headline's own table (`reference/review/accounting/table_lines.csv`), is its `trust_fund_limitation`.
+
+**Prevention and Public Health Fund** (Labor-HHS FY2024-FY2026): each bill's sec. 222 transfers the Fund "to the
+accounts specified, in the amounts specified" under the heading Prevention and Public Health Fund in the report or
+explanatory statement. Each row of that table is a `transfer_in` beside the receiving account's headline
+(`reference/review/accounting/pphf_table.csv`, written by `build_pphf_table.py`). Where the table names only the
+agency (House reports, the FY2026 explanatory statement), the activity's account is the one the same document's
+comparative table prints the Fund's line under, and each account's rows add up to that line. FY2024 Enacted: its
+own table is in the FY2024 explanatory statement, which we don't hold, so the rows are the FY2025 Senate report's
+comparative-table lines (2024 appropriation column). ACL's rows are reported, not recorded (we don't hold ACL's
+accounts).
+
+**ONC** (FY2024 House and Senate, FY2025 Senate and Enacted, FY2026 House and Senate): the headline is $0 budget
+authority as the bill text prints it (no new budget authority), and the paragraph's whole amount is its section 241
+`transfer_in`, beside the headline. FY2025 Enacted cites P.L. 119-4 sec. 1101, continuing P.L. 118-47 div. D.
 
 **Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026. Each
 amount in the headline's paragraph is read by its own clause:
@@ -146,8 +170,8 @@ of-which inside, an "in addition" amount beside) and the record's note says so.
 
    | cause | meaning |
    |---|---|
-   | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA) |
-   | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on |
+   | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA); none since phase 1b |
+   | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (none since phase 1b) |
    | `cr_anomaly_dropped` | a component a P.L. 119-4 anomaly changed is missing from FY2025 and explains the difference exactly |
    | `unexplained` | anything else |
 

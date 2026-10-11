@@ -5,6 +5,7 @@ refusing bad records, the tagging rules (scripts/tag_components.py), the measure
 the committed data/staged.json.
 """
 
+import collections
 import copy
 import json
 import shutil
@@ -12,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -110,6 +112,29 @@ class ComponentSchema(unittest.TestCase):
         self.assertTrue(errors(outer, dict(inner, amount=901)))
         self.assertTrue(errors(outer, dict(inner, in_headline="FALSE")))
         self.assertTrue(errors(outer, dict(inner, within_component_id="CMP-LHHS-9999")))
+
+    def test_no_view_counts_a_nested_component_with_its_parent(self):
+        outer = comp(t="trust_fund_limitation", amount=900)
+        inner = comp(cid="CMP-LHHS-9002", t="designated", designation="cap_adjustment", amount=600,
+                     within_component_id="CMP-LHHS-9001")
+        beside = [dict(outer, in_headline="FALSE"), dict(inner, in_headline="FALSE")]
+        views = dict(AC.VIEWS, split_cap={"label": "a view that splits its parent", "add": (),
+                                           "remove": (("designated", "cap_adjustment"),)},
+                     both={"label": "a view that picks both", "add": ("trust_fund_limitation", "designated"),
+                           "remove": ("trust_fund_limitation", "designated")})
+        by_obs = AC.components_by_observation(STAGED)
+        cases = [[outer, inner], beside] + list(by_obs.values())
+        with unittest.mock.patch.dict(AC.VIEWS, views):
+            for view in views:
+                for cs in cases:
+                    used = {c["component_id"] for c in AC.view_adjustment(cs, view)[1]}
+                    for c in cs:
+                        self.assertFalse(c["component_id"] in used and c.get("within_component_id") in used,
+                                         f"{view}: {c['component_id']} and its parent both counted")
+            # the nested one is used only to split its parent
+            self.assertEqual(AC.view_adjustment([outer, inner], "split_cap"), (-600, [inner]))
+            self.assertEqual(AC.view_adjustment(beside, "both")[0], 900)
+            self.assertEqual(AC.view_adjustment([outer, inner], "both")[0], -900)
 
     def test_the_committed_data_is_sound(self):
         self.assertEqual(AC.data_errors(STAGED), [])
@@ -237,7 +262,8 @@ class TaggingRules(unittest.TestCase):
                                                 "specified in the table under this heading")), "program table")
 
     def test_the_cr_drops_only_what_an_anomaly_changes(self):
-        sections, changes = TC.CR_ANOMALIES["ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
+        sections, changes, stated = TC.CR_ANOMALIES["ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
+        self.assertEqual(stated, [])
         self.assertTrue(AC._selected(comp(t="earmark"), changes))
         self.assertFalse(AC._selected(comp(t="transfer_in", transfer_from="241"), changes))
         carried = [c for c in STAGED["observation_components"] if c["tag_method"] == "carried_forward"]
@@ -245,6 +271,69 @@ class TaggingRules(unittest.TestCase):
         self.assertIn(("ACC-HHS-SAMHSA-PROGRAM-SUPPORT", "transfer_in"),
                       {(obs[c["observation_id"]]["canonical_account_id"], c["component_type"]) for c in carried})
         self.assertNotIn("earmark", {c["component_type"] for c in carried})
+
+    def test_an_anomaly_that_states_the_amount_gives_a_new_fy2025_component(self):
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        got = {(obs[c["observation_id"]]["canonical_account_id"], c["component_type"], c["designation"]): c
+               for c in STAGED["observation_components"] if c["tag_method"] == "cr_anomaly"}
+        want = {("ACC-HHS-ACF-CHILD-SUPPORT", "advance_enacted", ""): 1600000000,
+                ("ACC-HHS-ACF-FOSTER-CARE", "advance_enacted", ""): 3600000000,
+                ("ACC-HHS-CMS-HCFAC", "trust_fund_limitation", ""): 941000000,
+                ("ACC-HHS-CMS-HCFAC", "designated", "cap_adjustment"): 630000000,
+                ("ACC-HHS-NIH-CURES", "designated", "other"): 127000000}
+        self.assertEqual({k: c["amount"] for k, c in got.items()}, want)
+        for c in got.values():
+            self.assertEqual(c["source_document_id"], "SRC-PLAW-119PUBL4")
+            self.assertIn(f"{c['amount']:,}", c["quoted_text"])
+            self.assertEqual(obs[c["observation_id"]]["fiscal_year"], 2025)
+        cap = got[("ACC-HHS-CMS-HCFAC", "designated", "cap_adjustment")]
+        self.assertEqual(cap["within_component_id"], got[("ACC-HHS-CMS-HCFAC", "trust_fund_limitation", "")]["component_id"])
+        # Medicaid's FY2026 advance is already held from the table line, and equals sec. 1109(b)(2)
+        self.assertIn(261063820000, {c["amount"] for c in STAGED["observation_components"]
+                                     if obs[c["observation_id"]]["canonical_account_id"] == "ACC-HHS-CMS-MEDICAID"
+                                     and obs[c["observation_id"]]["fiscal_year"] == 2025
+                                     and c["component_type"] == "advance_enacted"})
+
+    def test_the_cr_list_names_every_fy2024_component(self):
+        _, _, report = TC.build(STAGED)
+        fy24 = [c for c in STAGED["observation_components"] if c["observation_id"] in
+                {o["observation_id"] for o in STAGED["observations"] if o["fiscal_year"] == 2024
+                 and o["stage"] == "Enacted" and o["canonical_account_id"].startswith("ACC-HHS-")}]
+        listed = " ".join(w for _, w, _ in report["cr_list"])
+        for c in fy24:
+            self.assertIn(c["component_id"], listed)
+        self.assertEqual({k for k, _, _ in report["cr_list"]} - {"carried forward", "dropped", "replaced"},
+                         {"not carried: FY2025 already holds the type"})
+
+    def test_pphf_allocation_rows(self):
+        rows = [c for c in STAGED["observation_components"] if c["transfer_from"] == TC.PPHF]
+        self.assertTrue(rows)
+        self.assertTrue(all(c["component_type"] == "transfer_in" and c["in_headline"] == "FALSE" for c in rows))
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        cdc = collections.Counter()
+        for c in rows:
+            o = obs[c["observation_id"]]
+            if o["canonical_account_id"].startswith("ACC-HHS-CDC-"):
+                cdc[(o["fiscal_year"], o["stage"])] += c["amount"]
+        # the Fund's CDC share after sequestration, each year (the reports' totals)
+        for (fy, _), v in cdc.items():
+            self.assertEqual(v, {2024: 1186200000, 2025: 1186200000, 2026: 1398375000}[fy])
+        self.assertEqual(len(cdc), 9)
+
+    def test_onc_headline_is_zero_with_its_241_transfer(self):
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        cells = {(2024, "House Reported"), (2024, "Senate Reported"), (2025, "Senate Reported"), (2025, "Enacted"),
+                 (2026, "House Reported"), (2026, "Senate Reported")}
+        heads = {(o["fiscal_year"], o["stage"]): o for o in STAGED["observations"]
+                 if o["canonical_account_id"] == "ACC-HHS-OS-ONC" and not o["component"]
+                 and (o["fiscal_year"], o["stage"]) in cells}
+        self.assertEqual(set(heads), cells)
+        for o in heads.values():
+            self.assertEqual(o["amount"], 0)
+            t = [c for c in STAGED["observation_components"] if c["observation_id"] == o["observation_id"]
+                 and c["component_type"] == "transfer_in"]
+            self.assertEqual(len(t), 1)
+            self.assertEqual(t[0]["in_headline"], "FALSE")
 
     def test_a_241_list_tags_each_numbered_item(self):
         p = [amt(79, "in addition to amounts provided herein, the following amounts shall be available under "

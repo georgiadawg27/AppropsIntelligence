@@ -110,6 +110,33 @@ def other_agency(para, words):
     return bool(words) and all(w in ctx for w in words.split())
 
 
+WRAPPED = re.compile(r"(?:,|\b(?:AND|OF|FOR|THE|ON|IN|TO))\s*$")
+
+
+def agency_above(paras, agency_set):
+    """{paragraph_id: the agency (as agency_words) whose heading is the last one above the paragraph, in document
+    order within its title}. A PDF's text layer keeps the agency heading only on the agency's first paragraph (the
+    heading levels are lost), so the agency over a later paragraph is the last agency heading printed before it.
+    The title's own heading (the first one, over every paragraph: 'SCIENCE', 'DEPARTMENT OF HEALTH AND HUMAN') is
+    not an agency heading, nor is the first line of a heading printed on two lines."""
+    out, cur, title, first = {}, None, None, None
+    for p in paras:
+        if p["title"] != title:
+            cur, title, first = None, p["title"], (p["heading_path"] or [None])[0]
+        above = p["heading_path"][:-1]
+        if above and above[0] == first:
+            above = above[1:]
+        # the first line of a heading printed on two lines ('SCIENCE, TECHNOLOGY, ENGINEERING, AND') is not one
+        above = [h for h in above if not WRAPPED.search(h)]
+        ctx = set(norm(" ".join(above)).split())
+        for w in sorted(agency_set, key=lambda w: -len(w.split())):
+            if w and all(x in ctx for x in w.split()):
+                cur = w
+                break
+        out[p["paragraph_id"]] = cur
+    return out
+
+
 GENERIC = {"national", "institute", "of", "on", "for", "and", "to", "office", "program", "programs", "fund"}
 
 
@@ -501,6 +528,12 @@ def check(data, texts, exempt):
                           and not any(other_agency(p, w) for w in agencies[sc] - {agency_words(a)})]
             if len(same_title) == 1:
                 placed = same_title
+        if not placed and loose and len(named) > 1:
+            # a PDF's text layer: tell the paragraphs apart by the agency heading printed above each one
+            above = agency_above(paras, agencies[sc])
+            placed = [p for p in named if above[p["paragraph_id"]] == agency_words(a)]
+            if len(placed) > 1:
+                placed = []
         hits = placed or (named if len(named) == 1 and loose else [])
         if not hits and len(named) > 1:
             res.update(result="ambiguous", paragraph=None, text_amount=None,
