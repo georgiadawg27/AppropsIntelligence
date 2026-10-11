@@ -76,7 +76,8 @@ class SiteReadsData(unittest.TestCase):
         # (sum and cross-document questions) and 90 resolved at creation by the triage's standard reasons; the owner's
         # rules 3 and 5 (2026-10-08) resolve 13 more (short sums explained exactly, the request baseline) and 16 sums
         # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending. The bill and law text
-        # check's mismatches and ambiguous results (VAL-TXT-) wait for review too
+        # check's mismatches and ambiguous results (VAL-TXT-) wait for review too, and so do measure_reconcile's
+        # failed bases and printed views that differ from the computed ones (VAL-MR-, VAL-MRV-)
         data = json.loads(S.STAGED.read_text())
         # the backfill years (FY2022 and earlier), whose records the triage and owner rules resolve
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] <= 2022
@@ -84,10 +85,11 @@ class SiteReadsData(unittest.TestCase):
         st = [v.get("human_review_status") for v in data["validations"]]
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
-                         ["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
-                          "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912"]
-                         + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
-                            and (v["observation_id"] in fy2022 or v["validation_id"].startswith("VAL-TXT-"))])
+                         sorted(["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
+                                 "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912"]
+                                + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
+                                   and (v["observation_id"] in fy2022
+                                        or v["validation_id"].startswith(("VAL-TXT-", "VAL-MR-", "VAL-MRV-")))]))
         # the owner's text-over-table corrections (2026-10-11) close the records on the figures they replace
         # (VAL-LHHS-07178 among them) and resolve the GDM FY2020 House sum check on its replacement
         corrected = {o["observation_id"] for o in data["observations"] if o["verification_status"] == "superseded"

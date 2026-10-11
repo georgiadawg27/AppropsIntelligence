@@ -404,6 +404,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0640"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-0640"
           }
@@ -1782,6 +1788,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0624"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-0624"
           }
@@ -2163,6 +2175,12 @@
            "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-0194"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0620"
           },
           {
            "human_review_status": null,
@@ -2552,6 +2570,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0616"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-0616"
           }
@@ -2833,6 +2857,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0617"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-0617"
           }
@@ -2933,7 +2963,14 @@
          "stage": "Enacted",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0612"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -3149,7 +3186,14 @@
          "stage": "President's Budget",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf",
-         "validation": [],
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0615"
+          }
+         ],
          "verification_status": "human-verified"
         }
        ],
@@ -4763,6 +4807,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0640"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-0640"
      }
@@ -5498,6 +5548,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0624"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-0624"
      }
@@ -5723,6 +5779,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0620"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-0620"
      }
@@ -5902,6 +5964,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0617"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-0617"
      }
@@ -5981,6 +6049,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0616"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-0616"
      }
@@ -6050,7 +6124,14 @@
     "stage": "President's Budget",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/hrpt582/CRPT-118hrpt582.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0615"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {
@@ -6196,7 +6277,14 @@
     "stage": "Enacted",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
-    "validation": [],
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0612"
+     }
+    ],
     "verification_status": "human-verified"
    },
    {

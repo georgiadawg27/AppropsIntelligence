@@ -30,7 +30,8 @@ def staged_rows():
     tabs = {"account": "accounts", "historical_name": "historical_names_tab", "source_document": "source_docs",
             "bill_report_reference": "bill_report_refs", "component": "components",
             "appropriations_observation": "observations", "confirmed_absence": "confirmed_absences",
-            "account_relationship": "relationships", "validation_record": "validations"}
+            "account_relationship": "relationships", "validation_record": "validations",
+            "observation_component": "observation_components", "account_attribute": "account_attributes"}
     return {t: len(data[k]) for t, k in tabs.items()}
 sys.path.insert(0, str(ROOT))
 

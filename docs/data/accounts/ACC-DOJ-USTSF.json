@@ -83,6 +83,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0976"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-0976"
           }
@@ -446,6 +452,12 @@
       "result": "info",
       "rule_applied": "cross_document",
       "validation_id": "VAL-0248"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0976"
      },
      {
       "human_review_status": null,

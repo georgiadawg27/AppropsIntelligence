@@ -54,6 +54,12 @@
           },
           {
            "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-4107"
+          },
+          {
+           "human_review_status": null,
            "result": "info",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-LHHS-4107"
@@ -4166,6 +4172,12 @@
       "result": "pass",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-17246"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-4107"
      },
      {
       "human_review_status": null,

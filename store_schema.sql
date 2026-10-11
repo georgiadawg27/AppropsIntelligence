@@ -236,7 +236,10 @@ CREATE TABLE validation_record (
                                                               -- reference/review/law_text.py: an Enacted figure against the enrolled law;
                                                               -- scripts/check_legislative_text.py: a figure against its stage's
                                                               -- bill (bill_text) or law (law_text) paragraph
-                                                              'law_text', 'bill_text')),
+                                                              'law_text', 'bill_text',
+                                                              -- scripts/measure_reconcile.py: a headline against its
+                                                              -- tagged components; a printed view against the computed one
+                                                              'measure_reconcile')),
     expected_result     TEXT,
     observed_result     TEXT,
     -- info: a comparison recorded for the reader that neither fails nor confirms (law_text's known differences)
@@ -288,3 +291,52 @@ WHEN EXISTS (SELECT 1 FROM confirmed_absence a
 BEGIN
     SELECT RAISE(ABORT, 'observation contradicts a confirmed absence of the same fact');
 END;
+
+-- Accounting views, phase 1 (accounting.py; reference/ACCOUNTING_RULES.md). Every headline keeps its
+-- printed figure; a component is a tagged part of it (in_headline 1) or an amount beside it (in_headline 0),
+-- so a view (advances when available, program level, excluding emergencies ...) is a sum. Signed: a
+-- rescission, transfer_out or fees_offsets is negative, every other type positive. IDs are never reused.
+CREATE TABLE observation_component (
+    component_id              TEXT PRIMARY KEY CHECK (component_id GLOB 'CMP-[0-9][0-9][0-9][0-9]'
+                                                      OR component_id GLOB 'CMP-LHHS-[0-9][0-9][0-9][0-9]'),
+    observation_id            TEXT NOT NULL REFERENCES appropriations_observation (observation_id),
+    component_type            TEXT NOT NULL CHECK (component_type IN ('advance_enacted', 'advance_available',
+                                  'designated', 'transfer_in', 'transfer_out', 'trust_fund_limitation', 'fees_offsets',
+                                  'rescission', 'defense_portion', 'other_law', 'earmark')),
+    designation               TEXT CHECK (designation IS NULL OR designation IN ('emergency', 'disaster',
+                                                                                  'cap_adjustment', 'other')),
+    transfer_from             TEXT,
+    amount                    INTEGER NOT NULL,
+    in_headline               INTEGER NOT NULL CHECK (in_headline IN (0, 1)),
+    source_document_id        TEXT NOT NULL REFERENCES source_document (document_id),
+    source_location           TEXT NOT NULL,
+    quoted_text               TEXT NOT NULL,
+    tag_method                TEXT NOT NULL CHECK (tag_method IN ('retagged', 'table_line', 'auto_text',
+                                                                  'carried_forward')),
+    tag_rule                  TEXT NOT NULL,
+    source_observation_id     TEXT REFERENCES appropriations_observation (observation_id),
+    carried_from_component_id TEXT REFERENCES observation_component (component_id) DEFERRABLE INITIALLY DEFERRED,
+    notes                     TEXT,
+    CHECK ((component_type = 'designated') = (designation IS NOT NULL)),
+    CHECK ((component_type = 'transfer_in') = (transfer_from IS NOT NULL)),
+    CHECK (CASE WHEN component_type IN ('rescission', 'transfer_out', 'fees_offsets') THEN amount <= 0
+                ELSE amount >= 0 END)
+) STRICT;
+
+CREATE INDEX component_by_observation ON observation_component (observation_id);
+
+-- One value per account, fiscal year and attribute, each with its evidence (filled in phase 2 from the
+-- Budget Appendix).
+CREATE TABLE account_attribute (
+    account_attribute_id TEXT PRIMARY KEY CHECK (account_attribute_id GLOB 'AAT-[0-9][0-9][0-9][0-9]'
+                                                 OR account_attribute_id GLOB 'AAT-LHHS-[0-9][0-9][0-9][0-9]'),
+    canonical_account_id TEXT NOT NULL REFERENCES account (canonical_account_id),
+    fiscal_year          INTEGER NOT NULL CHECK (fiscal_year BETWEEN 2017 AND 2027),
+    attribute            TEXT NOT NULL CHECK (attribute IN ('budget_class', 'budget_subfunction', 'fund_type',
+                                                            'account_id_code')),
+    value                TEXT NOT NULL CHECK (value <> ''),
+    source_document_id   TEXT NOT NULL REFERENCES source_document (document_id),
+    source_location      TEXT,
+    evidence             TEXT NOT NULL CHECK (evidence <> ''),
+    UNIQUE (canonical_account_id, fiscal_year, attribute)
+) STRICT;

@@ -23,7 +23,7 @@ REL_TYPE = ["same", "renamed", "split_from", "merged_into", "moved", "proposed_m
 # account's start (its earlier provision not yet identified); start_basis_reason is then required
 START_BASIS = ["unidentified"]
 DOC_TYPE = ["bill", "committee_report", "explanatory_statement", "public_law", "presidents_budget", "budget_appendix", "congressional_budget_justification", "cbo_cost_estimate", "crs_report", "omb_public_budget_database", "other"]
-RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text", "bill_text"]
+RULE = ["source_text", "structural", "table_total", "cross_document", "historical", "account_identity", "unit", "semantic", "law_text", "bill_text", "measure_reconcile"]
 RESULT = ["pass", "fail", "flag", "info"]
 REVIEW = ["pending", "resolved"]
 CHAMBER = ["House", "Senate", "N/A"]
@@ -130,6 +130,21 @@ def _check_integrity():
         raise SystemExit("BUILD STOPPED: integrity\n  " + "\n  ".join(errs[:50]) + (f"\n  ... {len(errs)} total" if len(errs) > 50 else ""))
 
 _check_integrity()
+
+def _check_accounting():
+    """Observation Component and Account Attribute (accounting views, phase 1): accounting.data_errors --
+    types, signs, the headline each component sits on, evidence for each attribute, IDs never reused.
+    Stops the build like the checks above."""
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    import accounting
+    errs = accounting.data_errors(data)
+    if errs:
+        raise SystemExit("BUILD STOPPED: accounting components and attributes\n  " + "\n  ".join(errs[:50])
+                         + (f"\n  ... {len(errs)} total" if len(errs) > 50 else ""))
+
+_check_accounting()
 
 def _check_status_rule():
     """Every verification_status the rule sets is the one validate_approps.verification_status gives for
@@ -417,6 +432,34 @@ for row in ws.iter_rows(min_row=2, max_row=n, min_col=4, max_col=4):
         c.alignment = Alignment(wrap_text=True, vertical="top")
 
 # ---------------------------------------------------------------------------
+# Observation Component -- the tagged components of a headline (accounting views, phase 1;
+# reference/ACCOUNTING_RULES.md). Every headline keeps its "As printed" figure; a view is the
+# headline less the included components it leaves out plus the components beside it it counts.
+# in_headline TRUE: the money is inside the printed headline; FALSE: it sits beside it.
+# ---------------------------------------------------------------------------
+import accounting as _AC
+ws = wb.create_sheet("Observation Component")
+oc_rows = data.get("observation_components", [])
+write_rows(ws, _AC.COMPONENT_COLUMNS, oc_rows, [16, 16, 22, 14, 30, 16, 11, 22, 40, 60, 15, 40, 16, 16, 50])
+n = max(len(oc_rows) + 1, 2)
+add_dropdown(ws, "C", _AC.COMPONENT_TYPES, 2, n)
+add_dropdown(ws, "D", _AC.DESIGNATIONS, 2, n)
+add_dropdown(ws, "G", BOOL, 2, n)
+add_dropdown(ws, "K", _AC.TAG_METHODS, 2, n)
+for r_i in range(2, n + 1):
+    ws.cell(row=r_i, column=6).number_format = "#,##0;-#,##0"
+
+# ---------------------------------------------------------------------------
+# Account Attribute -- one value per account, fiscal year and attribute, each with its evidence
+# (budget_class, budget_subfunction, fund_type, account_id_code). Filled in phase 2 from the Budget Appendix.
+# ---------------------------------------------------------------------------
+ws = wb.create_sheet("Account Attribute")
+aa_rows = data.get("account_attributes", [])
+write_rows(ws, _AC.ATTRIBUTE_COLUMNS, aa_rows, [18, 26, 12, 20, 20, 22, 30, 60])
+n = max(len(aa_rows) + 1, 2)
+add_dropdown(ws, "D", _AC.ATTRIBUTES, 2, n)
+
+# ---------------------------------------------------------------------------
 # Read Me
 # ---------------------------------------------------------------------------
 legend = wb.create_sheet("Read Me", 0)
@@ -426,6 +469,19 @@ rows = [
     ("Appropriations Pilot \u2014 CJS Title III (Science) + Labor-HHS Title II (HHS), Loaded Against the Schema", TITLE_FONT),
     ("Built from your filled-in CJS_Title_III_Science_Pilot_Schema_Loaded workbook. Five tabs, matching the Data "
      "Dictionary in the scoping doc.", SUBTITLE_FONT),
+    ("", BODY_FONT),
+    ("Accounting views, phase 1: components (2026-10-11)", BOLD_NOTE),
+    (f"\u2022 New Observation Component tab: {len(data.get('observation_components', []))} tagged components of "
+     "headline figures (advances, designations, transfers, trust-fund limitations, fees and offsets, rescissions, "
+     "defense portions, other laws, earmarks), each with its source, the quoted phrase and in_headline (inside the "
+     "printed headline or beside it). Every headline keeps its As-printed figure; no figure changed. Views (advances "
+     "when available or when enacted, program level, excluding emergencies, excluding earmarks, nondefense) are sums "
+     "of a headline and its components; the rules are in reference/ACCOUNTING_RULES.md.", NOTE_FONT),
+    ("\u2022 New Account Attribute tab (budget_class, budget_subfunction, fund_type, account_id_code; one value per "
+     "account-year with evidence): empty until phase 2 fills it from the Budget Appendix.", NOTE_FONT),
+    ("\u2022 New check measure_reconcile: headline = base + the components it includes (base never negative; a "
+     "negative base fails, pending review), and each printed view total equals the view computed from the "
+     "components (a difference is a flag, pending review). It never confirms a figure.", NOTE_FONT),
     ("", BODY_FONT),
     ("v38: two source notes", BOLD_NOTE),
     ("\u2022 SRC-CJ-AHA-FY2026: public link checked by hand (printed p. 11 = PDF p. 11). SRC-CBO-HR8845-FY2027: its 22 "
