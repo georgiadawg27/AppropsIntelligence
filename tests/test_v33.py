@@ -178,10 +178,12 @@ class V33Store(unittest.TestCase):
 
     def test_the_status_rule_reproduces_every_status(self):
         n = 0
-        for oid, conf, status in self.conn.execute(
-                "SELECT observation_id, confidence, verification_status FROM appropriations_observation "
+        for oid, conf, status, section in self.conn.execute(
+                "SELECT observation_id, confidence, verification_status, source_table_or_section "
+                "FROM appropriations_observation "
                 "WHERE verification_status NOT IN ('human-verified', 'provisional', 'superseded')").fetchall():
-            self.assertEqual(V.verification_status(conf, self.checks(oid)), status, oid)
+            o = {"confidence": conf, "source_table_or_section": section}
+            self.assertEqual(V.observation_status(o, self.checks(oid)), status, oid)
             n += 1
         self.assertGreater(n, 0)
 
