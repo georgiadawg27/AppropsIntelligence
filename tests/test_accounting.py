@@ -380,7 +380,8 @@ class TaggingRules(unittest.TestCase):
         _, _, report = TC.build(STAGED)
         fy24 = [c for c in STAGED["observation_components"] if c["observation_id"] in
                 {o["observation_id"] for o in STAGED["observations"] if o["fiscal_year"] == 2024
-                 and o["stage"] == "Enacted" and o["canonical_account_id"].startswith("ACC-HHS-")}]
+                 and o["stage"] == "Enacted" and o["canonical_account_id"].startswith("ACC-HHS-")}
+              and c["component_type"] != "advance_available"]   # read from the FY2023 law, never carried
         listed = " ".join(w for _, w, _ in report["cr_list"])
         for c in fy24:
             self.assertIn(c["component_id"], listed)
@@ -397,10 +398,20 @@ class TaggingRules(unittest.TestCase):
             o = obs[c["observation_id"]]
             if o["canonical_account_id"].startswith("ACC-HHS-CDC-"):
                 cdc[(o["fiscal_year"], o["stage"])] += c["amount"]
-        # the Fund's CDC share after sequestration, each year (the reports' totals)
-        for (fy, _), v in cdc.items():
-            self.assertEqual(v, {2024: 1186200000, 2025: 1186200000, 2026: 1398375000}[fy])
-        self.assertEqual(len(cdc), 9)
+        # the Fund's CDC share after sequestration, each cell (the reports' totals); FY2023 House and Senate leave
+        # out the $160,000,000 block grant, printed on the CDC-wide line, which holds no headline those stages
+        want = {(fy, st): v for fy, h, s, e in ((2017, 908300000, 891300000, 891300000),
+                                               (2018, 840600000, 800900000, 800900000),
+                                               (2019, 848000000, 808300000, 804500000),
+                                               (2020, 854250000, None, 854250000),
+                                               (2021, 856150000, 856150000, 856150000),
+                                               (2022, 903300000, 903300000, 903300000),
+                                               (2023, 743300000, 743300000, 903300000),
+                                               (2024, 1186200000, 1186200000, 1186200000),
+                                               (2025, 1186200000, 1186200000, 1186200000),
+                                               (2026, 1398375000, 1398375000, 1398375000))
+                for st, v in (("House Reported", h), ("Senate Reported", s), ("Enacted", e)) if v}
+        self.assertEqual(dict(cdc), want)
 
     def test_onc_headline_is_zero_with_its_241_transfer(self):
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
@@ -470,7 +481,7 @@ class MeasureReconcile(unittest.TestCase):
         disc = [o for o in outcomes if o.get("view") == "discretionary"]
         self.assertEqual(len(disc), 26)
         self.assertEqual([o for o in disc if o["result"] == "not checked"], [])
-        self.assertEqual(sum(o["result"] == "pass" for o in disc), 23)
+        self.assertEqual(sum(o["result"] == "pass" for o in disc), 25)
 
     def test_committed_records_are_up_to_date(self):
         records, _ = MR.run(STAGED)

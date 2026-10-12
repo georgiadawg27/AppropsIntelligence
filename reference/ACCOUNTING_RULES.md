@@ -55,6 +55,10 @@ read from the text layer (no page images) into `appendix_schedules.json`.
   Budget lines the request (a request the Appendix shows mixed like the enacted one, with no marked request line,
   follows the enacted class). Lines marked both D and M keep `mixed`. `mixed` stays only where no mark exists and
   the Appendix cannot split the account.
+- Carried from the last mark (owner, component backfill, 2026-10-12): an account-year that is `mixed` only because
+  none of its held lines carries a D or M mark takes the class of the account's latest earlier marked year, when
+  the Appendix account (agency and account, e.g. `075-0943`) is the same and no `mandatory_portion` component splits
+  that year's money. It cites the marked year's table page, and the evidence begins "carried from FY____ mark".
 - The Account tab's own `fund_type` follows the Appendix (owner, 2026-10-12): AFF, CVF, USTSF, NIH CURES and NOAA
   PDF are special funds, DOJ WCF a revolving fund, CMS Program Management and Medicare Operations general-fund
   accounts; each correction is noted on the account. A general-fund account with `trust_fund_limitation`
@@ -165,7 +169,7 @@ from the request's proposed language in FY N's Appendix (`appendix_text`); and E
 headline's own report states the program's funds are mandatory (`report_text`). FY2025 Enacted continues FY2024's
 under the CR. Each is a `mandatory_portion` inside the headline.
 
-**Prevention and Public Health Fund** (Labor-HHS FY2024-FY2026): each bill's sec. 222 transfers the Fund "to the
+**Prevention and Public Health Fund** (Labor-HHS FY2017-FY2026): each bill's general provision (sec. 219 to 225) transfers the Fund "to the
 accounts specified, in the amounts specified" under the heading Prevention and Public Health Fund in the report or
 explanatory statement. Each row of that table is a `transfer_in` beside the receiving account's headline
 (`reference/review/accounting/pphf_table.csv`, written by `build_pphf_table.py`). Where the table names only the
@@ -173,7 +177,19 @@ agency (House reports, the FY2026 explanatory statement), the activity's account
 comparative table prints the Fund's line under, and each account's rows add up to that line. FY2024 Enacted: its
 own table is in the FY2024 explanatory statement, which we don't hold, so the rows are the FY2025 Senate report's
 comparative-table lines (2024 appropriation column). ACL's rows are reported, not recorded (we don't hold ACL's
-accounts).
+accounts). FY2017-FY2023 (the component backfill): House and Senate rows from each report's own allocation table;
+the FY2018 House report prints none, so its rows are the comparative table's Fund lines (committee column). Enacted
+rows are the Fund lines of the comparative table that prints the Enacted view, in its enacted column (FY2020: the
+FY2021 Senate explanatory statement's 2020 column, since H.Rept. 116-450's table pages are images).
+
+**Advances** (Child Support, Foster Care, Medicaid; every year and stage; component backfill): the request's
+advance for the next year's first quarter, read from FY N's Appendix language (`advance_lines.csv`,
+`appendix_text`), is the President's Budget headline's `advance_enacted` (Child Support and Foster Care; Medicaid's
+are held from the report tables). Every headline also carries the advance an earlier law appropriated for this
+year's first quarter as `advance_available`: FY N-1's law text (the advance phrase rule on its paragraph; FY2026
+from the CR's anomaly), and FY2017 from the FY2017 Appendix's bracketed enacted text (FY2016's law is not held).
+It is inside the headline only when the headline less what is inside it is the current-year amount plus the
+advance; otherwise beside.
 
 **ONC** (FY2024 House and Senate, FY2025 Senate and Enacted, FY2026 House and Senate): the headline is $0 budget
 authority as the bill text prints it (no new budget authority), and the paragraph's whole amount is its section 241
@@ -182,7 +198,8 @@ Each headline has a `cross_document` check from the report's comparative table, 
 line in parentheses (a non-add) and no budget-authority line; FY2025 Enacted uses the FY 2025 column of the FY2026
 House report's table.
 
-**Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026. Each
+**Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026; the component
+backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted). Each
 amount in the headline's paragraph is read by its own clause:
 
 | phrase | component |
@@ -213,14 +230,16 @@ of-which component on the same side of the headline is within it.
 A component's amount is always printed in the text or table, never fitted. Only `in_headline` is decided by
 arithmetic for an auto-tagged component: the paragraph's main amount, less the of-which parts left out, plus the
 separate parts counted, must give the headline. Where no single assignment does, the default holds (an
-of-which inside, an "in addition" amount beside) and the record's note says so.
+of-which inside, an "in addition" amount beside) and the record's note says so. An amount larger than the
+paragraph's main amount cannot be part of it, so it is read as beside (unless it is the headline itself).
 
 ## measure_reconcile
 
 1. **Base**: for each headline with components, `base = headline - included components` must be at least zero. A
    negative base is a `fail`, pending review, on the headline.
 2. **Printed views**: a printed parallel total that a computed view stands for (appropriated in this bill,
-   available this fiscal year, program level, excluding emergencies) must equal the computed view exactly. An
+   available this fiscal year, program level, excluding emergencies) must equal the computed view exactly. A view
+whose named headline the bill text superseded is computed from the replacement. An
    agency total's view adds what the view changes on each of its accounts. A difference is a `flag`, pending
    review: the tagging may be incomplete, and the figure is not in question. Differences are grouped by cause,
    with one review item per cause (`VAL-MRC-<cause>`, listing every cell) and an info record on each printed view
@@ -232,7 +251,16 @@ of-which inside, an "in addition" amount beside) and the record's note says so.
    | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA); none since phase 1b |
    | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (none since phase 1b) |
    | `cr_anomaly_dropped` | a component a P.L. 119-4 anomaly changed is missing from FY2025 and explains the difference exactly |
-   | `mandatory_advance_untagged` | (discretionary) a mandatory account's headline is printed as available in this bill and its advances are not tagged outside the pilot, so the advance the total counts is not taken off |
+   | `mandatory_advance_untagged` | (discretionary) a mandatory account's headline is printed as available in this bill and its advances are not tagged, so the advance the total counts is not taken off (none since the component backfill) |
+   | `member_no_headline` | an account of the agency has no headline in the cell, so its components are missing |
+   | `headline_superseded` | the view counts the report's headline, which the bill text superseded with a figure that differs by the report's rounding |
+   | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags |
+   | `pandemic_flu_balances` | the FY2017 program level counts 'Pandemic Flu balances (Public Law 111-32)', which no phrase rule tags |
+   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241' |
+   | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ) |
+   | `prif_outside_printed_program_level` | the report's program level leaves out the PRIF transfer the bill makes in addition (NIH FY2023) |
+   | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total |
+   | `emergency_lines_not_held` | the total counts emergency appropriations from the law's other divisions, which we don't hold as lines |
    | `request_stage_class` | (discretionary) a President's Budget total where an account's request-stage class differs from how the report's total treats it |
    | `unexplained` | anything else |
 

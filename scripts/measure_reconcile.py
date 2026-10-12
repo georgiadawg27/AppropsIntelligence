@@ -15,8 +15,9 @@ computed from them (accounting views, phase 1; accounting.py, reference/ACCOUNTI
    view is its printed headline plus what the view changes on each of its accounts (approps_store.agency_members:
    the agency's accounts of its title, no parent, not totals). A difference is a 'flag', pending review, on the
    printed view line -- the tagging may be incomplete; the figure is not in question. VAL-MRV-<observation>.
-   A view is checked where its components were tagged: the pilot cells (Labor-HHS FY2024-FY2026 and CJS FY2026;
-   House, Senate, Enacted), or, outside them, an account's own view where its headline carries a component the
+   A view is checked where its components were tagged: the auto-tagged cells (tag_components.AUTO_CELLS: the pilot,
+   Labor-HHS FY2024-FY2026 and CJS FY2026, and the component backfill, both subcommittees FY2017-FY2023; House,
+   Senate, Enacted), or, outside them, an account's own view where its headline carries a component the
    view uses. Every other printed view is counted as not checked yet, with the reason.
 3. A printed 'discretionary' agency or title total (phase 2): the total less what each of its accounts holds
    that is not discretionary by the account's budget_class (account_attributes, from the Budget Appendix): a
@@ -59,17 +60,61 @@ KNOWN_CAUSES = {
     ("ACC-HHS-ACL-TOTAL", "program_level"): ("account_not_held",
         "the program-level money is in an ACL account we don't hold"),
 }
+# Causes known from reading the documents for one cell (component backfill, FY2017-FY2023): (account, fiscal year,
+# stage, view) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
+KNOWN_CELL_CAUSES = {
+    **{(a, fy, st, "program_level"): "nef_transfer_untagged" for a, fy, st in (
+        ("ACC-HHS-CDC-TOTAL", 2018, "Enacted"), ("ACC-HHS-CDC-TOTAL", 2020, "Enacted"),
+        ("ACC-HHS-CDC-TOTAL", 2021, "Senate Reported"), ("ACC-HHS-OS-TOTAL", 2021, "Senate Reported"))},
+    **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
+       for st in ("Senate Reported", "Enacted")},
+    ("ACC-HHS-CDC-TOTAL", 2022, "Senate Reported", "program_level"): "evaluation_tap_phrase_untagged",
+    **{("ACC-HHS-AHRQ-TOTAL", fy, st, "program_level"): "agency_total_only" for fy, st in (
+        (2021, "House Reported"), (2022, "House Reported"), (2022, "Senate Reported"))},
+    **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
+       for st in ("House Reported", "Senate Reported")},
+    **{("ACC-HHS-OS-ONC", fy, st, "program_level"): "onc_evaluation_tap_line" for fy, st in (
+        (2017, "House Reported"), (2019, "Enacted"))},
+    ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",
+}
 CAUSE_TEXT = {
     "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
     "member_no_headline": "an account of the agency has no headline in the cell, so its components are missing",
     "cr_anomaly_dropped": "a component a P.L. 119-4 anomaly changed was not carried into FY2025",
     "mandatory_advance_untagged": "a mandatory account's headline is printed as available in this bill, and its "
-                                  "advances are not tagged outside the pilot cells, so the advance the total counts "
+                                  "advances are not tagged, so the advance the total counts "
                                   "is not taken off",
     "request_stage_class": "an account's request-stage budget_class (what the President's Budget proposed, read "
                            "from the request's own Appendix) differs from how the report's total treats it",
+    "headline_superseded": "the printed view counts the report's own headline, which the bill or law text "
+                           "superseded with a figure that differs by the rounding of the report's thousands",
+    "nef_transfer_untagged": "Nonrecurring Expenses Fund money made available to the agency (a general provision, or "
+                             "a proviso that names the Fund apart from the amount) is printed as a 'Transfers from "
+                             "Nonrecurring Expenses Fund' line in the program level, and no phrase rule tags it",
+    "pandemic_flu_balances": "the FY2017 program level counts the 'Pandemic Flu balances (Public Law 111-32)' line, "
+                             "balances of another law that no phrase rule tags",
+    "evaluation_tap_phrase_untagged": "the paragraph's evaluation tap reads 'is available to this appropriation ... "
+                                      "from amounts provided pursuant to section 241', which no phrase rule reads",
+    "agency_total_only": "the agency is held only as its total (no account lines), and a total's paragraph is not "
+                         "read for components, so the evaluation tap its program level counts is not tagged",
+    "prif_outside_printed_program_level": "the bill makes the 10-year Pediatric Research Initiative Fund transfer in "
+                                          "addition to the Office of the Director's amount, and the report's program "
+                                          "level does not count it",
+    "onc_evaluation_tap_line": "the printed line is ONC's 'Evaluation Tap Funding' line ($0 here), not a program-level "
+                               "total, so it cannot equal the view where ONC has its own appropriation",
+    "emergency_lines_not_held": "the total counts emergency appropriations from the law's other divisions (P.L. "
+                                "117-328), which are not lines we hold, so no designated component takes them off",
     "unexplained": "not explained yet",
 }
+
+
+def named_headline(obs, v):
+    """The headline a printed view names; one the bill or law text superseded is followed to its replacement (the
+    components sit there)."""
+    h = obs.get(v.get("headline_observation_id") or "")
+    while h is not None and h["verification_status"] == "superseded" and h.get("superseded_by_observation_id"):
+        h = obs.get(h["superseded_by_observation_id"])
+    return h
 
 
 def suffix(oid):
@@ -176,7 +221,7 @@ def run(data):
         base_out = {"kind": "view", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
                     "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
         if comp == "discretionary":
-            h = obs.get(v.get("headline_observation_id") or "")
+            h = named_headline(obs, v)
             got = discretionary_view(data, a, v, h, heads, comps, attrs) if h else "names no headline"
             if isinstance(got, str):
                 outcomes.append(dict(base_out, result="not checked", detail=got))
@@ -206,14 +251,14 @@ def run(data):
             outcomes.append(dict(base_out, result="not checked", detail="no computed view stands for this printed scope"))
             continue
         view = AC.PRINTED_VIEW[comp]
-        h = obs.get(v.get("headline_observation_id") or "")
+        h = named_headline(obs, v)
         if h is None:
             outcomes.append(dict(base_out, result="not checked", detail="names no headline"))
             continue
         used = []
         if a.get("total_scope") == "agency":
-            if cell not in TC.PILOT:
-                outcomes.append(dict(base_out, result="not checked", detail="an agency total outside the pilot cells"))
+            if cell not in TC.AUTO_CELLS:
+                outcomes.append(dict(base_out, result="not checked", detail="an agency total outside the tagged cells"))
                 continue
             delta = 0
             for m in members(data, a):
@@ -236,7 +281,7 @@ def run(data):
             sel = AC.VIEWS[view]
             relevant = [c for c in comps[h["observation_id"]]
                         if AC._selected(c, sel["remove"]) or AC._selected(c, sel["add"])]
-            if cell not in TC.PILOT and not relevant:
+            if cell not in TC.AUTO_CELLS and not relevant:
                 outcomes.append(dict(base_out, result="not checked",
                                      detail="no component the view uses is tagged for this cell"))
                 continue
@@ -316,8 +361,25 @@ def why(data, a, v, view, diff, heads, comps):
                                 dropped -= c["amount"]
             if dropped and dropped == diff:
                 return "cr_anomaly_dropped"
+    named = obs_of(data).get(v.get("headline_observation_id") or "")
+    h = named_headline(obs_of(data), v)
+    if named is not None and h is not named and diff == named["amount"] - h["amount"]:
+        return "headline_superseded"
+    cell = KNOWN_CELL_CAUSES.get((a["canonical_account_id"], fy, stage, view))
+    if cell:
+        return cell
     known = KNOWN_CAUSES.get((a["canonical_account_id"], view))
     return known[0] if known else "unexplained"
+
+
+_OBS = {}
+
+
+def obs_of(data):
+    if id(data) not in _OBS:
+        _OBS.clear()
+        _OBS[id(data)] = {o["observation_id"]: o for o in data["observations"]}
+    return _OBS[id(data)]
 
 
 MACHINE = ("observation_id", "rule_applied", "expected_result", "observed_result", "result")

@@ -9,7 +9,7 @@ table_lines.csv), and gives the same records every run.
     python scripts/tag_components.py --ci         # fail when data/staged.json is not up to date with this
     python scripts/tag_components.py --report X   # every tag and every untagged component-like phrase as CSV
 
-Five sources, in this order (a later one never records money an earlier one already holds for the headline):
+Six sources, in this order (a later one never records money an earlier one already holds for the headline):
 
   retagged         lines we already hold that act as components of their headline (the same account, year and
                    stage): a supplemental '(emergency)' line -> designated/emergency; a separate supplemental act's
@@ -25,10 +25,14 @@ Five sources, in this order (a later one never records money an earlier one alre
   mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2): PSSF's section 436
                    amount (auto_text from the bill or law text; appendix_text from the request's language) and
                    EEOICP (report_text: the report states the program's funds are mandatory) -> mandatory_portion
-  auto_text        the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026; House, Senate and Enacted): each amount in
+  auto_text        AUTO_CELLS: the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026) and the component backfill (Labor-HHS
+                   and CJS FY2017-FY2023), House, Senate and Enacted: each amount in
                    the headline's own bill or law paragraph, read by the phrase rules below
   carried_forward  Labor-HHS FY2025 Enacted (the full-year CR, P.L. 119-4): the FY2024 Enacted components continue,
                    except what an anomaly naming the account changes (CR_ANOMALIES) or the CR ends (earmarks, sec. 1111)
+  advances         Child Support, Foster Care and Medicaid, every year and stage (component backfill): the request's
+                   advance from FY N's Appendix language (advance_lines.csv, appendix_text) and, on every headline,
+                   the advance an earlier law appropriated for this year -> advance_available (advances() below)
 
 A component is never fitted to a figure: its amount is printed in the text or the table. Only in_headline -- is
 the money inside the printed headline or beside it -- is decided by arithmetic for an auto_text component: the
@@ -57,9 +61,16 @@ import legislative_text as L  # noqa: E402
 TABLE_LINES = ROOT / "reference" / "review" / "accounting" / "table_lines.csv"
 PPHF_TABLE = ROOT / "reference" / "review" / "accounting" / "pphf_table.csv"
 MANDATORY_LINES = ROOT / "reference" / "review" / "accounting" / "mandatory_lines.csv"
+ADVANCE_LINES = ROOT / "reference" / "review" / "accounting" / "advance_lines.csv"
+# the accounts that appropriate an advance for the next year's first quarter (owner, component backfill)
+ADVANCE_ACCOUNTS = ("ACC-HHS-ACF-CHILD-SUPPORT", "ACC-HHS-ACF-FOSTER-CARE", "ACC-HHS-CMS-MEDICAID")
 PPHF = "the Prevention and Public Health Fund (section 4002 of the PPACA)"
 TEXT_STAGES = ("House Reported", "Senate Reported", "Enacted")
 PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | {("CJS", 2026, st) for st in TEXT_STAGES}
+# The component backfill (owner, 2026-10-12): the same phrase rules over Labor-HHS and CJS FY2017-FY2023, every stage
+# whose bill or law text we hold. AUTO_CELLS are the cells auto_text reads and measure_reconcile checks in full.
+BACKFILL = {(sc, fy, st) for sc in ("LHHS", "CJS") for fy in range(2017, 2024) for st in TEXT_STAGES}
+AUTO_CELLS = PILOT | BACKFILL
 CR_YEAR = ("LHHS", 2025, "Enacted")
 # P.L. 119-4 div. A (the FY2025 full-year CR) anomalies that name an account we hold -> (the section, the
 # components its text changes, the components its text states in their place). Every other component of the account
@@ -262,13 +273,20 @@ def not_a_component(a):
     return None
 
 
-def relation(a, main):
+def relation(a, main, headline=None):
     """How an amount sits to the paragraph's main amount: 'main' (it is the main amount), 'separate' (beside it:
     'in addition', 'together with', an advance) or 'of_which' (part of it)."""
     if main is not None and a["phrase"] == main["phrase"] and a["amount"] == main["amount"]:
         return "main"
     seg_b, _ = segments(a)
-    return "separate" if SEPARATE.search(seg_b) else "of_which"
+    if SEPARATE.search(seg_b):
+        return "separate"
+    # nesting: an amount larger than the main amount cannot be part of it (CDC Buildings and Facilities FY2020 House:
+    # '$30,000,000 ...: Provided, That in addition ..., $225,000,000 ... derived by transfer', where the phrase
+    # window starts after 'in addition'). An amount equal to the headline is the headline's own money, not beside it.
+    if main is not None and a["amount"] > main["amount"] and a["amount"] != headline:
+        return "separate"
+    return "of_which"
 
 
 def in_headline_by_arithmetic(headline, main, known, tagged):
@@ -475,7 +493,7 @@ def pphf_table(data, heads, report):
 
 
 def autotag(data, heads, held, report):
-    """The pilot: each headline's own paragraph, amount by amount."""
+    """The auto-tagged cells (AUTO_CELLS): each headline's own paragraph, amount by amount."""
     texts, exempt = CT.load_texts(L.TEXT_DIR), CT.load_exempt(L.TEXT_DIR)
     outcomes = CT.check(data, texts, exempt)
     obs = {o["observation_id"]: o for o in data["observations"]}
@@ -489,7 +507,7 @@ def autotag(data, heads, held, report):
     refs = {(r["subcommittee"], int(r["fiscal_year"]), r["stage"]): r for r in data["bill_report_refs"]}
     out = []
     for oid, res in sorted(outcomes.items()):
-        if (res["subcommittee"], res["fiscal_year"], res["stage"]) not in PILOT:
+        if (res["subcommittee"], res["fiscal_year"], res["stage"]) not in AUTO_CELLS:
             continue
         report["pilot_headlines"] += 1
         para = res.get("paragraph")
@@ -527,7 +545,7 @@ def autotag(data, heads, held, report):
                     report["untagged"].append({"observation_id": oid, "document": doc, "where": CT.where(para),
                                                "amount": x["amount"], "phrase": x["phrase"]})
                 continue
-            tagged.append((x, cl, relation(x, main), CT.where(para)))
+            tagged.append((x, cl, relation(x, main, o["amount"]), CT.where(para)))
         names = CT.account_names(a, by_acc[a["canonical_account_id"]], former)
         for amt, w in CT.provision_amounts(a, names, paras):
             p = next(p for p in paras if CT.where(p) == w)
@@ -586,6 +604,99 @@ def autotag(data, heads, held, report):
                 if rel == "of_which" and c["in_headline"] == outer["in_headline"] and abs(c["amount"]) <= abs(outer["amount"]):
                     c["within_component_id"] = ("KEY", key(outer))
         out += [c for c, _ in comps]
+    return out
+
+
+def advances(data, heads, records, report):
+    """Child Support, Foster Care and Medicaid advances in every year and stage (owner, component backfill):
+    the request's advance (advance_lines.csv: FY N's Appendix language) -> advance_enacted on the President's Budget
+    headline; and on every headline, the advance an earlier law appropriated for this year's first quarter ->
+    advance_available: FY N-1's law text (the advance its paragraph appropriates, read by the advance phrase rule;
+    the FY2025 full-year CR's anomaly for FY2026), FY2017 from the FY2017 Appendix's bracketed enacted text. A
+    headline that already holds one (Medicaid's 'Less appropriations provided in prior years' line) keeps it.
+    in_headline for an advance_available: inside only when the headline less the components inside it, less the
+    advance, is the paragraph's (or the request language's) current-year amount; beside otherwise."""
+    obs = {o["observation_id"]: o for o in data["observations"]}
+    by_obs = collections.defaultdict(list)
+    for c in records:
+        by_obs[c["observation_id"]].append(c)
+    texts, exempt = CT.load_texts(L.TEXT_DIR), CT.load_exempt(L.TEXT_DIR)
+    outcomes = CT.check(data, texts, exempt)
+    out, current = [], {}
+    if ADVANCE_LINES.exists():
+        with open(ADVANCE_LINES) as f:
+            for r in csv.DictReader(f):
+                if r["request_current_year"]:
+                    current[r["observation_id"]] = int(r["request_current_year"])
+                if r["component_type"] == "advance_enacted" and any(
+                        c["component_type"] == "advance_enacted" for c in by_obs[r["observation_id"]]):
+                    continue
+                out.append({"observation_id": r["observation_id"], "component_type": r["component_type"],
+                            "designation": "", "transfer_from": "", "amount": int(r["amount"]),
+                            "in_headline": r["in_headline"], "source_document_id": r["source_document_id"],
+                            "source_location": r["source_location"], "quoted_text": r["quoted_text"],
+                            "tag_method": "appendix_text", "tag_rule": r["tag_rule"], "source_observation_id": "",
+                            "carried_from_component_id": "", "notes": r["notes"]})
+
+    def law_advance(account, fy):
+        """The advance FY fy's law appropriated for the next year's first quarter -> component fields, or None."""
+        for h in heads[(account, fy, "Enacted")]:
+            stated = [c for c in by_obs[h["observation_id"]] if c["component_type"] == "advance_enacted"
+                      and c["tag_method"] in ("auto_text", "cr_anomaly")]
+            if stated:
+                return stated[0]
+            res = outcomes.get(h["observation_id"])
+            para = res and res.get("paragraph")
+            for x in (para or {}).get("amounts", []):
+                cl = classify(x)
+                if cl and cl[0] == "advance_enacted":
+                    return {"amount": x["amount"], "source_document_id": res["document"],
+                            "source_location": CT.where(para), "quoted_text": x["phrase"]}
+        return None
+
+    for account in ADVANCE_ACCOUNTS:
+        for (acc, fy, st), hs in sorted(heads.items()):
+            if acc != account or fy < 2018:
+                continue
+            for h in hs:
+                if any(c["component_type"] == "advance_available" for c in by_obs[h["observation_id"]]):
+                    continue
+                src = law_advance(account, fy - 1)
+                if src is None:
+                    report["advance_not_read"].append(f"{h['observation_id']} ({account} FY{fy} {st}): no FY{fy - 1} "
+                                                      "law advance in the text we hold")
+                    continue
+                out.append({"observation_id": h["observation_id"], "component_type": "advance_available",
+                            "designation": "", "transfer_from": "", "amount": src["amount"], "in_headline": "",
+                            "source_document_id": src["source_document_id"],
+                            "source_location": src["source_location"], "quoted_text": src["quoted_text"],
+                            "tag_method": "auto_text",   # read from the law's text (the CR's anomaly for FY2026)
+                            "tag_rule": f"the FY{fy - 1} law's advance for the first quarter of fiscal year {fy}, "
+                                        "available this year", "source_observation_id": "",
+                            "carried_from_component_id": "", "notes": ""})
+    for c in out:
+        if c["component_type"] != "advance_available":
+            continue
+        o = obs[c["observation_id"]]
+        cur = current.get(o["observation_id"])
+        if cur is None:
+            res = outcomes.get(o["observation_id"])
+            main = CT.main_amount(res["paragraph"])[0] if res and res.get("paragraph") else None
+            cur = main["amount"] if main else None
+        inside = sum(x["amount"] for x in by_obs[o["observation_id"]] + [y for y in out if y is not c and
+                     y["observation_id"] == c["observation_id"]] if x["in_headline"] == "TRUE")
+        base = o["amount"] - inside
+        if cur is not None and base - c["amount"] == cur:
+            c["in_headline"], c["notes"] = "TRUE", (f"inside the headline by arithmetic: the headline less what is "
+                                                    f"inside it is the current-year amount {AC.money(cur)} plus "
+                                                    "this advance")
+        elif cur is not None and base == cur:
+            c["in_headline"], c["notes"] = "FALSE", (f"beside the headline by arithmetic: the headline less what is "
+                                                     f"inside it is the current-year amount {AC.money(cur)}")
+        else:
+            c["in_headline"], c["notes"] = "FALSE", ("beside the headline by default: an earlier law's advance; the "
+                                                     "headline is not the current-year amount plus it")
+            report["advance_default"].append(f"{o['observation_id']} advance_available {AC.money(c['amount'])}")
     return out
 
 
@@ -723,7 +834,8 @@ def build(data):
         if isinstance(c.get("within_component_id"), tuple):
             c["within_component_id"] = ids[c["within_component_id"][1]]
     carried = carry_forward(data, heads, records, report)
-    records, retired = assign_ids(data, records + carried, obs)
+    adv = advances(data, heads, records + carried, report)
+    records, retired = assign_ids(data, records + carried + adv, obs)
     # a carried component within another names the carried copy of that one (or nothing, when it wasn't carried)
     copy_of = {(c["carried_from_component_id"], c["observation_id"]): c["component_id"] for c in records
                if c["carried_from_component_id"]}
@@ -753,7 +865,7 @@ def summarize(records, data, report):
     lines += ["| subcommittee | FY | type | " + " | ".join(AC.TAG_METHODS) + " |", "|---" * (3 + len(AC.TAG_METHODS)) + "|"]
     for k in sorted({k[:3] for k in by}):
         lines.append(f"| {k[0]} | {k[1]} | {k[2]} | " + " | ".join(str(by[k + (m,)]) for m in AC.TAG_METHODS) + " |")
-    lines += ["", f"Pilot headlines read: {report['pilot_headlines']}; no paragraph or no single paragraph: "
+    lines += ["", f"Headlines read (auto-tagged cells): {report['pilot_headlines']}; no paragraph or no single paragraph: "
               f"{len(report['pilot_no_paragraph'])}; auto tags already held from a line: "
               f"{len(report['auto_already_held'])}; auto tags with in_headline by default (not by arithmetic): "
               f"{len(report['auto_default'])}; component-like phrases no rule tagged: {len(report['untagged'])}; "
@@ -788,7 +900,8 @@ def main(argv=None):
     if a.ci and os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
             f.write(text + "\n")
-    for k in ("retag_no_headline", "carry_anomaly", "pilot_no_paragraph", "auto_default"):
+    for k in ("retag_no_headline", "carry_anomaly", "pilot_no_paragraph", "auto_default", "advance_not_read",
+              "advance_default"):
         for x in report[k]:
             print(f"  {k}: {x}")
     if errs:
