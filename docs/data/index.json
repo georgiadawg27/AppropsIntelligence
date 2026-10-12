@@ -799,13 +799,13 @@
    "historical_names": []
   }
  ],
- "contract_version": 1,
+ "contract_version": 2,
  "features": {
   "abbreviations": true,
   "account_panel": true,
-  "accounting_views": false,
-  "budget_class": false,
-  "defense_split": false,
+  "accounting_views": true,
+  "budget_class": true,
+  "defense_split": true,
   "export_csv": true,
   "figure_source": true,
   "grid": true,
@@ -841,5 +841,8 @@
   "version": "v38",
   "warnings": [],
   "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
- }
+ },
+ "split_subcommittees": [
+  "LHHS"
+ ]
 }

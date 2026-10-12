@@ -251,18 +251,19 @@ class Features(StaticTest):
                 self.assertFalse(self.index["features"][name], f"{name} is on but missing {missing}")
 
     def test_expected_flags_today(self):
-        # SPEC section 9 at main @ #55: the figure's source is published; the accounting data (UI-0) is not
+        # SPEC section 9: the figure's source is published, and since UI-0 the accounting data (contract_version 2)
         got = self.index["features"]
         self.assertTrue(got["figure_source"])
         for name in ("accounting_views", "budget_class", "defense_split"):
-            self.assertFalse(got[name], name)
+            self.assertTrue(got[name], name)
+        self.assertGreaterEqual(self.index["contract_version"], 2)
 
     def test_a_missing_field_turns_its_feature_off(self):
         with tempfile.TemporaryDirectory() as d:
             data = Path(d)
             (data / "subcommittees").mkdir()
             (data / "subcommittees" / "X.json").write_text(json.dumps(
-                {"rows": [{"budget_class": {"2026": None},
+                {"rows": [{"attributes": {"2026": {"budget_class": None}},
                            "cells": {"2026|Enacted": {"views": {}}, "2026|Senate Reported": {"views": {"x": None}}}}]}))
             got = E.features(data, {"accounts": [{"canonical_account_id": "ACC-X", "canonical_name": "X"}]})
         self.assertFalse(got["features"]["budget_class"])          # null is not a value

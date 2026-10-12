@@ -1,5 +1,5 @@
 {
- "contract_version": 1,
+ "contract_version": 2,
  "spec": "reference/ui/explore-v1/SPEC.md section 9",
  "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
  "features": {
@@ -137,14 +137,14 @@
    "spec_row": "Account type filter, \"incl. mandatory\" tags, \"Appropriated mandatory\" sub-group",
    "brief": "UI-0 / UI-3",
    "fields": [
-    "subcommittees/*.json:rows[].budget_class.*"
+    "subcommittees/*.json:rows[].attributes.*.budget_class"
    ]
   },
   "defense_split": {
    "spec_row": "Defense / nondefense column",
    "brief": "UI-0 / UI-3",
    "fields": [
-    "subcommittees/*.json:rows[].cells.*.components.defense_portion"
+    "subcommittees/*.json:rows[].cells.*.defense_portion"
    ]
   },
   "watchlist": {
@@ -155,5 +155,13 @@
     "index.json:accounts[].canonical_name"
    ]
   }
+ },
+ "shapes": {
+  "rows[].cells.<FY|stage>.views.<basis>": "a list: [{amount, timing: available|enacted (null for printed), status: checked|computed|excluded|not_computable, reason, printed_observation_id?, validation_id?, component_ids?, accounts_behind?}]. One entry for timing 'available' and, only where it differs, one for 'enacted': with no 'enacted' entry the 'available' one holds for both timings. basis: printed, discretionary, discretionary_designated, all_appropriations, program_level (accounting.BASES). Only on cells whose headline holds a value; amount is null unless status is checked or computed.",
+  "rows[].cells.<FY|stage>.components[]": "{component_id, type, amount, in_headline, within_component_id, designation, transfer_from, source_document_id, source_page, source_table_or_section}",
+  "rows[].cells.<FY|stage>.earmark": "{amount, component_ids[]}; only where earmark components are tagged (absent is not zero)",
+  "rows[].cells.<FY|stage>.defense_portion": "{amount, component_ids[]}; only where defense_portion components are tagged (absent is not zero)",
+  "rows[].attributes.<FY>": "{budget_class, provisional, budget_subfunction, fund_type, account_id_code, stage_basis, source_document_id, source_page, citations: {<attribute>: {account_attribute_id, source_document_id, source_page}}, request?: {the same, stage_basis 'request', where the President's Budget has its own value}}; an attribute with no record is absent",
+  "split": "index.json split_subcommittees lists the subcommittees also published per fiscal year: subcommittees/<SC>/index.json (everything but rows, titles, bill_total; files: {FY: file}) and subcommittees/<SC>/<FY>.json (rows, titles, bill_total with that year's cells and attributes only). subcommittees/<SC>.json stays the whole grid."
  }
 }
