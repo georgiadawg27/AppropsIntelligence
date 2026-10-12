@@ -144,3 +144,16 @@ Made in this phase (flag any you disagree with):
    scopes with no computed view, 25 account_not_held, 1 with no component tagged.
 6. Carried over: four ambiguous text-check figures; 55 untagged pilot phrases; auto-tagging beyond the pilot; the
    FY2024 explanatory statement is not held.
+
+## UI-R: design reference and data-gated features (2026-10-12)
+
+- `reference/ui/explore-v1/` committed as given (SPEC.md is the build target for every Explore UI brief).
+- `web/ui_contract.json` (contract_version 1): one entry per SPEC section 9 row, each with the
+  `<file glob>:<dotted path>` fields it reads. `export_static.features()` writes `features` + `contract_version`
+  into `docs/data/index.json`; a flag is true only if every listed field holds a non-null, non-empty value.
+- Today: figure_source, grid, account_panel, overview_panel, search_filter, interaction_state, abbreviations,
+  export_csv, phone, watchlist true; accounting_views, budget_class, defense_split false.
+- Open: the three UI-0 paths (`rows[].cells.*.views.*`, `rows[].budget_class.*`,
+  `rows[].cells.*.components.defense_portion`) are proposed names, not yet exported. UI-0 must publish under these
+  names or change the contract (bump contract_version). Briefs for the rows SPEC marks ready are unassigned (null).
+  The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
