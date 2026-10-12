@@ -256,8 +256,15 @@ Open items:
 - Esc: closes an open menu first, then clears the selection, and focus goes back to the figure or name. A click outside
   the grid, panel and menus clears; a press that closes a menu only closes it; controls never clear.
 
+Owner follow-ups on #59 (2026-10-12):
+- Draft documents are named as drafts ("Senate chair's draft explanatory statement, FY20xx (released <date>)",
+  "House subcommittee draft explanatory materials, FY2024 (released <date>)", "S. 3062, as introduced (Senate
+  chair's draft)"); every dated name says "released".
+- Names that open the account panel always carry the link style (navy #16325f, #9fb4d6 underline, 3px offset),
+  line names included (SPEC §4's #3a4150 for line names no longer applies to them).
+- SPEC.md §8: human-verified → "Verified by a person" (green, as auto-validated); §5.2: history bars start at zero.
+
 Open items:
-1. The document short names in web/documents.js are for the owner to review (especially the Senate and House
-   explanatory statements before FY2026).
+1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
 2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
    "request column") that the data has no field for, so it is left out.

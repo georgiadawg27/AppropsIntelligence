@@ -1501,8 +1501,9 @@ class ExploreV1(GridBrowser):
         self.assertEqual(sorted(r.get_attribute("data-account") for r in listed.all()), sorted(inside))
         line = lambda prop: listed.first.locator("td.num").first.evaluate(f"e => getComputedStyle(e).{prop}")
         self.assertEqual((line("fontSize"), line("fontWeight")), ("13px", "400"))
+        # 13px regular; a name that opens the account panel takes the link style (navy, owner decision on #59)
         self.assertEqual(listed.first.locator("td.acct a").evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).fontWeight, getComputedStyle(e).color]"),
-                         ["13px", "400", "rgb(58, 65, 80)"])
+                         ["13px", "400", "rgb(22, 50, 95)"])
         self.assertIn("rgb(185, 198, 220)", listed.first.locator("td.acct").evaluate("e => getComputedStyle(e).backgroundImage"))
         self.assertEqual(nih.locator("td.num").first.evaluate("e => getComputedStyle(e).fontWeight"), "600")
         # a collapsed agency 500, the total band 700; the Enacted column washed except on the band
@@ -1862,6 +1863,12 @@ class ExploreV1(GridBrowser):
                 self.assertIn("acct=ACC-HHS-NIH-NCI", self.page.url)
                 self.assertEqual(self.page.get_attribute("tr[data-account=ACC-HHS-NIH-NCI]", "data-sel"), "row")
                 text = lambda t: self.page.inner_text(f"[data-testid={t}]")
+                # every name that opens the panel has the link style, selected or not: navy, light underline 3px below
+                link = "e => [getComputedStyle(e).color, getComputedStyle(e).textDecorationLine, getComputedStyle(e).textDecorationColor, getComputedStyle(e).textUnderlineOffset]"
+                self.page.mouse.move(2, 2)
+                for aid in ("ACC-HHS-NIH-NCI", "ACC-HHS-NIH-NHLBI", "ACC-HHS-CDC-TOTAL"):
+                    self.assertEqual(self.page.locator(f"tr[data-account={aid}] [data-testid=row-name]").evaluate(link),
+                                     ["rgb(22, 50, 95)", "underline", "rgb(159, 180, 214)", "3px"], aid)
                 self.assertEqual(text("acct-path"), "Title II › National Institutes of Health")
                 self.assertEqual(text("acct-name"), "National Cancer Institute")
                 self.assertEqual(text("acct-headline"), "$7.35B")

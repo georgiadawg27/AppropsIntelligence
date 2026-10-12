@@ -103,7 +103,7 @@ There are no tiles above the grid: the headline figures live in the overview pan
 - Clicking another figure moves the selection.
 
 ### 5.2 Click an account name → account view in the panel
-The panel shows: the path (Title II › agency); the name; the headline in short form ($7.35B) with the exact $K and "FY2026 enacted, as printed"; the change vs the prior year when both are values; "FY2026 by stage, with sources" (each stage: amount, then document · page · bill link); "Enacted, FY2017–FY2026" bars (FY2025 CR bar lighter, gaps for non-values, never zero bars); Open account page; Watch (browser-only, section 9). The selected account row gets a light yellow fill (`#fff6dc`).
+The panel shows: the path (Title II › agency); the name; the headline in short form ($7.35B) with the exact $K and "FY2026 enacted, as printed"; the change vs the prior year when both are values; "FY2026 by stage, with sources" (each stage: amount, then document · page · bill link); "Enacted, FY2017–FY2026" bars (FY2025 CR bar lighter, gaps for non-values, never zero bars; the bars start at zero); Open account page; Watch (browser-only, section 9). The selected account row gets a light yellow fill (`#fff6dc`).
 
 ### 5.3 Panel modes and returning to the overview
 Precedence: figure source > account > overview. Each non-overview mode shows "‹ Title II overview" (or "‹ NIH overview" with an agency filter) and the hint "or click outside · Esc". The overview returns when you:
@@ -166,7 +166,7 @@ IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 
 | rail | `#b9c6dc` | lines under an expanded agency |
 | tag: incl. mandatory | bg `#eeeaf8`, text `#4b3f72` | class tags (UI-0) |
 | tag: proposed | bg `#fdf1d8`, text `#7a4b00` | proposed-only accounts |
-| badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412` | verification status |
+| badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412`; human-verified → Verified by a person (green, as auto-validated) | verification status |
 
 Contrast: every text/background pair meets 4.5:1. Every control is a real `<button>`, `<a>`, `<input>` or `<select>`, keyboard-reachable with a visible focus ring; dialogs and the sheet close on Esc and return focus.
 

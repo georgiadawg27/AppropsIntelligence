@@ -216,6 +216,9 @@
   .namebox { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; line-height: 1.35; }
   .namebox .linkish { font: inherit; font-size: inherit; color: inherit; text-decoration: none; cursor: pointer; text-align: left; padding: 0; }
   .namebox .linkish:hover { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  /* a name that opens the account in the side panel (SPEC 5.2): the design's link style, always */
+  .namebox .linkish.panel-link { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  .namebox .linkish.panel-link:hover { text-decoration-color: var(--x-accent); }
   .abbr { font-size: 12px; color: var(--x-muted); font-weight: 400; }
   .chev { appearance: none; flex: 0 0 auto; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--x-muted);
           cursor: pointer; font: inherit; font-size: 12px; padding: 0; }
@@ -1162,7 +1165,8 @@ function rowFilters(grid, cols) {
 function nameCell(o) {
   const box = el("span", { class: "namebox" });
   if (o.id) {
-    const b = el("a", { class: "linkish", "data-testid": "row-name", href: "?account=" + encodeURIComponent(o.id), text: o.name, title: o.title || o.id });
+    const panel = has("account_panel") && current && ownPage(current.grid, o.id);
+    const b = el("a", { class: "linkish" + (panel ? " panel-link" : ""), "data-testid": "row-name", href: "?account=" + encodeURIComponent(o.id), text: o.name, title: o.title || o.id });
     // the account in the side panel (SPEC 5.2); the One account view without the account panel
     b.addEventListener("click", (e) => {
       e.preventDefault();
