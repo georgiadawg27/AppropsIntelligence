@@ -268,3 +268,23 @@ Open items:
 1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
 2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
    "request column") that the data has no field for, so it is left out.
+
+## UI-P: Phone layout (2026-10-12)
+
+- Below 640px (`matchMedia("(max-width: 639px)")`) with `features.phone` on (`phone` now in `BUILT`) the body gets
+  `phone-on` and CSS hides the grid, the panel and the desktop control row; `#phone` shows the list. The desktop grid is
+  still rendered underneath (so a resize is instant); the phone list and sheet are rendered only while the phone layout
+  is active, so no test id appears twice on a desktop.
+- Same state: G, SEL, `open`, filters and the URL. New URL params: `stage=<request|house|senate>` (the phone's stage
+  when it differs from the lead stage) and `table=1` ("Open the full table": the grid on a phone; Back returns).
+- The phone always reads the Stages layout of `fy` (`asStages`), whatever `grid=` a desktop link carries.
+- `partsOf(group, F)` now holds the row grouping both the grid and the phone list use; `accountView(grid, id, phone)`
+  builds the account panel and the sheet.
+- Agency rows with lines expand on tap (the design's caret); every other line opens the sheet. A selected figure
+  (`fig=`) opens its account's sheet; a printed total's figure opens nothing.
+- Tests: `tests/test_compare.py` `PhoneV1` (13, 14, desktop link -> sheet, FY2027/CJS, full table);
+  `test_no_page_scroll_at_390px` now checks the phone list and `table=1`.
+
+Open items:
+1. Watch stays hidden (UI-6); the "incl. mandatory" tags wait on UI-3.
+2. Context picker shows the data's subcommittee name ("Labor-HHS-Education"); the design shortens it to "Labor-HHS".

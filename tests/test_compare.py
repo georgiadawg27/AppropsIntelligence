@@ -1414,12 +1414,15 @@ class CompareBrowser(GridBrowser):
             self.assertEqual(m["seam"], "thead", q)
 
     def test_no_page_scroll_at_390px(self):
-        # the phone layout is UI-P; until then the desktop page keeps a 16px gutter's worth of room: no sideways page scroll
+        # no sideways page scroll on a phone: the phone list (UI-P, SPEC section 6) in every compare mode a link can
+        # carry, and the grid "Open the full table" shows (table=1)
         self.page.set_viewport_size({"width": 390, "height": 844})
         for sc in ("LHHS", "CJS"):
             for q in ("stages", "years", "history"):
-                self.open("static", f"?view=compare&sc={sc}&grid={q}")
-                self.assertFalse(self.page.evaluate("document.documentElement.scrollWidth > innerWidth"), (sc, q))
+                for table in ("", "&table=1"):
+                    self.page.goto(self.urls["static"] + f"?view=compare&sc={sc}&grid={q}{table}")
+                    self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])" if table else "#p-list .prow")
+                    self.assertFalse(self.page.evaluate("document.documentElement.scrollWidth > innerWidth"), (sc, q, table))
 
 
 class ExploreV1(GridBrowser):
@@ -2200,6 +2203,260 @@ def printed(row, fy, stage):
     if h["state"] == "value" or (h["state"] == "not_funded" and not h["absence"]):
         return h["observations"][0]["amount"]
     return None
+
+
+def short(amount):
+    """GridMath.short: a figure in dollars as $1.55T, $47.29B, $128.0M."""
+    a, sign = abs(amount), "−" if amount < 0 else ""
+    if a >= 1e12:
+        return f"{sign}${a / 1e12:.2f}T"
+    if a >= 1e9:
+        return f"{sign}${a / 1e9:.2f}B"
+    return f"{sign}${a / 1e6:.1f}M"
+
+
+def pct_text(a, b):
+    """GridMath.pctText: the % under a change; "new" from a zero base, "—" when both are zero."""
+    if a is None or b is None:
+        return ""
+    if a == 0:
+        return "—" if b == 0 else "new"
+    p = (b - a) / abs(a) * 100
+    t = f"{abs(p):.1f}"
+    return "0.0%" if t == "0.0" else ("+" if p > 0 else "−") + t + "%"
+
+
+class PhoneV1(GridBrowser):
+    """reference/ui/explore-v1/SPEC.md section 6 at 390 x 844 (brief UI-P): section 10's tests 13 and 14, and a
+    desktop link with a selected account opening the sheet on a phone. Live server and static export."""
+
+    NIH, NCI = "ACC-HHS-NIH-TOTAL", "ACC-HHS-NIH-NCI"
+
+    def setUp(self):
+        super().setUp()
+        self.page.set_viewport_size({"width": 390, "height": 844})
+
+    def go(self, query="", where="static"):
+        self.page.goto(self.urls[where] + query)
+        self.page.wait_for_selector("#p-list .prow")
+
+    def lines(self, agency):
+        return self.page.locator(f"#p-list .prow.line[data-member-of='{agency}']:not(.more)")
+
+    def focus_ring(self):
+        return self.page.evaluate("getComputedStyle(document.activeElement).outlineStyle")
+
+    # 13
+    def test_phone_layout(self):
+        total = self.lhhs["titles"][0]["total"]
+        nih = self.lrow(self.NIH)
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go("?sc=LHHS&fy=2026", where)
+                # no grid; no compare modes, View menu, Share or Export; the side panel's job is the sheet's
+                for sel in ("#compare-grid", "#grid-wrap", "#side-panel", "#view-switch", "#view-btn", "#share", "#export",
+                            "#search", "#sc", "#filter-btn", ".appbar .tabs"):
+                    self.assertTrue(self.page.is_hidden(sel), sel)
+                self.assertTrue(self.page.is_visible("#menu-btn"))
+                # one row: the context picker, then Search and Filter icon buttons, 44 x 44
+                self.assertEqual(self.page.inner_text("#p-context-text"), "Labor-HHS-Education · FY2026")
+                for sel in ("#p-search-btn", "#p-filter-btn"):
+                    box = self.page.locator(sel).bounding_box()
+                    self.assertEqual((box["width"], box["height"]), (44, 44), sel)
+                # the summary card: the headline printed total, its change vs FY2025 enacted and vs the request
+                v, p, r = (printed(total, y, st) for y, st in ((2026, "Enacted"), (2025, "Enacted"), (2026, "President's Budget")))
+                self.assertEqual(self.page.inner_text("[data-testid=p-headline]"), short(v))
+                self.assertEqual(self.page.inner_text("[data-testid=p-vs-prior]"), f"+{short(v - p)} ({pct_text(p, v)}) vs FY2025 enacted")
+                self.assertEqual(self.page.inner_text("[data-testid=p-vs-request]"), f"+{short(v - r)} ({pct_text(r, v)}) vs request")
+                # the stage switch: four stages, Enacted by default, pinned while the list scrolls
+                stages = self.page.locator("#p-stages button")
+                self.assertEqual(stages.all_inner_texts(), ["Request", "House", "Senate", "Enacted"])
+                self.assertEqual([b.get_attribute("aria-pressed") for b in stages.all()], ["false", "false", "false", "true"])
+                self.assertEqual(self.page.inner_text("#p-stage-note"),
+                                 "Showing FY2026 Enacted · % change vs FY2025 enacted · tap a line for sources")
+                # each agency: a short figure and its % change vs FY2025 enacted
+                row = self.page.locator(f"#p-list .prow[data-account='{self.NIH}']")
+                a, b = printed(nih, 2025, "Enacted"), printed(nih, 2026, "Enacted")
+                self.assertEqual(row.locator("[data-testid=p-value]").inner_text(), short(b))
+                self.assertEqual(row.locator("[data-testid=p-change]").inner_text(), pct_text(a, b))
+                self.assertEqual(self.lines(self.NIH).count(), 0)
+                # expanding keeps the parent/line formatting: bold total and its note; lighter lines on a rail
+                row.locator(".pmain").click()
+                self.assertEqual(row.locator(".pmain").get_attribute("aria-expanded"), "true")
+                self.assertEqual(row.locator("[data-testid=p-row-note]").inner_text(), "Agency total · sum of the 32 lines below")
+                self.assertIn(f"open={self.NIH}", self.page.url)
+                self.assertEqual(row.locator(".pname").evaluate("e => getComputedStyle(e).fontWeight"), "600")
+                first = self.lines(self.NIH).first
+                self.assertEqual(first.locator(".pname").evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).fontWeight]"),
+                                 ["13px", "400"])
+                self.assertEqual(first.locator(".pval").evaluate("e => getComputedStyle(e).fontWeight"), "400")
+                self.assertIn("linear-gradient", first.evaluate("e => getComputedStyle(e).backgroundImage"))
+                # lines largest first: the first 6, then "Show N more"
+                members = [self.lrow(m) for m in self.members_in_view(self.NIH)]
+                self.assertEqual(len(members), 32)
+                want = sorted((printed(m, 2026, "Enacted") for m in members), key=lambda x: -1 if x is None else x, reverse=True)
+                shown = lambda: self.lines(self.NIH).locator("[data-testid=p-value]").all_inner_texts()
+                self.assertEqual(shown(), [short(x) for x in want[:6]])
+                self.assertEqual(self.page.inner_text("[data-testid=p-more]"), "Show 26 more NIH lines")
+                self.page.click("[data-testid=p-more]")
+                self.assertEqual(self.lines(self.NIH).count(), 32)
+                self.assertEqual(shown(), [short(x) if x else ("—" if x == 0 else "") for x in want])
+                # the stage switch stays pinned while scrolling
+                self.page.evaluate("window.scrollTo(0, 1200)")
+                self.assertAlmostEqual(self.page.locator("#p-stage-bar").bounding_box()["y"], 0, delta=1)
+                # tapping a line opens the sheet: the exact $K, five stages each with document · page · bill
+                self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain").click()
+                sheet = self.page.locator("#p-sheet")
+                self.assertTrue(sheet.is_visible())
+                self.assertEqual(sheet.get_attribute("role"), "dialog")
+                self.assertEqual(sheet.locator("[data-testid=acct-name]").inner_text(), "National Cancer Institute")
+                self.assertEqual(sheet.locator("[data-testid=acct-path]").inner_text(), "Title II › National Institutes of Health")
+                nci = self.lrow(self.NCI)
+                self.assertEqual(sheet.locator("[data-testid=acct-exact]").inner_text(),
+                                 f"{thousands(printed(nci, 2026, 'Enacted'))} in $ thousands · FY2026 enacted, as printed")
+                st = sheet.locator("[data-testid=acct-stage]")
+                self.assertEqual(st.count(), 5)
+                for k, (y, s) in enumerate([(2025, "Enacted")] + [(2026, x) for x in FOUR]):
+                    self.assertEqual(st.nth(k).locator("[data-testid=acct-stage-fig]").inner_text(), thousands(printed(nci, y, s)))
+                    src = st.nth(k).locator("[data-testid=acct-stage-src]")
+                    self.assertRegex(src.inner_text(), r" · p\. \d+")
+                    self.assertGreaterEqual(src.locator("a").count(), 2)          # the document and the bill
+                enacted = st.nth(4).locator("[data-testid=acct-stage-src]").inner_text()
+                self.assertIn("p. 285", enacted)
+                self.assertIn("P.L. 119-75", enacted)
+                self.assertEqual(sheet.locator("[data-testid=acct-bar]").count(), 10)
+                self.assertTrue(sheet.locator("[data-testid=acct-open]").is_visible())
+                self.assertIn(f"acct={self.NCI}", self.page.url)
+                # × closes it
+                sheet.locator("[data-testid=p-sheet-close]").click()
+                self.assertTrue(self.page.is_hidden("#p-sheet-back"))
+                self.assertNotIn("acct=", self.page.url)
+                # another stage: its figures, its URL
+                stages.nth(1).click()
+                self.assertEqual(stages.nth(1).get_attribute("aria-pressed"), "true")
+                self.assertIn("stage=house", self.page.url)
+                self.assertEqual(row.locator("[data-testid=p-value]").inner_text(), short(printed(nih, 2026, "House Reported")))
+                self.assertTrue(self.page.inner_text("#p-stage-note").startswith("Showing FY2026 House"))
+
+    def test_phone_year_without_enacted_and_no_total(self):
+        # FY2027 (the default year): the lead stage leads the switch and the card; CJS prints no title total
+        total = self.lhhs["titles"][0]["total"]
+        self.go("?sc=LHHS&fy=2027")
+        self.assertEqual(self.page.locator("#p-stages button[aria-pressed=true]").inner_text(), "House")
+        v, p = printed(total, 2027, "House Reported"), printed(total, 2026, "Enacted")
+        self.assertEqual(self.page.inner_text("[data-testid=p-headline]"), short(v))
+        self.assertEqual(self.page.inner_text("[data-testid=p-vs-prior]"), f"+{short(v - p)} ({pct_text(p, v)}) vs FY2026 enacted")
+        self.assertNotIn("stage=", self.page.url)
+        # a stage with nothing yet shows its state token, never a blank or a zero
+        self.page.locator("#p-stages button", has_text="Senate").click()
+        vals = self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] [data-testid=p-value]")
+        self.assertEqual(vals.inner_text(), "n/c")
+        self.assertEqual(self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] [data-testid=p-change]").inner_text(), "")
+        self.go("?sc=CJS&fy=2026")
+        self.assertEqual(self.page.inner_text("[data-testid=p-no-total]"),
+                         "No printed title or bill total on file. The page never adds accounts into one.")
+
+    # 14
+    def test_phone_keyboard_and_focus(self):
+        self.go(f"?sc=LHHS&fy=2026&open={self.NIH}")
+        self.page.locator("body").focus()
+        seen = []
+        for _ in range(12):
+            self.page.keyboard.press("Tab")
+            seen.append(self.page.evaluate("""() => { const e = document.activeElement;
+                return [e.id || e.dataset.key || e.tagName, getComputedStyle(e).outlineStyle]; }"""))
+        ids = [s[0] for s in seen]
+        for want in ("menu-btn", "p-context", "p-search-btn", "p-filter-btn", "pst-0", "pst-3", f"p-{self.NIH}", f"p-{self.NCI}"):
+            self.assertIn(want, ids)
+        self.assertEqual([s for s in seen if s[1] != "solid"], [])                # a visible focus ring on each
+        # the picker and the filter: Esc closes each and focus returns to its button
+        for button, panel in (("#p-context", "#p-picker"), ("#p-filter-btn", "#filter-panel")):
+            self.page.focus(button)
+            self.page.keyboard.press("Enter")
+            self.assertTrue(self.page.is_visible(panel), panel)
+            self.assertTrue(self.page.evaluate(f"document.querySelector('{panel}').contains(document.activeElement)"))
+            self.assertEqual(self.page.get_attribute(button, "aria-expanded"), "true")
+            self.page.keyboard.press("Escape")
+            self.assertTrue(self.page.is_hidden(panel))
+            self.assertEqual(self.page.evaluate("'#' + document.activeElement.id"), button)
+        # the menu
+        self.page.focus("#menu-btn")
+        self.page.keyboard.press("Enter")
+        self.assertTrue(self.page.is_visible(".appbar .tabs"))
+        self.assertEqual(self.page.evaluate("document.activeElement.id"), "tab-compare")
+        self.page.keyboard.press("Escape")
+        self.assertTrue(self.page.is_hidden(".appbar .tabs"))
+        self.assertEqual(self.page.evaluate("document.activeElement.id"), "menu-btn")
+        # the search icon opens its box
+        self.page.focus("#p-search-btn")
+        self.page.keyboard.press("Enter")
+        self.assertEqual(self.page.evaluate("document.activeElement.id"), "p-search")
+        # the sheet: Enter on a line opens it with focus inside; Tab stays inside; Esc closes it, focus back on the line
+        line = self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain")
+        line.focus()
+        self.page.keyboard.press("Enter")
+        self.assertTrue(self.page.is_visible("#p-sheet"))
+        self.assertEqual(self.page.evaluate("document.activeElement.dataset.testid"), "p-sheet-close")
+        for _ in range(25):
+            self.page.keyboard.press("Tab")
+            self.assertTrue(self.page.evaluate("document.querySelector('#p-sheet').contains(document.activeElement)"))
+            self.assertEqual(self.focus_ring(), "solid")
+        self.page.keyboard.press("Escape")
+        self.assertTrue(self.page.is_hidden("#p-sheet-back"))
+        self.assertEqual(self.page.evaluate("document.activeElement.closest('.prow').dataset.account"), self.NCI)
+        # × does the same; so does a tap on the dimmed page
+        line.click()
+        self.page.click("[data-testid=p-sheet-close]")
+        self.assertEqual(self.page.evaluate("document.activeElement.closest('.prow').dataset.account"), self.NCI)
+        line.click()
+        self.page.mouse.click(200, 20)
+        self.assertTrue(self.page.is_hidden("#p-sheet-back"))
+
+    def test_a_desktop_link_opens_the_same_state_on_a_phone(self):
+        agency = self.lrow(self.NIH)["account"]["agency"]
+        for sel, query in (("acct", f"acct={self.NCI}"), ("fig", f"fig={self.NCI}|2026|Enacted")):
+            with self.subTest(sel=sel):
+                self.page.set_viewport_size({"width": 1440, "height": 900})
+                self.page.goto(self.urls["static"] + f"?sc=LHHS&fy=2026&status=enacted&{query}&agency={agency}")
+                self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+                self.assertNotEqual(self.page.get_attribute("#side-panel", "data-mode"), "overview")
+                link = self.page.url
+                # the same link on a phone: the subcommittee, year, filters and the account in its sheet
+                self.page.set_viewport_size({"width": 390, "height": 844})
+                self.go(link[len(self.urls["static"]):])
+                self.assertEqual(self.page.inner_text("#p-context-text"), "Labor-HHS-Education · FY2026")
+                self.assertEqual(self.page.inner_text("#p-filter-badge"), "2")
+                self.assertEqual(self.page.locator("[data-testid=p-chip]").count(), 2)
+                self.assertIn(f"Agency: {agency}", self.page.inner_text("#p-chips"))
+                self.assertTrue(self.page.is_visible("#p-sheet"))
+                self.assertEqual(self.page.inner_text("#p-sheet [data-testid=acct-name]"), "National Cancer Institute")
+                self.assertEqual(self.page.evaluate("document.activeElement.dataset.testid"), "p-sheet-close")
+                self.assertEqual(self.page.url, link)                       # opening it changes nothing
+                # resizing back to the desktop keeps the same state
+                self.page.set_viewport_size({"width": 1440, "height": 900})
+                self.page.wait_for_selector("#compare-grid", state="visible")
+                self.assertTrue(self.page.is_hidden("#p-sheet"))
+                self.assertNotEqual(self.page.get_attribute("#side-panel", "data-mode"), "overview")
+        # and the other way: the list's choices reach the desktop
+        self.page.set_viewport_size({"width": 390, "height": 844})
+        self.go("?sc=LHHS&fy=2026")
+        self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] .pmain").click()
+        self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain").click()
+        self.page.set_viewport_size({"width": 1440, "height": 900})
+        self.page.wait_for_selector("#compare-grid", state="visible")
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "account")
+        self.assertEqual(self.page.inner_text("#side-panel [data-testid=acct-name]"), "National Cancer Institute")
+        self.assertEqual(self.page.locator(f"#compare-grid tr[data-account='{self.NCI}']").get_attribute("data-sel"), "row")
+
+    def test_open_the_full_table(self):
+        self.go("?sc=LHHS&fy=2026")
+        self.page.click("[data-testid=p-full]")
+        self.page.wait_for_selector("#compare-grid", state="visible")
+        self.assertIn("table=1", self.page.url)
+        self.assertTrue(self.page.is_hidden("#phone"))
+        self.page.go_back()
+        self.page.wait_for_selector("#p-list .prow")
+        self.assertTrue(self.page.is_hidden("#compare-grid"))
 
 
 class GridMathUnits(unittest.TestCase):
