@@ -194,6 +194,83 @@ class Export(StaticTest):
         self.assertEqual(WD.compare(WD.digest(self.out / E.DOWNLOAD), want["sheets"]), [])
 
 
+def contract_fields_present(data_dir, contract):
+    """{field: held anywhere in data_dir?} for every field web/ui_contract.json names, read back from the
+    written files (index.json included) by a walker of its own, not export_static's."""
+    def walk(obj, steps):
+        if not steps:
+            yield obj
+            return
+        step, rest = steps[0], steps[1:]
+        key = step[:-2] if step.endswith("[]") else step
+        if not isinstance(obj, dict):
+            return
+        values = list(obj.values()) if key == "*" else ([obj[key]] if key in obj else [])
+        for v in values:
+            if step.endswith("[]"):
+                for item in (v if isinstance(v, list) else []):
+                    yield from walk(item, rest)
+            else:
+                yield from walk(v, rest)
+
+    out = {}
+    for feature in contract["features"].values():
+        for field in feature["fields"]:
+            pattern, path = field.split(":", 1)
+            docs = [json.loads(p.read_text()) for p in sorted(data_dir.glob(pattern))]
+            out[field] = any(v not in (None, "", [], {}) for d in docs for v in walk(d, path.split(".")))
+    return out
+
+
+class Features(StaticTest):
+    """docs/data/index.json "features": computed from web/ui_contract.json and the exported data
+    (reference/ui/explore-v1/SPEC.md section 9)."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.contract = json.loads((ROOT / "web" / "ui_contract.json").read_text())
+        cls.present = contract_fields_present(cls.out / "data", cls.contract)
+
+    def test_features_are_what_the_contract_and_the_data_give(self):
+        want = {name: all(self.present[x] for x in f["fields"]) for name, f in self.contract["features"].items()}
+        self.assertEqual(self.index["features"], want)
+        self.assertEqual(self.index["contract_version"], self.contract["contract_version"])
+        committed = json.loads((ROOT / "docs" / "data" / "index.json").read_text())
+        self.assertEqual((committed["features"], committed["contract_version"]),
+                         (want, self.contract["contract_version"]))
+
+    def test_every_feature_names_fields_that_exist_or_is_off(self):
+        self.assertTrue(self.contract["features"])
+        for name, f in self.contract["features"].items():
+            self.assertTrue(f["fields"], f"{name} names no fields")
+            for field in f["fields"]:
+                self.assertRegex(field, r"^[\w*./-]+\.json:[^:\s]+$", name)
+            missing = [x for x in f["fields"] if not self.present[x]]
+            if missing:
+                self.assertFalse(self.index["features"][name], f"{name} is on but missing {missing}")
+
+    def test_expected_flags_today(self):
+        # SPEC section 9 at main @ #55: the figure's source is published; the accounting data (UI-0) is not
+        got = self.index["features"]
+        self.assertTrue(got["figure_source"])
+        for name in ("accounting_views", "budget_class", "defense_split"):
+            self.assertFalse(got[name], name)
+
+    def test_a_missing_field_turns_its_feature_off(self):
+        with tempfile.TemporaryDirectory() as d:
+            data = Path(d)
+            (data / "subcommittees").mkdir()
+            (data / "subcommittees" / "X.json").write_text(json.dumps(
+                {"rows": [{"budget_class": {"2026": None},
+                           "cells": {"2026|Enacted": {"views": {}}, "2026|Senate Reported": {"views": {"x": None}}}}]}))
+            got = E.features(data, {"accounts": [{"canonical_account_id": "ACC-X", "canonical_name": "X"}]})
+        self.assertFalse(got["features"]["budget_class"])          # null is not a value
+        self.assertFalse(got["features"]["accounting_views"])      # nor is a view with no amount
+        self.assertFalse(got["features"]["figure_source"])
+        self.assertTrue(got["features"]["watchlist"])
+
+
 @unittest.skipUnless(NODE, "node not installed")
 class MatcherParity(StaticTest):
     """web/match.js gives approps_store.resolve()'s answer for every query."""

@@ -17,7 +17,9 @@ that answers the same questions as approps_web.py without a server.
     (approps_store.accounts_for_matching(): canonical names + reviewed
     former names), the matching constants from accounts.py, and which data
     this is (data/staged.json: its sha256, the date it was committed, its
-    version from the workbook's Read Me).
+    version from the workbook's Read Me), and "features": per feature in
+    web/ui_contract.json, true only if every data field it reads is in the
+    export (with the contract's "contract_version").
   - Writes docs/data/subcommittees.json (the list) and, per subcommittee,
     docs/data/subcommittees/<name>.json: approps_web.subcommittee() --
     approps_store.subcommittee_grid(), the live /api/subcommittee answer.
@@ -57,6 +59,7 @@ ROOT = Path(__file__).resolve().parent
 DATA_META = '<meta name="approps-data" content="data/">'
 ZIP_LEVEL = 9                                     # the Download workbook's deflate level, fixed
 DOWNLOAD = "Approps_Pilot_Schema_Loaded.xlsx"       # docs/<this>: the page's "Download workbook" link
+CONTRACT = ROOT / "web" / "ui_contract.json"        # the data fields each page feature reads
 
 
 def reference_workbook():
@@ -117,6 +120,54 @@ def dump(obj, path, compact=False):
         path.write_text(text)
 
 
+def field_values(obj, path):
+    """Every value at a dotted path in obj (web/ui_contract.json's path_syntax): 'name[]' steps into each
+    item of a list, '*' into each value of an object (and '*[]' into each item of those)."""
+    found = [obj]
+    for step in path.split("."):
+        key, each = (step[:-2], True) if step.endswith("[]") else (step, False)
+        nxt = []
+        for o in found:
+            if not isinstance(o, dict):
+                continue
+            if key == "*":
+                nxt.extend(o.values())
+            elif key in o:
+                nxt.append(o[key])
+        if each:
+            nxt = [item for o in nxt if isinstance(o, list) for item in o]
+        found = nxt
+    return found
+
+
+def held(value):
+    """A field holds data unless it is null, empty text or an empty list/object. 0 and False hold data."""
+    return value is not None and value != "" and value != [] and value != {}
+
+
+def features(data, index):
+    """index.json's "features": a flag per feature in web/ui_contract.json, true only if every field the
+    contract lists for it holds a value somewhere in the exported data (data = out/data; index.json is the
+    dict about to be written). Computed from the export, never set by hand."""
+    contract = json.loads(CONTRACT.read_text())
+    loaded = {}
+
+    def docs(pattern):
+        if pattern == "index.json":
+            return [index]
+        if pattern not in loaded:
+            loaded[pattern] = [json.loads(p.read_text()) for p in sorted(data.glob(pattern))]
+        return loaded[pattern]
+
+    def present(field):
+        pattern, path = field.split(":", 1)
+        return any(held(v) for doc in docs(pattern) for v in field_values(doc, path))
+
+    flags = {name: bool(f["fields"]) and all(present(x) for x in f["fields"])
+             for name, f in contract["features"].items()}
+    return {"features": flags, "contract_version": contract["contract_version"]}
+
+
 def export(workbook, out, download=True):
     """download=False leaves out/DOWNLOAD as it is (see main: only CI's export job on main writes docs/'s copy)."""
     out = Path(out)
@@ -159,6 +210,7 @@ def export(workbook, out, download=True):
         "accounts": [{"canonical_account_id": a["canonical_account_id"], "canonical_name": a["canonical_name"],
                       "agency": a["agency"], "historical_names": a["historical_names"]} for a in pool],
     }
+    index.update(features(out / "data", index))
     dump(index, out / "data" / "index.json")
     page = (ROOT / "web" / "index.html").read_text()
     if "<head>" not in page:

@@ -1,0 +1,159 @@
+{
+ "contract_version": 1,
+ "spec": "reference/ui/explore-v1/SPEC.md section 9",
+ "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
+ "features": {
+  "grid": {
+   "spec_row": "Grid, states, compare modes, expand/collapse, sections",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:titles[].title",
+    "subcommittees/*.json:titles[].rows",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.outside_life",
+    "subcommittees/*.json:rows[].rollup",
+    "subcommittees/*.json:rows[].rollup_members",
+    "subcommittees/*.json:rows[].member_of",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:enactments.*.bill_id"
+   ]
+  },
+  "figure_source": {
+   "spec_row": "Click figure -> source panel",
+   "brief": "UI-2",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_table_or_section",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].url_or_identifier",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_url",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].verification_status",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].observation_id"
+   ]
+  },
+  "account_panel": {
+   "spec_row": "Account panel, history bars",
+   "brief": "UI-2",
+   "fields": [
+    "accounts/*.json:history.account.canonical_name",
+    "accounts/*.json:history.observations[].fiscal_year",
+    "accounts/*.json:history.observations[].stage",
+    "accounts/*.json:history.observations[].amount",
+    "accounts/*.json:grid.rows[].fiscal_year",
+    "accounts/*.json:grid.rows[].cells.*[].state",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].amount",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].source_document_id",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].source_page",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].bill_id",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].bill_url"
+   ]
+  },
+  "overview_panel": {
+   "spec_row": "Overview panel, largest movers",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees/*.json:titles[].total.cells.*.lines[].state",
+    "subcommittees/*.json:titles[].total.cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].rollup",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:enactments.*.bill_id",
+    "subcommittees/*.json:enactments.*.enactment_date",
+    "subcommittees/*.json:enactments.*.funding_type",
+    "subcommittees/*.json:enactments.*.vehicle_bill_id"
+   ]
+  },
+  "search_filter": {
+   "spec_row": "Search, agency filter, status filter",
+   "brief": "UI-1",
+   "fields": [
+    "index.json:accounts[].canonical_account_id",
+    "index.json:accounts[].canonical_name",
+    "index.json:accounts[].agency",
+    "index.json:accounts[].historical_names",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:rows[].cells.*.lines[].state"
+   ]
+  },
+  "interaction_state": {
+   "spec_row": "Hover, click-away, Esc, Share/URL state",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees.json:subcommittees",
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id"
+   ]
+  },
+  "abbreviations": {
+   "spec_row": "Abbreviations (display-only label map in web/, keyed by canonical_account_id)",
+   "brief": "UI-1",
+   "fields": [
+    "index.json:accounts[].canonical_account_id"
+   ]
+  },
+  "export_csv": {
+   "spec_row": "Export CSV",
+   "brief": "UI-4",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].observation_id"
+   ]
+  },
+  "phone": {
+   "spec_row": "Phone list and sheet",
+   "brief": "UI-P",
+   "fields": [
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_url"
+   ]
+  },
+  "accounting_views": {
+   "spec_row": "Amount basis, timing, Exclude earmarks",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views.*"
+   ]
+  },
+  "budget_class": {
+   "spec_row": "Account type filter, \"incl. mandatory\" tags, \"Appropriated mandatory\" sub-group",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].budget_class.*"
+   ]
+  },
+  "defense_split": {
+   "spec_row": "Defense / nondefense column",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.components.defense_portion"
+   ]
+  },
+  "watchlist": {
+   "spec_row": "Watch (browser storage only; no alerts or email)",
+   "brief": "UI-6",
+   "fields": [
+    "index.json:accounts[].canonical_account_id",
+    "index.json:accounts[].canonical_name"
+   ]
+  }
+ }
+}

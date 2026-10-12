@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explore — phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; display: flex; flex-direction: column; background: #f6f5f1; color: #1b1f27; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.4">
+
+<header style="flex: 0 0 auto; background: #16213a; color: #ffffff; display: flex; align-items: center; justify-content: space-between; padding: 0 8px 0 16px; height: 52px">
+<div style="font-weight: 700; font-size: 16px">Appropriations Intelligence</div>
+<button type="button" aria-label="Menu" style="width: 44px; height: 44px; border: 0; background: transparent; color: #ffffff; cursor: pointer"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h14"></path></svg></button>
+</header>
+
+<div style="flex: 0 0 auto; background: #ffffff; border-bottom: 1px solid #e3e5ea; display: flex; gap: 8px; padding: 8px 12px; align-items: center">
+<button type="button" style="flex: 1 1 auto; min-width: 0; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 12px; border: 1px solid #c9ced8; border-radius: 8px; background: #ffffff; font: inherit; font-size: 15px; color: #1b1f27; cursor: pointer"><span style="font-weight: 600">Labor-HHS · FY2026</span><span aria-hidden="true" style="color: #5b6372">▾</span></button>
+<button type="button" aria-label="Search" style="flex: 0 0 auto; width: 44px; height: 44px; border: 1px solid #c9ced8; border-radius: 8px; background: #ffffff; color: #1b1f27; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8" cy="8" r="5.5"></circle><path d="M12.2 12.2L16 16"></path></svg></button>
+<button type="button" aria-label="Filter" style="flex: 0 0 auto; width: 44px; height: 44px; border: 1px solid #c9ced8; border-radius: 8px; background: #ffffff; color: #1b1f27; cursor: pointer"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4h12M4.5 8h7M7 12h2"></path></svg></button>
+</div>
+
+<div style="flex: 1 1 auto; overflow: auto">
+<div style="margin: 12px; background: #ffffff; border: 1px solid #e3e5ea; border-radius: 12px; padding: 14px 16px">
+<div style="font-size: 12px; color: #5b6372">Title II enacted, FY2026 · as printed</div>
+<div style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">$1.55T</div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; font-variant-numeric: tabular-nums">
+<span style="color: #1d6b3a">+$252.71B (+19.4%) vs FY2025</span>
+<span style="color: #1d6b3a">+$31.73B (+2.1%) vs request</span>
+</div>
+</div>
+
+<div style="position: sticky; top: 0; z-index: 2; background: #f6f5f1; padding: 4px 12px 8px">
+<div role="group" aria-label="Stage shown" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid #c9ced8; border-radius: 8px; overflow: hidden; background: #ffffff">
+<sc-for list="{{stages}}" as="s" hint-placeholder-count="4"><button type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}" style="{{s.style}}">{{s.label}}</button></sc-for>
+</div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 6px">{{stageNote}}</div>
+</div>
+
+<div style="background: #ffffff; border-top: 1px solid #e3e5ea; border-bottom: 1px solid #e3e5ea">
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="10">
+<div style="{{r.rowStyle}}">
+<sc-if value="{{r.hasCaret}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.toggle}}" aria-expanded="{{r.expanded}}" aria-label="{{r.caretLabel}}" style="flex: 0 0 auto; width: 36px; height: 44px; border: 0; background: transparent; color: #5b6372; cursor: pointer; font: inherit; font-size: 12px">{{r.caret}}</button></sc-if>
+<sc-if value="{{r.isMore}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.more}}" style="flex: 1 1 auto; min-height: 44px; border: 0; background: transparent; text-align: left; padding: 0; font: inherit; font-size: 13px; color: #1f4e8c; cursor: pointer">{{r.name}}</button></sc-if>
+<sc-if value="{{r.isLine}}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{r.open}}" style="{{r.btnStyle}}">
+<span style="min-width: 0; flex: 1 1 auto"><span style="{{r.nameStyle}}">{{r.name}}</span><sc-if value="{{r.hasTag}}" hint-placeholder-val="{{ false }}"><span style="{{r.tagStyle}}">{{r.tag}}</span></sc-if><sc-if value="{{r.hasNote}}" hint-placeholder-val="{{ false }}"><span style="display: block; font-size: 12px; color: #5b6372; font-weight: 400">{{r.note}}</span></sc-if></span>
+<span style="flex: 0 0 auto; text-align: right; font-variant-numeric: tabular-nums"><span style="{{r.valStyle}}">{{r.val}}</span><span style="{{r.chgStyle}}">{{r.chg}}</span></span>
+</button>
+</sc-if>
+</div>
+</sc-for>
+</div>
+
+<div style="padding: 14px 16px 24px; font-size: 12px; color: #5b6372">
+<div>Short figures here; exact $ thousands and sources open when you tap an account. — not funded · blank = outside the account's life.</div>
+<a href="#" style="display: inline-block; margin-top: 10px; color: #1f4e8c; font-size: 13px">Open the full table (best on a larger screen)</a>
+</div>
+</div>
+
+<sc-if value="{{sheetOpen}}" hint-placeholder-val="{{ false }}">
+<div style="position: absolute; inset: 0; z-index: 10; background: rgba(22,33,58,0.4)">
+<div role="dialog" aria-label="National Cancer Institute" style="position: absolute; left: 0; right: 0; bottom: 0; height: 760px; background: #ffffff; border-radius: 16px 16px 0 0; display: flex; flex-direction: column; box-shadow: 0 -8px 24px rgba(22,33,58,0.2)">
+<div style="flex: 0 0 auto; padding: 8px 16px 0">
+<div aria-hidden="true" style="width: 40px; height: 4px; border-radius: 2px; background: #c9ced8; margin: 0 auto 8px"></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start">
+<div>
+<div style="font-size: 12px; color: #5b6372">Title II › National Institutes of Health</div>
+<div style="font-size: 19px; font-weight: 600; letter-spacing: -0.01em">National Cancer Institute</div>
+</div>
+<button type="button" onClick="{{closeSheet}}" aria-label="Close" style="flex: 0 0 auto; width: 44px; height: 44px; border: 1px solid #d5d9e1; background: #ffffff; border-radius: 22px; cursor: pointer; font: inherit; font-size: 18px">×</button>
+</div>
+</div>
+<div style="flex: 1 1 auto; overflow: auto; padding: 4px 16px 20px">
+<div style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 6px">$7.35B</div>
+<div style="font-size: 13px; color: #3a4150; font-variant-numeric: tabular-nums">7,352,159 in $ thousands · FY2026 enacted, as printed</div>
+<div style="font-size: 13px; color: #1d6b3a; margin-top: 2px; font-variant-numeric: tabular-nums">+$128.0M (+1.8%) vs FY2025 enacted (full-year CR)</div>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 16px 0 2px">FY2026 by stage, with sources</div>
+<sc-for list="{{sheetStages}}" as="s" hint-placeholder-count="5">
+<div style="padding: 10px 0; border-bottom: 1px solid #eef0f3">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums"><span style="color: #3a4150">{{s.label}}</span><span style="font-weight: 600">{{s.val}}</span></div>
+<div style="font-size: 12px; margin-top: 2px"><a href="{{s.docHref}}" style="color: #1f4e8c">{{s.doc}}</a><span style="color: #5b6372"> · {{s.page}} · </span><a href="{{s.billHref}}" style="color: #1f4e8c">{{s.bill}}</a></div>
+</div>
+</sc-for>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 16px 0 8px">Enacted, FY2017–FY2026</div>
+<div role="img" aria-label="Enacted history, rising from 5,389,329 in FY2017 to 7,352,159 in FY2026; FY2025 was a full-year continuing resolution" style="display: flex; align-items: flex-end; gap: 5px; height: 70px; border-bottom: 1px solid #c9ced8">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="10"><div style="{{b.style}}"></div></sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #5b6372; margin-top: 4px"><span>FY2017</span><span>FY2025 lighter = CR</span><span>FY2026</span></div>
+<div style="display: flex; gap: 8px; margin-top: 18px">
+<a href="#" style="flex: 1 1 auto; display: flex; align-items: center; justify-content: center; height: 48px; background: #1f4e8c; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: 600">Open account page</a>
+<button type="button" style="height: 48px; padding: 0 18px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">Watch</button>
+</div>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scene":{"editor":"enum","options":["list","sheet"],"default":"list"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sc = props.scene || 'list';
+    this.state = { stage: 4, expanded: { nih: true }, showAll: {}, sheet: sc === 'sheet' };
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var short = function (k) {
+      var a = Math.abs(k) * 1000, s = k < 0 ? '−' : '';
+      if (a >= 1e12) return s + '$' + (a / 1e12).toFixed(2) + 'T';
+      if (a >= 1e9) return s + '$' + (a / 1e9).toFixed(2) + 'B';
+      return s + '$' + (a / 1e6).toFixed(1) + 'M';
+    };
+    var pct = function (a, b) { var p = (a - b) / Math.abs(b) * 100; return (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(1) + '%'; };
+
+    var AG = [
+      ['hrsa', 'Health Resources and Services Administration', [8286229, 6371802, 7405460, 9133562, 9220107], ''],
+      ['cdc', 'Centers for Disease Control and Prevention', [7992946, 5094944, 6082505, 7710771, 7761672], ''],
+      ['nih', 'National Institutes of Health', [46888518, 29045186, 46479998, 47288518, 47288518], ''],
+      ['samhsa', 'Substance Abuse and Mental Health Services Administration', [7228639, 5562611, 6932188, 7283250, 7293950], ''],
+      ['ahrq', 'Agency for Healthcare Research and Quality', [369000, 0, 0, 345380, 345380], ''],
+      ['cms', 'Centers for Medicare & Medicaid Services', [1171040963, 1422885907, 1422895907, 1423091260, 1423091260], 'incl. mandatory'],
+      ['acf', 'Administration for Children and Families', [51897205, 45469350, 50326744, 52240075, 51736248], 'incl. mandatory'],
+      ['acl', 'Administration for Community Living', [2491074, 2443100, 2480432, 2500979, 2508979], ''],
+      ['aspr', 'Administration for Strategic Preparedness and Response', [3634606, 2825880, 3509606, 3616597, 3692597], ''],
+      ['os', 'Office of the Secretary', [1863720, 2235195, 1803141, 1883116, 1918646], '']
+    ];
+    var MEM = {
+      nih: [
+        ['nci', 'National Cancer Institute', [7224159, 4530833, 7272159, 7374159, 7352159]],
+        ['', 'National Heart, Lung, and Blood Institute', [3982345, 0, 3990345, 3982345, 3990345]],
+        ['', 'National Institute of Allergy and Infectious Diseases', [6562279, 4174965, 6582279, 6592279, 6585279]],
+        ['', 'National Institute on Aging', [4507623, 2686541, 4507623, 4557623, 4517623]],
+        ['', 'National Institute of Neurological Disorders and Stroke', [2603925, 0, 2633925, 2773925, 2804925]],
+        ['', 'National Institute of Diabetes and Digestive and Kidney Diseases', [2310721, 0, 2330721, 2320721, 2326721]],
+        ['', 'Office of the Director', [2605514, 1650062, 2441514, 2460514, 2475514]],
+        ['', 'National Institute of Mental Health', [2187843, 0, 2187843, 2193843, 2189843]],
+        ['', 'National Institute of General Medical Sciences', [1832197, 3427297, 1900677, 1832197, 1842197]],
+        ['', 'Eunice Kennedy Shriver National Institute of Child Health and Human Development', [1759078, 0, 1759078, 1779078, 1769078]],
+        ['', 'National Institute on Drug Abuse', [1662695, 0, 1662695, 1662695, 1662695]],
+        ['', 'Advanced Research Projects Agency for Health', [1500000, 945000, 945000, 1500000, 1500000]],
+        ['', 'National Center for Advancing Translational Sciences', [928323, 0, 928323, 938323, 942323]],
+        ['', 'National Institute of Environmental Health Sciences', [913979, 594086, 913979, 913979, 913979]],
+        ['', 'National Eye Institute', [896549, 0, 896549, 896549, 896549]],
+        ['', 'National Institute of Arthritis and Musculoskeletal and Skin Diseases', [685465, 0, 685465, 685465, 685465]],
+        ['', 'National Human Genome Research Institute', [663200, 0, 663200, 663200, 663200]],
+        ['', 'National Institute on Alcohol Abuse and Alcoholism', [595318, 0, 595318, 595318, 595318]],
+        ['', 'National Institute on Minority Health and Health Disparities', [534395, 0, 544395, 534395, 538395]],
+        ['', 'National Institute on Deafness and Other Communication Disorders', [534333, 0, 534333, 534333, 534333]],
+        ['', 'National Institute of Dental and Craniofacial Research', [520163, 0, 525163, 520163, 525163]],
+        ['', 'National Library of Medicine', [497548, 0, 497548, 497548, 497548]],
+        ['', 'National Institute of Biomedical Imaging and Bioengineering', [440627, 0, 440627, 440627, 440627]],
+        ['', 'Buildings and Facilities', [350000, 210000, 352000, 350000, 350000]],
+        ['', 'NIH Innovation Account, CURES Act', [127000, 226000, 226000, 226000, 226000]],
+        ['', 'National Institute of Nursing Research', [197693, 0, 197693, 197693, 197693]],
+        ['', 'National Center for Complementary and Integrative Health', [170384, 0, 170384, 170384, 170384]],
+        ['', 'John E. Fogarty International Center', [95162, 0, 95162, 95162, 95162]],
+        ['', 'National Institute on Body Systems Research', ['out', 4152062, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute on Neuroscience and Brain Research', ['out', 2347472, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute for Child and Women’s Health, Sensory Disorders and Communication', ['out', 1413630, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute of Behavioral Health', ['out', 2687238, 'miss', 'miss', 'out'], 'proposed']
+      ],
+      cms: [
+        ['', 'Program Management', [3669744, 3464391, 3474391, 3669744, 3669744]],
+        ['', 'Health Care Fraud and Abuse Control Account', [941000, 941000, 941000, 941000, 941000]],
+        ['', 'Grants to States for Medicaid', [383609399, 508148791, 508148791, 508148791, 508148791], 'mandatory'],
+        ['', 'Payments to the Health Care Trust Funds', [521757000, 593817000, 593817000, 593817000, 593817000], 'mandatory']
+      ]
+    };
+    var S = st.stage;
+    var STN = ['', 'Request', 'House', 'Senate', 'Enacted'];
+    var valOf = function (v) {
+      if (typeof v === 'number' && v !== 0) return short(v);
+      if (v === 0 || v === 'nf') return '—';
+      if (v === 'miss') return 'missing';
+      return '';
+    };
+    var chgOf = function (vals) {
+      var a = vals[S], b = vals[0];
+      if (typeof a !== 'number' || typeof b !== 'number' || b === 0 || a === 0) return { t: '', c: '#5b6372' };
+      return { t: pct(a, b), c: a > b ? '#1d6b3a' : (a < b ? '#b3471b' : '#5b6372') };
+    };
+    var tagStyle = function (t) { return t === 'proposed' ? 'margin-left: 6px; font-size: 11px; color: #7a4b00; background: #fdf1d8; border-radius: 4px; padding: 1px 6px; white-space: nowrap' : 'margin-left: 6px; font-size: 11px; color: #4b3f72; background: #eeeaf8; border-radius: 4px; padding: 1px 6px; white-space: nowrap'; };
+    var rows = [];
+    var line = function (o) {
+      var c = o.vals ? chgOf(o.vals) : { t: '', c: '' };
+      var mem = o.level === 'member';
+      var bg = o.bg || '#ffffff';
+      return {
+        isLine: true, isMore: false,
+        rowStyle: 'display: flex; align-items: center; min-height: 52px; border-bottom: 1px solid ' + (mem ? '#f0f1f4' : '#e3e5ea') + '; padding-left: ' + (o.pad || 0) + 'px; padding-right: 14px; background: ' + (mem ? 'linear-gradient(#b9c6dc, #b9c6dc) 22px 0 / 2px 100% no-repeat, ' + bg : bg) + ';',
+        hasCaret: !!o.toggle, toggle: o.toggle, expanded: o.isOpen ? 'true' : 'false', caret: o.isOpen ? '▾' : '▸', caretLabel: (o.isOpen ? 'Collapse ' : 'Expand ') + o.name,
+        open: o.open,
+        btnStyle: 'flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 8px 0; text-align: left; font: inherit; color: inherit; cursor: ' + (o.open ? 'pointer' : 'default') + ';',
+        name: o.name, nameStyle: mem ? 'font-size: 13px; color: #3a4150;' + (o.open ? ' text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px;' : '') : 'font-size: 14px; font-weight: 600; color: #1b1f27;',
+        hasTag: !!o.tag, tag: o.tag, tagStyle: tagStyle(o.tag),
+        hasNote: !!o.note, note: o.note,
+        val: o.vals ? valOf(o.vals[S]) : '',
+        valStyle: 'display: block; ' + (mem ? 'font-size: 13px; color: #4a5160;' : 'font-size: 15px; font-weight: 600; color: #1b1f27;'),
+        chg: c.t, chgStyle: 'display: block; font-size: 12px; color: ' + c.c + ';' + (mem ? '' : ' font-weight: 600;')
+      };
+    };
+    AG.forEach(function (a) {
+      var has = !!MEM[a[0]], open = !!st.expanded[a[0]];
+      var count = has ? MEM[a[0]].length : 0;
+      rows.push(line({ name: a[1], vals: a[2], tag: a[3], level: 'agency', pad: has ? 0 : 36, bg: open ? '#eef1f6' : '#ffffff', isOpen: open, note: open ? 'Agency total · sum of the ' + count + ' lines below' : '', toggle: has ? function () { var e = Object.assign({}, self.state.expanded); e[a[0]] = !e[a[0]]; self.setState({ expanded: e }); } : null }));
+      if (has && open) {
+        var list = MEM[a[0]];
+        var limit = st.showAll[a[0]] ? list.length : 6;
+        list.slice(0, limit).forEach(function (m) {
+          rows.push(line({ name: m[1], vals: m[2], tag: m[3] || '', level: 'member', pad: 36, open: m[0] === 'nci' ? function () { self.setState({ sheet: true }); } : null }));
+        });
+        if (list.length > limit) {
+          rows.push({ isLine: false, isMore: true, hasCaret: false, name: 'Show ' + (list.length - limit) + ' more ' + a[0].toUpperCase() + ' lines', more: function () { var s = Object.assign({}, self.state.showAll); s[a[0]] = true; self.setState({ showAll: s }); }, rowStyle: 'display: flex; align-items: center; min-height: 48px; padding-left: 36px; border-bottom: 1px solid #e3e5ea; background: linear-gradient(#b9c6dc, #b9c6dc) 22px 0 / 2px 100% no-repeat, #ffffff;' });
+        }
+      }
+    });
+    rows.push(line({ name: 'Administration for a Healthy America', vals: ['out', 574803, 'nf', 'nf', 'out'], tag: 'proposed', level: 'agency', pad: 36 }));
+
+    var stages = [1, 2, 3, 4].map(function (k) {
+      var on = S === k;
+      return { label: STN[k], pressed: on ? 'true' : 'false', pick: function () { self.setState({ stage: k }); },
+        style: 'height: 40px; border: 0; border-right: ' + (k < 4 ? '1px solid #c9ced8' : '0') + '; font: inherit; font-size: 13px; cursor: pointer; background: ' + (on ? '#1f4e8c' : '#ffffff') + '; color: ' + (on ? '#ffffff' : '#1b1f27') + '; font-weight: ' + (on ? '600' : '400') + ';' };
+    });
+    var bars = [5389329, 5664800, 5743892, 6245442, 6364852, 6718522, 7104159, 7224159, 7224159, 7352159].map(function (v, i) {
+      return { style: 'flex: 1 1 0; height: ' + Math.round(v / 7352159 * 66) + 'px; background: ' + (i === 8 ? '#a9bfe0' : '#2f5d9e') + '; border-radius: 3px 3px 0 0;' };
+    });
+    return {
+      stages: stages,
+      stageNote: 'Showing FY2026 ' + STN[S] + ' · % change vs FY2025 enacted · tap a line for sources',
+      rows: rows,
+      sheetOpen: st.sheet,
+      closeSheet: function () { self.setState({ sheet: false }); },
+      sheetStages: [
+        { label: 'FY2025 enacted (CR)', val: '7,224,159', doc: 'H.Rept. 119-271', page: 'p. 343', bill: 'P.L. 119-4', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/PLAW-119publ4/pdf/PLAW-119publ4.pdf' },
+        { label: 'Request', val: '4,530,833', doc: 'H.Rept. 119-271', page: 'p. 343', bill: 'Budget Appendix', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf' },
+        { label: 'House', val: '7,272,159', doc: 'H.Rept. 119-271', page: 'p. 343', bill: 'H.R. 5304', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf' },
+        { label: 'Senate', val: '7,374,159', doc: 'S.Rept. 119-55', page: 'p. 434', bill: 'S. 2587', docHref: 'https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf' },
+        { label: 'Enacted', val: '7,352,159', doc: 'Explanatory statement', page: 'p. 285', bill: 'P.L. 119-75, Div. B', docHref: 'https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf', billHref: 'https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf' }
+      ],
+      bars: bars
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -144,3 +144,20 @@ Made in this phase (flag any you disagree with):
    scopes with no computed view, 25 account_not_held, 1 with no component tagged.
 6. Carried over: four ambiguous text-check figures; 55 untagged pilot phrases; auto-tagging beyond the pilot; the
    FY2024 explanatory statement is not held.
+
+## UI-R: design reference and data-gated features (2026-10-12)
+
+- `reference/ui/explore-v1/` committed as given (SPEC.md is the build target for every Explore UI brief).
+- `web/ui_contract.json` (contract_version 1): one entry per SPEC section 9 row, each with the
+  `<file glob>:<dotted path>` fields it reads. `export_static.features()` writes `features` + `contract_version`
+  into `docs/data/index.json`; a flag is true only if every listed field holds a non-null, non-empty value.
+- Today: figure_source, grid, account_panel, overview_panel, search_filter, interaction_state, abbreviations,
+  export_csv, phone, watchlist true; accounting_views, budget_class, defense_split false.
+- Briefs (owner): grid, search_filter, overview_panel, interaction_state, abbreviations UI-1; figure_source,
+  account_panel UI-2; phone UI-P; accounting_views, budget_class, defense_split UI-0 / UI-3; export_csv UI-4;
+  watchlist UI-6.
+- UI-0 paths (owner, 2026-10-12): contract_version 1 keeps the proposed paths (`rows[].cells.*.views.*`,
+  `rows[].budget_class.*`, `rows[].cells.*.components.defense_portion`) for now. UI-0 will move budget_class to
+  `rows[].attributes.*.budget_class` and defense to `rows[].cells.*.defense_portion` in web/ui_contract.json and
+  bump contract_version.
+  The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).

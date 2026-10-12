@@ -799,6 +799,22 @@
    "historical_names": []
   }
  ],
+ "contract_version": 1,
+ "features": {
+  "abbreviations": true,
+  "account_panel": true,
+  "accounting_views": false,
+  "budget_class": false,
+  "defense_split": false,
+  "export_csv": true,
+  "figure_source": true,
+  "grid": true,
+  "interaction_state": true,
+  "overview_panel": true,
+  "phone": true,
+  "search_filter": true,
+  "watchlist": true
+ },
  "matching": {
   "accept_max_distance": 2,
   "accept_max_fraction": 0.15,

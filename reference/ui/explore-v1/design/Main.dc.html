@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explore — Labor-HHS-Education FY2026</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Condensed:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+</style>
+</helmet>
+<div onClick="{{clickAway}}" onKeyDown="{{escAway}}" style="font-family: 'IBM Plex Sans', system-ui, sans-serif; color: #1b1f27; background: #f6f5f1; min-height: 1040px; font-size: 14px; line-height: 1.4">
+
+<header style="background: #16213a; color: #ffffff; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; padding: 0 24px; min-height: 56px">
+<div style="font-weight: 700; font-size: 17px; letter-spacing: -0.01em; padding: 14px 0">Appropriations Intelligence</div>
+<nav aria-label="Main" style="display: flex; gap: 4px; flex-wrap: wrap">
+<a href="#" style="color: #ffffff; text-decoration: none; padding: 16px 10px 13px; border-bottom: 3px solid #8fb3ec; font-weight: 600">Explore</a>
+<a href="#" style="color: #c9d2e3; text-decoration: none; padding: 16px 10px 13px; border-bottom: 3px solid transparent">Find changes</a>
+<a href="#" style="color: #c9d2e3; text-decoration: none; padding: 16px 10px 13px; border-bottom: 3px solid transparent">Sources</a>
+</nav>
+</header>
+
+<section aria-label="Controls" style="background: #ffffff; border-bottom: 1px solid #e3e5ea; padding: 14px 24px; position: relative">
+<div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+<label style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 260px; min-width: 0; font-size: 12px; color: #5b6372; font-weight: 500">Search
+<input type="search" placeholder="Account, agency or program" style="height: 44px; box-sizing: border-box; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 12px; font: inherit; font-size: 15px; color: #1b1f27; background: #ffffff">
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; flex: 0 1 230px; font-size: 12px; color: #5b6372; font-weight: 500">Subcommittee
+<select style="height: 44px; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #1b1f27; background: #ffffff"><option>Labor-HHS-Education</option><option>Commerce-Justice-Science</option></select>
+</label>
+<label style="display: flex; flex-direction: column; gap: 4px; flex: 0 1 120px; font-size: 12px; color: #5b6372; font-weight: 500">Fiscal year
+<select style="height: 44px; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #1b1f27; background: #ffffff"><option>FY2026</option><option>FY2027</option><option>FY2025</option><option>FY2024</option></select>
+</label>
+<div style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #5b6372; font-weight: 500">Compare
+<div role="group" aria-label="Compare" style="display: flex; border: 1px solid #c9ced8; border-radius: 8px; overflow: hidden; height: 44px">
+<sc-for list="{{compares}}" as="m" hint-placeholder-count="3">
+<button type="button" aria-pressed="{{m.pressed}}" onClick="{{m.pick}}" style="{{m.style}}">{{m.label}}</button>
+</sc-for>
+</div>
+</div>
+<button type="button" onClick="{{toggleFilter}}" aria-expanded="{{filterExpanded}}" style="{{filterBtnStyle}}">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4h12M4.5 8h7M7 12h2"></path></svg>
+Filter
+<sc-if value="{{hasFilterCount}}" hint-placeholder-val="{{ false }}"><span style="background: #1f4e8c; color: #ffffff; border-radius: 10px; padding: 0 7px; font-size: 12px; line-height: 20px">{{filterCount}}</span></sc-if>
+</button>
+</div>
+
+<sc-if value="{{hasChips}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; font-size: 13px">
+<span style="color: #5b6372">Applied:</span>
+<sc-for list="{{chips}}" as="ch" hint-placeholder-count="1">
+<span style="display: inline-flex; align-items: center; gap: 6px; background: #e9eff9; color: #16325f; border: 1px solid #c3d3ee; border-radius: 16px; padding: 3px 4px 3px 12px">{{ch.label}}<button type="button" onClick="{{ch.clear}}" aria-label="{{ch.aria}}" style="border: 0; background: transparent; color: #16325f; width: 26px; height: 26px; border-radius: 13px; cursor: pointer; font: inherit; font-size: 15px">×</button></span>
+</sc-for>
+<button type="button" onClick="{{clearAll}}" style="border: 0; background: transparent; color: #1f4e8c; text-decoration: underline; font: inherit; font-size: 13px; cursor: pointer; padding: 6px">Clear all</button>
+</div>
+</sc-if>
+
+<sc-if value="{{filterOpen}}" hint-placeholder-val="{{ false }}">
+<div data-keep="1" role="dialog" aria-label="Filter" style="position: absolute; z-index: 20; top: 86px; right: 24px; width: 440px; max-width: calc(100% - 48px); max-height: 700px; overflow: auto; background: #ffffff; border: 1px solid #d5d9e1; border-radius: 12px; box-shadow: 0 12px 32px rgba(22,33,58,0.18); padding: 20px; box-sizing: border-box">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px">
+<div style="font-weight: 600; font-size: 16px">Filter</div>
+<button type="button" onClick="{{toggleFilter}}" aria-label="Close filter" style="border: 1px solid #d5d9e1; background: #ffffff; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font: inherit">×</button>
+</div>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: #3a4150; margin-bottom: 16px">Agency
+<select value="{{agencyVal}}" onChange="{{onAgency}}" style="height: 44px; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px; color: #1b1f27; background: #ffffff">
+<sc-for list="{{agencyOptions}}" as="o" hint-placeholder-count="5"><option value="{{o.value}}">{{o.label}}</option></sc-for>
+</select>
+</label>
+<div style="font-size: 13px; font-weight: 500; color: #3a4150; margin-bottom: 6px">Account type</div>
+<div role="group" aria-label="Account type" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px">
+<sc-for list="{{typeOpts}}" as="o" hint-placeholder-count="4"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+</div>
+<div style="font-size: 13px; font-weight: 500; color: #3a4150; margin-bottom: 6px">Status in FY2026</div>
+<div role="group" aria-label="Status" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px">
+<sc-for list="{{statusOpts}}" as="o" hint-placeholder-count="4"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+</div>
+
+<button type="button" onClick="{{toggleAdv}}" aria-expanded="{{advExpanded}}" style="width: 100%; display: flex; justify-content: space-between; align-items: center; border: 0; border-top: 1px solid #e3e5ea; background: transparent; padding: 14px 0 6px; font: inherit; cursor: pointer; text-align: left">
+<span><span style="font-weight: 600; font-size: 14px; color: #1b1f27">Advanced</span><span style="display: block; font-size: 12px; color: #5b6372; margin-top: 2px">{{advSummary}}</span></span>
+<span aria-hidden="true" style="color: #5b6372; font-size: 13px">{{advCaret}}</span>
+</button>
+<sc-if value="{{advOpen}}" hint-placeholder-val="{{ false }}">
+<div style="padding-top: 10px">
+<div style="font-size: 13px; font-weight: 500; color: #3a4150; margin-bottom: 6px">Amount basis</div>
+<div role="group" aria-label="Amount basis" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px">
+<sc-for list="{{bases}}" as="b" hint-placeholder-count="5">
+<button type="button" aria-pressed="{{b.pressed}}" onClick="{{b.pick}}" style="{{b.style}}"><span style="display: block; font-weight: 600; font-size: 13px">{{b.label}}</span><span style="display: block; font-size: 12px; color: #5b6372; margin-top: 2px">{{b.def}}</span></button>
+</sc-for>
+</div>
+<div style="font-size: 13px; font-weight: 500; color: #3a4150; margin-bottom: 6px">Advance appropriations count</div>
+<div role="group" aria-label="Timing" style="display: flex; gap: 6px; margin-bottom: 14px">
+<sc-for list="{{timings}}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+</div>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 14px">
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #5b6372">Change of at least (%)<input type="text" inputmode="decimal" placeholder="e.g. 10" style="height: 40px; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px"></label>
+<label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #5b6372">or at least ($K)<input type="text" inputmode="decimal" placeholder="e.g. 50,000" style="height: 40px; border: 1px solid #c9ced8; border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px"></label>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #3a4150">
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" style="width: 18px; height: 18px"> Exclude earmarks (CDS / CPF)</label>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" style="width: 18px; height: 18px"> Include committee drafts</label>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" style="width: 18px; height: 18px"> Show ended and reorganized accounts</label>
+<label style="display: flex; gap: 8px; align-items: center"><input type="checkbox" style="width: 18px; height: 18px"> Only figures pending review or flagged</label>
+</div>
+</div>
+</sc-if>
+<div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3e5ea">
+<button type="button" onClick="{{clearAll}}" style="height: 44px; padding: 0 16px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">Reset</button>
+<button type="button" onClick="{{toggleFilter}}" style="height: 44px; padding: 0 22px; border: 0; background: #1f4e8c; color: #ffffff; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer">Done</button>
+</div>
+</div>
+</sc-if>
+</section>
+
+<main style="padding: 20px 24px 28px; position: relative">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 14px">
+<div style="min-width: 0">
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 500">Labor-HHS-Education · Title II · FY2026</div>
+<h1 style="margin: 2px 0 0; font-size: 24px; letter-spacing: -0.015em; font-weight: 600">{{heading}}</h1>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; position: relative">
+<span style="font-size: 13px; color: #3a4150; background: #ebe9e2; border-radius: 6px; padding: 5px 10px">{{unitBasisLabel}}</span>
+<button type="button" onClick="{{toggleView}}" aria-expanded="{{viewExpanded}}" style="height: 40px; padding: 0 14px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">View ▾</button>
+<button type="button" onClick="{{share}}" style="height: 40px; padding: 0 14px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">{{shareLabel}}</button>
+<button type="button" style="height: 40px; padding: 0 16px; border: 0; background: #1f4e8c; color: #ffffff; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer">Export</button>
+<sc-if value="{{viewOpen}}" hint-placeholder-val="{{ false }}">
+<div data-keep="1" role="dialog" aria-label="View options" style="position: absolute; z-index: 15; top: 48px; right: 0; width: 290px; background: #ffffff; border: 1px solid #d5d9e1; border-radius: 12px; box-shadow: 0 12px 32px rgba(22,33,58,0.18); padding: 16px; box-sizing: border-box">
+<div style="font-size: 12px; font-weight: 500; color: #5b6372; margin-bottom: 6px">Units</div>
+<div role="group" aria-label="Units" style="display: flex; gap: 6px; margin-bottom: 14px">
+<sc-for list="{{unitOpts}}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+</div>
+<div style="font-size: 12px; font-weight: 500; color: #5b6372; margin-bottom: 6px">Density</div>
+<div role="group" aria-label="Density" style="display: flex; gap: 6px; margin-bottom: 14px">
+<sc-for list="{{densityOpts}}" as="o" hint-placeholder-count="2"><button type="button" aria-pressed="{{o.pressed}}" onClick="{{o.pick}}" style="{{o.style}}">{{o.label}}</button></sc-for>
+</div>
+<div style="font-size: 12px; font-weight: 500; color: #5b6372; margin-bottom: 6px">Columns</div>
+<button type="button" aria-pressed="{{reqColPressed}}" onClick="{{toggleReqCol}}" style="{{reqColStyle}}">{{reqColLabel}}</button>
+<div style="border-top: 1px solid #e3e5ea; margin-top: 14px; padding-top: 12px; display: flex; flex-direction: column; gap: 8px">
+<button type="button" onClick="{{toggleAll}}" style="height: 40px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">{{expandAllLabel}}</button>
+<button type="button" aria-pressed="{{reviewerPressed}}" onClick="{{toggleReviewer}}" style="{{reviewerStyle}}">{{reviewerLabel}}</button>
+</div>
+</div>
+</sc-if>
+</div>
+</div>
+
+<sc-if value="{{basisNotice}}" hint-placeholder-val="{{ false }}">
+<div style="background: #fff7e6; border: 1px solid #f0d49a; color: #6b4a00; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px">{{basisNoticeText}}</div>
+</sc-if>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start">
+<div data-keep="1" onMouseLeave="{{clearHover}}" style="flex: 999 1 600px; min-width: 0; height: 660px; overflow: auto; background: #ffffff; border: 1px solid #dfe2e8; border-radius: 10px; scrollbar-gutter: stable">
+<div style="{{tableStyle}}">
+<div style="position: sticky; top: 0; z-index: 3; background: #fbfbfa; border-bottom: 1px solid #d5d9e1">
+<div style="{{head1Style}}">
+<div style="position: sticky; left: 0; z-index: 4; background: #fbfbfa; border-right: 1px solid #e3e5ea"></div>
+<div style="padding: 10px 12px 2px; text-align: right; font-weight: 600; font-size: 13px">FY2025</div>
+<div style="grid-column: span 4; padding: 10px 12px 2px; text-align: center; font-weight: 600; font-size: 13px; border-left: 1px solid #e3e5ea">FY2026</div>
+<div style="{{changeHeadStyle}}">Change vs</div>
+</div>
+<div style="{{head2Style}}">
+<div style="position: sticky; left: 0; z-index: 4; background: #fbfbfa; border-right: 1px solid #e3e5ea; padding: 4px 12px 10px 16px; font-weight: 600; font-size: 13px; display: flex; align-items: flex-end">Account</div>
+<div style="{{hs.h0}}">Enacted (CR)</div>
+<div style="{{hs.h1}}">Request</div>
+<div style="{{hs.h2}}">House</div>
+<div style="{{hs.h3}}">Senate</div>
+<div style="{{hs.h4}}">Enacted</div>
+<div style="{{hs.h5}}">FY2025 enacted</div>
+<sc-if value="{{showReq}}" hint-placeholder-val="{{ false }}"><div style="{{hs.h6}}">FY2026 request</div></sc-if>
+</div>
+</div>
+
+<sc-for list="{{rows}}" as="r" hint-placeholder-count="12">
+<div style="{{r.rowStyle}}">
+<div style="{{r.nameCellStyle}}" onMouseEnter="{{r.enterName}}">
+<sc-if value="{{r.hasCaret}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.toggle}}" aria-expanded="{{r.expanded}}" aria-label="{{r.caretLabel}}" style="flex: 0 0 auto; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: #5b6372; cursor: pointer; font: inherit; font-size: 12px">{{r.caret}}</button></sc-if>
+<span style="min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px">
+<sc-if value="{{r.clickable}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{r.open}}" style="{{r.linkStyle}}">{{r.name}}</button></sc-if>
+<sc-if value="{{r.plain}}" hint-placeholder-val="{{ true }}"><span style="{{r.nameStyle}}">{{r.name}}</span></sc-if>
+<sc-if value="{{r.hasAbbr}}" hint-placeholder-val="{{ false }}"><span style="font-size: 12px; color: #5b6372">{{r.abbr}}</span></sc-if>
+<sc-if value="{{r.hasTag}}" hint-placeholder-val="{{ false }}"><span style="{{r.tagStyle}}">{{r.tag}}</span></sc-if>
+<sc-if value="{{r.hasNote}}" hint-placeholder-val="{{ false }}"><span style="flex-basis: 100%; font-size: 12px; font-weight: 400; color: #5b6372">{{r.note}}</span></sc-if>
+</span>
+</div>
+<sc-for list="{{r.cells}}" as="c" hint-placeholder-count="5"><div style="{{c.st}}" onMouseEnter="{{c.enter}}"><sc-if value="{{c.clickable}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{c.pick}}" aria-label="{{c.aria}}" title="{{c.title}}" style="{{c.btn}}">{{c.txt}}</button></sc-if><sc-if value="{{c.plain}}" hint-placeholder-val="{{ true }}"><span title="{{c.title}}">{{c.txt}}</span></sc-if></div></sc-for>
+<sc-for list="{{r.chg}}" as="c" hint-placeholder-count="1"><div style="{{c.st}}" onMouseEnter="{{c.enter}}"><span style="display: block">{{c.d}}</span><span style="display: block; font-size: 12px">{{c.p}}</span></div></sc-for>
+</div>
+</sc-for>
+</div>
+</div>
+
+<aside data-keep="1" aria-label="{{panelLabel}}" style="flex: 1 1 340px; min-width: 0; height: 660px; overflow: auto; background: #ffffff; border: 1px solid #dfe2e8; border-radius: 10px; box-sizing: border-box; padding: 18px 20px 20px">
+
+<sc-if value="{{figOpen}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 10px">
+<button type="button" onClick="{{closeFig}}" style="border: 0; background: transparent; padding: 0; font: inherit; font-size: 13px; color: #1f4e8c; cursor: pointer">‹ {{backLabel}}</button>
+<span style="font-size: 11px; color: #5b6372">or click outside · Esc</span>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600">Source for this figure</div>
+<div style="font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px">{{fig.name}}</div>
+<div style="font-size: 13px; color: #3a4150">{{fig.stage}}</div>
+<div style="margin-top: 12px; padding-bottom: 14px; border-bottom: 1px solid #e3e5ea">
+<div style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">{{fig.exact}}</div>
+<div style="font-size: 13px; color: #3a4150; font-variant-numeric: tabular-nums">{{fig.sub}}</div>
+<span style="{{fig.badgeStyle}}">{{fig.status}}</span>
+</div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 14px">Document</div>
+<div style="font-size: 14px"><a href="{{fig.docHref}}" style="color: #1f4e8c">{{fig.doc}}</a></div>
+<div style="font-size: 13px; color: #3a4150">Page {{fig.page}}</div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 12px">Printed as</div>
+<div style="font-size: 13px; color: #3a4150; background: #f8f8f6; border: 1px solid #e8eaee; border-radius: 6px; padding: 8px 10px; margin-top: 2px">{{fig.table}}</div>
+<sc-if value="{{fig.hasBill}}" hint-placeholder-val="{{ true }}">
+<div style="font-size: 12px; color: #5b6372; margin-top: 12px">Bill or law</div>
+<div style="font-size: 14px"><a href="{{fig.billHref}}" style="color: #1f4e8c">{{fig.bill}}</a></div>
+</sc-if>
+<div style="font-size: 12px; color: #5b6372; margin-top: 12px">Record {{fig.obs}}</div>
+<a href="{{fig.pageHref}}" style="display: flex; align-items: center; justify-content: center; height: 44px; margin-top: 16px; background: #1f4e8c; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: 600">{{fig.openLabel}}</a>
+<sc-if value="{{fig.isNci}}" hint-placeholder-val="{{ false }}"><button type="button" onClick="{{openAccount}}" style="width: 100%; height: 44px; margin-top: 8px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">See every stage for this account</button></sc-if>
+</sc-if>
+
+<sc-if value="{{overviewOpen}}" hint-placeholder-val="{{ true }}">
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600">Overview</div>
+<div style="font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px">{{ovTitle}}</div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 2px">Select an account in the grid to see its stages and sources here.</div>
+<div style="display: flex; flex-direction: column; gap: 8px; margin-top: 14px">
+<sc-for list="{{tiles}}" as="t" hint-placeholder-count="3">
+<div style="background: #f8f8f6; border: 1px solid #e8eaee; border-radius: 8px; padding: 10px 12px">
+<div style="font-size: 12px; color: #5b6372">{{t.label}}</div>
+<div style="{{t.valueStyle}}">{{t.value}}</div>
+<div style="font-size: 12px; color: #5b6372; font-variant-numeric: tabular-nums">{{t.sub}}</div>
+</div>
+</sc-for>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 18px 0 4px">FY2026 by stage (printed totals)</div>
+<sc-for list="{{ovStages}}" as="s" hint-placeholder-count="4">
+<div style="display: flex; justify-content: space-between; gap: 12px; padding: 7px 0; border-bottom: 1px solid #eef0f3; font-variant-numeric: tabular-nums"><span style="color: #3a4150">{{s.label}}</span><span style="font-weight: 600">{{s.val}}</span></div>
+</sc-for>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 18px 0 4px">Largest changes vs FY2025 enacted</div>
+<sc-for list="{{movers}}" as="m" hint-placeholder-count="6">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid #eef0f3; font-variant-numeric: tabular-nums">
+<span style="min-width: 0; font-size: 13px; color: #1b1f27">{{m.name}}<sc-if value="{{m.hasTag}}" hint-placeholder-val="{{ false }}"><span style="font-size: 11px; color: #4b3f72; background: #eeeaf8; border-radius: 4px; padding: 1px 6px; margin-left: 6px">{{m.tag}}</span></sc-if></span>
+<span style="{{m.style}}">{{m.d}} <span style="font-size: 12px; font-weight: 400">{{m.p}}</span></span>
+</div>
+</sc-for>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 18px 0 6px">Enacted in</div>
+<div style="font-size: 13px; color: #1b1f27"><a href="https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf" style="color: #1f4e8c">P.L. 119-75, Division B</a></div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 2px">Signed Feb. 3, 2026 · minibus · vehicle H.R. 7148</div>
+<div style="font-size: 12px; color: #5b6372; margin-top: 8px">FY2025 was a full-year continuing resolution (P.L. 119-4).</div>
+</sc-if>
+
+<sc-if value="{{panelOpen}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding-bottom: 10px">
+<button type="button" onClick="{{closePanel}}" style="border: 0; background: transparent; padding: 0; font: inherit; font-size: 13px; color: #1f4e8c; cursor: pointer">‹ {{backLabel}}</button>
+<span style="font-size: 11px; color: #5b6372">or click outside · Esc</span>
+</div>
+<div>
+<div style="font-size: 12px; color: #5b6372">Title II › National Institutes of Health</div>
+<div style="font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px">National Cancer Institute</div>
+</div>
+<div style="margin-top: 14px; padding-bottom: 14px; border-bottom: 1px solid #e3e5ea">
+<div style="font-size: 30px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums">$7.35B</div>
+<div style="font-size: 13px; color: #3a4150; font-variant-numeric: tabular-nums">7,352,159 in $ thousands · FY2026 enacted, as printed</div>
+<div style="font-size: 13px; color: #1d6b3a; margin-top: 4px; font-variant-numeric: tabular-nums">+$128.0M (+1.8%) vs FY2025 enacted (full-year CR)</div>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 14px 0 4px">FY2026 by stage, with sources</div>
+<sc-for list="{{panelStages}}" as="s" hint-placeholder-count="5">
+<div style="padding: 9px 0; border-bottom: 1px solid #eef0f3">
+<div style="display: flex; justify-content: space-between; gap: 12px; font-variant-numeric: tabular-nums"><span style="color: #3a4150">{{s.label}}</span><span style="font-weight: 600">{{s.val}}</span></div>
+<div style="font-size: 12px; margin-top: 2px"><a href="{{s.docHref}}" style="color: #1f4e8c">{{s.doc}}</a><span style="color: #5b6372"> · {{s.page}} · </span><a href="{{s.billHref}}" style="color: #1f4e8c">{{s.bill}}</a></div>
+</div>
+</sc-for>
+<div style="font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; margin: 16px 0 8px">Enacted, FY2017–FY2026</div>
+<div role="img" aria-label="Enacted history, rising from 5,389,329 in FY2017 to 7,352,159 in FY2026; FY2025 was a full-year continuing resolution" style="display: flex; align-items: flex-end; gap: 5px; height: 76px; border-bottom: 1px solid #c9ced8">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="10"><div title="{{b.tip}}" style="{{b.style}}"></div></sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #5b6372; margin-top: 4px"><span>FY2017</span><span>FY2025 lighter = full-year CR</span><span>FY2026</span></div>
+<div style="display: flex; gap: 8px; margin-top: 18px">
+<a href="#" style="flex: 1 1 auto; display: flex; align-items: center; justify-content: center; height: 44px; background: #1f4e8c; color: #ffffff; border-radius: 8px; text-decoration: none; font-weight: 600">Open account page</a>
+<button type="button" style="height: 44px; padding: 0 16px; border: 1px solid #c9ced8; background: #ffffff; border-radius: 8px; font: inherit; cursor: pointer">Watch</button>
+</div>
+</sc-if>
+</aside>
+</div>
+
+<footer style="display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: #5b6372">
+<span>{{unitNote}} · click an account name for details · click a figure for its source</span>
+<span>— not funded (printed zero or confirmed absent)</span>
+<span>missing = document on file, figure not entered</span>
+<span>blank = outside the account's life</span>
+<sc-if value="{{reviewer}}" hint-placeholder-val="{{ false }}"><span style="color: #3a4150">Reviewer mode on: verification marks show on every figure</span></sc-if>
+</footer>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scene":{"editor":"enum","options":["first","panel","filters","phone"],"default":"first"},"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    var sc = props.scene || 'first';
+    this.state = {
+      compare: 'stages',
+      expanded: sc === 'panel' ? { nih: true, cms: true } : (sc === 'filters' ? { nih: true } : {}),
+      panel: sc === 'panel',
+      filterOpen: sc === 'filters',
+      advOpen: sc === 'filters',
+      agency: sc === 'filters' ? 'nih' : 'all',
+      type: 'all', status: 'any', basis: 'printed', timing: 'available',
+      viewOpen: false, units: 'K', dense: false, showReq: false, reviewer: false, shared: false,
+      src: null, fig: null, hover: null
+    };
+  }
+  componentDidMount() {
+    var self = this;
+    try {
+      fetch('./sources.json').then(function (r) { return r.json(); }).then(function (j) { self.setState({ src: j }); }).catch(function () {});
+    } catch (e) {}
+  }
+  renderVals() {
+    var self = this, st = this.state;
+    var M = st.units === 'M';
+    var num = function (v) {
+      if (M) { var m = v / 1000; return (m < 0 ? '−' : '') + Math.abs(m).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+      return (v < 0 ? '−' : '') + Math.abs(v).toLocaleString('en-US');
+    };
+    var short = function (k) {
+      var a = Math.abs(k) * 1000, s = k < 0 ? '−' : '';
+      if (a >= 1e12) return s + '$' + (a / 1e12).toFixed(2) + 'T';
+      if (a >= 1e9) return s + '$' + (a / 1e9).toFixed(2) + 'B';
+      return s + '$' + (a / 1e6).toFixed(1) + 'M';
+    };
+    var signed = function (k) { return (k >= 0 ? '+' : '−') + short(Math.abs(k)); };
+    var pct = function (a, b) { var p = (a - b) / Math.abs(b) * 100; return (p >= 0 ? '+' : '−') + Math.abs(p).toFixed(1) + '%'; };
+
+    var T2 = [1300549900, 1521532778, 1546531981, 1555322508, 1553262357];
+    var AG = [
+      ['hrsa', 'Health Resources and Services Administration', 'HRSA', [8286229, 6371802, 7405460, 9133562, 9220107], ''],
+      ['cdc', 'Centers for Disease Control and Prevention', 'CDC', [7992946, 5094944, 6082505, 7710771, 7761672], ''],
+      ['nih', 'National Institutes of Health', 'NIH', [46888518, 29045186, 46479998, 47288518, 47288518], ''],
+      ['samhsa', 'Substance Abuse and Mental Health Services Administration', 'SAMHSA', [7228639, 5562611, 6932188, 7283250, 7293950], ''],
+      ['ahrq', 'Agency for Healthcare Research and Quality', 'AHRQ', [369000, 0, 0, 345380, 345380], ''],
+      ['cms', 'Centers for Medicare & Medicaid Services', 'CMS', [1171040963, 1422885907, 1422895907, 1423091260, 1423091260], 'incl. mandatory'],
+      ['acf', 'Administration for Children and Families', 'ACF', [51897205, 45469350, 50326744, 52240075, 51736248], 'incl. mandatory'],
+      ['acl', 'Administration for Community Living', 'ACL', [2491074, 2443100, 2480432, 2500979, 2508979], ''],
+      ['aspr', 'Administration for Strategic Preparedness and Response', 'ASPR', [3634606, 2825880, 3509606, 3616597, 3692597], ''],
+      ['os', 'Office of the Secretary', 'OS', [1863720, 2235195, 1803141, 1883116, 1918646], '']
+    ];
+    var MEM = {
+      nih: [
+        ['nci', 'National Cancer Institute', [7224159, 4530833, 7272159, 7374159, 7352159]],
+        ['', 'National Heart, Lung, and Blood Institute', [3982345, 0, 3990345, 3982345, 3990345]],
+        ['', 'National Institute of Dental and Craniofacial Research', [520163, 0, 525163, 520163, 525163]],
+        ['', 'National Institute of Diabetes and Digestive and Kidney Diseases', [2310721, 0, 2330721, 2320721, 2326721]],
+        ['', 'National Institute of Neurological Disorders and Stroke', [2603925, 0, 2633925, 2773925, 2804925]],
+        ['', 'National Institute of Allergy and Infectious Diseases', [6562279, 4174965, 6582279, 6592279, 6585279]],
+        ['', 'National Institute of General Medical Sciences', [1832197, 3427297, 1900677, 1832197, 1842197]],
+        ['', 'Eunice Kennedy Shriver National Institute of Child Health and Human Development', [1759078, 0, 1759078, 1779078, 1769078]],
+        ['', 'National Eye Institute', [896549, 0, 896549, 896549, 896549]],
+        ['', 'National Institute of Environmental Health Sciences', [913979, 594086, 913979, 913979, 913979]],
+        ['', 'National Institute on Aging', [4507623, 2686541, 4507623, 4557623, 4517623]],
+        ['', 'National Institute of Arthritis and Musculoskeletal and Skin Diseases', [685465, 0, 685465, 685465, 685465]],
+        ['', 'National Institute on Deafness and Other Communication Disorders', [534333, 0, 534333, 534333, 534333]],
+        ['', 'National Institute of Nursing Research', [197693, 0, 197693, 197693, 197693]],
+        ['', 'National Institute on Alcohol Abuse and Alcoholism', [595318, 0, 595318, 595318, 595318]],
+        ['', 'National Institute on Drug Abuse', [1662695, 0, 1662695, 1662695, 1662695]],
+        ['', 'National Institute of Mental Health', [2187843, 0, 2187843, 2193843, 2189843]],
+        ['', 'National Human Genome Research Institute', [663200, 0, 663200, 663200, 663200]],
+        ['', 'National Institute of Biomedical Imaging and Bioengineering', [440627, 0, 440627, 440627, 440627]],
+        ['', 'National Center for Complementary and Integrative Health', [170384, 0, 170384, 170384, 170384]],
+        ['', 'National Institute on Minority Health and Health Disparities', [534395, 0, 544395, 534395, 538395]],
+        ['', 'John E. Fogarty International Center', [95162, 0, 95162, 95162, 95162]],
+        ['', 'National Library of Medicine', [497548, 0, 497548, 497548, 497548]],
+        ['', 'National Center for Advancing Translational Sciences', [928323, 0, 928323, 938323, 942323]],
+        ['', 'Office of the Director', [2605514, 1650062, 2441514, 2460514, 2475514]],
+        ['', 'Buildings and Facilities', [350000, 210000, 352000, 350000, 350000]],
+        ['', 'Advanced Research Projects Agency for Health', [1500000, 945000, 945000, 1500000, 1500000]],
+        ['', 'NIH Innovation Account, CURES Act', [127000, 226000, 226000, 226000, 226000]],
+        ['sub', 'Proposed in the FY2026 request', null],
+        ['', 'National Institute on Body Systems Research', ['out', 4152062, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute on Neuroscience and Brain Research', ['out', 2347472, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute for Child and Women’s Health, Sensory Disorders and Communication', ['out', 1413630, 'miss', 'miss', 'out'], 'proposed'],
+        ['', 'National Institute of Behavioral Health', ['out', 2687238, 'miss', 'miss', 'out'], 'proposed']
+      ],
+      cms: [
+        ['', 'Program Management', [3669744, 3464391, 3474391, 3669744, 3669744]],
+        ['', 'Health Care Fraud and Abuse Control Account', [941000, 941000, 941000, 941000, 941000]],
+        ['sub', 'Appropriated mandatory', null],
+        ['', 'Grants to States for Medicaid', [383609399, 508148791, 508148791, 508148791, 508148791], 'mandatory'],
+        ['', 'Payments to the Health Care Trust Funds', [521757000, 593817000, 593817000, 593817000, 593817000], 'mandatory']
+      ],
+      gp: [
+        ['', 'Medicare Operations', [455000, 0, 455000, 455000, 455000]],
+        ['', 'Nonrecurring Expenses Fund, HHS (rescission)', [-1471000, -750000, -1613000, -1613000, -1826000]],
+        ['', 'Adoption Incentives (rescission)', ['nf', 'nf', 'nf', 'nf', 'nf']],
+        ['', 'Limitation for Title XVIII of the Social Security Act', ['miss', 'miss', 'miss', 'miss', 2000]]
+      ]
+    };
+
+    var GT = 'grid-template-columns: minmax(250px, 2.2fr) repeat(5, minmax(98px, 1fr)) minmax(112px, 1fr)' + (st.showReq ? ' minmax(112px, 1fr)' : '') + ';';
+    var minW = st.showReq ? 1000 : 880;
+    var padV = st.dense ? '6px' : '12px';
+    var line = '#e8eaee';
+
+    var LV = {
+      total: ' color: #1b1f27; font-weight: 700; font-size: 14px;',
+      agency: ' color: #1b1f27; font-weight: 600; font-size: 14px;',
+      agencyClosed: ' color: #1b1f27; font-weight: 500; font-size: 14px;',
+      member: ' color: #4a5160; font-weight: 400; font-size: 13px;'
+    };
+    var SRC = st.src;
+    var STL = ['FY2025 enacted (full-year CR)', 'FY2026 President’s request', 'FY2026 House', 'FY2026 Senate', 'FY2026 enacted'];
+    var cellOf = function (v, k, lvl, key, name, tint) {
+      var c = cellBase(v, k, lvl);
+      if (tint) c.st += tint;
+      var s = SRC && key && SRC[key] ? SRC[key][k] : null;
+      var sel = st.fig && st.fig.key === key && st.fig.k === k;
+      if (sel) c.st += ' background: #fff1c2; box-shadow: inset 0 0 0 2px #d9a400;';
+      c.clickable = !!s; c.plain = !s;
+      if (s) {
+        c.aria = 'Source for ' + name + ', ' + STL[k];
+        c.title = (c.title ? c.title + ' · ' : '') + 'Click for its source: ' + s[0] + ', p. ' + s[1];
+        c.btn = 'border: 0; background: transparent; padding: 0; margin: 0; width: 100%; text-align: right; font: inherit; color: inherit; cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: #b9c3d3; text-underline-offset: 4px;';
+        c.pick = function () { self.setState({ fig: { key: key, k: k, name: name, v: v }, panel: false }); };
+      }
+      return c;
+    };
+    var cellBase = function (v, k, lvl) {
+      var base = 'padding: ' + padV + ' 12px; text-align: right; font-variant-numeric: tabular-nums;' + (k === 1 ? ' border-left: 1px solid ' + line + ';' : '') + (k === 4 && lvl !== 'total' ? ' background: #f7f5ef;' : '');
+      if (typeof v === 'number' && v !== 0) return { txt: num(v), title: lvl === 'member' ? 'Adds into the agency total above' : '', st: base + (LV[lvl] || LV.member) };
+      if (v === 0 || v === 'nf') return { txt: '—', title: v === 0 ? 'Not funded: printed zero' : 'Not funded: confirmed absent in the bill or law text', st: base + ' color: #5b6372;' };
+      if (v === 'miss') return { txt: 'missing', title: 'Document on file; figure not yet entered', st: base + ' color: #5b6372; font-size: 12px; font-style: italic;' };
+      return { txt: '', title: 'Outside the account’s life', st: base };
+    };
+    var chgOf = function (a, b, lvl) {
+      var base = 'padding: ' + padV + ' 12px; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.25;' + (lvl === 'member' ? ' font-size: 13px;' : (lvl === 'agencyClosed' ? ' font-weight: 500;' : ' font-weight: 600;'));
+      if (typeof a !== 'number' || typeof b !== 'number' || b === 0) return { d: '', p: '', st: base };
+      var d = a - b, col = d > 0 ? '#1d6b3a' : (d < 0 ? '#b3471b' : '#5b6372');
+      return { d: (d > 0 ? '+' : d < 0 ? '−' : '') + num(Math.abs(d)), p: pct(a, b), st: base + ' color: ' + col + ';' };
+    };
+    var H = st.hover;
+    var hoverTint = function (ri, k) {
+      if (!H) return '';
+      var rh = H.r === ri, ch = k >= 0 && H.c === k;
+      if (rh && ch) return ' background: #d6e2f5;';
+      if (rh) return ' background: #ecf1f9;';
+      if (ch) return ' background: #f1f5fb;';
+      return '';
+    };
+    var setHover = function (ri, k) {
+      return function () { var h = self.state.hover; if (!h || h.r !== ri || h.c !== k) self.setState({ hover: { r: ri, c: k } }); };
+    };
+    var mkRow = function (o) {
+      var ri = rows.length;
+      var bg = o.bg || '#ffffff';
+      var vals = o.vals;
+      var lvl = o.level || 'member';
+      var live = !!vals;
+      var cells = vals ? vals.map(function (v, k) {
+        var c = cellOf(v, k, lvl, o.key, o.name, hoverTint(ri, k));
+        c.enter = setHover(ri, k);
+        return c;
+      }) : [0, 1, 2, 3, 4].map(function () { return { txt: '', title: '', st: '', enter: null }; });
+      var chg = [vals ? chgOf(vals[4], vals[0], lvl) : { d: '', p: '', st: '' }];
+      chg[0].st += ' border-left: 1px solid ' + line + ';';
+      if (st.showReq) chg.push(vals ? chgOf(vals[4], vals[1], lvl) : { d: '', p: '', st: '' });
+      chg.forEach(function (c, i) { if (live) { c.st += hoverTint(ri, 5 + i); c.enter = setHover(ri, 5 + i); } else { c.enter = null; } });
+      var rowHi = live && H && H.r === ri;
+      var nbg = rowHi ? '#ecf1f9' : bg;
+      var cellBg = o.rail ? 'linear-gradient(#b9c6dc, #b9c6dc) 30px 0 / 2px 100% no-repeat, ' + nbg : nbg;
+      return {
+        enterName: live ? setHover(ri, -1) : null,
+        rowStyle: 'display: grid; ' + GT + ' min-width: ' + minW + 'px; border-bottom: 1px solid ' + (o.strong ? '#cfd3da' : (o.rail ? '#f0f1f4' : line)) + ';' + (o.accent ? ' border-top: 1px solid #cfd3da; margin-top: 6px;' : '') + ' background: ' + bg + ';',
+        nameCellStyle: 'position: sticky; left: 0; z-index: 1; background: ' + cellBg + '; padding: ' + padV + ' 12px ' + padV + ' ' + o.pad + 'px; border-right: 1px solid ' + line + '; display: flex; align-items: center; gap: 4px; min-width: 0;' + (o.accent ? ' box-shadow: inset 4px 0 0 #1f4e8c;' : ''),
+        hasNote: !!o.note, note: o.note,
+        hasCaret: !!o.toggle, toggle: o.toggle, expanded: o.isOpen ? 'true' : 'false', caret: o.isOpen ? '▾' : '▸', caretLabel: (o.isOpen ? 'Collapse ' : 'Expand ') + o.name,
+        clickable: !!o.open, plain: !o.open, open: o.open,
+        name: o.name, nameStyle: o.nameStyle || 'font-weight: 500;',
+        linkStyle: 'border: 0; background: transparent; padding: 0; font: inherit; color: #16325f; text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; cursor: pointer; text-align: left; font-weight: 500;',
+        hasAbbr: !!o.abbr, abbr: o.abbr,
+        hasTag: !!o.tag, tag: o.tag,
+        tagStyle: o.tag === 'proposed' || o.tag === 'proposed · FY2026 request' ? 'font-size: 11px; color: #7a4b00; background: #fdf1d8; border-radius: 4px; padding: 1px 6px' : 'font-size: 11px; color: #4b3f72; background: #eeeaf8; border-radius: 4px; padding: 1px 6px',
+        cells: cells, chg: chg
+      };
+    };
+
+    var rows = [];
+    var filtered = st.agency !== 'all';
+    rows.push(mkRow({ name: filtered ? 'Total, Title II (printed, all accounts)' : 'Total, Title II (printed)', vals: T2, key: 'T2', bg: '#efede7', pad: 16, level: 'total', strong: true, nameStyle: 'font-weight: 700;' }));
+    var addMembers = function (key) {
+      MEM[key].forEach(function (m) {
+        if (m[0] === 'sub') { rows.push(mkRow({ name: m[1], vals: null, bg: '#fafaf7', pad: 52, rail: true, nameStyle: 'font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: #5b6372; font-weight: 600;' })); return; }
+        var isNci = m[0] === 'nci';
+        var sel = isNci && st.panel;
+        var tag = m[3] === 'mandatory' ? '' : (m[3] || '');
+        rows.push(mkRow({ name: m[1], key: m[1], vals: m[2], pad: 52, rail: true, level: 'member', bg: sel ? '#fff6dc' : '#ffffff', tag: tag, open: isNci ? function () { self.setState({ panel: true }); } : null, nameStyle: 'font-weight: 400; font-size: 13px; color: #3a4150;' }));
+      });
+    };
+    var lineCount = function (key) { return MEM[key].filter(function (m) { return m[0] !== 'sub'; }).length; };
+    var section = function (label) {
+      rows.push(mkRow({ name: label, vals: null, bg: '#f6f5f1', pad: 16, nameStyle: "font-family: 'IBM Plex Sans Condensed', 'IBM Plex Sans', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #5b6372; font-weight: 600; padding-top: 10px;" }));
+    };
+    section('Agencies · ' + (filtered ? 1 : AG.length));
+    AG.forEach(function (a) {
+      if (filtered && a[0] !== st.agency) return;
+      var has = !!MEM[a[0]];
+      var open = !!st.expanded[a[0]];
+      rows.push(mkRow({ name: a[1], key: a[1], abbr: a[2], tag: a[4], vals: a[3], bg: '#ffffff', strong: open, accent: open, level: open ? 'agency' : 'agencyClosed', pad: 8, isOpen: open,
+        note: open ? (has ? 'Agency total · sum of the ' + lineCount(a[0]) + ' lines below' : 'Agency total') : '',
+        nameStyle: open ? 'font-weight: 600;' : 'font-weight: 500;',
+        toggle: function () { var e = Object.assign({}, self.state.expanded); e[a[0]] = !e[a[0]]; self.setState({ expanded: e }); } }));
+      if (open && has) addMembers(a[0]);
+      if (open && !has) rows.push(mkRow({ name: 'Account lines list here (not loaded in this mockup; expand NIH or CMS)', vals: null, pad: 52, rail: true, bg: '#ffffff', nameStyle: 'font-size: 12px; font-style: italic; color: #5b6372; font-weight: 400;' }));
+    });
+    if (!filtered) {
+      section('General provisions');
+      var gpOpen = !!st.expanded.gp;
+      rows.push(mkRow({ name: 'Title II general provisions (4 lines)', vals: null, bg: '#ffffff', strong: gpOpen, accent: gpOpen, pad: 8, isOpen: gpOpen, note: gpOpen ? 'No printed total · each line counts in the Title II total' : '', nameStyle: gpOpen ? 'font-weight: 600;' : 'font-weight: 500;', toggle: function () { var e = Object.assign({}, self.state.expanded); e.gp = !e.gp; self.setState({ expanded: e }); } }));
+      if (gpOpen) addMembers('gp');
+      section('Proposed in the FY2026 request, not enacted');
+      rows.push(mkRow({ name: 'Administration for a Healthy America', key: 'Administration for a Healthy America', abbr: 'AHA', tag: 'proposed', vals: ['out', 574803, 'nf', 'nf', 'out'], bg: '#ffffff', level: 'agencyClosed', pad: 40, nameStyle: 'font-weight: 500; color: #4a5160;' }));
+    }
+
+    // tiles: the scope shown
+    var scope = filtered ? AG.filter(function (a) { return a[0] === st.agency; })[0] : null;
+    var V = scope ? scope[3] : T2;
+    var who = scope ? scope[2] : 'Title II';
+    var big = 'font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 1px 0; font-variant-numeric: tabular-nums;';
+    var moverSrc = filtered
+      ? (MEM[st.agency] || []).filter(function (m) { return m[0] !== 'sub'; }).map(function (m) { return [m[1], m[2], '']; })
+      : AG.map(function (a) { return [a[1], a[3], a[4]]; });
+    var withD = moverSrc.filter(function (m) { return typeof m[1][0] === 'number' && typeof m[1][4] === 'number' && m[1][0] !== 0; })
+      .map(function (m) { return { name: m[0], tag: m[2], d: m[1][4] - m[1][0], a: m[1][4], b: m[1][0] }; });
+    var ups = withD.filter(function (m) { return m.d > 0; }).sort(function (x, y) { return y.d - x.d; }).slice(0, 3);
+    var downs = withD.filter(function (m) { return m.d < 0; }).sort(function (x, y) { return x.d - y.d; }).slice(0, 3);
+    var movers = ups.concat(downs).map(function (m) {
+      return { name: m.name, hasTag: !!m.tag, tag: m.tag, d: signed(m.d), p: pct(m.a, m.b), style: 'flex: 0 0 auto; font-weight: 600; font-size: 13px; color: ' + (m.d > 0 ? '#1d6b3a' : '#b3471b') + ';' };
+    });
+    var fig = null;
+    if (st.fig && SRC && SRC[st.fig.key] && SRC[st.fig.key][st.fig.k]) {
+      var fs = SRC[st.fig.key][st.fig.k], fv = st.fig.v;
+      var stat = fs[6] === 'auto-validated' ? ['Auto-validated', '#e3f1e7', '#1d6b3a'] : (fs[6] === 'flagged' ? ['Flagged for review', '#fde8dc', '#9a3412'] : ['Not yet confirmed by a second document', '#eef0f3', '#3a4150']);
+      fig = {
+        name: st.fig.name, stage: STL[st.fig.k],
+        exact: typeof fv === 'number' ? (fv === 0 ? '0' : (fv < 0 ? '−' : '') + Math.abs(fv).toLocaleString('en-US')) : '—',
+        sub: typeof fv === 'number' && fv !== 0 ? short(fv) + ' · $ thousands · as printed' : 'Printed zero: not funded at this stage',
+        status: stat[0], badgeStyle: 'display: inline-block; margin-top: 8px; font-size: 12px; border-radius: 10px; padding: 2px 10px; background: ' + stat[1] + '; color: ' + stat[2] + ';',
+        doc: fs[0], page: fs[1], table: fs[2], docHref: fs[3], pageHref: fs[3] + '#page=' + fs[1], openLabel: 'Open page ' + fs[1] + ' of the document',
+        hasBill: !!fs[5], bill: fs[4], billHref: fs[5], obs: fs[7],
+        isNci: st.fig.name === 'National Cancer Institute'
+      };
+    }
+    var ovStages = [['President’s request', V[1]], ['House', V[2]], ['Senate', V[3]], ['Enacted', V[4]]].map(function (s) { return { label: s[0], val: num(s[1]) }; });
+    var tiles = [
+      { label: who + ' enacted, FY2026', value: short(V[4]), valueStyle: big + ' color: #1b1f27;', sub: num(V[4]) + (M ? ' $M' : ' $K') + ' · as printed' },
+      { label: 'vs FY2025 enacted (full-year CR)', value: signed(V[4] - V[0]), valueStyle: big + ' color: ' + (V[4] >= V[0] ? '#1d6b3a' : '#b3471b') + ';', sub: pct(V[4], V[0]) },
+      { label: 'vs FY2026 request', value: signed(V[4] - V[1]), valueStyle: big + ' color: ' + (V[4] >= V[1] ? '#1d6b3a' : '#b3471b') + ';', sub: pct(V[4], V[1]) }
+    ];
+
+    var seg = function (on) { return 'border: 0; border-right: 1px solid #c9ced8; padding: 0 14px; font: inherit; font-size: 14px; cursor: pointer; background: ' + (on ? '#1f4e8c' : '#ffffff') + '; color: ' + (on ? '#ffffff' : '#1b1f27') + '; font-weight: ' + (on ? '600' : '400') + ';'; };
+    var pill = function (on) { return 'min-height: 36px; padding: 0 12px; border-radius: 18px; font: inherit; font-size: 13px; cursor: pointer; border: 1px solid ' + (on ? '#1f4e8c' : '#c9ced8') + '; background: ' + (on ? '#1f4e8c' : '#ffffff') + '; color: ' + (on ? '#ffffff' : '#1b1f27') + ';'; };
+    var mkOpts = function (list, key) {
+      return list.map(function (o) { var on = st[key] === o[0]; return { label: o[1], pressed: on ? 'true' : 'false', style: pill(on), pick: function () { var s = {}; s[key] = o[0]; self.setState(s); } }; });
+    };
+
+    var compares = [['stages', 'Stages'], ['years', 'Two years'], ['history', 'Enacted history']].map(function (c) {
+      var on = st.compare === c[0];
+      return { label: c[1], pressed: on ? 'true' : 'false', style: seg(on), pick: function () { self.setState({ compare: c[0] }); } };
+    });
+
+    var BASES = [
+      ['printed', 'As printed', 'The figure as the account’s own documents print it.'],
+      ['disc', 'Discretionary', 'Discretionary budget authority, no designated amounts. Mandatory left out.'],
+      ['discdes', 'Discretionary incl. designated', 'Adds emergency, disaster and cap-adjustment amounts.'],
+      ['all', 'All appropriations', 'Adds appropriated mandatory, such as Medicaid.'],
+      ['prog', 'Program level', 'Adds transfers in, trust-fund limitations and fees; less transfers out.']
+    ];
+    var bases = BASES.map(function (b) {
+      var on = st.basis === b[0];
+      return { label: b[1], def: b[2], pressed: on ? 'true' : 'false', pick: function () { self.setState({ basis: b[0] }); },
+        style: 'text-align: left; padding: 9px 12px; border-radius: 8px; font: inherit; cursor: pointer; border: 1px solid ' + (on ? '#1f4e8c' : '#d5d9e1') + '; background: ' + (on ? '#eef3fb' : '#ffffff') + '; color: #1b1f27;' };
+    });
+    var basisLabel = BASES.filter(function (b) { return b[0] === st.basis; })[0][1];
+
+    var chips = [];
+    if (filtered) chips.push({ label: 'Agency: ' + scope[1], aria: 'Remove agency filter', clear: function () { self.setState({ agency: 'all' }); } });
+    if (st.type !== 'all') chips.push({ label: 'Type: ' + st.type, aria: 'Remove type filter', clear: function () { self.setState({ type: 'all' }); } });
+    if (st.status !== 'any') chips.push({ label: 'Status: ' + ({ enacted: 'Enacted', moving: 'Still moving', proposed: 'Proposed only' })[st.status], aria: 'Remove status filter', clear: function () { self.setState({ status: 'any' }); } });
+    if (st.basis !== 'printed') chips.push({ label: 'Basis: ' + basisLabel, aria: 'Return to as printed', clear: function () { self.setState({ basis: 'printed' }); } });
+
+    var bars = [5389329, 5664800, 5743892, 6245442, 6364852, 6718522, 7104159, 7224159, 7224159, 7352159].map(function (v, i) {
+      var fy = 2017 + i, cr = fy === 2025;
+      return { tip: 'FY' + fy + ' enacted: ' + v.toLocaleString('en-US') + (cr ? ' (full-year CR)' : ''), style: 'flex: 1 1 0; height: ' + Math.round(v / 7352159 * 72) + 'px; background: ' + (cr ? '#a9bfe0' : '#2f5d9e') + '; border-radius: 3px 3px 0 0;' };
+    });
+
+    var head = 'display: grid; ' + GT + ' min-width: ' + minW + 'px;';
+    var flagOn = st.filterOpen;
+    var count = chips.length;
+    var sw = function (on) { return 'width: 100%; height: 40px; text-align: left; padding: 0 12px; border-radius: 8px; font: inherit; cursor: pointer; border: 1px solid ' + (on ? '#1f4e8c' : '#c9ced8') + '; background: ' + (on ? '#eef3fb' : '#ffffff') + '; color: #1b1f27;'; };
+
+    return {
+      compares: compares,
+      filterOpen: st.filterOpen, filterExpanded: flagOn ? 'true' : 'false',
+      filterBtnStyle: 'height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border-radius: 8px; font: inherit; font-size: 15px; cursor: pointer; border: 1px solid ' + (flagOn || count ? '#1f4e8c' : '#c9ced8') + '; background: ' + (flagOn ? '#eef3fb' : '#ffffff') + '; color: #1b1f27;',
+      toggleFilter: function () { self.setState({ filterOpen: !self.state.filterOpen, viewOpen: false }); },
+      hasFilterCount: count > 0, filterCount: count,
+      hasChips: count > 0, chips: chips,
+      clearAll: function () { self.setState({ agency: 'all', type: 'all', status: 'any', basis: 'printed', timing: 'available' }); },
+      agencyVal: st.agency,
+      onAgency: function (e) { self.setState({ agency: e.target.value }); },
+      agencyOptions: [{ value: 'all', label: 'All agencies' }].concat(AG.map(function (a) { return { value: a[0], label: a[1] }; })),
+      typeOpts: mkOpts([['all', 'All'], ['discretionary', 'Discretionary'], ['mandatory', 'Mandatory'], ['mixed', 'Mixed']], 'type'),
+      statusOpts: mkOpts([['any', 'Any'], ['enacted', 'Enacted'], ['moving', 'Still moving'], ['proposed', 'Proposed only']], 'status'),
+      toggleAdv: function () { self.setState({ advOpen: !self.state.advOpen }); },
+      advOpen: st.advOpen, advExpanded: st.advOpen ? 'true' : 'false', advCaret: st.advOpen ? '▾' : '▸',
+      advSummary: basisLabel + ' · advances when ' + (st.timing === 'available' ? 'available' : 'enacted') + ' · earmarks included',
+      bases: bases,
+      timings: mkOpts([['available', 'When available'], ['enacted', 'When enacted']], 'timing'),
+      heading: filtered ? scope[1] : 'Department of Health and Human Services',
+      unitBasisLabel: (M ? '$ millions' : '$ thousands') + ' · ' + basisLabel.toLowerCase(),
+      unitNote: M ? '$ millions' : '$ thousands',
+      toggleView: function () { self.setState({ viewOpen: !self.state.viewOpen, filterOpen: false }); },
+      viewOpen: st.viewOpen, viewExpanded: st.viewOpen ? 'true' : 'false',
+      unitOpts: mkOpts([['K', '$ thousands'], ['M', '$ millions']], 'units'),
+      densityOpts: [[false, 'Comfortable'], [true, 'Compact']].map(function (o) { var on = st.dense === o[0]; return { label: o[1], pressed: on ? 'true' : 'false', style: pill(on), pick: function () { self.setState({ dense: o[0] }); } }; }),
+      reqColPressed: st.showReq ? 'true' : 'false', reqColStyle: sw(st.showReq), reqColLabel: (st.showReq ? '✓ ' : '') + 'Change vs FY2026 request',
+      toggleReqCol: function () { self.setState({ showReq: !self.state.showReq }); },
+      toggleAll: function () { var any = Object.keys(self.state.expanded).some(function (k) { return self.state.expanded[k]; }); self.setState({ expanded: any ? {} : { nih: true, cms: true, gp: true } }); },
+      expandAllLabel: Object.keys(st.expanded).some(function (k) { return st.expanded[k]; }) ? 'Collapse all' : 'Expand all',
+      reviewer: st.reviewer, reviewerPressed: st.reviewer ? 'true' : 'false', reviewerStyle: sw(st.reviewer), reviewerLabel: (st.reviewer ? '✓ ' : '') + 'Reviewer mode (verification marks)',
+      toggleReviewer: function () { self.setState({ reviewer: !self.state.reviewer }); },
+      share: function () { self.setState({ shared: true }); }, shareLabel: st.shared ? 'Link copied' : 'Share',
+      tiles: tiles,
+      basisNotice: st.basis !== 'printed',
+      basisNoticeText: 'Mockup: the ' + basisLabel + ' view needs the accounting data in the site (brief UI-0). Figures below are as printed.',
+      tableStyle: 'min-width: ' + minW + 'px;',
+      head1Style: head, head2Style: head,
+      hs: (function () {
+        var hb = 'padding: 4px 12px 10px; text-align: right; font-size: 13px; color: #3a4150;';
+        var o = {};
+        [0, 1, 2, 3, 4, 5, 6].forEach(function (k) {
+          var s = hb + (k === 1 || k === 5 ? ' border-left: 1px solid #e3e5ea;' : '') + (k === 4 ? ' color: #1b1f27; font-weight: 600; background: #f7f5ef;' : '');
+          if (H && H.c === k) s += ' background: #dfe8f6; color: #16325f; font-weight: 600; box-shadow: inset 0 -2px 0 #1f4e8c;';
+          o['h' + k] = s;
+        });
+        return o;
+      })(),
+      clearHover: function () { if (self.state.hover) self.setState({ hover: null }); },
+      changeHeadStyle: 'grid-column: span ' + (st.showReq ? 2 : 1) + '; padding: 10px 12px 2px; text-align: right; font-weight: 600; font-size: 13px; border-left: 1px solid #e3e5ea;',
+      showReq: st.showReq,
+      rows: rows,
+      clickAway: function (e) {
+        var t = e && e.target;
+        if (t && t.closest && t.closest('[data-keep]')) return;
+        if (t && t.closest && t.closest('button, a, input, select, label')) return;
+        var s = self.state;
+        if (s.fig || s.panel || s.filterOpen || s.viewOpen) self.setState({ fig: null, panel: false, filterOpen: false, viewOpen: false });
+      },
+      escAway: function (e) {
+        if (!e || e.key !== 'Escape') return;
+        var s = self.state;
+        if (s.filterOpen || s.viewOpen) { self.setState({ filterOpen: false, viewOpen: false }); return; }
+        if (s.fig || s.panel) self.setState({ fig: null, panel: false });
+      },
+      figOpen: !!fig,
+      fig: fig || {},
+      closeFig: function () { self.setState({ fig: null }); },
+      openAccount: function () { self.setState({ fig: null, panel: true }); },
+      panelOpen: st.panel && !fig,
+      overviewOpen: !st.panel && !fig,
+      panelLabel: fig ? 'Source for the selected figure' : (st.panel ? 'National Cancer Institute details' : 'Overview'),
+      ovTitle: (filtered ? scope[1] : 'Title II, Department of Health and Human Services') + ' · FY2026',
+      ovStages: ovStages,
+      movers: movers,
+      backLabel: (filtered ? scope[2] : 'Title II') + ' overview',
+      closePanel: function () { self.setState({ panel: false }); },
+      panelStages: [
+        { label: 'FY2025 enacted (full-year CR)', val: '7,224,159', doc: 'H.Rept. 119-271', page: 'p. 343, FY2025 column', bill: 'P.L. 119-4', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/PLAW-119publ4/pdf/PLAW-119publ4.pdf' },
+        { label: 'President’s request', val: '4,530,833', doc: 'H.Rept. 119-271', page: 'p. 343, request column', bill: 'FY2026 Budget Appendix', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf' },
+        { label: 'House', val: '7,272,159', doc: 'H.Rept. 119-271', page: 'p. 343', bill: 'H.R. 5304 as reported', docHref: 'https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf' },
+        { label: 'Senate', val: '7,374,159', doc: 'S.Rept. 119-55', page: 'p. 434', bill: 'S. 2587 as reported', docHref: 'https://www.congress.gov/119/crpt/srpt55/CRPT-119srpt55.pdf', billHref: 'https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf' },
+        { label: 'Enacted', val: '7,352,159', doc: 'Explanatory statement, Cong. Rec. Jan. 22, 2026', page: 'p. 285', bill: 'P.L. 119-75, Div. B', docHref: 'https://www.govinfo.gov/content/pkg/CREC-2026-01-22/pdf/CREC-2026-01-22-pt2-PgH1353-2.pdf', billHref: 'https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf' }
+      ],
+      bars: bars
+    };
+  }
+}
+</script>
+</body>
+</html>
