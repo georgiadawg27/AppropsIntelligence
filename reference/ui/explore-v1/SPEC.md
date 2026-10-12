@@ -10,7 +10,7 @@ This is the design the owner approved for the Explore workspace (the subcommitte
 ## 1. Rules that override everything else
 
 1. **The page never shows a figure the data doesn't hold.** It may show the difference between two figures it holds (change columns, % change, largest movers). It never computes totals, accounting views, classifications or anything else the build hasn't published. If a feature needs a field that isn't in `docs/data/`, the feature stays hidden (section 9).
-2. **Blank is not zero.** Each non-value cell shows its state (section 4) and is never used in a sum, difference or percentage.
+2. **Blank is not zero.** Each non-value cell shows its state (section 4) and is never used in a sum, difference or percentage. A **printed zero is a figure**: it counts in dollar differences (AHRQ's FY2026 request of 0 is −369,000 vs FY2025 enacted). A percentage from a zero base shows "new" (or "—" when both are zero). A confirmed absence with no printed figure is not used.
 3. **Every figure is one click from its source** (section 5.1).
 4. **Colour has one meaning each** (section 8): blue fill = hover only; yellow = selection only; green/orange = direction of change only.
 5. Keep the standing behaviour: a window-height scroll box, sticky header rows, a sticky first column, an always-visible bottom scrollbar.
@@ -34,7 +34,7 @@ Note: `04` shows the Amount basis and Account type controls enabled. That is the
 Top to bottom:
 
 1. **Header bar** (navy): product name; navigation Explore · Find changes · Sources. No sign-in link.
-2. **Control row** (white band): Search (grows), Subcommittee, Fiscal year, Compare (three joined buttons: Stages · Two years · Enacted history), Filter button with a count badge. Nothing else is always visible.
+2. **Control row** (white band): Search (grows), Subcommittee, Fiscal year (**default: the current fiscal year**, FY2027 as of Oct 1, 2026; owner decision 2026-10-12; the screenshots use FY2026 only because it shows every stage), Compare (three joined buttons: Stages · Two years · Enacted history), Filter button with a count badge. Nothing else is always visible.
 3. **Applied chips** (only when something is applied): `Applied: [Agency: National Institutes of Health ×] … Clear all`.
 4. **Title row**: eyebrow `LABOR-HHS-EDUCATION · TITLE II · FY2026` (condensed caps); heading = department name, or the agency name when an agency filter is applied. Right side: a units-and-basis label (`$ thousands · as printed`), then View ▾, Share, Export.
 5. **Workspace**: the grid (flex 999 1 600px) and the docked side panel (flex 1 1 340px) side by side, same height. Below ~980 px the panel wraps under the grid. The panel never overlays the grid.
@@ -63,7 +63,8 @@ There are no tiles above the grid: the headline figures live in the overview pan
 | State | Shows | Hover text |
 |---|---|---|
 | `value` | the figure | "Click for its source: <doc>, p. <n>" |
-| `not_funded` (printed zero or confirmed absence) | `—` muted | "Not funded: printed zero" / "…confirmed absent in the bill or law text" |
+| `not_funded`, printed zero | `—` muted, clickable to its source | "Not funded: printed zero". Counts as 0 in dollar differences |
+| `not_funded`, confirmed absence | `—` muted | "Not funded: confirmed absent in the bill or law text". Not used in any difference |
 | `missing` | `missing` small muted italic | "Document on file; figure not yet entered" |
 | `not_collected` / `not_enacted` / `not_reported` | `n/c` / `n/e` / `n/r` small muted | the state's meaning |
 | `no_printed_total` / `no_figure` | `—` muted | the state's meaning |
@@ -74,6 +75,15 @@ There are no tiles above the grid: the headline figures live in the overview pan
 **Weights.** Total band 14/700. Collapsed agency 14/500 (name and figures). Expanded agency 14/600. Lines 13/400. Change column follows its row (600 total and expanded, 500 collapsed, 400 lines).
 
 **Density.** Comfortable (default) rows have 12 px vertical padding; Compact has 6 px.
+
+**Years without an Enacted stage** (the default year is usually one of these):
+- The **lead stage** is the furthest stage, in the order Enacted › Senate › House › Request, for which the title total holds a printed value. It is chosen once per subcommittee and year, never row by row. For FY2027 Labor-HHS at main @ #55 that is House: the request and House stages hold figures, Senate is not collected, and nothing is enacted.
+- The stage columns are unchanged. Stages with no figures yet show their state tokens (`n/c`, `n/e`), never blanks or zeros.
+- The change column becomes "**<lead stage> vs FY<n−1> enacted**", e.g. "House vs FY2026 enacted". A row with no value at the lead stage shows an empty change cell. View › Columns adds "Request vs FY<n−1> enacted".
+- The lead-stage column takes the warm wash instead of Enacted.
+- The units-and-basis label adds the status: "$ thousands · as printed · FY2027 not yet enacted · latest: House".
+- "Still moving" (the Status filter) = nothing enacted for that year yet, and at least one earlier stage of that year holds a figure.
+- If no stage has a title total, there is no lead stage. The change column shows nothing, and the overview says "No printed totals yet for FY<n>".
 
 ## 5. Interactions
 
@@ -104,6 +114,8 @@ Clicks inside the grid or the panel never clear the selection.
 
 ### 5.4 The overview panel
 "Overview", the scope title ("Title II, Department of Health and Human Services · FY2026", or the filtered agency), the hint "Select an account in the grid to see its stages and sources here", three stacked figures (enacted; vs FY2025 enacted (full-year CR); vs FY2026 request), "FY2026 by stage (printed totals)", "Largest changes vs FY2025 enacted" (top three up, top three down, among the rows in scope with both values), and "Enacted in" (law with link, date signed, funding type, vehicle, from `enactments`), plus the CR note when the prior year was a full-year CR.
+
+In a year without an Enacted stage, the three figures become: the lead stage's total ("Title II, House, FY2027"); the lead stage vs FY<n−1> enacted; and the lead stage vs the request (when the lead stage isn't the request). "Largest changes" uses the lead stage. "Enacted in" becomes "**Status**": which stages are on file, with their documents, and "Not yet enacted". For FY2027 Labor-HHS that is the House total, 1,606,033,805, +52,771,448 (+3.4%) vs the FY2026 enacted total of 1,553,262,357.
 
 ### 5.5 Hover crosshair
 Hovering a figure cell tints its whole row `#ecf1f9` (including the sticky name cell) and its whole column `#f1f5fb`; the crossing cell is `#d6e2f5`; the column's header turns `#dfe8f6`, bold, with a 2 px `#1f4e8c` underline. Hovering a name tints the row only. Section labels and header-only rows don't highlight. Leaving the grid clears it. Selection fills are drawn over hover.
@@ -172,6 +184,7 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Abbreviations | display-only label map in `web/`, keyed by `canonical_account_id` (not data) | ready |
 | Export CSV | the shown rows | ready (UI-4) |
 | Phone list and sheet | same as grid and account panel | ready |
+| Filter › Advanced: change threshold, Include committee drafts, Show ended and reorganized accounts, Only figures pending review or flagged | cell states, `lifecycle`, verification status | ready (the Advanced section shows these now; the basis items join it when their flag is on) |
 | Amount basis, timing, Exclude earmarks | published views per cell (UI-0) | **hidden until UI-0** |
 | Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | **hidden until UI-0** |
 | Defense / nondefense column | `defense_portion` components (UI-0) | **hidden until UI-0** |
@@ -189,10 +202,11 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 8. `selection_beats_hover`: a selected cell keeps its yellow fill while hovered.
 9. `filter_chip_and_total_label`: apply Agency: NIH → chip appears, badge shows 1, the total reads "(printed, all accounts)" and its figures are unchanged.
 10. `url_round_trip`: every control and the selected figure survive a reload from the copied URL.
-11. `blank_vs_zero`: a printed zero shows `—` and is clickable; an outside-life cell is blank and not clickable; neither feeds a change or %.
+11. `blank_vs_zero`: a printed zero shows `—`, is clickable, and counts in the dollar change (AHRQ FY2026 Request vs FY2025 enacted = −369,000) with its % shown as "new"/"—" rules; a confirmed absence and an outside-life cell never feed a change or %; an outside-life cell is blank and not clickable.
 12. `feature_flags_hide_unready`: with `features.accounting_views` false, no Amount basis, Account type or defense controls exist in the DOM.
 13. `phone_layout`: at 390 × 844 there is no grid; the stage switch is present; tapping NCI opens the sheet with five stages and their sources.
 14. `keyboard_and_focus`: every control is reachable by Tab; dialogs and the sheet return focus on close.
+15. `default_year_and_lead_stage`: with no `fy` in the URL the page opens on FY2027. For Labor-HHS the change header reads "House vs FY2026 enacted"; the Senate and Enacted columns show `n/c` and `n/e`; the overview's first figure is the House total 1,606,033,805 and its change is +52,771,448 (+3.4%). Switching to FY2026 restores the Enacted layout.
 
 ## 11. Screenshot comparison in every UI PR
 

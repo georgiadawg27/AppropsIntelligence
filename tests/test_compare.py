@@ -549,6 +549,15 @@ class GridBrowser(CompareTest):
         getattr(self.page, action)(selector, *args)
         self.page.keyboard.press("Escape")
 
+    def advanced(self, action, selector, *args):
+        """A control in Filter › Advanced (SPEC 5.6): open the panel and the disclosure, use it, close with Esc."""
+        if self.page.is_hidden("#filter-panel"):
+            self.page.click("#filter-btn")
+        if self.page.get_attribute("#f-adv", "aria-expanded") != "true":
+            self.page.click("#f-adv")
+        getattr(self.page, action)(selector, *args)
+        self.page.keyboard.press("Escape")
+
     def cell(self, aid, fy, stage):
         return self.page.locator(f"tr[data-account={aid}] td[data-fy='{fy}'][data-stage=\"{stage}\"]")
 
@@ -628,7 +637,7 @@ class CompareBrowser(GridBrowser):
         fixture = json.loads((ROOT / "tests" / "fixtures" / "grid_counts.json").read_text())
         for sc, counts in fixture["state_counts"].items():
             for grid in ("stages", "years", "history"):
-                self.open("static", f"?view=compare&sc={sc}&grid={grid}")
+                self.open("static", f"?view=compare&sc={sc}&grid={grid}&rev=1")     # the counts show in Reviewer mode
                 got = {s.get_attribute("data-state"): int(s.inner_text().split()[0].replace(",", ""))
                        for s in self.page.locator("[data-testid=state-counts] [data-state]").all()}
                 # the blank cells outside an account's life, counted on their own (never missing)
@@ -792,7 +801,7 @@ class CompareBrowser(GridBrowser):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.assertFalse(self.page.locator("[data-testid=show-proposed]").is_checked())
         self.assertNotIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
-        self.menu("check", "[data-testid=show-proposed]")
+        self.advanced("check", "[data-testid=show-proposed]")
         self.assertIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
         self.assertIn("show=proposed", self.page.url)
         self.assertEqual(self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted").get_attribute("data-outside-life"), "outside")
@@ -805,7 +814,7 @@ class CompareBrowser(GridBrowser):
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2021&open=ACC-HHS-NIH-TOTAL")
         self.assertNotIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
         # 'new accounts before their first year': the row, blank
-        self.menu("check", "[data-testid=show-created]")
+        self.advanced("check", "[data-testid=show-created]")
         self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
         for st in FOUR:
             c = self.cell("ACC-HHS-NIH-ARPA-H", 2021, st)
@@ -1360,7 +1369,8 @@ class CompareBrowser(GridBrowser):
         cell = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget")
         self.assertIsNone(cell.get_attribute("title"))
         self.assertTrue(cell.locator("[data-testid=amount]").get_attribute("title"))
-        legend = self.page.inner_text("[data-testid=mark-legend]")          # beneath the one-line legend
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
+        legend = self.page.inner_text("[data-testid=mark-legend]")          # beneath the legend, in Reviewer mode
         self.assertIn("note on this figure: hover to read, click to open the account", legend)
         self.assertNotIn("other lines on file for this cell", legend)
         self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024")
@@ -1564,10 +1574,14 @@ class ExploreV1(GridBrowser):
         self.page.click("[data-testid=clear-all]")
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
         self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
-        # Account type and Advanced: hidden while their flags are false
+        # Advanced shows its ungated items; Account type and the basis items are not built here (UI-3)
         self.page.click("#filter-btn")
+        self.page.click("#f-adv")
         text = self.page.inner_text("#filter-panel")
-        for word in ("Account type", "Advanced", "Amount basis"):
+        for word in ("Advanced", "Change of at least (%)", "or at least ($K)", "Include committee drafts",
+                     "Show ended and reorganized accounts", "Only figures pending review or flagged"):
+            self.assertIn(word, text)
+        for word in ("Account type", "Amount basis", "Advance appropriations count", "Exclude earmarks"):
             self.assertNotIn(word, text)
 
     def test_search_keeps_ancestors(self):
@@ -1595,7 +1609,7 @@ class ExploreV1(GridBrowser):
                     status: document.querySelector('#f-status .on').dataset.status,
                     units: document.querySelector('#units .on').dataset.units,
                     density: document.querySelector('#density .on').dataset.density,
-                    menu: [...document.querySelectorAll('#view-menu input')].map(i => i.id + ':' + i.checked)})"""),
+                    menu: [...document.querySelectorAll('#view-menu input, #filter-panel input')].map(i => i.id + ':' + (i.type === 'checkbox' ? i.checked : i.value))})"""),
                 "grid": self.page.inner_html("#compare-grid tbody"), "head": self.page.inner_html("#compare-grid thead"),
                 "panel": self.page.inner_html("#side-panel")}
 
@@ -1613,6 +1627,10 @@ class ExploreV1(GridBrowser):
         self.page.select_option("#f-agency", "Centers for Disease Control and Prevention")
         self.page.click("#f-status button[data-status=enacted]")
         self.page.keyboard.press("Escape")
+        self.advanced("check", "#show-ended")
+        self.advanced("uncheck", "#f-drafts")
+        self.advanced("fill", "#f-min-k", "0")                 # FY2025 is a full-year CR: many changes are 0
+        self.page.wait_for_function("location.search.includes('mink=0')")
         self.page.click("tr[data-account=ACC-HHS-CDC-TOTAL] [data-testid=chevron]"); steps.append(self.state())
         self.page.fill("#search", "global")
         self.page.wait_for_function("location.search.includes('search=global')")
@@ -1626,7 +1644,7 @@ class ExploreV1(GridBrowser):
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
         self.assertEqual(self.state(), before)
         for k in ("fy=2025", "units=m", "density=compact", "cols=request", "rev=1", "agency=Centers", "status=enacted",
-                  "search=global", "open=ACC-HHS-CDC-TOTAL"):
+                  "search=global", "open=ACC-HHS-CDC-TOTAL", "show=proposed%2Cended", "drafts=0", "mink=0"):
             self.assertIn(k, copied)
         # the two compare views' own controls
         self.go("?sc=CJS&grid=years&a=2023&b=2025&stages=1011&basis=house&show=proposed,ended")
@@ -1648,10 +1666,11 @@ class ExploreV1(GridBrowser):
 
     # 11
     def test_blank_vs_zero(self):
-        # FY2027: AHRQ's request and House print a dash (a printed zero); its row has no change value
+        # SPEC section 1 rule 2: a printed zero is a figure and counts in dollar changes; a % from a zero base is
+        # "new" ("—" when both are zero); a confirmed absence and an outside-life cell never feed a change or %
         ahrq = self.lrow("ACC-HHS-AHRQ-TOTAL")
         cell = ahrq["cells"]["2027|House Reported"]["lines"][0]
-        self.assertEqual((cell["state"], cell["observations"][0]["amount"]), ("not_funded", 0))
+        self.assertEqual((cell["state"], cell["observations"][0]["amount"], cell["absence"]), ("not_funded", 0, None))
         self.go("?sc=LHHS&fy=2027&cols=request")
         td = self.cell("ACC-HHS-AHRQ-TOTAL", 2027, "House Reported")
         z = td.locator("a[data-testid=token-not-funded]")
@@ -1659,10 +1678,39 @@ class ExploreV1(GridBrowser):
         self.assertEqual(z.get_attribute("href"), cell["observations"][0]["url_or_identifier"] + "#page="
                          + str(cell["observations"][0]["source_page"]).split("-")[0])
         self.assertIn("Not funded: printed zero", z.get_attribute("title"))
+        # FY2027 AHRQ House (0) vs FY2026 enacted (345,380); Request (0) vs FY2026 enacted
         changes = self.page.locator("tr[data-account=ACC-HHS-AHRQ-TOTAL] [data-testid=change-cell]")
-        self.assertEqual([c.inner_text() for c in changes.all()], ["", ""])          # a zero never feeds a change
-        self.assertEqual(changes.first.get_attribute("data-delta"), None)
-        self.assertNotIn("ACC-HHS-AHRQ-TOTAL", [m.get_attribute("data-account") for m in self.page.locator("[data-testid=ov-mover]").all()])
+        self.assertEqual([c.inner_text().split("\n") for c in changes.all()], [["\u2212345,380", "\u2212100.0%"]] * 2)
+        self.assertEqual(changes.first.get_attribute("data-delta"), "-345380000")
+        # in the agency's own scope its lines' movers use the same figures
+        self.page.click("#filter-btn"); self.page.select_option("#f-agency", "Agency for Healthcare Research and Quality")
+        self.page.keyboard.press("Escape")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .s"), "\u2212345,380 $K · \u2212100.0%")
+        # FY2026: AHRQ's request is a printed zero. Request vs FY2025 enacted = −369,000 (−100.0%), from the page's own
+        # figure() and GridMath; Enacted vs a zero request shows "new"
+        self.go("?sc=LHHS&fy=2026&cols=request")
+        self.assertEqual(self.page.evaluate("""() => { const r = ROW_OF.get('ACC-HHS-AHRQ-TOTAL');
+            const a = figure(r, 2025, 'Enacted'), b = figure(r, 2026, "President's Budget");
+            return [GridMath.signedNumber(b - a, 'k'), GridMath.pctText(a, b)]; }"""), ["\u2212369,000", "\u2212100.0%"])
+        self.assertEqual([c.inner_text().split("\n") for c in self.page.locator("tr[data-account=ACC-HHS-AHRQ-TOTAL] [data-testid=change-cell]").all()],
+                         [["\u221223,620", "\u22126.4%"], ["+345,380", "new"]])
+        # a printed-zero base: CCPF FY2021 enacted printed 0, FY2022 enacted 5,000 -> +5,000, "new"
+        ccpf = self.lrow("ACC-HHS-HRSA-CCPF")
+        self.assertEqual(ccpf["cells"]["2021|Enacted"]["lines"][0]["observations"][0]["amount"], 0)
+        self.go("?sc=LHHS&fy=2022&open=ACC-HHS-HRSA-TOTAL")
+        self.assertEqual(self.page.locator("tr[data-account=ACC-HHS-HRSA-CCPF] [data-testid=change-cell]").inner_text().split("\n"),
+                         ["+5,000", "new"])
+        # a confirmed absence never counts: CCPF FY2020 enacted is confirmed absent, FY2021's printed zero has no change
+        absent = ccpf["cells"]["2020|Enacted"]["lines"][0]
+        self.assertEqual((absent["state"], bool(absent["absence"]), absent["observations"]), ("not_funded", True, []))
+        self.go("?sc=LHHS&fy=2021&open=ACC-HHS-HRSA-TOTAL")
+        prior = self.cell("ACC-HHS-HRSA-CCPF", 2020, "Enacted").locator("[data-testid=token-not-funded]")
+        self.assertEqual(prior.evaluate("e => e.tagName"), "SPAN")                         # not a link: no figure printed
+        self.assertTrue(prior.get_attribute("title").startswith("Not funded: confirmed absent in the bill or law text"))
+        ch = self.page.locator("tr[data-account=ACC-HHS-HRSA-CCPF] [data-testid=change-cell]")
+        self.assertEqual((ch.inner_text(), ch.get_attribute("data-delta")), ("", None))
+        # GridMath: both zero shows "—"
+        self.assertEqual(self.page.evaluate("[GridMath.pctText(0, 0), GridMath.pctText(0, 5), GridMath.pctText(null, 5)]"), ["—", "new", ""])
         # an outside-life cell: blank, not clickable, no change
         self.go("?sc=LHHS&fy=2026")
         aha = self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted")
@@ -1683,26 +1731,38 @@ class ExploreV1(GridBrowser):
 
     # 12
     def test_feature_flags_hide_unready(self):
-        index = json.loads((self.out / "data" / "index.json").read_text())
-        for flag in ("accounting_views", "budget_class", "defense_split"):
-            self.assertFalse(index["features"][flag], flag)
-        for where in self.urls:
-            self.go("?sc=LHHS&fy=2026", where)
-            self.page.click("#filter-btn")
-            html = self.page.inner_text("body").lower()
-            self.page.keyboard.press("Escape")
-            self.page.click("#view-btn")
-            html += self.page.inner_text("body").lower()
-            for word in ("amount basis", "account type", "defense", "incl. mandatory", "appropriated mandatory", "earmark"):
-                self.assertNotIn(word, html, (where, word))
-        # the page reads the flags in both modes: a flag turned off hides its feature
+        # with accounting_views / budget_class / defense_split false, none of their controls exist; UI-0 (#57) turned
+        # them on, and the controls still don't exist because no brief has built them yet (UI-3)
         def off(route):
+            body = json.loads(route.fetch().text())
+            for flag in ("accounting_views", "budget_class", "defense_split"):
+                body["features"][flag] = False
+            route.fulfill(json=body)
+        words = ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
+                 "appropriated mandatory", "earmark")
+        for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
+            for flagged_off in (True, False):
+                if flagged_off:
+                    self.page.route(pattern, off)
+                self.go("?sc=LHHS&fy=2026", where)
+                self.page.click("#filter-btn")
+                self.page.click("#f-adv")
+                html = self.page.inner_text("body").lower()
+                self.page.keyboard.press("Escape")
+                self.page.click("#view-btn")
+                html += self.page.inner_text("body").lower()
+                for word in words:
+                    self.assertNotIn(word, html, (where, flagged_off, word))
+                if flagged_off:
+                    self.page.unroute(pattern)
+        # the page reads the flags in both modes: a flag turned off hides its feature
+        def off2(route):
             body = json.loads(route.fetch().text())
             body["features"]["search_filter"] = False
             body["features"]["overview_panel"] = False
             route.fulfill(json=body)
         for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
-            self.page.route(pattern, off)
+            self.page.route(pattern, off2)
             self.go("?sc=LHHS&fy=2026", where)
             self.assertTrue(self.page.is_hidden("#search") and self.page.is_hidden("#filter-btn"), where)
             self.assertTrue(self.page.is_hidden("[data-testid=side-panel]"), where)
@@ -1742,36 +1802,107 @@ class ExploreV1(GridBrowser):
         self.assertTrue(self.page.is_hidden("#view-menu"))
 
     # the brief's 15: a year with no Enacted stage
-    def test_a_year_without_an_enacted_stage(self):
+    # 15
+    def test_default_year_and_lead_stage(self):
         t = self.total()
         self.assertEqual(expected_headline(t, 2027, "Enacted")["state"], "not_enacted")
         self.assertEqual(expected_headline(t, 2027, "Senate Reported")["state"], "not_collected")
-        house, prior = (expected_headline(t, y, st)["amount"] for y, st in ((2027, "House Reported"), (2026, "Enacted")))
-        self.go("?sc=LHHS&fy=2027&cols=request")
+        self.assertEqual(expected_headline(t, 2027, "House Reported")["amount"], "1,606,033,805")
+        self.assertEqual(expected_headline(t, 2026, "Enacted")["amount"], "1,553,262,357")
+        self.go("?sc=LHHS")                                                # no fy in the URL: the current fiscal year
+        self.assertEqual(self.page.input_value("#fy-pick"), "2027")
         heads = self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
         self.assertEqual(heads, [["Account", "FY2026", "FY2027", "Change"],
-                                 ["Enacted", "Request", "House", "Senate", "Enacted", "House vs FY2026 enacted", "House vs FY2027 request"]])
-        lead = self.page.locator("#compare-grid thead th.lead")
-        self.assertEqual(lead.inner_text(), "House")
-        self.assertEqual(self.cell("ACC-HHS-NIH-TOTAL", 2027, "House Reported").evaluate("e => e.classList.contains('lead')"), True)
-        ch = self.page.locator("tr.title [data-testid=change-cell]").first
-        to_k = lambda s: int(s.replace(",", "").replace("−", "-"))
-        self.assertEqual(int(ch.get_attribute("data-delta")), (to_k(house) - to_k(prior)) * 1000)
+                                 ["Enacted", "Request", "House", "Senate", "Enacted", "House vs FY2026 enacted"]])
+        self.assertEqual(self.page.locator("#compare-grid thead th.lead").inner_text(), "House")
+        self.assertTrue(self.cell("ACC-HHS-NIH-TOTAL", 2027, "House Reported").evaluate("e => e.classList.contains('lead')"))
+        # Senate and Enacted show their tokens, never blanks or zeros
+        for st, tok in (("Senate Reported", "n/c"), ("Enacted", "n/e")):
+            for aid in ("ACC-HHS-TITLE-II-TOTAL", "ACC-HHS-NIH-TOTAL"):
+                self.assertEqual(self.cell(aid, 2027, st).inner_text(), tok, (aid, st))
+        self.assertEqual(self.page.locator("tr.title [data-testid=change-cell]").first.inner_text().split("\n"), ["+52,771,448", "+3.4%"])
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed · FY2027 not yet enacted · latest: House")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title II House, FY2027")
+        # the overview: the House total first, then its change vs FY2026 enacted; Status instead of Enacted in
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title II, House, FY2027")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"), "1,606,033,805 $K · as printed")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .s"), "+52,771,448 $K · +3.4%")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .l"), "vs FY2026 enacted")
         status = [s.inner_text().split("\n") for s in self.page.locator("[data-testid=ov-status]").all()]
-        self.assertEqual(status, [["President’s request", "on file"], ["House", "on file"], ["Senate", "not yet collected"],
-                                  ["Enacted", "not yet enacted"]])
+        self.assertEqual(status, [["President’s request", "On file"], ["House", "On file"], ["Senate", "Not yet collected"],
+                                  ["Enacted", "Not yet enacted"]])
+        docs = [d.inner_text() for d in self.page.locator("[data-testid=ov-status-doc]").all()]
+        self.assertEqual(len(docs), 2)
+        for d, st in zip(docs, ("President's Budget", "House Reported")):
+            o = next(l for l in t["cells"][f"2027|{st}"]["lines"] if l["amount_type"] == "budget authority" and not l["component"])["observations"][0]
+            self.assertEqual(d, f"{o['source_document_id']} p.{o['source_page']}")
         self.assertEqual(self.page.locator("[data-testid=ov-law]").count(), 0)
-        # a year that has one: Enacted leads, the law it was enacted in
-        self.go("?sc=LHHS&fy=2026")
+        # View › Columns adds Request vs FY2026 enacted
+        self.go("?sc=LHHS&cols=request")
+        self.assertEqual(self.page.eval_on_selector_all("#compare-grid thead tr + tr th.delta", "ts => ts.map(t => t.innerText)"),
+                         ["House vs FY2026 enacted", "Request vs FY2026 enacted"])
+        # switching to FY2026 restores the Enacted layout
+        self.go("?sc=LHHS")
+        self.page.select_option("#fy-pick", "2026")
         self.assertEqual(self.page.locator("#compare-grid thead th.lead").inner_text(), "Enacted")
+        self.assertEqual(self.page.eval_on_selector_all("#compare-grid thead tr + tr th.delta", "ts => ts.map(t => t.innerText)"), ["FY2025 enacted"])
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title II enacted, FY2026")
         law = self.page.locator("[data-testid=ov-law] a")
         self.assertEqual(law.inner_text(), "P.L. 119-75, Division B")
         self.assertEqual(law.get_attribute("href"), "https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf")
         self.assertIn("Signed Feb. 3, 2026 · minibus · vehicle H.R. 7148", self.page.inner_text("[data-testid=side-panel]"))
         self.assertEqual(self.page.inner_text("[data-testid=ov-cr]"), "FY2025 was a full-year continuing resolution (P.L. 119-4).")
+
+    def test_footer_default_and_reviewer(self):
+        self.go("?sc=LHHS&fy=2026")
+        for sel in ("#grid-legend", "#grid-provenance"):
+            self.assertTrue(self.page.is_visible(sel), sel)
+        for sel in ("#grid-counts", "#mark-legend", "#rev-legend", "#grid-notes"):
+            self.assertTrue(self.page.is_hidden(sel), sel)
+        self.go("?sc=LHHS&fy=2026&rev=1")
+        for sel in ("#grid-counts", "#mark-legend", "#rev-legend"):
+            self.assertTrue(self.page.is_visible(sel), sel)
+
+    def test_advanced_filters(self):
+        self.go("?sc=LHHS&fy=2026")
+        shown = lambda: [r.get_attribute("data-account") for r in self.page.locator("tr[data-testid=compare-row]:not(.title)").all()]
+        # a change of at least 10%: the agencies whose change column moved that much (or with a line that did)
+        self.advanced("fill", "#f-min-pct", "10")
+        self.page.wait_for_function("location.search.includes('minpct=10')")
+        def moved(r):
+            a, b = (expected_headline(r, y, "Enacted") for y in (2025, 2026))
+            if a["state"] != "value" or b["state"] != "value":
+                return False
+            x, y = to_dollars(a["amount"]), to_dollars(b["amount"])
+            return abs(y - x) / abs(x) * 100 >= 10
+        agencies = [r for r in self.lhhs["rows"] if r["rollup"] == "agency" and r["lifecycle"]["type"] != "proposed_only"]
+        want = [r["account"]["canonical_account_id"] for r in agencies
+                if moved(r) or any(moved(m) for m in self.lhhs["rows"] if m["member_of"] == r["account"]["canonical_account_id"]
+                                   and in_view(m, self.DEFAULT))]
+        self.assertEqual([a for a in shown() if a in want or self.lrow(a)["rollup"] == "agency"], want)
+        self.assertIn("Change of at least 10%", self.page.inner_text("[data-testid=chips]"))
+        self.assertEqual(self.page.inner_text("[data-testid=filter-badge]"), "1")
+        # pending review or flagged only: every row left has such a figure in view (or a line that does)
+        self.page.click("[data-testid=clear-all]")
+        self.advanced("check", "#f-review")
+        self.assertIn("review=1", self.page.url)
+        self.assertGreater(len(shown()), 0)
+        # committee drafts left out: FY2024's House draft column goes
+        self.page.click("[data-testid=clear-all]")
+        self.go("?sc=LHHS&fy=2024")
+        self.assertEqual(self.page.locator("[data-testid=draft-label]").count(), 1)
+        self.advanced("uncheck", "#f-drafts")
+        self.assertEqual(self.page.locator("[data-testid=draft-label]").count(), 0)
+        self.assertEqual(self.page.locator("td[data-fy='2024'][data-stage='House Reported']").count(), 0)
+        self.assertIn("drafts=0", self.page.url)
+        self.assertIn("Committee drafts left out", self.page.inner_text("[data-testid=chips]"))
+        # the lifecycle choices live here and chip when changed
+        self.advanced("check", "#show-ended")
+        self.assertIn("Ended and reorganized accounts shown", self.page.inner_text("[data-testid=chips]"))
+        self.assertEqual(self.page.inner_text("[data-testid=filter-badge]"), "2")
+        self.page.click("#filter-btn")
+        self.page.click("[data-testid=filter-reset]")
+        self.assertTrue(self.page.is_hidden("[data-testid=filter-badge]"))
 
     def test_overview_figures_are_differences_of_printed_totals(self):
         t = self.total()
@@ -1789,9 +1920,9 @@ class ExploreV1(GridBrowser):
         for r in self.lhhs["rows"]:
             if r["rollup"] != "agency" or r["lifecycle"]["type"] == "proposed_only":
                 continue
-            a, b = (expected_headline(r, y, "Enacted") for y in (2025, 2026))
-            if a["state"] == b["state"] == "value":
-                moves.append((to_dollars(b["amount"]) - to_dollars(a["amount"]), r["account"]["canonical_account_id"]))
+            a, b = (printed(r, y, "Enacted") for y in (2025, 2026))
+            if a is not None and b is not None and a != b:
+                moves.append((b - a, r["account"]["canonical_account_id"]))
         want = [i for d_, i in sorted((m for m in moves if m[0] > 0), reverse=True)[:3]] + \
                [i for d_, i in sorted(m for m in moves if m[0] < 0)[:3]]
         self.assertEqual([m.get_attribute("data-account") for m in self.page.locator("[data-testid=ov-mover]").all()], want)
@@ -1799,6 +1930,19 @@ class ExploreV1(GridBrowser):
 
 def to_dollars(thousands_text):
     return int(thousands_text.replace(",", "").replace("−", "-")) * 1000
+
+
+def printed(row, fy, stage):
+    """The page's figure(): a value, or a printed zero (not_funded with its observation); never a confirmed absence."""
+    cell = row["cells"].get(f"{fy}|{stage}")
+    if not cell or cell.get("outside_life") or not cell["lines"]:
+        return None
+    h = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]), cell["lines"][0])
+    if not h["observations"]:
+        return None
+    if h["state"] == "value" or (h["state"] == "not_funded" and not h["absence"]):
+        return h["observations"][0]["amount"]
+    return None
 
 
 class GridMathUnits(unittest.TestCase):
@@ -1830,8 +1974,13 @@ class GridMathUnits(unittest.TestCase):
 
     def test_a_missing_figure_has_no_change(self):
         self.assertEqual(self.run_js("[GridMath.change(null, 5), GridMath.change(5, null)]"), [None, None])
-        # the arithmetic alone: a zero base has no percentage (the page never passes a printed zero: figure() reads value cells only)
+        # a printed zero is a figure: the change is real; the percentage from a zero base isn't defined ("new")
         self.assertEqual(self.run_js("GridMath.change(0, 7000)"), {"delta": 7000, "pct": None})
+
+    def test_pct_from_a_zero_base(self):
+        self.assertEqual(self.run_js("[GridMath.pctText(0, 7000), GridMath.pctText(0, 0), GridMath.pctText(369000, 0), "
+                                     "GridMath.pctText(null, 0), GridMath.pctText(200, 150)]"),
+                         ["new", "\u2014", "\u2212100.0%", "", "\u221225.0%"])
 
     def test_units(self):
         self.assertEqual(self.run_js("[GridMath.number(47811518000, 'k'), GridMath.number(47811518000, 'm'), "

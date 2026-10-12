@@ -216,9 +216,24 @@ Made in this phase (flag any you disagree with):
   checkboxes and basis, the "Accounts shown" lifecycle checkboxes. Kept below the legend: state counts, stage notes,
   provenance.
 
-Open items for the owner (also in the PR):
+Owner follow-ups (2026-10-12, same PR):
 
-1. SPEC.md has no "Years without an Enacted stage" text and no test 15; built from the brief's wording (see above),
-   test `test_a_year_without_an_enacted_stage` stands in for 15.
-2. Header nav shows Explore and One account; Find changes and Sources are not built (no brief yet), so not shown.
-3. CJS: accounts outside an agency total get their own section label ("Accounts outside an agency total · n").
+- SPEC.md replaced with the owner's second version (FY2027 section, test 15, the zero rule).
+- A printed zero is a figure: `figure()` returns it (0) and it counts in dollar changes and movers; a % from a zero
+  base shows "new" ("—" when both are zero, `GridMath.pctText`). A confirmed absence (no observation) never counts.
+- Lead stage: none when the title total holds nothing that year (change column empty, overview "No printed totals
+  yet"). CJS prints no title total at all, so it takes the latest stage any row holds. View › Columns adds
+  "Request vs FY<n-1> enacted" in a year without an Enacted stage.
+- Filter › Advanced shows its ungated items: change threshold (`minpct`, `mink`: the first change column), Include
+  committee drafts (on by default; off drops draft columns and leaves drafts out of every difference, `drafts=0`),
+  the three lifecycle checkboxes (moved from View), Only figures pending review or flagged (`review=1`). Amount
+  basis, timing, Exclude earmarks and Account type are not built (UI-3) and stay hidden although UI-0 (#57) turned
+  their flags on.
+- Footer: the default view shows the one-line legend and the provenance line; the cell counts and the corner-mark
+  key show in Reviewer mode.
+- The CJS section label and the temporary nav (Explore, One account) are approved.
+
+Open items:
+
+1. Include committee drafts defaults to on (today's behaviour); the design shows the box unticked. Owner to confirm.
+2. UI-3 builds the basis, timing, earmark and Account type controls; their flags are already on since UI-0.

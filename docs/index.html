@@ -131,6 +131,14 @@
   .pill { min-height: 36px; padding: 0 12px; border-radius: 18px; font: inherit; font-size: 13px; cursor: pointer;
           border: 1px solid var(--x-input); background: var(--x-surface); color: var(--x-ink); }
   .pill.on { border-color: var(--x-accent); background: var(--x-accent); color: #fff; }
+  .advbtn { width: 100%; display: flex; justify-content: space-between; align-items: center; border: 0; border-top: 1px solid #e3e5ea;
+            background: transparent; padding: 14px 0 6px; font: inherit; cursor: pointer; text-align: left; color: var(--x-ink); }
+  .advbtn .advt { font-weight: 600; font-size: 14px; display: block; }
+  .advbtn .advs { display: block; font-size: 12px; color: var(--x-muted); margin-top: 2px; }
+  .advbtn .advc { color: var(--x-muted); font-size: 13px; }
+  #f-adv-body { padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+  #f-adv-body .pair2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 8px; }
+  #f-adv-body input[type=text] { height: 40px; border: 1px solid var(--x-input); border-radius: 8px; padding: 0 10px; font: inherit; font-size: 14px; color: var(--x-ink); }
   .pfoot { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3e5ea; }
   .pfoot .xbtn { height: 44px; }
   #view-menu { top: 48px; right: 0; width: 300px; padding: 16px; max-height: 70vh; overflow: auto; }
@@ -257,6 +265,7 @@
   .ovtext { font-size: 13px; }
   .ovtext a { color: var(--x-accent); }
   .ovsmall { font-size: 12px; color: var(--x-muted); margin-top: 2px; }
+  .ovsmall a { color: var(--x-accent); }
 </style>
 </head>
 <body>
@@ -733,6 +742,12 @@ const GridMath = {
     return (pct > 0 ? "+" : "−") + s + "%";
   },
   direction(delta) { return delta > 0 ? "up" : delta < 0 ? "down" : ""; },
+  // the % shown under a change (SPEC section 1, rule 2): from a zero base it is "new", or "—" when both are zero
+  pctText(a, b) {
+    if (a == null || b == null) return "";
+    if (a === 0) return b === 0 ? "—" : "new";
+    return GridMath.signedPct(((b - a) / Math.abs(a)) * 100);
+  },
   // a figure in short form, dollars in: $1.55T, $47.29B, $128.0M
   short(amount) {
     const a = Math.abs(amount), s = amount < 0 ? "−" : "";
@@ -758,6 +773,8 @@ let dataVersion = "";
 const SHOW_PROPOSED = { stages: true, years: true, history: false };
 const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true, true, true, true], basis: 3,
             units: "k", reviewer: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
+            // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
+            minPct: null, minK: null, drafts: true, review: false,
             // "Accounts shown" (the account lifecycle): proposed-only accounts per view, ended accounts after
             // their last year, new accounts before their first year
             show: { proposed: { ...SHOW_PROPOSED }, ended: false, created: false } };
@@ -830,12 +847,18 @@ function rowShown(row, cols) {
       || (side === "before" && G.show.created && L.type === "new");
   });
 }
-// the headline's printed figure, or null: only a cell in the value state has one. A printed zero
-// (not_funded) and every other state are never used in a sum, difference or percentage (SPEC rule 2)
+// the headline's printed figure, or null (SPEC section 1, rule 2): a value; a printed zero (not_funded with its
+// observation) is a figure too and counts as 0 in dollar differences. A confirmed absence with no printed figure,
+// and every other state, is never used in a sum, difference or percentage. With "Include committee drafts" off,
+// a committee draft's figures are left out of every difference as well.
 function figure(row, y, st) {
   const x = row && headOf(row, y, st);
-  return x && x.h && x.h.state === "value" && x.h.observations.length && !x.cell.outside_life ? x.h.observations[0].amount : null;
+  if (!x || !x.h || x.cell.outside_life || !x.h.observations.length) return null;
+  if (!G.drafts && isDraft(current ? current.grid : null, y, st)) return null;
+  if (x.h.state === "value") return x.h.observations[0].amount;
+  return x.h.state === "not_funded" && !x.h.absence ? x.h.observations[0].amount : null;
 }
+const isDraft = (grid, y, st) => !!(grid && (grid.drafts || {})[`${y}|${st}`]);
 const validated = (s) => s === "auto-validated" || s === "human-verified";
 // an observation's validation records a person still has to look at (human_review_status = pending)
 const pendingReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "pending");
@@ -966,7 +989,7 @@ function changeCell(earlier, later, c) {
   const ch = GridMath.change(earlier, later);
   if (!ch) { td.title = `${c.what}: no change value, a figure is missing`; return td; }
   td.dataset.delta = String(ch.delta);
-  const txt = GridMath.signedNumber(ch.delta, G.units), pct = GridMath.signedPct(ch.pct);
+  const txt = GridMath.signedNumber(ch.delta, G.units), pct = GridMath.pctText(earlier, later);
   td.title = c.what;
   td.append(el("span", { class: GridMath.direction(ch.delta) || "flat",
                          "aria-label": `${c.what}: ${txt} ${G.units === "m" ? "million" : "thousand"} dollars${pct ? ", " + pct : ""}` },
@@ -981,11 +1004,13 @@ function printedTotal(grid) {
   if (t) return { label: t.title, row: t.total };
   return grid.bill_total ? { label: "Bill", row: grid.bill_total } : null;
 }
+// null: no stage of that year has a title total (no lead stage; the change column shows nothing).
+// A subcommittee that prints no title total at all (CJS) takes the latest stage any row holds.
 function leadStage(grid, y) {
   const T = printedTotal(grid);
-  const rows = T ? [T.row] : grid.rows;                          // no printed total: the latest stage any row holds
+  const rows = T ? [T.row] : grid.rows;
   for (const i of [3, 2, 1, 0]) if (rows.some((r) => figure(r, y, STAGES4[i]) != null)) return i;
-  return 3;
+  return T ? null : 3;
 }
 
 // ---- columns per view: groups over columns; a column is a figure [fy, stage index] or a change between two
@@ -995,6 +1020,8 @@ function historyYears(grid) {
   const later = ys.filter((y) => y > (enacted[enacted.length - 1] || 0));
   return { enacted, next: later.length ? later[later.length - 1] : null };
 }
+// a year's stage columns: all four, less a committee draft's when "Include committee drafts" is off
+const stagesIn = (grid, y, list = [0, 1, 2, 3]) => list.filter((i) => G.drafts || !isDraft(grid, y, STAGES4[i]));
 function shownStages() {
   const s = [0, 1, 2, 3].filter((i) => G.stages[i]);
   return s.length ? s : [3];
@@ -1004,7 +1031,7 @@ function layout(grid) {
     const { enacted, next } = historyYears(grid);
     const f = enacted[0], l = enacted[enacted.length - 1];
     const groups = [{ label: "Enacted", cols: enacted.map((y) => ({ fig: [y, 3], label: `FY${y}` })) }];
-    if (next) groups.push({ label: `FY${next}`, cols: [0, 1].map((i) => ({ fig: [next, i], label: STAGE_NAME[i] })) });
+    if (next) groups.push({ label: `FY${next}`, cols: stagesIn(grid, next, [0, 1]).map((i) => ({ fig: [next, i], label: STAGE_NAME[i] })) });
     if (enacted.length > 1) groups.push({ label: "Change", cls: "delta", cols: [{ chg: [[f, 3], [l, 3]],
       label: `FY${String(f).slice(2)} → FY${String(l).slice(2)}`, what: `FY${l} enacted vs FY${f} enacted` }] });
     return groups;
@@ -1012,21 +1039,26 @@ function layout(grid) {
   if (G.grid === "years") {
     const s = shownStages();
     return [
-      { label: `FY${G.a}`, cols: s.map((i) => ({ fig: [G.a, i], label: STAGE_NAME[i] })) },
-      { label: `FY${G.b}`, cls: "yb", cols: s.map((i) => ({ fig: [G.b, i], label: STAGE_NAME[i] })) },
+      { label: `FY${G.a}`, cols: stagesIn(grid, G.a, s).map((i) => ({ fig: [G.a, i], label: STAGE_NAME[i] })) },
+      { label: `FY${G.b}`, cls: "yb", cols: stagesIn(grid, G.b, s).map((i) => ({ fig: [G.b, i], label: STAGE_NAME[i] })) },
       { label: "Change", cls: "delta", cols: [{ chg: [[G.a, G.basis], [G.b, G.basis]], label: `FY${G.b} vs FY${G.a} ${STAGE_WORD[G.basis]}`,
         what: `FY${G.b} ${STAGE_WORD[G.basis]} vs FY${G.a} ${STAGE_WORD[G.basis]}` }] },
     ];
   }
   const y = G.fy, lead = leadStage(grid, y), enacted = lead === 3;
-  const chg = [{ chg: [[y - 1, 3], [y, lead]], label: enacted ? `FY${y - 1} enacted` : `${STAGE_NAME[lead]} vs FY${y - 1} enacted`,
-                 what: `FY${y} ${STAGE_WORD[lead]} vs FY${y - 1} enacted` }];
-  if (G.reqcol && lead !== 0)
-    chg.push({ chg: [[y, 0], [y, lead]], label: enacted ? `FY${y} request` : `${STAGE_NAME[lead]} vs FY${y} request`,
-               what: `FY${y} ${STAGE_WORD[lead]} vs FY${y} request`, req: true });
+  // no lead stage: the change column shows nothing
+  const chg = [lead == null ? { chg: null, label: "no printed totals yet", what: `FY${y}: no printed totals yet` }
+    : { chg: [[y - 1, 3], [y, lead]], label: enacted ? `FY${y - 1} enacted` : `${STAGE_NAME[lead]} vs FY${y - 1} enacted`,
+        what: `FY${y} ${STAGE_WORD[lead]} vs FY${y - 1} enacted` }];
+  // View › Columns: the request against the enacted figure (Enacted leads) or against last year's enacted (a year
+  // without an Enacted stage)
+  if (G.reqcol && lead === 3)
+    chg.push({ chg: [[y, 0], [y, 3]], label: `FY${y} request`, what: `FY${y} enacted vs FY${y} request`, req: true });
+  else if (G.reqcol && lead != null && lead !== 0)
+    chg.push({ chg: [[y - 1, 3], [y, 0]], label: `Request vs FY${y - 1} enacted`, what: `FY${y} request vs FY${y - 1} enacted`, req: true });
   return [
     { label: `FY${y - 1}`, cls: "right", cols: [{ fig: [y - 1, 3], label: "Enacted" }] },
-    { label: `FY${y}`, cols: [0, 1, 2, 3].map((i) => ({ fig: [y, i], label: STAGE_NAME[i], lead: i === lead })) },
+    { label: `FY${y}`, cols: stagesIn(grid, y).map((i) => ({ fig: [y, i], label: STAGE_NAME[i], lead: i === lead })) },
     { label: enacted ? "Change vs" : "Change", cls: "delta", cols: chg },
   ];
 }
@@ -1036,9 +1068,10 @@ function flatCols(groups) {
     cls: [g.cls === "delta" ? "" : g.cls || "", i === 0 && g.cls !== "delta" ? "gs" : "", c.lead ? "lead" : "",
           g.cls === "delta" && i === 0 ? "first" : ""].filter(Boolean).join(" ") })));
 }
+// a change column's two figures for a row ([null, null] for a change column with nothing to compare)
+const changeOf = (row, c) => c.chg ? [figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]])] : [null, null];
 function cellsFor(row, cols, name) {
-  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name)
-    : changeCell(figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]]), c));
+  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name) : changeCell(...changeOf(row, c), c));
 }
 
 // ---- which rows show: the filters (agency, status, search) over each row's life in the columns in view
@@ -1070,9 +1103,24 @@ function rowFilters(grid, cols) {
   const inView = (r) => rowShown(r, cols);
   const searchOK = (r) => !q || searchHit(r, q) || (r.member_of && searchHit(ROW_OF.get(r.member_of) || r, q))
     || (r.account.parent_account_id && ROW_OF.get(r.account.parent_account_id) && searchHit(ROW_OF.get(r.account.parent_account_id), q));
+  // Advanced: a change of at least minPct % or minK $K in the first change column (a row with no change value
+  // doesn't pass); only rows with a figure in view that is flagged or has a record pending review
+  const first = cols.find((c) => c.chg !== undefined && !c.fig);
+  const changeOK = (r) => {
+    if (G.minPct == null && G.minK == null) return true;
+    const [a, b] = first ? changeOf(r, first) : [null, null];
+    const c = GridMath.change(a, b);
+    if (!c) return false;
+    return (G.minK != null && Math.abs(c.delta) >= G.minK * 1000) || (G.minPct != null && c.pct != null && Math.abs(c.pct) >= G.minPct);
+  };
+  const reviewOK = (r) => !G.review || cols.some((c) => {
+    if (!c.fig) return false;
+    const x = headOf(r, c.fig[0], STAGES4[c.fig[1]]), o = x && !x.cell.outside_life && x.h && x.h.observations[0];
+    return o && (o.verification_status === "flagged" || pendingReview(o).length > 0);
+  });
   const ok = (r) => inView(r) && (!G.agency || r.account.agency === G.agency)
-    && (G.status === "any" || statusOf(r, y) === G.status) && (!has("search_filter") || searchOK(r));
-  return { inView, ok, filtering: !!(q || G.agency || G.status !== "any") };
+    && (G.status === "any" || statusOf(r, y) === G.status) && (!has("search_filter") || searchOK(r)) && changeOK(r) && reviewOK(r);
+  return { inView, ok, filtering: !!(q || G.agency || G.status !== "any" || G.minPct != null || G.minK != null || G.review) };
 }
 
 // ---- rows: per title, the printed total band, then the three sections (SPEC section 4)
@@ -1251,23 +1299,25 @@ function renderOverview(grid) {
   box.hidden = false;
   const y = focusYear(grid), S = scopeOf(grid), row = S.row;
   const lead = leadStage(grid, y), enacted = lead === 3;
-  const leadName = STAGE_WORD[lead];
   const kids = [el("div", { class: "ovk", text: "Overview" }),
                 el("div", { class: "ovtitle", "data-testid": "overview-title", text: S.title }),
                 el("div", { class: "ovhint", text: "Select an account in the grid to see its stages and sources here." })];
   const unitWord = G.units === "m" ? "$M" : "$K";
   const prior = crOf(grid, y - 1) ? `vs FY${y - 1} enacted (full-year CR)` : `vs FY${y - 1} enacted`;
-  if (row) {
+  if (row && lead == null) {
+    kids.push(el("p", { class: "ovsmall", "data-testid": "ov-no-total", text: `No printed totals yet for FY${y}.` }));
+  } else if (row) {
     const v = figure(row, y, STAGES4[lead]);
     const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid },
       el("div", { class: "l", text: l }), el("div", { class: "v " + (cls || ""), text: val }), el("div", { class: "s", text: sub }));
     const chTile = (l, a, b, tid) => {
       const c = GridMath.change(a, b);
-      return c ? tile(l, GridMath.signedShort(c.delta), GridMath.signedPct(c.pct), GridMath.direction(c.delta) || "flat", tid)
+      return c ? tile(l, GridMath.signedShort(c.delta), `${GridMath.signedNumber(c.delta, G.units)} ${unitWord} · ${GridMath.pctText(a, b)}`,
+                      GridMath.direction(c.delta) || "flat", tid)
                : tile(l, "—", "needs both figures", "flat", tid);
     };
     kids.push(el("div", { class: "ovtiles" },
-      tile(`${S.who} ${leadName}, FY${y}`, v == null ? "—" : GridMath.short(v),
+      tile(enacted ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`, v == null ? "—" : GridMath.short(v),
            v == null ? STATE_WORDS[stateOf(row, y, STAGES4[lead])] || "no figure" : `${GridMath.number(v, G.units)} ${unitWord} · as printed`, "", "ov-headline"),
       chTile(prior, figure(row, y - 1, "Enacted"), v, "ov-vs-prior"),
       lead !== 0 ? chTile(`vs FY${y} request`, figure(row, y, STAGES4[0]), v, "ov-vs-request") : null));
@@ -1284,7 +1334,10 @@ function renderOverview(grid) {
   }
   // largest changes: the rows in scope with both figures, top three up and three down
   const pool = S.members ? S.members : grid.rows.filter((r) => (r.rollup === "agency" || (!r.member_of && !isGP(r))) && !proposedOnly(r));
-  const moves = pool.map((r) => ({ r, c: GridMath.change(figure(r, y - 1, "Enacted"), figure(r, y, STAGES4[lead])) })).filter((m) => m.c && m.c.delta);
+  const moves = lead == null ? [] : pool.map((r) => {
+    const a = figure(r, y - 1, "Enacted"), b = figure(r, y, STAGES4[lead]);
+    return { r, a, b, c: GridMath.change(a, b) };
+  }).filter((m) => m.c && m.c.delta);
   const ups = moves.filter((m) => m.c.delta > 0).sort((p, q) => q.c.delta - p.c.delta).slice(0, 3);
   const downs = moves.filter((m) => m.c.delta < 0).sort((p, q) => p.c.delta - q.c.delta).slice(0, 3);
   if (ups.length + downs.length) {
@@ -1292,7 +1345,7 @@ function renderOverview(grid) {
     for (const m of ups.concat(downs))
       kids.push(el("div", { class: "ovline mover", "data-testid": "ov-mover", dataset: { account: m.r.account.canonical_account_id } },
         el("span", { class: "k", text: plainName(m.r.account.canonical_name) }),
-        el("span", { class: "val " + GridMath.direction(m.c.delta) }, GridMath.signedShort(m.c.delta) + " ", el("small", { text: GridMath.signedPct(m.c.pct) }))));
+        el("span", { class: "val " + GridMath.direction(m.c.delta) }, GridMath.signedShort(m.c.delta) + " ", el("small", { text: GridMath.pctText(m.a, m.b) }))));
   }
   const e = (grid.enactments || {})[String(y)];
   if (enacted && e) {
@@ -1306,14 +1359,23 @@ function renderOverview(grid) {
       el("div", { class: "ovsmall", text: [e.enactment_date && `Signed ${longDate(e.enactment_date)}`, FUNDING[e.funding_type] || e.funding_type,
                                            e.vehicle_bill_id && `vehicle ${e.vehicle_bill_id}`].filter(Boolean).join(" · ") }));
   } else if (!enacted) {
-    // a year without an enacted figure: where it stands, stage by stage, from the printed total's cell states
+    // a year without an enacted figure: "Status" -- which stages are on file, with their documents, and "Not yet
+    // enacted", from the printed total's own cells
     const T = printedTotal(grid);
-    kids.push(el("div", { class: "ovk sec", text: `Status, FY${y}` }));
+    kids.push(el("div", { class: "ovk sec", text: "Status" }));
     for (const i of [0, 1, 2, 3]) {
-      const st = T ? stateOf(T.row, y, STAGES4[i]) : null;
+      const x = T ? headOf(T.row, y, STAGES4[i]) : null;
+      const st = T ? stateOf(T.row, y, STAGES4[i]) : null, o = x && x.h && x.h.observations[0];
       const draft = (grid.drafts || {})[`${y}|${STAGES4[i]}`];
-      kids.push(el("div", { class: "ovline", "data-testid": "ov-status" }, el("span", { class: "k", text: STAGE_LONG[i] }),
-        el("span", { class: "val state", text: (st ? STATE_WORDS[st] || st : "no printed total") + (draft ? " (committee draft)" : "") })));
+      const word = i === 3 && st !== "value" ? "Not yet enacted" : st === "value" ? "On file" : (STATE_WORDS[st] || "no printed total").replace(/^./, (c) => c.toUpperCase());
+      const line = el("div", { class: "ovline", "data-testid": "ov-status" }, el("span", { class: "k", text: STAGE_LONG[i] }),
+        el("span", { class: "val state", text: word + (draft ? " (committee draft)" : "") }));
+      kids.push(line);
+      if (st === "value" && o) {
+        const href = sourceHref(o);
+        kids.push(el("div", { class: "ovsmall", "data-testid": "ov-status-doc", style: "margin:-4px 0 4px" },
+          href ? el("a", { href, target: "_blank", rel: "noopener", text: srcLabel(o) }) : srcLabel(o)));
+      }
     }
   }
   const prev = crOf(grid, y - 1);
@@ -1352,7 +1414,7 @@ function renderCompare(grid) {
   // units and basis; a year with no enacted figure says where it stands
   const lead = G.grid === "stages" ? leadStage(grid, G.fy) : 3;
   $("#grid-subline").textContent = `${G.units === "m" ? "$ millions" : "$ thousands"} · as printed`
-    + (lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
+    + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
   const groups = layout(grid), cols = flatCols(groups);
   current = { grid, cols };
   const note = (c) => c.fig ? (grid.stage_notes || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`] : null;
@@ -1395,7 +1457,10 @@ function renderCompare(grid) {
   renderOverview(grid);
   renderChips(grid);
   renderLegend();
+  // the default footer: the one-line legend and the provenance line; the cell counts and mark key in Reviewer mode
   $("#rev-legend").hidden = !G.reviewer;
+  $("#grid-counts").hidden = !G.reviewer;
+  $("#mark-legend").hidden = !G.reviewer;
   if (G.reviewer) {
     // cells in view whose figure has validation records pending review (human_review_status), every row
     const rows = [...grid.rows, ...(grid.titles || []).map((t) => t.total).filter(Boolean), grid.bill_total].filter(Boolean);
@@ -1490,6 +1555,10 @@ function compareURL() {
   if (G.agency) q.set("agency", G.agency);
   if (G.status !== "any") q.set("status", G.status);
   if (G.search.trim()) q.set("search", G.search.trim());
+  if (G.minPct != null) q.set("minpct", String(G.minPct));
+  if (G.minK != null) q.set("mink", String(G.minK));
+  if (!G.drafts) q.set("drafts", "0");
+  if (G.review) q.set("review", "1");
   // "Accounts shown", where it differs from the view's defaults: the list of what is shown
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
@@ -1538,6 +1607,10 @@ function settle(grid, want) {
     G.agency = agencies.includes(want.agency) ? want.agency : "";
     G.status = STATUS.some(([k]) => k === want.status) ? want.status : "any";
     G.search = want.search || "";
+    const num = (v) => (v != null && v !== "" && isFinite(Number(v)) && Number(v) >= 0 ? Number(v) : null);
+    G.minPct = num(want.minpct); G.minK = num(want.mink);
+    G.drafts = want.drafts !== "0";
+    G.review = want.review === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
   }
   if (!ys.includes(G.fy)) G.fy = defaultYear(grid);
@@ -1588,8 +1661,24 @@ function filterChips(grid) {
   const y = focusYear(grid), chips = [];
   if (G.agency) chips.push({ label: `Agency: ${G.agency}`, clear: () => { G.agency = ""; } });
   if (G.status !== "any") chips.push({ label: `Status in FY${y}: ${STATUS.find(([k]) => k === G.status)[1]}`, clear: () => { G.status = "any"; } });
+  if (G.minPct != null || G.minK != null)
+    chips.push({ label: "Change of at least " + [G.minPct != null && `${G.minPct}%`, G.minK != null && `$${G.minK.toLocaleString("en-US")}K`].filter(Boolean).join(" or "),
+                 clear: () => { G.minPct = null; G.minK = null; } });
+  if (!G.drafts) chips.push({ label: "Committee drafts left out", clear: () => { G.drafts = true; } });
+  if (G.show.ended) chips.push({ label: "Ended and reorganized accounts shown", clear: () => { G.show.ended = false; } });
+  if (G.show.created) chips.push({ label: "New accounts before their first year", clear: () => { G.show.created = false; } });
+  if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid])
+    chips.push({ label: G.show.proposed[G.grid] ? "Proposed-only accounts shown" : "Proposed-only accounts hidden",
+                 clear: () => { G.show.proposed[G.grid] = SHOW_PROPOSED[G.grid]; } });
+  if (G.review) chips.push({ label: "Only figures pending review or flagged", clear: () => { G.review = false; } });
   return chips;
 }
+// every filter back to its default (Reset, Clear all)
+function resetFilters() {
+  G.agency = ""; G.status = "any"; G.minPct = null; G.minK = null; G.drafts = true; G.review = false;
+  G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
+}
+let advOpen = false;      // the Advanced disclosure (not part of the URL: it changes no figure)
 function renderChips(grid) {
   const chips = has("search_filter") ? filterChips(grid) : [];
   const badge = $("#filter-badge");
@@ -1606,7 +1695,7 @@ function renderChips(grid) {
       return el("span", { class: "chip", "data-testid": "chip" }, c.label, x);
     }));
   const all = el("button", { type: "button", class: "textlink", "data-testid": "clear-all", text: "Clear all" });
-  all.addEventListener("click", () => { G.agency = ""; G.status = "any"; redraw(); $("#filter-btn").focus(); });
+  all.addEventListener("click", () => { resetFilters(); redraw(); $("#filter-btn").focus(); });
   box.append(all);
 }
 function renderFilterPanel(grid) {
@@ -1627,15 +1716,49 @@ function renderFilterPanel(grid) {
         return b;
       }));
     const reset = el("button", { type: "button", class: "xbtn", "data-testid": "filter-reset", "data-key": "reset", text: "Reset" });
-    reset.addEventListener("click", () => { G.agency = ""; G.status = "any"; redraw(); });
+    reset.addEventListener("click", () => { resetFilters(); redraw(); });
     const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "filter-done", "data-key": "done", text: "Done" });
     done.addEventListener("click", () => closeMenu(true));
-    // Account type and Advanced (Amount basis, timing, earmarks ...) read data UI-0 publishes: not built here,
-    // and hidden while their flags (budget_class, accounting_views) are false
+    // Advanced: the items no flag gates (SPEC section 9). Account type, Amount basis, timing and Exclude earmarks
+    // read the accounting data (budget_class, accounting_views): they join when a brief builds them and their flag is on
+    const check = (id, label, checked, set, extra = {}) => {
+      const c = el("input", { type: "checkbox", id, "data-key": id, ...extra });
+      c.checked = checked;
+      c.addEventListener("change", () => { set(c.checked); redraw(); });
+      return el("label", { class: "chk" }, c, label);
+    };
+    const number = (id, label, value, set, placeholder) => {
+      const n = el("input", { type: "text", inputmode: "decimal", id, "data-key": id, "data-testid": id, placeholder, autocomplete: "off" });
+      n.value = value == null ? "" : String(value);
+      n.addEventListener("change", () => {
+        const v = n.value.replace(/[,\s$%]/g, "");
+        set(v === "" || !isFinite(Number(v)) || Number(v) < 0 ? null : Number(v));
+        redraw();
+      });
+      return el("label", { class: "xfield" }, label, n);
+    };
+    const summary = [G.minPct != null || G.minK != null ? "change threshold set" : "any change", G.drafts ? "drafts included" : "drafts left out",
+                     G.show.ended ? "ended accounts shown" : "current accounts", G.review ? "pending review or flagged only" : "every figure"];
+    const adv = el("button", { type: "button", class: "advbtn", id: "f-adv", "data-key": "adv", "data-testid": "filter-advanced",
+                               "aria-expanded": String(advOpen), "aria-controls": "f-adv-body" },
+      el("span", {}, el("span", { class: "advt", text: "Advanced" }), el("span", { class: "advs", "data-testid": "advanced-summary",
+         text: summary.join(" · ").replace(/^./, (c) => c.toUpperCase()) })),
+      el("span", { "aria-hidden": "true", class: "advc", text: advOpen ? "▴" : "▾" }));
+    adv.addEventListener("click", () => { advOpen = !advOpen; renderFilterPanel(grid); });
+    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" },
+      el("div", { class: "pair2" },
+        number("f-min-pct", "Change of at least (%)", G.minPct, (v) => { G.minPct = v; }, "e.g. 10"),
+        number("f-min-k", "or at least ($K)", G.minK, (v) => { G.minK = v; }, "e.g. 50,000")),
+      check("f-drafts", "Include committee drafts", G.drafts, (v) => { G.drafts = v; }, { "data-testid": "f-drafts" }),
+      check("show-ended", "Show ended and reorganized accounts", G.show.ended, (v) => { G.show.ended = v; }, { "data-testid": "show-ended", "data-show": "ended" }),
+      check("show-created", "Show new accounts before their first year", G.show.created, (v) => { G.show.created = v; }, { "data-testid": "show-created", "data-show": "created" }),
+      check("show-proposed", "Show proposed-only accounts", G.show.proposed[G.grid], (v) => { G.show.proposed[G.grid] = v; }, { "data-testid": "show-proposed", "data-show": "proposed" }),
+      check("f-review", "Only figures pending review or flagged", G.review, (v) => { G.review = v; }, { "data-testid": "f-review" }));
+    body.hidden = !advOpen;
     panel.replaceChildren(
       el("div", { class: "phead" }, el("div", { class: "ptitle", id: "filter-title", text: "Filter" }), close),
       el("label", { class: "block" }, "Agency", agency),
-      el("div", { class: "glabel", text: `Status in FY${y}` }), status,
+      el("div", { class: "glabel", text: `Status in FY${y}` }), status, adv, body,
       el("div", { class: "pfoot" }, reset, done));
   });
 }
@@ -1660,10 +1783,10 @@ function renderViewMenu(grid) {
       ...pills("Units", [["k", "$ thousands"], ["m", "$ millions"]], "units", (v) => G.units === v, (v) => { G.units = v; }),
       ...pills("Density", [["comfortable", "Comfortable"], ["compact", "Compact"]], "density", (v) => G.dense === (v === "compact"),
                (v) => { G.dense = v === "compact"; })];
-    if (G.grid === "stages") {
-      const lead = leadStage(grid, G.fy);
+    const lead = G.grid === "stages" ? leadStage(grid, G.fy) : null;
+    if (lead != null && lead !== 0) {
       kids.push(el("div", { class: "glabel", text: "Columns" }),
-        check("col-req", lead === 3 ? `Change vs FY${G.fy} request` : `${STAGE_NAME[lead]} vs FY${G.fy} request`, G.reqcol, (v) => { G.reqcol = v; },
+        check("col-req", lead === 3 ? `Change vs FY${G.fy} request` : `Request vs FY${G.fy - 1} enacted`, G.reqcol, (v) => { G.reqcol = v; },
               { "data-testid": "col-request" }));
     }
     if (G.grid === "years") {
@@ -1676,10 +1799,6 @@ function renderViewMenu(grid) {
       kids.push(el("div", { class: "glabel", text: "Stages shown" }), checks,
         el("label", { class: "block", style: "margin:8px 0 12px;font-size:12px" }, "Change measured on", basis));
     }
-    kids.push(el("div", { class: "glabel", text: "Accounts shown", "data-testid": "accounts-shown" }),
-      check("show-proposed", "Proposed-only accounts", G.show.proposed[G.grid], (v) => { G.show.proposed[G.grid] = v; }, { "data-testid": "show-proposed", "data-show": "proposed" }),
-      check("show-ended", "Ended accounts after their last year", G.show.ended, (v) => { G.show.ended = v; }, { "data-testid": "show-ended", "data-show": "ended" }),
-      check("show-created", "New accounts before their first year", G.show.created, (v) => { G.show.created = v; }, { "data-testid": "show-created", "data-show": "created" }));
     const ex = el("button", { type: "button", class: "xbtn", id: "expand-all", "data-testid": "expand-all", "data-key": "expand-all", text: "Expand all" });
     ex.addEventListener("click", () => { if (current) open = new Set(expandable(current.grid)); renderBody(); commit(); });
     const co = el("button", { type: "button", class: "xbtn", id: "collapse-all", "data-testid": "collapse-all", "data-key": "collapse-all", text: "Collapse all" });
@@ -1778,7 +1897,8 @@ async function showAccountAt(id, at) {
 $("#sc").addEventListener("change", () => {
   G.sc = $("#sc").value; G.agency = ""; open = new Set();
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
-                cols: G.reqcol ? "request" : "", status: G.status, search: G.search }, false);
+                cols: G.reqcol ? "request" : "", status: G.status, search: G.search, review: G.review ? "1" : "",
+                minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0" }, false);
 });
 for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
 let searchTimer = null;
@@ -1810,7 +1930,7 @@ function route() {
   closeMenu(false);
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
-                                   "agency", "status", "search", "open"].map((k) => [k, params.get(k)]));
+                                   "agency", "status", "search", "open", "minpct", "mink", "drafts", "review"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
