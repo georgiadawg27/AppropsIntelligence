@@ -335,6 +335,17 @@ class TaggingRules(unittest.TestCase):
             self.assertEqual(len(t), 1)
             self.assertEqual(t[0]["in_headline"], "FALSE")
 
+    def test_acf_senate_earmarks_and_emergencies_after_the_head_start_list(self):
+        # read only since the parser keeps a paragraph whole past its enumerated list (S. 2624, S. 4942)
+        acf = {(o["fiscal_year"], o["stage"]): o["observation_id"] for o in STAGED["observations"]
+               if o["canonical_account_id"] == "ACC-HHS-ACF-CFSP" and not o["component"]
+               and o["stage"] == "Senate Reported"}
+        for fy, earmark, emergency in ((2024, 40011000, 275000000), (2025, 42850000, 700000000)):
+            got = {(c["component_type"], c["designation"], c["amount"], c["in_headline"])
+                   for c in STAGED["observation_components"] if c["observation_id"] == acf[(fy, "Senate Reported")]}
+            self.assertIn(("earmark", "", earmark, "TRUE"), got, fy)
+            self.assertIn(("designated", "emergency", emergency, "TRUE"), got, fy)
+
     def test_a_241_list_tags_each_numbered_item(self):
         p = [amt(79, "in addition to amounts provided herein, the following amounts shall be available under "
                      "section 241 of the PHS Act: (1)", "to carry out subpart II"),

@@ -123,6 +123,9 @@ accounts).
 **ONC** (FY2024 House and Senate, FY2025 Senate and Enacted, FY2026 House and Senate): the headline is $0 budget
 authority as the bill text prints it (no new budget authority), and the paragraph's whole amount is its section 241
 `transfer_in`, beside the headline. FY2025 Enacted cites P.L. 119-4 sec. 1101, continuing P.L. 118-47 div. D.
+Each headline has a `cross_document` check from the report's comparative table, which prints ONC's section 241
+line in parentheses (a non-add) and no budget-authority line; FY2025 Enacted uses the FY 2025 column of the FY2026
+House report's table.
 
 **Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026. Each
 amount in the headline's paragraph is read by its own clause:

@@ -15,5 +15,5 @@
 - Default subagents to Sonnet; use Opus only for planning, architecture, and
   reviewing tricky logic.
 - At the end of each phase, write decisions and open items to
-  `docs/handoff.md` so the next session can start fresh instead of continuing
+  `reference/handoff.md` (not docs/, which is the published site and must match the export exactly) so the next session can start fresh instead of continuing
   a long thread.

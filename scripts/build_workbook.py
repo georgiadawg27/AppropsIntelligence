@@ -470,6 +470,13 @@ rows = [
     ("Built from your filled-in CJS_Title_III_Science_Pilot_Schema_Loaded workbook. Five tabs, matching the Data "
      "Dictionary in the scoping doc.", SUBTITLE_FONT),
     ("", BODY_FONT),
+    ("Bill text parser fix (2026-10-11)", BOLD_NOTE),
+    ("• A paragraph of bill or law text now runs to the next heading or section, never stopping after an "
+     "enumerated list inside it; every committed file under data/legislative_text was reparsed. Newly read: the "
+     "Senate earmarks and emergency amounts in ACF Children and Families Services Programs (FY2024, FY2025) and the "
+     "ASPR emergency amounts. ONC's six $0 headlines are confirmed by the report tables, which print ONC's section "
+     "241 line in parentheses with no budget-authority line. No headline figure changed.", NOTE_FONT),
+    ("", BODY_FONT),
     ("Accounting views, phase 1b (2026-10-11)", BOLD_NOTE),
     ("\u2022 Prevention and Public Health Fund: each report's allocation table (the account, activity and amount the "
      "general provision, sec. 222, transfers) is read into transfer_in components beside each receiving CDC and SAMHSA "

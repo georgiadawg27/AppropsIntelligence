@@ -219,6 +219,24 @@ def provision_para(el, enum):
             "blocks": 1, "amounts": amounts}
 
 
+def _content_blocks(content):
+    """A USLM <content>'s blocks: each <p> starts one (a separate appropriating paragraph); anything else inside it
+    (an enumerated list, a continuation after the list) belongs to the block it follows, so the paragraph ends only
+    at the next heading or section."""
+    if content.find("{*}p") is None:
+        return [squash(html.unescape(_text(content)))]
+    blocks = [squash(html.unescape(content.text or ""))] if squash(content.text or "") else []
+    for c in content:
+        t = squash(html.unescape((_text(c) if _local(c.tag) not in SKIP_TEXT else "") + (c.tail or "")))
+        if not t and _local(c.tag) != "p":
+            continue
+        if _local(c.tag) == "p" or not blocks:
+            blocks.append(t)
+        else:
+            blocks[-1] = squash(blocks[-1] + " " + t)
+    return blocks
+
+
 def parse_uslm(raw, divisions=None):
     """USLM XML (govinfo PLAW and newer BILLS): nested <appropriations level=...> with <heading>, <subheading>,
     <content>; <page> markers give the Statutes at Large page."""
@@ -283,7 +301,7 @@ def parse_uslm(raw, divisions=None):
                     state["page"] = squash(c.text or "")
             if body and in_div:
                 if len(body) == 1 and _local(body[0].tag) == "content":
-                    blocks = [squash(html.unescape(_text(b))) for b in (body[0].findall("{*}p") or [body[0]])]
+                    blocks = _content_blocks(body[0])
                 else:
                     blocks = [squash(html.unescape(" ".join(_text(c) for c in body)))]
                 blocks = [b for b in blocks if b]
@@ -316,6 +334,23 @@ def _xml_safe(raw):
     s = raw.decode("utf-8") if isinstance(raw, bytes) else raw
     s = re.sub(r"<!DOCTYPE[^>]*>", "", s, count=1)
     return ENTITY.sub(lambda m: m.group(0) if m.group(1) in XML_ENTITIES else html.unescape(m.group(0)), s)
+
+
+def _bill_blocks(el):
+    """A bill-XML heading's paragraph text, as blocks: each <text> starts one (a separate appropriating paragraph);
+    everything else inside the heading -- an enumerated list's <paragraph>s, a <continuation-text> after the list, a
+    quoted block -- belongs to the block it follows. The paragraph ends only at the next heading or section."""
+    blocks = []
+    for c in el:
+        tag = _local(c.tag)
+        if tag in ("header", "enum") or tag.startswith("appropriations-") or tag == "section" or tag in SKIP_TEXT:
+            continue
+        t = squash(html.unescape(_text(c)))
+        if tag == "text" or not blocks:
+            blocks.append(t)
+        else:
+            blocks[-1] = squash(blocks[-1] + " " + t)
+    return [b for b in blocks if b]
 
 
 def parse_bill_xml(raw, divisions=None):
@@ -364,7 +399,7 @@ def parse_bill_xml(raw, divisions=None):
         elif tag in LEVEL:
             h = el.find("header")
             hdr = _heading(_text(h)) if h is not None else ""
-            texts = [squash(html.unescape(_text(t))) for t in el.findall("text")]
+            texts = _bill_blocks(el)
             level = LEVEL[tag]
             if (hdr.startswith("(") or not hdr) and state.get("last") and state["keep"]:
                 last = state["last"]                  # "(including transfer of funds)": a note on the heading above

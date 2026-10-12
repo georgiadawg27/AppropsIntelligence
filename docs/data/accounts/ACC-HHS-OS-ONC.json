@@ -2714,6 +2714,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17258"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4117"
           },
@@ -2724,7 +2730,7 @@
            "validation_id": "VAL-TXT-LHHS-4117"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -2788,6 +2794,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17259"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4118"
           },
@@ -2798,7 +2810,7 @@
            "validation_id": "VAL-TXT-LHHS-4118"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -2853,11 +2865,17 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17263"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4122"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -3058,6 +3076,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17260"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4119"
           },
@@ -3068,7 +3092,7 @@
            "validation_id": "VAL-TXT-LHHS-4119"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -3208,6 +3232,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17261"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4120"
           },
@@ -3218,7 +3248,7 @@
            "validation_id": "VAL-TXT-LHHS-4120"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -3282,6 +3312,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-LHHS-17262"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MR-LHHS-4121"
           },
@@ -3292,7 +3328,7 @@
            "validation_id": "VAL-TXT-LHHS-4121"
           }
          ],
-         "verification_status": "unverified"
+         "verification_status": "auto-validated"
         }
        ],
        "state": "not_funded"
@@ -5798,6 +5834,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17258"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4117"
      },
@@ -5808,7 +5850,7 @@
       "validation_id": "VAL-TXT-LHHS-4117"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -5845,6 +5887,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17259"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4118"
      },
@@ -5855,7 +5903,7 @@
       "validation_id": "VAL-TXT-LHHS-4118"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -6084,6 +6132,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17260"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4119"
      },
@@ -6094,7 +6148,7 @@
       "validation_id": "VAL-TXT-LHHS-4119"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -6130,11 +6184,17 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17263"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4122"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -6171,6 +6231,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17261"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4120"
      },
@@ -6181,7 +6247,7 @@
       "validation_id": "VAL-TXT-LHHS-4120"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 0,
@@ -6218,6 +6284,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-LHHS-17262"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MR-LHHS-4121"
      },
@@ -6228,7 +6300,7 @@
       "validation_id": "VAL-TXT-LHHS-4121"
      }
     ],
-    "verification_status": "unverified"
+    "verification_status": "auto-validated"
    },
    {
     "amount": 33375000,

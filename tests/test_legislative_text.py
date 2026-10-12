@@ -72,6 +72,32 @@ USLM = b"""<?xml version="1.0"?>
 <content><p>For acquisition of real property, $40,000,000, to remain available until September 30, 2028.</p></content></appropriations></appropriations>
 </title></division></main></pLaw>"""
 
+# a paragraph with an enumerated list inside it: the text after the list is still the same paragraph
+LIST_XML = b"""<?xml version="1.0"?>
+<bill><legis-body>
+<title><enum>II</enum><header>DEPARTMENT OF HEALTH AND HUMAN SERVICES</header>
+<appropriations-major><header>Administration for Children and Families</header></appropriations-major>
+<appropriations-intermediate><header>children and families services programs</header>
+<text>For carrying out the Head Start Act, $12,000,000,000, of which:</text>
+<paragraph><enum>(1)</enum><text>$275,000,000 shall be available for a cost of living adjustment;</text></paragraph>
+<paragraph><enum>(2)</enum><text>$8,000,000 shall be available for X:</text></paragraph>
+<continuation-text><proviso><italic>Provided further,</italic></proviso> That $40,011,000 shall be used for the
+projects specified in the table titled <quote>Congressionally Directed Spending</quote>.</continuation-text>
+</appropriations-intermediate>
+<appropriations-intermediate><header>promoting safe and stable families</header>
+<text>For carrying out section 436, $345,000,000.</text></appropriations-intermediate>
+</title>
+</legis-body></bill>"""
+
+USLM_LIST = b"""<?xml version="1.0"?>
+<pLaw xmlns="http://schemas.gpo.gov/xml/uslm"><main>
+<title><num value="II">TITLE II</num><heading>DEPARTMENT OF HEALTH AND HUMAN SERVICES</heading>
+<appropriations level="intermediate"><heading>Children and families services programs</heading>
+<content><p>For carrying out the Head Start Act, $12,000,000,000, of which:</p>
+<paragraph><num value="1">(1)</num><content>$275,000,000 shall be available for a cost of living adjustment;</content></paragraph>
+<continuation>Provided further, That $40,011,000 shall be used for projects.</continuation></content></appropriations>
+</title></main></pLaw>"""
+
 PDF_PAGES = [
     "SEN. APPRO.\nTITLE II\nDEPARTMENT OF HEALTH AND HUMAN SERVICES\nNATIONAL INSTITUTES OF HEALTH\n"
     "NATIONAL CANCER INSTITUTE\nFor carrying out section 301 and title IV of the PHS Act with respect to\n"
@@ -111,6 +137,19 @@ class Parser(unittest.TestCase):
         self.assertEqual(p["heading_path"], ["CENTERS FOR DISEASE CONTROL AND PREVENTION", "BUILDINGS AND FACILITIES"])
         self.assertEqual([a["amount"] for a in p["amounts"]], [40000000])
         self.assertIn("138 STAT. 640", json.dumps(p["location"]))
+
+    def test_paragraph_runs_past_an_enumerated_list(self):
+        paras = L.parse("bill_xml", LIST_XML, [])
+        p = next(p for p in paras if p["account_heading"].startswith("CHILDREN AND FAMILIES"))
+        self.assertEqual([a["amount"] for a in p["amounts"]], [12000000000, 275000000, 8000000, 40011000])
+        self.assertIn("Congressionally Directed Spending", p["amounts"][-1]["phrase"])
+        q = next(p for p in paras if p["account_heading"].startswith("PROMOTING SAFE"))
+        self.assertEqual([a["amount"] for a in q["amounts"]], [345000000], "the next heading starts a new paragraph")
+
+    def test_uslm_paragraph_runs_past_an_enumerated_list(self):
+        paras = L.parse("uslm", USLM_LIST, [])
+        self.assertEqual(len(paras), 1)
+        self.assertEqual([a["amount"] for a in paras[0]["amounts"]], [12000000000, 275000000, 40011000])
 
     def test_pdf_text_layer(self):
         paras = L.parse_pdf_text(PDF_PAGES)

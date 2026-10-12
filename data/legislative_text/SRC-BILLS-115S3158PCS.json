@@ -20,9 +20,9 @@
  "retrieved": "2026-10-11",
  "sha256": "626c2c93b35270bf52114a38ae1632140826f32762e47a4c86fb8ee8e9bb79ce",
  "bytes": 315747,
- "parser_version": "48e12fcf8fe4a6ab",
+ "parser_version": "13aa2ace1889d386",
  "paragraph_count": 150,
- "amount_count": 319,
+ "amount_count": 384,
  "paragraphs": [
   {
    "paragraph_id": "P0001",
@@ -40,7 +40,145 @@
      "amount": 3501200000,
      "block": 1,
      "proviso": false,
-     "phrase": "expenses of the Workforce Innovation and Opportunity Act (referred to in this Act as WIOA), the Second Chance Act of 2007, and the National Apprenticeship Act, [$3,501,200,000] , plus reimbursements, shall be available. Of the amounts provided:"
+     "phrase": "expenses of the Workforce Innovation and Opportunity Act (referred to in this Act as WIOA), the Second Chance Act of 2007, and the National Apprenticeship Act, [$3,501,200,000] , plus reimbursements, shall be available. Of the amounts provided: (1)for grants to States for adul"
+    },
+    {
+     "amount": 2789832000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "nts provided: (1)for grants to States for adult employment and training activities, youth activities, and dislocated worker employment and training activities, [$2,789,832,000] as follows: (A)$845,556,000 for adult employment and training activities, of which $133,556,000 sha"
+    },
+    {
+     "amount": 845556000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "States for adult employment and training activities, youth activities, and dislocated worker employment and training activities, $2,789,832,000 as follows: (A) [$845,556,000] for adult employment and training activities, of which $133,556,000 shall be available for the peri"
+    },
+    {
+     "amount": 133556000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "es, and dislocated worker employment and training activities, $2,789,832,000 as follows: (A)$845,556,000 for adult employment and training activities, of which [$133,556,000] shall be available for the period July 1, 2019 through June 30, 2020, and of which $712,000,000 sha"
+    },
+    {
+     "amount": 712000000,
+     "block": 1,
+     "proviso": false,
+     "phrase": ",556,000 for adult employment and training activities, of which $133,556,000 shall be available for the period July 1, 2019 through June 30, 2020, and of which [$712,000,000] shall be available for the period October 1, 2019 through June 30, 2020; (B)$903,416,000 for youth"
+    },
+    {
+     "amount": 903416000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "ilable for the period July 1, 2019 through June 30, 2020, and of which $712,000,000 shall be available for the period October 1, 2019 through June 30, 2020; (B) [$903,416,000] for youth activities, which shall be available for the period April 1, 2019 through June 30, 2020;"
+    },
+    {
+     "amount": 1040860000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "ctober 1, 2019 through June 30, 2020; (B)$903,416,000 for youth activities, which shall be available for the period April 1, 2019 through June 30, 2020; and (C) [$1,040,860,000] for dislocated worker employment and training activities, of which $180,860,000 shall be available"
+    },
+    {
+     "amount": 180860000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "shall be available for the period April 1, 2019 through June 30, 2020; and (C)$1,040,860,000 for dislocated worker employment and training activities, of which [$180,860,000] shall be available for the period July 1, 2019 through June 30, 2020, and of which $860,000,000 sha"
+    },
+    {
+     "amount": 860000000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "dislocated worker employment and training activities, of which $180,860,000 shall be available for the period July 1, 2019 through June 30, 2020, and of which [$860,000,000] shall be available for the period October 1, 2019 through June 30, 2020: Provided, That the funds a"
+    },
+    {
+     "amount": 711368000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "to carry out subtitle B of title I of the WIOA shall not be subject to the requirements of section 127(b)(1)(B)(ii) of such Act; and (2)for national programs, [$711,368,000] as follows: (A)$220,859,000 for the dislocated workers assistance national reserve, of which $20,85"
+    },
+    {
+     "amount": 220859000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "title I of the WIOA shall not be subject to the requirements of section 127(b)(1)(B)(ii) of such Act; and (2)for national programs, $711,368,000 as follows: (A) [$220,859,000] for the dislocated workers assistance national reserve, of which $20,859,000 shall be available for"
+    },
+    {
+     "amount": 20859000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "(1)(B)(ii) of such Act; and (2)for national programs, $711,368,000 as follows: (A)$220,859,000 for the dislocated workers assistance national reserve, of which [$20,859,000] shall be available for the period July 1, 2019 through September 30, 2020, and of which $200,000,00"
+    },
+    {
+     "amount": 200000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "he dislocated workers assistance national reserve, of which $20,859,000 shall be available for the period July 1, 2019 through September 30, 2020, and of which [$200,000,000] shall be available for the period October 1, 2019 through September 30, 2020: Provided, That funds"
+    },
+    {
+     "amount": 30000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "cal assistance and carry out additional activities related to the transition to the WIOA: Provided further, That of the funds provided under this subparagraph, [$30,000,000] shall be for training and employment assistance under sections 168(b), 169(c) (notwithstanding the"
+    },
+    {
+     "amount": 54000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": ")(1) and workers in the Lower Mississippi, as defined in section 4(2) of the Delta Development Act (Public Law 100–460, 102 Stat. 2246; 7 U.S.C. 2009aa(2)); (B) [$54,000,000] for Native American programs under section 166 of the WIOA, which shall be available for the period"
+    },
+    {
+     "amount": 87896000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "(2)); (B)$54,000,000 for Native American programs under section 166 of the WIOA, which shall be available for the period July 1, 2019 through June 30, 2020; (C) [$87,896,000] for migrant and seasonal farmworker programs under section 167 of the WIOA, including $81,447,000 f"
+    },
+    {
+     "amount": 81447000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ailable for the period July 1, 2019 through June 30, 2020; (C)$87,896,000 for migrant and seasonal farmworker programs under section 167 of the WIOA, including [$81,447,000] for formula grants (of which not less than 70 percent shall be for employment and training services"
+    },
+    {
+     "amount": 5922000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "rams under section 167 of the WIOA, including $81,447,000 for formula grants (of which not less than 70 percent shall be for employment and training services), [$5,922,000] for migrant and seasonal housing (of which not less than 70 percent shall be for permanent housing)"
+    },
+    {
+     "amount": 527000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "l be for employment and training services), $5,922,000 for migrant and seasonal housing (of which not less than 70 percent shall be for permanent housing), and [$527,000] for other discretionary purposes, which shall be available for the period July 1, 2019 through June"
+    },
+    {
+     "amount": 89534000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "tion limiting the number or proportion of eligible participants receiving related assistance services or discouraging grantees from providing such services; (D) [$89,534,000] for YouthBuild activities as described in section 171 of the WIOA, which shall be available for the"
+    },
+    {
+     "amount": 93079000,
+     "block": 1,
+     "proviso": true,
+     "phrase": ")$89,534,000 for YouthBuild activities as described in section 171 of the WIOA, which shall be available for the period April 1, 2019 through June 30, 2020; (E) [$93,079,000] for ex-offender activities, under the authority of section 169 of the WIOA and section 212 of the S"
+    },
+    {
+     "amount": 25000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "A and section 212 of the Second Chance Act of 2007, which shall be available for the period April 1, 2019 through June 30, 2020: Provided, That of this amount, [$25,000,000] shall be for competitive grants to national and regional intermediaries for activities that prepare"
+    },
+    {
+     "amount": 6000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ries for activities that prepare young ex-offenders and school dropouts for employment, with a priority for projects serving high-crime, high-poverty areas; (F) [$6,000,000] for the Workforce Data Quality Initiative, under the authority of section 169 of the WIOA, which sh"
+    },
+    {
+     "amount": 160000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "rce Data Quality Initiative, under the authority of section 169 of the WIOA, which shall be available for the period July 1, 2019 through June 30, 2020; and (G) [$160,000,000] to expand opportunities relating to apprenticeship programs registered under the National Apprentic"
     }
    ],
    "location": {
@@ -65,7 +203,25 @@
      "amount": 1718655000,
      "block": 1,
      "proviso": false,
-     "phrase": "the construction, alteration, and repairs of buildings and other facilities, and the purchase of real property for training centers as authorized by the WIOA, [$1,718,655,000] , plus reimbursements, as follows:"
+     "phrase": "the construction, alteration, and repairs of buildings and other facilities, and the purchase of real property for training centers as authorized by the WIOA, [$1,718,655,000] , plus reimbursements, as follows: (1)$1,603,325,000 for Job Corps Operations, which shall be availa"
+    },
+    {
+     "amount": 1603325000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "ngs and other facilities, and the purchase of real property for training centers as authorized by the WIOA, $1,718,655,000, plus reimbursements, as follows: (1) [$1,603,325,000] for Job Corps Operations, which shall be available for the period July 1, 2019 through June 30, 202"
+    },
+    {
+     "amount": 83000000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "00, plus reimbursements, as follows: (1)$1,603,325,000 for Job Corps Operations, which shall be available for the period July 1, 2019 through June 30, 2020; (2) [$83,000,000] for construction, rehabilitation and acquisition of Job Corps Centers, which shall be available for"
+    },
+    {
+     "amount": 32330000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "further, That the Committees on Appropriations of the House of Representatives and the Senate are notified at least 15 days in advance of any transfer; and (3) [$32,330,000] for necessary expenses of Job Corps, which shall be available for obligation for the period October"
     }
    ],
    "location": {
@@ -141,6 +297,90 @@
      "block": 1,
      "proviso": false,
      "phrase": "For authorized administrative expenses, $84,066,000, together with not to exceed [$3,254,944,000] which may be expended from the Employment Security Administration Account in the Unemployment Trust"
+    },
+    {
+     "amount": 2515816000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "o exceed $3,254,944,000 which may be expended from the Employment Security Administration Account in the Unemployment Trust Fund (the Trust Fund), of which: (1) [$2,515,816,000] from the Trust Fund is for grants to States for the administration of State unemployment insurance"
+    },
+    {
+     "amount": 150000000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "grants to States for the administration of State unemployment insurance laws as authorized under title III of the Social Security Act (including not less than [$150,000,000] to carry out reemployment services and eligibility assessments under section 306 of such Act, any c"
+    },
+    {
+     "amount": 117000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "n, including those who are profiled as most likely to exhaust their benefits, may be eligible for such services and assessments: Provided, That of such amount, [$117,000,000] is specified for grants under section 306 of the Social Security Act and is provided to meet the te"
+    },
+    {
+     "amount": 33000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "al Security Act and is provided to meet the terms of section 251(b)(2)(E)(ii) of the Balanced Budget and Emergency Deficit Control Act of 1985, as amended, and [$33,000,000] is additional new budget authority specified for purposes of section 251(b)(2)(E)(i)(II) of such Ac"
+    },
+    {
+     "amount": 9000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "icit Control Act of 1985, as amended, and $33,000,000 is additional new budget authority specified for purposes of section 251(b)(2)(E)(i)(II) of such Act; and [$9,000,000] for continued support of the Unemployment Insurance Integrity Center of Excellence), the administra"
+    },
+    {
+     "amount": 12000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "funds used for unemployment insurance workloads experienced through September 30, 2019 shall be available for Federal obligation through December 31, 2019; (2) [$12,000,000] from the Trust Fund is for national activities necessary to support the administration of the Feder"
+    },
+    {
+     "amount": 645000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "9; (2)$12,000,000 from the Trust Fund is for national activities necessary to support the administration of the Federal-State unemployment insurance system; (3) [$645,000,000] from the Trust Fund, together with $21,413,000 from the General Fund of the Treasury, is for grants"
+    },
+    {
+     "amount": 21413000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ional activities necessary to support the administration of the Federal-State unemployment insurance system; (3)$645,000,000 from the Trust Fund, together with [$21,413,000] from the General Fund of the Treasury, is for grants to States in accordance with section 6 of the"
+    },
+    {
+     "amount": 19818000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ates in accordance with section 6 of the Wagner-Peyser Act, and shall be available for Federal obligation for the period July 1, 2019 through June 30, 2020; (4) [$19,818,000] from the Trust Fund is for national activities of the Employment Service, including administration"
+    },
+    {
+     "amount": 62310000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "tax credit under section 51 of the Internal Revenue Code of 1986, and the provision of technical assistance and staff training under the Wagner-Peyser Act; (5) [$62,310,000] from the Trust Fund is for the administration of foreign labor certifications and related activitie"
+    },
+    {
+     "amount": 48028000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "rust Fund is for the administration of foreign labor certifications and related activities under the Immigration and Nationality Act and related laws, of which [$48,028,000] shall be available for the Federal administration of such activities, and $14,282,000 shall be avai"
+    },
+    {
+     "amount": 14282000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ties under the Immigration and Nationality Act and related laws, of which $48,028,000 shall be available for the Federal administration of such activities, and [$14,282,000] shall be available for grants to States for the administration of such activities; and (6)$62,653,0"
+    },
+    {
+     "amount": 62653000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "le for the Federal administration of such activities, and $14,282,000 shall be available for grants to States for the administration of such activities; and (6) [$62,653,000] from the General Fund is to provide workforce information, national electronic tools, and one-stop"
+    },
+    {
+     "amount": 28600000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "the extent that the Average Weekly Insured Unemployment (AWIU) for fiscal year 2019 is projected by the Department of Labor to exceed 2,030,000, an additional [$28,600,000] from the Trust Fund shall be available for obligation for every 100,000 increase in the AWIU level"
     }
    ],
    "location": {
@@ -372,7 +612,31 @@
      "amount": 74777000,
      "block": 1,
      "proviso": true,
-     "phrase": "her, That of those funds transferred to this account from the fair share entities to pay the cost of administration of the Federal Employees' Compensation Act, [$74,777,000] shall be made available to the Secretary as follows:"
+     "phrase": "her, That of those funds transferred to this account from the fair share entities to pay the cost of administration of the Federal Employees' Compensation Act, [$74,777,000] shall be made available to the Secretary as follows: (1)For enhancement and maintenance of automate"
+    },
+    {
+     "amount": 24540000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "made available to the Secretary as follows: (1)For enhancement and maintenance of automated data processing systems operations and telecommunications systems, [$24,540,000] ; (2)For automated workload processing operations, including document imaging, centralized mail inta"
+    },
+    {
+     "amount": 22968000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ations systems, $24,540,000; (2)For automated workload processing operations, including document imaging, centralized mail intake, and medical bill processing, [$22,968,000] ; (3)For periodic roll disability management and medical review, $25,535,000; (4)For program integri"
+    },
+    {
+     "amount": 25535000,
+     "block": 1,
+     "proviso": true,
+     "phrase": ", including document imaging, centralized mail intake, and medical bill processing, $22,968,000; (3)For periodic roll disability management and medical review, [$25,535,000] ; (4)For program integrity, $1,734,000; and (5)The remaining funds shall be paid into the Treasury a"
+    },
+    {
+     "amount": 1734000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ed mail intake, and medical bill processing, $22,968,000; (3)For periodic roll disability management and medical review, $25,535,000; (4)For program integrity, [$1,734,000] ; and (5)The remaining funds shall be paid into the Treasury as miscellaneous receipts: Provided fur"
     }
    ],
    "location": {
@@ -503,6 +767,24 @@
      "block": 1,
      "proviso": false,
      "phrase": "the Secretary under section 18 of the Act; and, in addition, notwithstanding 31 U.S.C. 3302, the Occupational Safety and Health Administration may retain up to [$499,000] per fiscal year of training institute course tuition and fees, otherwise authorized by law to be co"
+    },
+    {
+     "amount": 10537000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ly to any person who is engaged in a farming operation which does not maintain a temporary labor camp and employs 10 or fewer employees: Provided further, That [$10,537,000] shall be available for Susan Harwood training grants, of which the Secretary shall reserve not less"
+    },
+    {
+     "amount": 4500000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "or fewer employees: Provided further, That $10,537,000 shall be available for Susan Harwood training grants, of which the Secretary shall reserve not less than [$4,500,000] for Susan Harwood Training Capacity Building Developmental grants, as described in Funding Opportun"
+    },
+    {
+     "amount": 3500000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "Fed. Reg. 30568)) for program activities starting not later than September 30, 2019 and lasting for a period of 12 months: Provided further, That not less than [$3,500,000] shall be for Voluntary Protection Programs."
     }
    ],
    "location": {
@@ -686,6 +968,36 @@
      "block": 1,
      "proviso": false,
      "phrase": "Not to exceed [$250,041,000] may be derived from the Employment Security Administration account in the Unemployment Trust Fund t"
+    },
+    {
+     "amount": 180000000,
+     "block": 1,
+     "proviso": false,
+     "phrase": "rity Administration account in the Unemployment Trust Fund to carry out the provisions of chapters 41, 42, and 43 of title 38, United States Code, of which: (1) [$180,000,000] is for Jobs for Veterans State grants under 38 U.S.C. 4102A(b)(5) to support disabled veterans' out"
+    },
+    {
+     "amount": 24500000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "atment in military treatment facilities or warrior transition units, and to the spouses or other family caregivers of such wounded, ill, or injured members; (2) [$24,500,000] is for carrying out the Transition Assistance Program under 38 U.S.C. 4113 and 10 U.S.C. 1144; (3)$"
+    },
+    {
+     "amount": 42127000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "vers of such wounded, ill, or injured members; (2)$24,500,000 is for carrying out the Transition Assistance Program under 38 U.S.C. 4113 and 10 U.S.C. 1144; (3) [$42,127,000] is for Federal administration of chapters 41, 42, and 43 of title 38, United States Code: Provided,"
+    },
+    {
+     "amount": 500000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "U.S.C. 4113 and 10 U.S.C. 1144; (3)$42,127,000 is for Federal administration of chapters 41, 42, and 43 of title 38, United States Code: Provided, That, up to [$500,000] may be used to carry out the Hire VETS Act (division O of Public Law 115–31); and (4)$3,414,000 is"
+    },
+    {
+     "amount": 3414000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "42, and 43 of title 38, United States Code: Provided, That, up to $500,000 may be used to carry out the Hire VETS Act (division O of Public Law 115–31); and (4) [$3,414,000] is for the National Veterans' Employment and Training Services Institute under 38 U.S.C. 4109: Prov"
     }
    ],
    "location": {
@@ -2623,6 +2935,84 @@
      "block": 1,
      "proviso": true,
      "phrase": "of the Social Security Act and may be made for adoptions and legal guardianships completed before September 30, 2019: Provided, That $10,113,095,000, of which [$132,000,000] shall be available through March 31, 2020, shall be for making payments under the Head Start Act, o"
+    },
+    {
+     "amount": 215000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ded, That $10,113,095,000, of which $132,000,000 shall be available through March 31, 2020, shall be for making payments under the Head Start Act, of which: (1) [$215,000,000] shall be available for a cost of living adjustment notwithstanding section 640(a)(3)(A) of such Act"
+    },
+    {
+     "amount": 16000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "to any continuing appropriations act, funding available for a cost of living adjustment shall not be construed as an authority or condition under this Act; (2) [$16,000,000] shall be available to supplement funding otherwise available for research, evaluation, and Federal"
+    },
+    {
+     "amount": 25000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "tion under this Act; (2)$16,000,000 shall be available to supplement funding otherwise available for research, evaluation, and Federal administrative costs; (3) [$25,000,000] shall be available for allocation by the Secretary to supplement activities described in paragraphs"
+    },
+    {
+     "amount": 35000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "such funds shall not be included in the calculation of base grant in subsequent fiscal years, as such term is used in section 640(a)(7)(A) of such Act; and (4) [$35,000,000] of the amount available through March 31, 2020 shall be available for award by the Secretary to gra"
+    },
+    {
+     "amount": 250000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "(2)(C) of such Act in lieu of reducing the reservation of funds under sections 640(a)(2)(B), 640(a)(2)(D), and 640(a)(2)(E) of such Act: Provided further, That [$250,000,000] shall be available until December 31, 2019 for carrying out sections 9212 and 9213 of the Every Stu"
+    },
+    {
+     "amount": 752883000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "s in the preceding proviso shall be available for technical assistance and evaluation related to grants awarded under such section 9212: Provided further, That [$752,883,000] shall be for making payments under the CSBG Act: Provided further, That $28,233,000 shall be for se"
+    },
+    {
+     "amount": 28233000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "related to grants awarded under such section 9212: Provided further, That $752,883,000 shall be for making payments under the CSBG Act: Provided further, That [$28,233,000] shall be for sections 680 and 678E(b)(2) of the CSBG Act, of which not less than $19,883,000 shall"
+    },
+    {
+     "amount": 19883000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "be for making payments under the CSBG Act: Provided further, That $28,233,000 shall be for sections 680 and 678E(b)(2) of the CSBG Act, of which not less than [$19,883,000] shall be for section 680(a)(2) and not less than $8,000,000 shall be for section 680(a)(3)(B) of su"
+    },
+    {
+     "amount": 8000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "That $28,233,000 shall be for sections 680 and 678E(b)(2) of the CSBG Act, of which not less than $19,883,000 shall be for section 680(a)(2) and not less than [$8,000,000] shall be for section 680(a)(3)(B) of such Act: Provided further, That, notwithstanding section 675C"
+    },
+    {
+     "amount": 165000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ng construction and rehabilitation and loans or investments in private business enterprises owned by community development corporations: Provided further, That [$165,000,000] shall be for carrying out section 303(a) of the Family Violence Prevention and Services Act, of whi"
+    },
+    {
+     "amount": 5000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "lopment corporations: Provided further, That $165,000,000 shall be for carrying out section 303(a) of the Family Violence Prevention and Services Act, of which [$5,000,000] shall be allocated notwithstanding section 303(a)(2) of such Act for carrying out section 309 of su"
+    },
+    {
+     "amount": 1864000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "specified in section 112(a)(2) of the Child Abuse Prevention and Treatment Act shall not apply to funds appropriated under this heading: Provided further That [$1,864,000] shall be for a human services case management system for federally declared disasters, to include a"
+    },
+    {
+     "amount": 2000000,
+     "block": 1,
+     "proviso": true,
+     "phrase": "ly declared disasters, to include a comprehensive national case management contract and Federal costs of administering the system: Provided further, That up to [$2,000,000] shall be for improving the Public Assistance Reporting Information System, including grants to Stat"
     }
    ],
    "location": {
