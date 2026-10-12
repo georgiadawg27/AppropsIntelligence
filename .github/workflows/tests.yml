@@ -138,6 +138,8 @@ jobs:
           OPENPYXL_DEB: "3.1.2+dfsg-6"
         run: |
           sudo apt-get update -q
+          # what the runner's archive offers, so a pin that is gone shows its replacement in the log
+          apt-cache policy libreoffice-calc python3-uno python3-openpyxl | grep -E '^\S|Candidate|^ +[0-9*]' || true
           sudo apt-get install -y -q --no-install-recommends \
             "libreoffice-calc=$LIBREOFFICE" "libreoffice-core=$LIBREOFFICE" "libreoffice-common=$LIBREOFFICE" \
             "python3-uno=$LIBREOFFICE" "python3-openpyxl=$OPENPYXL_DEB"
