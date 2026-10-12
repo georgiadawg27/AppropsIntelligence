@@ -162,6 +162,40 @@ Made in this phase (flag any you disagree with):
   bump contract_version.
   The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
 
+## UI-0: accounting layer in the site data (2026-10-12)
+
+- `site_accounting.py` adds the layer to `approps_store.subcommittee_grid()` (so /api, the static export and the
+  store answer the same), from the store's own records (`approps_store.accounting_data`, data/staged.json's shape)
+  with accounting.py and `measure_reconcile.run()`. Per printed-figure cell (value or printed zero): `views.<basis>`
+  (list: an `available` entry, plus `enacted` only where it differs; printed has timing null), `components[]`,
+  `earmark` / `defense_portion` (only where tagged). Per row: `attributes.<FY>` (enacted basis, `request` beside it,
+  each attribute's citation). Totals: only views a passing measure_reconcile printed total gives; else
+  not_computable "not checked" with `accounts_behind`.
+- Basis definitions (`accounting.BASES`, `basis_amount`) follow `reference/ACCOUNTING_RULES.md` (owner, 2026-10-12),
+  cited in the code: all_appropriations = advances by timing; discretionary_designated = ACCOUNTING_RULES'
+  Discretionary (mandatory excluded, mixed less its mandatory_portion; a mixed account with none tagged counts its
+  headline, status computed, reason "mixed, no mandatory portion tagged: counted as discretionary (ACCOUNTING_RULES)");
+  discretionary = that less every in-headline `designated` component; program_level = headline + transfer_in +
+  trust_fund_limitation, advances by timing. Timing applies to every basis but printed. fees_offsets and
+  transfer_out are components only, counted by no basis.
+- Printed totals: 'discretionary' confirms only discretionary_designated where designated amounts exist; an
+  'excluding emergencies' total confirms discretionary only where every designated amount is emergency and nothing in
+  scope is mandatory (owner). Today none qualifies. Unused, all ACF Total: OBS-LHHS-0031 (FY2024 Enacted),
+  -0037 (FY2024 Senate), -1743 (FY2024 House), -0040 (FY2025 House), -0046 (FY2025 Senate): measure_reconcile pass,
+  but ACF holds mandatory accounts (Child Support, ...); OBS-LHHS-0028 (FY2023 Enacted): measure_reconcile fail
+  (emergency_lines_not_held); OBS-LHHS-0034, -0043 (FY2024, FY2025 President's Budget): not checked.
+- Whole LHHS.json stays next to the per-year files; removing it is a separate PR with the owner's OK. /api flags:
+  UI-1.
+- Outside the auto-tagged cells (President's Budget, FY2027), a view is not_computable unless the headline carries a
+  component the view uses (measure_reconcile's own rule).
+- LHHS.json is 13.8 MB (> `export_static.SPLIT_BYTES`, 12 MB), so it is also written as
+  `docs/data/subcommittees/LHHS/<FY>.json` + `index.json`; index.json `split_subcommittees` lists it, and the page's
+  static loader reads the per-year files. The whole file is still written; drop it once nothing reads it.
+- `web/ui_contract.json` contract_version 2 (paths moved as the owner set; a `shapes` block documents them);
+  accounting_views, budget_class, defense_split now true. `scripts/grid_counts.py` adds `view_status_counts`.
+- Open: page controls (UI-3); the ACF program-level totals (6 cells) pass but mix advance timings, so they confirm
+  neither timing; accounts with no budget_class on file (48 entries) have no discretionary view.
+
 ## UI-1: Explore workspace (2026-10-12)
 
 - Explore is the default view (`/`); One account stays reachable (header tab, `?view=account`, `?q=`, `?account=`) until UI-5.

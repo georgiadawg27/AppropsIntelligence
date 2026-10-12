@@ -179,7 +179,10 @@ class GridData(CompareTest):
                     for st in self.grid["stages"]:
                         cell = row["cells"][f"{y}|{st}"]
                         if y in by_year and st in by_year[y]:
-                            self.assertEqual(cell, {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
+                            # the accounting layer (UI-0, site_accounting.py) adds its own keys beside the lines
+                            layer = {"views", "components", "earmark", "defense_portion"}
+                            self.assertEqual({k: v for k, v in cell.items() if k not in layer},
+                                             {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
                             self.assertTrue(cell["outside_history"], (aid, y, st))
                             # each series in its computed state: no figure or absence is there
@@ -586,6 +589,24 @@ class CompareBrowser(GridBrowser):
                 self.open("static", f"?view=compare&sc=CJS&grid=stages&fy={fy}")
                 self.menu("click", "#expand-all")
                 self.assertEqual(self.shown(), self.expected(self.grid, [(fy - 1, "Enacted")] + [(fy, st) for st in FOUR]))
+
+    def test_split_subcommittee_loads_the_same_grid(self):
+        # a subcommittee file past export_static.SPLIT_BYTES is also published per fiscal year (UI-0); the static
+        # page reads those files and puts back exactly the whole file (which stays published), and the live /api
+        # answer is the same grid
+        index = json.loads((self.out / "data" / "index.json").read_text())
+        self.assertIn("LHHS", index["split_subcommittees"])
+        whole = json.loads((self.out / "data" / "subcommittees" / "LHHS.json").read_text())
+        self.assertEqual(whole, self.lhhs)
+        self.open("static", "?view=compare&sc=LHHS")
+        got = self.page.evaluate("source.subcommittee('LHHS')")
+        self.assertEqual(got, whole)
+        fetched = []
+        self.page.on("request", lambda r: fetched.append(r.url))
+        self.page.reload()
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.assertTrue(any(u.endswith("/subcommittees/LHHS/2026.json") for u in fetched), fetched)
+        self.assertFalse(any(u.endswith("/subcommittees/LHHS.json") for u in fetched))
 
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")

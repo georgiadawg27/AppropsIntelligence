@@ -417,7 +417,31 @@ function staticSource(base) {
       return { status: "picked", history: f.history, grid: f.grid };
     },
     subcommittees: () => getJSON(base + "subcommittees.json"),
-    subcommittee: (name) => getJSON(base + "subcommittees/" + encodeURIComponent(name) + ".json"),
+    async subcommittee(name) {
+      // a large subcommittee is also published one file per fiscal year (index.json "split_subcommittees":
+      // subcommittees/<name>/index.json + <FY>.json); the same grid is put back together here, nothing recomputed.
+      // The whole file (subcommittees/<name>.json) is still written, so either path gives the same answer.
+      const idx = await loadIndex();
+      const one = base + "subcommittees/" + encodeURIComponent(name);
+      if (!(idx.split_subcommittees || []).includes(name)) return getJSON(one + ".json");
+      const head = await getJSON(one + "/index.json");
+      const parts = await Promise.all(head.fiscal_years.map((fy) => getJSON(one + "/" + head.files[String(fy)])));
+      const join = (pieces) => {
+        const row = Object.assign({}, pieces[0], { cells: {} });
+        pieces.forEach((p) => {
+          Object.assign(row.cells, p.cells);
+          if (p.attributes) row.attributes = Object.assign(row.attributes || {}, p.attributes);
+        });
+        return row;
+      };
+      const grid = Object.assign({}, head);
+      delete grid.files;
+      grid.rows = parts[0].rows.map((_, i) => join(parts.map((p) => p.rows[i])));
+      grid.titles = parts[0].titles.map((t, i) => Object.assign({}, t,
+        { total: t.total ? join(parts.map((p) => p.titles[i].total)) : null }));
+      grid.bill_total = parts[0].bill_total ? join(parts.map((p) => p.bill_total)) : null;
+      return grid;
+    },
   };
 }
 

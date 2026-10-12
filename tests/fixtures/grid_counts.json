@@ -29,5 +29,62 @@
  "flagged_cells": {
   "CJS": 0,
   "LHHS": 4
+ },
+ "view_status_counts": {
+  "CJS": {
+   "printed": {
+    "-:checked": 766
+   },
+   "discretionary": {
+    "available:computed": 415,
+    "available:excluded": 1,
+    "available:not_computable": 350
+   },
+   "discretionary_designated": {
+    "available:computed": 402,
+    "available:excluded": 1,
+    "available:not_computable": 363
+   },
+   "all_appropriations": {
+    "available:computed": 408,
+    "available:not_computable": 358
+   },
+   "program_level": {
+    "available:computed": 409,
+    "available:not_computable": 357
+   }
+  },
+  "LHHS": {
+   "printed": {
+    "-:checked": 3580
+   },
+   "discretionary": {
+    "available:checked": 16,
+    "available:computed": 2065,
+    "available:excluded": 258,
+    "available:not_computable": 1241,
+    "enacted:computed": 4
+   },
+   "discretionary_designated": {
+    "available:checked": 25,
+    "available:computed": 2065,
+    "available:excluded": 258,
+    "available:not_computable": 1232,
+    "enacted:computed": 4
+   },
+   "all_appropriations": {
+    "available:computed": 2262,
+    "available:not_computable": 1318,
+    "enacted:checked": 25,
+    "enacted:computed": 71
+   },
+   "program_level": {
+    "available:checked": 139,
+    "available:computed": 2245,
+    "available:not_computable": 1196,
+    "enacted:checked": 13,
+    "enacted:computed": 96
+   }
+  }
  }
 }

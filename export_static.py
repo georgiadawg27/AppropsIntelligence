@@ -22,7 +22,12 @@ that answers the same questions as approps_web.py without a server.
     export (with the contract's "contract_version").
   - Writes docs/data/subcommittees.json (the list) and, per subcommittee,
     docs/data/subcommittees/<name>.json: approps_web.subcommittee() --
-    approps_store.subcommittee_grid(), the live /api/subcommittee answer.
+    approps_store.subcommittee_grid(), the live /api/subcommittee answer,
+    accounting layer included (site_accounting.py, UI-0: each figure's
+    views, components, earmark and defense_portion; each row's
+    attributes). A file past
+    SPLIT_BYTES is also written per fiscal year:
+    docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid).
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map) and web/fonts/ (IBM Plex Sans, SIL OFL).
@@ -62,6 +67,7 @@ DATA_META = '<meta name="approps-data" content="data/">'
 ZIP_LEVEL = 9                                     # the Download workbook's deflate level, fixed
 DOWNLOAD = "Approps_Pilot_Schema_Loaded.xlsx"       # docs/<this>: the page's "Download workbook" link
 CONTRACT = F.CONTRACT                              # the data fields each page feature reads
+SPLIT_BYTES = 12 * 1024 * 1024                      # a subcommittee file past this is also split per fiscal year
 
 
 def reference_workbook():
@@ -137,6 +143,30 @@ def features(data, index):
     return F.flags(paths, lambda p: index if p == "index.json" else json.loads((data / p).read_text()))
 
 
+def split_grid(g, folder):
+    """A subcommittee grid as one file per fiscal year (<folder>/<FY>.json: every row and total with only that
+    year's cells) and <folder>/index.json (everything else, and the years). Nothing is recomputed: each year's file
+    holds the same cells the whole file does."""
+    years = g["fiscal_years"]
+
+    def year_row(row, fy):
+        return dict(row, cells={k: c for k, c in row["cells"].items() if k.split("|", 1)[0] == str(fy)},
+                    **({"attributes": {k: v for k, v in row["attributes"].items() if k == str(fy)}}
+                       if "attributes" in row else {}))
+    for fy in years:
+        dump({"subcommittee": g["subcommittee"], "fiscal_year": fy, "stages": g["stages"],
+              "rows": [year_row(r, fy) for r in g["rows"]],
+              "titles": [dict(t, total=year_row(t["total"], fy) if t.get("total") else None) for t in g["titles"]],
+              "bill_total": year_row(g["bill_total"], fy) if g.get("bill_total") else None},
+             folder / f"{fy}.json", compact=True)
+    head = {k: v for k, v in g.items() if k not in ("rows", "titles", "bill_total")}
+    head["files"] = {str(fy): f"{fy}.json" for fy in years}
+    dump(head, folder / "index.json")
+    for stale in folder.glob("*.json"):
+        if stale.name != "index.json" and stale.stem not in {str(y) for y in years}:
+            stale.unlink()
+
+
 def export(workbook, out, download=True):
     """download=False leaves out/DOWNLOAD as it is (see main: only CI's export job on main writes docs/'s copy)."""
     out = Path(out)
@@ -156,9 +186,17 @@ def export(workbook, out, download=True):
         listing = W.subcommittees(str(db))
         names = listing["subcommittees"]
         dump(listing, out / "data" / "subcommittees.json")
+        split = []
         for name in names:
-            # the whole subcommittee side by side is large; compact keeps it ~1.5 MB
-            dump(W.subcommittee(str(db), name), out / "data" / "subcommittees" / f"{name}.json", compact=True)
+            g = W.subcommittee(str(db), name)
+            # the whole subcommittee side by side is large; compact keeps it small
+            path = out / "data" / "subcommittees" / f"{name}.json"
+            dump(g, path, compact=True)
+            if path.stat().st_size > SPLIT_BYTES:
+                split.append(name)
+                split_grid(g, out / "data" / "subcommittees" / name)
+            elif (out / "data" / "subcommittees" / name).is_dir():
+                shutil.rmtree(out / "data" / "subcommittees" / name)
     # an account or subcommittee no longer in the workbook doesn't linger
     for folder, keep in (("accounts", ids), ("subcommittees", names)):
         for stale in (out / "data" / folder).glob("*.json"):
@@ -176,6 +214,7 @@ def export(workbook, out, download=True):
                    "rows": report["rows"], "warnings": report["warnings"]},
         "matching": {"accept_max_distance": A.ACCEPT_MAX_DISTANCE, "accept_max_fraction": A.ACCEPT_MAX_FRACTION,
                      "ambiguity_margin": A.AMBIGUITY_MARGIN},
+        "split_subcommittees": split,
         "accounts": F.index_accounts(pool),
     }
     index.update(features(out / "data", index))
