@@ -281,6 +281,9 @@ VIEWS = {
     "program_level_when_available": {"label": "program level, advances counted when available",
                                      "remove": ("advance_enacted",),
                                      "add": ("advance_available", "transfer_in", "trust_fund_limitation")},
+    "program_level_when_enacted": {"label": "program level, advances counted when enacted",
+                                   "remove": ("advance_available",),
+                                   "add": ("advance_enacted", "transfer_in", "trust_fund_limitation")},
     "excluding_emergencies": {"label": "excluding emergency designations",
                               "remove": (("designated", "emergency"),), "add": ()},
     "excluding_earmarks": {"label": "excluding earmarks", "remove": ("earmark",), "add": ()},
@@ -353,6 +356,55 @@ def discretionary_adjustment(headline_amount, components, budget_class):
         cs = counted([c for c in components if c["component_type"] == "mandatory_portion" and c["in_headline"] == "TRUE"])
         return -sum(c["amount"] for c in cs), cs
     return None
+
+
+# The site's Amount basis views (UI-0): each a view above for the advance timing, and for the two discretionary bases
+# the account's budget_class for the year and stage. printed is the headline itself (no timing).
+#   all_appropriations       every appropriation in the headline, advances counted by timing
+#   discretionary_designated all_appropriations of a discretionary account; a mixed account's less its
+#                            mandatory_portion components; a mandatory account is excluded
+#   discretionary            discretionary_designated less the designated components inside the headline (emergency,
+#                            disaster, cap adjustment, other)
+#   program_level            program level (transfers in and trust-fund limitations), advances counted by timing
+BASES = ["printed", "discretionary", "discretionary_designated", "all_appropriations", "program_level"]
+TIMINGS = ["available", "enacted"]
+BASIS_VIEW = {"all_appropriations": "advances_when_{}", "discretionary_designated": "advances_when_{}",
+              "discretionary": "advances_when_{}", "program_level": "program_level_when_{}"}
+# the components a basis uses beyond its timing view's: what tells whether a cell's tagging can change it
+BASIS_USES = {"all_appropriations": (), "discretionary_designated": ("mandatory_portion",),
+              "discretionary": ("mandatory_portion", "designated"), "program_level": ()}
+
+
+def basis_uses(basis):
+    """Every component type the basis's amount can depend on (both timings)."""
+    sel = set(BASIS_USES[basis])
+    for t in TIMINGS:
+        v = VIEWS[BASIS_VIEW[basis].format(t)]
+        sel |= {s if isinstance(s, str) else s[0] for s in v["remove"] + v["add"]}
+    return sel
+
+
+def basis_amount(headline_amount, components, basis, timing, budget_class):
+    """One account headline's amount on an Amount basis and advance timing (BASES): -> ("value", amount, [the
+    components it used]), ("excluded", reason) or ("not_computable", reason). Never a new figure: the headline less
+    and plus its tagged components, as view_adjustment and discretionary_adjustment read them."""
+    if basis == "printed":
+        return "value", headline_amount, []
+    delta, used = view_adjustment(components, BASIS_VIEW[basis].format(timing))
+    if basis in ("discretionary", "discretionary_designated"):
+        if budget_class is None:
+            return "not_computable", "no budget_class on file for the year and stage"
+        if budget_class == "mandatory":
+            return "excluded", "a mandatory account (budget_class)"
+        types = (("mandatory_portion",) if budget_class == "mixed" else ()) + (
+            ("designated",) if basis == "discretionary" else ())
+        if budget_class == "mixed" and not any(c["component_type"] == "mandatory_portion" for c in components):
+            return "not_computable", "a mixed account with no mandatory_portion component tagged"
+        out = counted([c for c in components if c["in_headline"] == "TRUE" and _selected(c, types)
+                       and c not in used])
+        delta -= sum(c["amount"] for c in out)
+        used = used + out
+    return "value", headline_amount + delta, used
 
 
 def attribute_index(data):

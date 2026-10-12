@@ -1961,11 +1961,38 @@ def subcommittee_grid(conn, subcommittee):
             st = headline_state(c["lines"])
             if st:
                 state_counts[st] += 1
-    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
+    grid = {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
             "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts, "outside_life_cells": outside,
             **({"stage_notes": notes} if (notes := stage_notes(conn, subcommittee)) else {}),
             **({"enactments": e} if (e := enactments(conn, subcommittee)) else {}),
             **({"drafts": dr} if (dr := draft_stages(conn, subcommittee)) else {})}
+    # the accounting layer (UI-0): each figure's views, components, earmark and defense portion, each row's
+    # attributes -- from the store's own records, by the code measure_reconcile uses (site_accounting.py)
+    import site_accounting
+    return site_accounting.Layer(accounting_data(conn)).annotate(grid)
+
+
+def accounting_data(conn):
+    """The store's accounting records in data/staged.json's shape (accounts, observations, the Component
+    vocabulary, observation_components, account_attributes), for accounting.py and measure_reconcile, which read
+    that shape. Nothing is recomputed: blank text is '' and in_headline 'TRUE'/'FALSE', as the staged data holds
+    them."""
+    def rows(sql):
+        return [dict(r) for r in conn.execute(sql)]
+
+    def text(d, *keys):
+        for k in keys:
+            d[k] = d[k] if d[k] is not None else ""
+        return d
+    comps = [text(dict(c, in_headline="TRUE" if c["in_headline"] else "FALSE"), "designation", "transfer_from",
+                  "source_observation_id", "carried_from_component_id", "notes", "within_component_id")
+             for c in rows("SELECT * FROM observation_component ORDER BY component_id")]
+    return {"accounts": rows("SELECT * FROM account ORDER BY canonical_account_id"),
+            "observations": rows("SELECT * FROM appropriations_observation ORDER BY observation_id"),
+            "components": rows("SELECT component_id, kind FROM component"),
+            "observation_components": comps,
+            "account_attributes": [text(a, "source_location", "provisional")
+                                   for a in rows("SELECT * FROM account_attribute ORDER BY account_attribute_id")]}
 
 
 def fmt_amount(v):

@@ -161,3 +161,27 @@ Made in this phase (flag any you disagree with):
   `rows[].attributes.*.budget_class` and defense to `rows[].cells.*.defense_portion` in web/ui_contract.json and
   bump contract_version.
   The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
+
+## UI-0: accounting layer in the site data (2026-10-12)
+
+- `site_accounting.py` adds the layer to `approps_store.subcommittee_grid()` (so /api, the static export and the
+  store answer the same), from the store's own records (`approps_store.accounting_data`, data/staged.json's shape)
+  with accounting.py and `measure_reconcile.run()`. Per printed-figure cell (value or printed zero): `views.<basis>`
+  (list: an `available` entry, plus `enacted` only where it differs; printed has timing null), `components[]`,
+  `earmark` / `defense_portion` (only where tagged). Per row: `attributes.<FY>` (enacted basis, `request` beside it,
+  each attribute's citation). Totals: only views a passing measure_reconcile printed total gives; else
+  not_computable "not checked" with `accounts_behind`.
+- Basis definitions (`accounting.BASES`, `basis_amount`) are ours, written without accounting-views-spec.md (not in
+  the repo): all_appropriations = advances by timing; discretionary_designated = that, mandatory excluded, mixed less
+  mandatory_portion; discretionary = discretionary_designated less every in-headline `designated` component;
+  program_level = program_level_when_available / new `program_level_when_enacted`. Owner to confirm.
+- Outside the auto-tagged cells (President's Budget, FY2027), a view is not_computable unless the headline carries a
+  component the view uses (measure_reconcile's own rule).
+- LHHS.json is 13.8 MB (> `export_static.SPLIT_BYTES`, 12 MB), so it is also written as
+  `docs/data/subcommittees/LHHS/<FY>.json` + `index.json`; index.json `split_subcommittees` lists it, and the page's
+  static loader reads the per-year files. The whole file is still written; drop it once nothing reads it.
+- `web/ui_contract.json` contract_version 2 (paths moved as the owner set; a `shapes` block documents them);
+  accounting_views, budget_class, defense_split now true. `scripts/grid_counts.py` adds `view_status_counts`.
+- Open: page controls (UI-3); excluding_emergencies printed totals (5 passing agency cells) map to no basis; the
+  ACF program-level totals (6 cells) pass but mix advance timings, so they confirm neither timing; mixed accounts
+  with no mandatory_portion (CDC, NIH, ... 896 cells) have no discretionary view.

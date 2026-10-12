@@ -286,3 +286,197 @@ class ReviewList(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def grid_rows(g):
+    return g["rows"] + [t["total"] for t in g.get("titles", []) if t.get("total")] + \
+        ([g["bill_total"]] if g.get("bill_total") else [])
+
+
+class AccountingLayer(unittest.TestCase):
+    """The accounting layer of the site data (UI-0, site_accounting.py): every published view, component, earmark,
+    defense portion and attribute is what data/staged.json and measure_reconcile hold."""
+
+    @classmethod
+    def setUpClass(cls):
+        import sys
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import accounting as AC
+        import measure_reconcile as M
+        cls.AC = AC
+        cls.data = json.loads(S.STAGED.read_text())
+        cls.obs = {o["observation_id"]: o for o in cls.data["observations"]}
+        cls.comps = {c["component_id"]: c for c in cls.data["observation_components"]}
+        cls.by_obs = AC.components_by_observation(cls.data)
+        cls.vals = {v["validation_id"]: v for v in cls.data["validations"]}
+        records, outcomes = M.run(cls.data)
+        cls.records = {r["validation_id"]: r for r in records}
+        cls.outcome = {o["observation_id"]: o for o in outcomes if o["kind"] == "view"}
+        cls.grids = {sc: grid(sc) for sc in json.loads((DOCS / "data" / "subcommittees.json").read_text())["subcommittees"]}
+
+    def cells(self):
+        for sc, g in self.grids.items():
+            for row in grid_rows(g):
+                for key, cell in row["cells"].items():
+                    yield sc, row, key, cell
+
+    def headline(self, cell):
+        line = next(l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"])
+        return self.obs[line["observations"][0]["observation_id"]]
+
+    def test_every_view_is_measure_reconciles_record(self):
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if "views" not in cell:
+                continue
+            h = self.headline(cell)
+            self.assertEqual(set(cell["views"]), set(self.AC.BASES), key)
+            for basis, entries in cell["views"].items():
+                self.assertIn(len(entries), (1, 2))
+                self.assertEqual(entries[0]["timing"], None if basis == "printed" else "available")
+                if len(entries) == 2:
+                    self.assertEqual(entries[1]["timing"], "enacted")
+                for e in entries:
+                    self.assertIn(e["status"], ("checked", "computed", "excluded", "not_computable"))
+                    self.assertTrue(e["reason"])
+                    if e["status"] in ("excluded", "not_computable"):
+                        self.assertIsNone(e["amount"])
+                        continue
+                    self.assertIsInstance(e["amount"], int)
+                    if basis == "printed":
+                        self.assertEqual(e["amount"], h["amount"])
+                        continue
+                    if e["status"] == "checked":
+                        # a printed total confirms it: measure_reconcile passed that printed view line, and the
+                        # record is in data/staged.json
+                        p = self.obs[e["printed_observation_id"]]
+                        self.assertEqual(e["amount"], p["amount"])
+                        self.assertEqual((p["canonical_account_id"], f"{p['fiscal_year']}|{p['stage']}"),
+                                         (row["account"]["canonical_account_id"], key))
+                        self.assertEqual(self.outcome[p["observation_id"]]["result"], "pass")
+                        self.assertEqual(self.records[e["validation_id"]]["result"], "pass")
+                        self.assertEqual(self.vals[e["validation_id"]]["observation_id"], p["observation_id"])
+                        n += 1
+                    if "component_ids" in e:
+                        # an account's view: the headline less the included components it leaves out, plus the
+                        # components beside it it counts -- from the published components alone
+                        used = [self.comps[c] for c in e["component_ids"]]
+                        self.assertTrue(all(c["observation_id"] == h["observation_id"] for c in used))
+                        got = h["amount"] + sum(c["amount"] if c["in_headline"] != "TRUE" else -c["amount"]
+                                                for c in used)
+                        self.assertEqual(e["amount"], got, (key, basis, e["timing"]))
+                    else:
+                        self.assertEqual(e["status"], "checked")      # a total's view is never computed here
+        self.assertGreater(n, 150)
+
+    def test_totals_show_only_checked_views(self):
+        for sc, row, key, cell in self.cells():
+            if not row["rollup"] or "views" not in cell:
+                continue
+            for basis, entries in cell["views"].items():
+                for e in entries:
+                    self.assertIn(e["status"], ("checked", "not_computable"), (key, basis))
+                    if e["status"] == "not_computable" and basis != "printed":
+                        self.assertIsInstance(e.get("accounts_behind"), int)
+
+    def test_every_component_is_in_staged(self):
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if "components" not in cell:
+                continue
+            h = self.headline(cell)
+            self.assertEqual(sorted(c["component_id"] for c in cell["components"]),
+                             sorted(c["component_id"] for c in self.by_obs.get(h["observation_id"], [])))
+            for c in cell["components"]:
+                s = self.comps[c["component_id"]]
+                self.assertEqual((c["amount"], c["type"], c["in_headline"], c["source_document_id"],
+                                  c["within_component_id"] or ""),
+                                 (s["amount"], s["component_type"], s["in_headline"] == "TRUE",
+                                  s["source_document_id"], s.get("within_component_id") or ""))
+                n += 1
+            for field, ctype in (("earmark", "earmark"), ("defense_portion", "defense_portion")):
+                tagged = [c for c in cell["components"] if c["type"] == ctype]
+                if not tagged:
+                    self.assertNotIn(field, cell)            # none tagged is not zero
+                    continue
+                self.assertEqual(sorted(cell[field]["component_ids"]),
+                                 sorted(c["component_id"] for c in tagged if not c["within_component_id"]
+                                        or c["within_component_id"] not in {x["component_id"] for x in tagged}))
+                self.assertEqual(cell[field]["amount"],
+                                 sum(self.comps[i]["amount"] for i in cell[field]["component_ids"]))
+        self.assertEqual(n, sum(1 for c in self.data["observation_components"]
+                                if self.obs[c["observation_id"]]["canonical_account_id"] in
+                                {r["account"]["canonical_account_id"] for g in self.grids.values() for r in grid_rows(g)}))
+
+    def test_no_view_where_the_base_is_negative(self):
+        for sc, row, key, cell in self.cells():
+            if "views" not in cell:
+                continue
+            h = self.headline(cell)
+            base = self.AC.split(h["amount"], self.by_obs.get(h["observation_id"], []))[0]
+            if base < 0:
+                for entries in cell["views"].values():
+                    self.assertTrue(all(e["amount"] is None and e["status"] == "not_computable" for e in entries))
+
+    def test_views_only_on_cells_with_a_printed_figure(self):
+        for sc, row, key, cell in self.cells():
+            line = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]),
+                        None)
+            has = bool(line and line["state"] in ("value", "not_funded") and line["observations"])
+            self.assertEqual("views" in cell, has, (row["account"]["canonical_account_id"], key))
+
+    def test_status_counts_per_basis(self):
+        import site_accounting as SA
+        for sc, g in self.grids.items():
+            got = SA.status_counts(g)
+            self.assertEqual(got, GRID_COUNTS["view_status_counts"][sc], sc)
+            # every value cell has a printed view, and a mandatory account is excluded only from the
+            # discretionary bases
+            self.assertTrue(all(k.endswith("checked") for k in got["printed"]))
+            for basis in ("all_appropriations", "program_level"):
+                self.assertFalse([k for k in got[basis] if k.endswith("excluded")], basis)
+
+    def test_attributes_cite_their_records(self):
+        recs = {r["account_attribute_id"]: r for r in self.data["account_attributes"]}
+        n = 0
+        for sc, g in self.grids.items():
+            for row in grid_rows(g):
+                for fy, entry in row.get("attributes", {}).items():
+                    if "citations" not in entry:
+                        self.assertEqual(list(entry), ["request"])   # a proposed-only year: the request's values
+                    for e in (entry, entry.get("request")):
+                        if not e or "citations" not in e:
+                            continue
+                        for attr, cite in e["citations"].items():
+                            r = recs[cite["account_attribute_id"]]
+                            self.assertEqual((r["canonical_account_id"], str(r["fiscal_year"]), r["attribute"],
+                                              r["value"], r["stage_basis"], r["source_document_id"]),
+                                             (row["account"]["canonical_account_id"], fy, attr, e[attr],
+                                              e["stage_basis"], cite["source_document_id"]))
+                            n += 1
+                        if "budget_class" in e:
+                            self.assertEqual(e["provisional"],
+                                             bool(recs[e["citations"]["budget_class"]["account_attribute_id"]]
+                                                  .get("provisional")))
+        self.assertEqual(n, len(self.data["account_attributes"]))
+
+    def test_split_files_hold_the_same_grid(self):
+        index = json.loads((DOCS / "data" / "index.json").read_text())
+        for sc, g in self.grids.items():
+            folder = DOCS / "data" / "subcommittees" / sc
+            size = (DOCS / "data" / "subcommittees" / f"{sc}.json").stat().st_size
+            self.assertEqual(sc in index["split_subcommittees"], size > E.SPLIT_BYTES, sc)
+            self.assertEqual(folder.is_dir(), size > E.SPLIT_BYTES, sc)
+            if not folder.is_dir():
+                continue
+            head = json.loads((folder / "index.json").read_text())
+            self.assertEqual(head["fiscal_years"], g["fiscal_years"])
+            parts = [json.loads((folder / head["files"][str(fy)]).read_text()) for fy in g["fiscal_years"]]
+            for p in parts:
+                self.assertLess((folder / f"{p['fiscal_year']}.json").stat().st_size, E.SPLIT_BYTES)
+            for i, row in enumerate(g["rows"]):
+                cells = {}
+                for p in parts:
+                    self.assertEqual(p["rows"][i]["account"], row["account"])
+                    cells.update(p["rows"][i]["cells"])
+                self.assertEqual(cells, row["cells"])
