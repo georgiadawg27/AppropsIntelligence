@@ -6,8 +6,9 @@ Vaccine Injury Compensation Program Trust Fund: the table prints 'Post-FY 1988 C
 expenses' (or 'HRSA administration') above 'Total, Vaccine Injury Compensation Trust Fund'. The administrative
 line is the trust-fund limitation the bill and law text appropriate ('not to exceed $X shall be available from
 the Trust Fund'); the claims are such sums as may be necessary and print no dollar amount in the text. Each
-VICTF headline's administrative line, in the headline's own column, becomes a trust_fund_limitation component
-(scripts/tag_components.py reads table_lines.csv).
+VICTF headline's administrative line, in the headline's own column, becomes a trust_fund_limitation component;
+its claims line (phase 2) a mandatory_portion -- the Budget Appendix classes the account (075-8175) as mixed, the
+claims mandatory (scripts/tag_components.py reads table_lines.csv).
 
     python reference/review/accounting/table_lines.py --cache document_store     # downloads what it lacks
 
@@ -30,6 +31,7 @@ OUT = Path(__file__).resolve().parent / "table_lines.csv"
 ACCOUNT = "ACC-HHS-HRSA-VICTF"
 TOTAL = re.compile(r"Total,? Vaccine Injury Compensation", re.I)
 ADMIN = re.compile(r"^\s*HRSA Administrati(?:ve expenses|on)\b", re.I)
+CLAIMS = re.compile(r"^\s*Post[-–]?\s?(?:FY|Fiscal Year)\s?1988 Claims\b", re.I)
 # Pages whose text layer lacks the table (an image, or OCR too broken to place a column): read from the page
 # image by eye on 2026-10-11 (Claude Code), the column checked against the total the headline records.
 # observation_id -> (administrative line in thousands, the column it was read from, the total that column prints)
@@ -75,22 +77,22 @@ def numbers(line):
     return [(int(x.group().replace(",", "")), x.end()) for x in NUM.finditer(line, start)]
 
 
-def read(pdf, page, headline):
-    """-> (amount in thousands, the admin line, the total line) or (None, why, '')."""
+def read(pdf, page, headline, which=ADMIN):
+    """-> (amount in thousands, the line read (admin, or claims), the total line) or (None, why, '')."""
     lines = page_text(pdf, page).splitlines()
     tot = next((i for i, x in enumerate(lines) if TOTAL.search(x)), None)
     if tot is None:
         return None, "no 'Total, Vaccine Injury Compensation' line on the page", ""
-    admin = next((i for i in range(tot - 1, max(tot - 8, -1), -1) if ADMIN.search(lines[i])), None)
+    admin = next((i for i in range(tot - 1, max(tot - (14 if which is CLAIMS else 8), -1), -1) if which.search(lines[i])), None)
     if admin is None:
-        return None, "no 'HRSA Administrative expenses' line above the total", ""
+        return None, f"no '{which.pattern}' line above the total", ""
     t = numbers(lines[tot])
     col = [end for v, end in t if v * 1000 == headline]
     if not col:
         return None, f"the total line does not print {headline // 1000:,}", ""
     a = [v for v, end in numbers(lines[admin]) if abs(end - col[0]) <= 2]
     if len(a) != 1:
-        return None, "no administrative amount under the headline's column", ""
+        return None, "no amount under the headline's column", ""
     return a[0], " ".join(lines[admin].split()), " ".join(lines[tot].split())
 
 
@@ -124,6 +126,21 @@ def main(argv=None):
         rows.append({"observation_id": o["observation_id"], "source_document_id": o["source_document_id"],
                      "page": page, "line": "HRSA Administrative expenses", "amount": amt * 1000,
                      "printed_line": line, "printed_total": total, "read_from": how})
+        # phase 2: the claims line beside it (the mandatory part of the mixed account, a mandatory_portion)
+        c_amt, c_line, c_total = read(pdf, page, o["amount"], CLAIMS)
+        c_how = "text layer"
+        if c_amt is None and how != "text layer":
+            # the image read printed both lines; the claims line is the total less the administrative line
+            c_amt = o["amount"] // 1000 - amt
+            c_line, c_total = f"Post-FY 1988 Claims {c_amt:,} [{col}]", total
+            c_how = "page image, read by eye (the total less the administrative line, both printed)"
+        if c_amt is None or c_amt + amt != o["amount"] // 1000:
+            misses.append(f"{o['observation_id']} claims ({o['source_document_id']} p.{page}): "
+                          + (c_line if c_amt is None else f"{c_amt:,} + {amt:,} is not the total"))
+            continue
+        rows.append({"observation_id": o["observation_id"], "source_document_id": o["source_document_id"],
+                     "page": page, "line": "Post-FY 1988 Claims", "amount": c_amt * 1000,
+                     "printed_line": c_line, "printed_total": c_total, "read_from": c_how})
     with open(OUT, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         w.writeheader()

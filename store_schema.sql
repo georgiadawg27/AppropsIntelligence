@@ -302,7 +302,8 @@ CREATE TABLE observation_component (
     observation_id            TEXT NOT NULL REFERENCES appropriations_observation (observation_id),
     component_type            TEXT NOT NULL CHECK (component_type IN ('advance_enacted', 'advance_available',
                                   'designated', 'transfer_in', 'transfer_out', 'trust_fund_limitation', 'fees_offsets',
-                                  'rescission', 'defense_portion', 'other_law', 'earmark')),
+                                  'rescission', 'defense_portion', 'other_law', 'earmark',
+                                  'mandatory_portion')),
     designation               TEXT CHECK (designation IS NULL OR designation IN ('emergency', 'disaster',
                                                                                   'cap_adjustment', 'other')),
     transfer_from             TEXT,
@@ -312,7 +313,8 @@ CREATE TABLE observation_component (
     source_location           TEXT NOT NULL,
     quoted_text               TEXT NOT NULL,
     tag_method                TEXT NOT NULL CHECK (tag_method IN ('retagged', 'table_line', 'auto_text',
-                                                                  'carried_forward', 'cr_anomaly')),
+                                                                  'carried_forward', 'cr_anomaly',
+                                                                  'appendix_text', 'report_text')),
     tag_rule                  TEXT NOT NULL,
     source_observation_id     TEXT REFERENCES appropriations_observation (observation_id),
     carried_from_component_id TEXT REFERENCES observation_component (component_id) DEFERRABLE INITIALLY DEFERRED,
@@ -327,8 +329,8 @@ CREATE TABLE observation_component (
 
 CREATE INDEX component_by_observation ON observation_component (observation_id);
 
--- One value per account, fiscal year and attribute, each with its evidence (filled in phase 2 from the
--- Budget Appendix).
+-- One value per account, fiscal year, attribute and stage basis, each with its evidence (filled in phase 2
+-- from the Budget Appendix).
 CREATE TABLE account_attribute (
     account_attribute_id TEXT PRIMARY KEY CHECK (account_attribute_id GLOB 'AAT-[0-9][0-9][0-9][0-9]'
                                                  OR account_attribute_id GLOB 'AAT-LHHS-[0-9][0-9][0-9][0-9]'),
@@ -340,5 +342,10 @@ CREATE TABLE account_attribute (
     source_document_id   TEXT NOT NULL REFERENCES source_document (document_id),
     source_location      TEXT,
     evidence             TEXT NOT NULL CHECK (evidence <> ''),
-    UNIQUE (canonical_account_id, fiscal_year, attribute)
+    -- 'enacted': read from actuals (Enacted, House and Senate stages); 'request': what the President's Budget
+    -- proposed, recorded only where it differs from the enacted value (accounting.attribute_value)
+    stage_basis          TEXT NOT NULL CHECK (stage_basis IN ('enacted', 'request')),
+    -- blank, or why the value is provisional and when to re-check it (a class read from an estimate column)
+    provisional          TEXT,
+    UNIQUE (canonical_account_id, fiscal_year, attribute, stage_basis)
 ) STRICT;

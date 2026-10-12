@@ -9,7 +9,7 @@ table_lines.csv), and gives the same records every run.
     python scripts/tag_components.py --ci         # fail when data/staged.json is not up to date with this
     python scripts/tag_components.py --report X   # every tag and every untagged component-like phrase as CSV
 
-Four sources, in this order (a later one never records money an earlier one already holds for the headline):
+Five sources, in this order (a later one never records money an earlier one already holds for the headline):
 
   retagged         lines we already hold that act as components of their headline (the same account, year and
                    stage): a supplemental '(emergency)' line -> designated/emergency; a separate supplemental act's
@@ -20,7 +20,11 @@ Four sources, in this order (a later one never records money an earlier one alre
                    collections -> transfer_in / transfer_out / fees_offsets. The line keeps its ID; the component
                    names it (source_observation_id).
   table_line       a line the headline's own table prints inside it, read for this (table_lines.csv): VICTF's
-                   'HRSA Administrative expenses' -> trust_fund_limitation
+                   'HRSA Administrative expenses' -> trust_fund_limitation, its 'Post-FY 1988 Claims' ->
+                   mandatory_portion (phase 2)
+  mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2): PSSF's section 436
+                   amount (auto_text from the bill or law text; appendix_text from the request's language) and
+                   EEOICP (report_text: the report states the program's funds are mandatory) -> mandatory_portion
   auto_text        the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026; House, Senate and Enacted): each amount in
                    the headline's own bill or law paragraph, read by the phrase rules below
   carried_forward  Labor-HHS FY2025 Enacted (the full-year CR, P.L. 119-4): the FY2024 Enacted components continue,
@@ -52,6 +56,7 @@ import legislative_text as L  # noqa: E402
 
 TABLE_LINES = ROOT / "reference" / "review" / "accounting" / "table_lines.csv"
 PPHF_TABLE = ROOT / "reference" / "review" / "accounting" / "pphf_table.csv"
+MANDATORY_LINES = ROOT / "reference" / "review" / "accounting" / "mandatory_lines.csv"
 PPHF = "the Prevention and Public Health Fund (section 4002 of the PPACA)"
 TEXT_STAGES = ("House Reported", "Senate Reported", "Enacted")
 PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | {("CJS", 2026, st) for st in TEXT_STAGES}
@@ -402,14 +407,35 @@ def table_lines(data, heads):
     with open(TABLE_LINES) as f:
         for r in csv.DictReader(f):
             o = obs[r["observation_id"]]
-            out.append({"observation_id": o["observation_id"], "component_type": "trust_fund_limitation",
+            claims = r["line"] == "Post-FY 1988 Claims"
+            out.append({"observation_id": o["observation_id"],
+                        "component_type": "mandatory_portion" if claims else "trust_fund_limitation",
                         "designation": "", "transfer_from": "", "amount": int(r["amount"]), "in_headline": "TRUE",
                         "source_document_id": r["source_document_id"], "source_location": f"p.{r['page']}",
                         "quoted_text": r["printed_line"] + " | " + r["printed_total"],
-                        "tag_method": "table_line", "tag_rule": "the table's 'HRSA Administrative expenses' line, "
-                        "printed inside 'Total, Vaccine Injury Compensation Trust Fund' (" + r["read_from"] + ")",
+                        "tag_method": "table_line", "tag_rule": f"the table's '{r['line']}' line, "
+                        "printed inside 'Total, Vaccine Injury Compensation Trust Fund' (" + r["read_from"] + ")"
+                        + ("; the claims are the mandatory part of the mixed account 075-8175" if claims else ""),
                         "source_observation_id": "", "carried_from_component_id": "",
-                        "notes": "inside the headline: the table's total adds this line to the claims line"})
+                        "notes": "inside the headline: the table's total adds this line to the "
+                                 + ("administrative line" if claims else "claims line")})
+    return out
+
+
+def mandatory_lines(data, heads):
+    """The mandatory part of a mixed account printed inside its headline (mandatory_lines.csv, phase 2): PSSF's
+    section 436 amount (bill and law text; the request's Appendix language) and EEOICP (the report states it is
+    mandatory). A mandatory_portion inside the headline; the discretionary view leaves it out."""
+    out = []
+    if not MANDATORY_LINES.exists():
+        return out
+    with open(MANDATORY_LINES) as f:
+        for r in csv.DictReader(f):
+            out.append({"observation_id": r["observation_id"], "component_type": r["component_type"],
+                        "designation": "", "transfer_from": "", "amount": int(r["amount"]), "in_headline": "TRUE",
+                        "source_document_id": r["source_document_id"], "source_location": r["source_location"],
+                        "quoted_text": r["quoted_text"], "tag_method": r["tag_method"], "tag_rule": r["tag_rule"],
+                        "source_observation_id": "", "carried_from_component_id": "", "notes": r["notes"]})
     return out
 
 
@@ -684,6 +710,7 @@ def build(data):
     first = retag(data, heads, report)
     first += table_lines(data, heads)
     first += pphf_table(data, heads, report)
+    first += mandatory_lines(data, heads)
     held = collections.defaultdict(list)
     for c in first:
         held[c["observation_id"]].append(c)
