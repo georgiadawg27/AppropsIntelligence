@@ -287,4 +287,7 @@ Open items:
 
 Open items:
 1. Watch stays hidden (UI-6); the "incl. mandatory" tags wait on UI-3.
-2. Context picker shows the data's subcommittee name ("Labor-HHS-Education"); the design shortens it to "Labor-HHS".
+
+Owner decisions on #60 (2026-10-12), recorded in SPEC.md section 6 as adopted: the picker keeps "Labor-HHS-Education"
+on one line with an ellipsis (never wraps); lines strictly largest first; link style on every line name; an agency
+with lines expands on tap; "vs FY<n-1> enacted" in the summary card; "new" from a zero base.

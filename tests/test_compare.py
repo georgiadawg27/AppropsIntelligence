@@ -2338,6 +2338,19 @@ class PhoneV1(GridBrowser):
                 self.assertEqual(row.locator("[data-testid=p-value]").inner_text(), short(printed(nih, 2026, "House Reported")))
                 self.assertTrue(self.page.inner_text("#p-stage-note").startswith("Showing FY2026 House"))
 
+    def test_picker_name_is_one_line_with_an_ellipsis(self):
+        # owner, #60: the data's name, never wrapped; cut with an ellipsis where it doesn't fit
+        for width in (390, 320):
+            self.page.set_viewport_size({"width": width, "height": 844})
+            self.go("?sc=LHHS&fy=2026")
+            m = self.page.eval_on_selector("#p-context-text", """e => { const s = getComputedStyle(e);
+                return [e.textContent, s.whiteSpace, s.textOverflow, e.getBoundingClientRect().height <= parseFloat(s.lineHeight) + 1,
+                        e.scrollWidth > e.clientWidth, document.documentElement.scrollWidth > innerWidth]; }""")
+            self.assertEqual(m[:4], ["Labor-HHS-Education · FY2026", "nowrap", "ellipsis", True], width)
+            self.assertFalse(m[5], width)                                    # no sideways page scroll
+            if width == 320:
+                self.assertTrue(m[4])                                        # cut, not wrapped
+
     def test_phone_year_without_enacted_and_no_total(self):
         # FY2027 (the default year): the lead stage leads the switch and the card; CJS prints no title total
         total = self.lhhs["titles"][0]["total"]
