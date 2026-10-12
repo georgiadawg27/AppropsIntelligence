@@ -1998,7 +1998,7 @@ function compareURL() {
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
   if (open.size) q.set("open", [...open].sort().join(","));
-  if (G.pstage != null) q.set("stage", STAGE_WORD[G.pstage].toLowerCase());
+  if (G.pstage != null) q.set("pstage", STAGE_WORD[G.pstage].toLowerCase());
   if (G.table) q.set("table", "1");
   if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}`);
   if (SEL && SEL.kind === "acct") q.set("acct", SEL.id);
@@ -2050,7 +2050,7 @@ function settle(grid, want) {
     G.minPct = num(want.minpct); G.minK = num(want.mink);
     G.drafts = want.drafts !== "0";
     G.review = want.review === "1";
-    const si = STAGE_WORD.findIndex((w) => w.toLowerCase() === String(want.stage || "").toLowerCase());
+    const si = STAGE_WORD.findIndex((w) => w.toLowerCase() === String(want.pstage || "").toLowerCase());
     G.pstage = si < 0 ? null : si;
     G.table = want.table === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
@@ -2632,7 +2632,7 @@ $("#sc").addEventListener("change", () => {
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
                 cols: G.reqcol ? "request" : "", status: G.status, search: G.search, review: G.review ? "1" : "",
                 minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0",
-                stage: G.pstage == null ? "" : STAGE_WORD[G.pstage], table: G.table ? "1" : "" }, false);
+                pstage: G.pstage == null ? "" : STAGE_WORD[G.pstage], table: G.table ? "1" : "" }, false);
 });
 for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
 let searchTimer = null;
@@ -2669,7 +2669,7 @@ function route() {
   closeMenu(false);
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
-                                   "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct", "stage", "table"].map((k) => [k, params.get(k)]));
+                                   "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);

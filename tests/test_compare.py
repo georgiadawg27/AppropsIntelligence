@@ -2334,7 +2334,7 @@ class PhoneV1(GridBrowser):
                 # another stage: its figures, its URL
                 stages.nth(1).click()
                 self.assertEqual(stages.nth(1).get_attribute("aria-pressed"), "true")
-                self.assertIn("stage=house", self.page.url)
+                self.assertIn("pstage=house", self.page.url)
                 self.assertEqual(row.locator("[data-testid=p-value]").inner_text(), short(printed(nih, 2026, "House Reported")))
                 self.assertTrue(self.page.inner_text("#p-stage-note").startswith("Showing FY2026 House"))
 
@@ -2346,7 +2346,7 @@ class PhoneV1(GridBrowser):
         v, p = printed(total, 2027, "House Reported"), printed(total, 2026, "Enacted")
         self.assertEqual(self.page.inner_text("[data-testid=p-headline]"), short(v))
         self.assertEqual(self.page.inner_text("[data-testid=p-vs-prior]"), f"+{short(v - p)} ({pct_text(p, v)}) vs FY2026 enacted")
-        self.assertNotIn("stage=", self.page.url)
+        self.assertNotIn("pstage=", self.page.url)
         # a stage with nothing yet shows its state token, never a blank or a zero
         self.page.locator("#p-stages button", has_text="Senate").click()
         vals = self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] [data-testid=p-value]")

@@ -275,7 +275,7 @@ Open items:
   `phone-on` and CSS hides the grid, the panel and the desktop control row; `#phone` shows the list. The desktop grid is
   still rendered underneath (so a resize is instant); the phone list and sheet are rendered only while the phone layout
   is active, so no test id appears twice on a desktop.
-- Same state: G, SEL, `open`, filters and the URL. New URL params: `stage=<request|house|senate>` (the phone's stage
+- Same state: G, SEL, `open`, filters and the URL. New URL params: `pstage=<request|house|senate>` (not `stage=`: old links carry `stage=Enacted`) (the phone's stage
   when it differs from the lead stage) and `table=1` ("Open the full table": the grid on a phone; Back returns).
 - The phone always reads the Stages layout of `fy` (`asStages`), whatever `grid=` a desktop link carries.
 - `partsOf(group, F)` now holds the row grouping both the grid and the phone list use; `accountView(grid, id, phone)`
