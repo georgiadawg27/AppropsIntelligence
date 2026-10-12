@@ -84,6 +84,7 @@ There are no tiles above the grid: the headline figures live in the overview pan
 - The units-and-basis label adds the status: "$ thousands · as printed · FY2027 not yet enacted · latest: House".
 - "Still moving" (the Status filter) = nothing enacted for that year yet, and at least one earlier stage of that year holds a figure.
 - If no stage has a title total, there is no lead stage. The change column shows nothing, and the overview says "No printed totals yet for FY<n>".
+- A subcommittee that prints no title total at all (CJS today) takes as its lead stage the furthest stage any of its rows holds a figure for. This only chooses which stage the change column compares. The overview still says "No printed title or bill total on file. The page never adds accounts into one." (owner, 2026-10-12, #58)
 
 ## 5. Interactions
 
@@ -121,7 +122,7 @@ In a year without an Enacted stage, the three figures become: the lead stage's t
 Hovering a figure cell tints its whole row `#ecf1f9` (including the sticky name cell) and its whole column `#f1f5fb`; the crossing cell is `#d6e2f5`; the column's header turns `#dfe8f6`, bold, with a 2 px `#1f4e8c` underline. Hovering a name tints the row only. Section labels and header-only rows don't highlight. Leaving the grid clears it. Selection fills are drawn over hover.
 
 ### 5.6 Filter panel (the Filter button)
-A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `accounting-views-spec.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts, Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
+A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `accounting-views-spec.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts (on by default; draft columns are labelled "(draft)"; owner, 2026-10-12, #58), Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
 
 ### 5.7 View menu, Share, Export
 - **View**: Units ($ thousands · $ millions), Density (Comfortable · Compact), Columns (Change vs FY2026 request), Expand all / Collapse all, Reviewer mode.
