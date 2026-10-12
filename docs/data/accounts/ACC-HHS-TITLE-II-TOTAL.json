@@ -4368,7 +4368,8 @@
            "validation_id": "VAL-LHHS-01908"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "a request-stage classification difference, not an error: the FY2027 request's Appendix shows the Vaccine Injury Compensation Trust Fund (075-8175) with no discretionary budget authority, while the report's Title II total counts its $15,200,000 administrative line as discretionary. No figure changed; re-check if the report or the request changes.",
            "result": "flag",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRC-REQUEST-STAGE-CLASS"
@@ -8060,7 +8061,8 @@
       "validation_id": "VAL-LHHS-01908"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "a request-stage classification difference, not an error: the FY2027 request's Appendix shows the Vaccine Injury Compensation Trust Fund (075-8175) with no discretionary budget authority, while the report's Title II total counts its $15,200,000 administrative line as discretionary. No figure changed; re-check if the report or the request changes.",
       "result": "flag",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRC-REQUEST-STAGE-CLASS"
