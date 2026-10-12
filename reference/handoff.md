@@ -82,6 +82,13 @@ Made in this phase (flag any you disagree with):
   map is `appendix_map.csv`; per-row results and notes are in `appendix_coverage.csv`.
 - Table and text readers that need PDFs (run locally, outputs committed): `table_lines.py` (VICTF admin and claims),
   `mandatory_lines.py` (PSSF, EEOICP), `class_crosscheck.py` (the cross-checks), `build_pphf_table.py`.
+- Don't commit `docs/Approps_Pilot_Schema_Loaded.xlsx`: only CI's export job on main writes it
+  (`export_static.py --publish-workbook`). `export_static.py` without the flag leaves it alone, and the Tests
+  workflow fails a pull request that changes it. Its content is held to `tests/fixtures/workbook_values.json`.
+- Install with `pip install -r requirements.lock` (Python 3.11.17). The build forces openpyxl's ElementTree
+  writer, so a machine with lxml builds the same bytes.
+- Changing the parser section of `legislative_text.py` changes the parser version, so every committed text file
+  must be reparsed (`scripts/fetch_legislative_text.py --reparse`, from the gitignored download cache).
 - Don't commit the scoping doc or the NTU workbook, and don't copy their contents into the repo.
 
 ## Open items
