@@ -55,13 +55,14 @@ COMPONENT_ID = re.compile(r"CMP-(?:LHHS-)?\d{4}")
 # House and Senate stages (FY N from the FY N+2 Appendix's actuals where it exists, else FY N's own); 'request'
 # is what the President's request proposed (FY N's own Appendix), recorded only where it differs from the enacted
 # value or there is none (a proposed-only account). A 'mixed' account has both discretionary and mandatory budget
-# authority in the year: the mandatory part of its headline is a mandatory_portion component.
+# authority in the year: the mandatory part of its headline is a mandatory_portion component. provisional, when not
+# blank, says the value is read from an estimate column and when to re-check it (FY2026 and FY2027 classes).
 ATTRIBUTES = ["budget_class", "budget_subfunction", "fund_type", "account_id_code"]
 BUDGET_CLASS = ["discretionary", "mandatory", "mixed"]
 ATTRIBUTE_FUND_TYPE = ["general", "trust", "special", "revolving"]
 STAGE_BASES = ["enacted", "request"]
 ATTRIBUTE_COLUMNS = ["account_attribute_id", "canonical_account_id", "fiscal_year", "attribute", "value",
-                     "source_document_id", "source_location", "evidence", "stage_basis"]
+                     "source_document_id", "source_location", "evidence", "stage_basis", "provisional"]
 ATTRIBUTE_ID = re.compile(r"AAT-(?:LHHS-)?\d{4}")
 SUBFUNCTION = re.compile(r"\d{3}")
 # the Budget Appendix's account identification code: agency (3) - account (4) - transmittal (1) - fund (1) -
@@ -203,7 +204,7 @@ def attribute_errors(rows, accounts, documents):
     for r in rows:
         rid = r.get("account_attribute_id") or "?"
         for k in ATTRIBUTE_COLUMNS:
-            if _blank(r.get(k)) and k not in ("source_location", "stage_basis"):
+            if _blank(r.get(k)) and k not in ("source_location", "stage_basis", "provisional"):
                 errs.append(f"{rid}: {k} is blank (every value carries its evidence)")
         if not ATTRIBUTE_ID.fullmatch(rid):
             errs.append(f"{rid}: account_attribute_id is not AAT-NNNN or AAT-LHHS-NNNN")

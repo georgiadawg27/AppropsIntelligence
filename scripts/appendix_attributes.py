@@ -17,8 +17,12 @@ program-activity line and the budget authority lines by BEA category, column by 
 
 For each account and fiscal year we hold a figure for (FY2017-FY2027):
 
-  enacted   (Enacted, House and Senate stages) FY N from the FY N+2 Appendix, whose first column is FY N's actuals,
-            where that volume exists (FY2017-FY2025); otherwise FY N's own Appendix (FY2026, FY2027).
+  enacted   (Enacted, House and Senate stages) account_id_code, fund_type and budget_subfunction from FY N's own
+            Appendix (the account as it stood when FY N was appropriated). budget_class from the FY N+2 Appendix,
+            whose first column is FY N's actuals, where that volume exists (FY2017-FY2025); FY2026 and FY2027 read
+            the FY2027 volume's 2026 est. column and are marked provisional (re-check with the FY2028 and FY2029
+            volumes). Where the Appendix is mixed and the held report lines carry one D or M mark (the House report
+            tables of FY2018-FY2020, class_marks.csv), the class is the mark's, cited to the table page.
   request   (the President's Budget stage) FY N from FY N's own Appendix, its budget-year column: what the request
             proposed. Recorded only where it differs from the enacted value, or where there is no enacted value (a
             proposed-only account). Where the request moves the activity to another account (the FY2026 and FY2027
@@ -57,6 +61,11 @@ REVIEW = ROOT / "reference" / "review" / "accounting"
 EXTRACT = REVIEW / "appendix_schedules.json"
 MAP = REVIEW / "appendix_map.csv"
 COVERAGE = REVIEW / "appendix_coverage.csv"
+MARKS = REVIEW / "class_marks.csv"           # the report tables' D/M marks (class_crosscheck.py)
+MARK_CLASS = {"D": "discretionary", "M": "mandatory"}
+REPORT_NAMES = {"SRC-CRPT-115HRPT244": "H.Rept. 115-244", "SRC-CRPT-115HRPT862": "H.Rept. 115-862",
+                "SRC-CRPT-116HRPT62": "H.Rept. 116-62"}
+CODE_ATTRS = ("account_id_code", "budget_subfunction", "fund_type")
 GOVINFO = "https://www.govinfo.gov/content/pkg/"
 
 # The chapters (govinfo part files) and their printed page ranges (accounting views phase 1 report, "Phase 2 prep")
@@ -385,6 +394,40 @@ def class_in_column(s, fy, kind, hits):
     return cls, pages, ba
 
 
+def read_marks():
+    """-> {(account, fy, basis): [mark rows]}: the D/M mark of each held line in the House report tables that print
+    them. Enacted, House and Senate lines serve the enacted basis; President's Budget lines the request."""
+    out = collections.defaultdict(list)
+    if MARKS.exists():
+        with open(MARKS) as f:
+            for r in csv.DictReader(f):
+                basis = "request" if r["stage"] == REQUEST else "enacted"
+                out[(r["canonical_account_id"], int(r["fiscal_year"]), basis)].append(r)
+    return out
+
+
+def class_from_marks(got, marks):
+    """A mixed account-year whose held report lines carry one D or M mark takes the mark's class, cited to the
+    report table page; the Appendix's reading stays in the evidence. -> (got, note)"""
+    cls = got.get("budget_class")
+    if not cls or cls[0] != "mixed" or not marks:
+        return got, ""
+    kinds = {MARK_CLASS[m["mark"]] for m in marks}
+    lines = sorted({(m["source_document_id"], int(m["page"]), m["stage"], m["mark"], m["printed"]) for m in marks})
+    cited = "; ".join(f"{REPORT_NAMES.get(d, d)} table p.{p} ({st}): '{t}'" for d, p, st, _, t in lines)
+    if len(kinds) != 1:
+        return got, ("the report tables mark this account-year's lines both D and M (" + cited + "); budget_class "
+                     "stays mixed")
+    new = kinds.pop()
+    doc, page = lines[0][0], lines[0][1]
+    pages = sorted({p for d, p, *_ in lines if d == doc})
+    ev = (f"{REPORT_NAMES.get(doc, doc)} table marks the line {lines[0][3]} ({new}): " + cited
+          + f". The Appendix account is mixed: {cls[2]}")
+    out = dict(got)
+    out["budget_class"] = (new, ", ".join(f"p.{p}" for p in pages), ev, doc)
+    return out, ""
+
+
 def enacted_volume(fy):
     """Actuals from FY N+2 where printed. FY2026 has no FY2028 volume: its enacted level is the FY2027 volume's
     2026 est. column (FY2026's own volume would print the request). FY2027 falls back to its own volume."""
@@ -408,6 +451,7 @@ def held(data):
 def build(data, extract_, rows):
     """-> (attribute records without IDs, notes, coverage rows)"""
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
+    marks = read_marks()
     recs, notes, cover = [], [], []
     for (account, fy), stages in sorted(held(data).items()):
         a = acc[account]
@@ -441,18 +485,34 @@ def build(data, extract_, rows):
                     transmittals = ("0",) if r["status"] not in ("proposed", "moved") else ("0", "2", "4")
                 got, note = read_attributes(extract_, r, fy, vfy, transmittals, basis)
                 if got:
-                    got = {k: v + (r, vfy) for k, v in got.items()}
+                    got = {k: v + (document_id(vfy, r["chapter"]),) for k, v in got.items()}
+                    if basis == "enacted" and vfy != fy:
+                        # the code, fund and subfunction are FY N's own volume's (the account as it stood when FY N
+                        # was appropriated); the class stays the actuals'
+                        own, own_note = read_attributes(extract_, r, fy, fy, transmittals, basis)
+                        if all(k in own for k in CODE_ATTRS):
+                            got.update({k: own[k] + (document_id(fy, r["chapter"]),) for k in CODE_ATTRS})
+                        else:
+                            note = "; ".join(x for x in (note, f"account_id_code, fund_type and budget_subfunction "
+                                                         f"read from the FY{vfy} Appendix: {own_note}") if x)
                     if basis == "request" and "budget_class" not in got and fallback is None:
                         fallback, got = (got, note), {}   # an unfunded activity: try the request's other accounts
                         continue
                     break
             if not got and fallback:
                 got, note = fallback
-            values[basis] = (got, note)
-        enacted = values.get("enacted", ({}, ""))[0]
-        for basis, (got, note) in values.items():
+            raw = got.get("budget_class", ("",))[0]
+            got, mark_note = class_from_marks(got, marks.get((account, fy, basis)))
+            note = "; ".join(x for x in (note, mark_note) if x)
+            values[basis] = (got, note, raw)
+        enacted, enacted_raw = values.get("enacted", ({}, "", ""))[0], values.get("enacted", ({}, "", ""))[2]
+        for basis, (got, note, raw) in values.items():
             if basis == "request" and enacted:
                 diff = {k: v for k, v in got.items() if k not in enacted or enacted[k][0] != v[0]}
+                if diff.get("budget_class", ("",))[0] == "mixed" and enacted_raw == "mixed":
+                    # the request's Appendix is mixed as the enacted one is, and no President's Budget line is
+                    # marked: the request follows the enacted class (set from the marks)
+                    del diff["budget_class"]
                 if not got and note:
                     cover.append(row(account, a, fy, basis, {}, "empty", note))
                     notes.append({"canonical_account_id": account, "fiscal_year": fy, "stage_basis": basis,
@@ -465,10 +525,10 @@ def build(data, extract_, rows):
                         notes.append({"canonical_account_id": account, "fiscal_year": fy, "stage_basis": basis,
                                       "note": note})
                     continue
-            for attr, (v, loc, ev, r, vfy) in got.items():
+            for attr, (v, loc, ev, doc) in got.items():
                 recs.append({"canonical_account_id": account, "fiscal_year": fy, "attribute": attr, "value": v,
-                             "source_document_id": document_id(vfy, r["chapter"]), "source_location": loc,
-                             "evidence": ev, "stage_basis": basis})
+                             "source_document_id": doc, "source_location": loc, "evidence": ev, "stage_basis": basis,
+                             "provisional": provisional(fy, attr, basis)})
             if basis == "request" and enacted:
                 status = "differs from enacted (" + ", ".join(sorted(got)) + ")"
             else:
@@ -480,13 +540,21 @@ def build(data, extract_, rows):
     return recs, notes, cover
 
 
+def provisional(fy, attr, basis):
+    """FY2026 and FY2027 enacted-basis classes are read from estimate columns: re-checked against the actuals when
+    the FY2028 and FY2029 Appendix volumes are published."""
+    if basis == "enacted" and attr == "budget_class" and fy + 2 > AC.LAST_FY:
+        return (f"re-check when the FY{fy + 2} Appendix is published: read from the FY{enacted_volume(fy)} "
+                f"Appendix's 2026 est. column, not FY{fy} actuals")
+    return ""
+
+
 def row(account, a, fy, basis, got, status, note):
     g = lambda k: (got.get(k) or ("",))[0]  # noqa: E731
     return {"canonical_account_id": account, "subcommittee": a["subcommittee"], "fiscal_year": fy,
             "stage_basis": basis, "status": status, "account_id_code": g("account_id_code"),
             "budget_class": g("budget_class"), "fund_type": g("fund_type"), "budget_subfunction": g("budget_subfunction"),
-            "source": (document_id(got["account_id_code"][4], got["account_id_code"][3]["chapter"]) + " "
-                       + got["account_id_code"][1]) if got.get("account_id_code") else "",
+            "source": (got["account_id_code"][3] + " " + got["account_id_code"][1]) if got.get("account_id_code") else "",
             "note": note}
 
 

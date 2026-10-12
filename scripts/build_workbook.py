@@ -455,7 +455,7 @@ for r_i in range(2, n + 1):
 # ---------------------------------------------------------------------------
 ws = wb.create_sheet("Account Attribute")
 aa_rows = data.get("account_attributes", [])
-write_rows(ws, _AC.ATTRIBUTE_COLUMNS, aa_rows, [18, 26, 12, 20, 20, 22, 30, 60, 12])
+write_rows(ws, _AC.ATTRIBUTE_COLUMNS, aa_rows, [18, 26, 12, 20, 20, 22, 30, 60, 12, 40])
 n = max(len(aa_rows) + 1, 2)
 add_dropdown(ws, "D", _AC.ATTRIBUTES, 2, n)
 add_dropdown(ws, "I", _AC.STAGE_BASES, 2, n)
@@ -475,10 +475,14 @@ rows = [
     (f"\u2022 Account Attribute tab filled from the Budget Appendix Program and Financing schedules, FY2017\u2013FY2027 "
      f"({len(data.get('account_attributes', []))} rows, each citing its Appendix chapter and page): account_id_code, "
      "budget_subfunction, fund_type (from the code's fund digit) and budget_class (lines 4000 / 4090: discretionary, "
-     "mandatory, or mixed when both carry budget authority). stage_basis 'enacted' rows are read from the FY N+2 "
-     "Appendix's actual column (FY2026: the FY2027 Appendix's estimate; FY2027: its own Appendix) and serve the "
-     "Enacted, House and Senate stages; 'request' rows are read from FY N's own Appendix and are kept only where "
-     "the request differs. Accounts with no schedule found are left empty with a note "
+     "mandatory, or mixed when both carry budget authority). stage_basis 'enacted' rows serve the Enacted, House "
+     "and Senate stages: the code, fund and subfunction from FY N's own Appendix, the class from the FY N+2 "
+     "Appendix's actual column (FY2026 and FY2027: the FY2027 Appendix's 2026 estimate, marked provisional until "
+     "the FY2028 and FY2029 volumes are published). Where the Appendix is mixed and the House report tables mark "
+     "the held line D or M (FY2017–FY2020), the class is the mark's, cited to the table page. 'request' rows "
+     "are read from FY N's own Appendix and are kept only where the request differs. The Account tab's fund_type "
+     "now follows the Appendix (eight accounts corrected, each noted). Accounts with no schedule found are left "
+     "empty with a note "
      "(reference/review/accounting/appendix_coverage.csv). The discretionary view is now computed for agency and "
      "title totals. No headline figure changed.", NOTE_FONT),
     ("", BODY_FONT),

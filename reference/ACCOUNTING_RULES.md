@@ -29,10 +29,12 @@ account holds several of ours, a program activity line) in `reference/review/acc
 Program and Financing schedules of the HHS, Commerce, Justice, NASA, NSF and EOP chapters, FY2017 to FY2027, are
 read from the text layer (no page images) into `appendix_schedules.json`.
 
-- `stage_basis` `enacted` serves the Enacted, House and Senate stages: FY N from the FY N+2 Appendix's actual
-  column. FY2026 (no FY2028 volume yet) from the FY2027 Appendix's 2026 est. column, the enacted level. FY2027 from
-  its own Appendix: the code, fund and subfunction from its schedule, the class from its 2026 est. column (the
-  2027 column is the request).
+- `stage_basis` `enacted` serves the Enacted, House and Senate stages. `account_id_code`, `fund_type` and
+  `budget_subfunction` come from FY N's own Appendix volume (the account as it stood when FY N was appropriated;
+  the FY N+2 volume where FY N's own prints no schedule, with a note). `budget_class` comes from the FY N+2
+  Appendix's actual column. FY2026 (no FY2028 volume yet) and FY2027 take their class from the FY2027 Appendix's
+  2026 est. column, the latest enacted level (the 2027 column is the request); those classes are marked
+  `provisional`, to be re-checked when the FY2028 and FY2029 volumes are published (owner, 2026-10-12).
 - `stage_basis` `request` serves the President's Budget: FY N from FY N's own Appendix, the request's own account
   first (a proposed or moved account, e.g. the Administration for a Healthy America). It is recorded only where it
   differs from the enacted value; the President's Budget takes the enacted value otherwise
@@ -46,6 +48,18 @@ read from the text layer (no page images) into `appendix_schedules.json`.
   (discretionary) and 12xx/14xx/16xx/18xx (mandatory). Where a mixed schedule labels its mandatory program
   activities ('(Mandatory)', 'ACA'), the class is that of the activity lines the account maps to. Where it does not
   (CDC, NIH, SAMHSA), the class stays `mixed`, and the evidence says the schedule does not split by activity.
+- Activity-level class from the report tables (owner, 2026-10-12): where the Appendix leaves an account-year
+  `mixed` and its held lines in the House report tables carry a D or M mark (H.Rept. 115-244, 115-862, 116-62;
+  `class_marks.csv`, written by `class_crosscheck.py`), the class is the mark's, cited to the table page, with the
+  Appendix's reading kept in the evidence. Enacted, House and Senate lines serve the enacted basis; President's
+  Budget lines the request (a request the Appendix shows mixed like the enacted one, with no marked request line,
+  follows the enacted class). Lines marked both D and M keep `mixed`. `mixed` stays only where no mark exists and
+  the Appendix cannot split the account.
+- The Account tab's own `fund_type` follows the Appendix (owner, 2026-10-12): AFF, CVF, USTSF, NIH CURES and NOAA
+  PDF are special funds, DOJ WCF a revolving fund, CMS Program Management and Medicare Operations general-fund
+  accounts; each correction is noted on the account. A general-fund account with `trust_fund_limitation`
+  components (CMS Program Management, Medicare Hearings and Appeals: funded by transfers from the trust funds) is
+  consistent, not a disagreement.
 - Totals and part lines carry no attributes; an account with no schedule found is left empty with a note
   (`account_attribute_notes`, `reference/review/accounting/appendix_coverage.csv`). Nothing is guessed. The
   defense split stays on the `defense_portion` lines; no subfunction implies one.

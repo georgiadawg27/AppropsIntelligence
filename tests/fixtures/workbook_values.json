@@ -1,17 +1,17 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12)",
- "data_sha256": "998237769ab4a5d3288c5135a0d24719b0998e58359e480c071d31614a883b4d",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12)",
+ "data_sha256": "ceaf6befbb924efe68c75b0b953f4a827cd3292e7df3ea9aec7cd584fc528ac6",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 85,
    "columns": 1,
-   "sha256": "92218463e55a8a60fbaa25d56ec07d3c466d1be73ddfb8bbd93b54074c207422"
+   "sha256": "bc75e86afbbeee6a9c2121a8df8cc5e3ce5fa505d85b55b7991315f6bb291ffd"
   },
   "Account": {
    "rows": 131,
    "columns": 17,
-   "sha256": "68b71cf98f609dd64bcefd47320bbbd391262319b8a228383ab2f020da4e761e"
+   "sha256": "50b90abe3f21b8798fa6241bb09b82323545231caa2464c25112666f40a08f9a"
   },
   "Historical Name": {
    "rows": 15,
@@ -34,9 +34,9 @@
    "sha256": "4ae56c525b9a9ea28ca2cc91f1ac36ad985ddb714ced78aeeff522deb52a7c94"
   },
   "Source Document": {
-   "rows": 146,
+   "rows": 152,
    "columns": 12,
-   "sha256": "2a337fc90f79ed9c564f0f8d28bf1056c097271aa83aa0ce5867d57922389c3f"
+   "sha256": "7aa60199a88c8691da691c56bb0fa3ce52005d98841031f4f22916c38ebfd315"
   },
   "Bill Report Reference": {
    "rows": 84,
@@ -46,7 +46,7 @@
   "Validation Record": {
    "rows": 20791,
    "columns": 9,
-   "sha256": "075b6075b7838a305970031f22c842d6062017ff005f37b6b0758c606cefcfdc"
+   "sha256": "24c2baf1cd390de63eca8863e74f0c10f77185391dd7571a7cb8756922a8db20"
   },
   "Component": {
    "rows": 30,
@@ -59,9 +59,9 @@
    "sha256": "35352d217323d48d858936855ba62f26a8557f0a12b38aaaeaa6ac85a24034f6"
   },
   "Account Attribute": {
-   "rows": 4405,
-   "columns": 9,
-   "sha256": "6eb986ddaf68dc7b98e904eb185e6baf2585bf627781de4048721484abeea47c"
+   "rows": 4304,
+   "columns": 10,
+   "sha256": "6157cc93a6b4b62af80cd7315b307dc8116b9326c0ae1de156dfa3e99f203f16"
   }
  }
 }

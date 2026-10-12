@@ -354,7 +354,7 @@ TABS = [
         ("account_attribute_id", to_text, True), ("canonical_account_id", to_text, True),
         ("fiscal_year", to_int, True), ("attribute", to_text, True), ("value", to_text, True),
         ("source_document_id", to_text, True), ("source_location", to_text, False), ("evidence", to_text, True),
-        ("stage_basis", to_text, False)]),
+        ("stage_basis", to_text, False), ("provisional", to_text, False)]),
 ]
 
 # Tabs a workbook may not have yet (loaded as empty; the load report says so).
@@ -375,7 +375,7 @@ OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                     "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
                                               "draft", "not_reported"},
                     # accounting views phase 2: which stages an attribute row serves (blank -> 'enacted')
-                    "Account Attribute": {"stage_basis"}}
+                    "Account Attribute": {"stage_basis", "provisional"}}
 # The value a blank optional cell loads as (None unless listed).
 COLUMN_DEFAULTS = {("Account Attribute", "stage_basis"): "enacted"}
 # Columns a workbook may still carry but the store no longer has: read past,

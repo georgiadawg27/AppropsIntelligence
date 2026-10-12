@@ -4,7 +4,8 @@ review (class_crosscheck.csv); nothing is adjusted.
 
   marks   The older House report tables mark each line D (discretionary), M (mandatory), TF (trust fund) or NA
           (H.Rept. 115-244, 115-862, 116-62: on the text layer; H.Rept. 114-699 and 116-450 print their tables
-          as images and are skipped). Each held line of those tables is found on its own page by its amount in
+          as images and are skipped). Every held line's D or M mark is also written to class_marks.csv, which
+          scripts/appendix_attributes.py reads to set the class of an account-year the Appendix leaves mixed. Each held line of those tables is found on its own page by its amount in
           its own column, and its mark compared with the account's budget_class (and, for TF, with a trust fund
           link: fund_type 'trust' or a trust_fund_limitation component).
   hrsa    The newer reports print 'Total, Health Resources and Services Administration' with a 'Discretionary'
@@ -36,12 +37,15 @@ import measure_reconcile as MR  # noqa: E402
 import tag_components as TC  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "class_crosscheck.csv"
+MARKS_OUT = Path(__file__).resolve().parent / "class_marks.csv"
 MARK_DOCS = ("SRC-CRPT-115HRPT244", "SRC-CRPT-115HRPT862", "SRC-CRPT-116HRPT62")
 IMAGE_ONLY = ("SRC-CRPT-114HRPT699", "SRC-CRPT-116HRPT450")
 MARK = re.compile(r"(?:\.|\s)\s*\b(D|M|TF|NA)\b\s+[\d(]")
 HRSA_TOTAL = re.compile(r"Total, Health Resources and Services Administration\b")
 DISC = re.compile(r"^\s*Discretionary\s*\.{3}")
 NUM = re.compile(r"(?<![\d,])\d{1,3}(?:,\d{3})+(?![\d,])|(?<![\d,])\d{1,3}(?![\d,])")
+MARK_COLUMNS = ["observation_id", "canonical_account_id", "fiscal_year", "stage", "mark", "source_document_id", "page",
+                "printed"]
 COLUMNS = ["check", "result", "canonical_account_id", "fiscal_year", "stage", "source_document_id", "page",
            "printed", "attribute", "note"]
 
@@ -75,7 +79,7 @@ def trust_link(data, account, comps_by_acc):
     return "trust" in fund or account in comps_by_acc
 
 
-def marks(data, cache, docs, attrs, out):
+def marks(data, cache, docs, attrs, out, held_marks):
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     tfl = {o_acc for o_acc in (c["_account"] for c in data["_components"]
                                if c["component_type"] == "trust_fund_limitation")}
@@ -107,6 +111,10 @@ def marks(data, cache, docs, attrs, out):
         if len(mk) != 1:
             continue                                   # the line is not on the text layer, or its amount is ambiguous
         mark, line = mk.pop(), next(iter(found))[1]
+        if mark in ("D", "M"):
+            held_marks.append({"observation_id": o["observation_id"], "canonical_account_id": o["canonical_account_id"],
+                               "fiscal_year": o["fiscal_year"], "stage": o["stage"], "mark": mark,
+                               "source_document_id": doc, "page": page, "printed": line})
         rec = AC.attribute_value(attrs, o["canonical_account_id"], int(o["fiscal_year"]), "budget_class", o["stage"])
         cls = rec["value"] if rec else ""
         if mark == "NA":
@@ -121,8 +129,11 @@ def marks(data, cache, docs, attrs, out):
                                                     "no trust fund link (fund_type trust or trust_fund_limitation)"))
         else:
             want = {"D": "discretionary", "M": "mandatory"}[mark]
-            result = "agree" if cls == want else "consistent (mixed)" if cls == "mixed" else "disagree"
-            note = "" if result == "agree" else f"{mark} line; budget_class {cls}"
+            from_mark = rec and rec["source_document_id"].startswith("SRC-CRPT-")
+            result = ("set from the mark" if from_mark and cls == want else "agree" if cls == want else
+                      "consistent (mixed)" if cls == "mixed" else "disagree")
+            note = ("the Appendix account is mixed; budget_class " + cls + " is set from the report's marks"
+                    if result == "set from the mark" else "" if result == "agree" else f"{mark} line; budget_class {cls}")
         out.append(dict(base, result=result, printed=f"{mark}: {line}", attribute=cls, note=note))
 
 
@@ -180,7 +191,14 @@ def trust(data, out):
                               if c["component_type"] == "trust_fund_limitation")
     for a in sorted(set(fund) | set(tfl)):
         is_trust = "trust" in fund[a]
-        if is_trust == bool(tfl[a]):
+        if not is_trust and tfl[a] and fund[a] == {"general"}:
+            # a general-fund account financed by transfers from the trust funds (CMS Program Management, Medicare
+            # Hearings and Appeals): its trust_fund_limitation components are consistent with the general fund
+            out.append({"check": "trust", "result": "consistent (general fund, trust fund limitation)",
+                        "canonical_account_id": a, "printed": f"{tfl[a]} trust_fund_limitation components",
+                        "attribute": "general",
+                        "note": "a general-fund account whose budget authority is transferred from the trust funds"})
+        elif is_trust == bool(tfl[a]):
             out.append({"check": "trust", "result": "agree", "canonical_account_id": a,
                         "printed": f"{tfl[a]} trust_fund_limitation components", "attribute": "/".join(sorted(fund[a])),
                         "note": ""})
@@ -208,8 +226,8 @@ def main(argv=None):
                            for c in data["observation_components"]]
     docs = {d["document_id"]: d for d in data["source_docs"]}
     attrs = AC.attribute_index(data)
-    out = []
-    marks(data, a.cache, docs, attrs, out)
+    out, held_marks = [], []
+    marks(data, a.cache, docs, attrs, out, held_marks)
     hrsa(data, a.cache, docs, attrs, out)
     trust(data, out)
     with open(OUT, "w", newline="") as f:
@@ -217,6 +235,11 @@ def main(argv=None):
         w.writeheader()
         for r in out:
             w.writerow({c: r.get(c, "") for c in COLUMNS})
+    with open(MARKS_OUT, "w", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=MARK_COLUMNS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(held_marks)
+    print(f"{len(held_marks)} D/M marks -> {MARKS_OUT.relative_to(ROOT)}")
     c = collections.Counter((r["check"], r["result"]) for r in out)
     for k, n in sorted(c.items()):
         print(k, n)

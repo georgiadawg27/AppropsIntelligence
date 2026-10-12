@@ -195,6 +195,40 @@ class AttributeSchema(unittest.TestCase):
         self.assertEqual(AC.attribute_errors(recs, {a["canonical_account_id"] for a in STAGED["accounts"]},
                                              {d["document_id"] for d in STAGED["source_docs"]}), [])
 
+    def test_a_mixed_account_year_takes_the_class_of_its_report_marks(self):
+        import appendix_attributes as A
+        marks = A.read_marks()
+        attrs = AC.attribute_index(STAGED)
+        for (acc, fy, basis), rows in marks.items():
+            kinds = {A.MARK_CLASS[r["mark"]] for r in rows}
+            rec = attrs.get((acc, fy, "budget_class", basis))
+            if rec and len(kinds) == 1:
+                self.assertNotEqual(rec["value"], "mixed", (acc, fy, basis))
+                if rec["source_document_id"].startswith("SRC-CRPT-"):
+                    self.assertEqual(rec["value"], kinds.pop())
+                    self.assertIn("The Appendix account is mixed", rec["evidence"])
+
+    def test_codes_are_fy_ns_own_volume_and_late_classes_provisional(self):
+        notes = {(n["canonical_account_id"], n["fiscal_year"], n["stage_basis"]): n["note"]
+                 for n in STAGED["account_attribute_notes"]}
+        for r in STAGED["account_attributes"]:
+            fy, basis = int(r["fiscal_year"]), r["stage_basis"]
+            if r["attribute"] in ("account_id_code", "fund_type", "budget_subfunction"):
+                own = r["source_document_id"].startswith(f"SRC-BUDGET-APP-FY{fy}-")
+                self.assertTrue(own or "read from the FY" in notes.get((r["canonical_account_id"], fy, basis), ""),
+                                r["account_attribute_id"])
+            late = basis == "enacted" and r["attribute"] == "budget_class" and fy >= 2026
+            self.assertEqual(bool(r["provisional"]), late, r["account_attribute_id"])
+
+    def test_the_account_tabs_fund_type_is_the_appendixs(self):
+        fund = collections.defaultdict(set)
+        for r in STAGED["account_attributes"]:
+            if r["attribute"] == "fund_type":
+                fund[r["canonical_account_id"]].add(r["value"])
+        self.assertEqual([a["canonical_account_id"] for a in STAGED["accounts"] if a.get("fund_type")
+                          and fund[a["canonical_account_id"]] and a["fund_type"] not in fund[a["canonical_account_id"]]],
+                         [])
+
     def test_totals_carry_no_attributes_of_their_own(self):
         totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")}
         self.assertFalse([r for r in STAGED["account_attributes"] if r["canonical_account_id"] in totals])

@@ -7,13 +7,19 @@ Start here instead of the long thread. The rules themselves are in `reference/AC
 - Phases 1 and 1b (#46, #47, #50) added the component records and the `measure_reconcile` check; the parser fix
   (#51) keeps a bill-text paragraph whole. Phase 2 (this PR) fills the account-attribute table and computes the
   discretionary view.
-- 4,404 account attributes (Labor-HHS and CJS, FY2017 to FY2027), each citing its Appendix chapter and page:
-  `account_id_code`, `budget_subfunction`, `fund_type`, `budget_class`, with `stage_basis` `enacted` or `request`.
-  Read from the text layer only: 0 page images, $0.
+- 4,303 account attributes (Labor-HHS and CJS, FY2017 to FY2027), each citing its Appendix chapter and page (or,
+  for a class set from a report mark, the report table page): `account_id_code`, `budget_subfunction`,
+  `fund_type`, `budget_class`, with `stage_basis` `enacted` or `request`, and `provisional` on the FY2026 and
+  FY2027 enacted-basis classes. Read from the text layer only: 0 page images, $0.
+- Mixed budget_class records: 624 before the follow-ups (601 enacted, 23 request), 483 after (460 enacted, 23
+  request). The 272 marked lines on mixed accounts all now take their mark's class; what stays mixed has no
+  mark (FY2021 on, or a line the image-only reports print) or an Appendix account that is genuinely mixed by
+  activity (PSSF, CFSP, VICTF, HCFAC, CMS Program Management).
 - 583 components (was 462): 121 new `mandatory_portion` records (PSSF section 436, VICTF claims, EEOICP), and
   their FY2025 CR continuations.
 - measure_reconcile: base 427 pass, 0 fail. Printed views 115 pass, 3 differ, 241 not checked. The 26 printed
-  discretionary totals (ACF and Title II): 23 pass, 3 differ.
+  discretionary totals (ACF and Title II): 23 pass, 3 differ; the VICTF FY2027 request difference is resolved by
+  the owner (a request-stage classification difference), the two ACF Child Support differences stay pending.
 - No headline figure has changed. Every headline keeps its As printed figure.
 
 ## Decisions
@@ -28,6 +34,21 @@ The owner's (from the brief):
 - Proposed-only accounts take the request year's Appendix only. Totals and part lines carry no attributes. No
   schedule found: empty with a note. Defense stays on the `defense_portion` lines.
 - Cross-check failures go to review; nothing is adjusted.
+
+The owner's follow-ups (2026-10-12, same PR):
+
+- Activity-level class from the report tables: a mixed account-year whose held lines carry one D or M mark takes
+  the mark's class, cited to the table page (`class_marks.csv`). `mixed` stays only where no mark exists and the
+  Appendix can't split it.
+- `account_id_code`, `fund_type` and `budget_subfunction` from FY N's own Appendix volume; `budget_class` stays
+  from the FY N+2 actuals.
+- fund_type: the Appendix wins. The eight Account-tab entries were corrected, with a note on each account. A
+  general fund with trust_fund_limitation components (CMS Program Management, Medicare Hearings and Appeals) is
+  consistent.
+- FY2026 and FY2027 enacted-basis classes are `provisional`: re-check them when the FY2028 and FY2029 Appendix
+  volumes are published. The codes are FY N's own volume's, so they are not provisional.
+- VICTF FY2027 request (+$15.2M) resolved as a request-stage classification difference
+  (VAL-MRC-REQUEST-STAGE-CLASS).
 
 Made in this phase (flag any you disagree with):
 
@@ -65,19 +86,15 @@ Made in this phase (flag any you disagree with):
 
 ## Open items
 
-1. Three discretionary totals differ, each for a named cause (VAL-MRC-*): ACF FY2023 Enacted and FY2024 President's
-   Budget (-$1.3B, -$1.4B: Child Support's advance is not tagged outside the pilot, and its headline prints
-   'available in this bill'); Title II FY2027 President's Budget (+$15.2M: the FY2027 request's Appendix shows VICTF
-   with no discretionary budget authority, while the report counts its $15.2M administrative line as
-   discretionary).
-2. NIH subfunction: the FY2020 Appendix codes 075-9915 as subfunction 999 (its request moved AHRQ into NIH) and
-   prints that code over its 2018 actual column, so FY2018 enacted carries 999 while the FY2018 request says 552.
-   The rule (FY N+2 volume) was followed; consider taking the code from the FY N+1 volume where they disagree.
-3. Cross-check disagreements for review (`class_crosscheck.csv`): CMS Program Management and OMHA carry
-   trust_fund_limitation components but are general-fund accounts (funded by transfers from the trust funds); the
-   Account tab's own fund_type differs from the Appendix fund digit for AFF, CVF, USTSF, DOJ WCF, CMS Program
-   Management, Medicare Operations, CURES and NOAA PDF. The D/M/TF marks (340 lines compared) and the 7 HRSA
-   discretionary splits all agree.
+1. The two ACF Child Support differences (VAL-MRC-MANDATORY-ADVANCE-UNTAGGED: ACF FY2023 Enacted -$1.3B, FY2024
+   President's Budget -$1.4B; the advance is not tagged outside the pilot) stay pending until the FY2017-FY2023
+   component backfill.
+2. Subfunction 999 for review (`budget_subfunction` 999, all read as printed): NSF 049-0100 Research and Related
+   Activities (FY2017-FY2026 enacted); CDC 075-0943 (13 accounts, FY2017-FY2027 enacted, 143 records); NIH
+   075-9915 FY2020 enacted (26 institutes: the FY2020 volume's own code, as its request moved AHRQ into NIH); OS
+   075-0160 FY2027 request (OCR, OMHA in the request's proposed account).
+3. Cross-checks (`class_crosscheck.csv`): no disagreement left. Marks: 277 lines set from the mark, 57 agree; HRSA
+   7 agree; trust 112 agree, 2 consistent (general fund with trust fund limitation).
 4. Empty attributes with notes: Medicare limitation (a general provision with no schedule), OJP rescission (no
    account named), ASPR and HRSA/SAMHSA program support in the FY2026/FY2027 requests (split across accounts), NIH
    restructured institutes in the FY2025 request, NSC FY2017/FY2018 requests, and class-only gaps where a year shows

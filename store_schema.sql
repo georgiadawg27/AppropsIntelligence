@@ -345,5 +345,7 @@ CREATE TABLE account_attribute (
     -- 'enacted': read from actuals (Enacted, House and Senate stages); 'request': what the President's Budget
     -- proposed, recorded only where it differs from the enacted value (accounting.attribute_value)
     stage_basis          TEXT NOT NULL CHECK (stage_basis IN ('enacted', 'request')),
+    -- blank, or why the value is provisional and when to re-check it (a class read from an estimate column)
+    provisional          TEXT,
     UNIQUE (canonical_account_id, fiscal_year, attribute, stage_basis)
 ) STRICT;
