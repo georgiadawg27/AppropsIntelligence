@@ -5,7 +5,7 @@
  "features": {
   "grid": {
    "spec_row": "Grid, states, compare modes, expand/collapse, sections",
-   "brief": null,
+   "brief": "UI-1",
    "fields": [
     "subcommittees/*.json:fiscal_years",
     "subcommittees/*.json:stages",
@@ -40,7 +40,7 @@
   },
   "account_panel": {
    "spec_row": "Account panel, history bars",
-   "brief": null,
+   "brief": "UI-2",
    "fields": [
     "accounts/*.json:history.account.canonical_name",
     "accounts/*.json:history.observations[].fiscal_year",
@@ -57,7 +57,7 @@
   },
   "overview_panel": {
    "spec_row": "Overview panel, largest movers",
-   "brief": null,
+   "brief": "UI-1",
    "fields": [
     "subcommittees/*.json:titles[].total.cells.*.lines[].state",
     "subcommittees/*.json:titles[].total.cells.*.lines[].observations[].amount",
@@ -71,7 +71,7 @@
   },
   "search_filter": {
    "spec_row": "Search, agency filter, status filter",
-   "brief": null,
+   "brief": "UI-1",
    "fields": [
     "index.json:accounts[].canonical_account_id",
     "index.json:accounts[].canonical_name",
@@ -83,7 +83,7 @@
   },
   "interaction_state": {
    "spec_row": "Hover, click-away, Esc, Share/URL state",
-   "brief": null,
+   "brief": "UI-1",
    "fields": [
     "subcommittees.json:subcommittees",
     "subcommittees/*.json:fiscal_years",
@@ -93,7 +93,7 @@
   },
   "abbreviations": {
    "spec_row": "Abbreviations (display-only label map in web/, keyed by canonical_account_id)",
-   "brief": null,
+   "brief": "UI-1",
    "fields": [
     "index.json:accounts[].canonical_account_id"
    ]
@@ -114,7 +114,7 @@
   },
   "phone": {
    "spec_row": "Phone list and sheet",
-   "brief": null,
+   "brief": "UI-P",
    "fields": [
     "subcommittees/*.json:stages",
     "subcommittees/*.json:rows[].account.canonical_account_id",

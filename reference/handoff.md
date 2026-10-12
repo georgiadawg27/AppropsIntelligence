@@ -153,7 +153,11 @@ Made in this phase (flag any you disagree with):
   into `docs/data/index.json`; a flag is true only if every listed field holds a non-null, non-empty value.
 - Today: figure_source, grid, account_panel, overview_panel, search_filter, interaction_state, abbreviations,
   export_csv, phone, watchlist true; accounting_views, budget_class, defense_split false.
-- Open: the three UI-0 paths (`rows[].cells.*.views.*`, `rows[].budget_class.*`,
-  `rows[].cells.*.components.defense_portion`) are proposed names, not yet exported. UI-0 must publish under these
-  names or change the contract (bump contract_version). Briefs for the rows SPEC marks ready are unassigned (null).
+- Briefs (owner): grid, search_filter, overview_panel, interaction_state, abbreviations UI-1; figure_source,
+  account_panel UI-2; phone UI-P; accounting_views, budget_class, defense_split UI-0 / UI-3; export_csv UI-4;
+  watchlist UI-6.
+- UI-0 paths (owner, 2026-10-12): contract_version 1 keeps the proposed paths (`rows[].cells.*.views.*`,
+  `rows[].budget_class.*`, `rows[].cells.*.components.defense_portion`) for now. UI-0 will move budget_class to
+  `rows[].attributes.*.budget_class` and defense to `rows[].cells.*.defense_portion` in web/ui_contract.json and
+  bump contract_version.
   The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
