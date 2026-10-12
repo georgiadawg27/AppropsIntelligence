@@ -17,8 +17,11 @@ computed from them (accounting views, phase 1; accounting.py, reference/ACCOUNTI
    printed view line -- the tagging may be incomplete; the figure is not in question. VAL-MRV-<observation>.
    A view is checked where its components were tagged: the pilot cells (Labor-HHS FY2024-FY2026 and CJS FY2026;
    House, Senate, Enacted), or, outside them, an account's own view where its headline carries a component the
-   view uses. Every other printed view is counted as not checked yet, with the reason ('discretionary' needs
-   every account's budget_class -- phase 2).
+   view uses. Every other printed view is counted as not checked yet, with the reason.
+3. A printed 'discretionary' agency or title total (phase 2): the total less what each of its accounts holds
+   that is not discretionary by the account's budget_class (account_attributes, from the Budget Appendix): a
+   mandatory account's amount as the bill appropriates it, a mixed account's mandatory_portion components
+   (discretionary_view). Checked in every cell; a difference is a 'flag', as in 2.
 
 The check never changes a figure. A pass never confirms one (measure_reconcile is not a confirming rule) and a
 flag counts neither way (validate_approps.NEUTRAL_FLAG_RULES); a fail flags the headline.
@@ -60,6 +63,11 @@ CAUSE_TEXT = {
     "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
     "member_no_headline": "an account of the agency has no headline in the cell, so its components are missing",
     "cr_anomaly_dropped": "a component a P.L. 119-4 anomaly changed was not carried into FY2025",
+    "mandatory_advance_untagged": "a mandatory account's headline is printed as available in this bill, and its "
+                                  "advances are not tagged outside the pilot cells, so the advance the total counts "
+                                  "is not taken off",
+    "request_stage_class": "an account's request-stage budget_class (what the President's Budget proposed, read "
+                           "from the request's own Appendix) differs from how the report's total treats it",
     "unexplained": "not explained yet",
 }
 
@@ -75,6 +83,59 @@ def members(data, rollup):
             and not a.get("parent_account_id")]
 
 
+def title_members(data, rollup):
+    """A title total's accounts: every account of the subcommittee's title, no parent, not a total."""
+    return [a["canonical_account_id"] for a in data["accounts"]
+            if a["subcommittee"] == rollup["subcommittee"] and (a.get("title") or "") == (rollup.get("title") or "")
+            and not a.get("total_scope") and not a.get("parent_account_id")]
+
+
+def discretionary_view(data, a, v, h, heads, comps, attrs):
+    """The discretionary view of an agency or title total (phase 2): the printed total less, for each of its
+    accounts, what is not discretionary by the account's budget_class for the year and stage (accounting.
+    discretionary_adjustment: a mandatory account's amount as the bill appropriates it, a mixed account's
+    mandatory_portion components). An account with no budget_class on file is counted as printed and named.
+    -> (computed, how, the cause to name when it differs) or the reason it is not checked."""
+    scope = a.get("total_scope")
+    if scope not in ("agency", "title"):
+        return f"a {scope or 'non-total'} line: no discretionary view computed"
+    fy, stage = int(v["fiscal_year"]), v["stage"]
+    acc = {x["canonical_account_id"]: x for x in data["accounts"]}
+    delta, mand, mixed, unknown, cause = 0, [], [], [], "unexplained"
+    request_used, advance_gap = False, False
+    for m in (members(data, a) if scope == "agency" else title_members(data, a)):
+        hs = heads[(m, fy, stage)]
+        mh = TC.pick_headline(hs, h["source_document_id"]) if hs else None
+        if mh is None:
+            continue
+        rec = AC.attribute_value(attrs, m, fy, "budget_class", stage)
+        cs_all = comps[mh["observation_id"]]
+        got = AC.discretionary_adjustment(mh["amount"], cs_all, rec["value"] if rec else None)
+        if got is None:
+            if mh["amount"] or cs_all:
+                unknown.append(f"{m} {AC.money(mh['amount'])}")
+            continue
+        d, cs = got
+        delta += d
+        request_used |= rec["stage_basis"] == "request"
+        if rec["value"] == "mandatory":
+            mand.append(f"{acc[m]['canonical_name']} {AC.money(-d)}")
+            if (not any(c["component_type"].startswith("advance") for c in cs_all)
+                    and "available" in TC.printed(mh).lower()):
+                advance_gap = True
+        elif rec["value"] == "mixed" and cs:
+            mixed.append(f"{acc[m]['canonical_name']} {describe(cs)}")
+    if request_used:
+        cause = "request_stage_class"
+    elif advance_gap:
+        cause = "mandatory_advance_untagged"
+    how = (f"the {scope} total {AC.money(h['amount'])} ({h['observation_id']}) less its mandatory accounts as the "
+           f"bill appropriates them ({'; '.join(mand) or 'none'}) and the mandatory_portion components of its mixed "
+           f"accounts ({'; '.join(mixed) or 'none'})"
+           + (f"; accounts with no budget_class on file, counted as printed: {'; '.join(unknown)}" if unknown else ""))
+    return h["amount"] + delta, how, cause
+
+
 def describe(cs):
     return "; ".join(f"{c['component_id']} {c['component_type']}{'/' + c['designation'] if c.get('designation') else ''}"
                      f" {AC.money(c['amount'])}" for c in cs) or "none"
@@ -87,6 +148,7 @@ def run(data):
     kinds = {c["component_id"]: c["kind"] for c in data.get("components", [])}
     comps = AC.components_by_observation(data)
     heads = TC.headline_of(data)
+    attrs = AC.attribute_index(data)
     records, outcomes = [], []
     # 1. base
     for oid in sorted(comps):
@@ -113,6 +175,30 @@ def run(data):
         cell = (a["subcommittee"], int(v["fiscal_year"]), v["stage"])
         base_out = {"kind": "view", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
                     "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
+        if comp == "discretionary":
+            h = obs.get(v.get("headline_observation_id") or "")
+            got = discretionary_view(data, a, v, h, heads, comps, attrs) if h else "names no headline"
+            if isinstance(got, str):
+                outcomes.append(dict(base_out, result="not checked", detail=got))
+                continue
+            computed, how, cause_hint = got
+            ok = computed == v["amount"]
+            cause = None if ok else cause_hint
+            expected = f"discretionary: {how} = {AC.money(computed)}"
+            observed = (f"{AC.money(v['amount'])} printed ('{TC.printed(v)}', {v['source_document_id']} "
+                        f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
+                        f" -- differs by {AC.money(v['amount'] - computed)} (printed - computed); for review, no "
+                        "figure changed"))
+            if cause:
+                observed += f"; cause: {cause} (reviewed once for every cell, VAL-MRC-{cause.upper().replace('_', '-')})"
+            records.append({"validation_id": "VAL-MRV-" + suffix(v["observation_id"]),
+                            "observation_id": v["observation_id"], "rule_applied": RULE, "expected_result": expected,
+                            "observed_result": observed, "result": "pass" if ok else "info",
+                            "human_review_status": "", "reviewer": "", "resolution": ""})
+            outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
+                                 detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
+                                        f"difference {AC.money(v['amount'] - computed)}"))
+            continue
         if comp in AC.NOT_CHECKED_YET:
             outcomes.append(dict(base_out, result="not checked", detail=AC.NOT_CHECKED_YET[comp]))
             continue

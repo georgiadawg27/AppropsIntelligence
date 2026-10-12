@@ -25,14 +25,18 @@ import re
 from collections import defaultdict
 
 COMPONENT_TYPES = ["advance_enacted", "advance_available", "designated", "transfer_in", "transfer_out",
-                   "trust_fund_limitation", "fees_offsets", "rescission", "defense_portion", "other_law", "earmark"]
+                   "trust_fund_limitation", "fees_offsets", "rescission", "defense_portion", "other_law", "earmark",
+                   # phase 2: the mandatory part of a 'mixed' account's headline (budget_class mixed)
+                   "mandatory_portion"]
 DESIGNATIONS = ["emergency", "disaster", "cap_adjustment", "other"]
 # retagged: an existing line observation (source_observation_id) re-read as a component of its headline
 # table_line: a line the figure's own table prints (the observation's document), read for this component
 # auto_text: tagged from the committed bill or law text (data/legislative_text) by a phrase rule
 # carried_forward: FY2025 full-year CR -- the FY2024 Enacted component, continued (carried_from_component_id)
 # cr_anomaly: FY2025 full-year CR -- what an anomaly's text states in place of an FY2024 component it changes
-TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward", "cr_anomaly"]
+# appendix_text: the request's own proposed language in the Budget Appendix (a President's Budget headline has no
+# bill text)
+TAG_METHODS = ["retagged", "table_line", "auto_text", "carried_forward", "cr_anomaly", "appendix_text", "report_text"]
 NEGATIVE_TYPES = ("rescission", "transfer_out", "fees_offsets")
 BOOL = ("TRUE", "FALSE")
 
@@ -46,18 +50,26 @@ COMPONENT_REQUIRED = ["component_id", "observation_id", "component_type", "amoun
                       "source_document_id", "source_location", "quoted_text", "tag_method", "tag_rule"]
 COMPONENT_ID = re.compile(r"CMP-(?:LHHS-)?\d{4}")
 
-# Account attributes: one value per account, fiscal year and attribute, each with its evidence. Phase 1 adds the
-# fields; phase 2 fills them from the Budget Appendix.
+# Account attributes: one value per account, fiscal year, attribute and stage basis, each with its evidence (phase 2
+# fills them from the Budget Appendix; scripts/appendix_attributes.py). stage_basis 'enacted' serves the Enacted,
+# House and Senate stages (FY N from the FY N+2 Appendix's actuals where it exists, else FY N's own); 'request'
+# is what the President's request proposed (FY N's own Appendix), recorded only where it differs from the enacted
+# value or there is none (a proposed-only account). A 'mixed' account has both discretionary and mandatory budget
+# authority in the year: the mandatory part of its headline is a mandatory_portion component.
 ATTRIBUTES = ["budget_class", "budget_subfunction", "fund_type", "account_id_code"]
-BUDGET_CLASS = ["discretionary", "mandatory"]
+BUDGET_CLASS = ["discretionary", "mandatory", "mixed"]
 ATTRIBUTE_FUND_TYPE = ["general", "trust", "special", "revolving"]
+STAGE_BASES = ["enacted", "request"]
 ATTRIBUTE_COLUMNS = ["account_attribute_id", "canonical_account_id", "fiscal_year", "attribute", "value",
-                     "source_document_id", "source_location", "evidence"]
+                     "source_document_id", "source_location", "evidence", "stage_basis"]
 ATTRIBUTE_ID = re.compile(r"AAT-(?:LHHS-)?\d{4}")
 SUBFUNCTION = re.compile(r"\d{3}")
 # the Budget Appendix's account identification code: agency (3) - account (4) - transmittal (1) - fund (1) -
 # subfunction (3), e.g. 075-0849-0-1-550
 ACCOUNT_ID_CODE = re.compile(r"(\d{3})-(\d{4})-(\d)-(\d)-(\d{3})")
+# the code's fund digit -> fund_type (OMB Circular A-11: 1 general fund, 2 special fund, 3 public enterprise and 4
+# intragovernmental revolving fund, 7 trust fund, 8 trust revolving fund)
+FUND_DIGIT = {"1": "general", "2": "special", "3": "revolving", "4": "revolving", "7": "trust", "8": "trust"}
 FIRST_FY, LAST_FY = 2017, 2027
 
 
@@ -191,7 +203,7 @@ def attribute_errors(rows, accounts, documents):
     for r in rows:
         rid = r.get("account_attribute_id") or "?"
         for k in ATTRIBUTE_COLUMNS:
-            if _blank(r.get(k)) and k != "source_location":
+            if _blank(r.get(k)) and k not in ("source_location", "stage_basis"):
                 errs.append(f"{rid}: {k} is blank (every value carries its evidence)")
         if not ATTRIBUTE_ID.fullmatch(rid):
             errs.append(f"{rid}: account_attribute_id is not AAT-NNNN or AAT-LHHS-NNNN")
@@ -212,20 +224,29 @@ def attribute_errors(rows, accounts, documents):
                 errs.append(f"{rid}: {e}")
         if r.get("source_document_id") and r["source_document_id"] not in documents:
             errs.append(f"{rid}: unknown source document {r['source_document_id']}")
-        key = (r.get("canonical_account_id"), fy, a)
+        basis = r.get("stage_basis")
+        if basis not in STAGE_BASES:
+            errs.append(f"{rid}: stage_basis {basis!r} (allowed: {STAGE_BASES})")
+        key = (r.get("canonical_account_id"), fy, a, basis)
         if key in facts:
-            errs.append(f"{rid}: {key[0]} FY{fy} already has a {a} ({facts[key]}) -- one value per account-year")
+            errs.append(f"{rid}: {key[0]} FY{fy} already has a {basis} {a} ({facts[key]}) -- one value per "
+                        "account-year and stage basis")
         facts[key] = rid
     # the subfunction is the code's last three digits wherever both are on file
-    vals = {(r.get("canonical_account_id"), _int(r.get("fiscal_year")), r.get("attribute")): r for r in rows}
-    for (acc, fy, a), r in vals.items():
+    vals = {(r.get("canonical_account_id"), _int(r.get("fiscal_year")), r.get("attribute"), r.get("stage_basis")): r
+            for r in rows}
+    for (acc, fy, a, basis), r in vals.items():
         if a != "account_id_code":
             continue
         m = ACCOUNT_ID_CODE.fullmatch(r.get("value") or "")
-        sub = vals.get((acc, fy, "budget_subfunction"))
+        sub = vals.get((acc, fy, "budget_subfunction", basis))
         if m and sub and sub.get("value") != m.group(5):
             errs.append(f"{sub['account_attribute_id']}: budget_subfunction {sub.get('value')} differs from "
                         f"{r['account_attribute_id']}'s account_id_code {r['value']}")
+        ft = vals.get((acc, fy, "fund_type", basis))
+        if m and ft and FUND_DIGIT.get(m.group(4)) != ft.get("value"):
+            errs.append(f"{ft['account_attribute_id']}: fund_type {ft.get('value')} differs from "
+                        f"{r['account_attribute_id']}'s account_id_code {r['value']} (fund digit {m.group(4)})")
     return errs
 
 
@@ -273,7 +294,8 @@ PRINTED_VIEW = {
     "program_level_available_this_fiscal_year": "program_level_when_available",
     "excluding_emergencies": "excluding_emergencies",
 }
-NOT_CHECKED_YET = {"discretionary": "needs every account's budget_class (phase 2)"}
+# 'discretionary' (phase 2) is computed from each account's budget_class: discretionary_adjustment.
+NOT_CHECKED_YET = {}
 
 
 def _selected(c, selectors):
@@ -313,6 +335,36 @@ def view_adjustment(components, view):
 
 def view_amount(headline_amount, components, view):
     return headline_amount + view_adjustment(components, view)[0]
+
+
+def discretionary_adjustment(headline_amount, components, budget_class):
+    """What the discretionary view changes on top of one account's headline, from its budget_class for the year and
+    stage: -> (delta, [the components it used]), or None when the class is not on file. A discretionary account
+    counts its headline; a mandatory one counts nothing (its whole amount as the bill appropriates it -- advances
+    when enacted, as the agency and title totals print it -- comes off); a mixed one counts its headline less the
+    mandatory_portion components inside it."""
+    if budget_class == "discretionary":
+        return 0, []
+    if budget_class == "mandatory":
+        d, cs = view_adjustment(components, "advances_when_enacted")
+        return -(headline_amount + d), cs
+    if budget_class == "mixed":
+        cs = counted([c for c in components if c["component_type"] == "mandatory_portion" and c["in_headline"] == "TRUE"])
+        return -sum(c["amount"] for c in cs), cs
+    return None
+
+
+def attribute_index(data):
+    return {(r["canonical_account_id"], _int(r["fiscal_year"]), r["attribute"], r["stage_basis"]): r
+            for r in data.get("account_attributes", [])}
+
+
+def attribute_value(rows, account, fiscal_year, attribute, stage):
+    """An account's attribute for a year as a stage sees it (rows: attribute_index): the President's Budget stage
+    takes the request's value where one is on file, every stage the enacted one otherwise. -> the record, or None."""
+    if stage == "President's Budget" and (account, fiscal_year, attribute, "request") in rows:
+        return rows[(account, fiscal_year, attribute, "request")]
+    return rows.get((account, fiscal_year, attribute, "enacted"))
 
 
 def components_by_observation(data):

@@ -353,7 +353,8 @@ TABS = [
     ("Account Attribute", "account_attribute", [
         ("account_attribute_id", to_text, True), ("canonical_account_id", to_text, True),
         ("fiscal_year", to_int, True), ("attribute", to_text, True), ("value", to_text, True),
-        ("source_document_id", to_text, True), ("source_location", to_text, False), ("evidence", to_text, True)]),
+        ("source_document_id", to_text, True), ("source_location", to_text, False), ("evidence", to_text, True),
+        ("stage_basis", to_text, False)]),
 ]
 
 # Tabs a workbook may not have yet (loaded as empty; the load report says so).
@@ -372,7 +373,11 @@ OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                     "Source Document": {"notes"},
                     # v37: how an Enacted year was enacted (vehicle bill, division, date, funding type)
                     "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
-                                              "draft", "not_reported"}}
+                                              "draft", "not_reported"},
+                    # accounting views phase 2: which stages an attribute row serves (blank -> 'enacted')
+                    "Account Attribute": {"stage_basis"}}
+# The value a blank optional cell loads as (None unless listed).
+COLUMN_DEFAULTS = {("Account Attribute", "stage_basis"): "enacted"}
 # Columns a workbook may still carry but the store no longer has: read past,
 # never loaded. Account.effective_start / effective_end (removed in v33): each
 # value was the first year of data on file, not a real start or end date --
@@ -438,7 +443,7 @@ def convert_rows(tabs, report):
                 if blank(v):
                     if required:
                         raise LoadError(f"{tab} row {rownum}: {col} is blank")
-                    rec[col] = None
+                    rec[col] = COLUMN_DEFAULTS.get((tab, col))
                     continue
                 try:
                     rec[col] = conv(v)

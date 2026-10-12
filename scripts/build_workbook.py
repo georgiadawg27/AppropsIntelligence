@@ -455,9 +455,10 @@ for r_i in range(2, n + 1):
 # ---------------------------------------------------------------------------
 ws = wb.create_sheet("Account Attribute")
 aa_rows = data.get("account_attributes", [])
-write_rows(ws, _AC.ATTRIBUTE_COLUMNS, aa_rows, [18, 26, 12, 20, 20, 22, 30, 60])
+write_rows(ws, _AC.ATTRIBUTE_COLUMNS, aa_rows, [18, 26, 12, 20, 20, 22, 30, 60, 12])
 n = max(len(aa_rows) + 1, 2)
 add_dropdown(ws, "D", _AC.ATTRIBUTES, 2, n)
+add_dropdown(ws, "I", _AC.STAGE_BASES, 2, n)
 
 # ---------------------------------------------------------------------------
 # Read Me
@@ -469,6 +470,17 @@ rows = [
     ("Appropriations Pilot \u2014 CJS Title III (Science) + Labor-HHS Title II (HHS), Loaded Against the Schema", TITLE_FONT),
     ("Built from your filled-in CJS_Title_III_Science_Pilot_Schema_Loaded workbook. Five tabs, matching the Data "
      "Dictionary in the scoping doc.", SUBTITLE_FONT),
+    ("", BODY_FONT),
+    ("Accounting views, phase 2: account attributes (2026-10-12)", BOLD_NOTE),
+    (f"\u2022 Account Attribute tab filled from the Budget Appendix Program and Financing schedules, FY2017\u2013FY2027 "
+     f"({len(data.get('account_attributes', []))} rows, each citing its Appendix chapter and page): account_id_code, "
+     "budget_subfunction, fund_type (from the code's fund digit) and budget_class (lines 4000 / 4090: discretionary, "
+     "mandatory, or mixed when both carry budget authority). stage_basis 'enacted' rows are read from the FY N+2 "
+     "Appendix's actual column (FY2026: the FY2027 Appendix's estimate; FY2027: its own Appendix) and serve the "
+     "Enacted, House and Senate stages; 'request' rows are read from FY N's own Appendix and are kept only where "
+     "the request differs. Accounts with no schedule found are left empty with a note "
+     "(reference/review/accounting/appendix_coverage.csv). The discretionary view is now computed for agency and "
+     "title totals. No headline figure changed.", NOTE_FONT),
     ("", BODY_FONT),
     ("Bill text parser fix (2026-10-11)", BOLD_NOTE),
     ("• A paragraph of bill or law text now runs to the next heading or section, never stopping after an "

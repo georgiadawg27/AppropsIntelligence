@@ -1,5 +1,5 @@
 """
-Accounting views, phase 1: the component and attribute schema (accounting.py), the build and the loader
+Accounting views, phases 1 and 2: the component and attribute schema (accounting.py), the build and the loader
 refusing bad records, the tagging rules (scripts/tag_components.py), the measure_reconcile check
 (scripts/measure_reconcile.py) and the text check's like-with-like step. Offline: small inline fixtures and
 the committed data/staged.json.
@@ -51,7 +51,7 @@ def errors(*components, observations=None):
 def attr(aid="AAT-LHHS-0001", attribute="budget_class", value="discretionary", fy=2024, **kw):
     r = {"account_attribute_id": aid, "canonical_account_id": "ACC-X", "fiscal_year": fy, "attribute": attribute,
          "value": value, "source_document_id": "SRC-A", "source_location": "p.12",
-         "evidence": "Budget Appendix, HHS chapter: the account's schedule"}
+         "evidence": "Budget Appendix, HHS chapter: the account's schedule", "stage_basis": "enacted"}
     r.update(kw)
     return r
 
@@ -161,6 +161,44 @@ class AttributeSchema(unittest.TestCase):
         self.assertTrue(self.check(attr(), attr(aid="AAT-LHHS-0002", value="mandatory")))
         self.assertEqual(self.check(attr(), attr(aid="AAT-LHHS-0002", fy=2025)), [])
 
+    def test_stage_basis(self):
+        # an enacted and a request value for the same account-year are two records; anything else is refused
+        self.assertEqual(self.check(attr(), attr(aid="AAT-LHHS-0002", value="mixed", stage_basis="request")), [])
+        self.assertTrue(self.check(attr(stage_basis="house")))
+        self.assertTrue(self.check(attr(stage_basis="")))
+
+    def test_fund_type_is_the_codes_fund_digit(self):
+        code = attr(attribute="account_id_code", value="075-8175-0-7-551")
+        self.assertEqual(self.check(code, attr(aid="AAT-LHHS-0002", attribute="fund_type", value="trust")), [])
+        self.assertTrue(self.check(code, attr(aid="AAT-LHHS-0002", attribute="fund_type", value="general")))
+
+    def test_mixed_is_a_class(self):
+        self.assertEqual(self.check(attr(value="mixed")), [])
+
+    def test_the_president_s_budget_takes_the_request_value_where_there_is_one(self):
+        rows = AC.attribute_index({"account_attributes": [
+            attr(), attr(aid="AAT-LHHS-0002", value="mandatory", stage_basis="request")]})
+        self.assertEqual(AC.attribute_value(rows, "ACC-X", 2024, "budget_class", "President's Budget")["value"],
+                         "mandatory")
+        self.assertEqual(AC.attribute_value(rows, "ACC-X", 2024, "budget_class", "House Reported")["value"],
+                         "discretionary")
+        self.assertIsNone(AC.attribute_value(rows, "ACC-X", 2025, "budget_class", "Enacted"))
+
+    def test_committed_attributes_are_up_to_date(self):
+        import appendix_attributes as A
+        data = copy.deepcopy(STAGED)
+        recs, notes, _ = A.build(data, json.loads(A.EXTRACT.read_text()), A.read_map())
+        recs, retired = A.assign_ids(data, recs)
+        self.assertEqual(recs, STAGED["account_attributes"])
+        self.assertEqual(notes, STAGED["account_attribute_notes"])
+        self.assertEqual(retired, STAGED.get("account_attributes_retired", []))
+        self.assertEqual(AC.attribute_errors(recs, {a["canonical_account_id"] for a in STAGED["accounts"]},
+                                             {d["document_id"] for d in STAGED["source_docs"]}), [])
+
+    def test_totals_carry_no_attributes_of_their_own(self):
+        totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")}
+        self.assertFalse([r for r in STAGED["account_attributes"] if r["canonical_account_id"] in totals])
+
     def test_subfunction_is_the_codes_last_three_digits(self):
         code = attr(attribute="account_id_code", value="075-0849-0-1-550")
         self.assertEqual(self.check(code, attr(aid="AAT-LHHS-0002", attribute="budget_subfunction", value="550")), [])
@@ -168,6 +206,16 @@ class AttributeSchema(unittest.TestCase):
 
 
 class Views(unittest.TestCase):
+    def test_discretionary_adjustment(self):
+        cs = [comp(t="advance_enacted", amount=300, in_headline="FALSE"),
+              comp(cid="CMP-LHHS-9002", t="mandatory_portion", amount=200, in_headline="TRUE")]
+        self.assertEqual(AC.discretionary_adjustment(1000, cs, "discretionary"), (0, []))
+        # a mandatory account comes off whole, as the bill appropriates it (advances when enacted)
+        self.assertEqual(AC.discretionary_adjustment(1000, cs, "mandatory")[0], -1300)
+        # a mixed account: only its mandatory_portion comes off
+        self.assertEqual(AC.discretionary_adjustment(1000, cs, "mixed")[0], -200)
+        self.assertIsNone(AC.discretionary_adjustment(1000, cs, None))
+
     def test_base_and_views(self):
         cs = [comp(t="advance_enacted", amount=300, in_headline="TRUE"),
               comp(cid="CMP-LHHS-9002", t="advance_available", amount=250, in_headline="FALSE"),
@@ -382,6 +430,13 @@ class MeasureReconcile(unittest.TestCase):
         self.assertFalse([r for r in records if r["validation_id"].startswith("VAL-MRV-") and r["result"] == "flag"])
         self.assertNotIn("account_not_held", causes)
         self.assertTrue(any("account_not_held" in o["detail"] for o in outcomes if o["result"] == "not checked"))
+
+    def test_every_printed_discretionary_total_is_checked(self):
+        _, outcomes = MR.run(STAGED)
+        disc = [o for o in outcomes if o.get("view") == "discretionary"]
+        self.assertEqual(len(disc), 26)
+        self.assertEqual([o for o in disc if o["result"] == "not checked"], [])
+        self.assertEqual(sum(o["result"] == "pass" for o in disc), 23)
 
     def test_committed_records_are_up_to_date(self):
         records, _ = MR.run(STAGED)

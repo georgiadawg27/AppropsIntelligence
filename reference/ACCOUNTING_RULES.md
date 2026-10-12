@@ -1,4 +1,4 @@
-# Accounting rules (accounting views, phase 1)
+# Accounting rules (accounting views, phases 1 and 2)
 
 Every figure keeps its **As printed** headline: the Appropriations Observation with no component, budget
 authority, exactly as its source prints it. Nothing here changes a figure. Phase 1 adds the records that later
@@ -11,17 +11,44 @@ Code: `accounting.py` (schema, checks, views), `scripts/tag_components.py` (writ
 
 ### Account Attribute (`account_attributes` in data/staged.json)
 
-One value per account, fiscal year and attribute, each with its evidence (source document, location and the
-words that show it). Filled in phase 2 from the Budget Appendix; empty now.
+One value per account, fiscal year, attribute and `stage_basis`, each with its evidence (source document, location
+and the words that show it). Filled in phase 2 from the Budget Appendix (`scripts/appendix_attributes.py`).
 
 | attribute | values |
 |---|---|
-| `budget_class` | `discretionary`, `mandatory` |
+| `budget_class` | `discretionary`, `mandatory`, `mixed` (both in the same year; the split is carried by `mandatory_portion` components) |
 | `budget_subfunction` | three digits (e.g. `550`); equal to the last three digits of the account's `account_id_code` |
 | `fund_type` | `general`, `trust`, `special`, `revolving` |
 | `account_id_code` | the Budget Appendix identification code, e.g. `075-0849-0-1-550` |
 
-IDs: `AAT-NNNN` (CJS), `AAT-LHHS-NNNN` (Labor-HHS). FY2017 to FY2027.
+IDs: `AAT-NNNN` (CJS), `AAT-LHHS-NNNN` (Labor-HHS). FY2017 to FY2027. A record no longer produced is retired
+(`account_attributes_retired`).
+
+**Where each value comes from (phase 2).** Each account maps to its Appendix account (and, where the Appendix
+account holds several of ours, a program activity line) in `reference/review/accounting/appendix_map.csv`. The
+Program and Financing schedules of the HHS, Commerce, Justice, NASA, NSF and EOP chapters, FY2017 to FY2027, are
+read from the text layer (no page images) into `appendix_schedules.json`.
+
+- `stage_basis` `enacted` serves the Enacted, House and Senate stages: FY N from the FY N+2 Appendix's actual
+  column. FY2026 (no FY2028 volume yet) from the FY2027 Appendix's 2026 est. column, the enacted level. FY2027 from
+  its own Appendix: the code, fund and subfunction from its schedule, the class from its 2026 est. column (the
+  2027 column is the request).
+- `stage_basis` `request` serves the President's Budget: FY N from FY N's own Appendix, the request's own account
+  first (a proposed or moved account, e.g. the Administration for a Healthy America). It is recorded only where it
+  differs from the enacted value; the President's Budget takes the enacted value otherwise
+  (`accounting.attribute_value`). An activity the request leaves unfunded in an unchanged account keeps the
+  account's code; its class follows enacted.
+- `account_id_code` is the schedule's identification code; `budget_subfunction` its last three digits (`999`: the
+  account spans several subfunctions); `fund_type` its fund digit (1 general, 2 special, 3/4 revolving, 7/8
+  trust).
+- `budget_class` from lines 4000 (discretionary budget authority, gross) and 4090 (mandatory): both nonzero is
+  `mixed`. With neither printed (a rescission-only account), the budget-authority lines 11xx/13xx/15xx/17xx
+  (discretionary) and 12xx/14xx/16xx/18xx (mandatory). Where a mixed schedule labels its mandatory program
+  activities ('(Mandatory)', 'ACA'), the class is that of the activity lines the account maps to. Where it does not
+  (CDC, NIH, SAMHSA), the class stays `mixed`, and the evidence says the schedule does not split by activity.
+- Totals and part lines carry no attributes; an account with no schedule found is left empty with a note
+  (`account_attribute_notes`, `reference/review/accounting/appendix_coverage.csv`). Nothing is guessed. The
+  defense split stays on the `defense_portion` lines; no subfunction implies one.
 
 ### Observation Component (`observation_components`)
 
@@ -41,12 +68,14 @@ source, location and the quoted phrase that justifies it.
 | `defense_portion` | the defense (050) part of an account |
 | `other_law` | an amount from another law printed inside the figure |
 | `earmark` | Community Project Funding / Congressionally Directed Spending |
+| `mandatory_portion` | the mandatory part of a mixed account printed inside its headline (phase 2): PSSF's section 436 amount, the VICTF claims line, EEOICP |
 
 Amounts are signed as their effect on budget authority: `rescission`, `transfer_out` and `fees_offsets` are
 negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (Labor-HHS). An ID is never
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
 stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text`,
-`carried_forward` or `cr_anomaly`. `within_component_id` names the component this one is part of (HCFAC's cap
+`carried_forward`, `cr_anomaly`, `appendix_text` (the request's proposed language in the Budget Appendix) or
+`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). `within_component_id` names the component this one is part of (HCFAC's cap
 adjustment inside the amount transferred from the trust funds): the base subtracts only the outer one. Views add
 top-level components only; a nested component is used only when a view splits its parent (picks it without the
 parent, as a view leaving out the cap adjustment but keeping the trust-fund amount would), so no view ever counts a
@@ -72,7 +101,11 @@ loader (`approps_store.load`) refuses it.
 | excluding earmarks | `earmark` | nothing |
 | nondefense | `defense_portion` | nothing |
 
-Discretionary needs each account's `budget_class` (phase 2) and is not computed yet.
+**Discretionary** (phase 2) is computed for agency and title totals from each account's `budget_class` for the
+year and stage: a discretionary account counts its headline; a mandatory account counts nothing (its amount as the
+bill appropriates it, advances when enacted, comes off); a mixed account counts its headline less its
+`mandatory_portion` components (`accounting.discretionary_adjustment`). An account with no class on file is
+counted as printed and named in the check.
 
 ## Defaults (the owner's decisions)
 
@@ -108,7 +141,15 @@ supplemental and emergency lines, defense lines (NSF), the Medicaid advance line
 (`other_law`), and the CJS FY2027 transfers and offsetting collections (USPTO, NOAA ORF).
 
 **Table lines**: the Vaccine Injury Compensation Trust Fund's "HRSA Administrative expenses" line, read from the
-headline's own table (`reference/review/accounting/table_lines.csv`), is its `trust_fund_limitation`.
+headline's own table (`reference/review/accounting/table_lines.csv`), is its `trust_fund_limitation`; its
+"Post-FY 1988 Claims" line (phase 2) is its `mandatory_portion`.
+
+**Mandatory portions** (phase 2, every year; `reference/review/accounting/mandatory_lines.csv`, written by
+`mandatory_lines.py`): Promoting Safe and Stable Families' section 436 amount, read from the bill or law text
+("For carrying out ... section 436 of the Social Security Act, $X", `auto_text`) and, for the President's Budget,
+from the request's proposed language in FY N's Appendix (`appendix_text`); and EEOICP's whole line, where the
+headline's own report states the program's funds are mandatory (`report_text`). FY2025 Enacted continues FY2024's
+under the CR. Each is a `mandatory_portion` inside the headline.
 
 **Prevention and Public Health Fund** (Labor-HHS FY2024-FY2026): each bill's sec. 222 transfers the Fund "to the
 accounts specified, in the amounts specified" under the heading Prevention and Public Health Fund in the report or
@@ -169,13 +210,16 @@ of-which inside, an "in addition" amount beside) and the record's note says so.
    agency total's view adds what the view changes on each of its accounts. A difference is a `flag`, pending
    review: the tagging may be incomplete, and the figure is not in question. Differences are grouped by cause,
    with one review item per cause (`VAL-MRC-<cause>`, listing every cell) and an info record on each printed view
-   line naming its cause:
+   line naming its cause. A printed `discretionary` agency or title total (phase 2) is checked in every cell
+   against the discretionary view above:
 
    | cause | meaning |
    |---|---|
    | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA); none since phase 1b |
    | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (none since phase 1b) |
    | `cr_anomaly_dropped` | a component a P.L. 119-4 anomaly changed is missing from FY2025 and explains the difference exactly |
+   | `mandatory_advance_untagged` | (discretionary) a mandatory account's headline is printed as available in this bill and its advances are not tagged outside the pilot, so the advance the total counts is not taken off |
+   | `request_stage_class` | (discretionary) a President's Budget total where an account's request-stage class differs from how the report's total treats it |
    | `unexplained` | anything else |
 
    `account_not_held` (the money is in an account we don't hold: ACL program level) is not a failure; the view
