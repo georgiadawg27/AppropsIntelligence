@@ -34,6 +34,11 @@ Start here instead of the long thread. The rules themselves are in `reference/AC
   `scripts/check_legislative_text.py --write`, `scripts/build_workbook.py`, `reference/build_accounts.py`; then the
   workbook fixture (`scripts/workbook_digest.py`, `data_sha256`, the note), `reference/review/coverage.py`, commit,
   `export_static.py`, `scripts/grid_counts.py > tests/fixtures/grid_counts.json`.
+- Don't commit `docs/Approps_Pilot_Schema_Loaded.xlsx`: only CI's export job on main writes it
+  (`export_static.py --publish-workbook`). `export_static.py` without the flag leaves it alone, and the Tests
+  workflow fails a pull request that changes it. Its content is held to `tests/fixtures/workbook_values.json`.
+- Install with `pip install -r requirements.lock` (Python 3.11.17). The build forces openpyxl's ElementTree
+  writer, so a machine with lxml builds the same bytes.
 - Changing the parser section of `legislative_text.py` changes the parser version, so every committed text file
   must be reparsed (`scripts/fetch_legislative_text.py --reparse`, from the gitignored download cache).
 - Don't commit the scoping doc or the NTU workbook, and don't copy their contents into the repo.

@@ -1,7 +1,8 @@
 # Regenerate the static site (docs/, served by GitHub Pages) and reference/accounts.json
 # whenever the canonical data (data/staged.json) -- or anything the export depends on --
 # is committed. The export builds the workbook from data/staged.json
-# (scripts/build_workbook.py) and publishes it as docs/Approps_Pilot_Schema_Loaded.xlsx.
+# (scripts/build_workbook.py) and publishes it as docs/Approps_Pilot_Schema_Loaded.xlsx; this job is the
+# only writer of that file (pull requests don't commit it).
 # The export is deterministic, so a run that changes nothing commits nothing.
 # Commits made with GITHUB_TOKEN don't trigger workflows, so this can't loop.
 name: Export static site
@@ -39,18 +40,22 @@ jobs:
 
   export:
     needs: tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0          # the data's commit date goes into the page
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Install export dependencies
-        run: pip install openpyxl
-      - name: Build the workbook from data/staged.json and export docs/
-        run: python export_static.py
+          python-version: "3.11.17"
+      - name: Install export dependencies (the pinned versions the tests ran on)
+        run: pip install -r requirements.lock
+      - name: Build the workbook from data/staged.json and export docs/, with the Download workbook
+        # the only writer of docs/Approps_Pilot_Schema_Loaded.xlsx (pull requests don't commit it)
+        run: python export_static.py --publish-workbook
+      - name: The Download workbook holds the data's values and formulas
+        # every cell's value and formula on every sheet, against the digest the data's commit carries
+        run: python scripts/workbook_digest.py docs/Approps_Pilot_Schema_Loaded.xlsx --compare tests/fixtures/workbook_values.json
       - name: Regenerate reference/accounts.json from the same build
         run: python reference/build_accounts.py
       - name: Commit docs/ and reference/accounts.json if they changed

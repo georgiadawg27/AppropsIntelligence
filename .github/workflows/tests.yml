@@ -10,6 +10,9 @@
 #               uploads it as an artifact, then runs the store, ingest, extraction and build tests
 #               (every module but the three below)
 #   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node)
+# The toolchain is pinned: ubuntu-24.04, Python 3.11.17, requirements.lock (exact package versions) and
+# an exact LibreOffice build. A pull request doesn't commit docs/Approps_Pilot_Schema_Loaded.xlsx (the
+# `changes` job fails if it does): only export-static.yml on main writes it.
 # A change that touches only the page (web/, docs/, screenshots/, the three page test
 # modules, Markdown) can't affect the data tests, so `data` skips its steps for it; a change
 # under data/ or scripts/ is not page-only, so it runs them. The
@@ -33,7 +36,7 @@ permissions:
 
 jobs:
   changes:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       data: ${{ steps.paths.outputs.data }}
     steps:
@@ -56,6 +59,12 @@ jobs:
           fi
           changed=$(git diff --name-only "$(git merge-base "$base" HEAD)" HEAD)
           echo "$changed"
+          # one builder: only the export job on main (export-static.yml) writes the Download workbook, so a
+          # pull request never commits it; its content is checked against the data instead (test_static.py)
+          if [ "$EVENT" = "pull_request" ] && echo "$changed" | grep -qx 'docs/Approps_Pilot_Schema_Loaded.xlsx'; then
+            echo "::error file=docs/Approps_Pilot_Schema_Loaded.xlsx::a pull request doesn't commit the Download workbook; CI's export job on main writes it. Restore it: git checkout origin/main -- docs/Approps_Pilot_Schema_Loaded.xlsx"
+            exit 1
+          fi
           page_only='^(web/|docs/|screenshots/|tests/test_(web|compare|static)\.py$|.*\.md$)'
           if [ -n "$changed" ] && ! echo "$changed" | grep -Eqv "$page_only"; then
             echo "data=false" >> "$GITHUB_OUTPUT"; echo "page-only change -- the data tests are skipped"
@@ -65,7 +74,7 @@ jobs:
 
   data:
     needs: changes
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
       - name: Page-only change
@@ -78,13 +87,14 @@ jobs:
       - uses: actions/setup-python@v5
         if: needs.changes.outputs.data == 'true'
         with:
-          python-version: "3.11"
+          python-version: "3.11.17"    # .python-version; the README notes the pinned toolchain
           cache: pip
+          cache-dependency-path: requirements.lock
       - name: Install dependencies
         if: needs.changes.outputs.data == 'true'
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
-        run: pip install -r requirements.txt pytest pytest-xdist
+        run: pip install -r requirements.lock
       - name: Build the workbook from data/staged.json
         if: needs.changes.outputs.data == 'true'
         # the script runs its own checks first (allowed values, broken references, duplicate IDs,
@@ -118,11 +128,22 @@ jobs:
         run: |
           python scripts/tag_components.py --ci
           python scripts/measure_reconcile.py --ci
-      - name: Install LibreOffice (headless recalculation)
+      - name: Install LibreOffice (headless recalculation), pinned
         if: needs.changes.outputs.data == 'true'
+        # exact versions (the README notes them): a different LibreOffice could recalculate differently, so
+        # the install fails rather than take another one. When Ubuntu replaces this build, update the pins.
+        env:
+          LIBREOFFICE: "4:24.2.7-0ubuntu0.24.04.6"
+          LIBREOFFICE_VERSION: "LibreOffice 24.2.7.2"
+          OPENPYXL_DEB: "3.1.2+dfsg-6"
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q --no-install-recommends libreoffice-calc python3-uno python3-openpyxl
+          sudo apt-get install -y -q --no-install-recommends \
+            "libreoffice-calc=$LIBREOFFICE" "libreoffice-core=$LIBREOFFICE" "libreoffice-common=$LIBREOFFICE" \
+            "python3-uno=$LIBREOFFICE" "python3-openpyxl=$OPENPYXL_DEB"
+          v=$(soffice --version | tee -a "$GITHUB_STEP_SUMMARY")
+          echo "$v"
+          case "$v" in "$LIBREOFFICE_VERSION "*) ;; *) echo "::error::expected $LIBREOFFICE_VERSION, got $v"; exit 1;; esac
       - name: Recalculate in LibreOffice; fail on any formula error
         if: needs.changes.outputs.data == 'true'
         # the system python3 is the one with LibreOffice's uno bridge
@@ -177,7 +198,7 @@ jobs:
           --ignore=tests/test_web.py --ignore=tests/test_compare.py --ignore=tests/test_static.py
 
   browser:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
@@ -187,13 +208,14 @@ jobs:
           fetch-depth: 0          # the static export reads the workbook's commit date
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.11.17"    # .python-version; the README notes the pinned toolchain
           cache: pip
+          cache-dependency-path: requirements.lock
       - uses: actions/setup-node@v4     # tests/test_static.py: match.js parity under node
         with:
           node-version: "22"
       - name: Install dependencies
-        run: pip install -r requirements.txt pytest pytest-xdist
+        run: pip install -r requirements.lock
       - name: Browser cache key
         id: pw
         run: echo "key=pw-chromium-${{ runner.os }}-$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')" >> "$GITHUB_OUTPUT"
@@ -235,7 +257,7 @@ jobs:
   test:
     needs: [changes, data, browser]
     if: always()
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Both jobs passed
         env:

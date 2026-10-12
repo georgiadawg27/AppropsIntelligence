@@ -192,8 +192,10 @@ class DownloadWorkbook(unittest.TestCase):
                 files.append(out.read_bytes())
             self.assertNotEqual((Path(d) / "build1.xlsx").read_bytes(), (Path(d) / "build2.xlsx").read_bytes(),
                                 "openpyxl stamps the build time -- the publish step is what makes it stable")
+            # the determinism check: two builds in the same environment are the same file. docs/'s copy is
+            # written only by CI's export job on main; tests/test_static.py Export.test_committed_docs_are_current
+            # holds its content (every cell's value and formula) to the data
             self.assertEqual(files[0], files[1])
-            self.assertEqual(files[0], (DOCS / "Approps_Pilot_Schema_Loaded.xlsx").read_bytes())
 
 
 class ReviewList(unittest.TestCase):

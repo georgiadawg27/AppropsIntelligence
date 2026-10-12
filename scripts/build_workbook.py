@@ -1,5 +1,13 @@
 import json
-import openpyxl
+import os
+
+# openpyxl writes its XML with lxml when lxml happens to be installed and with the standard library's
+# ElementTree otherwise, and the two give different bytes for the same workbook (attribute and namespace
+# placement, "<x/>" vs "<x />"). lxml is no dependency of ours, but some machines have it, so the build
+# always uses ElementTree: the same data gives the same file wherever it is built.
+os.environ["OPENPYXL_LXML"] = "False"
+
+import openpyxl  # noqa: E402  (after the switch above)
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter

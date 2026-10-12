@@ -1,0 +1,35 @@
+# Exact versions of everything CI installs (requirements.txt plus pytest and pytest-xdist), for Python 3.11.17 on
+# ubuntu-24.04. CI installs this file, never the open ranges in requirements.txt, so the workbook build and the
+# tests run on the same packages every time. Regenerate after changing requirements.txt:
+#   uv pip compile requirements.txt <(printf "pytest\npytest-xdist\n") --python-version 3.11 \
+#     --python-platform x86_64-manylinux_2_39 --no-header --no-annotate -o requirements.lock
+# (then put this comment back). The workbook build itself uses only openpyxl and et-xmlfile.
+annotated-types==0.8.0
+anthropic==1.13.0
+anyio==4.15.1
+docstring-parser==0.18.0
+et-xmlfile==2.0.0
+execnet==2.1.2
+greenlet==3.5.6
+h11==0.16.0
+httpcore2==2.13.1
+httpx2==2.13.1
+idna==3.20
+iniconfig==2.3.1
+jiter==0.17.0
+openpyxl==3.1.5
+packaging==26.3
+playwright==1.63.0
+pluggy==1.6.0
+pydantic==2.14.1
+pydantic-core==2.50.1
+pyee==13.0.1
+pygments==2.21.0
+pymupdf==1.28.2
+pytest==9.1.1
+pytest-xdist==3.8.0
+python-dotenv==1.2.4
+sniffio==1.3.1
+truststore==0.10.4
+typing-extensions==4.16.0
+typing-inspection==0.4.4

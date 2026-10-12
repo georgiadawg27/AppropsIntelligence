@@ -9,6 +9,7 @@ tests need playwright + chromium, as tests/test_web.py.
 """
 
 import functools
+import hashlib
 import http.server
 import json
 import multiprocessing
@@ -25,10 +26,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tests"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 import approps_store as S  # noqa: E402
 import approps_web as W  # noqa: E402
 import export_static as E  # noqa: E402
+import workbook_digest as WD  # noqa: E402
 from test_web import WORKBOOK, chromium_path, sync_playwright  # noqa: E402
 
 NODE = shutil.which("node")
@@ -174,13 +177,21 @@ class Export(StaticTest):
             self.assertEqual(E.committed_date(WORKBOOK), "2026-09-25T20:55:20+00:00")
 
     def test_committed_docs_are_current(self):
-        # docs/ is what the export makes from the committed workbook and web/
-        # (the Actions workflow regenerates it on push; this catches a stale copy)
+        # docs/ is what the export makes from the committed data and web/ (the Actions workflow
+        # regenerates it on push; this catches a stale copy): every file byte for byte, except the
+        # Download workbook. Only CI's export job on main writes that file (pull requests don't commit
+        # it), so here its CONTENT is compared, not its bytes: every cell's value and formula on every
+        # sheet of the export's workbook against tests/fixtures/workbook_values.json, the digest the
+        # data's own commit carries (scripts/workbook_digest.py)
         committed = ROOT / "docs"
         a = {p.relative_to(self.out): p.read_bytes() for p in self.out.rglob("*") if p.is_file()}
         b = {p.relative_to(committed): p.read_bytes() for p in committed.rglob("*") if p.is_file()}
         self.assertEqual(sorted(a), sorted(b))
-        self.assertEqual([k for k in a if a[k] != b[k]], [])
+        self.assertEqual([k for k in a if a[k] != b[k] and k != Path(E.DOWNLOAD)], [])
+        want = json.loads((ROOT / "tests" / "fixtures" / "workbook_values.json").read_text())
+        self.assertEqual(want["data_sha256"], hashlib.sha256(S.STAGED.read_bytes()).hexdigest(),
+                         "tests/fixtures/workbook_values.json is from other data: regenerate it")
+        self.assertEqual(WD.compare(WD.digest(self.out / E.DOWNLOAD), want["sheets"]), [])
 
 
 @unittest.skipUnless(NODE, "node not installed")
