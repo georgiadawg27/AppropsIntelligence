@@ -806,21 +806,21 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-12T03:59:08+00:00",
-  "data_sha256": "b3f90515c7f50e36d5ce5651258ffd0056db40d6a544834290e0f752ff1b93dc",
+  "data_committed": "2026-10-12T08:21:33+00:00",
+  "data_sha256": "dfae1088756ac038cc1c5c2d1f44cc5d29f853383c0abc0169afb27e547bff2d",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
-   "account_attribute": 4303,
+   "account_attribute": 4292,
    "account_relationship": 14,
    "appropriations_observation": 4989,
    "bill_report_reference": 83,
    "component": 29,
    "confirmed_absence": 311,
    "historical_name": 14,
-   "observation_component": 583,
+   "observation_component": 1185,
    "source_document": 151,
-   "validation_record": 20790
+   "validation_record": 21289
   },
   "version": "v38",
   "warnings": [],

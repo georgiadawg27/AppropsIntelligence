@@ -428,6 +428,39 @@ def class_from_marks(got, marks):
     return out, ""
 
 
+def mandatory_years(data):
+    """-> {(account, fy)} where a mandatory_portion component splits the account's money that year."""
+    obs = {o["observation_id"]: o for o in data["observations"]}
+    return {(obs[c["observation_id"]]["canonical_account_id"], int(obs[c["observation_id"]]["fiscal_year"]))
+            for c in data.get("observation_components", []) if c["component_type"] == "mandatory_portion"}
+
+
+def appendix_account(got):
+    """The Appendix account (agency and account, '075-0943') of an attribute reading."""
+    code = (got.get("account_id_code") or ("",))[0]
+    return "-".join(code.split("-")[:2])
+
+
+def carry_from_mark(got, last, split):
+    """A mixed account-year with no D/M mark on any held line carries the class of the account's latest marked year
+    (owner, component backfill), when the Appendix account is the same and no mandatory_portion component splits
+    the year's money; cited to the marked year's table page. -> (got, note)"""
+    if not last:
+        return got, ""
+    mfy, marked = last
+    if split:
+        return got, f"not carried from the FY{mfy} mark: a mandatory_portion component splits this year's money"
+    if appendix_account(got) != appendix_account(marked):
+        return got, (f"not carried from the FY{mfy} mark: the Appendix account differs ({appendix_account(marked)} "
+                     f"then, {appendix_account(got)} now)")
+    cls, loc, ev, doc = marked["budget_class"]
+    out = dict(got)
+    out["budget_class"] = (cls, loc, f"carried from FY{mfy} mark: no held line of this year carries a D or M mark, "
+                           f"and the Appendix account is the same. FY{mfy}: {ev}. This year's Appendix account is "
+                           f"mixed: {got['budget_class'][2]}", doc)
+    return out, f"budget_class carried from FY{mfy} mark"
+
+
 def enacted_volume(fy):
     """Actuals from FY N+2 where printed. FY2026 has no FY2028 volume: its enacted level is the FY2027 volume's
     2026 est. column (FY2026's own volume would print the request). FY2027 falls back to its own volume."""
@@ -453,6 +486,8 @@ def build(data, extract_, rows):
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     marks = read_marks()
     recs, notes, cover = [], [], []
+    mandatory = mandatory_years(data)
+    last_mark = {}                      # (account, basis) -> the latest marked year's class (carry_from_mark)
     for (account, fy), stages in sorted(held(data).items()):
         a = acc[account]
         values = {}
@@ -503,6 +538,11 @@ def build(data, extract_, rows):
                 got, note = fallback
             raw = got.get("budget_class", ("",))[0]
             got, mark_note = class_from_marks(got, marks.get((account, fy, basis)))
+            if raw == "mixed" and got.get("budget_class", ("",))[0] in ("discretionary", "mandatory"):
+                last_mark[(account, basis)] = (fy, got)
+            elif raw == "mixed" and not marks.get((account, fy, basis)):
+                got, carry_note = carry_from_mark(got, last_mark.get((account, basis)), (account, fy) in mandatory)
+                mark_note = "; ".join(x for x in (mark_note, carry_note) if x)
             note = "; ".join(x for x in (note, mark_note) if x)
             values[basis] = (got, note, raw)
         enacted, enacted_raw = values.get("enacted", ({}, "", ""))[0], values.get("enacted", ({}, "", ""))[2]

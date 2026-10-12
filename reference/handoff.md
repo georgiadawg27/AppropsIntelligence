@@ -1,8 +1,39 @@
-# Handoff: accounting views, phase 2 (account attributes from the Budget Appendix), 2026-10-12
+# Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
-## Where things stand
+## Component backfill FY2017-FY2023 (this PR)
+
+- The tagger now auto-tags every Labor-HHS and CJS cell FY2017-FY2023, every stage (`AUTO_CELLS` = the pilot
+  cells plus `BACKFILL` in `scripts/tag_components.py`). 1,185 components (was 583): 602 new, 0 retired, 0 existing
+  changed. New by method: 380 auto_text, 188 table_line (PPHF), 34 appendix_text (advances). Labor-HHS new by FY:
+  2017 85, 2018 76, 2019 86, 2020 58, 2021 85, 2022 84, 2023 87 (plus 10 each FY2024-2026 and 6 FY2027 from the
+  derived advance_available). CJS: 5 earmarks (FY2022 2, FY2023 3); nothing else in the CJS text matched a rule.
+- Nesting: an amount larger than the paragraph's main amount is `separate`, unless it equals the headline (CDC B&F
+  FY2020 House NEF $225M is beside, CMS PM FY2017 House trust fund limitation stays inside).
+- PPHF: `build_pphf_table.py` reads the allocation tables FY2017-FY2023 (House, Senate, and Enacted from the
+  explanatory statements/comparative columns); 332 rows, 0 mismatches against the printed CDC totals. FY2020 has no
+  Senate bill; FY2021 House pages are image-only, so its rows are read from the text layer without the total check.
+  FY2023 House/Senate $160M block grant sits on the CDC-wide line, which has no headline those stages
+  (`member_no_headline`).
+- Advances: `reference/review/accounting/advance_lines.py` reads the Budget Appendix language (request
+  advance_enacted for Child Support and Foster Care; the FY2016 law's advance for FY2017 from the bracketed text).
+  From FY2018 on, advance_available is derived from the FY N-1 law's advance (Child Support, Foster Care,
+  Medicaid). in_headline is set by arithmetic; 11 advance_available defaults are listed in the tagger report. Both
+  ACF items pass (FY2023 Enacted, FY2024 request).
+- Class: a mixed account-year with no D/M mark takes the class of the account's last marked year when the Appendix
+  account is the same and no mandatory_portion exists that year ("carried from FY____ mark"). Mixed: 483 -> 177
+  (enacted LHHS 441 -> 135; request 23 and CJS 19 unchanged); 306 carried, all discretionary.
+- measure_reconcile: base 427 -> 797 pass, 0 fail. Views 115 pass / 3 fail / 241 not checked -> 213 / 25 / 121.
+  Agency totals outside the tagged cells 200 -> 70. Discretionary totals 26: 25 pass (Title II FY2027 request,
+  resolved). Failures are grouped by cause (one VAL-MRC review item each): agency_total_only 3,
+  emergency_lines_not_held 1, evaluation_tap_phrase_untagged 1, headline_superseded 4 (Medicaid FY2021, $1,000),
+  member_no_headline 2, nef_transfer_untagged 4, onc_evaluation_tap_line 2, onc_no_headline 1,
+  pandemic_flu_balances 4, prif_outside_printed_program_level 2, request_stage_class 1.
+- Text check ambiguous 4 -> 4. Page images 0, $0. No headline figure changed.
+
+## Phase 2 (before this PR)
+
 
 - Phases 1 and 1b (#46, #47, #50) added the component records and the `measure_reconcile` check; the parser fix
   (#51) keeps a bill-text paragraph whole. Phase 2 (this PR) fills the account-attribute table and computes the
@@ -93,9 +124,11 @@ Made in this phase (flag any you disagree with):
 
 ## Open items
 
-1. The two ACF Child Support differences (VAL-MRC-MANDATORY-ADVANCE-UNTAGGED: ACF FY2023 Enacted -$1.3B, FY2024
-   President's Budget -$1.4B; the advance is not tagged outside the pilot) stay pending until the FY2017-FY2023
-   component backfill.
+1. The new VAL-MRC cause items above are pending owner review. Untagged phrase candidates (tagger --report): CDC
+   Scientific Services FY2022 S $132M section 241; CDC B&F FY2018 E $240M BSL-4 lab; OS-GDM $6.8M section 241 teen
+   pregnancy evaluations; FY2020 E sec. 237 NEF $225M; OS-GDM FY2023 S $350M general provision. Tagger defaults:
+   OBS-LHHS-1582, -1664 (transfer_in), -3755 (trust_fund_limitation); PB advance 'neither' defaults OBS-LHHS-1933,
+   -2362, -2763.
 2. Subfunction 999 for review (`budget_subfunction` 999, all read as printed): NSF 049-0100 Research and Related
    Activities (FY2017-FY2026 enacted); CDC 075-0943 (13 accounts, FY2017-FY2027 enacted, 143 records); NIH
    075-9915 FY2020 enacted (26 institutes: the FY2020 volume's own code, as its request moved AHRQ into NIH); OS
@@ -106,7 +139,8 @@ Made in this phase (flag any you disagree with):
    account named), ASPR and HRSA/SAMHSA program support in the FY2026/FY2027 requests (split across accounts), NIH
    restructured institutes in the FY2025 request, NSC FY2017/FY2018 requests, and class-only gaps where a year shows
    no budget authority (NEF, CCPF, PHSSEF, ARPA-H FY2022).
-5. Still not checked: 200 agency totals outside the pilot cells, 25 printed scopes with no computed view, 9 in ACL
-   (not held), 7 with no component tagged.
+5. Still not checked: 70 agency totals outside the tagged cells (66 President's Budget, which the text tagger
+   does not read; 4 FY2027 House program levels), 25 printed
+   scopes with no computed view, 25 account_not_held, 1 with no component tagged.
 6. Carried over: four ambiguous text-check figures; 55 untagged pilot phrases; auto-tagging beyond the pilot; the
    FY2024 explanatory statement is not held.
