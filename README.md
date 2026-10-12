@@ -26,8 +26,8 @@ the store and the tests all read a build of `data/staged.json`.
 
 **Pinned toolchain.** CI builds and tests on ubuntu-24.04 with Python 3.11.17 (`.python-version`), the
 exact packages in `requirements.lock` (openpyxl 3.1.5 and et-xmlfile 2.0.0 for the build; everything else
-the tests use), and LibreOffice 24.2.7.2 (Ubuntu package `4:24.2.7-0ubuntu0.24.04.6`, with python3-openpyxl
-`3.1.2+dfsg-6`) for the formula check. Install with `pip install -r requirements.lock`; `requirements.txt`
+the tests use), and LibreOffice 24.2.7.2 (Ubuntu package `4:24.2.7-0ubuntu0.24.04.7`, from Ubuntu's snapshot archive of
+2026-10-12T04:40Z so the pin outlives Ubuntu's next update, with python3-openpyxl `3.1.2+dfsg-6`) for the formula check. Install with `pip install -r requirements.lock`; `requirements.txt`
 lists the open ranges the lock is compiled from.
 
 **The Download workbook is reproducible.** The same data gives the same file: the build always writes its

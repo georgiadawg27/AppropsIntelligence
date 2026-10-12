@@ -131,14 +131,19 @@ jobs:
       - name: Install LibreOffice (headless recalculation), pinned
         if: needs.changes.outputs.data == 'true'
         # exact versions (the README notes them): a different LibreOffice could recalculate differently, so
-        # the install fails rather than take another one. When Ubuntu replaces this build, update the pins.
+        # the install fails rather than take another one. The runner's mirror drops a build as soon as Ubuntu
+        # replaces it, so the pinned build comes from Ubuntu's snapshot archive as of UBUNTU_SNAPSHOT, which
+        # keeps it for good; moving to a newer LibreOffice means changing these values together.
         env:
-          LIBREOFFICE: "4:24.2.7-0ubuntu0.24.04.6"
+          UBUNTU_SNAPSHOT: "20261012T044000Z"
+          LIBREOFFICE: "4:24.2.7-0ubuntu0.24.04.7"
           LIBREOFFICE_VERSION: "LibreOffice 24.2.7.2"
           OPENPYXL_DEB: "3.1.2+dfsg-6"
         run: |
+          for suite in noble noble-updates noble-security; do
+            echo "deb [check-valid-until=no] https://snapshot.ubuntu.com/ubuntu/$UBUNTU_SNAPSHOT $suite main universe"
+          done | sudo tee /etc/apt/sources.list.d/ubuntu-snapshot.list
           sudo apt-get update -q
-          # what the runner's archive offers, so a pin that is gone shows its replacement in the log
           apt-cache policy libreoffice-calc python3-uno python3-openpyxl | grep -E '^\S|Candidate|^ +[0-9*]' || true
           sudo apt-get install -y -q --no-install-recommends \
             "libreoffice-calc=$LIBREOFFICE" "libreoffice-core=$LIBREOFFICE" "libreoffice-common=$LIBREOFFICE" \
