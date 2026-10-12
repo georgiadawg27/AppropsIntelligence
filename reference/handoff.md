@@ -195,3 +195,45 @@ Made in this phase (flag any you disagree with):
   accounting_views, budget_class, defense_split now true. `scripts/grid_counts.py` adds `view_status_counts`.
 - Open: page controls (UI-3); the ACF program-level totals (6 cells) pass but mix advance timings, so they confirm
   neither timing; accounts with no budget_class on file (48 entries) have no discretionary view.
+
+## UI-1: Explore workspace (2026-10-12)
+
+- Explore is the default view (`/`); One account stays reachable (header tab, `?view=account`, `?q=`, `?account=`) until UI-5.
+- Feature flags in both serving modes: `features.py` holds `field_values`, `held`, `flags`; `export_static.py` writes
+  them into `docs/data/index.json` from the files it exported, and `approps_web.py` serves `GET /api/features` from the
+  payloads it serves (`payloads(db)`, cached per database file). `tests/test_static.py` checks the two agree. The page
+  shows a feature only when it is built (`BUILT` in web/index.html: grid, search_filter, overview_panel,
+  interaction_state, abbreviations) and its flag is true.
+- Page assets: `web/abbreviations.js` (display-only map keyed by canonical_account_id), `web/fonts/` (IBM Plex Sans and
+  Sans Condensed woff2 from @fontsource 5.2.5, SIL OFL in `web/fonts/OFL.txt`). Both modes serve them; the export copies them.
+- Default fiscal year: the current one from today's date (October 1 starts it), never hard-coded; FY2027 now.
+- A year with no Enacted figure: the lead stage is the latest stage the printed title total holds (no title total:
+  the latest any row holds); it gets the wash, the change reads "<Stage> vs FY<n-1> enacted", the units label adds
+  "FY<n> not yet enacted · latest: <Stage>", and the overview shows a Status block instead of "Enacted in".
+- URL state: `sc, grid, fy | a, b, stages, basis, units, density, cols, rev, agency, status, search, show, open`
+  (`view=compare` still read). Every change is a history entry (search typing replaces); Back/Forward re-render.
+- Kept from the old grid, now in the View menu: Units, Expand/Collapse all, Reviewer mode, the two-years stage
+  checkboxes and basis, the "Accounts shown" lifecycle checkboxes. Kept below the legend: state counts, stage notes,
+  provenance.
+
+Owner follow-ups (2026-10-12, same PR):
+
+- SPEC.md replaced with the owner's second version (FY2027 section, test 15, the zero rule).
+- A printed zero is a figure: `figure()` returns it (0) and it counts in dollar changes and movers; a % from a zero
+  base shows "new" ("—" when both are zero, `GridMath.pctText`). A confirmed absence (no observation) never counts.
+- Lead stage: none when the title total holds nothing that year (change column empty, overview "No printed totals
+  yet"). CJS prints no title total at all, so it takes the latest stage any row holds. View › Columns adds
+  "Request vs FY<n-1> enacted" in a year without an Enacted stage.
+- Filter › Advanced shows its ungated items: change threshold (`minpct`, `mink`: the first change column), Include
+  committee drafts (on by default; off drops draft columns and leaves drafts out of every difference, `drafts=0`),
+  the three lifecycle checkboxes (moved from View), Only figures pending review or flagged (`review=1`). Amount
+  basis, timing, Exclude earmarks and Account type are not built (UI-3) and stay hidden although UI-0 (#57) turned
+  their flags on.
+- Footer: the default view shows the one-line legend and the provenance line; the cell counts and the corner-mark
+  key show in Reviewer mode.
+- The CJS section label and the temporary nav (Explore, One account) are approved.
+
+Open items:
+
+1. Include committee drafts defaults to on (today's behaviour); the design shows the box unticked. Owner to confirm.
+2. UI-3 builds the basis, timing, earmark and Account type controls; their flags are already on since UI-0.

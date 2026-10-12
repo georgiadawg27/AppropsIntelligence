@@ -28,8 +28,9 @@ that answers the same questions as approps_web.py without a server.
     attributes). A file past
     SPLIT_BYTES is also written per fiscal year:
     docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid).
-  - Copies web/index.html (marked to read data/ instead of /api) and
-    web/match.js, the browser port of the matching rule.
+  - Copies web/index.html (marked to read data/ instead of /api),
+    web/match.js (the browser port of the matching rule), web/abbreviations.js
+    (the display-only abbreviation map) and web/fonts/ (IBM Plex Sans, SIL OFL).
   - With --publish-workbook (CI's export job on main, the only writer of
     this file), publishes the built workbook as
     docs/Approps_Pilot_Schema_Loaded.xlsx (the page's "Download workbook"
@@ -59,12 +60,13 @@ from pathlib import Path
 import accounts as A
 import approps_store as S
 import approps_web as W
+import features as F
 
 ROOT = Path(__file__).resolve().parent
 DATA_META = '<meta name="approps-data" content="data/">'
 ZIP_LEVEL = 9                                     # the Download workbook's deflate level, fixed
 DOWNLOAD = "Approps_Pilot_Schema_Loaded.xlsx"       # docs/<this>: the page's "Download workbook" link
-CONTRACT = ROOT / "web" / "ui_contract.json"        # the data fields each page feature reads
+CONTRACT = F.CONTRACT                              # the data fields each page feature reads
 SPLIT_BYTES = 12 * 1024 * 1024                      # a subcommittee file past this is also split per fiscal year
 
 
@@ -126,52 +128,19 @@ def dump(obj, path, compact=False):
         path.write_text(text)
 
 
-def field_values(obj, path):
-    """Every value at a dotted path in obj (web/ui_contract.json's path_syntax): 'name[]' steps into each
-    item of a list, '*' into each value of an object (and '*[]' into each item of those)."""
-    found = [obj]
-    for step in path.split("."):
-        key, each = (step[:-2], True) if step.endswith("[]") else (step, False)
-        nxt = []
-        for o in found:
-            if not isinstance(o, dict):
-                continue
-            if key == "*":
-                nxt.extend(o.values())
-            elif key in o:
-                nxt.append(o[key])
-        if each:
-            nxt = [item for o in nxt if isinstance(o, list) for item in o]
-        found = nxt
-    return found
-
-
-def held(value):
-    """A field holds data unless it is null, empty text or an empty list/object. 0 and False hold data."""
-    return value is not None and value != "" and value != [] and value != {}
+field_values = F.field_values        # (moved to features.py, shared with approps_web.py's /api/features)
+held = F.held
 
 
 def features(data, index):
     """index.json's "features": a flag per feature in web/ui_contract.json, true only if every field the
     contract lists for it holds a value somewhere in the exported data (data = out/data; index.json is the
-    dict about to be written). Computed from the export, never set by hand."""
-    contract = json.loads(CONTRACT.read_text())
-    loaded = {}
-
-    def docs(pattern):
-        if pattern == "index.json":
-            return [index]
-        if pattern not in loaded:
-            loaded[pattern] = [json.loads(p.read_text()) for p in sorted(data.glob(pattern))]
-        return loaded[pattern]
-
-    def present(field):
-        pattern, path = field.split(":", 1)
-        return any(held(v) for doc in docs(pattern) for v in field_values(doc, path))
-
-    flags = {name: bool(f["fields"]) and all(present(x) for x in f["fields"])
-             for name, f in contract["features"].items()}
-    return {"features": flags, "contract_version": contract["contract_version"]}
+    dict about to be written). Computed from the export, never set by hand (features.flags, the rule
+    approps_web.py's /api/features applies to the payloads it serves)."""
+    data = Path(data)
+    paths = ["index.json"] + [p.relative_to(data).as_posix() for p in sorted(data.rglob("*.json"))
+                              if p.relative_to(data).as_posix() != "index.json"]
+    return F.flags(paths, lambda p: index if p == "index.json" else json.loads((data / p).read_text()))
 
 
 def split_grid(g, folder):
@@ -246,8 +215,7 @@ def export(workbook, out, download=True):
         "matching": {"accept_max_distance": A.ACCEPT_MAX_DISTANCE, "accept_max_fraction": A.ACCEPT_MAX_FRACTION,
                      "ambiguity_margin": A.AMBIGUITY_MARGIN},
         "split_subcommittees": split,
-        "accounts": [{"canonical_account_id": a["canonical_account_id"], "canonical_name": a["canonical_name"],
-                      "agency": a["agency"], "historical_names": a["historical_names"]} for a in pool],
+        "accounts": F.index_accounts(pool),
     }
     index.update(features(out / "data", index))
     dump(index, out / "data" / "index.json")
@@ -255,10 +223,23 @@ def export(workbook, out, download=True):
     if "<head>" not in page:
         raise SystemExit("web/index.html has no <head> to mark as static")
     page = page.replace("<head>", "<head>\n" + DATA_META, 1)
-    for name, text in (("index.html", page), ("match.js", (ROOT / "web" / "match.js").read_text()), (".nojekyll", "")):
+    files = [("index.html", page), (".nojekyll", "")] + [(n, (ROOT / "web" / n).read_text()) for n in W.ASSETS]
+    for name, text in files:
         target = out / name
         if not target.exists() or target.read_text() != text:
             target.write_text(text)
+    # the self-hosted fonts (IBM Plex Sans, SIL OFL) and their licence
+    fonts = out / "fonts"
+    fonts.mkdir(parents=True, exist_ok=True)
+    keep = set()
+    for src in sorted(W.FONTS.iterdir()):
+        if src.suffix in (".woff2", ".txt"):
+            keep.add(src.name)
+            if not (fonts / src.name).exists() or (fonts / src.name).read_bytes() != src.read_bytes():
+                (fonts / src.name).write_bytes(src.read_bytes())
+    for stale in fonts.iterdir():
+        if stale.name not in keep:
+            stale.unlink()
     if built and download:
         publish_workbook(workbook, out / DOWNLOAD, data_committed)
     # the page checks still open for a person (reference/review/page_check_sheet.csv), linked to the PDFs

@@ -240,6 +240,32 @@ class Features(StaticTest):
         self.assertEqual((committed["features"], committed["contract_version"]),
                          (want, self.contract["contract_version"]))
 
+    def test_live_api_features_agree_with_the_export(self):
+        # approps_web.py's /api/features reads the payloads it serves; the export, the files it wrote from the
+        # same answers: the two modes give the page the same flags
+        live = W.features(str(self.db))
+        self.assertEqual(live, {"features": self.index["features"], "contract_version": self.index["contract_version"]})
+        # each payload the server reads is the file the export wrote
+        served = W.payloads(str(self.db))
+        written = sorted(p.relative_to(self.out / "data").as_posix() for p in (self.out / "data").rglob("*.json"))
+        # the export also writes a large subcommittee one file per fiscal year (subcommittees/<name>/...): the same
+        # cells again, which no contract pattern reads; every other file is a payload the server answers with
+        split = {p for p in written if p.count("/") == 2 and p.startswith("subcommittees/")}
+        self.assertEqual(sorted(served), sorted(set(written) - split))
+        for path in ("subcommittees.json", "subcommittees/LHHS.json", "accounts/ACC-HHS-NIH-NCI.json"):
+            self.assertEqual(served[path], json.loads((self.out / "data" / path).read_text()), path)
+        self.assertEqual(served["index.json"]["accounts"], self.index["accounts"])
+        # and over HTTP
+        httpd = W.serve(self.db, port=0, verbose=False)
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
+        try:
+            import urllib.request
+            with urllib.request.urlopen(f"http://127.0.0.1:{httpd.server_address[1]}/api/features") as r:
+                self.assertEqual(json.loads(r.read()), live)
+        finally:
+            httpd.shutdown()
+            httpd.server_close()
+
     def test_every_feature_names_fields_that_exist_or_is_off(self):
         self.assertTrue(self.contract["features"])
         for name, f in self.contract["features"].items():
@@ -353,7 +379,7 @@ class StaticVersusLive(StaticTest):
         self.assertEqual(self.errors, [])
 
     def shown(self, url, q, pick=None):
-        self.page.goto(url)
+        self.page.goto(url + "?view=account")             # Explore is the default view; One account is beside it
         self.page.fill("#q", q)
         self.page.click("button[type=submit]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden]), [data-testid=candidates]:not([hidden])")
@@ -400,7 +426,7 @@ class StaticVersusLive(StaticTest):
             self.same(q)
 
     def test_static_page_says_how_fresh_it_is(self):
-        self.page.goto(self.static_url)
+        self.page.goto(self.static_url + "?view=account")
         self.page.wait_for_selector("[data-testid=freshness]:not([hidden])")
         text = self.page.text_content("[data-testid=freshness]")
         self.assertIn("data/staged.json (v38)", text)
@@ -413,7 +439,7 @@ class StaticVersusLive(StaticTest):
         self.assertTrue(resolved.endswith("/Approps_Pilot_Schema_Loaded.xlsx"))
         body = self.page.request.get(resolved).body()
         self.assertEqual(body, (self.out / "Approps_Pilot_Schema_Loaded.xlsx").read_bytes())
-        self.page.goto(self.live_url)
+        self.page.goto(self.live_url + "?view=account")
         self.assertTrue(self.page.locator("[data-testid=freshness]").is_hidden())
         self.assertEqual(self.page.locator("[data-testid=download-workbook]").count(), 0)
 
