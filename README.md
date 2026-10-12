@@ -24,12 +24,27 @@ the store and the tests all read a build of `data/staged.json`.
 
 **How to rebuild.**
 
-Build with Python 3.11 (`.python-version`), the version CI uses: the Download workbook file is compared byte
-for byte, and another Python's zlib compresses the same workbook to different bytes.
+**Pinned toolchain.** CI builds and tests on ubuntu-24.04 with Python 3.11.17 (`.python-version`), the
+exact packages in `requirements.lock` (openpyxl 3.1.5 and et-xmlfile 2.0.0 for the build; everything else
+the tests use), and LibreOffice 24.2.7.2 (Ubuntu package `4:24.2.7-0ubuntu0.24.04.7`, from Ubuntu's snapshot archive of
+2026-10-12T04:40Z so the pin outlives Ubuntu's next update, with python3-openpyxl `3.1.2+dfsg-6`) for the formula check. Install with `pip install -r requirements.lock`; `requirements.txt`
+lists the open ranges the lock is compiled from.
+
+**The Download workbook is reproducible.** The same data gives the same file: the build always writes its
+XML with Python's ElementTree (openpyxl would switch to lxml wherever lxml happens to be installed, which
+writes different bytes), and the publish step (`export_static.publish_workbook`) sets every zip timestamp and
+the document dates to the data's commit date, writes the entries in a fixed order at a fixed compression
+level. `tests/test_site_data.py` builds it twice and requires identical bytes.
+
+**One builder.** Only CI's export job on `main` (`.github/workflows/export-static.yml`,
+`python export_static.py --publish-workbook`) writes `docs/Approps_Pilot_Schema_Loaded.xlsx`. A pull request
+doesn't commit it (the Tests workflow fails if it does), and `python export_static.py` without the flag leaves
+it as committed. On a pull request, "docs are current" compares the workbook's content (every cell's value and
+formula, `scripts/workbook_digest.py`) against `tests/fixtures/workbook_values.json`, not its bytes.
 
 ```
 mkdir -p build && python scripts/build_workbook.py      # -> build/Approps_Pilot_Schema_Loaded.xlsx
-python export_static.py                                 # the site (docs/) and the Download workbook file
+python export_static.py                                 # the site (docs/); CI's export job adds --publish-workbook
 python reference/build_accounts.py                      # reference/accounts.json
 ```
 
@@ -195,7 +210,7 @@ commit date, sha256) it was built from, and links the workbook built from it.
 
 How it stays current: `.github/workflows/export-static.yml` runs on every push
 that changes `data/`, the build script or the code the export depends on, runs
-`python export_static.py` and `python reference/build_accounts.py`, and commits
+`python export_static.py --publish-workbook` and `python reference/build_accounts.py`, and commits
 `docs/` and `reference/accounts.json` back to the same branch if anything changed.
 Re-running on unchanged data produces identical files, so nothing is committed.
 It can also be run by hand from the Actions tab (workflow_dispatch).

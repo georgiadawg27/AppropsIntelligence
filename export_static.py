@@ -4,7 +4,7 @@ export_static.py
 Static export of the read-only UI for GitHub Pages: docs/ becomes a site
 that answers the same questions as approps_web.py without a server.
 
-    python export_static.py [--workbook X.xlsx] [--out docs]
+    python export_static.py [--workbook X.xlsx] [--out docs] [--publish-workbook]
 
   - Builds the workbook from the canonical data, data/staged.json
     (approps_store.reference_workbook(): scripts/build_workbook.py, which
@@ -23,9 +23,13 @@ that answers the same questions as approps_web.py without a server.
     approps_store.subcommittee_grid(), the live /api/subcommittee answer.
   - Copies web/index.html (marked to read data/ instead of /api) and
     web/match.js, the browser port of the matching rule.
-  - Publishes the built workbook as docs/Approps_Pilot_Schema_Loaded.xlsx
-    (the page's "Download workbook" link), its zip timestamps and document
-    dates set to the data's commit date so an unchanged build is the same file.
+  - With --publish-workbook (CI's export job on main, the only writer of
+    this file), publishes the built workbook as
+    docs/Approps_Pilot_Schema_Loaded.xlsx (the page's "Download workbook"
+    link) as a reproducible file (publish_workbook): zip timestamps and
+    document dates set to the data's commit date, fixed entry order and
+    compression level, so an unchanged build is the same file. Without it,
+    the export leaves docs/'s copy as committed: pull requests don't commit it.
 
 Output is deterministic (sorted keys, no timestamps), so re-running on an
 unchanged data/staged.json changes nothing -- .github/workflows/export-static.yml
@@ -51,6 +55,7 @@ import approps_web as W
 
 ROOT = Path(__file__).resolve().parent
 DATA_META = '<meta name="approps-data" content="data/">'
+ZIP_LEVEL = 9                                     # the Download workbook's deflate level, fixed
 DOWNLOAD = "Approps_Pilot_Schema_Loaded.xlsx"       # docs/<this>: the page's "Download workbook" link
 
 
@@ -63,23 +68,29 @@ def reference_workbook():
 
 
 def publish_workbook(workbook, target, when):
-    """Copy the built workbook to target with every zip timestamp and its document dates
-    (docProps/core.xml) set to `when` (an ISO time, or None for 1980-01-01): openpyxl stamps
-    the build time, which would make every rebuild a different file."""
+    """Copy the built workbook to target as a reproducible file: the same data gives the same bytes.
+    openpyxl stamps the build time, so every zip timestamp and the document dates (docProps/core.xml)
+    are set to `when`, the data's commit date (an ISO time, or None for 1980-01-01), never the build
+    time. The entries are written in a fixed order ([Content_Types].xml first, as Office writes it, then
+    by name), each deflated at the fixed level ZIP_LEVEL with the same permissions and system marker,
+    so nothing about the machine or the zip library's defaults reaches the file."""
     stamp = (when or "1980-01-01T00:00:00+00:00")[:19]
     date_time = tuple(int(x) for x in re.split(r"[-T:]", stamp))
     with zipfile.ZipFile(workbook) as src:
-        entries = [(i.filename, src.read(i.filename)) for i in src.infolist()]
+        entries = {i.filename: src.read(i.filename) for i in src.infolist()}
+    order = sorted(entries, key=lambda n: (n != "[Content_Types].xml", n))
     target.parent.mkdir(parents=True, exist_ok=True)
     tmp = target.with_suffix(".tmp")
-    with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED) as out:
-        for name, data in entries:
+    with zipfile.ZipFile(tmp, "w", zipfile.ZIP_DEFLATED, compresslevel=ZIP_LEVEL) as out:
+        for name in order:
+            data = entries[name]
             if name == "docProps/core.xml":
                 data = re.sub(rb"(<dcterms:(?:created|modified)[^>]*>)[^<]*", lambda m: m.group(1) + (stamp + "Z").encode(), data)
             info = zipfile.ZipInfo(name, date_time=date_time)
             info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system = 3                        # Unix, wherever it is built
             info.external_attr = 0o644 << 16
-            out.writestr(info, data)
+            out.writestr(info, data, compresslevel=ZIP_LEVEL)
     if target.exists() and target.read_bytes() == tmp.read_bytes():
         tmp.unlink()
     else:
@@ -106,7 +117,8 @@ def dump(obj, path, compact=False):
         path.write_text(text)
 
 
-def export(workbook, out):
+def export(workbook, out, download=True):
+    """download=False leaves out/DOWNLOAD as it is (see main: only CI's export job on main writes docs/'s copy)."""
     out = Path(out)
     workbook = Path(workbook)
     with tempfile.TemporaryDirectory() as tmp:
@@ -156,7 +168,7 @@ def export(workbook, out):
         target = out / name
         if not target.exists() or target.read_text() != text:
             target.write_text(text)
-    if built:
+    if built and download:
         publish_workbook(workbook, out / DOWNLOAD, data_committed)
     # the page checks still open for a person (reference/review/page_check_sheet.csv), linked to the PDFs
     sys.path.insert(0, str(ROOT / "reference" / "review"))
@@ -169,9 +181,16 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1])
     p.add_argument("--workbook", help="default: the workbook built from data/staged.json")
     p.add_argument("--out", default=str(ROOT / "docs"))
+    p.add_argument("--publish-workbook", action="store_true",
+                   help="also write docs/" + DOWNLOAD + " (only CI's export job on main passes this)")
     args = p.parse_args(argv)
-    r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out)
-    print(f"exported {r['accounts']} accounts from {r['workbook']} to {r['out']}")
+    # one builder: docs/'s Download workbook is written only by .github/workflows/export-static.yml on main;
+    # anywhere else the export leaves it as committed (another --out always gets its own copy)
+    to_docs = Path(args.out).resolve() == (ROOT / "docs").resolve()
+    download = args.publish_workbook or not to_docs
+    r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out, download=download)
+    print(f"exported {r['accounts']} accounts from {r['workbook']} to {r['out']}"
+          + ("" if download else f" ({DOWNLOAD} left as committed: CI's export job on main writes it)"))
     return 0
 
 
