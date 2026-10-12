@@ -1,5 +1,39 @@
 # CLAUDE.md
 
+## Standing constraints
+
+These apply to every session and every brief, whatever the task says.
+
+Security and settings
+- Never change repo visibility, GitHub Pages, branch protection or secrets.
+- Never print a secret value, and never add steps that echo environment
+  variables. GOVINFO_API_KEY stays a repository secret, used only by the
+  manual fetch workflow.
+- The scoping doc is read-only: never commit it, quote it or copy it into the
+  repo. Never commit the NTU workbook or copy its rows (terms unconfirmed).
+- Ask before deleting data or changing what is public (IP review pending).
+
+Pull requests
+- One draft PR per thread. Never merge; the owner merges.
+- Judge a PR by its GitHub checks, not local runs. Run the full suite once
+  before marking a PR ready; otherwise prefer targeted tests.
+- Never commit `docs/Approps_Pilot_Schema_Loaded.xlsx`. The export job on main
+  is its only writer; PRs update `tests/fixtures/workbook_values.json` instead.
+- Never skip, disable or loosen a check to get green. Route failures to review.
+- No headline figure changes unless the owner approves; list any change old ->
+  new with source and page.
+
+Data
+- Record each stage as its own documents print it. Enacted follows the law.
+- Bill/law text beats the report table when scopes match; keep the table
+  figure as a note.
+- Supersede, never overwrite. Never reuse or renumber IDs; retired IDs go on
+  the retired lists.
+- Blank is not zero. A confirmed absence cites bill/law text, never a table's
+  silence.
+- Missing input: say what is missing and stop. Never guess a figure.
+- Never adjust a figure silently.
+
 ## Token discipline
 
 - Never read full bill text, statute text, or other large source documents into
