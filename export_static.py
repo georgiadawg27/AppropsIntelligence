@@ -30,7 +30,8 @@ that answers the same questions as approps_web.py without a server.
     docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid).
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
-    (the display-only abbreviation map) and web/fonts/ (IBM Plex Sans, SIL OFL).
+    (the display-only abbreviation map), web/documents.js (the display-only
+    document short names) and web/fonts/ (IBM Plex Sans, SIL OFL).
   - With --publish-workbook (CI's export job on main, the only writer of
     this file), publishes the built workbook as
     docs/Approps_Pilot_Schema_Loaded.xlsx (the page's "Download workbook"

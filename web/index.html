@@ -215,6 +215,9 @@
   .namebox { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; line-height: 1.35; }
   .namebox .linkish { font: inherit; font-size: inherit; color: inherit; text-decoration: none; cursor: pointer; text-align: left; padding: 0; }
   .namebox .linkish:hover { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  /* a name that opens the account in the side panel (SPEC 5.2): the design's link style, always */
+  .namebox .linkish.panel-link { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  .namebox .linkish.panel-link:hover { text-decoration-color: var(--x-accent); }
   .abbr { font-size: 12px; color: var(--x-muted); font-weight: 400; }
   .chev { appearance: none; flex: 0 0 auto; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--x-muted);
           cursor: pointer; font: inherit; font-size: 12px; padding: 0; }
@@ -224,12 +227,17 @@
   .tag.inside { background: #eef0f3; color: var(--x-ink2); }
   .move { flex-basis: 100%; font-size: 12px; color: #7a4b00; font-weight: 400; }
   /* a figure: one click from its source; a faint dotted underline */
-  .grid td.num a { color: inherit; text-decoration: underline dotted #b9c3d3; text-underline-offset: 4px; }
-  .grid td.num a:hover { color: var(--x-accent-text); text-decoration-color: var(--x-accent); }
+  .grid td.num a, button.fig { color: inherit; text-decoration: underline dotted #b9c3d3; text-underline-offset: 4px; }
+  button.fig { appearance: none; background: none; border: 0; border-radius: 2px; padding: 0; margin: 0; font: inherit;
+               font-variant-numeric: tabular-nums; cursor: pointer; text-align: inherit; }
+  .grid td.num a:hover, button.fig:hover { color: var(--x-accent-text); text-decoration-color: var(--x-accent); }
+  /* selection (SPEC 5.1, 5.2, 8): yellow means selected, drawn over hover and the enacted wash */
+  #compare-grid tbody td[data-sel=fig] { background-color: var(--x-sel-fig) !important; box-shadow: inset 0 0 0 2px var(--x-sel-fig-line) !important; }
+  #compare-grid tbody tr[data-sel=row] > td { background-color: var(--x-sel-row) !important; }
   .tok { display: inline-block; font-size: 12px; color: var(--x-muted); font-weight: 400; cursor: help; }
   .tok.dash { font-size: inherit; }
   .tok.miss { font-style: italic; }
-  .grid td.num a.tok { color: var(--x-muted); }
+  .grid td.num a.tok, .grid td.num button.tok { color: var(--x-muted); }
   button.nm { position: absolute; top: 0; right: 0; appearance: none; padding: 0; margin: 0; background: none; border: 0; border-radius: 0;
               border-top: 9px solid #8A93A3; border-left: 9px solid transparent; width: 0; height: 0; min-height: 0; cursor: pointer; }
   button.nm:hover, button.nm:focus-visible { border-top-color: var(--x-accent); }
@@ -265,6 +273,35 @@
   .ovtext a { color: var(--x-accent); }
   .ovsmall { font-size: 12px; color: var(--x-muted); margin-top: 2px; }
   .ovsmall a { color: var(--x-accent); }
+  /* the panel's figure-source and account modes (SPEC 5.1, 5.2) */
+  .panelback { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .backlink { appearance: none; border: 0; background: none; padding: 2px 0; font: inherit; font-size: 13px; color: var(--x-accent); cursor: pointer; }
+  .backlink:hover { text-decoration: underline; }
+  .srcstage { font-size: 13px; color: var(--x-ink2); margin-top: 2px; }
+  .srcpath { font-size: 12px; color: var(--x-muted); margin-top: 14px; }
+  .bigfig { font-size: 30px; font-weight: 600; letter-spacing: -0.02em; margin-top: 14px; font-variant-numeric: tabular-nums; }
+  .vbadge { display: inline-block; font-size: 12px; border-radius: 10px; padding: 2px 9px; }
+  .vbadge.ok { background: #e3f1e7; color: #1d6b3a; } .vbadge.unv { background: #eef0f3; color: #3a4150; } .vbadge.flag { background: #fde8dc; color: #9a3412; }
+  .srcrule { border: 0; border-top: 1px solid var(--x-rule); margin: 16px 0 12px; }
+  .srcfield { margin-bottom: 12px; font-size: 13px; }
+  .srcfield .srck { font-size: 12px; color: var(--x-muted); margin-bottom: 2px; }
+  .srcfield a, .acctstage a { color: var(--x-accent); }
+  .printed { background: #f8f8f6; border: 1px solid var(--x-rule); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--x-ink2); overflow-wrap: anywhere; }
+  .srcrec { font-size: 12px; color: var(--x-muted); margin: 4px 0 14px; }
+  .pbtn { display: flex; align-items: center; justify-content: center; box-sizing: border-box; width: 100%; min-height: 44px; margin-top: 8px;
+          border: 1px solid var(--x-input); border-radius: 8px; background: var(--x-surface); color: var(--x-ink); font: inherit; cursor: pointer; text-decoration: none; }
+  .pbtn.primary { border-color: var(--x-accent); background: var(--x-accent); color: #fff; font-weight: 600; }
+  .acctchg { font-size: 13px; margin-top: 4px; }
+  .acctstage { padding: 4px 0 6px; border-bottom: 1px solid #eef0f3; }
+  .acctstage .ovline { border-bottom: 0; padding: 4px 0 0; }
+  .acctstage .ovsmall { margin-top: 0; }
+  .acctstage button.fig { font-weight: 600; }
+  .bars { display: flex; align-items: flex-end; gap: 4px; margin-top: 8px; }
+  .barcol { flex: 1 1 0; min-width: 0; text-align: center; }
+  .barbox { height: 64px; display: flex; align-items: flex-end; border-bottom: 1px solid var(--x-rule-strong); }
+  .bar { width: 100%; background: var(--x-accent); border-radius: 2px 2px 0 0; }
+  .bar.cr { background: #a9bedf; }
+  .barlbl { font-size: 11px; color: var(--x-muted); margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -359,6 +396,7 @@
 
 <script src="match.js"></script>
 <script src="abbreviations.js"></script>
+<script src="documents.js"></script>
 <script>
 "use strict";
 const $ = (sel) => document.querySelector(sel);
@@ -784,12 +822,11 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
-const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations"]);
+const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel"]);
 let FEAT = {};
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
-// the figure's own source page: the link each figure has carried since before the flags; its data is
-// the figure_source fields (the panel itself is UI-2)
-const linksToSource = () => FEAT.figure_source === true;
+// a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
+const linksToSource = () => has("figure_source");
 async function loadFeatures() {
   const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
   FEAT = f.features || {};
@@ -880,28 +917,29 @@ function sourceHref(o) {
     ? o.url_or_identifier + (first ? "#page=" + first : "") : null;
 }
 const srcLabel = (o) => `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
-const clickFor = (o) => `Click for its source: ${o.source_document_id}${o.source_page ? ", p. " + o.source_page : ""}`;
+const clickFor = (o) => `Click for its source: ${docName(o.source_document_id)}${o.source_page ? ", p. " + o.source_page : ""}`;
 function token(state, line, ctx) {
   const [text, meaning] = TOKENS[state] || [state, state];
   let why = state === "not_funded" && line && line.absence ? "Not funded: confirmed absent in the bill or law text" : meaning;
   if (line && line.absence) why += ` — ${line.absence.evidence}`;
   const cls = "tok" + (DASHES.has(state) ? " dash" : "") + (state === "missing" ? " miss" : "");
   const o = line && line.observations && line.observations[0];
-  // a printed zero holds an observation: it links to its source page like any figure (SPEC 5.1)
-  if (state === "not_funded" && o && linksToSource() && sourceHref(o))
-    return el("a", { class: cls, "data-testid": "token-not-funded", href: sourceHref(o), target: "_blank", rel: "noopener",
-                     title: `${why} · ${clickFor(o)}`, "aria-label": `Source for ${ctx.name}, ${ctx.stage}: not funded, printed zero`,
-                     "data-source": srcLabel(o), text });
+  // a printed zero holds an observation: a button to its source like any figure (SPEC 5.1)
+  if (state === "not_funded" && o && !line.absence && linksToSource())
+    return figButton(o, text, ctx, { class: cls, "data-testid": "token-not-funded", title: `${why} · ${clickFor(o)}` });
   return el("span", { class: cls, "data-testid": "token-" + testid(state), title: why, "aria-label": why, text });
 }
 function numberLink(o, units, ctx) {
   const text = GridMath.number(o.amount, units);
-  const href = sourceHref(o);
   const title = `${clickFor(o)} · ${o.status_text || o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
-  return href && linksToSource()
-    ? el("a", { "data-testid": "amount", href, target: "_blank", rel: "noopener", title, "data-source": srcLabel(o),
-                "aria-label": `Source for ${ctx.name}, ${ctx.stage}`, text })
+  return linksToSource() ? figButton(o, text, ctx, { "data-testid": "amount", title })
     : el("span", { "data-testid": "amount", title, "data-source": srcLabel(o), text });
+}
+// a figure with an observation: a button whose accessible name is "Source for <account>, <stage>"; clicking it
+// selects the figure and shows its source in the side panel (the grid's click handler)
+function figButton(o, text, ctx, props) {
+  return el("button", { type: "button", ...props, class: "fig" + (props.class ? " " + props.class : ""), "data-source": srcLabel(o),
+                        "data-href": sourceHref(o) || "", "data-obs": o.observation_id, "aria-label": `Source for ${ctx.name}, ${ctx.stage}`, text });
 }
 // a stage in a sentence: "FY2026 enacted", "FY2025 enacted (full-year CR)", "FY2026 President’s request"
 function stageText(grid, y, i) {
@@ -1126,8 +1164,13 @@ function rowFilters(grid, cols) {
 function nameCell(o) {
   const box = el("span", { class: "namebox" });
   if (o.id) {
-    const b = el("a", { class: "linkish", "data-testid": "row-name", href: "?account=" + encodeURIComponent(o.id), text: o.name, title: o.title || o.id });
-    b.addEventListener("click", (e) => { e.preventDefault(); openAccount(o.id); });
+    const panel = has("account_panel") && current && ownPage(current.grid, o.id);
+    const b = el("a", { class: "linkish" + (panel ? " panel-link" : ""), "data-testid": "row-name", href: "?account=" + encodeURIComponent(o.id), text: o.name, title: o.title || o.id });
+    // the account in the side panel (SPEC 5.2); the One account view without the account panel
+    b.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (has("account_panel") && current && ownPage(current.grid, o.id)) select({ kind: "acct", id: o.id }); else openAccount(o.id);
+    });
     box.append(b);
   } else box.append(el("span", { class: "plain", text: o.name }));
   if (o.abbr) box.append(el("span", { class: "abbr", text: o.abbr }));
@@ -1384,12 +1427,218 @@ function renderOverview(grid) {
   box.replaceChildren(...kids);
 }
 
+// ---- the side panel's other modes (SPEC 5.1-5.3): the source of one figure, or one account; precedence
+// figure source > account > overview. SEL is the selection, part of the URL (fig=<id>|<fy>|<stage>, acct=<id>).
+let SEL = null;                 // { kind: "fig", id, y, st } | { kind: "acct", id } | null
+const docName = (id) => (typeof DOCUMENT_NAMES === "object" && DOCUMENT_NAMES[id]) || id;
+const unitsLong = () => (G.units === "m" ? "$ millions" : "$ thousands");
+// every row of the grid by account id, the printed totals included
+function gridRow(grid, id) {
+  return grid.rows.concat(grid.titles.map((t) => t.total), [grid.bill_total]).find((r) => r && r.account.canonical_account_id === id) || null;
+}
+// a row with its own account page (the One account view): not a printed title or bill total
+const ownPage = (grid, id) => !grid.titles.some((t) => t.total && t.total.account.canonical_account_id === id)
+  && !(grid.bill_total && grid.bill_total.account.canonical_account_id === id);
+// the observation a figure cell holds (a value or a printed zero), or null: the cells that are buttons
+function cellObs(row, y, st) {
+  const x = row && headOf(row, y, st);
+  return x && x.h && !x.cell.outside_life && x.h.observations.length ? x.h.observations[0] : null;
+}
+// the bill or law, as the document names it: "P.L. 119-75, Div. B", "H.R. 5304 as reported", "FY2026 Budget Appendix"
+function billText(grid, o, y, st) {
+  const id = o.bill_id || "";
+  const app = id.match(/^PREX 2\.8:(\d{4})\/APP$/);
+  if (app) return `FY${app[1]} Budget Appendix`;
+  let t = id.replace(/^(P\.L\.|H\.R\.|S\.)\s*/, "$1 ");
+  const e = (grid.enactments || {})[String(y)];
+  if (st === "Enacted" && e && e.bill_id === id && e.division) t += `, Div. ${e.division}`;
+  if ((st === "House Reported" || st === "Senate Reported") && /^(H\.R\.|S\.) /.test(t) && !isDraft(grid, y, st)) t += " as reported";
+  return t;
+}
+const BADGES = {
+  "auto-validated": ["ok", "Auto-validated"], "human-verified": ["ok", "Verified by a person"],
+  unverified: ["unv", "Not yet confirmed by a second document"], flagged: ["flag", "Flagged for review"],
+};
+function badge(o) {
+  const [cls, text] = BADGES[o.verification_status] || ["unv", o.status_text || o.verification_status];
+  return el("span", { class: "vbadge " + cls, "data-testid": "src-badge", "data-status": o.verification_status, text });
+}
+const docLink = (o, cls) => {
+  const href = /^https?:/.test(o.url_or_identifier || "") ? o.url_or_identifier : null;
+  return href ? el("a", { href, target: "_blank", rel: "noopener", class: cls || "", text: docName(o.source_document_id) })
+              : el("span", { text: docName(o.source_document_id) });
+};
+// the back link and its hint (SPEC 5.3): "‹ Title II overview", "‹ NIH overview" with an agency filter
+function backRow(grid) {
+  const S = scopeOf(grid), T = printedTotal(grid);
+  const what = G.agency ? S.back : T && T.label !== "Bill" ? T.label : scLabels[grid.subcommittee] || grid.subcommittee;
+  const b = el("button", { type: "button", class: "backlink", "data-testid": "panel-back", text: `‹ ${what} overview` });
+  b.addEventListener("click", () => clearSelection(true));
+  return el("div", { class: "panelback" }, b, el("span", { class: "ovhint", "data-testid": "panel-hint", text: "or click outside · Esc" }));
+}
+function field(label, ...kids) {
+  return el("div", { class: "srcfield" }, el("div", { class: "srck", text: label }), ...kids);
+}
+function renderSource(grid, box) {
+  const { id, y, st } = SEL, row = gridRow(grid, id), o = cellObs(row, y, st);
+  const i = STAGES4.indexOf(st), name = plainName(row.account.canonical_name);
+  const zero = o.amount === 0;
+  const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
+  const kids = [backRow(grid),
+    el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
+    el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
+    el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
+    el("div", { class: "bigfig", "data-testid": "src-value", text: GridMath.number(o.amount, G.units) }),
+    el("div", { class: "ovsmall", "data-testid": "src-short",
+                text: (zero ? "Not funded: printed zero" : GridMath.short(o.amount)) + ` · ${unitsLong()} · as printed` }),
+    el("div", { style: "margin-top:8px" }, badge(o)),
+    el("hr", { class: "srcrule" }),
+    field("Document", el("div", { "data-testid": "src-doc", "data-doc": o.source_document_id }, docLink(o)),
+          o.source_page ? el("div", { "data-testid": "src-page", text: `Page ${o.source_page}` }) : null)];
+  if (o.source_table_or_section)
+    kids.push(field("Printed as", el("div", { class: "printed", "data-testid": "src-printed", text: o.source_table_or_section })));
+  if (o.bill_url)
+    kids.push(field("Bill or law", el("a", { href: o.bill_url, target: "_blank", rel: "noopener", "data-testid": "src-bill", text: billText(grid, o, y, st) })));
+  kids.push(el("div", { class: "srcrec", "data-testid": "src-record", text: `Record ${o.observation_id}` }));
+  if (href)
+    kids.push(el("a", { class: "pbtn primary", "data-testid": "src-open", href, target: "_blank", rel: "noopener",
+                        text: first ? `Open page ${first} of the document` : "Open the document" }));
+  if (ownPage(grid, id)) {
+    const b = el("button", { type: "button", class: "pbtn", "data-testid": "src-account-btn", text: "See every stage for this account" });
+    b.addEventListener("click", () => select({ kind: "acct", id }));
+    kids.push(b);
+  }
+  box.setAttribute("aria-label", "Source for this figure");
+  box.replaceChildren(...kids);
+}
+function renderAccountPanel(grid, box) {
+  const row = gridRow(grid, SEL.id), a = row.account, id = a.canonical_account_id;
+  const y = focusYear(grid), lead = (G.grid === "stages" ? leadStage(grid, y) : 3) ?? 3;
+  const agencyTotal = row.rollup === "agency";
+  const path = [a.title, agencyTotal ? null : a.agency].filter(Boolean).join(" › ");
+  const kids = [backRow(grid), el("div", { class: "srcpath", "data-testid": "acct-path", text: path }),
+                el("div", { class: "ovtitle", "data-testid": "acct-name", text: plainName(a.canonical_name) })];
+  // the headline: the lead stage's printed figure (Enacted, or the latest stage in a year not yet enacted)
+  const hx = headOf(row, y, STAGES4[lead]), ho = cellObs(row, y, STAGES4[lead]);
+  const v = ho ? ho.amount : null, when = stageText(grid, y, lead);
+  if (v != null) {
+    kids.push(el("div", { class: "bigfig", "data-testid": "acct-headline", text: v === 0 ? "—" : GridMath.short(v) }),
+      el("div", { class: "ovsmall", "data-testid": "acct-exact", text: `${GridMath.number(v, G.units)} in ${unitsLong()} · ${when}, as printed` }));
+    const p = figure(row, y - 1, "Enacted"), c = GridMath.change(p, figure(row, y, STAGES4[lead]));
+    if (c) kids.push(el("div", { class: "acctchg " + (GridMath.direction(c.delta) || "flat"), "data-testid": "acct-change",
+      text: `${GridMath.signedShort(c.delta)} (${GridMath.pctText(p, p + c.delta)}) vs ${stageText(grid, y - 1, 3)}` }));
+  } else {
+    const st = hx && hx.h && !hx.cell.outside_life ? hx.h.state : null;
+    kids.push(el("div", { class: "ovsmall", "data-testid": "acct-exact", text: `${when}: ${st ? STATE_WORDS[st] || st : "outside the account’s life"}` }));
+  }
+  // every stage of the year, with its source: document · page · bill
+  kids.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: `FY${y} by stage, with sources` }));
+  for (const [yy, i] of [[y - 1, 3], [y, 0], [y, 1], [y, 2], [y, 3]]) {
+    const st = STAGES4[i], o = cellObs(row, yy, st), x = headOf(row, yy, st);
+    const label = yy !== y ? stageText(grid, yy, i) : STAGE_LONG[i] + (isDraft(grid, yy, st) ? " (draft)" : "");
+    const state = x && x.h ? (x.cell.outside_life ? "outside the account’s life" : STATE_WORDS[x.h.state] || x.h.state) : "outside the account’s life";
+    const amt = o ? el("button", { type: "button", class: "fig", "data-testid": "acct-stage-fig",
+                                   "aria-label": `Source for ${plainName(a.canonical_name)}, ${stageText(grid, yy, i)}`,
+                                   text: o.amount === 0 ? "—" : GridMath.number(o.amount, G.units) })
+                  : el("span", { class: "val state", text: state });
+    if (o) amt.addEventListener("click", () => select({ kind: "fig", id, y: yy, st }));
+    const line = el("div", { class: "acctstage", "data-testid": "acct-stage", dataset: { fy: String(yy), stage: st } },
+      el("div", { class: "ovline" }, el("span", { class: "k", text: label }), amt));
+    if (o) line.append(el("div", { class: "ovsmall", "data-testid": "acct-stage-src" }, docLink(o),
+      o.source_page ? ` · p. ${o.source_page}` : "",
+      ...(o.bill_url ? [" · ", el("a", { href: o.bill_url, target: "_blank", rel: "noopener", text: billText(grid, o, yy, st) })] : [])));
+    kids.push(line);
+  }
+  // enacted history: one bar per year, the full-year CR years lighter, a gap (never a zero bar) for a non-value
+  const years = grid.fiscal_years.filter((yy) => yy <= y);
+  if (years.length) {
+    const vals = years.map((yy) => { const o = cellObs(row, yy, "Enacted"); return o ? o.amount : null; });
+    const max = Math.max(0, ...vals.filter((x) => x != null));
+    kids.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: `Enacted, FY${years[0]}–FY${years[years.length - 1]}` }));
+    const bars = el("div", { class: "bars", "data-testid": "acct-bars", role: "list" });
+    years.forEach((yy, k) => {
+      const val = vals[k], cr = !!crOf(grid, yy), x = headOf(row, yy, "Enacted");
+      const what = val != null ? `${GridMath.number(val, G.units)} ${unitsLong()}`
+        : x && x.h && !x.cell.outside_life ? STATE_WORDS[x.h.state] || x.h.state : "outside the account’s life";
+      const label = `FY${yy} enacted${cr ? " (full-year CR)" : ""}: ${what}`;
+      const h = val != null && val > 0 && max > 0 ? Math.max(2, Math.round((val / max) * 64)) : 0;
+      bars.append(el("div", { class: "barcol", role: "listitem", title: label, "aria-label": label,
+                              dataset: { fy: String(yy), testid: "acct-bar", value: val == null ? "" : String(val), cr: String(cr) } },
+        el("div", { class: "barbox" }, h ? el("div", { class: "bar" + (cr ? " cr" : ""), style: `height:${h}px` }) : null),
+        el("div", { class: "barlbl", text: `’${String(yy).slice(2)}` })));
+    });
+    kids.push(bars);
+    if (years.some((yy) => crOf(grid, yy))) kids.push(el("div", { class: "ovsmall", text: "Lighter bar: a full-year continuing resolution" }));
+  }
+  if (ownPage(grid, id)) {
+    const b = el("button", { type: "button", class: "pbtn primary", "data-testid": "acct-open", text: "Open account page" });
+    b.addEventListener("click", () => openAccount(id));
+    kids.push(b);
+  }
+  box.setAttribute("aria-label", "Account");
+  box.replaceChildren(...kids);
+}
+// a selection still on file in this grid (a link from another subcommittee, or a figure no longer held, is dropped)
+function validSel(grid, s) {
+  if (!s) return null;
+  const row = gridRow(grid, s.id);
+  if (!row) return null;
+  if (s.kind === "fig") return has("figure_source") && cellObs(row, s.y, s.st) ? s : null;
+  return has("account_panel") && ownPage(grid, s.id) ? s : null;
+}
+function renderPanel(grid) {
+  const box = $("#side-panel");
+  SEL = validSel(grid, SEL);
+  if (SEL && has("overview_panel")) {
+    box.hidden = false;
+    if (SEL.kind === "fig") renderSource(grid, box); else renderAccountPanel(grid, box);
+    box.dataset.mode = SEL.kind === "fig" ? "source" : "account";
+  } else {
+    renderOverview(grid);
+    box.dataset.mode = "overview";
+  }
+}
+// the selected figure (yellow fill and outline) and the selected account row (light yellow): drawn over hover
+function markSelection() {
+  for (const n of document.querySelectorAll("#compare-grid [data-sel]")) delete n.dataset.sel;
+  if (!SEL) return;
+  const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(SEL.id)}"]`);
+  if (!tr) return;
+  if (SEL.kind === "acct") { tr.dataset.sel = "row"; return; }
+  const td = tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
+  if (td) td.dataset.sel = "fig";
+}
+function select(s) {
+  if (!current) return;
+  SEL = s;
+  markSelection();
+  renderPanel(current.grid);
+  commit();
+}
+// back to the overview; focus returns to the figure or the name that was selected
+function clearSelection(returnFocus) {
+  if (!SEL || !current) return false;
+  const was = SEL;
+  SEL = null;
+  markSelection();
+  renderPanel(current.grid);
+  commit();
+  if (returnFocus) {
+    const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(was.id)}"]`);
+    const n = tr && (was.kind === "fig" ? tr.querySelector(`td[data-fy="${was.y}"][data-stage="${CSS.escape(was.st)}"] button.fig`)
+                                        : tr.querySelector("[data-testid=row-name]"));
+    if (n) n.focus();
+  }
+  return true;
+}
+
 // ---- the table and its footers
 let current = null;     // { grid, cols }
 function renderBody() {
   if (!current) return;
   clearHover();
   $("#compare-grid tbody").replaceWith(el("tbody", {}, ...buildRows(current.grid, current.cols)));
+  markSelection();
 }
 function headingOf(grid) {
   if (G.agency) return G.agency;
@@ -1453,7 +1702,7 @@ function renderCompare(grid) {
   table.classList.toggle("compact", G.dense);
   table.replaceChildren(colgroup, el("thead", {}, r1, r2), el("tbody"));
   renderBody();
-  renderOverview(grid);
+  renderPanel(grid);
   renderChips(grid);
   renderLegend();
   // the default footer: the one-line legend and the provenance line; the cell counts and mark key in Reviewer mode
@@ -1537,6 +1786,13 @@ $("#compare-grid").addEventListener("mouseover", (e) => {
   setHover(tr, td.classList.contains("acct") ? null : td.dataset.col || null);
 });
 $("#grid-wrap").addEventListener("mouseleave", clearHover);
+// a figure: select it and show its source (SPEC 5.1); another figure moves the selection
+$("#compare-grid").addEventListener("click", (e) => {
+  const b = e.target.closest("td button.fig");
+  if (!b) return;
+  const td = b.closest("td"), tr = td.closest("tr");
+  select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy), st: td.dataset.stage });
+});
 
 // ---- state <-> URL (SPEC 5.7): every control and the expanded rows
 function compareURL() {
@@ -1562,6 +1818,8 @@ function compareURL() {
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
   if (open.size) q.set("open", [...open].sort().join(","));
+  if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}`);
+  if (SEL && SEL.kind === "acct") q.set("acct", SEL.id);
   return "?" + q.toString();
 }
 // a change the user made: a new history entry (Back undoes it); replace=true for typing and the first load
@@ -1611,7 +1869,11 @@ function settle(grid, want) {
     G.drafts = want.drafts !== "0";
     G.review = want.review === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
+    const f = String(want.fig || "").split("|");
+    SEL = f.length === 3 && /^\d{4}$/.test(f[1]) && STAGES4.includes(f[2]) ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2] }
+      : want.acct ? { kind: "acct", id: String(want.acct) } : null;
   }
+  SEL = validSel(grid, SEL);
   if (!ys.includes(G.fy)) G.fy = defaultYear(grid);
   if (!ys.includes(G.b)) G.b = G.fy;
   if (!ys.includes(G.a)) G.a = before(G.b, 2);
@@ -1829,11 +2091,23 @@ function closeMenu(returnFocus) {
 }
 $("#filter-btn").addEventListener("click", () => (openMenu && openMenu.panel.id === "filter-panel" ? closeMenu(true) : showMenu($("#filter-panel"), $("#filter-btn"))));
 $("#view-btn").addEventListener("click", () => (openMenu && openMenu.panel.id === "view-menu" ? closeMenu(true) : showMenu($("#view-menu"), $("#view-btn"))));
+// Esc: the first press closes an open menu, the next clears the selection (SPEC 5.3)
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && openMenu) { e.preventDefault(); closeMenu(true); }
+  if (e.key !== "Escape") return;
+  if (openMenu) { e.preventDefault(); closeMenu(true); }
+  else if (!$("#compare-view").hidden && SEL) { e.preventDefault(); clearSelection(true); }
 });
+let menuClosedBy = null;  // the press that closed a menu does only that
 document.addEventListener("mousedown", (e) => {
-  if (openMenu && !openMenu.panel.contains(e.target) && !openMenu.button.contains(e.target)) closeMenu(false);
+  menuClosedBy = null;
+  if (openMenu && !openMenu.panel.contains(e.target) && !openMenu.button.contains(e.target)) { closeMenu(false); menuClosedBy = e.target; }
+});
+// a click outside the grid, the panel and any menu clears the selection; controls do their own job (SPEC 5.3)
+document.addEventListener("click", (e) => {
+  if (!SEL || $("#compare-view").hidden || e.target === menuClosedBy) return;
+  const t = e.target;
+  if (!(t instanceof Element) || t.closest("#grid-wrap, #side-panel, .xpanel, button, a, input, select, label, textarea, [role=dialog]")) return;
+  clearSelection(false);
 });
 $("#share").addEventListener("click", async () => {
   const url = location.href, b = $("#share");
@@ -1894,7 +2168,7 @@ async function showAccountAt(id, at) {
 }
 
 $("#sc").addEventListener("change", () => {
-  G.sc = $("#sc").value; G.agency = ""; open = new Set();
+  G.sc = $("#sc").value; G.agency = ""; open = new Set(); SEL = null;
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
                 cols: G.reqcol ? "request" : "", status: G.status, search: G.search, review: G.review ? "1" : "",
                 minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0" }, false);
@@ -1929,7 +2203,7 @@ function route() {
   closeMenu(false);
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
-                                   "agency", "status", "search", "open", "minpct", "mink", "drafts", "review"].map((k) => [k, params.get(k)]));
+                                   "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);

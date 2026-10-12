@@ -237,3 +237,34 @@ Open items:
 
 1. Include committee drafts defaults to on (today's behaviour); the design shows the box unticked. Owner to confirm.
 2. UI-3 builds the basis, timing, earmark and Account type controls; their flags are already on since UI-0.
+
+## UI-2: Click-to-source and the account panel (2026-10-12)
+
+- SPEC.md: the two owner decisions from #58 added word for word (§4 CJS lead-stage bullet; §5.6 drafts on by default).
+- Figures: every cell holding an observation (a value, or a printed zero) is a `<button class="fig">` with aria-label
+  "Source for <account>, <stage>" (stage as `stageText`: "FY2026 enacted", "FY2025 enacted (full-year CR)", "FY2026 House").
+  It keeps `data-testid` amount / token-not-funded and `data-source`; the page link moved from `href` to `data-href`.
+  Confirmed absences and outside-life cells stay plain spans. Gated by `figure_source` (now in `BUILT`).
+- Panel modes (`renderPanel`): figure source > account > overview. `SEL` holds the selection; URL params
+  `fig=<id>|<fy>|<stage>` and `acct=<id>`. A selection not on file in the grid is dropped (`validSel`); changing
+  subcommittee clears it. Selection is marked with `data-sel=fig|row` and drawn with `!important` over hover and wash.
+- `web/documents.js` (served by both modes via `approps_web.ASSETS`): display-only short names keyed by
+  source_document_id, 72 entries. Built by hand from the ID patterns plus 12 explanatory-statement and draft entries
+  named from their URL and publication_date. A document with no entry shows its ID.
+- Account names open the account mode when `account_panel` is on and the row has its own page (not a printed
+  total); "Open account page" opens the One account view (until UI-5). Watch stays hidden (`watchlist` not built, UI-6).
+- Esc: closes an open menu first, then clears the selection, and focus goes back to the figure or name. A click outside
+  the grid, panel and menus clears; a press that closes a menu only closes it; controls never clear.
+
+Owner follow-ups on #59 (2026-10-12):
+- Draft documents are named as drafts ("Senate chair's draft explanatory statement, FY20xx (released <date>)",
+  "House subcommittee draft explanatory materials, FY2024 (released <date>)", "S. 3062, as introduced (Senate
+  chair's draft)"); every dated name says "released".
+- Names that open the account panel always carry the link style (navy #16325f, #9fb4d6 underline, 3px offset),
+  line names included (SPEC §4's #3a4150 for line names no longer applies to them).
+- SPEC.md §8: human-verified → "Verified by a person" (green, as auto-validated); §5.2: history bars start at zero.
+
+Open items:
+1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
+2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
+   "request column") that the data has no field for, so it is left out.

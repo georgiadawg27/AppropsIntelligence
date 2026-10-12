@@ -84,6 +84,7 @@ There are no tiles above the grid: the headline figures live in the overview pan
 - The units-and-basis label adds the status: "$ thousands · as printed · FY2027 not yet enacted · latest: House".
 - "Still moving" (the Status filter) = nothing enacted for that year yet, and at least one earlier stage of that year holds a figure.
 - If no stage has a title total, there is no lead stage. The change column shows nothing, and the overview says "No printed totals yet for FY<n>".
+- A subcommittee that prints no title total at all (CJS today) takes as its lead stage the furthest stage any of its rows holds a figure for. This only chooses which stage the change column compares. The overview still says "No printed title or bill total on file. The page never adds accounts into one." (owner, 2026-10-12, #58)
 
 ## 5. Interactions
 
@@ -102,7 +103,7 @@ There are no tiles above the grid: the headline figures live in the overview pan
 - Clicking another figure moves the selection.
 
 ### 5.2 Click an account name → account view in the panel
-The panel shows: the path (Title II › agency); the name; the headline in short form ($7.35B) with the exact $K and "FY2026 enacted, as printed"; the change vs the prior year when both are values; "FY2026 by stage, with sources" (each stage: amount, then document · page · bill link); "Enacted, FY2017–FY2026" bars (FY2025 CR bar lighter, gaps for non-values, never zero bars); Open account page; Watch (browser-only, section 9). The selected account row gets a light yellow fill (`#fff6dc`).
+The panel shows: the path (Title II › agency); the name; the headline in short form ($7.35B) with the exact $K and "FY2026 enacted, as printed"; the change vs the prior year when both are values; "FY2026 by stage, with sources" (each stage: amount, then document · page · bill link); "Enacted, FY2017–FY2026" bars (FY2025 CR bar lighter, gaps for non-values, never zero bars; the bars start at zero); Open account page; Watch (browser-only, section 9). The selected account row gets a light yellow fill (`#fff6dc`).
 
 ### 5.3 Panel modes and returning to the overview
 Precedence: figure source > account > overview. Each non-overview mode shows "‹ Title II overview" (or "‹ NIH overview" with an agency filter) and the hint "or click outside · Esc". The overview returns when you:
@@ -121,7 +122,7 @@ In a year without an Enacted stage, the three figures become: the lead stage's t
 Hovering a figure cell tints its whole row `#ecf1f9` (including the sticky name cell) and its whole column `#f1f5fb`; the crossing cell is `#d6e2f5`; the column's header turns `#dfe8f6`, bold, with a 2 px `#1f4e8c` underline. Hovering a name tints the row only. Section labels and header-only rows don't highlight. Leaving the grid clears it. Selection fills are drawn over hover.
 
 ### 5.6 Filter panel (the Filter button)
-A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `accounting-views-spec.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts, Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
+A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `accounting-views-spec.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts (on by default; draft columns are labelled "(draft)"; owner, 2026-10-12, #58), Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
 
 ### 5.7 View menu, Share, Export
 - **View**: Units ($ thousands · $ millions), Density (Comfortable · Compact), Columns (Change vs FY2026 request), Expand all / Collapse all, Reviewer mode.
@@ -165,7 +166,7 @@ IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 
 | rail | `#b9c6dc` | lines under an expanded agency |
 | tag: incl. mandatory | bg `#eeeaf8`, text `#4b3f72` | class tags (UI-0) |
 | tag: proposed | bg `#fdf1d8`, text `#7a4b00` | proposed-only accounts |
-| badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412` | verification status |
+| badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412`; human-verified → Verified by a person (green, as auto-validated) | verification status |
 
 Contrast: every text/background pair meets 4.5:1. Every control is a real `<button>`, `<a>`, `<input>` or `<select>`, keyboard-reachable with a visible focus ring; dialogs and the sheet close on Esc and return focus.
 

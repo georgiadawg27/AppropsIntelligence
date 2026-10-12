@@ -47,7 +47,8 @@ from subcommittees import display_name
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
 # the page's own files beside index.html (export_static.py copies the same ones): name -> content type
-ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8"}
+ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8",
+          "documents.js": "text/javascript; charset=utf-8"}
 FONTS = PAGE.parent / "fonts"                               # IBM Plex Sans, self-hosted (SIL OFL)
 
 
