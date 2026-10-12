@@ -369,6 +369,31 @@ class AccountingLayer(unittest.TestCase):
                         self.assertEqual(e["status"], "checked")      # a total's view is never computed here
         self.assertGreater(n, 150)
 
+    def test_mixed_without_mandatory_portion_counts_as_discretionary(self):
+        # ACCOUNTING_RULES: a mixed account counts its headline less its mandatory_portion; with none tagged, its
+        # headline (owner, 2026-10-12)
+        attrs = self.AC.attribute_index(self.data)
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if row["rollup"] or "views" not in cell:
+                continue
+            fy, stage = key.split("|", 1)
+            rec = self.AC.attribute_value(attrs, row["account"]["canonical_account_id"], int(fy), "budget_class", stage)
+            h = self.headline(cell)
+            if not rec or rec["value"] != "mixed" or any(c["component_type"] == "mandatory_portion"
+                                                         for c in self.by_obs.get(h["observation_id"], [])):
+                continue
+            for basis in ("discretionary", "discretionary_designated"):
+                for e in cell["views"][basis]:
+                    self.assertNotEqual(e["status"], "excluded")
+                    if e["status"] in ("computed", "checked"):
+                        self.assertTrue(e["reason"].startswith("mixed, no mandatory portion tagged: counted as "
+                                                               "discretionary (ACCOUNTING_RULES)"), e["reason"])
+                        n += 1
+                    else:
+                        self.assertNotIn("mixed", e["reason"])
+        self.assertGreater(n, 500)
+
     def test_totals_show_only_checked_views(self):
         for sc, row, key, cell in self.cells():
             if not row["rollup"] or "views" not in cell:

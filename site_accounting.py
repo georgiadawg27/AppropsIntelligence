@@ -53,6 +53,9 @@ PRINTED_BASIS = {
     "program_level": [("program_level", None)],
     "program_level_available_this_fiscal_year": [("program_level", "available")],
     "discretionary": [("discretionary_designated", None), ("discretionary", None)],
+    # owner, 2026-10-12: confirms discretionary only where every designated amount is emergency and nothing in scope
+    # is mandatory (only_emergency_designated); otherwise unused (Layer.unused)
+    "excluding_emergencies": [("discretionary", None)],
 }
 ATTR_FIELDS = AC.ATTRIBUTES
 
@@ -93,6 +96,7 @@ class Layer:
         self.outcome = {o["observation_id"]: o for o in outcomes if o["kind"] == "view"}
         # printed view lines by cell
         kinds = {c["component_id"]: c["kind"] for c in data.get("components", [])}
+        self.unused = set()     # (printed view observation, why it confirms no basis): excluding_emergencies
         self.printed = collections.defaultdict(list)
         for o in data["observations"]:
             if kinds.get(o.get("component") or "") == "view" and o["verification_status"] != "superseded":
@@ -129,10 +133,13 @@ class Layer:
                          "reason": "no component the view uses is tagged for this cell (outside the auto-tagged "
                                    "cells), so its components are not known"}
                 else:
-                    _, amount, used = got
+                    _, amount, used, note = got
                     e = {"amount": amount, "timing": timing, "status": "computed",
                          "component_ids": sorted(c["component_id"] for c in used)}
-                    e.update(self.confirm(printed, basis, timing, amount))
+                    e.update(self.confirm(printed, basis, timing, amount,
+                                          self.emergency_scope([(a["canonical_account_id"], h)], fy, stage)))
+                    if note:
+                        e["reason"] = f"{note}; {e['reason']}"
                 entries.append(e)
             avail, enacted = entries
             same = (avail["amount"], avail["status"]) == (enacted["amount"], enacted["status"])
@@ -143,12 +150,34 @@ class Layer:
         """[(printed view observation, measure_reconcile's outcome)] for the cell."""
         return [(o, self.outcome.get(o["observation_id"])) for o in self.printed[(account, fy, stage)]]
 
-    def confirm(self, printed, basis, timing, amount):
-        """status and reason for a computed amount from the cell's printed view lines."""
+    def emergency_scope(self, heads, fy, stage):
+        """None when an 'excluding emergencies' printed total over these (account, headline) pairs is the discretionary
+        view (every designated amount inside the headlines is emergency, and no account is mandatory, has a
+        mandatory_portion or has no budget_class on file); else why not."""
+        for m, x in heads:
+            cs = self.comps.get(x["observation_id"], [])
+            # a total carries no attributes: its own headline is judged by its components alone
+            rec = ({"value": None} if self.acc[m].get("total_scope")
+                   else AC.attribute_value(self.attrs, m, fy, "budget_class", stage))
+            if rec is None:
+                return f"{m} has no budget_class on file"
+            if rec["value"] == "mandatory" or any(c["component_type"] == "mandatory_portion" for c in cs):
+                return f"{m} holds mandatory budget authority"
+            if any(c["component_type"] == "designated" and c["in_headline"] == "TRUE"
+                   and c.get("designation") != "emergency" for c in cs):
+                return f"{m} has a designated amount that is not emergency"
+        return None
+
+    def confirm(self, printed, basis, timing, amount, emergency_bar=None):
+        """status and reason for a computed amount from the cell's printed view lines. emergency_bar: why an
+        'excluding emergencies' printed total cannot confirm discretionary here (None: it can)."""
         notes = []
         for o, out in printed:
             fits = [b for b, t in PRINTED_BASIS.get(o["component"], []) if b == basis and t in (None, timing)]
             if not fits:
+                continue
+            if o["component"] == "excluding_emergencies" and emergency_bar:
+                self.unused.add((o["observation_id"], emergency_bar))
                 continue
             vid = "VAL-MRV-" + M.suffix(o["observation_id"])
             if out and out["result"] == "pass" and o["amount"] == amount and vid in self.records:
@@ -209,6 +238,11 @@ class Layer:
             vid = "VAL-MRV-" + M.suffix(o["observation_id"])
             if vid not in self.records:
                 continue
+            if o["component"] == "excluding_emergencies":
+                bar = self.emergency_scope([(a["canonical_account_id"], h)] + mh, fy, stage)
+                if bar:
+                    self.unused.add((o["observation_id"], bar))
+                    continue
             for basis, timing in PRINTED_BASIS.get(o["component"], []):
                 heads = [h] + [x for _, x in mh]
                 if o["component"] == "discretionary":
