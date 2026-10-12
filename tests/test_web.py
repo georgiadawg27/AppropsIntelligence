@@ -180,7 +180,7 @@ class BrowserBase(WebTest):
         self.assertEqual(self.errors, [])
 
     def search_ui(self, q):
-        self.page.goto(self.base + "/")
+        self.page.goto(self.base + "/?view=account")
         self.page.fill("#q", q)
         self.page.click("button[type=submit]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden]), [data-testid=candidates]:not([hidden])")
@@ -338,7 +338,7 @@ class Browser(BrowserBase):
         conn.close()
         n = 0
         for acct in accts:
-            self.page.goto(self.base + "/")
+            self.page.goto(self.base + "/?view=account")
             self.page.evaluate(f"pick({acct!r}, 'test')")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
             # a confirmed absence's chip carries its evidence; a printed zero's says so instead
@@ -355,7 +355,7 @@ class NoPrintedTotalAndCoverage(BrowserBase):
     # the ASPR total the FY2023 House report doesn't print): nothing to add
 
     def open_account(self, acct):
-        self.page.goto(self.base + "/")
+        self.page.goto(self.base + "/?view=account")
         self.page.evaluate(f"pick({acct!r}, 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
 
@@ -397,11 +397,13 @@ class V33Page(BrowserBase):
 
     def test_header_names_no_pilot(self):
         self.page.goto(self.base + "/")
-        self.assertNotIn("CJS Title III pilot", self.page.inner_text("main"))
+        self.assertNotIn("CJS Title III pilot", self.page.inner_text("body"))
 
     def test_health_centers_indented_under_primary_care(self):
         self.compare("/?view=compare&sc=LHHS&grid=stages&fy=2024")
+        self.page.click("#view-btn")
         self.page.click("#expand-all")
+        self.page.keyboard.press("Escape")
         ids = self.page.eval_on_selector_all("#compare-grid tr[data-account]", "trs => trs.map(t => t.dataset.account)")
         i = ids.index("ACC-HHS-HRSA-PRIMARY-CARE")
         self.assertEqual(ids[i + 1], "ACC-HHS-HRSA-HEALTH-CENTERS")
@@ -421,7 +423,7 @@ class V33Page(BrowserBase):
         self.assertEqual(self.page.locator("[data-testid=stage-notes]").count(), 0)
 
     def open(self, acct):
-        self.page.goto(self.base + "/")
+        self.page.goto(self.base + "/?view=account")
         self.page.evaluate(f"pick({acct!r}, 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
 
@@ -442,7 +444,7 @@ class V33Page(BrowserBase):
         self.page.wait_for_function("document.querySelector('[data-testid=account-name]').textContent.includes('Environmental')")
 
     def test_note_on_the_account_grid(self):
-        self.page.goto(self.base + "/")
+        self.page.goto(self.base + "/?view=account")
         self.page.evaluate("pick('ACC-HHS-NIH-TOTAL', 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
         cell = self.page.locator("#grid tr[data-fy='2023'] td[data-stage='Senate Reported']")

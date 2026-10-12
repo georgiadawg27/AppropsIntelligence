@@ -4,40 +4,56 @@
 <meta name="approps-data" content="data/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Appropriations History</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&display=swap">
+<title>Appropriations Intelligence</title>
 <style>
+  /* IBM Plex Sans, self-hosted (web/fonts/, SIL OFL; reference/ui/explore-v1/SPEC.md section 7) */
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 400; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-latin-400-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 500; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-latin-600-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans"; font-weight: 700; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-latin-700-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans Condensed"; font-weight: 500; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-condensed-latin-500-normal.woff2") format("woff2"); }
+  @font-face { font-family: "IBM Plex Sans Condensed"; font-weight: 600; font-style: normal; font-display: swap; src: url("fonts/ibm-plex-sans-condensed-latin-600-normal.woff2") format("woff2"); }
   :root {
     --bg: #fbfbfa; --fg: #1d1d1b; --muted: #6b6b66; --line: #e2e1dc; --card: #ffffff;
     --accent: #1f5f8b; --former-bg: #eef5ea; --former-fg: #2f5d1e; --warn-bg: #fdf3e2; --warn-fg: #7a4b00;
     --missing-fg: #8a8a84; --missing-bg: repeating-linear-gradient(135deg, #f4f3ef 0 6px, #ecebe6 6px 12px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #161614; --fg: #ecebe6; --muted: #a09f99; --line: #2e2d2a; --card: #1e1e1b;
-      --accent: #7fb6e0; --former-bg: #1f2d1a; --former-fg: #b5d9a4; --warn-bg: #33270f; --warn-fg: #f0c878;
-      --missing-fg: #8d8c86; --missing-bg: repeating-linear-gradient(135deg, #232320 0 6px, #2a2a26 6px 12px);
-    }
+    /* Explore v1 tokens (SPEC section 8) */
+    --x-header: #16213a; --x-page: #f6f5f1; --x-surface: #ffffff; --x-ink: #1b1f27; --x-ink2: #3a4150; --x-muted: #5b6372;
+    --x-rule: #e8eaee; --x-rule-strong: #cfd3da; --x-input: #c9ced8; --x-accent: #1f4e8c; --x-accent-text: #16325f;
+    --x-up: #1d6b3a; --x-down: #b3471b; --x-band: #efede7; --x-wash: #f7f5ef; --x-rail: #b9c6dc;
+    --x-hov-row: #ecf1f9; --x-hov-col: #f1f5fb; --x-hov-cross: #d6e2f5; --x-hov-head: #dfe8f6;
+    --x-sel-fig: #fff1c2; --x-sel-fig-line: #d9a400; --x-sel-row: #fff6dc;
+    --x-cond: "IBM Plex Sans Condensed", "IBM Plex Sans", system-ui, sans-serif;
+    --x-pad: 12px;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--fg);
-         font: 14px/1.45 "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
-  main { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
-  h1 { font-size: 20px; margin: 0 0 4px; }
+  body { margin: 0; background: var(--x-page); color: var(--x-ink);
+         font: 14px/1.4 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif; }
+  :focus-visible { outline: 2px solid var(--x-accent); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+  /* ---- the header bar (both views) */
+  .appbar { background: var(--x-header); color: #fff; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; padding: 0 24px; min-height: 56px; }
+  .appbar .brand { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; padding: 14px 0; }
+  .appbar .tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .appbar .tabs button { appearance: none; background: none; border: 0; border-bottom: 3px solid transparent; border-radius: 0;
+                         color: #c9d2e3; font: inherit; padding: 16px 10px 13px; cursor: pointer; }
+  .appbar .tabs button[aria-selected=true] { color: #fff; border-bottom-color: #8fb3ec; font-weight: 600; }
+  .appbar .tabs button:focus-visible { outline-color: #8fb3ec; outline-offset: -4px; }
+  /* ---- One account (unchanged until UI-5) */
+  #account-view { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
+  #account-view h1 { font-size: 20px; margin: 0 0 4px; }
   .sub { color: var(--muted); margin: 0 0 20px; }
-  form { display: flex; gap: 8px; margin-bottom: 16px; }
-  input[type=search] { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border: 1px solid var(--line);
+  #account-view form { display: flex; gap: 8px; margin-bottom: 16px; }
+  #account-view input[type=search] { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border: 1px solid var(--x-input);
                        border-radius: 8px; background: var(--card); color: var(--fg); }
-  button { font: inherit; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--accent);
-           background: var(--accent); color: #fff; cursor: pointer; }
+  #account-view button { font: inherit; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--x-accent);
+           background: var(--x-accent); color: #fff; cursor: pointer; }
   .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-  .candidates button { display: block; width: 100%; text-align: left; margin-top: 8px; background: var(--card);
-                       color: var(--fg); border-color: var(--line); }
-  .candidates button:hover { border-color: var(--accent); }
+  .candidates button { display: block; width: 100%; text-align: left; margin-top: 8px; background: var(--card) !important;
+                       color: var(--fg) !important; border-color: var(--line) !important; }
+  .candidates button:hover { border-color: var(--accent) !important; }
   .candidates small { color: var(--muted); }
-  h2 { font-size: 18px; margin: 0 0 4px; }
+  #account-view h2 { font-size: 18px; margin: 0 0 4px; }
   .meta { color: var(--muted); font-size: 13px; }
   .note { border-radius: 8px; padding: 10px 12px; margin-top: 12px; font-size: 14px; }
   .former { background: var(--former-bg); color: var(--former-fg); }
@@ -48,10 +64,10 @@
   .na-chip { display: inline-block; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line);
              color: var(--muted); font-size: 12px; cursor: help; }
   .table-wrap { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; min-width: 760px; font-variant-numeric: tabular-nums; }
-  th, td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; text-align: left; }
-  th { font-size: 13px; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); }
-  td.fy { font-weight: 600; white-space: nowrap; }
+  #grid { border-collapse: collapse; width: 100%; min-width: 760px; font-variant-numeric: tabular-nums; }
+  #grid th, #grid td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; text-align: left; }
+  #grid th { font-size: 13px; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--card); }
+  #grid td.fy { font-weight: 600; white-space: nowrap; }
   .line + .line { margin-top: 6px; }
   .series { color: var(--muted); font-size: 12px; }
   .line.not-added { padding-left: 8px; border-left: 2px solid var(--line); }
@@ -65,156 +81,198 @@
   details.src[open] > summary::before { content: "\25BE "; }
   .cite a { color: var(--accent); text-decoration: none; }
   .flag { color: var(--warn-fg); font-size: 12px; }
-  td.empty { background: var(--missing-bg); }
+  #grid td.empty { background: var(--missing-bg); }
   #grid td.focus { outline: 2px solid var(--accent); outline-offset: -2px; }
   .error { color: #b3261e; }
-  .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--line); }
-  .tabs button { background: none; color: var(--muted); border: 0; border-bottom: 2px solid transparent;
-                 border-radius: 0; padding: 8px 12px; }
-  .tabs button[aria-selected=true] { color: var(--fg); border-bottom-color: var(--accent); font-weight: 600; }
-  .controls { display: grid; gap: 12px; }
-  .controls fieldset { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
-  .controls legend { font-weight: 600; font-size: 13px; color: var(--muted); padding: 0; margin-bottom: 4px; }
-  .controls label { white-space: nowrap; font-size: 14px; }
-  .controls select { font: inherit; padding: 4px 6px; border: 1px solid var(--line); border-radius: 6px;
-                     background: var(--card); color: var(--fg); }
   .linkish { background: none; border: 0; color: var(--accent); padding: 0; font-size: 13px; }
-  /* ---- Subcommittee grid (compare view): ported from the approved design reference
-     (grid_design_reference.html). Renamed where they clash with the account view:
-     .sub -> .subrow, .panel -> .tpanel, .row -> .trow, footer -> .gfooter. Light only, as designed. */
-  body.wide { background: #F6F6F3; color: #16181D; line-height: normal; }
-  body.wide main { max-width: none; padding: 12px 32px 0; }
-  body.wide main > #page-title, body.wide main > #page-sub, body.wide main > #freshness { display: none; }
-  #compare-view a { color: #1F4E8C; } #compare-view a:hover { color: #163A69; }
-  .grid { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 14px; }
-  .grid th { position: sticky; top: 0; z-index: 2; background: #FFFFFF; text-align: right; font-weight: 600; color: #3D4350;
-             padding: 9px 14px; border-bottom: 1px solid #C9CBC4; white-space: nowrap; vertical-align: bottom; }
-  .grid th.grp { text-align: center; font-weight: 700; color: #16181D; border-bottom: 1px solid #E3E4E0; padding: 11px 14px 6px; height: 20px; }
-  .grid thead tr + tr th { top: var(--head1, 38px); }   /* --head1: the first row's measured height (pinHeader) */
-  .grid th.acct { text-align: left; left: 0; z-index: 3; vertical-align: bottom; }
-  .grid th.delta { background: #FFFFFF; }
-  .grid th.delta.grp { color: #4A515E; }
-  .grid th.yb { background: #F8F9FC; }
-  .grid th, .grid td { border-left: 1px solid #E6E6E1; }
-  .grid th.acct, .grid td.acct { border-left: 0; border-right: 1px solid #D3D5CE; }
-  .grid th.gs, .grid td.gs { border-left: 2px solid #C4C6BE; }
-  .grid td { padding: 9px 14px; border-bottom: 1px solid #E9E9E4; text-align: right; white-space: nowrap; font-family: 'Public Sans', sans-serif;
-             font-variant-numeric: tabular-nums lining-nums; color: #16181D; vertical-align: top; }
-  .grid td.acct { position: sticky; left: 0; z-index: 1; background: #FFFFFF; text-align: left; white-space: normal;
-                  width: 360px; min-width: 360px; max-width: 360px; }
-  .grid th.acct { width: 360px; min-width: 360px; max-width: 360px; }
-  .grid td.delta { font-size: 13px; }
-  .grid td.yb { background: #FBFBFD; }
-  .grid tbody tr.child:nth-child(even) td { background-color: #F7F7F4; }
-  .grid tr.title td { background-color: #E6E7E1; font-weight: 700; border-bottom: 2px solid #9A9F94; }
-  .grid tr.agency td { font-weight: 600; background-color: #EFF0EA; border-top: 1px solid #B9BCB2; }
-  .grid tr.agency td.acct { background-color: #EFF0EA; }
-  .grid tr.group td { background: #F3F3EF; font-weight: 600; text-align: left; color: #3D4350; }
-  .grid tr.note td { color: #3D4350; font-size: 13px; text-align: left; border-bottom: 1px dashed #E3E4E0; white-space: normal; }
-  .grid tbody tr:hover > td { background-color: #E3ECF8 !important; }
-  .grid tbody tr.agency:hover > td, .grid tbody tr.title:hover > td, .grid tbody tr.group:hover > td { background-color: #D6E3F5 !important; }
-  /* design reference v2: rollups, the change block set apart, notes as a corner mark */
-  .grid tr.agency .namebox, .grid tr.title .namebox { padding-right: 54px; }
-  .grid tr.agency .tag.total, .grid tr.title .tag.total { position: absolute; right: 10px; top: 11px; margin: 0; }
-  .tag.total { background: transparent; color: #5D6472; border: 1px solid #C9CBC4; text-transform: uppercase; font-size: 10px;
-               letter-spacing: .07em; font-weight: 600; padding: 0 5px; }
-  .grid tr.child td.acct.lvl1, .grid tr.child td.acct.lvl2, .grid tr.note td.acct {
-    background-image: linear-gradient(#C4C6BE, #C4C6BE); background-size: 2px 100%; background-position: 27px 0; background-repeat: no-repeat; }
-  .grid tr.last td { border-bottom: 1px solid #B9BCB2; }
-  .grid th.gap, .grid td.gap, .grid tbody tr:hover > td.gap, .grid tbody tr.child:nth-child(even) > td.gap { background: #F6F6F3 !important; border-top: 0; border-bottom: 0 !important; border-left: 1px solid #C9CBC4 !important;
-                               width: 14px; min-width: 14px; max-width: 14px; padding: 0; }
-  .grid th.gap + th, .grid td.gap + td { border-left: 1px solid #C9CBC4; }
-  td.num { position: relative; }
+
+  /* ---- Explore (reference/ui/explore-v1/SPEC.md) */
+  .xcontrols { background: var(--x-surface); border-bottom: 1px solid #e3e5ea; padding: 14px 24px; position: relative; }
+  .xrow { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .xfield { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--x-muted); font-weight: 500; }
+  .xfield.grow { flex: 1 1 260px; min-width: 0; }
+  .xfield.sc { flex: 0 1 230px; }
+  .xfield.fy { flex: 0 1 120px; }
+  .xfield .pair { display: flex; gap: 6px; align-items: center; color: var(--x-ink2); font-size: 13px; }
+  .xcontrols input[type=search], .xcontrols select, .xpanel select {
+    height: 44px; border: 1px solid var(--x-input); border-radius: 8px; padding: 0 10px; font: inherit; font-size: 15px;
+    color: var(--x-ink); background: var(--x-surface); min-width: 0; }
+  .xcontrols input[type=search] { padding: 0 12px; width: 100%; }
+  .xcontrols select:disabled { color: var(--x-muted); background: #f4f4f2; }
+  .seg { display: flex; border: 1px solid var(--x-input); border-radius: 8px; overflow: hidden; height: 44px; }
+  .seg button { appearance: none; border: 0; border-right: 1px solid var(--x-input); padding: 0 14px; font: inherit; font-size: 14px;
+                cursor: pointer; background: var(--x-surface); color: var(--x-ink); font-weight: 400; border-radius: 0; }
+  .seg button:last-child { border-right: 0; }
+  .seg button.on { background: var(--x-accent); color: #fff; font-weight: 600; }
+  .seg button:focus-visible { outline-offset: -3px; outline-color: #8fb3ec; }
+  .xbtn { appearance: none; height: 40px; padding: 0 14px; border: 1px solid var(--x-input); background: var(--x-surface); border-radius: 8px;
+          font: inherit; color: var(--x-ink); cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .xbtn.primary { border: 0; background: var(--x-accent); color: #fff; font-weight: 600; padding: 0 16px; }
+  .xbtn[aria-disabled=true] { background: #8ea6c8; cursor: not-allowed; }
+  .xbtn.tall { height: 44px; font-size: 15px; padding: 0 16px; }
+  .xbtn.active { border-color: var(--x-accent); }
+  .badge { background: var(--x-accent); color: #fff; border-radius: 10px; padding: 0 7px; font-size: 12px; line-height: 20px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; font-size: 13px; }
+  .chips .lbl { color: var(--x-muted); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; background: #e9eff9; color: var(--x-accent-text); border: 1px solid #c3d3ee;
+          border-radius: 16px; padding: 3px 4px 3px 12px; }
+  .chip button { border: 0; background: transparent; color: var(--x-accent-text); width: 26px; height: 26px; border-radius: 13px; cursor: pointer;
+                 font: inherit; font-size: 15px; padding: 0; }
+  .textlink { border: 0; background: transparent; color: var(--x-accent); text-decoration: underline; font: inherit; font-size: 13px; cursor: pointer; padding: 6px; }
+  .xpanel { position: absolute; z-index: 20; background: var(--x-surface); border: 1px solid #d5d9e1; border-radius: 12px;
+            box-shadow: 0 12px 32px rgba(22,33,58,0.18); padding: 20px; box-sizing: border-box; }
+  #filter-panel { top: 86px; right: 24px; width: 440px; max-width: calc(100% - 48px); max-height: 700px; overflow: auto; }
+  .xpanel .phead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .xpanel .ptitle { font-weight: 600; font-size: 16px; }
+  .xpanel .x { border: 1px solid #d5d9e1; background: var(--x-surface); width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font: inherit; padding: 0; }
+  .xpanel label.block { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 500; color: var(--x-ink2); margin-bottom: 16px; }
+  .xpanel .glabel { font-size: 13px; font-weight: 500; color: var(--x-ink2); margin-bottom: 6px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .pill { min-height: 36px; padding: 0 12px; border-radius: 18px; font: inherit; font-size: 13px; cursor: pointer;
+          border: 1px solid var(--x-input); background: var(--x-surface); color: var(--x-ink); }
+  .pill.on { border-color: var(--x-accent); background: var(--x-accent); color: #fff; }
+  .pfoot { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e3e5ea; }
+  .pfoot .xbtn { height: 44px; }
+  #view-menu { top: 48px; right: 0; width: 300px; padding: 16px; max-height: 70vh; overflow: auto; }
+  #view-menu .glabel { font-size: 12px; color: var(--x-muted); }
+  #view-menu .pills { margin-bottom: 14px; }
+  #view-menu .sep { border-top: 1px solid #e3e5ea; margin-top: 4px; padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .chk { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--x-ink2); min-height: 32px; }
+  .chk input { width: 18px; height: 18px; margin: 0; }
+  #view-menu .xbtn { width: 100%; justify-content: center; }
+  .explore { padding: 20px 24px 28px; position: relative; }
+  .titlerow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
+  .eyebrow { font-family: var(--x-cond); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--x-muted); font-weight: 500; }
+  #grid-title { margin: 2px 0 0; font-size: 24px; letter-spacing: -0.015em; font-weight: 600; }
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; position: relative; }
+  .unitlabel { font-size: 13px; color: var(--x-ink2); background: #ebe9e2; border-radius: 6px; padding: 5px 10px; }
+  .workspace { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+  .tablebox { flex: 999 1 600px; min-width: 0; height: calc(100vh - 380px); min-height: 420px; overflow: auto; background: var(--x-surface);
+              border: 1px solid #dfe2e8; border-radius: 10px; }
+  .sidepanel { flex: 1 1 340px; min-width: 0; height: calc(100vh - 380px); min-height: 420px; overflow: auto; background: var(--x-surface);
+               border: 1px solid #dfe2e8; border-radius: 10px; padding: 18px 20px 20px; }
+  @media (max-width: 979px) { .sidepanel { height: auto; min-height: 0; } }
+  .gfooter { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--x-muted); }
+  .gfooter.small { font-size: 11px; margin-top: 4px; }
+  /* the grid */
+  .grid { border-collapse: separate; border-spacing: 0; width: 100%; table-layout: fixed; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .grid th { position: sticky; top: 0; z-index: 2; background: #fbfbfa; text-align: right; font-weight: 400; font-size: 13px; color: var(--x-ink2);
+             padding: 4px 12px 10px; white-space: normal; vertical-align: bottom; }
+  .grid thead tr:first-child th { padding: 10px 12px 2px; font-weight: 600; color: var(--x-ink); }
+  .grid thead tr:first-child th.grp { text-align: center; }
+  .grid thead tr:first-child th.grp.right, .grid thead tr:first-child th.delta { text-align: right; }
+  .grid thead tr + tr th { top: var(--head1, 30px); border-bottom: 1px solid #d5d9e1; }
+  .grid th.acct { text-align: left; left: 0; z-index: 4; border-right: 1px solid #e3e5ea; font-weight: 600; color: var(--x-ink);
+                  padding: 4px 12px 10px 16px; border-bottom: 1px solid #d5d9e1; }
+  .grid th.gs, .grid td.gs { border-left: 1px solid var(--x-rule); }
+  .grid th.delta.first, .grid td.delta.first { border-left: 1px solid var(--x-rule); }
+  .grid th.lead { color: var(--x-ink); font-weight: 600; background: var(--x-wash); }
+  .grid td { padding: var(--x-pad) 12px; border-bottom: 1px solid var(--x-rule); text-align: right; white-space: nowrap; vertical-align: top;
+             background: var(--x-surface); color: var(--x-ink); font-weight: 500; }
+  .grid.compact { --x-pad: 6px; }
+  .grid td.acct { position: sticky; left: 0; z-index: 1; text-align: left; white-space: normal; border-right: 1px solid var(--x-rule);
+                  padding-left: 8px; font-weight: 500; }
+  .grid td.lead { background: var(--x-wash); }
+  .grid td.num { position: relative; }
+  .grid td.delta { line-height: 1.25; }
+  .pct { display: block; font-size: 12px; }
+  .up { color: var(--x-up); } .down { color: var(--x-down); } .flat { color: var(--x-muted); }
+  /* the total band */
+  .grid tr.title td { background: var(--x-band); font-weight: 700; border-bottom: 1px solid var(--x-rule-strong); }
+  .grid tr.title td.acct { padding-left: 16px; }
+  .grid tr.title td.delta { font-weight: 600; }
+  /* section labels */
+  .grid tr.section td { background: var(--x-page); font-family: var(--x-cond); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+                        color: var(--x-muted); font-weight: 600; text-align: left; padding-top: calc(var(--x-pad) + 10px); }
+  .grid tr.section td.acct { padding-left: 16px; }
+  /* agency rows: collapsed 14/500; expanded 14/600 with the bar, a rule and gap above, and the note */
+  .grid tr.agency.open td, .grid tr.group.open td { font-weight: 600; border-top: 6px solid var(--x-surface); box-shadow: inset 0 1px 0 var(--x-rule-strong);
+                                                     border-bottom-color: var(--x-rule-strong); }
+  .grid tr.agency.open td.acct, .grid tr.group.open td.acct { box-shadow: inset 4px 0 0 var(--x-accent), inset 0 1px 0 var(--x-rule-strong); }
+  .grid tr.agency.open td.delta, .grid tr.title td.delta { font-weight: 600; }
+  .grid tr.child.top td.acct { padding-left: 40px; }
+  .rownote { flex-basis: 100%; font-size: 12px; font-weight: 400; color: var(--x-muted); }
+  /* lines under an expanded agency: on the rail, 13/400, subordinate */
+  .grid tr.child td { font-size: 13px; font-weight: 400; color: #4a5160; border-bottom-color: #f0f1f4; }
+  .grid tr.child td.acct, .grid tr.subgroup td.acct, .grid tr.note td.acct {
+    background-image: linear-gradient(var(--x-rail), var(--x-rail)); background-size: 2px 100%; background-position: 30px 0; background-repeat: no-repeat;
+    padding-left: 52px; color: var(--x-ink2); }
+  .grid tr.child td.acct.lvl2 { padding-left: 68px; }
+  .grid tr.child.loose td.acct { background-image: none; padding-left: 40px; }
+  .grid tr.subgroup td { background: #fafaf7; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--x-muted);
+                         font-weight: 600; text-align: left; border-bottom-color: #f0f1f4; }
+  .grid tr.note td { color: var(--x-ink2); font-size: 13px; text-align: left; white-space: normal; font-weight: 400; border-bottom-color: #f0f1f4; }
+  /* hover crosshair (SPEC 5.5): rules written by the page for the hovered row / column */
+  #compare-grid tbody tr[data-hov] > td { background-color: var(--x-hov-row); }
+  .namecell { display: flex; align-items: center; gap: 4px; min-width: 0; }
+  .namebox { min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; line-height: 1.35; }
+  .namebox .linkish { font: inherit; font-size: inherit; color: inherit; text-decoration: none; cursor: pointer; text-align: left; padding: 0; }
+  .namebox .linkish:hover { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  .abbr { font-size: 12px; color: var(--x-muted); font-weight: 400; }
+  .chev { appearance: none; flex: 0 0 auto; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--x-muted);
+          cursor: pointer; font: inherit; font-size: 12px; padding: 0; }
+  .spacer { display: inline-block; width: 28px; flex: 0 0 28px; }
+  .tag { display: inline-block; font-size: 11px; font-weight: 400; padding: 1px 6px; border-radius: 4px; white-space: nowrap; letter-spacing: 0; text-transform: none; }
+  .tag.prop { background: #fdf1d8; color: #7a4b00; }
+  .tag.inside { background: #eef0f3; color: var(--x-ink2); }
+  .move { flex-basis: 100%; font-size: 12px; color: #7a4b00; font-weight: 400; }
+  /* a figure: one click from its source; a faint dotted underline */
+  .grid td.num a { color: inherit; text-decoration: underline dotted #b9c3d3; text-underline-offset: 4px; }
+  .grid td.num a:hover { color: var(--x-accent-text); text-decoration-color: var(--x-accent); }
+  .tok { display: inline-block; font-size: 12px; color: var(--x-muted); font-weight: 400; cursor: help; }
+  .tok.dash { font-size: inherit; }
+  .tok.miss { font-style: italic; }
+  .grid td.num a.tok { color: var(--x-muted); }
   button.nm { position: absolute; top: 0; right: 0; appearance: none; padding: 0; margin: 0; background: none; border: 0; border-radius: 0;
               border-top: 9px solid #8A93A3; border-left: 9px solid transparent; width: 0; height: 0; min-height: 0; cursor: pointer; }
-  button.nm:hover, button.nm:focus-visible { border-top-color: #1F4E8C; outline: none; }
-  /* a note in the top-left corner: the documents disagree about this figure (pending review), or the law gives it in two divisions */
-  span.cn { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; cursor: help; }
-  a.cn { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; }
-  .tok.blank { min-width: 14px; border: 1px dashed #C9CDD4; background: transparent; }
-  .cn-legend { display: inline-block; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; vertical-align: 2px; margin-right: 4px; }
-  .nm-legend { display: inline-block; width: 0; height: 0; border-top: 9px solid #8A93A3; border-left: 9px solid transparent; vertical-align: 2px; margin-right: 4px; }
-  .namecell { display: flex; align-items: flex-start; gap: 6px; }
-  .namebox { flex: 1; min-width: 0; line-height: 1.35; }
-  .namebox .linkish { font: inherit; color: inherit !important; text-decoration: none; cursor: pointer; }
-  .namebox .linkish:hover { color: #1F4E8C !important; text-decoration: underline; }
-  .lvl1 { padding-left: 38px !important; }
-  .lvl2 { padding-left: 58px !important; color: #4A515E; }
-  .num a { color: inherit !important; text-decoration: none; border-bottom: 1px dotted transparent; }
-  .num a:hover { border-bottom-color: #1F4E8C; color: #1F4E8C !important; }
-  .tok { display: inline-block; font-size: 12px; color: #5D6472; letter-spacing: .02em; cursor: help; }
-  .tok.miss { color: #8A4B08; }
-  .zero { color: #5D6472 !important; }
+  button.nm:hover, button.nm:focus-visible { border-top-color: var(--x-accent); }
+  button.nm:focus-visible { outline: 2px solid var(--x-accent); outline-offset: 1px; }
+  span.cn, a.cn { position: absolute; top: 0; left: 0; width: 0; height: 0; border-top: 9px solid #B7791F; border-right: 9px solid transparent; cursor: help; }
+  .cn-legend, .nm-legend { display: inline-block; width: 0; height: 0; vertical-align: 2px; margin-right: 4px; }
+  .cn-legend { border-top: 9px solid #B7791F; border-right: 9px solid transparent; }
+  .nm-legend { border-top: 9px solid #8A93A3; border-left: 9px solid transparent; }
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 6px; vertical-align: middle; }
   .dot.flag { background: #B7791F; }
   .dot.pend { background: transparent; box-shadow: inset 0 0 0 1.5px #B7791F; }
   .dot.unv { border: 1.5px solid #8A93A3; width: 5px; height: 5px; }
   .dot.res { background: #C9CED6; width: 5px; height: 5px; }
   .dot.rule { border: 1.5px dashed #5D6472; width: 5px; height: 5px; }
-  .up { color: #1A7339; } .down { color: #A8460C; } .flat { color: #5D6472; }
-  .pct { display: block; font-size: 12px; }
-  .chev { appearance: none; border: 0; background: none; padding: 0; width: 20px; height: 20px; flex: 0 0 20px; cursor: pointer;
-          color: #4A515E; font: inherit; line-height: 18px; border-radius: 0; }
-  .chev:focus-visible { outline: 2px solid #1F4E8C; outline-offset: 1px; }
-  .spacer { display: inline-block; width: 20px; flex: 0 0 20px; }
-  .tag { display: inline-block; font-size: 11px; font-weight: 500; padding: 1px 6px; border-radius: 3px; margin-left: 6px; vertical-align: 1px;
-         letter-spacing: .02em; white-space: nowrap; }
-  .tag.prop { background: #FFF1E0; color: #8A4B08; }
-  .tag.inside { background: #EDEFF3; color: #4A515E; }
-  .move { display: block; font-size: 12px; color: #8A4B08; font-weight: 400; margin-top: 2px; }
-  .abbr { color: #5D6472; font-weight: 400; font-size: 13px; margin-left: 6px; }
-  .seg { display: inline-flex; border: 1px solid #CFD2CB; border-radius: 6px; overflow: hidden; }
-  .seg button { appearance: none; border: 0; border-radius: 0; background: #FFFFFF; padding: 8px 14px; font: inherit; font-size: 13px;
-                color: #2B2F36; cursor: pointer; min-height: 36px; }
-  .seg button + button { border-left: 1px solid #CFD2CB; }
-  .seg button.on { background: #1F4E8C; color: #FFFFFF; }
-  .btn { appearance: none; border: 1px solid #CFD2CB; background: #FFFFFF; border-radius: 6px; padding: 8px 12px; font: inherit; font-size: 13px;
-         color: #2B2F36; cursor: pointer; min-height: 36px; }
-  .btn:hover, .seg button:hover { background: #F2F5FA; }
-  .seg button.on:hover { background: #163A69; }
-  .seg button:focus-visible, .btn:focus-visible, #compare-view select:focus-visible, #compare-view input:focus-visible {
-    outline: 2px solid #1F4E8C; outline-offset: 1px; }
-  #compare-view select { font: inherit; font-size: 13px; padding: 7px 10px; border: 1px solid #CFD2CB; border-radius: 6px; background: #FFFFFF;
-                         color: #16181D; min-height: 36px; }
-  .field { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: #4A515E; }
-  .chk { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: #2B2F36; min-height: 36px; padding-right: 6px; }
-  .gwrap { padding: 16px 0 48px; box-sizing: border-box; }
-  .ginner { max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
-  .gheader { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px; }
-  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #6A7180; }
-  .gheader h1 { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.01em; }
-  .gheader h1 .titlename { font-weight: 400; color: #4A515E; }
-  .subline { font-size: 13px; color: #4A515E; }
-  .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-  .tile { background: #FFFFFF; border: 1px solid #E3E4E0; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
-  .tile .l { font-size: 12px; color: #4A515E; } .tile .v { font-size: 24px; font-weight: 600; font-variant-numeric: tabular-nums lining-nums; }
-  .tile .s { font-size: 12px; }
-  .tpanel { display: flex; flex-direction: column; gap: 10px; background: #FFFFFF; border: 1px solid #E3E4E0; border-radius: 8px; padding: 12px; }
-  .trow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-  .subrow { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; border-top: 1px solid #EDEDE9; padding-top: 10px; }
-  #compare-view [hidden] { display: none !important; }
-  .subrow .hint { font-size: 12px; color: #6A7180; padding-bottom: 10px; }
-  .tablebox { background: #FFFFFF; border: 1px solid #E3E4E0; border-radius: 8px; overflow: auto; height: calc(100vh - 120px); min-height: 480px; }
-  .gfooter { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: 12px; color: #4A515E; padding: 4px 2px; }
-  .gfooter.small { font-size: 11px; color: #6A7180; }
-  .stage-note-mark { color: #1F4E8C; cursor: help; font-weight: 600; }
-  @media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } body.wide main { padding: 12px 16px 0; } }
-  @media (max-width: 600px) { .tiles { grid-template-columns: minmax(0, 1fr); } .tile .v { font-size: clamp(18px, 6vw, 24px); } }
+  .stage-note-mark { color: var(--x-accent); cursor: help; font-weight: 600; }
+  /* the overview panel (SPEC 5.4) */
+  .ovk { font-family: var(--x-cond); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--x-muted); font-weight: 600; }
+  .ovk.sec { margin: 18px 0 4px; }
+  .ovtitle { font-size: 19px; font-weight: 600; letter-spacing: -0.01em; margin-top: 2px; }
+  .ovhint { font-size: 12px; color: var(--x-muted); margin-top: 2px; }
+  .ovtiles { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .ovtile { background: #f8f8f6; border: 1px solid var(--x-rule); border-radius: 8px; padding: 10px 12px; }
+  .ovtile .l, .ovtile .s { font-size: 12px; color: var(--x-muted); font-variant-numeric: tabular-nums; }
+  .ovtile .v { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 1px 0; font-variant-numeric: tabular-nums; }
+  .ovline { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid #eef0f3; font-variant-numeric: tabular-nums; }
+  .ovline .k { color: var(--x-ink2); min-width: 0; }
+  .ovline .val { font-weight: 600; flex: 0 0 auto; }
+  .ovline .val.state { font-weight: 400; color: var(--x-muted); font-size: 13px; }
+  .ovline.mover .k { font-size: 13px; color: var(--x-ink); }
+  .ovline.mover .val { font-size: 13px; }
+  .ovline.mover .val small { font-size: 12px; font-weight: 400; }
+  .ovtext { font-size: 13px; }
+  .ovtext a { color: var(--x-accent); }
+  .ovsmall { font-size: 12px; color: var(--x-muted); margin-top: 2px; }
 </style>
 </head>
 <body>
-<main>
+<header class="appbar">
+  <div class="brand">Appropriations Intelligence</div>
+  <nav class="tabs" role="tablist" aria-label="Main">
+    <button type="button" role="tab" id="tab-compare" aria-selected="true" data-view="compare">Explore</button>
+    <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">One account</button>
+  </nav>
+</header>
+<noscript><p class="error" style="padding:16px 24px">This page needs JavaScript to show the grid and account histories.</p></noscript>
+
+<main id="account-view" hidden>
   <h1 id="page-title">Appropriations history</h1>
   <p class="sub" id="page-sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
   <p class="sub" id="freshness" hidden data-testid="freshness"></p>
-  <noscript><p class="error">This page needs JavaScript to search and show account histories.</p></noscript>
-
-  <div class="tabs" role="tablist">
-    <button type="button" role="tab" id="tab-account" aria-selected="true" data-view="account">One account</button>
-    <button type="button" role="tab" id="tab-compare" aria-selected="false" data-view="compare">Subcommittee grid</button>
-  </div>
-
-  <div id="account-view">
   <form id="search-form" role="search">
     <input id="q" type="search" name="q" autocomplete="off" aria-label="Account name"
            placeholder="Account name, e.g. NASA Science, Deep Space Exploration Systems, Office of Inspector General">
@@ -237,63 +295,62 @@
     </div>
     <div class="panel" id="sources"></div>
   </section>
-  </div>
-
-  <div id="compare-view" hidden data-testid="compare-view"><div class="gwrap"><div class="ginner">
-    <header class="gheader">
-      <div style="display:flex;flex-direction:column;gap:4px">
-        <div class="eyebrow">Appropriations history &middot; subcommittee view</div>
-        <h1 id="grid-title" data-testid="grid-title"></h1>
-        <div class="subline" id="grid-subline" data-testid="grid-subline"></div>
-      </div>
-      <label class="field">Subcommittee<select id="sc" data-testid="sc"></select></label>
-    </header>
-    <div id="compare-message" role="status"></div>
-    <section id="compare-result" hidden data-testid="compare-result" style="display:flex;flex-direction:column;gap:18px">
-      <section class="tiles" id="tiles" data-testid="tiles"></section>
-      <div class="tpanel" role="toolbar" aria-label="Grid controls">
-        <div class="trow" style="justify-content:space-between">
-          <div class="trow">
-            <div class="seg" role="group" aria-label="View" id="view-switch" data-testid="view-switch">
-              <button type="button" data-grid="stages">Compare stages</button><button type="button" data-grid="years">Compare two years</button><button type="button" data-grid="history">Enacted history</button>
-            </div>
-            <div class="seg" role="group" aria-label="Units" id="units" data-testid="units">
-              <button type="button" data-units="k">$ thousands</button><button type="button" data-units="m">$ millions</button>
-            </div>
-            <button type="button" class="btn" id="expand-all" data-testid="expand-all">Expand all</button>
-            <button type="button" class="btn" id="collapse-all" data-testid="collapse-all">Collapse all</button>
-          </div>
-          <label class="chk"><input type="checkbox" id="reviewer" data-testid="reviewer"> Reviewer mode <span style="color:#6A7180">(verification marks)</span></label>
-        </div>
-        <div class="subrow" id="sub-controls"></div>
-        <div class="subrow" id="show-controls" data-testid="accounts-shown" style="align-items:center"></div>
-      </div>
-      <div class="tablebox" id="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table></div>
-      <footer class="gfooter" id="grid-legend" data-testid="legend">
-        <span><b style="color:#16181D">1,234</b> printed figure (click for source page)</span>
-        <span><b style="color:#5D6472">0</b> printed as zero</span>
-        <span><span class="tok">&mdash;</span> not funded / no such line</span>
-        <span><span class="tok">no printed total</span> the document prints the account, not this line</span>
-        <span><span class="tok">n/c</span> not yet collected</span>
-        <span><span class="tok blank">&nbsp;</span> blank: outside the account's life (before it was created, after it ended, or a stage it never had)</span>
-        <span><span class="tok miss">?</span> document on file, figure not yet extracted</span>
-        <span><span class="tok">n/e</span> not yet enacted</span>
-        <span><span class="tok">no figure</span> no figure for this year (a proposed account before its first request, or a program the document funds inside another account)</span>
-        <span><span class="tok">n/r</span> not reported: the committee never reported a bill or released a draft this year</span>
-        <span><span class="up">+</span> / <span class="down">&minus;</span> change, with % of the earlier figure (shown apart from the figures)</span>
-        <span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span>
-        <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span>
-        <span><span class="tag total" style="margin-left:0">total</span> printed total of the accounts indented below it, not added again</span>
-        <span id="rev-legend"><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot rule"></span> resolved by rule: bill or law text controls <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></span>
-      </footer>
-      <footer class="gfooter" id="grid-counts" data-testid="state-counts"></footer>
-      <footer class="gfooter" id="grid-notes"></footer>
-      <footer class="gfooter small" id="grid-provenance" data-testid="provenance"></footer>
-    </section>
-  </div></div></div>
 </main>
 
+<div id="compare-view" data-testid="compare-view">
+  <section class="xcontrols" aria-label="Controls" id="controls">
+    <div class="xrow">
+      <label class="xfield grow" id="search-field">Search
+        <input type="search" id="search" data-testid="search" autocomplete="off" placeholder="Account, agency or program">
+      </label>
+      <label class="xfield sc">Subcommittee<select id="sc" data-testid="sc"></select></label>
+      <div class="xfield fy" id="fy-field"></div>
+      <div class="xfield">Compare
+        <div class="seg" role="group" aria-label="Compare" id="view-switch" data-testid="view-switch">
+          <button type="button" data-grid="stages">Stages</button><button type="button" data-grid="years">Two years</button><button type="button" data-grid="history">Enacted history</button>
+        </div>
+      </div>
+      <button type="button" class="xbtn tall" id="filter-btn" data-testid="filter-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="filter-panel">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4h12M4.5 8h7M7 12h2"></path></svg>
+        Filter <span class="badge" id="filter-badge" data-testid="filter-badge" hidden></span>
+      </button>
+    </div>
+    <div class="chips" id="chips" data-testid="chips" hidden></div>
+    <div class="xpanel" id="filter-panel" role="dialog" aria-modal="false" aria-labelledby="filter-title" data-testid="filter-panel" hidden></div>
+  </section>
+
+  <main class="explore">
+    <div id="compare-message" role="status"></div>
+    <section id="compare-result" hidden data-testid="compare-result">
+      <div class="titlerow">
+        <div style="min-width:0">
+          <div class="eyebrow" id="eyebrow" data-testid="eyebrow"></div>
+          <h1 id="grid-title" data-testid="grid-title"></h1>
+        </div>
+        <div class="tools">
+          <span class="unitlabel" id="grid-subline" data-testid="grid-subline"></span>
+          <button type="button" class="xbtn" id="view-btn" data-testid="view-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="view-menu">View &#9662;</button>
+          <button type="button" class="xbtn" id="share" data-testid="share">Share</button>
+          <button type="button" class="xbtn primary" id="export" data-testid="export" aria-disabled="true" title="Coming in UI-4">Export</button>
+          <div class="xpanel" id="view-menu" role="dialog" aria-label="View options" data-testid="view-menu" hidden></div>
+        </div>
+      </div>
+      <div class="workspace">
+        <div class="tablebox" id="grid-wrap" data-testid="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table></div>
+        <aside class="sidepanel" id="side-panel" data-testid="side-panel" aria-label="Overview"></aside>
+      </div>
+      <footer class="gfooter" id="grid-legend" data-testid="legend"></footer>
+      <footer class="gfooter small" id="mark-legend" data-testid="mark-legend"><span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span> <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span></footer>
+      <footer class="gfooter small" id="rev-legend" hidden><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot rule"></span> resolved by rule: bill or law text controls <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></footer>
+      <footer class="gfooter small" id="grid-counts" data-testid="state-counts"></footer>
+      <footer class="gfooter small" id="grid-notes"></footer>
+      <footer class="gfooter small" id="grid-provenance" data-testid="provenance"></footer>
+    </section>
+  </main>
+</div>
+
 <script src="match.js"></script>
+<script src="abbreviations.js"></script>
 <script>
 "use strict";
 const $ = (sel) => document.querySelector(sel);
@@ -618,11 +675,10 @@ function renderSources(h) {
   box.append(ul);
 }
 
-// ---- Subcommittee grid: every account of a subcommittee side by side.
-// The cells are approps_store.subcommittee_grid() -- each account's own
-// history_grid() -- so nothing here decides a state, a figure or a total; this
-// only picks the columns for a view, lays the rows out, and works out the
-// differences between figures it shows (GridMath).
+// ---- Explore: every account of a subcommittee side by side (reference/ui/explore-v1/SPEC.md).
+// The cells are approps_store.subcommittee_grid() -- each account's own history_grid() -- so nothing
+// here decides a state, a figure or a total; this only picks the columns for a view, lays the rows
+// out, filters which rows show, and works out differences between two figures it shows (GridMath).
 
 // GRID-MATH-BEGIN -- the change arithmetic, kept apart so tests run it under node
 const GridMath = {
@@ -653,37 +709,58 @@ const GridMath = {
     return (pct > 0 ? "+" : "−") + s + "%";
   },
   direction(delta) { return delta > 0 ? "up" : delta < 0 ? "down" : ""; },
+  // a figure in short form, dollars in: $1.55T, $47.29B, $128.0M
+  short(amount) {
+    const a = Math.abs(amount), s = amount < 0 ? "−" : "";
+    if (a >= 1e12) return s + "$" + (a / 1e12).toFixed(2) + "T";
+    if (a >= 1e9) return s + "$" + (a / 1e9).toFixed(2) + "B";
+    return s + "$" + (a / 1e6).toFixed(1) + "M";
+  },
+  signedShort(delta) { return (delta >= 0 ? "+" : "−") + GridMath.short(Math.abs(delta)); },
+  // the fiscal year a date falls in: it starts on October 1
+  fiscalYear(d) { return d.getFullYear() + (d.getMonth() >= 9 ? 1 : 0); },
 };
 // GRID-MATH-END
 
 const STAGES4 = ["President's Budget", "House Reported", "Senate Reported", "Enacted"];
 const STAGE_NAME = ["Request", "House", "Senate", "Enacted"];          // the column labels, by STAGES4 index
 const STAGE_WORD = ["request", "House", "Senate", "enacted"];          // the same in a sentence
+const STAGE_LONG = ["President’s request", "House", "Senate", "Enacted"];
 const isHeadline = (l) => l.amount_type === "budget authority" && !l.component;
 const scCache = new Map();
 let scNames = null;
 let scLabels = {};
 let dataVersion = "";
+const SHOW_PROPOSED = { stages: true, years: true, history: false };
 const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true, true, true, true], basis: 3,
-            units: "k", reviewer: false,
+            units: "k", reviewer: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // "Accounts shown" (the account lifecycle): proposed-only accounts per view, ended accounts after
             // their last year, new accounts before their first year
-            show: { proposed: { stages: true, years: true, history: false }, ended: false, created: false } };
+            show: { proposed: { ...SHOW_PROPOSED }, ended: false, created: false } };
 const NAME_OF = new Map();      // account id -> name, for the rows being rendered
 const STATUS_OF = new Map();    // account id -> status
 const ROW_OF = new Map();       // account id -> grid row
-let open = new Set();           // agency totals whose accounts are shown (by account id)
+let open = new Set();           // expanded rows: agency totals by account id, general-provision groups as "gp:<title>"
+
+// ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
+// publishes what it reads (docs/data/index.json "features", or the live /api/features)
+const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations"]);
+let FEAT = {};
+const has = (name) => BUILT.has(name) && FEAT[name] === true;
+// the figure's own source page: the link each figure has carried since before the flags; its data is
+// the figure_source fields (the panel itself is UI-2)
+const linksToSource = () => FEAT.figure_source === true;
+async function loadFeatures() {
+  const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
+  FEAT = f.features || {};
+}
 
 function showView(view) {
   const compare = view === "compare";
   $("#account-view").hidden = compare;
   $("#compare-view").hidden = !compare;
-  document.body.classList.toggle("wide", compare);
   for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.view === view));
-  if (!compare) {
-    $("#page-title").textContent = "Appropriations history";
-    $("#page-sub").textContent = "Federal appropriations by account, fiscal year and stage · read-only · every figure cites the document and page it came from";
-  }
+  document.title = compare ? "Explore · Appropriations Intelligence" : "One account · Appropriations Intelligence";
 }
 
 function compareStatus(msg, isError) {
@@ -703,9 +780,11 @@ function headOf(row, y, st) {
   const lines = cell.lines;
   return { cell, lines, h: lines.find(isHeadline) || lines[0] || null };
 }
+const stateOf = (row, y, st) => { const x = row && headOf(row, y, st); return x && x.h && !x.cell.outside_life ? x.h.state : null; };
 // ---- the account lifecycle (row.lifecycle, derived in the store from figures and confirmed absences)
 const ENDED = ["ended_eliminated", "ended_merged", "renamed", "split", "moved"];
 const lifeOf = (row) => row.lifecycle || { type: "ongoing" };
+const proposedOnly = (row) => lifeOf(row).type === "proposed_only" || row.account.status === "proposed";
 function lifeText(row, y, st) {
   const L = lifeOf(row), side = (row.cells[y + "|" + st] || {}).outside_life;
   if (L.type === "proposed_only") return `Outside the account's life: proposed only, never enacted (FY${y} ${st}).`;
@@ -713,7 +792,7 @@ function lifeText(row, y, st) {
   if (side === "after") return `Outside the account's life: FY${y} ${st} is after its last year.`;
   return `Outside the account's life: the account has no ${st} figures (FY${y}).`;
 }
-// a row shows when a column in view falls inside its life; the "Accounts shown" filters add proposed-only
+// a row is in view when a column in view falls inside its life; the "Accounts shown" choices add proposed-only
 // accounts (per view), ended accounts after their last year and new accounts before their first year
 function rowShown(row, cols) {
   const L = lifeOf(row);
@@ -727,56 +806,67 @@ function rowShown(row, cols) {
       || (side === "before" && G.show.created && L.type === "new");
   });
 }
-// the headline's printed figure (a printed zero is 0), or null where nothing is printed
+// the headline's printed figure, or null: only a cell in the value state has one. A printed zero
+// (not_funded) and every other state are never used in a sum, difference or percentage (SPEC rule 2)
 function figure(row, y, st) {
   const x = row && headOf(row, y, st);
-  return x && x.h && x.h.observations.length ? x.h.observations[0].amount : null;
+  return x && x.h && x.h.state === "value" && x.h.observations.length && !x.cell.outside_life ? x.h.observations[0].amount : null;
 }
 const validated = (s) => s === "auto-validated" || s === "human-verified";
 // an observation's validation records a person still has to look at (human_review_status = pending)
 const pendingReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "pending");
 const resolvedReview = (o) => (o.validation || []).filter((v) => v.human_review_status === "resolved");
 
+// the cell states (SPEC section 4): what each shows and its hover text
 const TOKENS = {
-  not_funded: ["—", "Not funded: printed as a dash or zero, or checked and confirmed absent"],
-  missing: ["?", "Missing: a document on file covers this year and stage, but no figure is recorded yet"],
+  not_funded: ["—", "Not funded: printed zero"],
+  missing: ["missing", "Document on file; figure not yet entered"],
   not_collected: ["n/c", "Not yet collected: no document on file covers this year and stage"],
   not_enacted: ["n/e", "Not yet enacted: no enacted law for this fiscal year yet"],
-  no_figure: ["no figure", "No figure for this year: a proposed account before its first request, or a program the document funds inside another account"],
-  no_printed_total: ["no printed total", "No printed total: the document prints the account but not this line"],
-  not_reported: ["n/r", "Not reported: the committee never reported a bill or released a draft this year."],
+  not_reported: ["n/r", "Not reported: the committee never reported a bill or released a draft this year"],
+  no_printed_total: ["—", "No printed total: the document prints the account but not this line"],
+  no_figure: ["—", "No figure for this year: a proposed account before its first request, or a program the document funds inside another account"],
 };
-function token(state, line) {
-  const [text, meaning] = TOKENS[state] || [state, state];
-  let why = meaning;
-  if (line && line.absence) why += ` — ${line.absence.evidence}`;
-  else if (line && state === "not_funded" && line.observations[0]) {
-    const o = line.observations[0];
-    why += ` — printed as a dash or zero (${o.source_document_id}${o.source_page ? " p." + o.source_page : ""})`;
-  }
-  return el("span", { class: "tok" + (state === "missing" ? " miss" : ""), "data-testid": "token-" + testid(state),
-                      title: why, "aria-label": why, text });
-}
+const DASHES = new Set(["not_funded", "no_printed_total", "no_figure"]);
 function sourceHref(o) {
   const first = (o.source_page || "").split("-")[0];
   return o.url_or_identifier && /^https?:/.test(o.url_or_identifier)
     ? o.url_or_identifier + (first ? "#page=" + first : "") : null;
 }
-function numberLink(o, units) {
-  const label = `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
-  const href = sourceHref(o);
-  const text = GridMath.number(o.amount, units);
-  const title = `${label} · ${o.status_text || o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
-  const cls = o.amount === 0 ? "zero" : "";
-  return href ? el("a", { class: cls, "data-testid": "amount", href, target: "_blank", rel: "noopener", title,
-                          "data-source": label, text })
-              : el("span", { class: cls, "data-testid": "amount", title, "data-source": label, text });
+const srcLabel = (o) => `${o.source_document_id}${o.source_page ? " p." + o.source_page : ""}`;
+const clickFor = (o) => `Click for its source: ${o.source_document_id}${o.source_page ? ", p. " + o.source_page : ""}`;
+function token(state, line, ctx) {
+  const [text, meaning] = TOKENS[state] || [state, state];
+  let why = state === "not_funded" && line && line.absence ? "Not funded: confirmed absent in the bill or law text" : meaning;
+  if (line && line.absence) why += ` — ${line.absence.evidence}`;
+  const cls = "tok" + (DASHES.has(state) ? " dash" : "") + (state === "missing" ? " miss" : "");
+  const o = line && line.observations && line.observations[0];
+  // a printed zero holds an observation: it links to its source page like any figure (SPEC 5.1)
+  if (state === "not_funded" && o && linksToSource() && sourceHref(o))
+    return el("a", { class: cls, "data-testid": "token-not-funded", href: sourceHref(o), target: "_blank", rel: "noopener",
+                     title: `${why} · ${clickFor(o)}`, "aria-label": `Source for ${ctx.name}, ${ctx.stage}: not funded, printed zero`,
+                     "data-source": srcLabel(o), text });
+  return el("span", { class: cls, "data-testid": "token-" + testid(state), title: why, "aria-label": why, text });
 }
-const tileMoney = (v, units) => v == null ? "—" : (v < 0 ? "−$" : "$") + GridMath.number(Math.abs(v), units);
+function numberLink(o, units, ctx) {
+  const text = GridMath.number(o.amount, units);
+  const href = sourceHref(o);
+  const title = `${clickFor(o)} · ${o.status_text || o.verification_status}` + (o.document_notes ? ` — ${o.document_notes}` : "");
+  return href && linksToSource()
+    ? el("a", { "data-testid": "amount", href, target: "_blank", rel: "noopener", title, "data-source": srcLabel(o),
+                "aria-label": `Source for ${ctx.name}, ${ctx.stage}`, text })
+    : el("span", { "data-testid": "amount", title, "data-source": srcLabel(o), text });
+}
+// a stage in a sentence: "FY2026 enacted", "FY2025 enacted (full-year CR)", "FY2026 President’s request"
+function stageText(grid, y, i) {
+  if (i === 3) return `FY${y} enacted` + (crOf(grid, y) ? " (full-year CR)" : "");
+  return `FY${y} ${["President’s request", "House", "Senate"][i]}`;
+}
+const crOf = (grid, y) => { const e = (grid.enactments || {})[String(y)]; return e && e.funding_type === "full_year_cr" ? e : null; };
 
 // one figure cell: the headline line's state or figure
-function figureCell(row, y, st, cls) {
-  const td = el("td", { class: "num " + cls, dataset: { fy: y, stage: st, testid: "compare-cell" } });
+function figureCell(row, y, st, c, name) {
+  const td = el("td", { class: "num " + (c.cls || ""), dataset: { fy: y, stage: st, testid: "compare-cell", col: String(c.col) } });
   const x = headOf(row, y, st);
   if (x && x.cell.outside_life) {                                // outside the account's life: blank, no token
     td.dataset.state = ""; td.dataset.outsideLife = x.cell.outside_life;
@@ -784,7 +874,7 @@ function figureCell(row, y, st, cls) {
     return td;
   }
   if (!x || !x.h) { td.dataset.state = ""; return td; }        // nothing that can exist in this cell
-  const h = x.h;
+  const h = x.h, ctx = { name, stage: stageText(current.grid, y, STAGES4.indexOf(st)) };
   td.dataset.state = h.state;
   if (x.cell.outside_history) {
     td.dataset.outside = "true";
@@ -793,8 +883,8 @@ function figureCell(row, y, st, cls) {
       : `Nothing on file for this account in FY${y} ${st}: its figures and confirmed absences span FY${span[0]}–FY${span[1]}.`;
   }
   const o = h.observations[0];
-  if (h.state === "value") td.append(numberLink(o, G.units));
-  else td.append(token(h.state, h));
+  if (h.state === "value") td.append(numberLink(o, G.units, ctx));
+  else td.append(token(h.state, h, ctx));
   const more = otherLines(row, y, st, x.lines, h);
   if (more) td.append(more);
   // the corner note: the headline observation's, or (a cell with no figure) its line's own
@@ -821,13 +911,13 @@ function figureCell(row, y, st, cls) {
                    rule: o.status_text || "Resolved by rule: bill or law text controls",
                    pend: "Verified, with a record still pending review",
                    res: "Verified, with records resolved by a person" }[kind];
-    const open = pending.length ? ` \u2014 ${pending.length} pending review: ` +
+    const openRecs = pending.length ? ` — ${pending.length} pending review: ` +
       pending.map((v) => `${v.validation_id} ${v.rule_applied} ${v.result}`).join("; ") : "";
     const done = resolved.map((v) => `\n${v.validation_id} resolved: ${v.resolution}`).join("");
     td.append(el("span", { class: "dot " + kind, role: "img", "data-testid": "status-dot",
                            "data-status": o.verification_status, "data-pending": String(pending.length),
                            "data-resolved": String(resolved.length),
-                           title: `${what} (${o.verification_status})${open}${done}`, "aria-label": what }));
+                           title: `${what} (${o.verification_status})${openRecs}${done}`, "aria-label": what }));
   }
   return td;
 }
@@ -846,22 +936,35 @@ function otherLines(row, y, st, lines, h) {
   return b;
 }
 
-// the later figure against the earlier one: $ change over % of the earlier figure
-function changeCell(earlier, later, what, cls) {
-  const td = el("td", { class: "num delta " + cls, dataset: { testid: "change-cell", kind: what } });
-  const c = GridMath.change(earlier, later);
-  if (!c) { td.title = `${what}: no change value, a figure is missing`; return td; }
-  td.dataset.delta = String(c.delta);
-  const txt = GridMath.signedNumber(c.delta, G.units), pct = GridMath.signedPct(c.pct);
-  td.title = what;
-  td.append(el("span", { class: GridMath.direction(c.delta) || "flat",
-                         "aria-label": `${what}: ${txt} ${G.units === "m" ? "million" : "thousand"} dollars${pct ? ", " + pct : ""}` },
+// the later figure against the earlier one: $ change over % of the earlier figure; only two values
+function changeCell(earlier, later, c) {
+  const td = el("td", { class: "num delta " + (c.cls || ""), dataset: { testid: "change-cell", kind: c.what, col: String(c.col) } });
+  const ch = GridMath.change(earlier, later);
+  if (!ch) { td.title = `${c.what}: no change value, a figure is missing`; return td; }
+  td.dataset.delta = String(ch.delta);
+  const txt = GridMath.signedNumber(ch.delta, G.units), pct = GridMath.signedPct(ch.pct);
+  td.title = c.what;
+  td.append(el("span", { class: GridMath.direction(ch.delta) || "flat",
+                         "aria-label": `${c.what}: ${txt} ${G.units === "m" ? "million" : "thousand"} dollars${pct ? ", " + pct : ""}` },
     el("span", { "data-testid": "change", text: txt }), el("span", { class: "pct", text: pct })));
   return td;
 }
 
-// ---- columns per view, as in the design reference: groups over columns; a column is a figure
-// [fy, stage index] or a change between two of them
+// ---- the lead stage: Enacted, or, in a year with no enacted figure, the latest stage the printed
+// title total holds (SPEC section 4, "Years without an Enacted stage")
+function printedTotal(grid) {
+  const t = grid.titles.find((x) => x.total);
+  if (t) return { label: t.title, row: t.total };
+  return grid.bill_total ? { label: "Bill", row: grid.bill_total } : null;
+}
+function leadStage(grid, y) {
+  const T = printedTotal(grid);
+  const rows = T ? [T.row] : grid.rows;                          // no printed total: the latest stage any row holds
+  for (const i of [3, 2, 1, 0]) if (rows.some((r) => figure(r, y, STAGES4[i]) != null)) return i;
+  return 3;
+}
+
+// ---- columns per view: groups over columns; a column is a figure [fy, stage index] or a change between two
 function historyYears(grid) {
   const ys = grid.fiscal_years;
   const enacted = ys.filter((y) => grid.rows.some((r) => figure(r, y, "Enacted") != null));
@@ -887,53 +990,84 @@ function layout(grid) {
     return [
       { label: `FY${G.a}`, cols: s.map((i) => ({ fig: [G.a, i], label: STAGE_NAME[i] })) },
       { label: `FY${G.b}`, cls: "yb", cols: s.map((i) => ({ fig: [G.b, i], label: STAGE_NAME[i] })) },
-      { label: `FY${G.b} vs FY${G.a}`, cls: "delta", cols: [{ chg: [[G.a, G.basis], [G.b, G.basis]], label: STAGE_NAME[G.basis],
+      { label: "Change", cls: "delta", cols: [{ chg: [[G.a, G.basis], [G.b, G.basis]], label: `FY${G.b} vs FY${G.a} ${STAGE_WORD[G.basis]}`,
         what: `FY${G.b} ${STAGE_WORD[G.basis]} vs FY${G.a} ${STAGE_WORD[G.basis]}` }] },
     ];
   }
-  const y = G.fy;
+  const y = G.fy, lead = leadStage(grid, y), enacted = lead === 3;
+  const chg = [{ chg: [[y - 1, 3], [y, lead]], label: enacted ? `FY${y - 1} enacted` : `${STAGE_NAME[lead]} vs FY${y - 1} enacted`,
+                 what: `FY${y} ${STAGE_WORD[lead]} vs FY${y - 1} enacted` }];
+  if (G.reqcol && lead !== 0)
+    chg.push({ chg: [[y, 0], [y, lead]], label: enacted ? `FY${y} request` : `${STAGE_NAME[lead]} vs FY${y} request`,
+               what: `FY${y} ${STAGE_WORD[lead]} vs FY${y} request`, req: true });
   return [
-    { label: `FY${y - 1}`, cols: [{ fig: [y - 1, 3], label: "Enacted" }] },
-    { label: `FY${y}`, cols: [0, 1, 2, 3].map((i) => ({ fig: [y, i], label: STAGE_NAME[i] })) },
-    { label: `FY${y} enacted vs`, cls: "delta", cols: [
-      { chg: [[y - 1, 3], [y, 3]], label: `FY${y - 1} enacted`, what: `FY${y} enacted vs FY${y - 1} enacted` },
-      { chg: [[y, 0], [y, 3]], label: "Request", what: `FY${y} enacted vs FY${y} request` }] },
+    { label: `FY${y - 1}`, cls: "right", cols: [{ fig: [y - 1, 3], label: "Enacted" }] },
+    { label: `FY${y}`, cols: [0, 1, 2, 3].map((i) => ({ fig: [y, i], label: STAGE_NAME[i], lead: i === lead })) },
+    { label: enacted ? "Change vs" : "Change", cls: "delta", cols: chg },
   ];
 }
 function flatCols(groups) {
-  return groups.flatMap((g) => g.cols.map((c, i) => ({ ...c, cls: [g.cls || "", i === 0 && g.cls !== "delta" ? "gs" : ""].join(" ").trim() })));
+  let k = 0;
+  return groups.flatMap((g) => g.cols.map((c, i) => ({ ...c, col: k++,
+    cls: [g.cls === "delta" ? "" : g.cls || "", i === 0 && g.cls !== "delta" ? "gs" : "", c.lead ? "lead" : "",
+          g.cls === "delta" && i === 0 ? "first" : ""].filter(Boolean).join(" ") })));
 }
-const gapCell = () => el("td", { class: "gap", "aria-hidden": "true" });
-const spanOf = (cols) => cols.length + (cols.some((c) => c.chg) ? 1 : 0);      // with the gap column
-function cellsFor(row, cols) {
-  const out = [];
-  cols.forEach((c, i) => {
-    if (c.chg && !(cols[i - 1] && cols[i - 1].chg)) out.push(gapCell());       // the change block, set apart
-    out.push(c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c.cls)
-      : changeCell(figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]]), c.what, c.cls));
-  });
-  return out;
+function cellsFor(row, cols, name) {
+  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name)
+    : changeCell(figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]]), c));
 }
 
-// ---- rows: the printed title total first, then each agency total (its accounts beneath when open),
-// proposed agencies last, then accounts outside an agency
+// ---- which rows show: the filters (agency, status, search) over each row's life in the columns in view
 const plainName = (n) => n.replace(/\s*\((agency|title) total\)$/i, "").replace(/\s*\((title [ivx]+ )?general provision\)$/i, "");
-const abbrOf = (id) => id.replace(/-TOTAL$/, "").split("-").pop();
+const abbrOf = (id) => (has("abbreviations") && typeof ABBREVIATIONS === "object" && ABBREVIATIONS[id]) || "";
+const isGP = (r) => r.account.bureau === "General Provisions";
+// the fiscal year the Status filter and the overview describe
+function focusYear(grid) {
+  if (G.grid === "years") return G.b;
+  if (G.grid === "history") { const { enacted } = historyYears(grid); return enacted[enacted.length - 1] || G.fy; }
+  return G.fy;
+}
+const STATUS = [["any", "Any"], ["enacted", "Enacted"], ["moving", "Still moving"], ["proposed", "Proposed only"]];
+// a row's status in a fiscal year, read from its own cell states and lifecycle (never computed from figures)
+function statusOf(row, y) {
+  if (proposedOnly(row)) return "proposed";
+  const e = stateOf(row, y, "Enacted");
+  if (e === "value" || e === "not_funded") return "enacted";
+  return [0, 1, 2].some((i) => stateOf(row, y, STAGES4[i]) === "value") ? "moving" : "none";
+}
+function searchHit(row, q) {
+  const a = row.account;
+  const names = [a.canonical_name, plainName(a.canonical_name), a.agency, abbrOf(a.canonical_account_id)].concat(row.historical_names || []);
+  return names.some((n) => n && n.toLowerCase().includes(q));
+}
+let VIEW = null;      // { cols, inView(row), ok(row) } for the render in progress
+function rowFilters(grid, cols) {
+  const y = focusYear(grid), q = G.search.trim().toLowerCase();
+  const inView = (r) => rowShown(r, cols);
+  const searchOK = (r) => !q || searchHit(r, q) || (r.member_of && searchHit(ROW_OF.get(r.member_of) || r, q))
+    || (r.account.parent_account_id && ROW_OF.get(r.account.parent_account_id) && searchHit(ROW_OF.get(r.account.parent_account_id), q));
+  const ok = (r) => inView(r) && (!G.agency || r.account.agency === G.agency)
+    && (G.status === "any" || statusOf(r, y) === G.status) && (!has("search_filter") || searchOK(r));
+  return { inView, ok, filtering: !!(q || G.agency || G.status !== "any") };
+}
+
+// ---- rows: per title, the printed total band, then the three sections (SPEC section 4)
 function nameCell(o) {
-  const box = el("div", { class: "namebox" });
+  const box = el("span", { class: "namebox" });
   if (o.id) {
     const b = el("a", { class: "linkish", "data-testid": "row-name", href: "?account=" + encodeURIComponent(o.id), text: o.name, title: o.title || o.id });
     b.addEventListener("click", (e) => { e.preventDefault(); openAccount(o.id); });
     box.append(b);
-  } else box.append(o.name);
+  } else box.append(el("span", { class: "plain", text: o.name }));
   if (o.abbr) box.append(el("span", { class: "abbr", text: o.abbr }));
   for (const t of o.tags || []) box.append(el("span", { class: "tag " + t.cls, "data-testid": t.testid || "tag", text: t.text, ...(t.title ? { title: t.title } : {}) }));
   if (o.move) box.append(el("span", { class: "move", "data-testid": "move-note", text: o.move }));
+  if (o.note) box.append(el("span", { class: "rownote", "data-testid": o.noteTestid || "row-note", text: o.note }));
   let lead = null;
   if (o.chev) {
     lead = el("button", { type: "button", class: "chev", "data-testid": "chevron", "aria-expanded": String(o.open),
-                          "aria-label": `${o.open ? "Collapse" : "Expand"} ${o.abbr || o.name}`, dataset: { for: o.id }, text: o.open ? "▾" : "▸" });
-    lead.addEventListener("click", () => toggle(o.id));
+                          "aria-label": `${o.open ? "Collapse" : "Expand"} ${o.abbr || o.name}`, dataset: { for: o.key }, text: o.open ? "▾" : "▸" });
+    lead.addEventListener("click", () => toggle(o.key));
   } else if (o.spacer) lead = el("span", { class: "spacer" });
   return el("td", { class: "acct " + (o.lvl || "") }, el("div", { class: "namecell" }, lead, box));
 }
@@ -949,14 +1083,14 @@ function moveLine(r) {
   return `FY${rel.effective_fiscal_year} request: ${verb} ${plainName(NAME_OF.get(rel.to_account_id) || rel.to_account_id)} (proposed)`;
 }
 function accountRow(r, cols, cls, lvl) {
-  const a = r.account, id = a.canonical_account_id;
+  const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name);
   const tags = [];
-  if (a.status === "proposed") tags.push({ cls: "prop", text: "proposed in request" });
+  if (proposedOnly(r)) tags.push({ cls: "prop", text: "proposed", title: "Proposed in a request or bill; never enacted" });
   if (a.parent_account_id) tags.push({ cls: "inside", text: "inside the line above · not added",
                                        title: `inside ${NAME_OF.get(a.parent_account_id)}'s figure; never added again` });
   return el("tr", { class: cls, dataset: { account: id, testid: "compare-row", ...(r.member_of ? { memberOf: r.member_of } : {}) } },
-    nameCell({ id, name: plainName(a.canonical_name), title: accountTitle(r), lvl, tags, move: moveLine(r) }),
-    ...cellsFor(r, cols));
+    nameCell({ id, name, title: accountTitle(r), lvl, tags, move: moveLine(r), abbr: cls.includes("top") ? abbrOf(id) : "" }),
+    ...cellsFor(r, cols, name));
 }
 function relNote(rel, ncols, abbr) {
   const from = ROW_OF.get(rel.from_account_id);
@@ -966,146 +1100,217 @@ function relNote(rel, ncols, abbr) {
     + " · figures stay under its current agency · not added here";
   return el("tr", { class: "note", dataset: { testid: "rel-note", noteOf: rel.to_account_id },
                     title: `${rel.relationship_id} · ${rel.relationship_type}${rel.human_reviewed ? "" : " · not yet reviewed"}` },
-    el("td", { class: "acct lvl1", text: name }), el("td", { class: "note-text", colspan: String(ncols), style: "text-align:left", text }));
+    el("td", { class: "acct", text: name }), el("td", { class: "note-text", colspan: String(ncols), text }));
 }
-function emptyRow(cls, name, ncols, testidName) {
+function labelRow(cls, name, ncols, testidName) {
   return el("tr", { class: cls, dataset: { testid: testidName } },
     el("td", { class: "acct", text: name }), el("td", { colspan: String(ncols) }));
 }
 
 function buildRows(grid, cols) {
   const out = [];
-  const shown = (r) => rowShown(r, cols);
-  const ncols = spanOf(cols);
-  const TOTAL = { cls: "total", text: "total", testid: "total", title: "printed total of the accounts indented below it, not added again" };
+  const F = rowFilters(grid, cols);
+  const ncols = cols.length;
+  const y = focusYear(grid);
+  const proposedLabel = G.grid === "history" ? "Proposed, not enacted" : `Proposed in the FY${G.grid === "years" ? G.b : G.fy} request, not enacted`;
+  // members of a total: in data order, the proposed ones after a sub-group label; a line inside another line follows it
+  const pushMembers = (members, lvlOf) => {
+    const kept = members.filter((m) => !proposedOnly(m)), prop = members.filter(proposedOnly);
+    for (const m of kept) out.push(accountRow(m, cols, "child", lvlOf(m)));
+    if (prop.length) {
+      out.push(labelRow("subgroup", G.grid === "history" ? "Proposed, not enacted" : `Proposed in the FY${G.grid === "years" ? G.b : G.fy} request`,
+                        ncols, "subgroup-label"));
+      for (const m of prop) out.push(accountRow(m, cols, "child", lvlOf(m)));
+    }
+  };
+  const lvl = (m) => (m.account.parent_account_id ? "lvl2" : "");
+  const filtered = !!G.agency;
   for (const group of grid.titles) {
-    const ids = group.rows.map((id) => ROW_OF.get(id));
+    const rows = group.rows.map((id) => ROW_OF.get(id));
     if (group.total) {
       out.push(el("tr", { class: "title", dataset: { account: group.total.account.canonical_account_id, testid: "compare-row" } },
-        nameCell({ name: `Total, ${group.title} (printed)`, spacer: true, tags: [TOTAL] }), ...cellsFor(group.total, cols)));
+        nameCell({ name: `Total, ${group.title} (printed${filtered ? ", all accounts" : ""})`, tags: [] }), ...cellsFor(group.total, cols, `Total, ${group.title}`)));
+      out[out.length - 1].querySelector(".plain").dataset.testid = "total";
     } else {
-      out.push(emptyRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
+      out.push(labelRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
     }
-    // an agency shows with itself or any of its accounts in view
-    const agencies = ids.filter((r) => r.rollup === "agency"
-      && (shown(r) || ids.some((m) => m.member_of === r.account.canonical_account_id && shown(m))));
-    agencies.sort((x, y) => (x.account.status === "proposed") - (y.account.status === "proposed"));
+    // agencies: shown with themselves or any of their accounts
+    const membersOf = (id) => rows.filter((m) => m.member_of === id);
+    const shownAgency = (r) => F.ok(r) || membersOf(r.account.canonical_account_id).some(F.ok);
+    const agencies = rows.filter((r) => r.rollup === "agency" && !proposedOnly(r) && shownAgency(r));
+    const loose = rows.filter((r) => !r.rollup && !r.member_of && F.ok(r));
+    const gp = loose.filter((r) => isGP(r) && !proposedOnly(r));
+    const other = loose.filter((r) => !isGP(r) && !proposedOnly(r));
+    const proposed = rows.filter((r) => !r.member_of && proposedOnly(r) && (r.rollup === "agency" ? shownAgency(r) : F.ok(r))
+                                        && (r.rollup !== "agency" || F.inView(r) || membersOf(r.account.canonical_account_id).some(F.inView)));
+    if (agencies.length) out.push(labelRow("section", `Agencies · ${agencies.length}`, ncols, "section-label"));
     for (const r of agencies) {
-      const a = r.account, id = a.canonical_account_id, abbr = abbrOf(id);
-      const members = ids.filter((m) => m.member_of === id && shown(m));
-      const incoming = a.status === "proposed" ? r.relationships.filter((x) => x.to_account_id === id) : [];
-      const kids = members.length + incoming.length > 0, isOpen = kids && open.has(id);
-      // TOTAL marks a row that sums the accounts indented beneath it; a proposed agency's rows beneath
-      // are relationship notes, not accounts
-      const tags = a.status === "proposed" ? [{ cls: "prop", text: "proposed agency · not enacted", title: a.notes || "" }] : [TOTAL];
-      out.push(el("tr", { class: "agency", dataset: { account: id, testid: "compare-row" } },
-        nameCell({ id, name: plainName(a.canonical_name), title: accountTitle(r), abbr, chev: kids, spacer: !kids, open: isOpen, tags }),
-        ...cellsFor(r, cols)));
-      if (!isOpen) continue;
-      const inside = members.map((m) => accountRow(m, cols, "child", m.account.parent_account_id ? "lvl2" : "lvl1"))
-        .concat(incoming.map((rel) => relNote(rel, ncols, abbr)));
-      inside[inside.length - 1].classList.add("last");                             // the group's closing rule
-      out.push(...inside);
+      const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name), abbr = abbrOf(id);
+      const all = membersOf(id);
+      const members = all.filter((m) => F.ok(m) || (F.ok(r) && !F.filtering && F.inView(m)));
+      // N: the total's rollup_members inside their life in the columns in view, which are the lines listed (SPEC section 4)
+      const n = (r.rollup_members || []).filter((m) => ROW_OF.get(m) && F.inView(ROW_OF.get(m))).length;
+      const auto = F.filtering && !F.ok(r) && members.length > 0;          // shown for a line that matches: opened
+      const isOpen = all.length > 0 && (open.has(id) || auto);
+      out.push(el("tr", { class: "agency top" + (isOpen ? " open" : ""), dataset: { account: id, testid: "compare-row" } },
+        nameCell({ id, key: id, name, title: accountTitle(r), abbr, chev: all.length > 0, spacer: !all.length, open: isOpen,
+                   note: isOpen ? (n ? `Agency total · sum of the ${n} line${n === 1 ? "" : "s"} below` : "Agency total") : "",
+                   noteTestid: "total" }),
+        ...cellsFor(r, cols, name)));
+      if (isOpen) pushMembers(F.filtering ? members : all.filter((m) => F.inView(m)), lvl);
     }
-    // accounts outside an agency: a heading where two or more share a bureau, else a row of their own
-    const loose = ids.filter((r) => !r.rollup && !r.member_of && shown(r));
-    const bureaus = new Map();
-    for (const r of loose) {
-      const b = r.account.parent_account_id ? ROW_OF.get(r.account.parent_account_id).account.bureau : r.account.bureau;
-      if (!bureaus.has(b)) bureaus.set(b, []);
-      bureaus.get(b).push(r);
+    if (other.length) {
+      out.push(labelRow("section", `Accounts outside an agency total · ${other.length}`, ncols, "section-label"));
+      for (const r of other) out.push(accountRow(r, cols, "child loose top", ""));
     }
-    for (const [b, rs] of bureaus) {
-      if (rs.length > 1) {
-        const label = (b === "General Provisions" ? "General provisions" : b) + (group.title ? ` (${group.title})` : "");
-        out.push(emptyRow("group", label, ncols, "group-head"));
-        for (const r of rs) out.push(accountRow(r, cols, "child", r.account.parent_account_id ? "lvl2" : "lvl1"));
-      } else out.push(accountRow(rs[0], cols, "child", ""));
+    if (gp.length) {
+      out.push(labelRow("section", "General provisions", ncols, "section-label"));
+      const key = "gp:" + (group.title || ""), isOpen = open.has(key) || (F.filtering && !!G.search.trim());
+      const label = `${group.title ? group.title + " general" : "General"} provisions (${gp.length} line${gp.length === 1 ? "" : "s"})`;
+      const tr = el("tr", { class: "group top" + (isOpen ? " open" : ""), dataset: { testid: "group-head", group: key } },
+        nameCell({ key, name: label, chev: true, open: isOpen,
+                   note: isOpen ? `No printed total · each line counts in the ${group.title || "bill"} total` : "" }),
+        el("td", { colspan: String(ncols) }));
+      out.push(tr);
+      if (isOpen) for (const r of gp) out.push(accountRow(r, cols, "child", lvl(r)));
+    }
+    if (proposed.length) {
+      out.push(labelRow("section", proposedLabel, ncols, "section-label"));
+      for (const r of proposed) {
+        const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name), abbr = abbrOf(id);
+        const incoming = r.rollup === "agency" ? r.relationships.filter((x) => x.to_account_id === id) : [];
+        const isOpen = incoming.length > 0 && open.has(id);
+        out.push(el("tr", { class: (r.rollup === "agency" ? "agency" : "child loose") + " top" + (isOpen ? " open" : ""), dataset: { account: id, testid: "compare-row" } },
+          nameCell({ id, key: id, name, title: (a.notes || "") + " · " + accountTitle(r), abbr, chev: incoming.length > 0, spacer: !incoming.length,
+                     open: isOpen, tags: [{ cls: "prop", text: "proposed", title: "Proposed in a request; never enacted" }] }),
+          ...cellsFor(r, cols, name)));
+        if (isOpen) for (const rel of incoming) out.push(relNote(rel, ncols, abbr || name));
+      }
     }
   }
   return out;
 }
 
-function toggle(id) {
-  if (open.has(id)) open.delete(id); else open.add(id);
+function toggle(key) {
+  if (open.has(key)) open.delete(key); else open.add(key);
   renderBody();
-  const c = document.querySelector(`#compare-grid .chev[data-for="${id}"]`);
+  commit();
+  const c = document.querySelector(`#compare-grid .chev[data-for="${CSS.escape(key)}"]`);
   if (c) c.focus();
 }
+const expandable = (grid) => grid.rows.filter((r) => r.rollup === "agency").map((r) => r.account.canonical_account_id)
+  .concat(grid.titles.filter((t) => t.rows.some((id) => isGP(ROW_OF.get(id)))).map((t) => "gp:" + (t.title || "")));
 
-// ---- tiles: the printed title (or bill) total only, never a sum of the accounts
-function printedTotal(grid) {
-  const t = grid.titles.find((x) => x.total);
-  if (t) return { label: t.title, row: t.total };
-  return grid.bill_total ? { label: "Bill", row: grid.bill_total } : null;
-}
-function tile(l, v, s, c) {
-  return el("div", { class: "tile", dataset: { testid: "tile" } },
-    el("div", { class: "l", text: l }), el("div", { class: "v", text: v }), el("div", { class: "s " + (c || "flat"), text: s }));
-}
-function changeTile(l, earlier, later, s, missing) {
-  const c = GridMath.change(earlier, later);
-  if (!c) return tile(l, "—", missing);
-  return tile(l, GridMath.signedNumber(c.delta, G.units), c.pct == null ? s : `${GridMath.signedPct(c.pct)} ${s}`, GridMath.direction(c.delta) || "flat");
-}
-function renderTiles(grid) {
-  const T = printedTotal(grid), rows = grid.rows, N = rows.length;
-  const f = (y, i) => figure(T && T.row, y, STAGES4[i]);
-  const have = (y, i) => `${rows.filter((r) => figure(r, y, STAGES4[i]) != null).length} of ${N}`;
-  const label = T ? T.label : "Printed total";
-  const none = "no title or bill total printed for these accounts · the grid never adds them";
-  let tiles;
-  if (G.grid === "history") {
-    const { enacted, next } = historyYears(grid);
-    const fy = enacted[0], ly = enacted[enacted.length - 1];
-    const c = GridMath.change(f(fy, 3), f(ly, 3));
-    const agencies = rows.filter((r) => r.rollup === "agency").length;
-    const gp = rows.filter((r) => r.account.bureau === "General Provisions").length;
-    tiles = [
-      T ? tile(`${label} enacted, FY${ly}`, tileMoney(f(ly, 3), G.units),
-               c ? `${GridMath.signedNumber(c.delta, G.units)} (${GridMath.signedPct(c.pct)}) since FY${fy}` : `no printed total for FY${fy}`,
-               c ? GridMath.direction(c.delta) || "flat" : "flat")
-        : tile(`Accounts with an enacted figure, FY${ly}`, have(ly, 3), none),
-      next ? tile(`FY${next} request`, T ? tileMoney(f(next, 0), G.units) : have(next, 0), T ? "President’s Budget" : "accounts with a request figure")
-           : tile("Next request", "—", "none on file"),
-      next ? tile(`FY${next} House`, T ? tileMoney(f(next, 1), G.units) : have(next, 1), T ? "Committee-reported bill" : "accounts with a House figure")
-           : tile("Next House bill", "—", "none on file"),
-      tile("Accounts", String(N), `${agencies} agenc${agencies === 1 ? "y" : "ies"}` + (gp ? ` · ${gp} general provision${gp === 1 ? "" : "s"}` : "")),
-    ];
-  } else if (G.grid === "years") {
-    const w = STAGE_WORD[G.basis];
-    tiles = T ? [
-      tile(`${label} ${w}, FY${G.a}`, tileMoney(f(G.a, G.basis), G.units), "earlier year"),
-      tile(`${label} ${w}, FY${G.b}`, tileMoney(f(G.b, G.basis), G.units), "later year"),
-      changeTile("Change", f(G.a, G.basis), f(G.b, G.basis), `FY${G.a} → FY${G.b}`, "no figure for one of the years"),
-    ] : [
-      tile(`Accounts with a ${w} figure, FY${G.a}`, have(G.a, G.basis), none),
-      tile(`Accounts with a ${w} figure, FY${G.b}`, have(G.b, G.basis), "later year"),
-      tile("Change", "—", "measured on each account’s own figures only"),
-    ];
-    tiles.push(tile("Stages shown", `${shownStages().length} of 4`, "per year"));
-  } else {
-    const y = G.fy, e = f(y, 3);
-    tiles = T ? [
-      tile(`${label} enacted, FY${y}`, tileMoney(e, G.units), e != null ? "as printed" : "not yet enacted"),
-      changeTile(`vs FY${y - 1} enacted`, f(y - 1, 3), e, "change", "needs both enacted figures"),
-      changeTile(`vs FY${y} request`, f(y, 0), e, "vs the President’s Budget", "needs both figures"),
-      changeTile("Senate vs House", f(y, 1), f(y, 2), "(committee bills)", "needs both committee figures"),
-    ] : [
-      tile(`Accounts with an enacted figure, FY${y}`, have(y, 3), none),
-      tile(`Accounts with a request figure, FY${y}`, have(y, 0), "President’s Budget"),
-      tile(`Accounts with a House figure, FY${y}`, have(y, 1), "committee-reported bill"),
-      tile(`Accounts with a Senate figure, FY${y}`, have(y, 2), "committee-reported bill"),
-    ];
+// ---- the overview panel (SPEC 5.4): printed totals and the differences between figures it holds
+function scopeOf(grid) {
+  const y = focusYear(grid);
+  if (G.agency) {
+    const row = grid.rows.find((r) => r.rollup === "agency" && r.account.agency === G.agency);
+    return { row, who: row ? (abbrOf(row.account.canonical_account_id) || G.agency) : G.agency, title: `${G.agency} · FY${y}`,
+             back: abbrOf(row ? row.account.canonical_account_id : "") || G.agency,
+             members: grid.rows.filter((r) => r.account.agency === G.agency && r.rollup !== "agency") };
   }
-  $("#tiles").replaceChildren(...tiles);
+  const T = printedTotal(grid);
+  const titled = grid.titles.length === 1 && T && T.label !== "Bill";
+  return { row: T && T.row, who: T ? T.label : "", members: null,
+           title: (titled ? plainName(T.row.account.canonical_name) : (scLabels[grid.subcommittee] || grid.subcommittee)) + ` · FY${y}` };
+}
+const FUNDING = { omnibus: "omnibus", minibus: "minibus", full_year_cr: "full-year continuing resolution", standalone: "regular bill" };
+const MONTHS = ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+const longDate = (iso) => { const [yy, mm, dd] = (iso || "").split("-").map(Number); return yy ? `${MONTHS[mm - 1]} ${dd}, ${yy}` : ""; };
+const plDisplay = (id) => (id || "").replace(/^P\.L\.\s*/, "P.L. ");
+const STATE_WORDS = { value: "on file", not_collected: "not yet collected", not_enacted: "not yet enacted", missing: "document on file, figure not yet entered",
+                      not_reported: "not reported", not_funded: "not funded", no_printed_total: "no printed total", no_figure: "no figure" };
+function renderOverview(grid) {
+  const box = $("#side-panel");
+  if (!has("overview_panel")) { box.hidden = true; return; }
+  box.hidden = false;
+  const y = focusYear(grid), S = scopeOf(grid), row = S.row;
+  const lead = leadStage(grid, y), enacted = lead === 3;
+  const leadName = STAGE_WORD[lead];
+  const kids = [el("div", { class: "ovk", text: "Overview" }),
+                el("div", { class: "ovtitle", "data-testid": "overview-title", text: S.title }),
+                el("div", { class: "ovhint", text: "Select an account in the grid to see its stages and sources here." })];
+  const unitWord = G.units === "m" ? "$M" : "$K";
+  const prior = crOf(grid, y - 1) ? `vs FY${y - 1} enacted (full-year CR)` : `vs FY${y - 1} enacted`;
+  if (row) {
+    const v = figure(row, y, STAGES4[lead]);
+    const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid },
+      el("div", { class: "l", text: l }), el("div", { class: "v " + (cls || ""), text: val }), el("div", { class: "s", text: sub }));
+    const chTile = (l, a, b, tid) => {
+      const c = GridMath.change(a, b);
+      return c ? tile(l, GridMath.signedShort(c.delta), GridMath.signedPct(c.pct), GridMath.direction(c.delta) || "flat", tid)
+               : tile(l, "—", "needs both figures", "flat", tid);
+    };
+    kids.push(el("div", { class: "ovtiles" },
+      tile(`${S.who} ${leadName}, FY${y}`, v == null ? "—" : GridMath.short(v),
+           v == null ? STATE_WORDS[stateOf(row, y, STAGES4[lead])] || "no figure" : `${GridMath.number(v, G.units)} ${unitWord} · as printed`, "", "ov-headline"),
+      chTile(prior, figure(row, y - 1, "Enacted"), v, "ov-vs-prior"),
+      lead !== 0 ? chTile(`vs FY${y} request`, figure(row, y, STAGES4[0]), v, "ov-vs-request") : null));
+    kids.push(el("div", { class: "ovk sec", text: `FY${y} by stage (printed totals)` }));
+    for (const i of [0, 1, 2, 3]) {
+      const f = figure(row, y, STAGES4[i]), st = stateOf(row, y, STAGES4[i]);
+      kids.push(el("div", { class: "ovline", "data-testid": "ov-stage" }, el("span", { class: "k", text: STAGE_LONG[i] }),
+        el("span", { class: "val" + (f == null ? " state" : ""), text: f == null ? (STATE_WORDS[st] || "—") : GridMath.number(f, G.units) })));
+    }
+  } else {
+    kids.push(el("p", { class: "ovsmall", "data-testid": "ov-no-total",
+      text: G.agency ? "No printed total for this agency. The page never adds accounts into one." :
+                       "No printed title or bill total on file. The page never adds accounts into one." }));
+  }
+  // largest changes: the rows in scope with both figures, top three up and three down
+  const pool = S.members ? S.members : grid.rows.filter((r) => (r.rollup === "agency" || (!r.member_of && !isGP(r))) && !proposedOnly(r));
+  const moves = pool.map((r) => ({ r, c: GridMath.change(figure(r, y - 1, "Enacted"), figure(r, y, STAGES4[lead])) })).filter((m) => m.c && m.c.delta);
+  const ups = moves.filter((m) => m.c.delta > 0).sort((p, q) => q.c.delta - p.c.delta).slice(0, 3);
+  const downs = moves.filter((m) => m.c.delta < 0).sort((p, q) => p.c.delta - q.c.delta).slice(0, 3);
+  if (ups.length + downs.length) {
+    kids.push(el("div", { class: "ovk sec", text: enacted ? `Largest changes vs FY${y - 1} enacted` : `Largest changes, ${STAGE_NAME[lead]} vs FY${y - 1} enacted` }));
+    for (const m of ups.concat(downs))
+      kids.push(el("div", { class: "ovline mover", "data-testid": "ov-mover", dataset: { account: m.r.account.canonical_account_id } },
+        el("span", { class: "k", text: plainName(m.r.account.canonical_name) }),
+        el("span", { class: "val " + GridMath.direction(m.c.delta) }, GridMath.signedShort(m.c.delta) + " ", el("small", { text: GridMath.signedPct(m.c.pct) }))));
+  }
+  const e = (grid.enactments || {})[String(y)];
+  if (enacted && e) {
+    // the law's link: the bill_url its own enacted figures carry
+    const obs = [printedTotal(grid) && printedTotal(grid).row].concat(grid.rows).filter(Boolean)
+      .map((r) => { const x = headOf(r, y, "Enacted"); return x && x.h && x.h.observations[0]; })
+      .find((o) => o && o.bill_id === e.bill_id && o.bill_url);
+    const lawText = plDisplay(e.bill_id) + (e.division ? `, Division ${e.division}` : "");
+    kids.push(el("div", { class: "ovk sec", text: "Enacted in" }),
+      el("div", { class: "ovtext", "data-testid": "ov-law" }, obs ? el("a", { href: obs.bill_url, target: "_blank", rel: "noopener", text: lawText }) : lawText),
+      el("div", { class: "ovsmall", text: [e.enactment_date && `Signed ${longDate(e.enactment_date)}`, FUNDING[e.funding_type] || e.funding_type,
+                                           e.vehicle_bill_id && `vehicle ${e.vehicle_bill_id}`].filter(Boolean).join(" · ") }));
+  } else if (!enacted) {
+    // a year without an enacted figure: where it stands, stage by stage, from the printed total's cell states
+    const T = printedTotal(grid);
+    kids.push(el("div", { class: "ovk sec", text: `Status, FY${y}` }));
+    for (const i of [0, 1, 2, 3]) {
+      const st = T ? stateOf(T.row, y, STAGES4[i]) : null;
+      const draft = (grid.drafts || {})[`${y}|${STAGES4[i]}`];
+      kids.push(el("div", { class: "ovline", "data-testid": "ov-status" }, el("span", { class: "k", text: STAGE_LONG[i] }),
+        el("span", { class: "val state", text: (st ? STATE_WORDS[st] || st : "no printed total") + (draft ? " (committee draft)" : "") })));
+    }
+  }
+  const prev = crOf(grid, y - 1);
+  if (prev) kids.push(el("div", { class: "ovsmall", style: "margin-top:8px", "data-testid": "ov-cr",
+                              text: `FY${y - 1} was a full-year continuing resolution (${plDisplay(prev.bill_id)}).` }));
+  box.setAttribute("aria-label", "Overview");
+  box.replaceChildren(...kids);
 }
 
 // ---- the table and its footers
 let current = null;     // { grid, cols }
 function renderBody() {
   if (!current) return;
+  clearHover();
   $("#compare-grid tbody").replaceWith(el("tbody", {}, ...buildRows(current.grid, current.cols)));
+}
+function headingOf(grid) {
+  if (G.agency) return G.agency;
+  const totals = grid.titles.filter((t) => t.total);
+  if (grid.titles.length === 1 && totals.length === 1) return plainName(totals[0].total.account.canonical_name).replace(/^Title [IVX]+,\s*/, "");
+  return scLabels[grid.subcommittee] || grid.subcommittee;
 }
 function renderCompare(grid) {
   NAME_OF.clear(); STATUS_OF.clear(); ROW_OF.clear();
@@ -1115,67 +1320,67 @@ function renderCompare(grid) {
     ROW_OF.set(r.account.canonical_account_id, r);
   }
   const label = scLabels[grid.subcommittee] || grid.subcommittee;
-  const totals = grid.titles.filter((t) => t.total);
   const named = grid.titles.map((t) => t.title).filter(Boolean);
-  const titleName = totals.length === 1 && grid.titles.length === 1 ? plainName(totals[0].total.account.canonical_name)
-    : named.length === 1 ? named[0] : `Titles ${named.map((t) => t.replace(/^Title /, "")).join(", ")}`;
-  $("#grid-title").replaceChildren(label + " ", el("span", { class: "titlename", text: `· ${titleName}` }));
-  $("#grid-subline").textContent = `Budget authority in ${G.units === "m" ? "$ millions" : "$ thousands (as printed in the committee tables)"}`
-    + " · every figure links to the page it was printed on" + (dataVersion ? ` · data as of ${dataVersion}` : "");
+  const titles = named.length === 1 ? named[0] : `Titles ${named.map((t) => t.replace(/^Title /, "")).join(", ")}`;
+  const when = G.grid === "years" ? `FY${G.a} vs FY${G.b}` : G.grid === "history" ? "Enacted history" : `FY${G.fy}`;
+  $("#eyebrow").textContent = `${label} · ${titles} · ${when}`;
+  $("#grid-title").textContent = headingOf(grid);
+  // units and basis; a year with no enacted figure says where it stands
+  const lead = G.grid === "stages" ? leadStage(grid, G.fy) : 3;
+  $("#grid-subline").textContent = `${G.units === "m" ? "$ millions" : "$ thousands"} · as printed`
+    + (lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
   const groups = layout(grid), cols = flatCols(groups);
+  current = { grid, cols };
   const note = (c) => c.fig ? (grid.stage_notes || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`] : null;
   const r1 = el("tr", {}, el("th", { class: "acct", scope: "col", rowspan: "2", text: "Account" }));
-  // a year funded by a full-year continuing resolution (Bill Report Reference funding_type, v37):
-  // its Enacted column says so -- "FY2025 (CR)" where the header names the year, "Enacted (CR)" where
-  // the year's other stages sit beside it -- with the law and date in the title
+  for (const g of groups)
+    r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""}${g.cls === "delta" ? " first" : " gs"}`, text: g.label }));
+  // a year funded by a full-year continuing resolution (Bill Report Reference funding_type): its Enacted
+  // column says so, "Enacted (CR)" (or "FY2025 (CR)" in Enacted history), with the law and date in the title
   const cr = (c) => {
-    const e = c.fig && c.fig[1] === 3 && (grid.enactments || {})[String(c.fig[0])];
-    return e && e.funding_type === "full_year_cr"
-      ? { fy: c.fig[0], title: `Funded by a full-year continuing resolution (${(e.bill_id || "").replace(/^P\.L\.\s*/, "P.L. ")}`
-          + `${e.enactment_date ? ", enacted " + e.enactment_date : ""})` } : null;
+    const e = c.fig && c.fig[1] === 3 && crOf(grid, c.fig[0]);
+    return e ? { fy: c.fig[0], title: `Funded by a full-year continuing resolution (${plDisplay(e.bill_id)}`
+                 + `${e.enactment_date ? ", enacted " + e.enactment_date : ""})` } : null;
   };
-  const crAttrs = (k) => k ? { title: k.title, "data-cr": String(k.fy), "data-testid": "cr-label" } : {};
-  const crInGroup = new Set();      // years labeled on their group header (a group of just that Enacted column)
-  for (const g of groups) {
-    const change = g.cls === "delta";
-    if (change) r1.append(el("th", { class: "gap", rowspan: "2", "aria-hidden": "true" }));
-    const k = g.cols.length === 1 && g.label === `FY${g.cols[0].fig && g.cols[0].fig[0]}` ? cr(g.cols[0]) : null;
-    r1.append(el("th", { scope: "colgroup", colspan: String(g.cols.length), class: `grp ${g.cls || ""}${change ? "" : " gs"}`,
-                         text: k ? `${g.label} (CR)` : change && !/^Change\b/.test(g.label) ? `Change · ${g.label}` : g.label,
-                         ...crAttrs(k) }));
-    if (k) crInGroup.add(k.fy);
-  }
   // a House / Senate column whose Bill Report Reference row says draft (the full committee never
   // reported the bill): "House (draft)", its title naming the document the figures come from
   const draft = (c) => {
     const d = c.fig && (c.fig[1] === 1 || c.fig[1] === 2) && (grid.drafts || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`];
     return d ? { key: `${c.fig[0]}|${STAGES4[c.fig[1]]}`,
-                 title: "Committee draft \u2014 the full committee never reported this bill" + (d.document ? ` \u00b7 ${d.document}` : "") } : null;
+                 title: "Committee draft — the full committee never reported this bill" + (d.document ? ` · ${d.document}` : "") } : null;
   };
   const r2 = el("tr", {}, ...cols.map((c) => {
-    const n = note(c);
-    const k = c.fig && crInGroup.has(c.fig[0]) ? null : cr(c);
-    const dr = draft(c);
-    const label = k ? `${c.label} (CR)` : dr ? `${c.label} (draft)` : c.label;
+    const n = note(c), k = cr(c), dr = draft(c);
+    const lbl = k ? `${c.label} (CR)` : dr ? `${c.label} (draft)` : c.label;
     const plain = n ? `FY${c.fig[0]} ${STAGES4[c.fig[1]]} — ${n}` : c.what || `FY${c.fig[0]} ${STAGES4[c.fig[1]]}`;
-    return el("th", { scope: "col", class: c.cls, title: dr ? dr.title + (n ? ` \u2014 ${n}` : "") : plain,
-                      ...crAttrs(k), ...(dr ? { "data-draft": dr.key, "data-testid": "draft-label" } : {}) },
-      n ? noteMark(n) : null, label);
+    return el("th", { scope: "col", class: c.cls + (c.chg ? " delta" : ""), dataset: { col: String(c.col) },
+                      title: dr ? dr.title + (n ? ` — ${n}` : "") : k ? k.title : plain,
+                      ...(k ? { "data-cr": String(k.fy), "data-testid": "cr-label" } : {}),
+                      ...(dr ? { "data-draft": dr.key, "data-testid": "draft-label" } : {}) },
+      n ? noteMark(n) : null, lbl);
   }));
-  current = { grid, cols };
-  $("#compare-grid").replaceChildren(el("thead", {}, r1, r2), el("tbody"));
+  // column widths: the design's template, minmax(250px, 2.2fr) then minmax(98px, 1fr) per figure, minmax(112px, 1fr) per change
+  const fr = 2.2 + cols.length;
+  const colgroup = el("colgroup", {}, el("col", { style: `width:${(2.2 / fr * 100).toFixed(3)}%` }),
+    ...cols.map(() => el("col", { style: `width:${(100 / fr).toFixed(3)}%` })));
+  const table = $("#compare-grid");
+  table.style.minWidth = (250 + cols.filter((c) => c.fig).length * 98 + cols.filter((c) => c.chg).length * 112) + "px";
+  table.classList.toggle("compact", G.dense);
+  table.replaceChildren(colgroup, el("thead", {}, r1, r2), el("tbody"));
   renderBody();
-  renderTiles(grid);
+  renderOverview(grid);
+  renderChips(grid);
+  renderLegend();
   $("#rev-legend").hidden = !G.reviewer;
   if (G.reviewer) {
     // cells in view whose figure has validation records pending review (human_review_status), every row
     const rows = [...grid.rows, ...(grid.titles || []).map((t) => t.total).filter(Boolean), grid.bill_total].filter(Boolean);
     const keys = [...new Set(cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`))];
     const n = rows.reduce((acc, row) => acc + keys.filter((k) => {
-      const [y, st] = k.split("|"), x = headOf(row, y, st), o = x && x.h && x.h.observations[0];
+      const [yy, st] = k.split("|"), x = headOf(row, yy, st), o = x && x.h && x.h.observations[0];
       return o && pendingReview(o).length;
     }).length, 0);
-    $("#rev-count").textContent = `\u00b7 ${n.toLocaleString("en-US")} cell${n === 1 ? "" : "s"} in view with records pending review`;
+    $("#rev-count").textContent = `· ${n.toLocaleString("en-US")} cell${n === 1 ? "" : "s"} in view with records pending review`;
   }
   const c = grid.state_counts || {};
   const parts = [["value", "with a figure"], ["not_funded", "not funded"], ["no_printed_total", "no printed total"],
@@ -1185,31 +1390,69 @@ function renderCompare(grid) {
     ...parts.map(([k, l]) => el("span", { dataset: { state: k }, text: `${(c[k] || 0).toLocaleString("en-US")} ${l}` })),
     el("span", { dataset: { state: "outside_life" },
                  text: `${(grid.outside_life_cells || 0).toLocaleString("en-US")} blank, outside an account's life (never missing)` }));
-  const shown = cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`);
-  const notes = Object.entries(grid.stage_notes || {}).filter(([k]) => shown.includes(k));
+  const shownKeys = cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`);
+  const notes = Object.entries(grid.stage_notes || {}).filter(([k]) => shownKeys.includes(k));
   $("#grid-notes").replaceChildren(...notes.map(([k, n]) => {
-    const [y, st] = k.split("|");
-    return el("span", { "data-testid": "stage-notes", text: `† FY${y} ${st}: ${n}` });
+    const [yy, st] = k.split("|");
+    return el("span", { "data-testid": "stage-notes", text: `† FY${yy} ${st}: ${n}` });
   }));
   $("#grid-notes").hidden = !notes.length;
   fillProvenance($("#grid-provenance"));
   $("#compare-result").hidden = false;
   pinHeader();
 }
+function renderLegend() {
+  $("#grid-legend").replaceChildren(
+    el("span", { text: `${G.units === "m" ? "$ millions" : "$ thousands"} · click an account name for details · click a figure for its source` }),
+    el("span", { text: "— not funded (printed zero or confirmed absent)" }),
+    el("span", { text: "missing = document on file, figure not entered" }),
+    el("span", { text: "blank = outside the account’s life" }));
+}
 
 // the second header row sits right under the first, whatever height the first renders at
 function pinHeader() {
-  const r1 = document.querySelector("#compare-grid thead tr");
-  if (!r1 || $("#compare-view").hidden) return;
-  const h = r1.querySelector("th.grp").getBoundingClientRect().height;
+  const th = document.querySelector("#compare-grid thead tr:first-child th.grp");
+  if (!th || $("#compare-view").hidden) return;
+  const h = th.getBoundingClientRect().height;
   if (h) $("#compare-grid").style.setProperty("--head1", h + "px");
 }
 window.addEventListener("resize", pinHeader);
 if (document.fonts) document.fonts.ready.then(pinHeader);
 
-// ---- state <-> URL
+// ---- hover crosshair (SPEC 5.5): the row, the column, their crossing and the column's header
+const hoverCSS = document.head.appendChild(document.createElement("style"));
+let hovered = null;
+function clearHover() {
+  if (hovered && hovered.tr) delete hovered.tr.dataset.hov;
+  hovered = null;
+  hoverCSS.textContent = "";
+}
+function setHover(tr, col) {
+  if (hovered && hovered.tr === tr && hovered.col === col) return;
+  clearHover();
+  hovered = { tr, col };
+  tr.dataset.hov = "1";
+  if (col == null) return;
+  const k = CSS.escape(col);
+  hoverCSS.textContent =
+    `#compare-grid tbody td[data-col="${k}"] { background-color: var(--x-hov-col); }\n` +
+    `#compare-grid tbody tr[data-hov] > td[data-col="${k}"] { background-color: var(--x-hov-cross); }\n` +
+    `#compare-grid thead th[data-col="${k}"] { background-color: var(--x-hov-head); color: var(--x-accent-text); font-weight: 600; box-shadow: inset 0 -2px 0 var(--x-accent); }`;
+}
+$("#compare-grid").addEventListener("mouseover", (e) => {
+  if (!has("interaction_state")) return;
+  const td = e.target.closest("#compare-grid tbody td");
+  if (!td) return;
+  const tr = td.parentNode;
+  // section labels and header-only rows don't highlight
+  if (!tr.querySelector("td[data-col]")) { clearHover(); return; }
+  setHover(tr, td.classList.contains("acct") ? null : td.dataset.col || null);
+});
+$("#grid-wrap").addEventListener("mouseleave", clearHover);
+
+// ---- state <-> URL (SPEC 5.7): every control and the expanded rows
 function compareURL() {
-  const q = new URLSearchParams({ view: "compare", sc: G.sc, grid: G.grid });
+  const q = new URLSearchParams({ sc: G.sc, grid: G.grid });
   if (G.grid === "stages") q.set("fy", G.fy);
   if (G.grid === "years") {
     q.set("a", G.a); q.set("b", G.b);
@@ -1217,16 +1460,30 @@ function compareURL() {
     if (G.basis !== 3) q.set("basis", STAGE_WORD[G.basis].toLowerCase());
   }
   if (G.units !== "k") q.set("units", G.units);
+  if (G.dense) q.set("density", "compact");
+  if (G.reqcol) q.set("cols", "request");
   if (G.reviewer) q.set("rev", "1");
+  if (G.agency) q.set("agency", G.agency);
+  if (G.status !== "any") q.set("status", G.status);
+  if (G.search.trim()) q.set("search", G.search.trim());
   // "Accounts shown", where it differs from the view's defaults: the list of what is shown
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
+  if (open.size) q.set("open", [...open].sort().join(","));
   return "?" + q.toString();
 }
-const SHOW_PROPOSED = { stages: true, years: true, history: false };
+// a change the user made: a new history entry (Back undoes it); replace=true for typing and the first load
+function commit(replace) {
+  const url = compareURL();
+  if (url === location.search) return;
+  if (replace || !has("interaction_state")) history.replaceState(null, "", url); else history.pushState(null, "", url);
+}
+// the fiscal year a first visit opens on: the current one (October 1 starts it), from today's date
 function defaultYear(grid) {
-  const ys = grid.fiscal_years;
-  return [...ys].reverse().find((y) => grid.rows.some((r) => figure(r, y, "Enacted") != null)) || ys[ys.length - 1];
+  const ys = grid.fiscal_years, now = GridMath.fiscalYear(new Date());
+  if (ys.includes(now)) return now;
+  const before = ys.filter((y) => y <= now);
+  return before.length ? before[before.length - 1] : ys[ys.length - 1];
 }
 function settle(grid, want) {
   const ys = grid.fiscal_years;
@@ -1236,6 +1493,8 @@ function settle(grid, want) {
     G.grid = want.grid === "enacted" ? "history" : ["stages", "years", "history"].includes(want.grid) ? want.grid : "stages";
     G.units = want.units === "m" ? "m" : "k";
     G.reviewer = want.rev === "1";
+    G.dense = want.density === "compact";
+    G.reqcol = String(want.cols || "").split(",").includes("request");
     G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
     if (want.show) {
       const on = String(want.show).split(",");
@@ -1251,105 +1510,240 @@ function settle(grid, want) {
     G.stages = /^[01]{4}$/.test(want.stages || "") ? [...want.stages].map((x) => x === "1") : [true, true, true, true];
     const bi = STAGE_WORD.findIndex((w) => w.toLowerCase() === String(want.basis || "").toLowerCase());
     G.basis = bi < 0 ? 3 : bi;
+    const agencies = agencyOptions(grid);
+    G.agency = agencies.includes(want.agency) ? want.agency : "";
+    G.status = STATUS.some(([k]) => k === want.status) ? want.status : "any";
+    G.search = want.search || "";
+    open = new Set(String(want.open || "").split(",").filter(Boolean));
   }
   if (!ys.includes(G.fy)) G.fy = defaultYear(grid);
   if (!ys.includes(G.b)) G.b = G.fy;
   if (!ys.includes(G.a)) G.a = before(G.b, 2);
 }
+// the Agency filter's choices: each agency the subcommittee's rows name, agency totals first
+function agencyOptions(grid) {
+  const out = [];
+  for (const r of grid.rows.filter((x) => x.rollup === "agency").concat(grid.rows))
+    if (!out.includes(r.account.agency)) out.push(r.account.agency);
+  return out;
+}
+
+// ---- the control row, the filter panel, chips and the View menu
+function pressed(b, on) { b.classList.toggle("on", on); b.setAttribute("aria-pressed", String(on)); }
+function keepFocus(container, render) {
+  const key = container.contains(document.activeElement) ? document.activeElement.dataset.key : null;
+  render();
+  if (key) { const n = container.querySelector(`[data-key="${CSS.escape(key)}"]`); if (n) n.focus(); }
+}
 function renderControls(grid) {
-  for (const b of document.querySelectorAll("#view-switch button")) {
-    if (b.dataset.grid === G.grid) b.className = "on"; else b.removeAttribute("class");
-    b.setAttribute("aria-pressed", String(b.dataset.grid === G.grid));
-  }
-  for (const b of document.querySelectorAll("#units button")) {
-    if (b.dataset.units === G.units) b.className = "on"; else b.removeAttribute("class");
-    b.setAttribute("aria-pressed", String(b.dataset.units === G.units));
-  }
-  $("#reviewer").checked = G.reviewer;
-  const yearSel = (id, label, key) => {
-    const s = el("select", { id, "data-testid": id }, ...grid.fiscal_years.map((y) => el("option", { value: y, text: `FY${y}` })));
+  for (const b of document.querySelectorAll("#view-switch button")) pressed(b, b.dataset.grid === G.grid);
+  const yearSel = (id, key, aria) => {
+    const s = el("select", { id, "data-testid": id, "aria-label": aria }, ...grid.fiscal_years.map((y) => el("option", { value: y, text: `FY${y}` })));
     s.value = String(G[key]);
     s.addEventListener("change", () => { G[key] = Number(s.value); redraw(); });
-    return el("label", { class: "field" }, label, s);
+    return s;
   };
-  // "Accounts shown": the lifecycle filters, in every view
-  const showBox = (key, label, title) => {
-    const c = el("input", { type: "checkbox", dataset: { show: key }, "data-testid": "show-" + key });
-    c.checked = key === "proposed" ? G.show.proposed[G.grid] : G.show[key];
-    c.addEventListener("change", () => {
-      if (key === "proposed") G.show.proposed[G.grid] = c.checked; else G.show[key] = c.checked;
-      redraw();
-    });
-    return el("label", { class: "chk", title }, c, label);
-  };
-  $("#show-controls").replaceChildren(
-    el("span", { style: "font-size:12px;color:#4A515E", text: "Accounts shown" }),
-    showBox("proposed", "proposed-only accounts", "Accounts proposed in a request or bill and never enacted"),
-    showBox("ended", "ended accounts after their last year", "An account that ended (eliminated, merged, moved): its row after its last year, blank"),
-    showBox("created", "new accounts before their first year", "An account created after FY2017: its row before its first year, blank"));
-  const box = $("#sub-controls");
-  box.replaceChildren();
-  box.hidden = G.grid === "history";
-  if (G.grid === "stages") {
-    box.append(yearSel("fy-pick", "Fiscal year", "fy"),
-      el("div", { class: "hint", text: "Prior-year enacted, then this year’s request, House, Senate and enacted, with the change from both" }));
-  } else if (G.grid === "years") {
-    const checks = el("div", { style: "display:flex;flex-wrap:wrap;gap:4px 10px", "data-testid": "stage-checks" },
-      ...STAGE_NAME.map((n, i) => {
-        const c = el("input", { type: "checkbox", dataset: { stage: String(i) } });
-        c.checked = G.stages[i];
-        c.addEventListener("change", () => { G.stages[i] = c.checked; redraw(); });
-        return el("label", { class: "chk" }, c, n);
-      }));
-    const basis = el("select", { id: "basis", "data-testid": "basis" },
-      ...[3, 0, 1, 2].map((i) => el("option", { value: String(i), text: STAGE_NAME[i] })));
-    basis.value = String(G.basis);
-    basis.addEventListener("change", () => { G.basis = Number(basis.value); redraw(); });
-    box.append(yearSel("fy-a", "Compare", "a"), yearSel("fy-b", "with", "b"),
-      el("fieldset", { style: "border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:4px" },
-        el("legend", { style: "font-size:12px;color:#4A515E;padding:0;margin-bottom:4px", text: "Stages shown" }), checks),
-      el("label", { class: "field" }, "Change measured on", basis));
+  const box = $("#fy-field");
+  if (G.grid === "years") {
+    box.replaceChildren("Fiscal years", el("div", { class: "pair" }, yearSel("fy-a", "a", "Earlier fiscal year"), "vs", yearSel("fy-b", "b", "Later fiscal year")));
+    box.classList.remove("fy");
+  } else {
+    const s = yearSel("fy-pick", "fy", "Fiscal year");
+    if (G.grid === "history") { s.disabled = true; s.title = "Enacted history shows every enacted year"; }
+    box.replaceChildren(el("label", { class: "xfield", style: "color:inherit" }, "Fiscal year", s));
+    box.classList.add("fy");
   }
+  $("#search").value = G.search;
+  $("#search-field").hidden = !has("search_filter");
+  $("#filter-btn").hidden = !has("search_filter");
+  $("#share").hidden = !has("interaction_state");
+  renderFilterPanel(grid);
+  renderViewMenu(grid);
 }
-async function redraw() {
+function filterChips(grid) {
+  const y = focusYear(grid), chips = [];
+  if (G.agency) chips.push({ label: `Agency: ${G.agency}`, clear: () => { G.agency = ""; } });
+  if (G.status !== "any") chips.push({ label: `Status in FY${y}: ${STATUS.find(([k]) => k === G.status)[1]}`, clear: () => { G.status = "any"; } });
+  return chips;
+}
+function renderChips(grid) {
+  const chips = has("search_filter") ? filterChips(grid) : [];
+  const badge = $("#filter-badge");
+  badge.hidden = !chips.length;
+  badge.textContent = String(chips.length);
+  $("#filter-btn").classList.toggle("active", chips.length > 0);
+  $("#filter-btn").setAttribute("aria-label", chips.length ? `Filter, ${chips.length} applied` : "Filter");
+  const box = $("#chips");
+  box.hidden = !chips.length;
+  box.replaceChildren(el("span", { class: "lbl", text: "Applied:" }),
+    ...chips.map((c) => {
+      const x = el("button", { type: "button", "aria-label": `Remove ${c.label}`, text: "×" });
+      x.addEventListener("click", () => { c.clear(); redraw(); $("#filter-btn").focus(); });
+      return el("span", { class: "chip", "data-testid": "chip" }, c.label, x);
+    }));
+  const all = el("button", { type: "button", class: "textlink", "data-testid": "clear-all", text: "Clear all" });
+  all.addEventListener("click", () => { G.agency = ""; G.status = "any"; redraw(); $("#filter-btn").focus(); });
+  box.append(all);
+}
+function renderFilterPanel(grid) {
+  const panel = $("#filter-panel");
+  keepFocus(panel, () => {
+    const y = focusYear(grid);
+    const close = el("button", { type: "button", class: "x", "aria-label": "Close filter", "data-key": "close", text: "×" });
+    close.addEventListener("click", () => closeMenu(true));
+    const agency = el("select", { id: "f-agency", "data-testid": "filter-agency", "data-key": "agency" },
+      el("option", { value: "", text: "All agencies" }), ...agencyOptions(grid).map((a) => el("option", { value: a, text: a })));
+    agency.value = G.agency;
+    agency.addEventListener("change", () => { G.agency = agency.value; redraw(); });
+    const status = el("div", { class: "pills", role: "group", "aria-label": `Status in FY${y}`, id: "f-status", "data-testid": "filter-status" },
+      ...STATUS.map(([k, l]) => {
+        const b = el("button", { type: "button", class: "pill", dataset: { status: k, key: "status-" + k }, text: l });
+        pressed(b, G.status === k);
+        b.addEventListener("click", () => { G.status = k; redraw(); });
+        return b;
+      }));
+    const reset = el("button", { type: "button", class: "xbtn", "data-testid": "filter-reset", "data-key": "reset", text: "Reset" });
+    reset.addEventListener("click", () => { G.agency = ""; G.status = "any"; redraw(); });
+    const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "filter-done", "data-key": "done", text: "Done" });
+    done.addEventListener("click", () => closeMenu(true));
+    // Account type and Advanced (Amount basis, timing, earmarks ...) read data UI-0 publishes: not built here,
+    // and hidden while their flags (budget_class, accounting_views) are false
+    panel.replaceChildren(
+      el("div", { class: "phead" }, el("div", { class: "ptitle", id: "filter-title", text: "Filter" }), close),
+      el("label", { class: "block" }, "Agency", agency),
+      el("div", { class: "glabel", text: `Status in FY${y}` }), status,
+      el("div", { class: "pfoot" }, reset, done));
+  });
+}
+function renderViewMenu(grid) {
+  const menu = $("#view-menu");
+  keepFocus(menu, () => {
+    const pills = (label, items, key, on, set) => [el("div", { class: "glabel", text: label }),
+      el("div", { class: "pills", role: "group", "aria-label": label, id: key, "data-testid": key },
+        ...items.map(([v, l]) => {
+          const b = el("button", { type: "button", class: "pill", dataset: { [key === "units" ? "units" : "density"]: v, key: key + "-" + v }, text: l });
+          pressed(b, on(v));
+          b.addEventListener("click", () => { set(v); redraw(); });
+          return b;
+        }))];
+    const check = (id, label, checked, set, extra = {}) => {
+      const c = el("input", { type: "checkbox", id, "data-key": id, ...extra });
+      c.checked = checked;
+      c.addEventListener("change", () => { set(c.checked); redraw(); });
+      return el("label", { class: "chk" }, c, label);
+    };
+    const kids = [
+      ...pills("Units", [["k", "$ thousands"], ["m", "$ millions"]], "units", (v) => G.units === v, (v) => { G.units = v; }),
+      ...pills("Density", [["comfortable", "Comfortable"], ["compact", "Compact"]], "density", (v) => G.dense === (v === "compact"),
+               (v) => { G.dense = v === "compact"; })];
+    if (G.grid === "stages") {
+      const lead = leadStage(grid, G.fy);
+      kids.push(el("div", { class: "glabel", text: "Columns" }),
+        check("col-req", lead === 3 ? `Change vs FY${G.fy} request` : `${STAGE_NAME[lead]} vs FY${G.fy} request`, G.reqcol, (v) => { G.reqcol = v; },
+              { "data-testid": "col-request" }));
+    }
+    if (G.grid === "years") {
+      const checks = el("div", { "data-testid": "stage-checks" }, ...STAGE_NAME.map((n, i) =>
+        check("stage-" + i, n, G.stages[i], (v) => { G.stages[i] = v; }, { "data-stage": String(i) })));
+      const basis = el("select", { id: "basis", "data-testid": "basis", "data-key": "basis", style: "height:36px;font-size:13px" },
+        ...[3, 0, 1, 2].map((i) => el("option", { value: String(i), text: STAGE_NAME[i] })));
+      basis.value = String(G.basis);
+      basis.addEventListener("change", () => { G.basis = Number(basis.value); redraw(); });
+      kids.push(el("div", { class: "glabel", text: "Stages shown" }), checks,
+        el("label", { class: "block", style: "margin:8px 0 12px;font-size:12px" }, "Change measured on", basis));
+    }
+    kids.push(el("div", { class: "glabel", text: "Accounts shown", "data-testid": "accounts-shown" }),
+      check("show-proposed", "Proposed-only accounts", G.show.proposed[G.grid], (v) => { G.show.proposed[G.grid] = v; }, { "data-testid": "show-proposed", "data-show": "proposed" }),
+      check("show-ended", "Ended accounts after their last year", G.show.ended, (v) => { G.show.ended = v; }, { "data-testid": "show-ended", "data-show": "ended" }),
+      check("show-created", "New accounts before their first year", G.show.created, (v) => { G.show.created = v; }, { "data-testid": "show-created", "data-show": "created" }));
+    const ex = el("button", { type: "button", class: "xbtn", id: "expand-all", "data-testid": "expand-all", "data-key": "expand-all", text: "Expand all" });
+    ex.addEventListener("click", () => { if (current) open = new Set(expandable(current.grid)); renderBody(); commit(); });
+    const co = el("button", { type: "button", class: "xbtn", id: "collapse-all", "data-testid": "collapse-all", "data-key": "collapse-all", text: "Collapse all" });
+    co.addEventListener("click", () => { open = new Set(); renderBody(); commit(); });
+    kids.push(el("div", { class: "sep" }, ex, co,
+      check("reviewer", "Reviewer mode (verification marks)", G.reviewer, (v) => { G.reviewer = v; }, { "data-testid": "reviewer" })));
+    menu.replaceChildren(...kids);
+  });
+}
+
+// ---- menus: one open at a time; Esc or a click outside closes it and focus returns to its button
+let openMenu = null;      // { panel, button }
+function showMenu(panel, button) {
+  closeMenu(false);
+  panel.hidden = false;
+  button.setAttribute("aria-expanded", "true");
+  openMenu = { panel, button };
+  const first = panel.querySelector("select, button.pill.on, button, input");
+  if (first) first.focus();
+}
+function closeMenu(returnFocus) {
+  if (!openMenu) return false;
+  const { panel, button } = openMenu;
+  panel.hidden = true;
+  button.setAttribute("aria-expanded", "false");
+  openMenu = null;
+  if (returnFocus) button.focus();
+  return true;
+}
+$("#filter-btn").addEventListener("click", () => (openMenu && openMenu.panel.id === "filter-panel" ? closeMenu(true) : showMenu($("#filter-panel"), $("#filter-btn"))));
+$("#view-btn").addEventListener("click", () => (openMenu && openMenu.panel.id === "view-menu" ? closeMenu(true) : showMenu($("#view-menu"), $("#view-btn"))));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && openMenu) { e.preventDefault(); closeMenu(true); }
+});
+document.addEventListener("mousedown", (e) => {
+  if (openMenu && !openMenu.panel.contains(e.target) && !openMenu.button.contains(e.target)) closeMenu(false);
+});
+$("#share").addEventListener("click", async () => {
+  const url = location.href, b = $("#share");
+  b.textContent = "Link copied"; b.dataset.copied = url;
+  setTimeout(() => { b.textContent = "Share"; }, 2000);
+  try { await navigator.clipboard.writeText(url); } catch (err) {
+    const t = el("textarea", { style: "position:fixed;opacity:0" }); t.value = url; document.body.append(t); t.select();
+    try { document.execCommand("copy"); } catch (e2) { /* the address bar still has it */ }
+    t.remove();
+  }
+});
+$("#export").addEventListener("click", (e) => e.preventDefault());
+
+async function redraw(replace) {
   const grid = await loadSubcommittee(G.sc);
   settle(grid);
   renderControls(grid);
-  history.replaceState(null, "", compareURL());
+  commit(replace);
   renderCompare(grid);
 }
 
-async function showCompare(want) {
+async function showCompare(want, replace = true) {
   showView("compare");
   compareStatus("Loading…");
   try {
     if (!scNames) {
+      await loadFeatures();
       const list = await source.subcommittees();
       scNames = list.subcommittees;                 // stored codes (CJS, LHHS); the option shows the display name
       scLabels = list.names || {};
       $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
-      if (STATIC_BASE) {
-        dataVersion = (await source.loadIndex()).source.version || "";
-      }
+      if (STATIC_BASE) dataVersion = (await source.loadIndex()).source.version || "";
     }
-    G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || $("#sc").value || scNames[0];
+    if (!has("grid")) { compareStatus("The grid's data isn't in this build yet.", true); return; }
+    G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || (scNames.includes("LHHS") ? "LHHS" : scNames[0]);
     $("#sc").value = G.sc;
     const grid = await loadSubcommittee(G.sc);
-    // the agency with the most accounts starts open, as in the design
-    const biggest = grid.rows.filter((r) => r.rollup === "agency")
-      .sort((x, y) => (y.rollup_members || []).length - (x.rollup_members || []).length)[0];
-    open = new Set(biggest && (biggest.rollup_members || []).length ? [biggest.account.canonical_account_id] : []);
+    for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
     settle(grid, want || {});
     compareStatus("");
     renderControls(grid);
-    history.replaceState(null, "", compareURL());
+    commit(replace);
     renderCompare(grid);
   } catch (e) { compareStatus("Error: " + e.message, true); }
 }
 
 async function openAccount(id, at) {
   showView("account");
-  history.replaceState(null, "", "?account=" + encodeURIComponent(id) + (at ? `&fy=${at.fy}&stage=${encodeURIComponent(at.stage)}` : ""));
+  history.pushState(null, "", "?account=" + encodeURIComponent(id) + (at ? `&fy=${at.fy}&stage=${encodeURIComponent(at.stage)}` : ""));
+  await showAccountAt(id, at);
+}
+async function showAccountAt(id, at) {
   reset("Loading…");
   try { showAccount(await source.account(id)); } catch (e) { reset("Error: " + e.message, true); return; }
   // a cell asked for: mark it and bring it into view
@@ -1357,24 +1751,27 @@ async function openAccount(id, at) {
   if (td) { td.classList.add("focus"); td.dataset.focus = "true"; td.scrollIntoView({ block: "center" }); }
 }
 
-$("#sc").addEventListener("change", () => { G.sc = $("#sc").value; showCompare({ sc: G.sc, grid: G.grid, units: G.units, rev: G.reviewer ? "1" : "" }); });
-for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
-for (const b of document.querySelectorAll("#units button")) b.addEventListener("click", () => { G.units = b.dataset.units; redraw(); });
-$("#reviewer").addEventListener("change", () => { G.reviewer = $("#reviewer").checked; redraw(); });
-$("#expand-all").addEventListener("click", () => {
-  if (current) open = new Set(current.grid.rows.filter((r) => r.rollup === "agency").map((r) => r.account.canonical_account_id));
-  renderBody();
+$("#sc").addEventListener("change", () => {
+  G.sc = $("#sc").value; G.agency = ""; open = new Set();
+  showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
+                cols: G.reqcol ? "request" : "", status: G.status, search: G.search }, false);
 });
-$("#collapse-all").addEventListener("click", () => { open = new Set(); renderBody(); });
+for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
+let searchTimer = null;
+$("#search").addEventListener("input", () => {
+  G.search = $("#search").value;
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { if (current) { renderBody(); commit(true); } }, 120);
+});
 for (const b of document.querySelectorAll(".tabs button")) {
   b.addEventListener("click", () => {
     if (b.dataset.view === "compare") {
-      if (scNames && G.sc) { showView("compare"); history.replaceState(null, "", compareURL()); pinHeader(); }
-      else showCompare({});
+      if (scNames && G.sc) { showView("compare"); history.pushState(null, "", compareURL()); pinHeader(); }
+      else showCompare({}, false);
     } else {
       showView("account");
       const q = $("#q").value.trim();
-      history.replaceState(null, "", q ? "?q=" + encodeURIComponent(q) : location.pathname);
+      history.pushState(null, "", q ? "?q=" + encodeURIComponent(q) : "?view=account");
     }
   });
 }
@@ -1382,17 +1779,28 @@ for (const b of document.querySelectorAll(".tabs button")) {
 $("#search-form").addEventListener("submit", (e) => {
   e.preventDefault();
   const q = $("#q").value.trim();
-  if (q) { history.replaceState(null, "", "?q=" + encodeURIComponent(q)); runSearch(q); }
+  if (q) { history.pushState(null, "", "?q=" + encodeURIComponent(q)); runSearch(q); }
 });
-const params = new URLSearchParams(location.search);
-const initial = params.get("q");
-if (params.get("view") === "compare") {
-  showCompare({ sc: params.get("sc"), grid: params.get("grid"), fy: params.get("fy"), a: params.get("a"), b: params.get("b"),
-                stages: params.get("stages"), basis: params.get("basis"), units: params.get("units"), rev: params.get("rev"),
-                show: params.get("show") });
-} else if (params.get("account")) {
-  openAccount(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
-} else if (initial) { $("#q").value = initial; runSearch(initial); }
+// the address decides the view: Explore unless it names an account, a search or the One account view
+function route() {
+  closeMenu(false);
+  const params = new URLSearchParams(location.search);
+  const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
+                                   "agency", "status", "search", "open"].map((k) => [k, params.get(k)]));
+  if (params.get("account")) {
+    showView("account");
+    showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
+  } else if (params.get("q")) {
+    showView("account");
+    $("#q").value = params.get("q"); runSearch(params.get("q"));
+  } else if (params.get("view") === "account") {
+    showView("account");
+  } else {
+    showCompare(want, true);
+  }
+}
+window.addEventListener("popstate", route);
+route();
 </script>
 </body>
 </html>

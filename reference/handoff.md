@@ -161,3 +161,30 @@ Made in this phase (flag any you disagree with):
   `rows[].attributes.*.budget_class` and defense to `rows[].cells.*.defense_portion` in web/ui_contract.json and
   bump contract_version.
   The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
+
+## UI-1: Explore workspace (2026-10-12)
+
+- Explore is the default view (`/`); One account stays reachable (header tab, `?view=account`, `?q=`, `?account=`) until UI-5.
+- Feature flags in both serving modes: `features.py` holds `field_values`, `held`, `flags`; `export_static.py` writes
+  them into `docs/data/index.json` from the files it exported, and `approps_web.py` serves `GET /api/features` from the
+  payloads it serves (`payloads(db)`, cached per database file). `tests/test_static.py` checks the two agree. The page
+  shows a feature only when it is built (`BUILT` in web/index.html: grid, search_filter, overview_panel,
+  interaction_state, abbreviations) and its flag is true.
+- Page assets: `web/abbreviations.js` (display-only map keyed by canonical_account_id), `web/fonts/` (IBM Plex Sans and
+  Sans Condensed woff2 from @fontsource 5.2.5, SIL OFL in `web/fonts/OFL.txt`). Both modes serve them; the export copies them.
+- Default fiscal year: the current one from today's date (October 1 starts it), never hard-coded; FY2027 now.
+- A year with no Enacted figure: the lead stage is the latest stage the printed title total holds (no title total:
+  the latest any row holds); it gets the wash, the change reads "<Stage> vs FY<n-1> enacted", the units label adds
+  "FY<n> not yet enacted · latest: <Stage>", and the overview shows a Status block instead of "Enacted in".
+- URL state: `sc, grid, fy | a, b, stages, basis, units, density, cols, rev, agency, status, search, show, open`
+  (`view=compare` still read). Every change is a history entry (search typing replaces); Back/Forward re-render.
+- Kept from the old grid, now in the View menu: Units, Expand/Collapse all, Reviewer mode, the two-years stage
+  checkboxes and basis, the "Accounts shown" lifecycle checkboxes. Kept below the legend: state counts, stage notes,
+  provenance.
+
+Open items for the owner (also in the PR):
+
+1. SPEC.md has no "Years without an Enacted stage" text and no test 15; built from the brief's wording (see above),
+   test `test_a_year_without_an_enacted_stage` stands in for 15.
+2. Header nav shows Explore and One account; Find changes and Sources are not built (no brief yet), so not shown.
+3. CJS: accounts outside an agency total get their own section label ("Accounts outside an agency total · n").

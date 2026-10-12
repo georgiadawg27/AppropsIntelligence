@@ -26,6 +26,10 @@ API
   GET /api/subcommittee/<name>
       every account of the subcommittee side by side -> approps_store.subcommittee_grid()
       (the page picks fiscal years and stages from it)
+  GET /api/features
+      {"features": {name: bool}, "contract_version": n}: the page's feature flags (features.flags),
+      computed from the payloads this server answers with -- the same flags the static export writes
+      into docs/data/index.json from the same answers
 """
 
 import argparse
@@ -37,10 +41,14 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 import approps_store as S
+import features as F
 from subcommittees import display_name
 
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
+# the page's own files beside index.html (export_static.py copies the same ones): name -> content type
+ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8"}
+FONTS = PAGE.parent / "fonts"                               # IBM Plex Sans, self-hosted (SIL OFL)
 
 
 def search(db, q, agency=None):
@@ -84,6 +92,39 @@ def subcommittee(db, name):
         conn.close()
 
 
+def payloads(db):
+    """Every answer the page can read, keyed by the path the static export writes it to under docs/data/:
+    index.json (the matching pool), subcommittees.json, subcommittees/<name>.json, accounts/<id>.json --
+    each as a client receives it (through JSON)."""
+    conn = S.connect(db, readonly=True)
+    try:
+        pool = S.accounts_for_matching(conn)
+    finally:
+        conn.close()
+    out = {"index.json": {"accounts": F.index_accounts(pool)}}
+    listing = subcommittees(db)
+    out["subcommittees.json"] = listing
+    for name in listing["subcommittees"]:
+        out[f"subcommittees/{name}.json"] = subcommittee(db, name)
+    for a in pool:
+        p = account(db, a["canonical_account_id"])
+        out[f"accounts/{a['canonical_account_id']}.json"] = {"history": p["history"], "grid": p["grid"]}
+    return {k: F.as_served(v) for k, v in out.items()}
+
+
+_FEATURES = {}
+
+
+def features(db):
+    """The feature flags for this store (cached per database file and its modification time: the store is read-only)."""
+    path = Path(db)
+    key = (str(path.resolve()), path.stat().st_mtime_ns)
+    if key not in _FEATURES:
+        data = payloads(db)
+        _FEATURES[key] = F.flags(list(data), data.__getitem__)
+    return _FEATURES[key]
+
+
 def make_handler(db):
     class Handler(BaseHTTPRequestHandler):
         def send(self, status, body, ctype):
@@ -103,9 +144,17 @@ def make_handler(db):
             try:
                 if url.path in ("/", "/index.html"):
                     return self.send(HTTPStatus.OK, PAGE.read_bytes(), "text/html; charset=utf-8")
-                if url.path == "/match.js":                   # loaded by the page; used only by the static export
-                    return self.send(HTTPStatus.OK, (PAGE.parent / "match.js").read_bytes(),
-                                     "text/javascript; charset=utf-8")
+                if url.path.lstrip("/") in ASSETS:            # loaded by the page (match.js: used only by the static export)
+                    name = url.path.lstrip("/")
+                    return self.send(HTTPStatus.OK, (PAGE.parent / name).read_bytes(), ASSETS[name])
+                if url.path.startswith("/fonts/"):
+                    name = url.path[len("/fonts/"):]
+                    font = FONTS / name
+                    if "/" not in name and name.endswith(".woff2") and font.is_file():
+                        return self.send(HTTPStatus.OK, font.read_bytes(), "font/woff2")
+                    return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
+                if url.path == "/api/features":
+                    return self.json(HTTPStatus.OK, features(db))
                 if url.path == "/api/search":
                     qs = parse_qs(url.query)
                     q = (qs.get("q") or [""])[0].strip()
