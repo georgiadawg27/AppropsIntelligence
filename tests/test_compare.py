@@ -1583,15 +1583,16 @@ class ExploreV1(GridBrowser):
         self.page.click("[data-testid=clear-all]")
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
         self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
-        # Advanced shows its ungated items; Account type and the basis items are not built here (UI-3)
+        # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; Exclude earmarks
+        # waits for its own flag (exclude_earmarks, false until UI-0b)
         self.page.click("#filter-btn")
         self.page.click("#f-adv")
         text = self.page.inner_text("#filter-panel")
         for word in ("Advanced", "Change of at least (%)", "or at least ($K)", "Include committee drafts",
-                     "Show ended and reorganized accounts", "Only figures pending review or flagged"):
+                     "Show ended and reorganized accounts", "Only figures pending review or flagged",
+                     "Account type", "Amount basis", "Advance appropriations count"):
             self.assertIn(word, text)
-        for word in ("Account type", "Amount basis", "Advance appropriations count", "Exclude earmarks"):
-            self.assertNotIn(word, text)
+        self.assertNotIn("Exclude earmarks", text)
 
     def test_search_keeps_ancestors(self):
         self.go("?sc=LHHS&fy=2026")
@@ -1992,11 +1993,11 @@ class ExploreV1(GridBrowser):
         # /api/features), none of their controls exist; with the flags as published (on since UI-0), UI-3's do
         def off(route):
             body = json.loads(route.fetch().text())
-            for flag in ("accounting_views", "budget_class", "defense_split"):
+            for flag in ("accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense"):
                 body["features"][flag] = False
             route.fulfill(json=body)
         words = ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
-                 "appropriated mandatory", "earmark")
+                 "appropriated mandatory", "earmark", "nondefense")
         for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
             for flagged_off in (True, False):
                 if flagged_off:
@@ -2013,6 +2014,9 @@ class ExploreV1(GridBrowser):
                         self.assertNotIn(word, html, (where, word))
                     elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory"):
                         self.assertIn(word, html, (where, word))
+                # exclude_earmarks and nondefense are false until UI-0b publishes their data: no control either way
+                for word in ("exclude earmarks", "nondefense"):
+                    self.assertNotIn(word, html, (where, flagged_off, word))
                 if flagged_off:
                     self.page.unroute(pattern)
         # the page reads the flags in both modes: a flag turned off hides its feature
@@ -2364,12 +2368,25 @@ class AmountBasis(GridBrowser):
     def test_account_type_and_class_tags(self):
         self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
         attrs = lambda aid: self.lrow(aid)["attributes"]["2026"]
-        # the agency's tag; the mixed line's tag, marked provisional as its record says
-        self.assertEqual(self.page.inner_text("tr[data-account=ACC-HHS-CMS-TOTAL] [data-testid=class-tag]"), "incl. mandatory")
-        tag = self.page.locator(f"tr[data-account={self.PM}] [data-testid=class-tag]")
+        # "incl. mandatory" (owner, #61): a line whose class is mandatory, or mixed with a tagged mandatory_portion; an
+        # agency holding one. FY2026: HRSA, CDC, CMS, ACF and OS. A mixed line with none tagged (CMS Program
+        # Management) counts as discretionary and has no tag
+        tagged = self.page.eval_on_selector_all("tr.agency [data-testid=class-tag]", "ts => ts.map(t => t.closest('tr').dataset.account)")
+        self.assertEqual(sorted(tagged), sorted(f"ACC-HHS-{a}-TOTAL" for a in ("HRSA", "CDC", "CMS", "ACF", "OS")))
+        self.assertIn("Vaccine Injury Compensation Program Trust Fund: mandatory portion 272,062",
+                      self.page.get_attribute("tr[data-account=ACC-HHS-HRSA-TOTAL] [data-testid=class-tag]", "title"))
+        self.assertIn("Grants to States for Medicaid: mandatory 508,148,791",
+                      self.page.get_attribute("tr[data-account=ACC-HHS-CMS-TOTAL] [data-testid=class-tag]", "title"))
+        self.assertEqual(self.page.locator(f"tr[data-account={self.PM}] [data-testid=class-tag]").count(), 0)
+        self.assertEqual(attrs(self.PM)["budget_class"], "mixed")
+        # a mixed line with a portion: its tag names the amount and is marked provisional as its record says
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-HRSA-TOTAL")
+        tag = self.page.locator("tr[data-account=ACC-HHS-HRSA-VICTF] [data-testid=class-tag]")
         self.assertEqual(tag.inner_text(), "incl. mandatory")
-        self.assertEqual(tag.get_attribute("data-provisional"), str(attrs(self.PM)["provisional"]).lower())
+        self.assertEqual(tag.get_attribute("data-provisional"), str(attrs("ACC-HHS-HRSA-VICTF")["provisional"]).lower())
+        self.assertIn("mandatory portion 272,062", tag.get_attribute("title"))
         self.assertIn("Budget class mixed", tag.get_attribute("title"))
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
         # "Appropriated mandatory": CMS's mandatory lines follow the label, after the others
         order = self.page.eval_on_selector_all("#compare-grid tbody tr", "trs => trs.map(t => t.dataset.account || t.dataset.testid)")
         k = order.index("subgroup-mandatory")

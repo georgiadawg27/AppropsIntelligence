@@ -842,6 +842,7 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "defense_split"]);
+// exclude_earmarks and nondefense (web/ui_contract.json) wait for their data (UI-0b): not built, so never shown
 let FEAT = {};
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -1237,6 +1238,24 @@ function classOf(row, y) {
            where: `${docName(c.source_document_id)}${c.source_page ? ", p. " + c.source_page : ""}` };
 }
 const classTitle = (k, y) => `Budget class ${k.cls}${k.provisional ? " (provisional)" : ""}, FY${y}, ${k.basis} basis · ${k.where}`;
+// what makes a line "incl. mandatory" (owner, 2026-10-12, #61): its class for the year is mandatory, or mixed with a
+// mandatory_portion component tagged on its figure at the stage the grid leads with. A mixed account with none tagged
+// counts as discretionary (ACCOUNTING_RULES) and gets no tag. The text names the line and its mandatory amount: the
+// whole printed figure of a mandatory account, or each tagged mandatory portion (listed, never added)
+const tagStage = (grid) => STAGES4[G.grid === "years" ? G.basis : G.grid === "history" ? 3 : (leadStage(grid, G.fy) ?? 3)];
+function mandatoryOf(row, y) {
+  const k = classOf(row, y);
+  if (!k || !current) return null;
+  const st = tagStage(current.grid), name = plainName(row.account.canonical_name);
+  if (k.cls === "mandatory") {
+    const p = printedFig(row, y, st);
+    return { k, text: `${name}: mandatory${p != null ? " " + GridMath.number(p, G.units) : ""} (the whole figure; budget class mandatory)` };
+  }
+  if (k.cls !== "mixed") return null;
+  const x = headOf(row, y, st);
+  const parts = ((x && !x.cell.outside_life && x.cell.components) || []).filter((c) => c.type === "mandatory_portion");
+  return parts.length ? { k, text: `${name}: mandatory portion ${parts.map((c) => GridMath.number(c.amount, G.units)).join(", ")}` } : null;
+}
 const lineClass = (m, y) => classOf(m.account.parent_account_id && ROW_OF.get(m.account.parent_account_id) || m, y);
 const STATUS = [["any", "Any"], ["enacted", "Enacted"], ["moving", "Still moving"], ["proposed", "Proposed only"]];
 // a row's status in a fiscal year, read from its own cell states and lifecycle (never computed from figures)
@@ -1329,9 +1348,10 @@ function accountRow(r, cols, cls, lvl, inMandatory) {
   if (k) {
     // a provisional class: the tag has a dashed outline, and its title says so
     const t = { cls: "cls" + (k.provisional ? " prov" : ""), testid: "class-tag", title: classTitle(k, y), prov: k.provisional };
-    if (k.cls === "mixed") tags.push({ ...t, text: "incl. mandatory" });
-    else if (k.cls === "mandatory" && !inMandatory) tags.push({ ...t, text: "mandatory" });
-    else if (k.cls === "mandatory" && k.provisional) tags.push({ ...t, text: "provisional" });
+    const mi = k.cls === "mixed" ? mandatoryOf(r, y) : null;
+    if (mi) tags.push({ ...t, text: "incl. mandatory", title: `${mi.text} · ${t.title}` });
+    else if (k.cls === "mandatory" && !inMandatory) tags.push({ ...t, text: "mandatory", title: `${mandatoryOf(r, y).text} · ${t.title}` });
+    else if (k.cls === "mandatory" && k.provisional) tags.push({ ...t, text: "provisional", title: `${mandatoryOf(r, y).text} · ${t.title}` });
   }
   return el("tr", { class: cls, dataset: { account: id, testid: "compare-row", ...(r.member_of ? { memberOf: r.member_of } : {}) } },
     nameCell({ id, name, title: accountTitle(r), lvl, tags, move: moveLine(r), abbr: cls.includes("top") ? abbrOf(id) : "" }),
@@ -1404,9 +1424,9 @@ function buildRows(grid, cols) {
       const auto = F.filtering && !F.ok(r) && members.length > 0;          // shown for a line that matches: opened
       const isOpen = all.length > 0 && (open.has(id) || auto);
       // "incl. mandatory": the agency's lines in view include a mandatory or mixed account (their own budget_class)
-      const withMand = all.filter((m) => F.inView(m) && ["mandatory", "mixed"].includes((classOf(m, y) || {}).cls));
+      const withMand = all.filter((m) => F.inView(m)).map((m) => mandatoryOf(m, y)).filter(Boolean);
       const tags = withMand.length ? [{ cls: "cls", testid: "class-tag", text: "incl. mandatory",
-        title: "Lines with mandatory budget authority: " + withMand.map((m) => `${plainName(m.account.canonical_name)} (${classTitle(classOf(m, y), y)})`).join("; ") }] : [];
+        title: withMand.map((x) => x.text).join("; ") }] : [];
       out.push(el("tr", { class: "agency top" + (isOpen ? " open" : ""), dataset: { account: id, testid: "compare-row" } },
         nameCell({ id, key: id, name, title: accountTitle(r), abbr, chev: all.length > 0, spacer: !all.length, open: isOpen, tags,
                    note: isOpen ? (n ? `Agency total · sum of the ${n} line${n === 1 ? "" : "s"} below` : "Agency total") : "",
@@ -2194,7 +2214,7 @@ function renderFilterPanel(grid) {
     const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "filter-done", "data-key": "done", text: "Done" });
     done.addEventListener("click", () => closeMenu(true));
     // Advanced: Amount basis and advance timing (accounting_views), then the items no flag gates (SPEC section 9).
-    // Exclude earmarks stays out: no published view leaves earmarks out (brief UI-3; the page never computes a view)
+    // Exclude earmarks waits for its own flag, exclude_earmarks (UI-0b publishes the view; the page never computes one)
     const check = (id, label, checked, set, extra = {}) => {
       const c = el("input", { type: "checkbox", id, "data-key": id, ...extra });
       c.checked = checked;
@@ -2286,7 +2306,7 @@ function renderViewMenu(grid) {
       colChecks.push(check("col-req", lead === 3 ? `Change vs FY${G.fy} request` : `Request vs FY${G.fy - 1} enacted`, G.reqcol, (v) => { G.reqcol = v; },
                            { "data-testid": "col-request" }));
     if (lead != null && has("defense_split"))
-      colChecks.push(check("col-def", "Defense / nondefense (defense portion)", G.defcol, (v) => { G.defcol = v; }, { "data-testid": "col-defense" }));
+      colChecks.push(check("col-def", "Defense portion", G.defcol, (v) => { G.defcol = v; }, { "data-testid": "col-defense" }));
     if (colChecks.length) kids.push(el("div", { class: "glabel", text: "Columns" }), ...colChecks);
     if (G.grid === "years") {
       const checks = el("div", { "data-testid": "stage-checks" }, ...STAGE_NAME.map((n, i) =>

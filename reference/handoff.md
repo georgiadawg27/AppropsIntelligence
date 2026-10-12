@@ -294,11 +294,18 @@ Open items:
   Management, the title total, FY2025 CR; source panel arithmetic; overview totals; Account type and tags; defense
   column; URL round-trip of every option). Test 12 forces the three flags false and checks the controls appear when on.
 
-Open items (owner):
-1. Exclude earmarks is not built: no published view leaves earmarks out, and the page never computes one. Needs e.g.
-   `rows[].cells.*.views_excluding_earmarks.<basis>` (same shape as views) from site_accounting.py.
-2. Nondefense is not shown: it is a view (ACCOUNTING_RULES "nondefense"); needs a published nondefense amount per cell.
-3. Design's Program level definition mentions fees and transfers out; ACCOUNTING_RULES/accounting.py count neither, so
-   the page's definition follows ACCOUNTING_RULES.
-4. "incl. mandatory" shows on HRSA, CDC, NIH and OS too (each holds a mixed line in FY2026); the design shows it on
-   CMS and ACF only.
+Owner answers on #61 (2026-10-12):
+1. Exclude earmarks and nondefense: nothing built; new flags `exclude_earmarks` and `nondefense` in web/ui_contract.json
+   (contract_version 3), false until UI-0b publishes `rows[].cells.*.views_excluding_earmarks.<basis>` and
+   `rows[].cells.*.nondefense` (proposed paths, in the contract's shapes; UI-0b may rename them in the contract).
+   Neither is in `BUILT`; test 12 forces both false and checks no control either way. View › Columns reads
+   "Defense portion".
+2. "incl. mandatory": a line whose class is mandatory, or mixed with a mandatory_portion tagged at the lead stage; an
+   agency holding one. FY2026: HRSA, CDC, CMS, ACF, OS (the mockup's CMS/ACF-only predates the class data). Hover names
+   each line and its mandatory amount (portions listed, never added). Recorded in SPEC §4; test in AmountBasis.
+3. Program level follows ACCOUNTING_RULES (owner decision on #57).
+4. Other departures adopted and recorded in SPEC §4 (basis tokens, class tags, defense column), §5.6 (definitions,
+   Exclude earmarks flag, label timing, overview/source panel under a basis), §8 (provisional dashed outline).
+
+Open: SPEC §9's table still says "hidden until UI-0" for the accounting rows and has no rows for the two new flags
+(the owner's answer named §4/§5.6/§8 only).

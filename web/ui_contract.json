@@ -1,5 +1,5 @@
 {
- "contract_version": 2,
+ "contract_version": 3,
  "spec": "reference/ui/explore-v1/SPEC.md section 9",
  "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
  "features": {
@@ -147,6 +147,20 @@
     "subcommittees/*.json:rows[].cells.*.defense_portion"
    ]
   },
+  "exclude_earmarks": {
+   "spec_row": "Filter › Advanced: Exclude earmarks",
+   "brief": "UI-0b / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views_excluding_earmarks.*"
+   ]
+  },
+  "nondefense": {
+   "spec_row": "Defense / nondefense column: the nondefense figure",
+   "brief": "UI-0b / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.nondefense"
+   ]
+  },
   "watchlist": {
    "spec_row": "Watch (browser storage only; no alerts or email)",
    "brief": "UI-6",
@@ -162,6 +176,8 @@
   "rows[].cells.<FY|stage>.earmark": "{amount, component_ids[]}; only where earmark components are tagged (absent is not zero)",
   "rows[].cells.<FY|stage>.defense_portion": "{amount, component_ids[]}; only where defense_portion components are tagged (absent is not zero)",
   "rows[].attributes.<FY>": "{budget_class, provisional, budget_subfunction, fund_type, account_id_code, stage_basis, source_document_id, source_page, citations: {<attribute>: {account_attribute_id, source_document_id, source_page}}, request?: {the same, stage_basis 'request', where the President's Budget has its own value}}; an attribute with no record is absent",
-  "split": "index.json split_subcommittees lists the subcommittees also published per fiscal year: subcommittees/<SC>/index.json (everything but rows, titles, bill_total; files: {FY: file}) and subcommittees/<SC>/<FY>.json (rows, titles, bill_total with that year's cells and attributes only). subcommittees/<SC>.json stays the whole grid."
+  "split": "index.json split_subcommittees lists the subcommittees also published per fiscal year: subcommittees/<SC>/index.json (everything but rows, titles, bill_total; files: {FY: file}) and subcommittees/<SC>/<FY>.json (rows, titles, bill_total with that year's cells and attributes only). subcommittees/<SC>.json stays the whole grid.",
+  "rows[].cells.<FY|stage>.views_excluding_earmarks.<basis>": "proposed for UI-0b (owner, 2026-10-12, #61): the views shape, with earmark components left out; not published yet, so exclude_earmarks is false",
+  "rows[].cells.<FY|stage>.nondefense": "proposed for UI-0b (owner, 2026-10-12, #61): the nondefense view of the printed figure; not published yet, so nondefense is false"
  }
 }
