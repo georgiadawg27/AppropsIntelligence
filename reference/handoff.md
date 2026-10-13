@@ -1,5 +1,21 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-3b: Exclude earmarks and the nondefense column (2026-10-13)
+
+- Page only (web/index.html, docs/index.html as the export writes it). BUILT gains `exclude_earmarks` and `nondefense`.
+- Filter › Advanced "Exclude earmarks (CDS / CPF)": every printed figure reads `views_excluding_earmarks.<basis>` (printed
+  included) with UI-3's tokens; chip "Earmarks excluded"; URL `earmarks=excl`; label/overview/panel add "· excl.
+  earmarks". The source panel lists the earmark components the view used (amount, document, page or statute location)
+  and the published result, under the view figure.
+- View › Columns "Nondefense" (URL `cols=nondefense`), after Defense portion: the lead stage's `views_nondefense` for the
+  basis in view; empty with the reason on hover where not computable. Exclude earmarks doesn't change it.
+- Tests: tests/test_compare.py `ExcludeEarmarks` (5); test 12 and the filter-panel test now expect both controls.
+- Open: the brief's test case SAMHSA HSPS FY2026 Senate has no earmark component tagged (S.Rept. 119-55 p.436 prints CDS
+  54,611 inside 175,866; S. 2587's paragraph appropriates both). Its excluding-earmarks view is "computed" 175,866 with
+  "no earmark component tagged". The test uses FY2026 Enacted (CMP-LHHS-0209, 54,311, P.L. 119-75) for the panel and
+  checks the Senate cell equals its published view only. Tagging the Senate earmark is a data change (D-2 or owner).
+- Open: the panel names SRC-PLAW-119PUBL75 by its ID (web/documents.js has no label for it), as the UI-3 component list does.
+
 ## UI-0b: excluding-earmarks and nondefense views (2026-10-13)
 
 - Every cell with `views` now also gets `views_excluding_earmarks.<basis>` and `views_nondefense.<basis>`, the same

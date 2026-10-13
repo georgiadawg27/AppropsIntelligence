@@ -966,6 +966,8 @@ const SHOW_PROPOSED = { stages: true, years: true, history: false };
 const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true, true, true, true], basis: 3,
             // Amount basis, advance timing, Account type (Filter), the defense column (View › Columns): UI-3
             amt: "printed", timing: "available", type: "all", defcol: false,
+            // Exclude earmarks (Filter › Advanced) and the nondefense column (View › Columns): UI-3b
+            noear: false, ndcol: false,
             units: "k", reviewer: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
             minPct: null, minK: null, drafts: true, review: false,
@@ -982,8 +984,7 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
-                        "accounting_views", "budget_class", "defense_split", "phone"]);
-// exclude_earmarks and nondefense (web/ui_contract.json) wait for their data (UI-0b): not built, so never shown
+                        "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone"]);
 let FEAT = {};
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -1060,7 +1061,7 @@ function printedFig(row, y, st) {
 // view, and a cell with no published view, is no figure: never used in a difference (SPEC section 1)
 function figure(row, y, st) {
   const p = printedFig(row, y, st);
-  if (p == null || basisOf() === "printed") return p;
+  if (p == null || !usesViews()) return p;
   const e = viewOf(row, y, st);
   return e && VALUED.has(e.status) ? e.amount : null;
 }
@@ -1077,11 +1078,19 @@ const TIMINGS = [["available", "When available", "An advance counts in the year 
 const VALUED = new Set(["checked", "computed"]);
 const basisOf = () => (has("accounting_views") ? G.amt : "printed");
 const basisLabel = (b = basisOf()) => BASES.find(([k]) => k === b)[1];
+// Exclude earmarks (UI-0b views_excluding_earmarks, every basis including printed): the page reads the published view,
+// never takes an earmark out itself. A cell shows a view under any basis but As printed, or with earmarks excluded
+const noEar = () => has("exclude_earmarks") && G.noear;
+const usesViews = () => basisOf() !== "printed" || noEar();
+const viewKey = () => (noEar() ? "views_excluding_earmarks" : "views");
+// the basis in words: "All appropriations, advances when available", each with " · excl. earmarks" when on
+const basisPhrase = (lower = false) => (lower ? basisLabel().toLowerCase() : basisLabel())
+  + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "");
 // the cell's published view entry for the basis and timing in view: the timing's own entry, else the "available"
 // one, which holds for both timings where no "enacted" entry is published (web/ui_contract.json shapes)
-function viewOf(row, y, st, basis = basisOf()) {
+function viewOf(row, y, st, basis = basisOf(), key = viewKey()) {
   const x = row && headOf(row, y, st);
-  const list = x && !x.cell.outside_life && x.cell.views && x.cell.views[basis];
+  const list = x && !x.cell.outside_life && x.cell[key] && x.cell[key][basis];
   if (!list || !list.length) return null;
   return list.find((e) => e.timing === G.timing) || list.find((e) => e.timing === "available") || list[0];
 }
@@ -1160,7 +1169,7 @@ function figureCell(row, y, st, c, name) {
   const o = h.observations[0];
   // a printed figure (a value or a printed zero) under a basis other than As printed: its published view
   const printedHere = o && (h.state === "value" || (h.state === "not_funded" && !h.absence));
-  if (printedHere && basisOf() !== "printed") td.append(viewCell(row, y, st, o, ctx, td));
+  if (printedHere && usesViews()) td.append(viewCell(row, y, st, o, ctx, td));
   else if (h.state === "value") td.append(numberLink(o, G.units, ctx));
   else td.append(token(h.state, h, ctx));
   const more = otherLines(row, y, st, x.lines, h);
@@ -1212,7 +1221,7 @@ function viewText(e) {
   if (e.status === "excluded") return { text: "excl.", why: e.reason || "" };
   return { text: e.accounts_behind != null ? "not checked" : "n/a", why: e.reason || "" };
 }
-const viewHead = (e) => `${basisLabel()}${basisOf() === "printed" ? "" : `, advances when ${G.timing}`}: ${e ? VIEW_WORDS[e.status] || e.status : "not computable"}`;
+const viewHead = (e) => `${basisPhrase()}: ${e ? VIEW_WORDS[e.status] || e.status : "not computable"}`;
 function viewCell(row, y, st, o, ctx, td) {
   const e = viewOf(row, y, st), v = viewText(e);
   td.dataset.view = e ? e.status : "none";
@@ -1324,6 +1333,15 @@ function layout(grid) {
   if (G.defcol && has("defense_split") && lead != null)
     groups.push({ label: `FY${y} ${STAGE_WORD[lead]}`, cls: "def", cols: [{ def: [y, lead], label: "Defense portion",
       what: `FY${y} ${STAGE_WORD[lead]}: the defense portion tagged on the printed figure` }] });
+  // View › Columns: the lead stage's nondefense view (nondefense: cells' views_nondefense, the basis in view), next
+  // to the defense portion when both are on
+  if (G.ndcol && has("nondefense") && lead != null) {
+    const nd = { nondef: [y, lead], label: "Nondefense", what: `FY${y} ${STAGE_WORD[lead]}: nondefense, ${basisLabel().toLowerCase()}`
+      + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) };
+    const g = groups[groups.length - 1];
+    if (g.cls === "def") g.cols.push(nd);
+    else groups.push({ label: `FY${y} ${STAGE_WORD[lead]}`, cls: "def", cols: [nd] });
+  }
   return groups;
 }
 function flatCols(groups) {
@@ -1336,11 +1354,12 @@ function flatCols(groups) {
 const changeOf = (row, c) => c.chg ? [figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]])] : [null, null];
 function cellsFor(row, cols, name) {
   return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name) : c.def ? defenseCell(row, c, name)
+    : c.nondef ? nondefenseCell(row, c, name)
     : changeCell(...changeOf(row, c), c));
 }
 // the defense portion of a printed figure: the amount the data holds (defense_portion), a button to the figure's
-// source (the panel lists the components); no tag is not zero, so an untagged cell is empty. Nondefense is a view
-// the data doesn't publish, so it is not shown.
+// source (the panel lists the components); no tag is not zero, so an untagged cell is empty. Nondefense is its own
+// column (nondefenseCell), read from the published view.
 function defenseCell(row, c, name) {
   const [y, i] = c.def, st = STAGES4[i];
   const td = el("td", { class: "num def " + (c.cls || ""), dataset: { testid: "defense-cell", defFy: String(y), defStage: st, col: String(c.col) } });
@@ -1353,6 +1372,28 @@ function defenseCell(row, c, name) {
   td.dataset.amount = String(dp.amount);
   td.append(linksToSource() ? figButton(o, GridMath.number(dp.amount, G.units), ctx, { "data-testid": "defense", title })
     : el("span", { "data-testid": "defense", title, text: GridMath.number(dp.amount, G.units) }));
+  return td;
+}
+
+// the nondefense view of a printed figure (UI-0b views_nondefense.<basis>, the basis and timing in view, earmarks
+// never taken out of it): the published amount when checked or computed, a button to the figure's source. Empty where
+// it is not computable, the reason on hover; never zero for a figure the data doesn't hold (SPEC section 1)
+function nondefenseCell(row, c, name) {
+  const [y, i] = c.nondef, st = STAGES4[i];
+  const td = el("td", { class: "num def " + (c.cls || ""), dataset: { testid: "nondefense-cell", ndFy: String(y), ndStage: st, col: String(c.col) } });
+  const o = printedFig(row, y, st) != null ? cellObs(row, y, st) : null;
+  const e = o ? viewOf(row, y, st, basisOf(), "views_nondefense") : null;
+  if (!e || !VALUED.has(e.status)) {
+    td.dataset.view = e ? e.status : "none";
+    td.title = `${c.what}: ${!o ? "no printed figure" : !e ? "no published nondefense view for this cell" : `not computable — ${e.reason || ""}`}`;
+    return td;
+  }
+  const title = `${c.what}: ${VIEW_WORDS[e.status]}${e.reason ? " — " + e.reason : ""} · ${clickFor(o)}`;
+  const ctx = { name, stage: `${stageText(current.grid, y, i)}, nondefense` };
+  td.dataset.view = e.status;
+  td.dataset.amount = String(e.amount);
+  td.append(linksToSource() ? figButton(o, GridMath.number(e.amount, G.units), ctx, { "data-testid": "nondefense", title })
+    : el("span", { "data-testid": "nondefense", title, text: GridMath.number(e.amount, G.units) }));
   return td;
 }
 
@@ -1657,7 +1698,7 @@ const STATE_WORDS = { value: "on file", not_collected: "not yet collected", not_
 // a printed figure with no figure on the basis in view: what the overview says instead (a total's view shows only
 // where the data marks it checked; otherwise "not checked (n accounts)")
 function viewGap(row, y, st) {
-  if (basisOf() === "printed" || printedFig(row, y, st) == null || figure(row, y, st) != null) return null;
+  if (!usesViews() || printedFig(row, y, st) == null || figure(row, y, st) != null) return null;
   const e = viewOf(row, y, st);
   if (e && e.accounts_behind != null) return `not checked (${e.accounts_behind} accounts)`;
   return e && e.status === "excluded" ? "excluded" : "not computable";
@@ -1677,7 +1718,7 @@ function renderOverview(grid) {
     kids.push(el("p", { class: "ovsmall", "data-testid": "ov-no-total", text: `No printed totals yet for FY${y}.` }));
   } else if (row) {
     const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
-    const basisWord = basisOf() === "printed" ? "as printed" : `${basisLabel().toLowerCase()}, advances when ${G.timing}, checked`;
+    const basisWord = usesViews() ? `${basisPhrase(true)}, checked` : "as printed";
     const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid },
       el("div", { class: "l", text: l }), el("div", { class: "v " + (cls || ""), text: val }), el("div", { class: "s", text: sub }));
     const chTile = (l, a, b, tid) => {
@@ -1692,8 +1733,8 @@ function renderOverview(grid) {
              : `${GridMath.number(v, G.units)} ${unitWord} · ${basisWord}`, gap ? "state" : "", "ov-headline"),
       chTile(prior, figure(row, y - 1, "Enacted"), v, "ov-vs-prior"),
       lead !== 0 ? chTile(`vs FY${y} request`, figure(row, y, STAGES4[0]), v, "ov-vs-request") : null));
-    kids.push(el("div", { class: "ovk sec", text: basisOf() === "printed" ? `FY${y} by stage (printed totals)`
-                                                                         : `FY${y} by stage (${basisLabel().toLowerCase()}, checked totals)` }));
+    kids.push(el("div", { class: "ovk sec", text: !usesViews() ? `FY${y} by stage (printed totals)`
+                                                               : `FY${y} by stage (${basisPhrase(true)}, checked totals)` }));
     for (const i of [0, 1, 2, 3]) {
       const f = figure(row, y, STAGES4[i]), st = stateOf(row, y, STAGES4[i]), g = viewGap(row, y, STAGES4[i]);
       kids.push(el("div", { class: "ovline", "data-testid": "ov-stage" }, el("span", { class: "k", text: STAGE_LONG[i] }),
@@ -1839,7 +1880,25 @@ function viewBlock(grid, row, y, st, o) {
         line("Printed figure", GridMath.number(o.amount, G.units), "", "arith-term"),
         ...terms.map((k) => line(`${k.in_headline ? "less" : "plus"} ${componentWord(k).toLowerCase()}`,
                                  `${k.in_headline ? "−" : "+"}${GridMath.number(k.amount, G.units)}`, "", "arith-term")),
-        line(`= ${basisLabel()}, advances when ${G.timing}`, GridMath.number(e.amount, G.units), "eq", "arith-result")));
+        line(`= ${basisPhrase()}`, GridMath.number(e.amount, G.units), "eq", "arith-result")));
+  }
+  // Exclude earmarks (brief UI-3b item 3): the earmark components the published view took out, each with its amount,
+  // document and page, then the published result. Listed, never added: the result is the data's amount
+  if (noEar()) {
+    const ears = comps.filter((k) => k.type === "earmark" && used.has(k.component_id));
+    const where = (k) => k.source_page ? `p. ${k.source_page}` : ((k.source_table_or_section || "").match(/\(([^()]*)\)\s*$/) || [])[1]?.split(";")[0] || "";
+    const box = [el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Earmarks taken out (CDS / CPF)" })];
+    if (!ears.length)
+      box.push(el("div", { class: "ovsmall", "data-testid": "src-no-earmarks",
+        text: e && VALUED.has(e.status) ? "None tagged inside this figure." : "No published figure excluding earmarks for this cell." }));
+    for (const k of ears)
+      box.push(el("div", { class: "comp", "data-testid": "src-earmark", dataset: { component: k.component_id } },
+        el("span", { text: componentWord(k) }), el("span", { class: "cv", text: `−${GridMath.number(k.amount, G.units)}` }),
+        el("span", { class: "cs" }, docLink(k), where(k) ? ` · ${where(k)}` : "", ` · ${k.component_id}`)));
+    if (e && VALUED.has(e.status))
+      box.push(el("div", { class: "ovline eq", "data-testid": "src-earmark-result" }, el("span", { class: "k", text: `= ${basisPhrase()} (published)` }),
+        el("span", { class: "val", text: GridMath.number(e.amount, G.units) })));
+    head.push(...box);
   }
   return { head, tail };
 }
@@ -1848,7 +1907,7 @@ function renderSource(grid, box) {
   const i = STAGES4.indexOf(st), name = plainName(row.account.canonical_name);
   const zero = o.amount === 0;
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
-  const VB = basisOf() !== "printed" ? viewBlock(grid, row, y, st, o) : null;
+  const VB = usesViews() ? viewBlock(grid, row, y, st, o) : null;
   const kids = [backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
@@ -2055,7 +2114,7 @@ function renderCompare(grid) {
   // units and basis; a year with no enacted figure says where it stands
   const lead = G.grid === "stages" ? leadStage(grid, G.fy) : 3;
   $("#grid-subline").textContent = `${G.units === "m" ? "$ millions" : "$ thousands"} · ${basisLabel().toLowerCase()}`
-    + (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`)
+    + (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "")
     + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
   const groups = layout(grid), cols = flatCols(groups);
   current = { grid, cols };
@@ -2140,8 +2199,8 @@ function renderLegend() {
     el("span", { text: "missing = document on file, figure not entered" }),
     el("span", { text: "blank = outside the account’s life" }),
     ...(has("budget_class") ? [el("span", { "data-testid": "class-legend", text: "dashed tag = provisional budget class" })] : []),
-    ...(basisOf() === "printed" ? [] : [el("span", { "data-testid": "basis-legend",
-      text: `${basisLabel()}: excl. = left out by this basis · n/a = not computable · not checked = no printed total confirms it (hover for why)` })]));
+    ...(!usesViews() ? [] : [el("span", { "data-testid": "basis-legend",
+      text: `${basisPhrase()}: excl. = left out by this basis · n/a = not computable · not checked = no printed total confirms it (hover for why)` })]));
 }
 
 // the second header row sits right under the first, whatever height the first renders at
@@ -2189,7 +2248,8 @@ $("#compare-grid").addEventListener("click", (e) => {
   const b = e.target.closest("td button.fig");
   if (!b) return;
   const td = b.closest("td"), tr = td.closest("tr");
-  select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy || td.dataset.defFy), st: td.dataset.stage || td.dataset.defStage });
+  select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy || td.dataset.defFy || td.dataset.ndFy),
+          st: td.dataset.stage || td.dataset.defStage || td.dataset.ndStage });
 });
 
 // ---- state <-> URL (SPEC 5.7): every control and the expanded rows
@@ -2203,8 +2263,10 @@ function compareURL() {
   }
   if (G.units !== "k") q.set("units", G.units);
   if (G.dense) q.set("density", "compact");
-  if (G.reqcol || G.defcol) q.set("cols", [G.reqcol && "request", G.defcol && "defense"].filter(Boolean).join(","));
+  if (G.reqcol || G.defcol || G.ndcol)
+    q.set("cols", [G.reqcol && "request", G.defcol && "defense", G.ndcol && "nondefense"].filter(Boolean).join(","));
   if (G.amt !== "printed") q.set("amt", G.amt);
+  if (G.noear) q.set("earmarks", "excl");
   if (G.timing !== "available") q.set("timing", G.timing);
   if (G.type !== "all") q.set("type", G.type);
   if (G.reviewer) q.set("rev", "1");
@@ -2249,6 +2311,8 @@ function settle(grid, want) {
     G.dense = want.density === "compact";
     G.reqcol = String(want.cols || "").split(",").includes("request");
     G.defcol = String(want.cols || "").split(",").includes("defense");
+    G.ndcol = String(want.cols || "").split(",").includes("nondefense");
+    G.noear = want.earmarks === "excl";
     G.amt = BASES.some(([k]) => k === want.amt) ? want.amt : "printed";
     G.timing = want.timing === "enacted" ? "enacted" : "available";
     G.type = TYPES.some(([k]) => k === want.type) ? want.type : "all";
@@ -2339,6 +2403,7 @@ function filterChips(grid) {
     chips.push({ label: `Account type: ${TYPES.find(([k]) => k === G.type)[1]}`, clear: () => { G.type = "all"; } });
   if (has("accounting_views") && G.amt !== "printed") chips.push({ label: `Basis: ${basisLabel()}`, clear: () => { G.amt = "printed"; } });
   if (has("accounting_views") && G.timing !== "available") chips.push({ label: "Advances: when enacted", clear: () => { G.timing = "available"; } });
+  if (noEar()) chips.push({ label: "Earmarks excluded", clear: () => { G.noear = false; } });
   if (G.status !== "any") chips.push({ label: `Status in FY${y}: ${STATUS.find(([k]) => k === G.status)[1]}`, clear: () => { G.status = "any"; } });
   if (G.minPct != null || G.minK != null)
     chips.push({ label: "Change of at least " + [G.minPct != null && `${G.minPct}%`, G.minK != null && `$${G.minK.toLocaleString("en-US")}K`].filter(Boolean).join(" or "),
@@ -2355,7 +2420,7 @@ function filterChips(grid) {
 // every filter back to its default (Reset, Clear all)
 function resetFilters() {
   G.agency = ""; G.status = "any"; G.minPct = null; G.minK = null; G.drafts = true; G.review = false;
-  G.type = "all"; G.amt = "printed"; G.timing = "available";
+  G.type = "all"; G.amt = "printed"; G.timing = "available"; G.noear = false;
   G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
 }
 let advOpen = false;      // the Advanced disclosure (not part of the URL: it changes no figure)
@@ -2413,8 +2478,8 @@ function renderFilterPanel(grid) {
     reset.addEventListener("click", () => { resetFilters(); redraw(); });
     const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "filter-done", "data-key": "done", text: "Done" });
     done.addEventListener("click", () => closeMenu(true));
-    // Advanced: Amount basis and advance timing (accounting_views), then the items no flag gates (SPEC section 9).
-    // Exclude earmarks waits for its own flag, exclude_earmarks (UI-0b publishes the view; the page never computes one)
+    // Advanced: Amount basis and advance timing (accounting_views), Exclude earmarks (its own flag, exclude_earmarks:
+    // UI-0b publishes the view; the page never computes one), then the items no flag gates (SPEC section 9)
     const check = (id, label, checked, set, extra = {}) => {
       const c = el("input", { type: "checkbox", id, "data-key": id, ...extra });
       c.checked = checked;
@@ -2433,11 +2498,12 @@ function renderFilterPanel(grid) {
     };
     const views = has("accounting_views");
     const summary = views
-      ? [basisLabel(), `advances when ${G.timing}`, "earmarks included",
+      ? [basisLabel(), `advances when ${G.timing}`, ...(has("exclude_earmarks") ? [noEar() ? "earmarks excluded" : "earmarks included"] : []),
          ...(G.minPct != null || G.minK != null ? ["change threshold set"] : []), ...(G.drafts ? [] : ["drafts left out"]),
          ...(G.show.ended ? ["ended accounts shown"] : []), ...(G.review ? ["pending review or flagged only"] : [])]
       : [G.minPct != null || G.minK != null ? "change threshold set" : "any change", G.drafts ? "drafts included" : "drafts left out",
-         G.show.ended ? "ended accounts shown" : "current accounts", G.review ? "pending review or flagged only" : "every figure"];
+         G.show.ended ? "ended accounts shown" : "current accounts", G.review ? "pending review or flagged only" : "every figure",
+         ...(noEar() ? ["earmarks excluded"] : [])];
     const option = (group, k, label, def, on, set) => {
       const b = el("button", { type: "button", class: "opt" + (on ? " on" : ""), dataset: { [group]: k, key: group + "-" + k }, "aria-pressed": String(on) },
         el("span", { class: "optt", text: label }), el("span", { class: "optd", text: def }));
@@ -2461,7 +2527,9 @@ function renderFilterPanel(grid) {
          text: summary.join(" · ").replace(/^./, (c) => c.toUpperCase()) })),
       el("span", { "aria-hidden": "true", class: "advc", text: advOpen ? "▴" : "▾" }));
     adv.addEventListener("click", () => { advOpen = !advOpen; renderFilterPanel(grid); });
-    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox,
+    const earBox = has("exclude_earmarks") ? [check("f-noear", "Exclude earmarks (CDS / CPF)", G.noear, (v) => { G.noear = v; },
+      { "data-testid": "f-noear", title: "Each figure less its tagged congressionally directed spending (CDS / CPF), as the data publishes it" })] : [];
+    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox, ...earBox,
       el("div", { class: "pair2" },
         number("f-min-pct", "Change of at least (%)", G.minPct, (v) => { G.minPct = v; }, "e.g. 10"),
         number("f-min-k", "or at least ($K)", G.minK, (v) => { G.minK = v; }, "e.g. 50,000")),
@@ -2507,6 +2575,8 @@ function renderViewMenu(grid) {
                            { "data-testid": "col-request" }));
     if (lead != null && has("defense_split"))
       colChecks.push(check("col-def", "Defense portion", G.defcol, (v) => { G.defcol = v; }, { "data-testid": "col-defense" }));
+    if (lead != null && has("nondefense"))
+      colChecks.push(check("col-nondef", "Nondefense", G.ndcol, (v) => { G.ndcol = v; }, { "data-testid": "col-nondefense" }));
     if (colChecks.length) kids.push(el("div", { class: "glabel", text: "Columns" }), ...colChecks);
     if (G.grid === "years") {
       const checks = el("div", { "data-testid": "stage-checks" }, ...STAGE_NAME.map((n, i) =>
@@ -2633,7 +2703,7 @@ function renderPhoneTop(grid) {
       return b;
     })));
     $("#p-stage-note").textContent = `Showing FY${y} ${STAGE_NAME[i]}${isDraft(grid, y, STAGES4[i]) ? " (draft)" : ""}`
-      + (basisOf() === "printed" ? "" : ` · ${basisLabel()}, advances when ${G.timing}`)
+      + (usesViews() ? ` · ${basisPhrase()}` : "")
       + ` · % change vs FY${y - 1} enacted · tap a line for sources`;
   });
   $("#p-full").href = compareURL() + "&table=1";
@@ -2649,7 +2719,7 @@ function renderSummary(grid, y, lead) {
     return;
   }
   const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
-  const basisWord = basisOf() === "printed" ? "as printed" : `${basisLabel().toLowerCase()}, advances when ${G.timing}, checked`;
+  const basisWord = usesViews() ? `${basisPhrase(true)}, checked` : "as printed";
   const chg = (a, what, tid) => {
     const c = GridMath.change(a, v);
     return c ? el("span", { class: GridMath.direction(c.delta) || "flat", "data-testid": tid,
@@ -2669,7 +2739,7 @@ function phoneValue(row, y, st) {
                                                              ...(x && x.cell.outside_life ? { title: lifeText(row, y, st) } : {}) });
   const h = x.h;
   // under an Amount basis (UI-3): the published view of a printed figure, as the grid shows it
-  if (basisOf() !== "printed" && printedFig(row, y, st) != null) {
+  if (usesViews() && printedFig(row, y, st) != null) {
     const e = viewOf(row, y, st), v = viewText(e), title = viewHead(e) + (v.why ? " — " + v.why : "");
     if (v.text == null)
       return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title,
@@ -2948,7 +3018,7 @@ function route() {
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
                                    "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct",
-                                   "amt", "timing", "type", "pstage", "table"].map((k) => [k, params.get(k)]));
+                                   "amt", "timing", "type", "earmarks", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);

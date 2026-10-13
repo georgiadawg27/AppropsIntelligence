@@ -1587,16 +1587,15 @@ class ExploreV1(GridBrowser):
         self.page.click("[data-testid=clear-all]")
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
         self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
-        # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; Exclude earmarks
-        # waits for the page to build it (exclude_earmarks: the data is published since UI-0b)
+        # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; (UI-3b,
+        # exclude_earmarks on) Exclude earmarks
         self.page.click("#filter-btn")
         self.page.click("#f-adv")
         text = self.page.inner_text("#filter-panel")
         for word in ("Advanced", "Change of at least (%)", "or at least ($K)", "Include committee drafts",
                      "Show ended and reorganized accounts", "Only figures pending review or flagged",
-                     "Account type", "Amount basis", "Advance appropriations count"):
+                     "Account type", "Amount basis", "Advance appropriations count", "Exclude earmarks (CDS / CPF)"):
             self.assertIn(word, text)
-        self.assertNotIn("Exclude earmarks", text)
 
     def test_search_keeps_ancestors(self):
         self.go("?sc=LHHS&fy=2026")
@@ -2016,12 +2015,9 @@ class ExploreV1(GridBrowser):
                 for word in words:
                     if flagged_off:
                         self.assertNotIn(word, html, (where, word))
-                    elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory"):
+                    elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
+                                  "earmark", "nondefense"):
                         self.assertIn(word, html, (where, word))
-                # exclude_earmarks and nondefense: UI-0b publishes their data, but the page has not built them (BUILT): no
-                # control either way
-                for word in ("exclude earmarks", "nondefense"):
-                    self.assertNotIn(word, html, (where, flagged_off, word))
                 if flagged_off:
                     self.page.unroute(pattern)
         # the page reads the flags in both modes: a flag turned off hides its feature
@@ -2533,6 +2529,14 @@ def view_expected(row, fy, stage, basis, timing):
     return ("not checked" if e.get("accounts_behind") is not None else "n/a"), None
 
 
+def view_entry_of(row, fy, stage, basis, timing, key):
+    """view_entry for one of the other published view sets (views_excluding_earmarks, views_nondefense)."""
+    cell = row["cells"].get(f"{fy}|{stage}") or {}
+    entries = (cell.get(key) or {}).get(basis) or []
+    return next((e for e in entries if e["timing"] == timing), None) or \
+        next((e for e in entries if e["timing"] == "available"), None) or (entries[0] if entries else None)
+
+
 def row_class(row, fy):
     """The row's budget_class for the year: the enacted-basis record, else the request basis' (a proposed account)."""
     a = (row.get("attributes") or {}).get(str(fy)) or {}
@@ -2765,6 +2769,194 @@ class AmountBasis(GridBrowser):
         self.page.click("[data-testid=clear-all]")
         self.assertNotIn("amt=", self.page.url)
         self.assertNotIn("type=", self.page.url)
+
+
+class ExcludeEarmarks(GridBrowser):
+    """Brief UI-3b (SPEC 5.6, 4): Filter › Advanced "Exclude earmarks (CDS / CPF)" and View › Columns "Nondefense",
+    each read from the published views (UI-0b views_excluding_earmarks, views_nondefense), never computed."""
+
+    HSPS, OPEN = "ACC-HHS-SAMHSA-PROGRAM-SUPPORT", "ACC-HHS-SAMHSA-TOTAL"
+    RRA = "ACC-NSF-RRA"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        conn = S.connect(cls.db, readonly=True)
+        cls.cjs = plain(S.subcommittee_grid(conn, "CJS"))
+        conn.close()
+
+    def go(self, query="", where="static"):
+        self.page.goto(self.urls[where] + query)
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+
+    def text(self, aid, fy, stage):
+        return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
+
+    def expected(self, row, fy, stage, basis, timing):
+        if printed(row, fy, stage) is None:
+            return None
+        e = view_entry_of(row, fy, stage, basis, timing, "views_excluding_earmarks")
+        if e is None:
+            return "n/a"
+        if e["status"] in ("checked", "computed"):
+            return "—" if e["amount"] == 0 and printed(row, fy, stage) == 0 else thousands(e["amount"])
+        return "excl." if e["status"] == "excluded" else ("not checked" if e.get("accounts_behind") is not None else "n/a")
+
+    def nd_row(self, aid):
+        return next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == aid)
+
+    def test_exclude_earmarks_cells(self):
+        # the box on: every cell of SAMHSA's lines and the title total shows views_excluding_earmarks for the basis and
+        # timing in view (the printed basis included), with UI-3's tokens; the label, chip, badge and URL say so
+        rows = [self.lrow(m) for m in self.members_in_view(self.OPEN)] + [self.lhhs["titles"][0]["total"]]
+        self.go(f"?sc=LHHS&fy=2026&open={self.OPEN}")
+        self.assertNotIn("excl. earmarks", self.page.inner_text("#grid-subline"))
+        self.advanced("check", "#f-noear")
+        self.page.wait_for_function("location.search.includes('earmarks=excl')")
+        self.assertIn("· excl. earmarks", self.page.inner_text("#grid-subline"))
+        self.assertEqual(self.page.inner_text("#filter-badge"), "1")
+        self.assertIn("Earmarks excluded", self.page.inner_text("#chips"))
+        for basis in BASES:
+            for timing in TIMINGS:
+                with self.subTest(basis=basis, timing=timing):
+                    self.go(f"?sc=LHHS&fy=2026&earmarks=excl&amt={basis}&timing={timing}&open={self.OPEN}")
+                    label = self.page.inner_text("#grid-subline")
+                    self.assertIn("excl. earmarks", label)
+                    for row in rows:
+                        aid = row["account"]["canonical_account_id"]
+                        for fy, st in self.DEFAULT:
+                            exp = self.expected(row, fy, st, basis, timing)
+                            if exp is None:
+                                continue
+                            self.assertEqual(self.text(aid, fy, st), exp, (aid, fy, st))
+                            e = view_entry_of(row, fy, st, basis, timing, "views_excluding_earmarks")
+                            self.assertEqual(self.cell(aid, fy, st).get_attribute("data-view"), e["status"] if e else "none")
+                            if e and e.get("reason"):
+                                self.assertIn(e["reason"], self.cell(aid, fy, st).locator("button.fig").get_attribute("title"))
+
+    def test_known_earmark_figures(self):
+        # SAMHSA HSPS FY2026 Enacted: printed 171,566 less its tagged earmark CMP-LHHS-0209 (54,311, P.L. 119-75) =
+        # 117,255, the published view; the panel lists the earmark and the published result. FY2026 Senate: the
+        # published view; the President's Budget: n/a, "earmarks not tagged for this stage"; the total: not checked
+        hsps = self.lrow(self.HSPS)
+        pub = view_entry_of(hsps, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
+        self.assertEqual((pub["status"], pub["amount"], pub["component_ids"]), ("computed", 117255000, ["CMP-LHHS-0209"]))
+        self.go(f"?sc=LHHS&fy=2026&earmarks=excl&open={self.OPEN}")
+        self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "117,255")
+        senate = view_entry_of(hsps, 2026, "Senate Reported", "printed", None, "views_excluding_earmarks")
+        self.assertEqual(self.text(self.HSPS, 2026, "Senate Reported"), thousands(senate["amount"]))
+        pb = self.cell(self.HSPS, 2026, "President's Budget")
+        self.assertEqual(pb.evaluate(CELL_TEXT_JS), "n/a")
+        self.assertIn("earmarks not tagged for this stage", pb.locator("button.fig").get_attribute("title"))
+        total = self.lhhs["titles"][0]["total"]["account"]["canonical_account_id"]
+        self.assertEqual(self.text(total, 2026, "Enacted"), "not checked")
+        self.assertIn("earmark components tagged", self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
+        # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
+        self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "117,255")
+        ears = self.page.locator("[data-testid=src-earmark]")
+        self.assertEqual(ears.count(), 1)
+        self.assertEqual(ears.first.get_attribute("data-component"), "CMP-LHHS-0209")
+        t = ears.first.inner_text()
+        self.assertIn("54,311", t)
+        self.assertIn("SRC-PLAW-119PUBL75", t)
+        self.assertIn("140 STAT. 271", t)
+        self.assertIn("117,255", self.page.inner_text("[data-testid=src-earmark-result]"))
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "171,566")
+        # the box off: the cell is as printed again
+        self.advanced("uncheck", "#f-noear")
+        self.page.wait_for_function("!location.search.includes('earmarks=')")
+        self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "171,566")
+
+    def test_nondefense_column(self):
+        # NSF R&RA FY2026 Enacted: the nondefense view equals the published one (its defense portion is printed
+        # beside the headline); every other line's cell is its published amount or empty; FY2025 is not computable
+        rra = self.nd_row(self.RRA)
+        self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
+        self.assertEqual(self.page.locator("[data-testid=nondefense-cell]").count(), 0)
+        self.menu("check", "#col-nondef")
+        self.page.wait_for_function("location.search.includes('cols=nondefense')")
+        for basis in BASES:
+            with self.subTest(basis=basis):
+                self.go(f"?sc=CJS&fy=2026&cols=defense,nondefense&amt={basis}&open=ACC-NSF-TOTAL")
+                cells = self.page.eval_on_selector_all("[data-testid=nondefense-cell]",
+                                                       "ts => ts.map(t => [t.closest('tr').dataset.account, t.innerText.trim(), t.title])")
+                self.assertTrue(cells)
+                for aid, text, title in cells:
+                    row = next((r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == aid), None) \
+                        or next(t["total"] for t in self.cjs["titles"] if t["total"]["account"]["canonical_account_id"] == aid)
+                    e = view_entry_of(row, 2026, "Enacted", basis, "available", "views_nondefense") \
+                        if printed(row, 2026, "Enacted") is not None else None
+                    if e and e["status"] in ("checked", "computed"):
+                        self.assertEqual(text, thousands(e["amount"]), aid)
+                    else:
+                        self.assertEqual(text, "", aid)          # not computable: empty, never 0
+                        if e:
+                            self.assertIn(e["reason"], title, aid)
+                pub = view_entry_of(rra, 2026, "Enacted", basis, "available", "views_nondefense")
+                self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), thousands(pub["amount"]))
+                # the nondefense column sits right after the defense portion
+                cols = self.page.eval_on_selector(f"tr[data-account={self.RRA}]", "tr => ['defense-cell', 'nondefense-cell']"
+                                                  ".map(t => Number(tr.querySelector(`[data-testid=${t}]`).dataset.col))")
+                self.assertEqual(cols[1], cols[0] + 1)
+        self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), "7,057,700")
+        self.page.click(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell] button.fig")
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        # FY2025 (CJS FY2024-FY2025 are outside the auto-tagged cells): empty, the reason on hover
+        self.go("?sc=CJS&fy=2025&cols=nondefense&open=ACC-NSF-TOTAL")
+        nd = self.page.locator(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]")
+        self.assertEqual(nd.inner_text().strip(), "")
+        self.assertEqual(nd.get_attribute("data-view"), "not_computable")
+        self.assertIn("defense not tagged for this stage", nd.get_attribute("title"))
+
+    def test_each_flag_hides_its_control(self):
+        # each control is absent with its own flag forced false, the other still shown; a URL asking for it changes nothing
+        for flag, gone, kept in (("exclude_earmarks", "#f-noear", "#col-nondef"), ("nondefense", "#col-nondef", "#f-noear")):
+            for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
+                with self.subTest(flag=flag, where=where):
+                    def off(route, request, flag=flag):
+                        body = json.loads(route.fetch().text())
+                        body["features"][flag] = False
+                        route.fulfill(json=body)
+                    self.page.route(pattern, off)
+                    self.go("?sc=CJS&fy=2026&earmarks=excl&cols=nondefense&open=ACC-NSF-TOTAL", where)
+                    self.page.click("#filter-btn"); self.page.click("#f-adv")
+                    self.page.keyboard.press("Escape")
+                    self.page.click("#view-btn")
+                    self.assertEqual(self.page.locator(gone).count(), 0)
+                    self.assertEqual(self.page.locator(kept).count(), 1)
+                    self.page.keyboard.press("Escape")
+                    if flag == "exclude_earmarks":
+                        self.assertNotIn("excl. earmarks", self.page.inner_text("#grid-subline"))
+                        self.assertEqual(self.page.locator("#chips [data-testid=chip]").count(), 0)
+                    else:
+                        self.assertEqual(self.page.locator("[data-testid=nondefense-cell]").count(), 0)
+                    self.page.unroute(pattern)
+
+    def test_url_round_trip(self):
+        def snap():
+            self.page.mouse.move(2, 2)
+            return {"url": self.page.url.split("?", 1)[1], "grid": self.page.inner_html("#compare-grid"),
+                    "panel": self.page.inner_html("#side-panel"), "chips": self.page.inner_html("#chips"),
+                    "sub": self.page.inner_text("#grid-subline")}
+        self.go(f"?sc=LHHS&fy=2026&open={self.OPEN}")
+        self.advanced("check", "#f-noear")
+        self.advanced("click", "#f-basis button[data-basis=program_level]")
+        self.menu("check", "#col-nondef")
+        self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
+        before = snap()
+        for p in ("earmarks=excl", "cols=nondefense", "amt=program_level", "fig="):
+            self.assertIn(p, before["url"])
+        self.page.click("#share")
+        self.page.goto(self.page.get_attribute("#share", "data-copied"))
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.assertEqual(snap(), before)
+        self.assertEqual(self.page.locator("[data-testid=src-earmark]").count(), 1)
+        self.assertTrue(self.page.evaluate("document.querySelector('[data-testid=advanced-summary]').textContent")
+                        .startswith("Program level · advances when available · earmarks excluded"))
+        self.page.click("[data-testid=clear-all]")
+        self.assertNotIn("earmarks=", self.page.url)
 
 
 class GridMathUnits(unittest.TestCase):
