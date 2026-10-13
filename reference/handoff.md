@@ -268,3 +268,44 @@ Open items:
 1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
 2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
    "request column") that the data has no field for, so it is left out.
+
+## UI-3: Amount basis and class features (2026-10-12)
+
+- SPEC.md: §4 line-name rule replaced with the owner's #59 wording; §5.6 basis definitions now cite
+  `reference/ACCOUNTING_RULES.md` (was `accounting-views-spec.md`, not in the repo). Nothing else in SPEC changed.
+- `BUILT` gains accounting_views, budget_class, defense_split; each control renders only when its flag is true.
+- Filter › Advanced: Amount basis (five options, `amt=`; definitions paraphrase ACCOUNTING_RULES' Arithmetic table and
+  Discretionary rule as accounting.BASES applies them), "Advance appropriations count" (`timing=enacted`). Account type
+  (`type=`) sits between Agency and Status. Each non-default choice is a chip and counts in the badge; Reset/Clear all
+  restore them. The summary reads "<basis> · advances when <timing> · earmarks included".
+- `figure()` is basis-aware (the published view when status checked/computed, else no figure); `printedFig()` keeps the
+  printed figure for the lead stage, enacted-history years and the account panel. Cells under a basis: the view amount;
+  "excl." (excluded); "n/a" (account not computable) or "not checked" (total not computable); reason on hover; each a
+  button to the figure's source. Overview totals: the view only where checked, else "not checked (n accounts)".
+- Source panel under a basis: view value + status + reason, the printed headline (UI-2 fields), every component (type,
+  amount, in/beside the figure, document, page, ID) and the arithmetic: the printed figure, the components the view
+  used (`component_ids`, less if in the headline, plus if beside), "= " the published amount. The page adds nothing up.
+- budget_class: the enacted-basis record, else the request basis (proposed accounts). Mixed → "incl. mandatory" tag;
+  mandatory lines go under "Appropriated mandatory" in their agency (tag "provisional" where provisional); an agency gets
+  "incl. mandatory" when a line in view is mandatory or mixed. Provisional = dashed outline (legend says so).
+- View › Columns: "Defense / nondefense (defense portion)" (`cols=defense`): the lead stage's `defense_portion` amount
+  where tagged, empty otherwise (untagged is not zero). Only CJS NSF RRA is tagged today.
+- Tests: tests/test_compare.py AmountBasis (basis x timing cells and changes on Medicaid, CURES, SAMHSA HSPS, CMS Program
+  Management, the title total, FY2025 CR; source panel arithmetic; overview totals; Account type and tags; defense
+  column; URL round-trip of every option). Test 12 forces the three flags false and checks the controls appear when on.
+
+Owner answers on #61 (2026-10-12):
+1. Exclude earmarks and nondefense: nothing built; new flags `exclude_earmarks` and `nondefense` in web/ui_contract.json
+   (contract_version 3), false until UI-0b publishes `rows[].cells.*.views_excluding_earmarks.<basis>` and
+   `rows[].cells.*.nondefense` (proposed paths, in the contract's shapes; UI-0b may rename them in the contract).
+   Neither is in `BUILT`; test 12 forces both false and checks no control either way. View › Columns reads
+   "Defense portion".
+2. "incl. mandatory": a line whose class is mandatory, or mixed with a mandatory_portion tagged at the lead stage; an
+   agency holding one. FY2026: HRSA, CDC, CMS, ACF, OS (the mockup's CMS/ACF-only predates the class data). Hover names
+   each line and its mandatory amount (portions listed, never added). Recorded in SPEC §4; test in AmountBasis.
+3. Program level follows ACCOUNTING_RULES (owner decision on #57).
+4. Other departures adopted and recorded in SPEC §4 (basis tokens, class tags, defense column), §5.6 (definitions,
+   Exclude earmarks flag, label timing, overview/source panel under a basis), §8 (provisional dashed outline).
+
+Open: SPEC §9's table still says "hidden until UI-0" for the accounting rows and has no rows for the two new flags
+(the owner's answer named §4/§5.6/§8 only).

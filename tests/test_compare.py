@@ -1583,15 +1583,16 @@ class ExploreV1(GridBrowser):
         self.page.click("[data-testid=clear-all]")
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
         self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
-        # Advanced shows its ungated items; Account type and the basis items are not built here (UI-3)
+        # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; Exclude earmarks
+        # waits for its own flag (exclude_earmarks, false until UI-0b)
         self.page.click("#filter-btn")
         self.page.click("#f-adv")
         text = self.page.inner_text("#filter-panel")
         for word in ("Advanced", "Change of at least (%)", "or at least ($K)", "Include committee drafts",
-                     "Show ended and reorganized accounts", "Only figures pending review or flagged"):
+                     "Show ended and reorganized accounts", "Only figures pending review or flagged",
+                     "Account type", "Amount basis", "Advance appropriations count"):
             self.assertIn(word, text)
-        for word in ("Account type", "Amount basis", "Advance appropriations count", "Exclude earmarks"):
-            self.assertNotIn(word, text)
+        self.assertNotIn("Exclude earmarks", text)
 
     def test_search_keeps_ancestors(self):
         self.go("?sc=LHHS&fy=2026")
@@ -1988,15 +1989,15 @@ class ExploreV1(GridBrowser):
 
     # 12
     def test_feature_flags_hide_unready(self):
-        # with accounting_views / budget_class / defense_split false, none of their controls exist; UI-0 (#57) turned
-        # them on, and the controls still don't exist because no brief has built them yet (UI-3)
+        # with accounting_views / budget_class / defense_split forced false (a fixture of index.json and
+        # /api/features), none of their controls exist; with the flags as published (on since UI-0), UI-3's do
         def off(route):
             body = json.loads(route.fetch().text())
-            for flag in ("accounting_views", "budget_class", "defense_split"):
+            for flag in ("accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense"):
                 body["features"][flag] = False
             route.fulfill(json=body)
         words = ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
-                 "appropriated mandatory", "earmark")
+                 "appropriated mandatory", "earmark", "nondefense")
         for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
             for flagged_off in (True, False):
                 if flagged_off:
@@ -2009,6 +2010,12 @@ class ExploreV1(GridBrowser):
                 self.page.click("#view-btn")
                 html += self.page.inner_text("body").lower()
                 for word in words:
+                    if flagged_off:
+                        self.assertNotIn(word, html, (where, word))
+                    elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory"):
+                        self.assertIn(word, html, (where, word))
+                # exclude_earmarks and nondefense are false until UI-0b publishes their data: no control either way
+                for word in ("exclude earmarks", "nondefense"):
                     self.assertNotIn(word, html, (where, flagged_off, word))
                 if flagged_off:
                     self.page.unroute(pattern)
@@ -2200,6 +2207,273 @@ def printed(row, fy, stage):
     if h["state"] == "value" or (h["state"] == "not_funded" and not h["absence"]):
         return h["observations"][0]["amount"]
     return None
+
+
+BASES = ["printed", "discretionary", "discretionary_designated", "all_appropriations", "program_level"]
+TIMINGS = ["available", "enacted"]
+CELL_TEXT_JS = """td => { const n = td.querySelector(':scope > [data-testid=amount], :scope > [data-testid=view-state], :scope > .fig, :scope > .tok');
+                     return n ? n.textContent : ''; }"""
+
+
+def view_entry(row, fy, stage, basis, timing):
+    """The cell's published view entry the page shows (web/ui_contract.json shapes): the timing's own entry, else the
+    'available' one."""
+    cell = row["cells"].get(f"{fy}|{stage}") or {}
+    entries = (cell.get("views") or {}).get(basis) or []
+    return next((e for e in entries if e["timing"] == timing), None) or \
+        next((e for e in entries if e["timing"] == "available"), None) or (entries[0] if entries else None)
+
+
+def view_expected(row, fy, stage, basis, timing):
+    """(text the cell shows, figure used in differences or None) under a basis, for a printed figure; None for a cell
+    with no printed figure (it shows its state as before)."""
+    p = printed(row, fy, stage)
+    if p is None:
+        return None
+    if basis == "printed":
+        return ("—" if p == 0 else thousands(p)), p
+    e = view_entry(row, fy, stage, basis, timing)
+    if e is None:
+        return "n/a", None
+    if e["status"] in ("checked", "computed"):
+        return ("—" if e["amount"] == 0 and p == 0 else thousands(e["amount"])), e["amount"]
+    if e["status"] == "excluded":
+        return "excl.", None
+    return ("not checked" if e.get("accounts_behind") is not None else "n/a"), None
+
+
+def row_class(row, fy):
+    """The row's budget_class for the year: the enacted-basis record, else the request basis' (a proposed account)."""
+    a = (row.get("attributes") or {}).get(str(fy)) or {}
+    return a.get("budget_class") or (a.get("request") or {}).get("budget_class")
+
+
+class AmountBasis(GridBrowser):
+    """Brief UI-3 (SPEC 5.6 Advanced, section 4 class items): the Amount basis and advance timing, Account type and
+    the class tags, the defense column; each against the published accounting layer (UI-0), never a computed figure."""
+
+    MEDICAID, CURES, HSPS, PM = ("ACC-HHS-CMS-MEDICAID", "ACC-HHS-NIH-CURES", "ACC-HHS-SAMHSA-PROGRAM-SUPPORT",
+                                 "ACC-HHS-CMS-PROGRAM-MANAGEMENT")
+    OPEN = "ACC-HHS-CMS-TOTAL,ACC-HHS-NIH-TOTAL,ACC-HHS-SAMHSA-TOTAL"
+
+    def go(self, query="", where="static"):
+        self.page.goto(self.urls[where] + query)
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+
+    def text(self, aid, fy, stage):
+        return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
+
+    def test_basis_and_timing_cells(self):
+        # every basis x timing: an account with advances (Medicaid, mandatory), one with a designated component (NIH
+        # Innovation Account, CURES), an earmark account (SAMHSA HSPS), a mixed-class account (CMS Program
+        # Management), the title total; FY2025 is a full-year CR year. Each cell shows its published view, "excl."
+        # or its state; the change is the difference of the two shown figures, or empty
+        rows = [self.lrow(a) for a in (self.MEDICAID, self.CURES, self.HSPS, self.PM)] + [self.lhhs["titles"][0]["total"]]
+        for basis in BASES:
+            for timing in TIMINGS:
+                for where in (("static", "live") if timing == "available" else ("static",)):
+                    with self.subTest(basis=basis, timing=timing, where=where):
+                        self.go(f"?sc=LHHS&fy=2026&amt={basis}&timing={timing}&open={self.OPEN}", where)
+                        label = self.page.inner_text("#grid-subline")
+                        self.assertIn("as printed" if basis == "printed" else f"advances when {timing}", label)
+                        for row in rows:
+                            aid = row["account"]["canonical_account_id"]
+                            figs = {}
+                            for fy, st in self.DEFAULT:
+                                exp = view_expected(row, fy, st, basis, timing)
+                                if exp is None:
+                                    continue
+                                self.assertEqual(self.text(aid, fy, st), exp[0], (aid, fy, st))
+                                figs[(fy, st)] = exp[1]
+                                if basis != "printed":
+                                    e = view_entry(row, fy, st, basis, timing)
+                                    self.assertEqual(self.cell(aid, fy, st).get_attribute("data-view"), e["status"] if e else "none")
+                                    if e and e.get("reason"):
+                                        self.assertIn(e["reason"], self.cell(aid, fy, st).locator("button.fig").get_attribute("title"))
+                            a, b = figs.get((2025, "Enacted")), figs.get((2026, "Enacted"))
+                            delta = self.page.locator(f"tr[data-account={aid}] [data-testid=change-cell]").first.get_attribute("data-delta")
+                            self.assertEqual(delta, None if a is None or b is None else str(b - a), (aid, basis, timing))
+
+    def test_known_views(self):
+        # the figures the data holds, read off the page: Medicaid's advances (FY2026 and the FY2025 CR year), CURES'
+        # designated amount, Medicaid excluded under the discretionary bases, the mixed account's note
+        self.go(f"?sc=LHHS&fy=2026&amt=all_appropriations&open={self.OPEN}")
+        self.assertEqual(self.text(self.MEDICAID, 2026, "Enacted"), "769,212,611")
+        self.assertEqual(self.text(self.MEDICAID, 2025, "Enacted"), "629,189,813")
+        self.go(f"?sc=LHHS&fy=2026&amt=all_appropriations&timing=enacted&open={self.OPEN}")
+        self.assertEqual(self.text(self.MEDICAID, 2026, "Enacted"), "824,663,516")
+        self.assertEqual(self.cell(self.MEDICAID, 2026, "Enacted").get_attribute("data-view"), "checked")
+        self.go(f"?sc=LHHS&fy=2026&amt=discretionary&open={self.OPEN}")
+        self.assertEqual(self.text(self.MEDICAID, 2026, "Enacted"), "excl.")
+        self.assertEqual(self.text(self.CURES, 2026, "Enacted"), "0")
+        self.assertIn("mixed, no mandatory portion tagged", self.cell(self.PM, 2026, "Enacted").locator("button.fig").get_attribute("title"))
+        self.go(f"?sc=LHHS&fy=2026&amt=discretionary_designated&open={self.OPEN}")
+        self.assertEqual(self.text(self.CURES, 2026, "Enacted"), "226,000")
+        # the earmark account: every view counts its earmark (ACCOUNTING_RULES default 4); no view leaves it out
+        self.go(f"?sc=LHHS&fy=2026&amt=all_appropriations&open={self.OPEN}")
+        self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "171,566")
+        # the legend names the basis' tokens
+        self.assertIn("excl. = left out by this basis", self.page.inner_text("[data-testid=basis-legend]"))
+
+    def test_source_panel_under_basis(self):
+        def panel(q):
+            self.go(q)
+            self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+            terms = self.page.eval_on_selector_all("[data-testid=arith-term]", "es => es.map(e => e.innerText.replace(/\\s+/g, ' '))")
+            comps = self.page.eval_on_selector_all("[data-testid=src-component]", "es => es.map(e => [e.dataset.component, e.dataset.used])")
+            return terms, comps
+        terms, comps = panel(f"?sc=LHHS&fy=2026&amt=all_appropriations&fig={self.MEDICAID}|2026|Enacted")
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "769,212,611")
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "508,148,791")       # the printed headline
+        self.assertEqual(terms, ["Printed figure 508,148,791", "plus advance, available this year +261,063,820"])
+        self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], "769,212,611")
+        self.assertEqual(comps, [["CMP-LHHS-0009", "false"], ["CMP-LHHS-0010", "true"]])
+        self.assertIn("p. 289", self.page.inner_text("[data-testid=src-component]"))
+        self.assertIn("Open page 289", self.page.inner_text("#side-panel"))
+        terms, _ = panel(f"?sc=LHHS&fy=2026&amt=discretionary&fig={self.CURES}|2026|Enacted")
+        self.assertEqual(terms, ["Printed figure 226,000", "less designated (other) −226,000"])
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "0")
+        # excluded: the reason, the printed headline and the components; no arithmetic
+        terms, _ = panel(f"?sc=LHHS&fy=2026&amt=discretionary&fig={self.MEDICAID}|2026|Enacted")
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "excl.")
+        self.assertIn("A mandatory account (budget_class)", self.page.inner_text("[data-testid=src-view-reason]"))
+        self.assertEqual(terms, [])
+        # the earmark account: its earmark is a component the view keeps
+        terms, comps = panel(f"?sc=LHHS&fy=2026&amt=all_appropriations&fig={self.HSPS}|2026|Enacted")
+        self.assertIn(["CMP-LHHS-0209", "false"], comps)
+        self.assertIn("Earmarks (CDS / CPF)", self.page.inner_text("#side-panel"))
+        # as printed: the panel is UI-2's, with no view block
+        self.go(f"?sc=LHHS&fy=2026&fig={self.MEDICAID}|2026|Enacted")
+        self.assertEqual(self.page.locator("[data-testid=src-view-value], [data-testid=src-component]").count(), 0)
+
+    def test_overview_view_totals(self):
+        total = self.lhhs["titles"][0]["total"]
+        for basis in BASES[1:]:
+            with self.subTest(basis=basis):
+                self.go(f"?sc=LHHS&fy=2026&amt={basis}")
+                e = view_entry(total, 2026, "Enacted", basis, "available")
+                head = self.page.inner_text("[data-testid=ov-headline]")
+                if e["status"] == "checked":
+                    self.assertIn(thousands(e["amount"]), head)
+                else:
+                    self.assertIn(f"not checked ({e['accounts_behind']} accounts)", head)
+                stages = self.page.eval_on_selector_all("[data-testid=ov-stage] .val", "es => es.map(e => e.innerText)")
+                for i, st in enumerate(("President's Budget", "House Reported", "Senate Reported", "Enacted")):
+                    x = view_entry(total, 2026, st, basis, "available")
+                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] == "checked"
+                                     else f"not checked ({x['accounts_behind']} accounts)")
+        self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
+        self.assertIn("114,797,239", self.page.inner_text("[data-testid=ov-headline]"))
+
+    def test_account_type_and_class_tags(self):
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
+        attrs = lambda aid: self.lrow(aid)["attributes"]["2026"]
+        # "incl. mandatory" (owner, #61): a line whose class is mandatory, or mixed with a tagged mandatory_portion; an
+        # agency holding one. FY2026: HRSA, CDC, CMS, ACF and OS. A mixed line with none tagged (CMS Program
+        # Management) counts as discretionary and has no tag
+        tagged = self.page.eval_on_selector_all("tr.agency [data-testid=class-tag]", "ts => ts.map(t => t.closest('tr').dataset.account)")
+        self.assertEqual(sorted(tagged), sorted(f"ACC-HHS-{a}-TOTAL" for a in ("HRSA", "CDC", "CMS", "ACF", "OS")))
+        self.assertIn("Vaccine Injury Compensation Program Trust Fund: mandatory portion 272,062",
+                      self.page.get_attribute("tr[data-account=ACC-HHS-HRSA-TOTAL] [data-testid=class-tag]", "title"))
+        self.assertIn("Grants to States for Medicaid: mandatory 508,148,791",
+                      self.page.get_attribute("tr[data-account=ACC-HHS-CMS-TOTAL] [data-testid=class-tag]", "title"))
+        self.assertEqual(self.page.locator(f"tr[data-account={self.PM}] [data-testid=class-tag]").count(), 0)
+        self.assertEqual(attrs(self.PM)["budget_class"], "mixed")
+        # a mixed line with a portion: its tag names the amount and is marked provisional as its record says
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-HRSA-TOTAL")
+        tag = self.page.locator("tr[data-account=ACC-HHS-HRSA-VICTF] [data-testid=class-tag]")
+        self.assertEqual(tag.inner_text(), "incl. mandatory")
+        self.assertEqual(tag.get_attribute("data-provisional"), str(attrs("ACC-HHS-HRSA-VICTF")["provisional"]).lower())
+        self.assertIn("mandatory portion 272,062", tag.get_attribute("title"))
+        self.assertIn("Budget class mixed", tag.get_attribute("title"))
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
+        # "Appropriated mandatory": CMS's mandatory lines follow the label, after the others
+        order = self.page.eval_on_selector_all("#compare-grid tbody tr", "trs => trs.map(t => t.dataset.account || t.dataset.testid)")
+        k = order.index("subgroup-mandatory")
+        cms = [r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if r["member_of"] == "ACC-HHS-CMS-TOTAL"
+               and (r.get("attributes", {}).get("2026") or {}).get("budget_class") == "mandatory"]
+        self.assertEqual(sorted(order[k + 1:k + 1 + len(cms)]), sorted(cms))
+        self.assertIn(self.MEDICAID, cms)
+        self.assertLess(order.index(self.PM), k)
+        # Account type: only the lines of that class; the badge and the chip count it
+        for kind in ("discretionary", "mandatory", "mixed"):
+            with self.subTest(kind=kind):
+                self.page.click("#filter-btn")
+                self.page.click(f"#f-type button[data-type={kind}]")
+                self.page.keyboard.press("Escape")
+                shown = self.page.eval_on_selector_all("#compare-grid tbody tr.child[data-account]", "ts => ts.map(t => t.dataset.account)")
+                self.assertTrue(shown)
+                for aid in shown:
+                    self.assertEqual(row_class(self.lrow(aid), 2026), kind, aid)
+                self.assertEqual(self.page.inner_text("#filter-badge"), "1")
+                self.assertIn(f"Account type: {kind.capitalize()}", self.page.inner_text("#chips"))
+                # the printed total stays as printed
+                total = self.lhhs["titles"][0]["total"]
+                self.assertEqual(self.text(total["account"]["canonical_account_id"], 2026, "Enacted"), thousands(printed(total, 2026, "Enacted")))
+
+    def test_defense_column(self):
+        conn = S.connect(self.db, readonly=True)
+        cjs = plain(S.subcommittee_grid(conn, "CJS"))
+        conn.close()
+        tagged = {r["account"]["canonical_account_id"]: r["cells"]["2026|Enacted"]["defense_portion"]["amount"]
+                  for r in cjs["rows"] if "defense_portion" in (r["cells"].get("2026|Enacted") or {})}
+        self.assertTrue(tagged)
+        parents = sorted({r["member_of"] for r in cjs["rows"] if r["account"]["canonical_account_id"] in tagged and r["member_of"]})
+        self.go("?sc=CJS&fy=2026&open=" + ",".join(parents))
+        self.assertEqual(self.page.locator("[data-testid=defense-cell]").count(), 0)
+        self.menu("check", "#col-def")
+        self.page.wait_for_function("location.search.includes('cols=defense')")
+        cells = self.page.eval_on_selector_all("[data-testid=defense-cell]", "ts => ts.map(t => [t.closest('tr').dataset.account, t.innerText.trim()])")
+        self.assertTrue(cells)
+        for aid, text in cells:
+            self.assertEqual(text, thousands(tagged[aid]) if aid in tagged else "", aid)      # untagged is empty, not 0
+        aid = next(iter(tagged))
+        self.page.click(f"tr[data-account={aid}] [data-testid=defense-cell] button.fig")
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertIn("fig=" + aid, self.page.url)
+
+    def test_url_round_trip_every_option(self):
+        def snap():
+            self.page.mouse.move(2, 2)
+            return {"url": self.page.url.split("?", 1)[1], "grid": self.page.inner_html("#compare-grid"),
+                    "panel": self.page.inner_html("#side-panel"), "chips": self.page.inner_html("#chips"),
+                    "pressed": self.page.eval_on_selector_all("#filter-panel [aria-pressed=true], #view-menu input:checked",
+                                                              "es => es.map(e => e.dataset.key || e.id)")}
+        def round_trip(param):
+            before = snap()
+            self.assertIn(param, before["url"])
+            self.page.click("#share")
+            self.page.goto(self.page.get_attribute("#share", "data-copied"))
+            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            self.assertEqual(snap(), before, param)
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
+        for basis in BASES[1:] + ["printed"]:
+            self.advanced("click", f"#f-basis button[data-basis={basis}]")
+            round_trip(f"amt={basis}" if basis != "printed" else "sc=LHHS")
+        self.advanced("click", "#f-basis button[data-basis=program_level]")
+        for timing in ("enacted", "available"):
+            self.advanced("click", f"#f-timing button[data-timing={timing}]")
+            round_trip("timing=enacted" if timing == "enacted" else "amt=program_level")
+        for kind in ("discretionary", "mandatory", "mixed", "all"):
+            self.page.click("#filter-btn")
+            self.page.click(f"#f-type button[data-type={kind}]")
+            self.page.keyboard.press("Escape")
+            round_trip(f"type={kind}" if kind != "all" else "amt=program_level")
+        self.menu("check", "#col-def")
+        round_trip("cols=defense")
+        # all of them at once, with a selected figure; chips and badge count each non-default choice
+        self.advanced("click", "#f-timing button[data-timing=enacted]")
+        self.page.click("#filter-btn"); self.page.click("#f-type button[data-type=mandatory]"); self.page.keyboard.press("Escape")
+        self.cell(self.MEDICAID, 2026, "Enacted").locator("button.fig").click()
+        round_trip("fig=")
+        self.assertEqual(self.page.inner_text("#filter-badge"), "3")
+        self.assertEqual(self.page.eval_on_selector_all("#chips [data-testid=chip]", "cs => cs.map(c => c.firstChild.textContent)"),
+                         ["Account type: Mandatory", "Basis: Program level", "Advances: when enacted"])
+        self.assertTrue(self.page.evaluate("document.querySelector('[data-testid=advanced-summary]').textContent")
+                        .startswith("Program level · advances when enacted · earmarks included"))
+        self.page.click("[data-testid=clear-all]")
+        self.assertNotIn("amt=", self.page.url)
+        self.assertNotIn("type=", self.page.url)
 
 
 class GridMathUnits(unittest.TestCase):
