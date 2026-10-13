@@ -542,6 +542,12 @@ class GridBrowser(CompareTest):
     def open(self, where="static", query="?view=compare&sc=CJS&fy=2026"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
+
+    def settle(self, page=None):
+        """Wait for every font load in flight and one frame: the grid's column widths are measured in the loaded fonts
+        (UI-2c), so layout is read only once they have settled."""
+        (page or self.page).evaluate("document.fonts.ready.then(() => new Promise((r) => requestAnimationFrame(() => r())))")
 
     def menu(self, action, selector, *args):
         """A control in the View menu (SPEC 5.7): open the menu, use the control, close it with Esc."""
@@ -558,6 +564,11 @@ class GridBrowser(CompareTest):
             self.page.click("#f-adv")
         getattr(self.page, action)(selector, *args)
         self.page.keyboard.press("Escape")
+
+    def definitions(self):
+        """Open "Definitions and data sources" below the grid (UI-2c), where the legend, counts and provenance live."""
+        if self.page.get_attribute("#definitions", "open") is None:
+            self.page.click("[data-testid=definitions-toggle]")
 
     def cell(self, aid, fy, stage):
         return self.page.locator(f"tr[data-account={aid}] td[data-fy='{fy}'][data-stage=\"{stage}\"]")
@@ -639,6 +650,7 @@ class CompareBrowser(GridBrowser):
         for sc, counts in fixture["state_counts"].items():
             for grid in ("stages", "years", "history"):
                 self.open("static", f"?view=compare&sc={sc}&grid={grid}&rev=1")     # the counts show in Reviewer mode
+                self.definitions()
                 got = {s.get_attribute("data-state"): int(s.inner_text().split()[0].replace(",", ""))
                        for s in self.page.locator("[data-testid=state-counts] [data-state]").all()}
                 # the blank cells outside an account's life, counted on their own (never missing)
@@ -914,6 +926,7 @@ class CompareBrowser(GridBrowser):
             self.assertEqual(m[1:], ["none", "rgb(91, 99, 114)"], state)
             if text != "—":
                 self.assertEqual(m[0], "12px", state)
+        self.definitions()
         legend = self.page.inner_text("[data-testid=legend]")
         for part in ("— not funded (printed zero or confirmed absent)", "missing = document on file, figure not entered",
                      "blank = outside the account’s life"):
@@ -1004,6 +1017,7 @@ class CompareBrowser(GridBrowser):
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
         self.menu("click", "#expand-all")
         self.assertEqual(self.page.locator("[data-testid=status-dot]").count(), 0)
+        self.definitions()
         self.assertTrue(self.page.is_hidden("#rev-legend"))
         self.menu("check", "#reviewer")
         self.menu("click", "#expand-all")
@@ -1114,24 +1128,22 @@ class CompareBrowser(GridBrowser):
         m = self.page.evaluate("""() => { const w = document.querySelector('#grid-wrap');
             const h2 = document.querySelector('#compare-grid thead tr:nth-child(2) th');
             const acct = document.querySelector('#compare-grid tbody td.acct');
-            return {height: w.getBoundingClientRect().height, scrollable: w.scrollHeight > w.clientHeight,
-                    overflow: getComputedStyle(w).overflow, head2: getComputedStyle(h2).top,
+            return {vscroll: w.scrollHeight > w.clientHeight, overflowY: getComputedStyle(w).overflowY,
+                    bar: !document.querySelector('#grid-hbar').hidden, head2: getComputedStyle(h2).top,
                     head1: document.querySelector('#compare-grid thead th.grp').getBoundingClientRect().height + 'px',
                     nameSticky: getComputedStyle(acct).position, headSticky: getComputedStyle(h2).position,
                     font: getComputedStyle(document.querySelector('#compare-grid td')).fontFamily,
                     nums: getComputedStyle(document.querySelector('#compare-grid td.num')).fontVariantNumeric,
                     size: getComputedStyle(document.querySelector('#compare-grid')).fontSize,
-                    hscroll: w.scrollWidth > w.clientWidth}; }""")
-        # the window-height scroll box: from below the title row to the window's bottom edge (UI-2b)
-        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 900), 2)
-        self.assertTrue(m["scrollable"])
-        self.assertTrue(m["hscroll"])                               # history is wide: the box's own bottom scrollbar
-        self.assertEqual(m["overflow"], "auto")
+                    wide: document.querySelector('#compare-grid').offsetWidth > w.clientWidth}; }""")
+        # one vertical scrollbar, the page's (UI-2c): the grid is not a scroll box; history is wide, so the pinned bar shows
+        self.assertFalse(m["vscroll"])
+        self.assertEqual(m["overflowY"], "visible")
+        self.assertTrue(m["wide"])
+        self.assertTrue(m["bar"])
         self.assertEqual((m["head2"], m["nameSticky"], m["headSticky"]), (m["head1"], "sticky", "sticky"))
         self.assertTrue(m["font"].startswith('"IBM Plex Sans"'))
         self.assertEqual((m["size"], m["nums"]), ("14px", "tabular-nums"))
-        self.page.set_viewport_size({"width": 1440, "height": 600})
-        self.assertEqual(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().height"), 420)   # min-height
         # page order: header, control row, eyebrow, heading, units label, grid, side panel, legend, provenance
         order = self.page.evaluate("""() => ['.appbar', '#controls', '#eyebrow', '#grid-title', '#grid-subline', '#grid-wrap',
             '#side-panel', '#grid-legend', '#grid-counts', '#grid-provenance'].map(s => document.querySelector(s))
@@ -1140,6 +1152,7 @@ class CompareBrowser(GridBrowser):
         self.assertEqual(self.page.inner_text("#grid-title"), "Department of Health and Human Services")
         self.assertEqual(self.page.inner_text("#eyebrow"), "LABOR-HHS-EDUCATION · TITLE II · ENACTED HISTORY")
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed")
+        self.definitions()
         self.assertIn("sha256", self.page.inner_text("#grid-provenance"))
         self.assertIn("(v38)", self.page.inner_text("#grid-provenance"))
         self.assertTrue(self.page.is_hidden("#freshness"))
@@ -1385,6 +1398,7 @@ class CompareBrowser(GridBrowser):
         self.assertIsNone(cell.get_attribute("title"))
         self.assertTrue(cell.locator("[data-testid=amount]").get_attribute("title"))
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
+        self.definitions()
         legend = self.page.inner_text("[data-testid=mark-legend]")          # beneath the legend, in Reviewer mode
         self.assertIn("note on this figure: hover to read, click to open the account", legend)
         self.assertNotIn("other lines on file for this cell", legend)
@@ -1407,7 +1421,7 @@ class CompareBrowser(GridBrowser):
         for q in ("stages", "years", "history"):
             self.open("static", f"?view=compare&sc=LHHS&grid={q}")
             self.menu("click", "#expand-all")
-            self.page.eval_on_selector("#grid-wrap", "w => { w.scrollTop = 700; }")
+            self.page.evaluate("window.scrollTo(0, document.querySelector('#grid-wrap').getBoundingClientRect().top + scrollY + 700)")
             self.page.wait_for_timeout(50)
             m = self.page.evaluate("""() => {
                 const r1 = document.querySelector('#compare-grid thead tr th.grp').getBoundingClientRect();
@@ -1439,6 +1453,7 @@ class ExploreV1(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def total(self):
         return self.lhhs["titles"][0]["total"]
@@ -1478,10 +1493,10 @@ class ExploreV1(GridBrowser):
                 self.assertTrue(self.page.is_visible("[data-testid=side-panel]"))
                 self.assertTrue(self.page.inner_text("[data-testid=overview-title]").startswith(
                     "Title II, Department of Health and Human Services · FY"))
-                # grid and panel side by side, the same height
+                # grid and panel side by side, tops aligned (UI-2c: each as tall as its content)
                 g, p = (self.page.locator(s).bounding_box() for s in ("#grid-wrap", "#side-panel"))
                 self.assertLess(g["x"] + g["width"], p["x"])
-                self.assertEqual((g["y"], g["height"]), (p["y"], p["height"]))
+                self.assertEqual(g["y"], p["y"])
                 self.assertEqual(self.page.inner_text("#grid-title"), "Department of Health and Human Services")
                 self.assertEqual(self.page.locator("#export").get_attribute("title"), "Coming in UI-4")
                 self.assertEqual(self.page.locator("#export").get_attribute("aria-disabled"), "true")
@@ -1764,10 +1779,12 @@ class ExploreV1(GridBrowser):
         marks = "#compare-grid [data-testid=cell-note], #compare-grid [data-testid=more]"
         self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
         self.assertEqual(self.page.locator(marks).count(), 0)
+        self.definitions()
         self.assertTrue(self.page.is_hidden("[data-testid=mark-legend]"))
         self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL&rev=1")
         self.assertGreater(self.page.locator("#compare-grid [data-testid=cell-note]").count(), 0)
         self.assertGreater(self.page.locator("#compare-grid [data-testid=more]").count(), 0)
+        self.definitions()
         self.assertTrue(self.page.is_visible("[data-testid=mark-legend]"))
         # turning Reviewer mode off in the View menu takes them away again
         self.menu("uncheck", "[data-testid=reviewer]")
@@ -1790,23 +1807,6 @@ class ExploreV1(GridBrowser):
         self.go("?sc=LHHS&fy=2024&fig=ACC-HHS-ASPR-TOTAL|2024|Enacted")
         self.assertIn("Created FY2024", self.page.inner_text("[data-testid=src-notes]"))
         self.assertEqual(self.page.get_attribute("[data-testid=src-note-link]", "data-link"), "ACC-HHS-OS-PHSSEF")
-
-    def test_grid_box_fills_the_window(self):
-        for w, h in ((1440, 900), (1280, 720)):
-            with self.subTest(size=(w, h)):
-                self.page.set_viewport_size({"width": w, "height": h})
-                self.go("?sc=LHHS&fy=2026")
-                box = lambda: self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom")
-                self.assertLessEqual(abs(box() - h), 2)
-                # the legend and provenance sit below it, reached by scrolling the page
-                self.assertGreaterEqual(self.page.evaluate("document.querySelector('[data-testid=legend]').getBoundingClientRect().top"), h)
-                self.assertGreater(self.page.evaluate("document.documentElement.scrollHeight"), h)
-        # resize-aware: a taller window, then an applied chip row, keep the bottom on the edge
-        self.page.set_viewport_size({"width": 1440, "height": 1000})
-        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 1000), 2)
-        self.go("?sc=LHHS&fy=2026&agency=National+Institutes+of+Health")
-        self.assertTrue(self.page.is_visible("[data-testid=chips]") if self.page.locator("[data-testid=chips]").count() else True)
-        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 1000), 2)
 
     def test_source_panel_full_dollars_and_one_source_link(self):
         self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
@@ -2218,12 +2218,21 @@ class ExploreV1(GridBrowser):
         self.assertEqual(self.page.inner_text("[data-testid=ov-cr]"), "FY2025 was a full-year continuing resolution (P.L. 119-4).")
 
     def test_footer_default_and_reviewer(self):
+        # one line below the grid, "Definitions and data sources", expanding on click (UI-2c)
         self.go("?sc=LHHS&fy=2026")
+        for sel in ("#grid-legend", "#grid-provenance"):
+            self.assertTrue(self.page.is_hidden(sel), sel)
+        self.definitions()
         for sel in ("#grid-legend", "#grid-provenance"):
             self.assertTrue(self.page.is_visible(sel), sel)
         for sel in ("#grid-counts", "#mark-legend", "#rev-legend", "#grid-notes"):
             self.assertTrue(self.page.is_hidden(sel), sel)
+        # Reviewer mode's counts live inside it
         self.go("?sc=LHHS&fy=2026&rev=1")
+        for sel in ("#grid-counts", "#mark-legend", "#rev-legend"):
+            self.assertTrue(self.page.is_hidden(sel), sel)
+            self.assertEqual(self.page.locator(f"#definitions {sel}").count(), 1, sel)
+        self.definitions()
         for sel in ("#grid-counts", "#mark-legend", "#rev-legend"):
             self.assertTrue(self.page.is_visible(sel), sel)
 
@@ -2290,6 +2299,230 @@ class ExploreV1(GridBrowser):
         want = [i for d_, i in sorted((m for m in moves if m[0] > 0), reverse=True)[:3]] + \
                [i for d_, i in sorted(m for m in moves if m[0] < 0)[:3]]
         self.assertEqual([m.get_attribute("data-account") for m in self.page.locator("[data-testid=ov-mover]").all()], want)
+
+
+class PageScroll(GridBrowser):
+    """Brief UI-2c (owner decisions, 2026-10-13): one vertical scrollbar, the page's; header rows pinned under the top
+    of the window; the account column pinned sideways; a pinned horizontal bar only when needed; a 300px side panel
+    that can be hidden; no figure ever clipped at laptop widths; the definitions below the last row."""
+
+    CMS = "ACC-HHS-CMS-TOTAL"
+
+    def go(self, query="", where="static"):
+        self.page.goto(self.urls[where] + query)
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
+
+    def test_only_the_page_scrolls_vertically(self):
+        for size in ((1440, 900), (1280, 720)):
+            for q in ("?sc=LHHS&fy=2026", "?sc=LHHS&fy=2026&grid=history"):
+                with self.subTest(size=size, q=q):
+                    self.page.set_viewport_size({"width": size[0], "height": size[1]})
+                    self.go(q)
+                    self.menu("click", "#expand-all")
+                    m = self.page.evaluate("""() => {
+                        const scrollers = [...document.querySelectorAll('body *')].filter((e) => e.offsetParent
+                            && ['auto', 'scroll'].includes(getComputedStyle(e).overflowY) && e.scrollHeight > e.clientHeight + 1);
+                        const box = (s) => { const e = document.querySelector(s);
+                            return [getComputedStyle(e).overflowY, e.scrollHeight <= e.clientHeight]; };
+                        return {scrollers: scrollers.map((e) => e.id || e.className), grid: box('#grid-wrap'), panel: box('#side-panel'),
+                                page: document.documentElement.scrollHeight > innerHeight};
+                    }""")
+                    self.assertEqual(m["scrollers"], [])
+                    self.assertEqual(m["grid"], ["visible", True])
+                    self.assertEqual(m["panel"], ["visible", True])
+                    self.assertTrue(m["page"])
+                    # every row at full length: the grid's box is as tall as its table
+                    g, t = (self.page.locator(s).bounding_box() for s in ("#grid-wrap", "#compare-grid"))
+                    self.assertGreaterEqual(g["height"] + 1, t["height"])
+
+    def test_header_rows_stay_in_view_after_scrolling_the_page(self):
+        self.go("?sc=LHHS&fy=2026")
+        self.menu("click", "#expand-all")
+        self.page.evaluate("window.scrollTo(0, 1000)")
+        self.page.wait_for_timeout(50)
+        m = self.page.evaluate("""() => {
+            const r1 = document.querySelector('#compare-grid thead th.grp').getBoundingClientRect();
+            const r2 = document.querySelector('#compare-grid thead tr + tr th').getBoundingClientRect();
+            const at = document.elementFromPoint(r2.left + r2.width / 2, r2.top + r2.height / 2);
+            return {y: scrollY, top1: r1.top, bottom2: r2.bottom, top2: r2.top, bottom1: r1.bottom, inHead: !!at.closest('thead')};
+        }""")
+        self.assertEqual(m["y"], 1000)
+        self.assertAlmostEqual(m["top1"], 0, delta=0.5)              # pinned under the top of the window
+        self.assertAlmostEqual(m["top2"], m["bottom1"], delta=0.5)
+        self.assertTrue(m["inHead"])
+        self.assertLess(m["bottom2"], 200)
+
+    def test_account_column_stays_when_the_grid_scrolls_sideways(self):
+        self.page.set_viewport_size({"width": 1280, "height": 720})
+        self.go("?sc=LHHS&fy=2026&grid=history")
+        name = lambda: self.page.locator(f"tr[data-account={self.CMS}] td.acct").bounding_box()["x"]
+        head = lambda: self.page.locator("#compare-grid th.acct").bounding_box()["x"]
+        fig = lambda: self.page.locator(f"tr[data-account={self.CMS}] td[data-fy='2020'][data-stage=Enacted]").bounding_box()["x"]
+        x0, h0, f0 = name(), head(), fig()
+        # the pinned bar scrolls the grid
+        self.page.eval_on_selector("#grid-hbar", "b => { b.scrollLeft = 300; }")
+        self.page.wait_for_timeout(50)
+        self.assertEqual((name(), head()), (x0, h0))
+        self.assertAlmostEqual(fig(), f0 - 300, delta=1)
+        # a sideways wheel over the grid moves it too, and the bar with it
+        self.page.mouse.move(700, 500)
+        self.page.mouse.wheel(-200, 0)
+        self.page.wait_for_timeout(50)
+        self.assertAlmostEqual(fig(), f0 - 100, delta=1)
+        self.assertEqual(self.page.eval_on_selector("#grid-hbar", "b => Math.round(b.scrollLeft)"), 100)
+        self.assertEqual(name(), x0)
+
+    def test_touch_swipe_moves_the_grid_with_the_bar(self):
+        # a touchscreen swipe sideways on the grid itself moves it and the pinned bar together; a vertical swipe on
+        # the grid still scrolls the page and leaves the grid where it is; a tap still opens a figure's source
+        ctx = self.browser.new_context(viewport={"width": 1280, "height": 720}, has_touch=True)
+        page = ctx.new_page()
+        try:
+            page.goto(self.urls["static"] + "?sc=LHHS&fy=2026&grid=history")
+            page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            self.assertEqual(page.evaluate("getComputedStyle(document.querySelector('#grid-wrap')).touchAction"), "pan-y pinch-zoom")
+            cdp = ctx.new_cdp_session(page)
+
+            def swipe(x, y, dx, dy, steps=12):
+                cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": [{"x": x, "y": y}]})
+                for i in range(1, steps + 1):
+                    cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": [{"x": x + dx * i / steps, "y": y + dy * i / steps}]})
+                    page.wait_for_timeout(16)
+                cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+                page.wait_for_timeout(200)
+
+            state = lambda: page.evaluate("""() => [parseFloat(getComputedStyle(document.querySelector('#grid-wrap')).getPropertyValue('--sx')),
+                Math.round(document.querySelector('#grid-hbar').scrollLeft), scrollY,
+                document.querySelector('tr[data-account=ACC-HHS-CMS-TOTAL] td.acct').getBoundingClientRect().left]""")
+            sx, bar, y, name = state()
+            self.assertEqual((sx, bar, y), (0, 0, 0))
+            # start the swipe on a figure: it moves the grid, and is not a tap on that figure
+            fig = page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] td[data-fy='2020'][data-stage=Enacted] button.fig").bounding_box()
+            swipe(fig["x"] + fig["width"] / 2, fig["y"] + fig["height"] / 2, -300, 0)
+            self.assertEqual(state()[:3], [300, 300, 0])               # the grid and the bar, together; the page stays
+            self.assertEqual(page.get_attribute("#side-panel", "data-mode"), "overview")
+            self.assertEqual(state()[3], name)                         # the account column stays put
+            swipe(700, 600, 0, -300)
+            sx, bar, y, _ = state()
+            self.assertEqual((sx, bar), (300, 300))                     # a vertical swipe doesn't move the grid ...
+            self.assertGreater(y, 200)                                 # ... and scrolls the page
+            swipe(700, 400, 120, 0)
+            self.assertEqual(state()[:2], [180, 180])
+            # the bar moved by hand moves the grid the same way (one position for both)
+            page.eval_on_selector("#grid-hbar", "b => { b.scrollLeft = 40; }")
+            page.wait_for_timeout(50)
+            self.assertEqual(state()[:2], [40, 40])
+            # a tap is not a swipe: it opens the figure's source
+            page.tap("tr[data-account=ACC-HHS-NIH-TOTAL] td[data-fy='2022'][data-stage=Enacted] button.fig")
+            self.assertEqual(page.get_attribute("#side-panel", "data-mode"), "source")
+        finally:
+            ctx.close()
+
+    def test_pinned_bar_only_when_the_grid_is_wider_than_its_space(self):
+        self.page.set_viewport_size({"width": 1280, "height": 720})
+        self.go("?sc=LHHS&fy=2026")
+        self.assertTrue(self.page.is_hidden("[data-testid=grid-hbar]"))
+        self.assertTrue(self.page.evaluate("document.querySelector('#compare-grid').offsetWidth <= document.querySelector('#grid-wrap').clientWidth"))
+        self.go("?sc=LHHS&fy=2026&grid=history")
+        bar = self.page.locator("[data-testid=grid-hbar]")
+        self.assertTrue(bar.is_visible())
+        # pinned to the bottom of the window while the grid runs past it, and the bar's range is the grid's overflow
+        self.assertAlmostEqual(bar.bounding_box()["y"] + bar.bounding_box()["height"], 720, delta=1)
+        self.page.evaluate("window.scrollTo(0, 600)")
+        self.assertAlmostEqual(bar.bounding_box()["y"] + bar.bounding_box()["height"], 720, delta=1)
+        self.assertEqual(self.page.evaluate("""() => { const b = document.querySelector('#grid-hbar');
+            return b.scrollWidth - b.clientWidth === document.querySelector('#compare-grid').offsetWidth
+                   - document.querySelector('#grid-wrap').clientWidth; }"""), True)
+        # gone again when the grid fits (a wide window)
+        self.page.set_viewport_size({"width": 2400, "height": 900})
+        self.page.wait_for_timeout(100)
+        self.assertTrue(self.page.is_hidden("[data-testid=grid-hbar]"))
+
+    def test_panel_is_300px_and_hide_show_survives_a_reload(self):
+        for w in (1280, 1366, 1440, 1536, 1920):
+            self.page.set_viewport_size({"width": w, "height": 900})
+            self.go("?sc=LHHS&fy=2026")
+            self.assertEqual(self.page.locator("#side-panel").bounding_box()["width"], 300, w)
+        toggle = self.page.locator("[data-testid=panel-toggle]")
+        self.assertEqual((toggle.inner_text(), toggle.get_attribute("aria-expanded")), ("Hide panel", "true"))
+        before = self.page.locator("#grid-wrap").bounding_box()["width"]
+        toggle.focus()
+        self.page.keyboard.press("Enter")                            # keyboard-reachable
+        self.assertTrue(self.page.is_hidden("#side-panel"))
+        self.assertEqual((toggle.inner_text(), toggle.get_attribute("aria-expanded")), ("Show panel", "false"))
+        self.assertGreater(self.page.locator("#grid-wrap").bounding_box()["width"], before + 300)
+        self.assertIn("panel=hidden", self.page.url)
+        self.page.reload()
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.assertTrue(self.page.is_hidden("#side-panel"))
+        self.assertEqual(toggle.inner_text(), "Show panel")
+        # selecting a figure while hidden shows the panel again, with the figure's source
+        self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] td[data-fy='2026'][data-stage=Enacted] button.fig").click()
+        self.assertTrue(self.page.is_visible("#side-panel"))
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertNotIn("panel=hidden", self.page.url)
+        # and selecting an account
+        toggle.click()
+        self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=row-name]").click()
+        self.assertTrue(self.page.is_visible("#side-panel"))
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "account")
+        self.assertEqual(toggle.inner_text(), "Hide panel")
+
+    def test_no_figure_is_clipped_at_laptop_widths(self):
+        cut = """(ids) => [...document.querySelectorAll('#compare-grid tbody tr')]
+            .filter((tr) => ids.includes(tr.dataset.account) || tr.classList.contains('title'))
+            .flatMap((tr) => [...tr.cells]).filter((td) => !td.classList.contains('acct') && td.colSpan === 1)
+            .filter((td) => td.scrollWidth > td.clientWidth)
+            .map((td) => `${td.closest('tr').dataset.account} ${td.dataset.fy || ''} ${td.dataset.stage || ''} ${td.scrollWidth}/${td.clientWidth}`)"""
+        cms = [self.CMS] + [r["account"]["canonical_account_id"] for r in self.lhhs["rows"] if r["member_of"] == self.CMS]
+        for w, h in ((1280, 720), (1366, 768), (1440, 900), (1536, 864)):
+            ctx = self.browser.new_context(viewport={"width": w, "height": h}, device_scale_factor=1.25)
+            page = ctx.new_page()
+            try:
+                for fy in (2026, 2027):
+                    for grid in ("stages", "history"):
+                        with self.subTest(size=(w, h), fy=fy, grid=grid):
+                            page.goto(self.urls["static"] + f"?sc=LHHS&fy={fy}&grid={grid}&open={self.CMS}")
+                            page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+                            self.settle(page)
+                            self.assertGreater(page.locator(f"tr[data-account={self.CMS}]").count(), 0)
+                            self.assertGreater(page.locator("#compare-grid tr.title").count(), 0)
+                            self.assertEqual(page.evaluate(cut, cms), [])
+            finally:
+                ctx.close()
+
+    def test_columns_refit_when_a_font_loads_late(self):
+        # a font that finishes loading after the first render (here a much wider face for the figures' weight)
+        # refits the columns, so no figure is cut by widths measured before it arrived
+        self.page.set_viewport_size({"width": 1280, "height": 720})
+        self.go("?sc=LHHS&fy=2026")
+        cut = """() => [...document.querySelectorAll('#compare-grid td.num')].filter((td) => td.scrollWidth > td.clientWidth).length"""
+        self.assertEqual(self.page.evaluate(cut), 0)
+        before = self.page.eval_on_selector_all("#compare-grid col", "cs => cs.map((c) => c.style.width)")
+        self.page.evaluate("""async () => {
+            const f = new FontFace('IBM Plex Sans', 'local("DejaVu Sans Mono"), local("Liberation Mono"), local("Courier New")', {weight: '500'});
+            document.fonts.add(f);
+            await f.load();
+        }""")
+        self.settle()
+        self.assertNotEqual(self.page.eval_on_selector_all("#compare-grid col", "cs => cs.map((c) => c.style.width)"), before)
+        self.assertEqual(self.page.evaluate(cut), 0)
+
+    def test_definitions_below_the_last_row(self):
+        self.go("?sc=LHHS&fy=2026")
+        summary = self.page.locator("[data-testid=definitions-toggle]")
+        self.assertEqual(summary.inner_text(), "Definitions and data sources")
+        self.assertIsNone(self.page.get_attribute("#definitions", "open"))
+        last = self.page.locator("#compare-grid tbody tr").last.bounding_box()
+        top = self.page.locator("#definitions").bounding_box()["y"]
+        self.assertGreaterEqual(top, last["y"] + last["height"])
+        self.assertGreaterEqual(top, self.page.evaluate("innerHeight"))   # seen only by scrolling down to it
+        summary.focus()
+        self.page.keyboard.press("Enter")
+        self.assertIsNotNone(self.page.get_attribute("#definitions", "open"))
+        self.assertTrue(self.page.is_visible("[data-testid=legend]"))
+        self.assertTrue(self.page.is_visible("[data-testid=provenance]"))
 
 
 def to_dollars(thousands_text):
@@ -2653,6 +2886,7 @@ class AmountBasis(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def text(self, aid, fy, stage):
         return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
@@ -2707,6 +2941,7 @@ class AmountBasis(GridBrowser):
         self.go(f"?sc=LHHS&fy=2026&amt=all_appropriations&open={self.OPEN}")
         self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "171,566")
         # the legend names the basis' tokens
+        self.definitions()
         self.assertIn("excl. = left out by this basis", self.page.inner_text("[data-testid=basis-legend]"))
 
     def test_source_panel_under_basis(self):
@@ -2887,6 +3122,7 @@ class ExcludeEarmarks(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def text(self, aid, fy, stage):
         return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)

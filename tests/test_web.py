@@ -416,6 +416,7 @@ class V33Page(BrowserBase):
         mark = self.page.locator("#compare-grid thead [data-testid=stage-note-mark]")
         self.assertEqual(mark.count(), 1)
         self.assertIn("never reported", mark.get_attribute("title"))
+        self.page.click("[data-testid=definitions-toggle]")         # the stage notes live in "Definitions and data sources"
         self.assertIn("FY2023 Senate Reported: committee draft released 2022-07-28",
                       self.page.inner_text("[data-testid=stage-notes]"))
         # not shown when the column isn't

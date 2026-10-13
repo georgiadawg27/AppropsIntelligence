@@ -167,11 +167,43 @@
   .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; position: relative; }
   .unitlabel { font-size: 13px; color: var(--x-ink2); background: #ebe9e2; border-radius: 6px; padding: 5px 10px; }
   .workspace { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-  .tablebox { flex: 999 1 600px; min-width: 0; height: calc(100vh - var(--box-top, 380px)); min-height: 420px; overflow: auto; background: var(--x-surface);
+  /* one vertical scrollbar, the page's own (owner, 2026-10-13, UI-2c): the grid shows every row at full length and
+     is not a scroll box in either axis (overflow-x: clip makes no scroll container), so its header rows stick under
+     the top of the window. Sideways, the table moves by --sx, driven by the pinned bar (#grid-hbar) */
+  .tablebox { flex: 1 1 600px; min-width: 0; overflow-x: clip; overflow-clip-margin: 2px; background: var(--x-surface);
               border: 1px solid #dfe2e8; border-radius: 10px; }
-  .sidepanel { flex: 1 1 340px; min-width: 0; height: calc(100vh - var(--box-top, 380px)); min-height: 420px; overflow: auto; background: var(--x-surface);
-               border: 1px solid #dfe2e8; border-radius: 10px; padding: 18px 20px 20px; }
-  @media (max-width: 979px) { .sidepanel { height: auto; min-height: 0; } }
+  .tablebox .grid { position: relative; left: calc(-1 * var(--sx, 0px)); }
+  /* a wide grid takes sideways touch swipes itself; the browser keeps vertical panning (the page's scroll) and zoom */
+  .tablebox.wide { touch-action: pan-y pinch-zoom; }
+  .tablebox .grid .acct { left: auto; transform: translateX(var(--sx, 0px)); }   /* stays put while the table moves */
+  /* the pinned horizontal bar: sticks to the window's bottom edge while the grid is on screen; only when needed */
+  .hbar { position: sticky; bottom: 0; z-index: 6; overflow-x: auto; overflow-y: hidden; height: 14px; background: rgba(246, 245, 241, 0.92);
+          border-top: 1px solid var(--x-rule); }
+  .hbar > div { height: 1px; }
+  /* the side panel: 300px at every desktop width, scrolls with the page (no sticky, no scrollbar of its own) */
+  .sidepanel { flex: 0 0 300px; width: 300px; min-width: 0; background: var(--x-surface);
+               border: 1px solid #dfe2e8; border-radius: 10px; padding: 16px 16px 18px; overflow-wrap: break-word; }
+  .workspace.panel-off .sidepanel { display: none; }
+  /* its type sized to fit 300px (the phone's sheet keeps the SPEC section 7 sizes) */
+  .sidepanel .ovtitle { font-size: 17px; }
+  .sidepanel .bigfig { font-size: 24px; }
+  .sidepanel .medfig { font-size: 18px; }
+  .sidepanel .ovtile .v { font-size: 20px; }
+  @media (max-width: 979px) { .sidepanel { flex: 1 1 100%; width: auto; } }
+  /* slim, muted scrollbars (Windows draws them full size) */
+  html, .hbar { scrollbar-width: thin; scrollbar-color: #b9bfc9 transparent; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #b9bfc9; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8a93a3; }
+  /* definitions and data sources: one line below the grid, expanding on click */
+  .defs { margin-top: 12px; }
+  .defs > summary { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; color: var(--x-ink2); padding: 6px 2px;
+                    border-radius: 4px; list-style: none; }
+  .defs > summary::-webkit-details-marker { display: none; }
+  .defs > summary::before { content: "\25B8"; color: var(--x-muted); font-size: 11px; }
+  .defs[open] > summary::before { content: "\25BE"; }
+  .defs > summary:hover { color: var(--x-accent-text); }
   .gfooter { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--x-muted); }
   .gfooter.small { font-size: 11px; margin-top: 4px; }
   /* the grid */
@@ -553,6 +585,7 @@
         </div>
         <div class="tools">
           <span class="unitlabel" id="grid-subline" data-testid="grid-subline"></span>
+          <button type="button" class="xbtn" id="panel-toggle" data-testid="panel-toggle" aria-controls="side-panel" aria-expanded="true">Hide panel</button>
           <button type="button" class="xbtn" id="view-btn" data-testid="view-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="view-menu">View &#9662;</button>
           <button type="button" class="xbtn" id="share" data-testid="share">Share</button>
           <button type="button" class="xbtn primary" id="export" data-testid="export" aria-disabled="true" title="Coming in UI-4">Export</button>
@@ -560,15 +593,19 @@
         </div>
       </div>
       <div class="workspace">
-        <div class="tablebox" id="grid-wrap" data-testid="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table></div>
+        <div class="tablebox" id="grid-wrap" data-testid="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table>
+          <div class="hbar" id="grid-hbar" data-testid="grid-hbar" hidden><div></div></div></div>
         <aside class="sidepanel" id="side-panel" data-testid="side-panel" aria-label="Overview"></aside>
       </div>
-      <footer class="gfooter" id="grid-legend" data-testid="legend"></footer>
-      <footer class="gfooter small" id="mark-legend" data-testid="mark-legend"><span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span> <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span></footer>
-      <footer class="gfooter small" id="rev-legend" hidden><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot rule"></span> resolved by rule: bill or law text controls <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></footer>
-      <footer class="gfooter small" id="grid-counts" data-testid="state-counts"></footer>
-      <footer class="gfooter small" id="grid-notes"></footer>
-      <footer class="gfooter small" id="grid-provenance" data-testid="provenance"></footer>
+      <details class="defs" id="definitions" data-testid="definitions">
+        <summary data-testid="definitions-toggle">Definitions and data sources</summary>
+        <footer class="gfooter" id="grid-legend" data-testid="legend"></footer>
+        <footer class="gfooter small" id="mark-legend" data-testid="mark-legend"><span><span class="nm-legend"></span>note on this figure: hover to read, click to open the account</span> <span><span class="cn-legend"></span>a note on this figure (the sources disagree, or the law spreads it over two divisions): hover to read</span></footer>
+        <footer class="gfooter small" id="rev-legend" hidden><span class="dot flag"></span> flagged for review <span class="dot unv"></span> not yet confirmed by a sum or second document <span class="dot rule"></span> resolved by rule: bill or law text controls <span class="dot pend"></span> verified, a record still pending review <span class="dot res"></span> verified, records resolved by a person (hover to read) <span id="rev-count" data-testid="pending-count"></span></footer>
+        <footer class="gfooter small" id="grid-counts" data-testid="state-counts"></footer>
+        <footer class="gfooter small" id="grid-notes"></footer>
+        <footer class="gfooter small" id="grid-provenance" data-testid="provenance"></footer>
+      </details>
     </section>
   </main>
 </div>
@@ -992,7 +1029,7 @@ const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true,
             amt: "printed", timing: "available", type: "all", defcol: false,
             // Exclude earmarks (Filter › Advanced) and the nondefense column (View › Columns): UI-3b
             noear: false, ndcol: false,
-            units: "k", reviewer: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
+            units: "k", reviewer: false, panelOff: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
             minPct: null, minK: null, drafts: true, review: false,
             // the phone (SPEC section 6): the stage its list shows (null: the lead stage); table: the grid on a phone
@@ -2159,6 +2196,8 @@ function select(s) {
   SEL = s;
   markSelection();
   renderPanel(current.grid);
+  // selecting a figure or an account while the panel is hidden shows it again
+  if (s && G.panelOff) { G.panelOff = false; applyPanel(); pinHeader(); }
   commit();
 }
 // back to the overview; focus returns to the figure or the name that was selected
@@ -2191,6 +2230,7 @@ function renderBody() {
   $("#compare-grid tbody").replaceWith(el("tbody", {}, ...buildRows(current.grid, current.cols)));
   if (isPhone()) keepFocus($("#phone"), () => renderPhoneList(current.grid));
   markSelection();
+  pinHeader();
 }
 function headingOf(grid) {
   if (G.agency) return G.agency;
@@ -2205,6 +2245,7 @@ function renderCompare(grid) {
     STATUS_OF.set(r.account.canonical_account_id, r.account.status);
     ROW_OF.set(r.account.canonical_account_id, r);
   }
+  applyPanel();
   const label = scLabels[grid.subcommittee] || grid.subcommittee;
   const named = grid.titles.map((t) => t.title).filter(Boolean);
   const titles = named.length === 1 ? named[0] : `Titles ${named.map((t) => t.replace(/^Title /, "")).join(", ")}`;
@@ -2247,12 +2288,11 @@ function renderCompare(grid) {
                       ...(dr ? { "data-draft": dr.key, "data-testid": "draft-label" } : {}) },
       n ? noteMark(n) : null, lbl);
   }));
-  // column widths: the design's template, minmax(250px, 2.2fr) then minmax(98px, 1fr) per figure, minmax(112px, 1fr) per change
-  const fr = 2.2 + cols.length;
-  const colgroup = el("colgroup", {}, el("col", { style: `width:${(2.2 / fr * 100).toFixed(3)}%` }),
-    ...cols.map(() => el("col", { style: `width:${(100 / fr).toFixed(3)}%` })));
+  // column widths: the design's template, minmax(250px, 2.2fr) then minmax(98px, 1fr) per figure, minmax(112px, 1fr)
+  // per change, set in px by fitColumns so no figure is ever cut (UI-2c)
+  const colgroup = el("colgroup", {}, el("col", { dataset: { w: "2.2", floor: "250" } }),
+    ...cols.map((c) => el("col", { dataset: { w: "1", floor: c.chg ? "112" : "98" } })));
   const table = $("#compare-grid");
-  table.style.minWidth = (250 + cols.filter((c) => c.fig || c.def).length * 98 + cols.filter((c) => c.chg).length * 112) + "px";
   table.classList.toggle("compact", G.dense);
   table.replaceChildren(colgroup, el("thead", {}, r1, r2), el("tbody"));
   renderBody();
@@ -2303,24 +2343,129 @@ function renderLegend() {
       text: `${basisPhrase()}: excl. = left out by this basis · n/a = not computable · not checked = no printed total confirms it (hover for why)` })]));
 }
 
+// The page has one vertical scrollbar, its own (owner, 2026-10-13, UI-2c). The grid shows every row and is not a
+// scroll box, so its header rows stick under the top of the window. Each figure column is at least as wide as its
+// widest figure in view (the account names give way first, down to ACCT_MIN, and wrap); beyond that the grid is
+// wider than its space and moves sideways (--sx) under the pinned bar at the window's bottom edge.
+const ACCT_MIN = 200;
+let SX = 0;
+function fitColumns() {
+  const table = $("#compare-grid"), wrap = $("#grid-wrap");
+  const cols = [...table.querySelectorAll("colgroup col")];
+  if (!cols.length || !wrap.offsetParent) return;
+  // measure: each figure column 1px wide, so every cell overflows and its scrollWidth is its content's width
+  cols.forEach((c, i) => { c.style.width = i ? "1px" : "250px"; });
+  table.style.width = (250 + cols.length - 1) + "px";
+  const need = cols.map(() => 0);
+  const take = (cells, i) => {
+    for (const td of cells) {
+      const span = td.colSpan || 1;
+      if (span === 1 && i > 0 && !td.classList.contains("acct")) need[i] = Math.max(need[i], td.scrollWidth);
+      i += span;
+    }
+  };
+  const head = table.tHead && table.tHead.rows[1];
+  if (head) take(head.cells, 1);
+  for (const tr of table.tBodies[0] ? table.tBodies[0].rows : []) take(tr.cells, 0);
+  // share the space as the template's fr units; a column whose minimum is above its share keeps its minimum
+  const W = wrap.clientWidth, weight = cols.map((c) => Number(c.dataset.w));
+  const min = cols.map((c, i) => (i ? Math.max(Number(c.dataset.floor), Math.ceil(need[i]) + 1) : 0));
+  const figs = min.reduce((a, v) => a + v, 0);
+  min[0] = Math.max(ACCT_MIN, Math.min(250, W - figs));
+  const width = cols.map(() => null);
+  for (;;) {
+    const free = width.map((v, i) => (v == null ? i : -1)).filter((i) => i >= 0);
+    if (!free.length) break;
+    const fr = (W - width.reduce((a, v) => a + (v || 0), 0)) / free.reduce((a, i) => a + weight[i], 0);
+    const tight = free.filter((i) => min[i] > fr * weight[i]);
+    if (!tight.length) { for (const i of free) width[i] = Math.floor(fr * weight[i]); break; }
+    for (const i of tight) width[i] = min[i];
+  }
+  const total = width.reduce((a, v) => a + v, 0);
+  if (total < W) width[0] += W - total;        // the rounding's leftover pixels go to the names
+  cols.forEach((c, i) => { c.style.width = width[i] + "px"; });
+  table.style.width = Math.max(W, total) + "px";
+}
+function setSX(x) {
+  const table = $("#compare-grid"), wrap = $("#grid-wrap"), bar = $("#grid-hbar");
+  SX = Math.min(Math.max(0, table.offsetWidth - wrap.clientWidth), Math.max(0, Math.round(x)));
+  wrap.style.setProperty("--sx", SX + "px");
+  if (Math.round(bar.scrollLeft) !== SX) bar.scrollLeft = SX;
+}
+// the pinned bar: shown only when the grid is wider than its space; its scroll range is the grid's
+function syncBar() {
+  const table = $("#compare-grid"), wrap = $("#grid-wrap"), bar = $("#grid-hbar");
+  bar.hidden = !wrap.offsetParent || table.offsetWidth <= wrap.clientWidth;
+  wrap.classList.toggle("wide", !bar.hidden);
+  bar.firstElementChild.style.width = table.offsetWidth + "px";
+  setSX(SX);
+}
 // the second header row sits right under the first, whatever height the first renders at
 function pinHeader() {
-  sizeBox();
+  if ($("#compare-view").hidden) return;
+  fitColumns();
+  syncBar();
   const th = document.querySelector("#compare-grid thead tr:first-child th.grp");
-  if (!th || $("#compare-view").hidden) return;
+  if (!th) return;
   const h = th.getBoundingClientRect().height;
   if (h) $("#compare-grid").style.setProperty("--head1", h + "px");
 }
-// the grid box fills the window from below the title row to the bottom edge (owner, 2026-10-13, UI-2b): its top
-// on the page (scrolled to the top) sets --box-top; the legend and provenance sit below, reached by scrolling
-function sizeBox() {
-  const w = $("#grid-wrap");
-  if (!w || $("#compare-view").hidden || !w.offsetParent) return;
-  const top = w.getBoundingClientRect().top + window.scrollY;
-  document.documentElement.style.setProperty("--box-top", Math.round(top) + "px");
-}
 window.addEventListener("resize", pinHeader);
-if (document.fonts) document.fonts.ready.then(pinHeader);
+// widths are measured in the loaded fonts: refit after every font load, including a weight first used after the
+// first render (fonts.ready may already have resolved by then)
+if (document.fonts) { document.fonts.ready.then(pinHeader); document.fonts.addEventListener("loadingdone", pinHeader); }
+$("#grid-hbar").addEventListener("scroll", () => setSX($("#grid-hbar").scrollLeft));
+// a touchscreen swipe sideways on the grid moves it through setSX, the same path as the bar, so the two never drift
+// apart. touch-action: pan-y leaves vertical pans to the browser (it cancels the pointer when it takes one). A touch
+// that moves past the tap slop is not a tap, so the browser sends no click: a swipe never opens a figure.
+let swipe = null;
+$("#grid-wrap").addEventListener("pointerdown", (e) => {
+  if (e.pointerType !== "touch" || $("#grid-hbar").hidden || e.target.closest("#grid-hbar")) return;
+  swipe = { id: e.pointerId, x: e.clientX, sx: SX, moved: false };
+});
+$("#grid-wrap").addEventListener("pointermove", (e) => {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  const dx = e.clientX - swipe.x;
+  if (Math.abs(dx) > 8) swipe.moved = true;
+  if (swipe.moved) setSX(swipe.sx - dx);
+});
+const endSwipe = (e) => {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  swipe = null;
+};
+for (const t of ["pointerup", "pointercancel"]) $("#grid-wrap").addEventListener(t, endSwipe);
+// a sideways wheel or trackpad swipe (or Shift + wheel) over the grid moves it sideways; vertical scrolling stays the page's
+$("#grid-wrap").addEventListener("wheel", (e) => {
+  const dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
+  if (!dx || $("#grid-hbar").hidden) return;
+  e.preventDefault();
+  setSX(SX + dx);
+}, { passive: false });
+// keyboard focus on a figure out of view sideways brings it into view, clear of the account column
+$("#grid-wrap").addEventListener("focusin", (e) => {
+  const cell = e.target instanceof Element && e.target.closest("td, th");
+  if (!cell || cell.classList.contains("acct") || $("#grid-hbar").hidden) return;
+  const r = cell.getBoundingClientRect(), w = $("#grid-wrap").getBoundingClientRect();
+  const name = document.querySelector("#compare-grid th.acct").getBoundingClientRect().right;
+  if (r.right > w.right) setSX(SX + r.right - w.right);
+  else if (r.left < name) setSX(SX - (name - r.left));
+});
+
+// "Hide panel" / "Show panel": the grid takes the full width; the choice is in the URL (owner, 2026-10-13, UI-2c)
+function applyPanel() {
+  const on = has("overview_panel"), off = on && G.panelOff;
+  document.querySelector(".workspace").classList.toggle("panel-off", off);
+  const b = $("#panel-toggle");
+  b.hidden = !on;
+  b.textContent = off ? "Show panel" : "Hide panel";
+  b.setAttribute("aria-expanded", String(!off));
+}
+$("#panel-toggle").addEventListener("click", () => {
+  G.panelOff = !G.panelOff;
+  applyPanel();
+  pinHeader();
+  commit();
+});
 
 // ---- hover crosshair (SPEC 5.5): the row, the column, their crossing and the column's header
 const hoverCSS = document.head.appendChild(document.createElement("style"));
@@ -2379,6 +2524,7 @@ function compareURL() {
   if (G.timing !== "available") q.set("timing", G.timing);
   if (G.type !== "all") q.set("type", G.type);
   if (G.reviewer) q.set("rev", "1");
+  if (G.panelOff) q.set("panel", "hidden");
   if (G.agency) q.set("agency", G.agency);
   if (G.status !== "any") q.set("status", G.status);
   if (G.search.trim()) q.set("search", G.search.trim());
@@ -2417,6 +2563,7 @@ function settle(grid, want) {
     G.grid = want.grid === "enacted" ? "history" : ["stages", "years", "history"].includes(want.grid) ? want.grid : "stages";
     G.units = want.units === "m" ? "m" : "k";
     G.reviewer = want.rev === "1";
+    G.panelOff = want.panel === "hidden";
     G.dense = want.density === "compact";
     G.reqcol = String(want.cols || "").split(",").includes("request");
     G.defcol = String(want.cols || "").split(",").includes("defense");
@@ -3089,7 +3236,8 @@ $("#sc").addEventListener("change", () => {
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
                 cols: G.reqcol ? "request" : "", status: G.status, search: G.search, review: G.review ? "1" : "",
                 minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0",
-                pstage: G.pstage == null ? "" : STAGE_WORD[G.pstage], table: G.table ? "1" : "" }, false);
+                pstage: G.pstage == null ? "" : STAGE_WORD[G.pstage], table: G.table ? "1" : "",
+                panel: G.panelOff ? "hidden" : "" }, false);
 });
 for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
 let searchTimer = null;
@@ -3125,7 +3273,7 @@ $("#search-form").addEventListener("submit", (e) => {
 function route() {
   closeMenu(false);
   const params = new URLSearchParams(location.search);
-  const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
+  const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "panel", "show", "density", "cols",
                                    "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct",
                                    "amt", "timing", "type", "earmarks", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
