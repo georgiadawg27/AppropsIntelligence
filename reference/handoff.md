@@ -501,3 +501,8 @@ UI-3b's "Earmarks taken out (CDS / CPF)" list now sits inside the "Source docume
 before the button (`viewBlock` returns `ears` beside `head`/`tail`). Earmarks and components name their document as
 plain text with the page as the link (`compSource`; through the figure's URL when the component is in the figure's
 own document; `docLink` removed). UI-3b tests updated for the full-dollar `src-value`. SPEC §5.6 records the placement.
+
+docs/CNAME (custom domain, added on main by the owner, 64413f7): `web/CNAME` holds the same bytes (no trailing
+newline) and `export_static.export()` writes it into docs/ beside `.nojekyll`, so `test_committed_docs_are_current`
+sees it as export output. The domain and Pages settings are unchanged; to change the domain, edit web/CNAME and
+re-export.
