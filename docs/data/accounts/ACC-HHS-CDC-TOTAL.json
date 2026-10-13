@@ -3681,14 +3681,8 @@
            "validation_id": "VAL-LHHS-08303"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MRC-EVALUATION-TAP-PHRASE-UNTAGGED"
-          },
-          {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-2058"
           }
@@ -6280,6 +6274,18 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-00631"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRC-PPHF-GENERAL-PROVISION-TABLE"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0147"
           }
          ],
          "verification_status": "auto-validated"
@@ -9699,14 +9705,8 @@
       "validation_id": "VAL-LHHS-08303"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
-      "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MRC-EVALUATION-TAP-PHRASE-UNTAGGED"
-     },
-     {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-2058"
      }
@@ -12070,6 +12070,18 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-00631"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRC-PPHF-GENERAL-PROVISION-TABLE"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0147"
      }
     ],
     "verification_status": "auto-validated"
