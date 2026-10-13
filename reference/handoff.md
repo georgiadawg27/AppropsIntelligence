@@ -1,5 +1,23 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-0b: excluding-earmarks and nondefense views (2026-10-13)
+
+- Every cell with `views` now also gets `views_excluding_earmarks.<basis>` and `views_nondefense.<basis>`, the same
+  shape as `views`, the printed basis included (`site_accounting.Layer.account_exclusion` / `total_exclusion`;
+  the arithmetic is `accounting.excluded_amount`: the basis amount less that type's components inside the headline
+  that the basis hasn't already taken out).
+- Coverage = `tag_components.AUTO_CELLS`. Outside it every entry is `not_computable`, "earmarks not tagged for this
+  stage" / "defense not tagged for this stage": the President's Budget, FY2027, and also CJS FY2024-FY2025 (not
+  in AUTO_CELLS). This leaves out NSF R&RA's President's Budget defense lines FY2017-FY2026 and the one FY2027 House
+  earmark (a table line), although they are tagged. Owner decision pending.
+- Accounts: always `computed`, never `checked`. NSF's defense_portion is printed beside its headline, so its
+  nondefense view takes nothing out.
+- Totals: `checked` only where `views.<basis>` is checked (a printed total measure_reconcile matched), the cell is
+  auto-tagged, and neither the total nor any of its accounts has a component of that type. Otherwise not checked,
+  with `accounts_behind`. The printed basis on a total is always not checked.
+- ui_contract v3: `exclude_earmarks` and `nondefense` (both true). Counts in tests/fixtures/grid_counts.json
+  (`views_*_status_counts`). The page doesn't read these fields yet (UI-3).
+
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
 ## Component backfill FY2017-FY2023 (this PR)

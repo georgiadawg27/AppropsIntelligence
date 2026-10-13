@@ -282,7 +282,10 @@ class Features(StaticTest):
         self.assertTrue(got["figure_source"])
         for name in ("accounting_views", "budget_class", "defense_split"):
             self.assertTrue(got[name], name)
-        self.assertGreaterEqual(self.index["contract_version"], 2)
+        # UI-0b (contract_version 3): the excluding-earmarks and nondefense views
+        for name in ("exclude_earmarks", "nondefense"):
+            self.assertTrue(got[name], name)
+        self.assertGreaterEqual(self.index["contract_version"], 3)
 
     def test_a_missing_field_turns_its_feature_off(self):
         with tempfile.TemporaryDirectory() as d:
@@ -294,6 +297,8 @@ class Features(StaticTest):
             got = E.features(data, {"accounts": [{"canonical_account_id": "ACC-X", "canonical_name": "X"}]})
         self.assertFalse(got["features"]["budget_class"])          # null is not a value
         self.assertFalse(got["features"]["accounting_views"])      # nor is a view with no amount
+        self.assertFalse(got["features"]["exclude_earmarks"])
+        self.assertFalse(got["features"]["nondefense"])
         self.assertFalse(got["features"]["figure_source"])
         self.assertTrue(got["features"]["watchlist"])
 

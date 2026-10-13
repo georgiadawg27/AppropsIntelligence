@@ -58,6 +58,11 @@ PRINTED_BASIS = {
     "excluding_emergencies": [("discretionary", None)],
 }
 ATTR_FIELDS = AC.ATTRIBUTES
+# UI-0b: the cell field each exclusion view is published under
+EXCLUSION_FIELDS = {"excluding_earmarks": "views_excluding_earmarks", "nondefense": "views_nondefense"}
+EXCLUSION_WORD = {"excluding_earmarks": "excluding earmarks", "nondefense": "excluding defense"}
+UNTAGGED = {"excluding_earmarks": "earmarks not tagged for this stage",
+            "nondefense": "defense not tagged for this stage"}
 
 
 def page_of(location):
@@ -277,6 +282,96 @@ class Layer:
             views[basis] = [avail] if same else [avail, enacted]
         return views
 
+    # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
+    def untagged(self, exclusion, behind=None):
+        """The entries of a cell whose stage the tagger has not read (outside tag_components.AUTO_CELLS): untagged is
+        never 'none tagged'."""
+        e = {"amount": None, "status": "not_computable", "reason": UNTAGGED[exclusion]}
+        if behind is not None:
+            e["accounts_behind"] = behind
+        return {b: [dict(e, timing=None if b == "printed" else "available")] for b in AC.BASES}
+
+    def account_exclusion(self, a, fy, stage, h, exclusion, views):
+        """views_excluding_earmarks / views_nondefense of an account cell: each basis's view (account_views) with the
+        exclusion's components inside the headline taken out (accounting.excluded_amount)."""
+        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS:
+            return self.untagged(exclusion)
+        ctype = AC.EXCLUSIONS[exclusion]
+        cs = self.cell_components(h)
+        if AC.split(h["amount"], cs)[0] < 0:          # account_views' negative base: the same not_computable entries
+            return {b: [dict(e) for e in es] for b, es in views.items()}
+        beside = [c for c in cs if c["component_type"] == ctype and c["in_headline"] != "TRUE"]
+        rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)
+        cls = rec["value"] if rec else None
+        out = {}
+        for basis in AC.BASES:
+            entries = []
+            for timing in ([None] if basis == "printed" else AC.TIMINGS):
+                got = AC.excluded_amount(h["amount"], cs, basis, timing, cls, exclusion)
+                if got[0] != "value":
+                    entries.append({"amount": None, "timing": timing, "status": got[0], "reason": got[1]})
+                    continue
+                _, amount, used, note = got
+                taken = [c for c in used if c["component_type"] == ctype]
+                view = "the figure as printed" if basis == "printed" else f"the {basis} view"
+                if taken:
+                    why = (f"{view} less {len(taken)} {ctype} component{'s' if len(taken) > 1 else ''} inside the "
+                           f"headline ({AC.money(sum(c['amount'] for c in taken))})")
+                elif beside:
+                    why = (f"its {ctype} component{'s are' if len(beside) > 1 else ' is'} printed beside the headline, "
+                           f"not in it: equals {view}")
+                else:
+                    why = f"no {ctype} component tagged in this auto-tagged cell: equals {view}"
+                if note:
+                    why = f"{note}; {why}"
+                base = next((e for e in views[basis] if e["timing"] == timing), views[basis][0])
+                if basis != "printed" and base["status"] == "checked":
+                    why += f" (checked: {base['validation_id']})"
+                entries.append({"amount": amount, "timing": timing, "status": "computed", "reason": why,
+                                "component_ids": sorted(c["component_id"] for c in used)})
+            if len(entries) == 2 and (entries[0]["amount"], entries[0]["status"]) == \
+                    (entries[1]["amount"], entries[1]["status"]):
+                entries = entries[:1]
+            out[basis] = entries
+        return out
+
+    def total_exclusion(self, a, fy, stage, h, exclusion, views):
+        """A total's views_excluding_earmarks / views_nondefense: never summed. A basis keeps its checked view (a
+        printed total measure_reconcile matched) only where the cell is auto-tagged and neither the total nor any of
+        its accounts has a component of the exclusion's type tagged, so the printed total is the view; every other
+        basis is not checked, with accounts_behind."""
+        mh = self.member_heads(a, fy, stage, h)
+        behind = len(mh)
+        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS:
+            return self.untagged(exclusion, behind)
+        ctype = AC.EXCLUSIONS[exclusion]
+        tagged = [m for m, x in [(a["canonical_account_id"], h)] + mh
+                  if any(c["component_type"] == ctype for c in self.comps.get(x["observation_id"], []))]
+        word = EXCLUSION_WORD[exclusion]
+        out = {}
+        for basis in AC.BASES:
+            if tagged:
+                why = (f"not checked: {len(tagged)} of its accounts ha{'ve' if len(tagged) > 1 else 's'} {ctype} "
+                       f"components tagged, and no printed total {word} that measure_reconcile matches "
+                       f"({behind} accounts behind it)")
+            else:
+                why = (f"not checked: no printed {basis} total that measure_reconcile matches ({behind} accounts "
+                       "behind it)")
+            nc = {"amount": None, "status": "not_computable", "accounts_behind": behind, "reason": why}
+            entries = []
+            for e in views[basis]:
+                if basis != "printed" and not tagged and e["status"] == "checked":
+                    article = "an" if ctype[0] in "aeiou" else "a"
+                    entries.append(dict(e, reason=f"{e['reason']}; none of its {behind} accounts has {article} "
+                                                  f"{ctype} component tagged (an auto-tagged cell)"))
+                else:
+                    entries.append(dict(nc, timing=e["timing"]))
+            if len(entries) == 2 and (entries[0]["amount"], entries[0]["status"]) == \
+                    (entries[1]["amount"], entries[1]["status"]):
+                entries = entries[:1]
+            out[basis] = entries
+        return out
+
     # ------------------------------------------------------------------ the grid
     def annotate_row(self, row):
         aid = row["account"]["canonical_account_id"]
@@ -291,6 +386,9 @@ class Layer:
                 continue
             total = bool(a.get("total_scope"))
             cell["views"] = (self.total_views if total else self.account_views)(a, fy, stage, h)
+            for exclusion, field in EXCLUSION_FIELDS.items():
+                cell[field] = (self.total_exclusion if total else self.account_exclusion)(
+                    a, fy, stage, h, exclusion, cell["views"])
             cs = self.cell_components(h)
             cell["components"] = [component_record(c) for c in sorted(cs, key=lambda c: c["component_id"])]
             for field, ctype in (("earmark", "earmark"), ("defense_portion", "defense_portion")):
@@ -336,15 +434,15 @@ class Layer:
         return grid
 
 
-def status_counts(grid):
-    """{basis: {status: cells}} over every row, title total and bill total of a subcommittee grid (a cell counts
-    once per basis: its 'available' entry)."""
+def status_counts(grid, field="views"):
+    """{basis: {timing:status: entries}} over every row, title total and bill total of a subcommittee grid, for
+    views or one of EXCLUSION_FIELDS."""
     out = {b: collections.Counter() for b in AC.BASES}
     rows = grid["rows"] + [t["total"] for t in grid.get("titles", []) if t.get("total")] + \
         ([grid["bill_total"]] if grid.get("bill_total") else [])
     for row in rows:
         for cell in row["cells"].values():
-            for b, entries in (cell.get("views") or {}).items():
+            for b, entries in (cell.get(field) or {}).items():
                 for e in entries:
                     out[b][(e["timing"] or "-", e["status"])] += 1
     return {b: {f"{t}:{s}": n for (t, s), n in sorted(c.items())} for b, c in out.items()}

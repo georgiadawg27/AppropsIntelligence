@@ -34,7 +34,8 @@ def headline_observations(g):
 def counts():
     out = {"note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged.json changes "
                    "on purpose", "state_counts": {}, "outside_life_cells": {}, "flagged_cells": {},
-           "view_status_counts": {}}
+           "view_status_counts": {}, "views_excluding_earmarks_status_counts": {},
+           "views_nondefense_status_counts": {}}
     for code in json.loads((DOCS / "data" / "subcommittees.json").read_text())["subcommittees"]:
         g = json.loads((DOCS / "data" / "subcommittees" / f"{code}.json").read_text())
         out["state_counts"][code] = g["state_counts"]
@@ -42,6 +43,9 @@ def counts():
         out["flagged_cells"][code] = sum(1 for _, _, o in headline_observations(g) if o["verification_status"] == "flagged")
         # the accounting layer (UI-0): per Amount basis, the cells' view entries by timing and status
         out["view_status_counts"][code] = SA.status_counts(g)
+        # UI-0b: the same for the excluding-earmarks and nondefense views
+        for field in SA.EXCLUSION_FIELDS.values():
+            out[f"{field}_status_counts"][code] = SA.status_counts(g, field)
     return out
 
 
