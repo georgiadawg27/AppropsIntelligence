@@ -1818,12 +1818,13 @@ const docLink = (o, cls) => {
               : el("span", { text: docName(o.source_document_id) });
 };
 // the back link and its hint (SPEC 5.3): "‹ Title II overview", "‹ NIH overview" with an agency filter
-function backRow(grid, hint = true) {
+// no "or click outside · Esc" hint in any panel mode (owner, 2026-10-13, UI-2b); click-away and Esc still work
+function backRow(grid) {
   const S = scopeOf(grid), T = printedTotal(grid);
   const what = G.agency ? S.back : T && T.label !== "Bill" ? T.label : scLabels[grid.subcommittee] || grid.subcommittee;
   const b = el("button", { type: "button", class: "backlink", "data-testid": "panel-back", text: `‹ ${what} overview` });
   b.addEventListener("click", () => clearSelection(true));
-  return el("div", { class: "panelback" }, b, hint ? el("span", { class: "ovhint", "data-testid": "panel-hint", text: "or click outside · Esc" }) : null);
+  return el("div", { class: "panelback" }, b);
 }
 function field(label, ...kids) {
   return el("div", { class: "srcfield" }, el("div", { class: "srck", text: label }), ...kids);
@@ -1901,7 +1902,7 @@ function renderSource(grid, box) {
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
   const VB = basisOf() !== "printed" ? viewBlock(grid, row, y, st, o) : null;
   // the figure in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
-  const kids = [backRow(grid, false),
+  const kids = [backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
     el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
@@ -1922,10 +1923,11 @@ function renderSource(grid, box) {
     doc.append(el("a", { class: "pbtn primary", "data-testid": "src-open", href, target: "_blank", rel: "noopener",
                          text: first ? `Open source document at page ${first}` : "Open source document" }));
   kids.push(doc);
-  // the bill or law: a small secondary link, apart from the source document
+  // the bill or law: a small secondary link, apart from the source document; a request figure's is the budget
+  // document (owner, 2026-10-13)
   if (o.bill_url)
     kids.push(el("div", { class: "srcbill" }, el("a", { href: o.bill_url, target: "_blank", rel: "noopener", "data-testid": "src-bill",
-                                                        text: `Bill / law: ${billText(grid, o, y, st)}` })));
+      text: `${/^PREX /.test(o.bill_id || "") ? "Budget document" : "Bill / law"}: ${billText(grid, o, y, st)}` })));
   const notes = figureNotes(grid, row, y, st);
   if (notes.length)
     kids.push(el("div", { class: "srcnotes", "data-testid": "src-notes" }, el("div", { class: "ovk", text: "Notes" }), el("ul", {}, ...notes)));
@@ -1989,9 +1991,12 @@ function accountView(grid, id0, phone) {
       // a short name ("H.Rept. 119-271, p. 343") stays on one line; a long one wraps between words
       const keep = docName(o.source_document_id).length <= 22 ? { style: "white-space:nowrap" } : {};
       src = href ? el("a", { href, target: "_blank", rel: "noopener", ...keep, text: what }) : el("span", { ...keep, text: what });
-      // the year's bill and law text, listed once under the table (the Budget Appendix is not bill text)
-      if (yy === y && o.bill_url && !/^PREX /.test(o.bill_id || "") && !bills.has(o.bill_url))
-        bills.set(o.bill_url, (o.bill_id || "").replace(/^(P\.L\.|H\.R\.|S\.)\s*/, "$1 "));
+      // the bill and law text, listed once under the table: the year's stages, and the prior year's law as
+      // "FY2025: P.L. 119-4 (full-year CR)" (owner, 2026-10-13); the Budget Appendix is not bill text
+      if (o.bill_url && !/^PREX /.test(o.bill_id || "") && !bills.has(o.bill_url)) {
+        const id = (o.bill_id || "").replace(/^(P\.L\.|H\.R\.|S\.)\s*/, "$1 ");
+        bills.set(o.bill_url, yy === y ? id : `FY${yy}: ${id}` + (crOf(grid, yy) ? " (full-year CR)" : ""));
+      }
     }
     body.append(el("tr", { class: "acctstage", "data-testid": "acct-stage", dataset: { fy: String(yy), stage: st } },
       el("th", { scope: "row", class: "k", text: label }), el("td", { class: "amt" }, amt),

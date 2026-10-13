@@ -429,7 +429,7 @@ lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid
   the selected year's stages, Budget Appendix excluded, deduplicated, labelled by bill_id.
 - SPEC.md §3, §4, §5.1, §5.2, §6, §8 record the decisions. Screenshots: screenshots/ui-2b/.
 
-Open for the owner:
-1. The account panel keeps "or click outside · Esc" (the brief removed it from the figure panel only).
-2. "Bill text:" leaves out the prior year's law (P.L. 119-4) and the Budget Appendix, following the brief's example.
-3. The figure panel's secondary link reads "Bill / law: FY2026 Budget Appendix" for a request figure.
+Owner answers (2026-10-13, same PR), recorded in SPEC §5.1/§5.2:
+1. The hint is gone from every panel mode (`backRow` has no hint; `panel-hint` no longer rendered).
+2. "Bill text:" adds the prior year's law first, "FY2025: P.L. 119-4 (full-year CR)"; the Budget Appendix stays out.
+3. A request figure's secondary link reads "Budget document: FY2026 Budget Appendix".

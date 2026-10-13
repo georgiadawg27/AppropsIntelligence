@@ -1832,7 +1832,13 @@ class ExploreV1(GridBrowser):
             self.assertEqual(r.locator("td").count(), 2)                                  # Stage (th) | Amount | Source
             self.assertEqual(r.locator("a").count(), 1)
             self.assertIn("#page=", r.locator("a").get_attribute("href"))
-        self.assertEqual(self.page.locator("[data-testid=acct-bills] a").count(), 3)
+        self.assertEqual(self.page.locator("[data-testid=acct-bills] a").count(), 4)
+        self.assertNotIn("Budget Appendix", self.page.inner_text("[data-testid=acct-bills]"))
+        self.assertEqual(self.page.locator("[data-testid=panel-hint]").count(), 0)          # no hint in the account panel
+        self.assertNotIn("or click outside", self.page.inner_text("#side-panel"))
+        # a request figure's secondary link is the budget document
+        self.page.locator("[data-testid=acct-stage][data-stage=\"President's Budget\"] [data-testid=acct-stage-fig]").click()
+        self.assertEqual(self.page.inner_text("[data-testid=src-bill]"), "Budget document: FY2026 Budget Appendix")
 
     # 3
     def test_every_value_cell_is_clickable(self):
@@ -1981,7 +1987,7 @@ class ExploreV1(GridBrowser):
                 self.assertEqual(self.page.eval_on_selector_all("[data-testid=acct-table] thead th", "ts => ts.map(t => t.innerText)"),
                                  ["Stage", "Amount ($K)", "Source"])
                 # the bill and law text once, on one line under the table
-                self.assertEqual(text("acct-bills"), "Bill text: H.R. 5304 · S. 2587 · P.L. 119-75")
+                self.assertEqual(text("acct-bills"), "Bill text: FY2025: P.L. 119-4 (full-year CR) · H.R. 5304 · S. 2587 · P.L. 119-75")
                 # a stage's figure opens its source
                 stages.nth(2).locator("[data-testid=acct-stage-fig]").click()
                 self.assertEqual(self.page.inner_text("[data-testid=src-stage]"), "FY2026 House")
@@ -2420,7 +2426,7 @@ class PhoneV1(GridBrowser):
                 enacted = st.nth(4).locator("[data-testid=acct-stage-src] a")
                 self.assertIn("p.\u00a0285", enacted.inner_text())
                 self.assertTrue(enacted.get_attribute("href").endswith("#page=285"))
-                self.assertEqual(sheet.locator("[data-testid=acct-bills]").inner_text(), "Bill text: H.R. 5304 · S. 2587 · P.L. 119-75")
+                self.assertEqual(sheet.locator("[data-testid=acct-bills]").inner_text(), "Bill text: FY2025: P.L. 119-4 (full-year CR) · H.R. 5304 · S. 2587 · P.L. 119-75")
                 self.assertEqual(sheet.locator("[data-testid=acct-bar]").count(), 10)
                 self.assertTrue(sheet.locator("[data-testid=acct-open]").is_visible())
                 self.assertIn(f"acct={self.NCI}", self.page.url)
