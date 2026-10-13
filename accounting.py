@@ -414,6 +414,26 @@ def basis_amount(headline_amount, components, basis, timing, budget_class):
     return "value", headline_amount + delta, used, None
 
 
+# UI-0b: the excluding-earmarks and nondefense views of every basis (ACCOUNTING_RULES' Arithmetic table: excluding
+# earmarks takes out the earmark components, nondefense the defense_portion components; neither adds anything)
+EXCLUSIONS = {"excluding_earmarks": "earmark", "nondefense": "defense_portion"}
+
+
+def excluded_amount(headline_amount, components, basis, timing, budget_class, exclusion):
+    """One account headline's amount on a basis (basis_amount) with an EXCLUSIONS view on top: the basis amount less
+    the components of the exclusion's type inside the headline that the basis has not already taken out. -> the
+    shape basis_amount returns; the components list holds the basis's and the excluded ones."""
+    got = basis_amount(headline_amount, components, basis, timing, budget_class)
+    if got[0] != "value":
+        return got
+    _, amount, used, note = got
+    taken = {c["component_id"] for c in used}
+    out = [c for c in counted([c for c in components if c["in_headline"] == "TRUE"
+                               and _selected(c, VIEWS[exclusion]["remove"])])
+           if c["component_id"] not in taken and (c.get("within_component_id") or "") not in taken]
+    return "value", amount - sum(c["amount"] for c in out), used + out, note
+
+
 def attribute_index(data):
     return {(r["canonical_account_id"], _int(r["fiscal_year"]), r["attribute"], r["stage_basis"]): r
             for r in data.get("account_attributes", [])}

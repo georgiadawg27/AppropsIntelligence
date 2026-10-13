@@ -179,8 +179,9 @@ class GridData(CompareTest):
                     for st in self.grid["stages"]:
                         cell = row["cells"][f"{y}|{st}"]
                         if y in by_year and st in by_year[y]:
-                            # the accounting layer (UI-0, site_accounting.py) adds its own keys beside the lines
-                            layer = {"views", "components", "earmark", "defense_portion"}
+                            # the accounting layer (UI-0, UI-0b; site_accounting.py) adds its own keys beside the lines
+                            layer = {"views", "components", "earmark", "defense_portion", "views_excluding_earmarks",
+                                     "views_nondefense"}
                             self.assertEqual({k: v for k, v in cell.items() if k not in layer},
                                              {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
@@ -1587,7 +1588,7 @@ class ExploreV1(GridBrowser):
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
         self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
         # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; Exclude earmarks
-        # waits for its own flag (exclude_earmarks, false until UI-0b)
+        # waits for the page to build it (exclude_earmarks: the data is published since UI-0b)
         self.page.click("#filter-btn")
         self.page.click("#f-adv")
         text = self.page.inner_text("#filter-panel")
@@ -2017,7 +2018,8 @@ class ExploreV1(GridBrowser):
                         self.assertNotIn(word, html, (where, word))
                     elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory"):
                         self.assertIn(word, html, (where, word))
-                # exclude_earmarks and nondefense are false until UI-0b publishes their data: no control either way
+                # exclude_earmarks and nondefense: UI-0b publishes their data, but the page has not built them (BUILT): no
+                # control either way
                 for word in ("exclude earmarks", "nondefense"):
                     self.assertNotIn(word, html, (where, flagged_off, word))
                 if flagged_off:

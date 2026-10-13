@@ -799,19 +799,19 @@
    "historical_names": []
   }
  ],
- "contract_version": 3,
+ "contract_version": 4,
  "features": {
   "abbreviations": true,
   "account_panel": true,
   "accounting_views": true,
   "budget_class": true,
   "defense_split": true,
-  "exclude_earmarks": false,
+  "exclude_earmarks": true,
   "export_csv": true,
   "figure_source": true,
   "grid": true,
   "interaction_state": true,
-  "nondefense": false,
+  "nondefense": true,
   "overview_panel": true,
   "phone": true,
   "search_filter": true,
