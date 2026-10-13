@@ -1272,9 +1272,13 @@ class CompareBrowser(GridBrowser):
         # law, S.Rept. 118-84's restatement in their corner (owner, 2026-10-09)
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
-        # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.')
+        # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.'; and since D-2, the report-table
+        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A)
         self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
-                                          "S.Rept. 118-84 restates FY2023", "Created FY2022")) for x in titles), titles)
+                                          "S.Rept. 118-84 restates FY2023", "Created FY2022",
+                                          "H.Rept. 117-403 p.813 prints no budget-authority line",
+                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'"))
+                            for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))

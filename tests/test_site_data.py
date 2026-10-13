@@ -545,8 +545,10 @@ class AccountingLayer(unittest.TestCase):
         self.assertGreater(n, 20)
 
     def test_untagged_stages_are_never_computed(self):
-        # outside the auto-tagged cells (the President's Budget, FY2027 but its House stage (D-1), ...) untagged is
-        # never 'no earmarks' or 'no defense portion': every entry is not_computable with the coverage reason
+        # outside the auto-tagged cells (FY2027 but its House stage (D-1), ...) untagged is never 'no earmarks' or
+        # 'no defense portion': every entry is not_computable with the coverage reason. The President's Budget is
+        # read account by account (D-2): an account whose request language was not found is untagged in the same
+        # way, its reason saying why; one whose language was read is covered, like an auto-tagged cell
         import site_accounting as SA
         import tag_components as TC
         seen = set()
@@ -557,18 +559,26 @@ class AccountingLayer(unittest.TestCase):
                 if fy == "2027":
                     self.assertIn((sc, 2027, stage), TC.FY2027_HOUSE)
                 continue
+            account = row["account"]["canonical_account_id"]
+            if stage == "President's Budget" and (row["rollup"] or TC.covered(account, sc, int(fy), stage)):
+                seen.add("request read" if not row["rollup"] else "request total")
+                continue
             for exclusion, field, basis, entries in self.exclusion_entries(cell):
                 seen.add(stage if stage == "President's Budget" else fy)
                 if fy == "2027":
                     seen.add("2027")
                 self.assertEqual(len(entries), 1)
                 e = entries[0]
-                self.assertEqual((e["status"], e["amount"], e["reason"]),
-                                 ("not_computable", None, SA.UNTAGGED[exclusion]), (key, field, basis))
+                self.assertEqual((e["status"], e["amount"]), ("not_computable", None), (key, field, basis))
+                self.assertTrue(e["reason"].startswith(SA.UNTAGGED[exclusion]), (key, field, basis, e["reason"]))
+                if stage == "President's Budget":
+                    self.assertIn("request language not found", e["reason"], (key, field, basis))
+                else:
+                    self.assertEqual(e["reason"], SA.UNTAGGED[exclusion], (key, field, basis))
                 self.assertNotIn("component_ids", e)
                 if row["rollup"]:
                     self.assertIsInstance(e["accounts_behind"], int)
-        self.assertTrue({"President's Budget", "2027"} <= seen)
+        self.assertTrue({"President's Budget", "2027", "request read"} <= seen)
         self.assertEqual(SA.UNTAGGED, {"excluding_earmarks": "earmarks not tagged for this stage",
                                        "nondefense": "defense not tagged for this stage"})
 
