@@ -119,7 +119,7 @@ class Layer:
                    f"(VAL-MR-{M.suffix(h['observation_id'])}, pending review)")
             return {b: [{"amount": None, "timing": None if b == "printed" else "available",
                          "status": "not_computable", "reason": why}] for b in AC.BASES}
-        auto = (a["subcommittee"], fy, stage) in TC.AUTO_CELLS
+        auto = TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage)
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)
         cls = rec["value"] if rec else None
         printed = self.printed_checks(a["canonical_account_id"], fy, stage)
@@ -135,8 +135,9 @@ class Layer:
                     e = {"amount": None, "timing": timing, "status": got[0], "reason": got[1]}
                 elif not auto and not relevant:
                     e = {"amount": None, "timing": timing, "status": "not_computable",
-                         "reason": "no component the view uses is tagged for this cell (outside the auto-tagged "
-                                   "cells), so its components are not known"}
+                         "reason": "no component the view uses is tagged for this cell ("
+                                   + TC.not_covered_reason(a["canonical_account_id"], fy, stage)
+                                   + "), so its components are not known"}
                 else:
                     _, amount, used, note = got
                     e = {"amount": amount, "timing": timing, "status": "computed",
@@ -283,10 +284,11 @@ class Layer:
         return views
 
     # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
-    def untagged(self, exclusion, behind=None):
-        """The entries of a cell whose stage the tagger has not read (outside tag_components.AUTO_CELLS): untagged is
-        never 'none tagged'."""
-        e = {"amount": None, "status": "not_computable", "reason": UNTAGGED[exclusion]}
+    def untagged(self, exclusion, behind=None, why=None):
+        """The entries of a cell whose stage the tagger has not read (outside tag_components.AUTO_CELLS, or a
+        President's Budget account whose request language was not found): untagged is never 'none tagged'."""
+        e = {"amount": None, "status": "not_computable",
+             "reason": UNTAGGED[exclusion] + (f" ({why})" if why else "")}
         if behind is not None:
             e["accounts_behind"] = behind
         return {b: [dict(e, timing=None if b == "printed" else "available")] for b in AC.BASES}
@@ -294,8 +296,9 @@ class Layer:
     def account_exclusion(self, a, fy, stage, h, exclusion, views):
         """views_excluding_earmarks / views_nondefense of an account cell: each basis's view (account_views) with the
         exclusion's components inside the headline taken out (accounting.excluded_amount)."""
-        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS:
-            return self.untagged(exclusion)
+        if not TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage):
+            return self.untagged(exclusion, why=TC.not_covered_reason(a["canonical_account_id"], fy, stage)
+                                 if stage == TC.REQUEST_STAGE else None)
         ctype = AC.EXCLUSIONS[exclusion]
         cs = self.cell_components(h)
         if AC.split(h["amount"], cs)[0] < 0:          # account_views' negative base: the same not_computable entries
@@ -342,20 +345,22 @@ class Layer:
         is the view; every other basis is not checked, with accounts_behind."""
         mh = self.member_heads(a, fy, stage, h)
         behind = len(mh)
-        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS:
+        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS and stage != TC.REQUEST_STAGE:
             return self.untagged(exclusion, behind)
         ctype = AC.EXCLUSIONS[exclusion]
         tagged = [m for m, x in [(a["canonical_account_id"], h)] + mh
                   if any(c["component_type"] == ctype for c in self.comps.get(x["observation_id"], []))]
         # owner, #62: a matched printed total is reused only when every account behind it is inside coverage
-        outside = [m for m, x in mh if (self.acc[m]["subcommittee"], int(x["fiscal_year"]), x["stage"])
-                   not in TC.AUTO_CELLS]
+        outside = [m for m, x in mh if not TC.covered(m, self.acc[m]["subcommittee"], int(x["fiscal_year"]),
+                                                      x["stage"])]
         word = EXCLUSION_WORD[exclusion]
         out = {}
         for basis in AC.BASES:
             if outside:
-                why = (f"not checked: {len(outside)} of its {behind} accounts are outside the auto-tagged cells, so "
-                       f"their {ctype} components are not known")
+                why = (f"not checked: {len(outside)} of its {behind} accounts "
+                       + ("have no request language read" if stage == TC.REQUEST_STAGE
+                          else "are outside the auto-tagged cells")
+                       + f", so their {ctype} components are not known")
             elif tagged:
                 why = (f"not checked: {len(tagged)} of its accounts ha{'ve' if len(tagged) > 1 else 's'} {ctype} "
                        f"components tagged, and no printed total {word} that measure_reconcile matches "

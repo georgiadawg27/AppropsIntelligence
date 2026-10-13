@@ -1272,9 +1272,13 @@ class CompareBrowser(GridBrowser):
         # law, S.Rept. 118-84's restatement in their corner (owner, 2026-10-09)
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
-        # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.')
+        # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.'; and since D-2, the report-table
+        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A)
         self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
-                                          "S.Rept. 118-84 restates FY2023", "Created FY2022")) for x in titles), titles)
+                                          "S.Rept. 118-84 restates FY2023", "Created FY2022",
+                                          "H.Rept. 117-403 p.813 prints no budget-authority line",
+                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'"))
+                            for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
         self.assertEqual((n.get_attribute("title"), n.get_attribute("aria-label")), (note, note))
@@ -2836,15 +2840,29 @@ class ExcludeEarmarks(GridBrowser):
 
     def test_known_earmark_figures(self):
         # SAMHSA HSPS FY2026 Enacted: printed 171,566 less its tagged earmark CMP-LHHS-0209 (54,311, P.L. 119-75) =
-        # 117,255, the published view; the panel lists the earmark and the published result. FY2026 Senate: the
-        # published view; the President's Budget: n/a, "earmarks not tagged for this stage"; the total: not checked
+        # 117,255, the published view; the panel lists the earmark and the published result. FY2026 Senate the same
+        # (below); the President's Budget: n/a, "earmarks not tagged for this stage"; the total: not checked
         hsps = self.lrow(self.HSPS)
         pub = view_entry_of(hsps, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual((pub["status"], pub["amount"], pub["component_ids"]), ("computed", 117255000, ["CMP-LHHS-0209"]))
         self.go(f"?sc=LHHS&fy=2026&earmarks=excl&open={self.OPEN}")
         self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "117,255")
+        # FY2026 Senate: printed 175,866 less its earmark CMP-LHHS-1326 (54,611, S.Rept. 119-55 p.436) = 121,255, the
+        # published view; the panel lists that earmark
         senate = view_entry_of(hsps, 2026, "Senate Reported", "printed", None, "views_excluding_earmarks")
-        self.assertEqual(self.text(self.HSPS, 2026, "Senate Reported"), thousands(senate["amount"]))
+        self.assertEqual((senate["status"], senate["amount"], senate["component_ids"]), ("computed", 121255000, ["CMP-LHHS-1326"]))
+        self.assertEqual(self.text(self.HSPS, 2026, "Senate Reported"), "121,255")
+        self.cell(self.HSPS, 2026, "Senate Reported").locator("button.fig").click()
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "121,255")
+        ears = self.page.locator("[data-testid=src-earmark]")
+        self.assertEqual(ears.count(), 1)
+        self.assertEqual(ears.first.get_attribute("data-component"), "CMP-LHHS-1326")
+        t = ears.first.inner_text()
+        self.assertIn("54,611", t)
+        self.assertIn("p. 436", t)
+        self.assertIn("121,255", self.page.inner_text("[data-testid=src-earmark-result]"))
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "175,866")
+        self.page.keyboard.press("Escape")
         pb = self.cell(self.HSPS, 2026, "President's Budget")
         self.assertEqual(pb.evaluate(CELL_TEXT_JS), "n/a")
         self.assertIn("earmarks not tagged for this stage", pb.locator("button.fig").get_attribute("title"))
@@ -2871,7 +2889,7 @@ class ExcludeEarmarks(GridBrowser):
 
     def test_nondefense_column(self):
         # NSF R&RA FY2026 Enacted: the nondefense view equals the published one (its defense portion is printed
-        # beside the headline); every other line's cell is its published amount or empty; FY2025 is not computable
+        # beside the headline); every other line's cell is its published amount or empty; NSF's total is not computable
         rra = self.nd_row(self.RRA)
         self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
         self.assertEqual(self.page.locator("[data-testid=nondefense-cell]").count(), 0)
@@ -2903,12 +2921,16 @@ class ExcludeEarmarks(GridBrowser):
         self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), "7,057,700")
         self.page.click(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell] button.fig")
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
-        # FY2025 (CJS FY2024-FY2025 are outside the auto-tagged cells): empty, the reason on hover
-        self.go("?sc=CJS&fy=2025&cols=nondefense&open=ACC-NSF-TOTAL")
-        nd = self.page.locator(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]")
+        # a not computable view (NSF's total: one of its accounts has a defense portion and no printed nondefense total
+        # confirms it): empty, the reason on hover
+        nsf = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == "ACC-NSF-TOTAL")
+        e = view_entry_of(nsf, 2026, "Enacted", "printed", None, "views_nondefense")
+        self.assertEqual(e["status"], "not_computable")
+        self.go("?sc=CJS&fy=2026&cols=nondefense&open=ACC-NSF-TOTAL")
+        nd = self.page.locator("tr[data-account=ACC-NSF-TOTAL] [data-testid=nondefense-cell]")
         self.assertEqual(nd.inner_text().strip(), "")
         self.assertEqual(nd.get_attribute("data-view"), "not_computable")
-        self.assertIn("defense not tagged for this stage", nd.get_attribute("title"))
+        self.assertIn(e["reason"], nd.get_attribute("title"))
 
     def test_each_flag_hides_its_control(self):
         # each control is absent with its own flag forced false, the other still shown; a URL asking for it changes nothing

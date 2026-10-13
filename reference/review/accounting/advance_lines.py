@@ -38,7 +38,22 @@ REQUEST_ADVANCE = ("ACC-HHS-ACF-CHILD-SUPPORT", "ACC-HHS-ACF-FOSTER-CARE")
 MONEY = re.compile(r"\$[\d,]+")
 FIRST_Q = re.compile(r"first quarter of fiscal year", re.I)
 COLUMNS = ["observation_id", "component_type", "amount", "in_headline", "source_document_id", "source_location",
-           "quoted_text", "tag_rule", "notes", "request_current_year"]
+           "quoted_text", "tag_rule", "notes", "request_current_year", "tag_method"]
+# The owner's rulings on the request advances the arithmetic could not place (D-1 decision 7d, applied in D-2):
+# B for Foster Care FY2021 (inside) and FY2020 (the report's own 'New Advance' line, inside, superseding the
+# Appendix's amount, which stays as a note); A for Child Support FY2022 (beside, unchanged).
+INSIDE_BY_RULING = {
+    "OBS-LHHS-2362": "inside the headline (owner, decision 7d B, 2026-10-13): the label 'Total, Payments to States, "
+                     "available in this bill' and the amounts are the current year plus the new advance; the headline "
+                     "is $463,000 below the language's $7,012,000,000 + $3,000,000,000 (the report's current-year "
+                     "figure against the Appendix's)",
+}
+REPORT_ADVANCE = {
+    # the report's request column prints the advance at $2,800,000,000 (H.Rept. 116-62 p.349, printed folio 345;
+    # read from the page image: the table page has no figures in its text layer)
+    "OBS-LHHS-2763": {"amount": 2800000000, "source_document_id": "SRC-CRPT-116HRPT62", "page": 349,
+                      "line": "New Advance, 1st quarter, FY 2021 ... M  2,800,000 (FY 2020 Request column)"},
+}
 
 
 def flat(s):
@@ -123,12 +138,30 @@ def main():
                         inside, note = "FALSE", (f"beside the headline by default: the headline ${o['amount']:,} is "
                                                  f"neither the language's current-year amount ${main_amt:,} nor that "
                                                  "plus the advance")
+                    if o["observation_id"] in INSIDE_BY_RULING:
+                        inside, note = "TRUE", INSIDE_BY_RULING[o["observation_id"]]
+                    rep = REPORT_ADVANCE.get(o["observation_id"])
+                    if rep:
+                        # the report's own line, as its stage prints it, supersedes the Appendix's amount (kept here)
+                        rows.append({"observation_id": o["observation_id"], "component_type": "advance_enacted",
+                                     "amount": rep["amount"], "in_headline": "TRUE",
+                                     "source_document_id": rep["source_document_id"],
+                                     "source_location": f"p.{rep['page']}", "quoted_text": rep["line"],
+                                     "tag_rule": f"the report's request column prints the advance for the first "
+                                                 f"quarter of fiscal year {fy + 1} as its own line",
+                                     "notes": (f"inside the headline (owner, decision 7d B, 2026-10-13): the headline "
+                                               f"is the request's current-year line plus this line. The FY{fy} "
+                                               f"Appendix's language proposes ${req:,} ({doc}, {loc}: "
+                                               f"'{quote[-120:]}'); superseded by the report's line, kept as this "
+                                               "note"),
+                                     "request_current_year": main_amt, "tag_method": "table_line"})
+                        continue
                     rows.append({"observation_id": o["observation_id"], "component_type": "advance_enacted",
                                  "amount": req, "in_headline": inside, "source_document_id": doc,
                                  "source_location": loc, "quoted_text": quote,
                                  "tag_rule": f"the request's language appropriates an advance for the first quarter "
                                              f"of fiscal year {fy + 1}", "notes": note,
-                                 "request_current_year": main_amt})
+                                 "request_current_year": main_amt, "tag_method": "appendix_text"})
             if fy == 2017:
                 if old is None:
                     misses.append(f"{account} FY2017: no bracketed FY2016 advance in the FY2017 Appendix")
@@ -143,7 +176,8 @@ def main():
                                              "(the enacted text the FY2017 request's language prints in brackets), "
                                              "available in FY2017",
                                  "notes": "",   # in_headline: tag_components.py, as for every advance_available
-                                 "request_current_year": main_amt if o["stage"] == "President's Budget" else ""})
+                                 "request_current_year": main_amt if o["stage"] == "President's Budget" else "",
+                                 "tag_method": "appendix_text"})
     rows.sort(key=lambda r: (r["observation_id"], r["component_type"]))
     with open(OUT, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=COLUMNS, lineterminator="\n")

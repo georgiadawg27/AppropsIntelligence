@@ -32,6 +32,7 @@ import argparse
 import collections
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -44,7 +45,10 @@ import tag_components as TC  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RULE = "measure_reconcile"
-PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-")
+PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-")
+# the earmark rule (owner 2026-10-11): a headline that counts the account's congressionally directed spending /
+# community project funding inside, replacing the table's account line
+EARMARK_RULE = re.compile(r"Congressionally Directed Spending|Community Project Funding", re.I)
 
 # Why a printed view differs from the computed one (owner, 2026-10-11): one review item per cause, not one per
 # cell. account_not_held is no failure: the money sits in an account we don't hold, so the view is not checked.
@@ -213,6 +217,32 @@ def run(data):
         outcomes.append({"kind": "base", "observation_id": oid, "result": "pass" if ok else "fail",
                          "account": h["canonical_account_id"], "fy": h["fiscal_year"], "stage": h["stage"],
                          "detail": observed})
+    # 1b. the earmark rule (D-2 item 5a, permanent): where a headline set by the earmark rule differs from the
+    # table's account line it replaced, its earmark components inside must equal the difference. Fails, never adjusts.
+    for o in data["observations"]:
+        h = obs.get(o.get("superseded_by_observation_id") or "")
+        if (o["verification_status"] != "superseded" or h is None or h["verification_status"] == "superseded"
+                or not EARMARK_RULE.search(h.get("source_table_or_section") or "")):
+            continue
+        diff = h["amount"] - o["amount"]
+        if diff == 0:
+            continue                    # the account line already is the headline (its CDS printed inside it)
+        inside = [c for c in comps.get(h["observation_id"], []) if c["component_type"] == "earmark"
+                  and c["in_headline"] == "TRUE"]
+        got = sum(c["amount"] for c in inside)
+        ok = got == diff
+        expected = (f"earmark rule: the headline {AC.money(h['amount'])} ({h['observation_id']}) less the table's "
+                    f"account line {AC.money(o['amount'])} ({o['observation_id']}) = {AC.money(diff)} = the earmark "
+                    f"components inside the headline")
+        observed = (f"earmark components inside: {describe(inside)} = {AC.money(got)}"
+                    + ("" if ok else f" -- differs by {AC.money(diff - got)}; for review, no figure changed"))
+        records.append({"validation_id": "VAL-MRE-" + suffix(h["observation_id"]), "observation_id": h["observation_id"],
+                        "rule_applied": RULE, "expected_result": expected, "observed_result": observed,
+                        "result": "pass" if ok else "fail", "human_review_status": "" if ok else "pending",
+                        "reviewer": "", "resolution": ""})
+        outcomes.append({"kind": "earmark", "observation_id": h["observation_id"], "result": "pass" if ok else "fail",
+                         "account": h["canonical_account_id"], "fy": h["fiscal_year"], "stage": h["stage"],
+                         "detail": observed})
     # 2. printed views
     for v in data["observations"]:
         comp = v.get("component") or ""
@@ -262,7 +292,7 @@ def run(data):
             # (retagged), not a program-level total: it is checked against the cell's section 241 transfers (D-1)
             taps = [c for c in comps[h["observation_id"]] if c["component_type"] == "transfer_in"
                     and "241" in (c.get("transfer_from") or "")]
-            if cell not in TC.AUTO_CELLS and not taps:
+            if not TC.covered(a["canonical_account_id"], *cell) and not taps:
                 outcomes.append(dict(base_out, result="not checked",
                                      detail="no component the view uses is tagged for this cell"))
                 continue
@@ -285,9 +315,26 @@ def run(data):
             continue
         used = []
         if a.get("total_scope") == "agency":
-            if cell not in TC.AUTO_CELLS:
+            if cell not in TC.AUTO_CELLS and v["stage"] != TC.REQUEST_STAGE:
                 outcomes.append(dict(base_out, result="not checked", detail="an agency total outside the tagged cells"))
                 continue
+            if v["stage"] == TC.REQUEST_STAGE:
+                # the President's Budget (D-2): checked where every account behind the total had its request
+                # language read
+                ms = [m for m in members(data, a) if heads[(m, int(v["fiscal_year"]), v["stage"])]]
+                unread = [m for m in ms if not TC.covered(m, *cell)]
+                if not ms and not TC.covered(a["canonical_account_id"], *cell):
+                    # an agency held only as its total whose own language was not read (the Administration for a
+                    # Healthy America): its components are not known
+                    outcomes.append(dict(base_out, result="not checked",
+                                         detail="a President's Budget agency total held only as its total, whose "
+                                                "request language was not read"))
+                    continue
+                if unread:
+                    outcomes.append(dict(base_out, result="not checked",
+                                         detail="a President's Budget agency total with an account whose request "
+                                                "language was not found"))
+                    continue
             delta = 0
             for m in members(data, a):
                 hs = heads[(m, int(v["fiscal_year"]), v["stage"])]
@@ -300,6 +347,19 @@ def run(data):
             d, cs = AC.view_adjustment(comps[h["observation_id"]], view)
             delta += d
             used += cs
+            # a supplemental '(emergency)' line the total's own table prints after an account's total is beside
+            # that account's headline but inside the agency total (D-2: ACF FY2023 Enacted's CR-funding lines,
+            # S.Rept. 118-84 pp.384-385): a view leaving out emergency designations leaves it out of the total too
+            for m in members(data, a):
+                hs = heads[(m, int(v["fiscal_year"]), v["stage"])]
+                mh = TC.pick_headline(hs, h["source_document_id"]) if hs else None
+                for c in (comps[mh["observation_id"]] if mh else []):
+                    if (c["in_headline"] != "TRUE" and c["tag_method"] == "retagged"
+                            and c["source_document_id"] == h["source_document_id"]
+                            and AC._selected(c, AC.VIEWS[view]["remove"])
+                            and (c["component_type"], c.get("designation")) == ("designated", "emergency")):
+                        delta -= c["amount"]
+                        used.append(c)
             computed = h["amount"] + delta
             how = f"the agency total {AC.money(h['amount'])} ({h['observation_id']}) + its accounts' components"
         elif a.get("total_scope"):
@@ -309,7 +369,7 @@ def run(data):
             sel = AC.VIEWS[view]
             relevant = [c for c in comps[h["observation_id"]]
                         if AC._selected(c, sel["remove"]) or AC._selected(c, sel["add"])]
-            if cell not in TC.AUTO_CELLS and not relevant:
+            if not TC.covered(a["canonical_account_id"], *cell) and not relevant:
                 outcomes.append(dict(base_out, result="not checked",
                                      detail="no component the view uses is tagged for this cell"))
                 continue
@@ -375,7 +435,7 @@ def why(data, a, v, view, diff, heads, comps):
                        for (acc, _, _), hs in heads.items() if acc == m for h in hs for c in comps[h["observation_id"]])
             if uses:
                 return "onc_no_headline" if m == "ACC-HHS-OS-ONC" else "member_no_headline"
-        if (a["subcommittee"], fy, stage) == TC.CR_YEAR:
+        if (a["subcommittee"], fy, stage) in TC.CR_CELLS:
             dropped = 0
             for m in members(data, a):
                 if m not in TC.CR_ANOMALIES:
@@ -451,7 +511,9 @@ def summary(outcomes):
     lines += ["| check | pass | fail | not checked |", "|---|---|---|---|",
               f"| headline = base + included components (base >= 0) | {c[('base', 'pass')]} | {c[('base', 'fail')]} | - |",
               f"| printed view = computed view | {c[('view', 'pass')]} | {c[('view', 'fail')]} | "
-              f"{c[('view', 'not checked')]} |", ""]
+              f"{c[('view', 'not checked')]} |",
+              f"| earmark rule: headline - account line = earmark components | {c[('earmark', 'pass')]} | "
+              f"{c[('earmark', 'fail')]} | - |", ""]
     nc = collections.Counter(o["detail"] for o in outcomes if o["result"] == "not checked")
     if nc:
         lines += ["Not checked yet: " + "; ".join(f"{k} ({n})" for k, n in nc.most_common()), ""]
@@ -460,9 +522,9 @@ def summary(outcomes):
         lines += ["**Failures (pending review: one item per cause)**", ""]
         groups = collections.defaultdict(list)
         for o in fails:
-            groups[o.get("cause") or "base"].append(o)
+            groups[o.get("cause") or ("earmark_rule" if o["kind"] == "earmark" else "base")].append(o)
         for cause, os_ in sorted(groups.items()):
-            lines.append(f"- **{cause}** ({len(os_)}): " + ("" if cause == "base" else cause_text(cause)))
+            lines.append(f"- **{cause}** ({len(os_)}): " + ("" if cause in ("base", "earmark_rule") else cause_text(cause)))
             lines += [f"  - {o['observation_id']} {o['account']} FY{o['fy']} {o['stage']}"
                       + (f" [{o['view']}]" if o.get("view") else " [base]") + f": {o['detail']}" for o in os_]
         lines.append("")
