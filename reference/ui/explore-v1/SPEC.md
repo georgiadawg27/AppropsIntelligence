@@ -152,6 +152,14 @@ There is no grid on a phone.
 
 Compare modes, the View menu and Export are not offered on phones.
 
+Adopted on the phone (owner, 2026-10-12, #60):
+- The picker reads the data's subcommittee name, "Labor-HHS-Education · FY2026", on one line; if it doesn't fit it is cut with an ellipsis, never wrapped.
+- Lines are sorted strictly largest first at the stage shown (a line inside another line stays right after it).
+- Every line name that opens the sheet carries the link style (as on desktop, #59).
+- Tapping an agency that has lines expands it; the sheet opens from a line, or from a row with no lines below it.
+- The summary card's changes read "vs FY<n−1> enacted" and "vs request".
+- A % change from a zero base shows "new" ("—" when both are zero), as section 1 rule 2.
+
 ## 7. Typography
 
 IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 14 px / 1.4; all figures `font-variant-numeric: tabular-nums`. IBM Plex Sans Condensed 12 px caps with 0.08em tracking for eyebrows and section labels. Heading 24/600. Panel title 19/600. Panel headline figure 30/600.

@@ -309,3 +309,32 @@ Owner answers on #61 (2026-10-12):
 
 Open: SPEC §9's table still says "hidden until UI-0" for the accounting rows and has no rows for the two new flags
 (the owner's answer named §4/§5.6/§8 only).
+
+## UI-P: Phone layout (2026-10-12)
+
+- Below 640px (`matchMedia("(max-width: 639px)")`) with `features.phone` on (`phone` now in `BUILT`) the body gets
+  `phone-on` and CSS hides the grid, the panel and the desktop control row; `#phone` shows the list. The desktop grid is
+  still rendered underneath (so a resize is instant); the phone list and sheet are rendered only while the phone layout
+  is active, so no test id appears twice on a desktop.
+- Same state: G, SEL, `open`, filters and the URL. New URL params: `pstage=<request|house|senate>` (not `stage=`: old links carry `stage=Enacted`) (the phone's stage
+  when it differs from the lead stage) and `table=1` ("Open the full table": the grid on a phone; Back returns).
+- The phone always reads the Stages layout of `fy` (`asStages`), whatever `grid=` a desktop link carries.
+- `partsOf(group, F)` now holds the row grouping both the grid and the phone list use; `accountView(grid, id, phone)`
+  builds the account panel and the sheet.
+- Agency rows with lines expand on tap (the design's caret); every other line opens the sheet. A selected figure
+  (`fig=`) opens its account's sheet; a printed total's figure opens nothing.
+- Tests: `tests/test_compare.py` `PhoneV1` (13, 14, desktop link -> sheet, FY2027/CJS, full table);
+  `test_no_page_scroll_at_390px` now checks the phone list and `table=1`.
+
+Open items:
+1. Watch stays hidden (UI-6).
+
+Owner decisions on #60 (2026-10-12), recorded in SPEC.md section 6 as adopted: the picker keeps "Labor-HHS-Education"
+on one line with an ellipsis (never wraps); lines strictly largest first; link style on every line name; an agency
+with lines expands on tap; "vs FY<n-1> enacted" in the summary card; "new" from a zero base.
+
+Merged main after UI-3 (#61): `BUILT` keeps both lists; `buildRows` uses `partsOf` with UI-3's "incl. mandatory"
+(`inclMandatory`) and class tags (`classTags`, factored out of `accountRow`). The phone list shows the same tags
+(an agency "incl. mandatory"; a line "mandatory" / "incl. mandatory"; no "Appropriated mandatory" sub-group since
+lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid does: view amounts, "excl.",
+"n/a" / "not checked"; the summary card and the stage note name the basis.

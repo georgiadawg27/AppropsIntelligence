@@ -318,12 +318,118 @@
   .bar { width: 100%; background: var(--x-accent); border-radius: 2px 2px 0 0; }
   .bar.cr { background: #a9bedf; }
   .barlbl { font-size: 11px; color: var(--x-muted); margin-top: 2px; }
+  .barfoot { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--x-muted); margin-top: 4px; }
+
+  /* ---- the phone layout (SPEC section 6): below 640px there is no grid. body.phone-on: the page built it and the
+     data publishes it (features.phone); body.table: "Open the full table" asked for the grid on a phone */
+  .menubtn, .phone { display: none; }
+  @media (max-width: 639px) {
+    body.phone-on:not(.table) .appbar { padding: 0 8px 0 16px; min-height: 52px; justify-content: space-between; }
+    body.phone-on:not(.table) .appbar .brand { font-size: 16px; padding: 14px 0; }
+    body.phone-on:not(.table) .menubtn { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0;
+      background: transparent; color: #fff; cursor: pointer; border-radius: 8px; }
+    body.phone-on:not(.table) .menubtn:focus-visible { outline-color: #8fb3ec; }
+    body.phone-on:not(.table) .appbar .tabs { display: none; }
+    body.phone-on:not(.table) .appbar.navopen .tabs { display: flex; flex-basis: 100%; }
+    body.phone-on:not(.table) #compare-result, body.phone-on:not(.table) .xcontrols > .xrow,
+    body.phone-on:not(.table) .xcontrols > .chips { display: none !important; }
+    body.phone-on:not(.table) .xcontrols { padding: 0; border: 0; }
+    body.phone-on:not(.table) .explore { padding: 0 12px; }
+    body.phone-on:not(.table) .phone:not([hidden]) { display: block; }
+    /* the filter panel and the picker: sheets from the bottom of the screen */
+    body.phone-on:not(.table) #filter-panel, body.phone-on:not(.table) #p-picker {
+      position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: auto; max-width: none; max-height: 85vh; overflow: auto;
+      border-radius: 16px 16px 0 0; z-index: 40; }
+    body.phone-on:not(.table).sheet-open { overflow: hidden; }
+  }
+  .pbar { background: var(--x-surface); border-bottom: 1px solid #e3e5ea; display: flex; gap: 8px; padding: 8px 12px; align-items: center; }
+  .pctx { flex: 1 1 auto; min-width: 0; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 12px;
+          border: 1px solid var(--x-input); border-radius: 8px; background: var(--x-surface); font: inherit; font-size: 15px; color: var(--x-ink); cursor: pointer; }
+  .pctx #p-context-text { min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pcaret { color: var(--x-muted); }
+  .picon { position: relative; flex: 0 0 auto; width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+           border: 1px solid var(--x-input); border-radius: 8px; background: var(--x-surface); color: var(--x-ink); cursor: pointer; padding: 0; }
+  .picon[aria-expanded=true] { border-color: var(--x-accent); }
+  .pbadge { position: absolute; top: -6px; right: -6px; }
+  #p-picker label.block select { height: 44px; }
+  .psearch { background: var(--x-surface); border-bottom: 1px solid #e3e5ea; padding: 8px 12px 10px; }
+  .psearch input { height: 44px; width: 100%; border: 1px solid var(--x-input); border-radius: 8px; padding: 0 12px; font: inherit; font-size: 15px; color: var(--x-ink); }
+  .pchips { margin: 10px 12px 0; }
+  .pcard { margin: 12px; background: var(--x-surface); border: 1px solid #e3e5ea; border-radius: 12px; padding: 14px 16px; }
+  .pcard .l { font-size: 12px; color: var(--x-muted); }
+  .pcard .v { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .pcard .chgs { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .pstage { position: sticky; top: 0; z-index: 3; background: var(--x-page); padding: 4px 12px 8px; }
+  .pseg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--x-input); border-radius: 8px; overflow: hidden; background: var(--x-surface); }
+  .pseg button { height: 40px; border: 0; border-right: 1px solid var(--x-input); font: inherit; font-size: 13px; cursor: pointer; background: var(--x-surface);
+                 color: var(--x-ink); font-weight: 400; padding: 0 4px; border-radius: 0; }
+  .pseg button:last-child { border-right: 0; }
+  .pseg button.on { background: var(--x-accent); color: #fff; font-weight: 600; }
+  .pseg button:disabled { color: var(--x-muted); background: #f4f4f2; cursor: not-allowed; }
+  .pseg button:focus-visible { outline-offset: -3px; outline-color: #8fb3ec; }
+  .pnote { font-size: 12px; color: var(--x-muted); margin-top: 6px; }
+  .plist { background: var(--x-surface); border-top: 1px solid #e3e5ea; border-bottom: 1px solid #e3e5ea; font-variant-numeric: tabular-nums; }
+  .prow { display: flex; align-items: center; min-height: 52px; border-bottom: 1px solid #e3e5ea; padding-right: 14px; background: var(--x-surface); }
+  .prow.open { background: #eef1f6; }
+  .prow.line { border-bottom-color: #f0f1f4; padding-left: 36px;
+               background: linear-gradient(var(--x-rail), var(--x-rail)) 22px 0 / 2px 100% no-repeat, var(--x-surface); }
+  .prow.line.lvl2 { padding-left: 52px; }
+  .prow.top:not(.agency):not(.group) { padding-left: 36px; }
+  .prow.label { min-height: 0; padding: 14px 16px 6px; background: var(--x-page); font-family: var(--x-cond); font-size: 11px; letter-spacing: 0.08em;
+                text-transform: uppercase; color: var(--x-muted); font-weight: 600; }
+  .prow[data-sel=row], .prow.line[data-sel=row] { background: var(--x-sel-row); }
+  .pmain { flex: 1 1 auto; min-width: 0; min-height: 44px; display: flex; align-items: center; gap: 10px; border: 0; background: transparent; padding: 8px 0;
+           text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .pmain:focus-visible { outline-offset: -2px; }
+  .pchev { flex: 0 0 36px; width: 36px; text-align: center; color: var(--x-muted); font-size: 12px; }
+  .pname { min-width: 0; flex: 1 1 auto; font-size: 14px; font-weight: 600; color: var(--x-ink); }
+  .pname .tag { margin-left: 6px; }
+  .pname .rownote { display: block; font-size: 12px; color: var(--x-muted); font-weight: 400; }
+  .prow.line .pname, .prow.top.acct .pname { font-size: 13px; font-weight: 400; }
+  .pname .nm { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb4d6; text-underline-offset: 3px; }
+  .prow.top.acct .pname { font-size: 14px; font-weight: 600; }
+  .pfig { flex: 0 0 auto; text-align: right; }
+  .pval { display: block; font-size: 15px; font-weight: 600; color: var(--x-ink); }
+  .pval .tok { font-size: 12px; }
+  .prow.line .pval { font-size: 13px; font-weight: 400; color: #4a5160; }
+  .pchg { display: block; font-size: 12px; font-weight: 600; }
+  .prow.line .pchg { font-weight: 400; }
+  .pmore { flex: 1 1 auto; min-height: 44px; border: 0; background: transparent; text-align: left; padding: 0; font: inherit; font-size: 13px;
+           color: var(--x-accent); cursor: pointer; }
+  .prow.more { min-height: 48px; }
+  .pfoot2 { padding: 14px 16px 24px; font-size: 12px; color: var(--x-muted); }
+  .pfoot2 a { display: inline-block; margin-top: 10px; color: var(--x-accent); font-size: 13px; padding: 6px 0; }
+  /* the account sheet: from the bottom, over a dimmed page */
+  .sheetback { position: fixed; inset: 0; z-index: 30; background: rgba(22,33,58,0.4); }
+  .sheet { position: absolute; left: 0; right: 0; bottom: 0; max-height: calc(100% - 84px); background: var(--x-surface); border-radius: 16px 16px 0 0;
+           display: flex; flex-direction: column; box-shadow: 0 -8px 24px rgba(22,33,58,0.2); }
+  .sheet .shead { flex: 0 0 auto; padding: 8px 16px 0; }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--x-input); margin: 0 auto 8px; }
+  .sheet .shrow { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .sheet .srcpath { margin-top: 0; }
+  .sheet .sclose { flex: 0 0 auto; width: 44px; height: 44px; border: 1px solid #d5d9e1; background: var(--x-surface); border-radius: 22px; cursor: pointer;
+                   font: inherit; font-size: 18px; padding: 0; color: var(--x-ink); }
+  .sheet .sbody { flex: 1 1 auto; overflow: auto; padding: 4px 16px 20px; }
+  .sheet .bigfig { margin-top: 6px; }
+  .sheet .ovsmall[data-testid=acct-exact] { font-size: 13px; color: var(--x-ink2); }
+  .sheet .srcrule { display: none; }
+  .sheet .ovk { margin: 16px 0 2px; }
+  .sheet .acctstage { padding: 10px 0; }
+  .sheet .acctstage .val { font-weight: 600; }
+  .sheet .barbox { height: 70px; }
+  .sheet .bars { gap: 5px; }
+  .sheet .bar { background: #2f5d9e; border-radius: 3px 3px 0 0; }
+  .sheet .bar.cr { background: #a9bfe0; }
+  .sheet .pbtn.primary { min-height: 48px; margin-top: 18px; }
 </style>
 </head>
 <body>
 <header class="appbar">
   <div class="brand">Appropriations Intelligence</div>
-  <nav class="tabs" role="tablist" aria-label="Main">
+  <button type="button" class="menubtn" id="menu-btn" data-testid="menu-button" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 5h14M3 10h14M3 15h14"></path></svg>
+  </button>
+  <nav class="tabs" id="main-nav" role="tablist" aria-label="Main">
     <button type="button" role="tab" id="tab-compare" aria-selected="true" data-view="compare">Explore</button>
     <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">One account</button>
   </nav>
@@ -378,6 +484,40 @@
     </div>
     <div class="chips" id="chips" data-testid="chips" hidden></div>
     <div class="xpanel" id="filter-panel" role="dialog" aria-modal="false" aria-labelledby="filter-title" data-testid="filter-panel" hidden></div>
+  </section>
+
+  <!-- the phone layout (SPEC section 6, below 640px): the same data and state as the grid, one stage at a time -->
+  <section class="phone" id="phone" data-testid="phone" aria-label="Explore" hidden>
+    <div class="pbar">
+      <button type="button" class="pctx" id="p-context" data-testid="p-context" aria-haspopup="dialog" aria-expanded="false" aria-controls="p-picker">
+        <span id="p-context-text"></span><span aria-hidden="true" class="pcaret">&#9662;</span>
+      </button>
+      <button type="button" class="picon" id="p-search-btn" data-testid="p-search-button" aria-label="Search" aria-expanded="false" aria-controls="p-search-row">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="8" cy="8" r="5.5"></circle><path d="M12.2 12.2L16 16"></path></svg>
+      </button>
+      <button type="button" class="picon" id="p-filter-btn" data-testid="p-filter-button" aria-label="Filter" aria-haspopup="dialog" aria-expanded="false" aria-controls="filter-panel">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4h12M4.5 8h7M7 12h2"></path></svg>
+        <span class="badge pbadge" id="p-filter-badge" data-testid="p-filter-badge" hidden></span>
+      </button>
+      <div class="xpanel" id="p-picker" role="dialog" aria-modal="false" aria-labelledby="p-picker-title" data-testid="p-picker" hidden></div>
+    </div>
+    <div class="psearch" id="p-search-row" hidden>
+      <label class="xfield">Search<input type="search" id="p-search" data-testid="p-search" autocomplete="off" placeholder="Account, agency or program"></label>
+    </div>
+    <div class="chips pchips" id="p-chips" data-testid="p-chips" hidden></div>
+    <div class="pcard" id="p-summary" data-testid="p-summary"></div>
+    <div class="pstage" id="p-stage-bar" data-testid="p-stage-bar">
+      <div class="pseg" role="group" aria-label="Stage shown" id="p-stages" data-testid="p-stages"></div>
+      <div class="pnote" id="p-stage-note" data-testid="p-stage-note"></div>
+    </div>
+    <div class="plist" id="p-list" data-testid="p-list"></div>
+    <div class="pfoot2">
+      <div>Short figures here; exact $ thousands and sources open when you tap an account. — not funded · blank = outside the account’s life.</div>
+      <a href="?" id="p-full" data-testid="p-full">Open the full table (best on a larger screen)</a>
+    </div>
+    <div class="sheetback" id="p-sheet-back" data-testid="p-sheet-back" hidden>
+      <div class="sheet" id="p-sheet" role="dialog" aria-modal="true" aria-labelledby="p-sheet-title" data-testid="p-sheet"></div>
+    </div>
   </section>
 
   <main class="explore">
@@ -830,6 +970,8 @@ const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true,
             units: "k", reviewer: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
             minPct: null, minK: null, drafts: true, review: false,
+            // the phone (SPEC section 6): the stage its list shows (null: the lead stage); table: the grid on a phone
+            pstage: null, table: false,
             // "Accounts shown" (the account lifecycle): proposed-only accounts per view, ended accounts after
             // their last year, new accounts before their first year
             show: { proposed: { ...SHOW_PROPOSED }, ended: false, created: false } };
@@ -841,7 +983,7 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
-                        "accounting_views", "budget_class", "defense_split"]);
+                        "accounting_views", "budget_class", "defense_split", "phone"]);
 // exclude_earmarks and nondefense (web/ui_contract.json) wait for their data (UI-0b): not built, so never shown
 let FEAT = {};
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
@@ -1336,23 +1478,26 @@ function moveLine(r) {
   const verb = rel.relationship_type === "proposed_consolidation" ? "consolidated into" : "moved to";
   return `FY${rel.effective_fiscal_year} request: ${verb} ${plainName(NAME_OF.get(rel.to_account_id) || rel.to_account_id)} (proposed)`;
 }
+// the class tags (budget_class): a mixed account "incl. mandatory"; a mandatory one "mandatory", or under its
+// agency's "Appropriated mandatory" sub-group "provisional" where its class is (and no tag where it isn't)
+function classTags(r, y, inMandatory) {
+  const k = classOf(r, y);
+  if (!k) return [];
+  // a provisional class: the tag has a dashed outline, and its title says so
+  const t = { cls: "cls" + (k.provisional ? " prov" : ""), testid: "class-tag", title: classTitle(k, y), prov: k.provisional };
+  const mi = k.cls === "mixed" ? mandatoryOf(r, y) : null;
+  if (mi) return [{ ...t, text: "incl. mandatory", title: `${mi.text} · ${t.title}` }];
+  if (k.cls === "mandatory" && !inMandatory) return [{ ...t, text: "mandatory", title: `${mandatoryOf(r, y).text} · ${t.title}` }];
+  if (k.cls === "mandatory" && k.provisional) return [{ ...t, text: "provisional", title: `${mandatoryOf(r, y).text} · ${t.title}` }];
+  return [];
+}
 function accountRow(r, cols, cls, lvl, inMandatory) {
   const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name);
   const tags = [];
   if (proposedOnly(r)) tags.push({ cls: "prop", text: "proposed", title: "Proposed in a request or bill; never enacted" });
   if (a.parent_account_id) tags.push({ cls: "inside", text: "inside the line above · not added",
                                        title: `inside ${NAME_OF.get(a.parent_account_id)}'s figure; never added again` });
-  // the class tags (budget_class): a mixed account "incl. mandatory"; a mandatory one "mandatory", or under its
-  // agency's "Appropriated mandatory" sub-group "provisional" where its class is (and no tag where it isn't)
-  const y = current ? focusYear(current.grid) : G.fy, k = classOf(r, y);
-  if (k) {
-    // a provisional class: the tag has a dashed outline, and its title says so
-    const t = { cls: "cls" + (k.provisional ? " prov" : ""), testid: "class-tag", title: classTitle(k, y), prov: k.provisional };
-    const mi = k.cls === "mixed" ? mandatoryOf(r, y) : null;
-    if (mi) tags.push({ ...t, text: "incl. mandatory", title: `${mi.text} · ${t.title}` });
-    else if (k.cls === "mandatory" && !inMandatory) tags.push({ ...t, text: "mandatory", title: `${mandatoryOf(r, y).text} · ${t.title}` });
-    else if (k.cls === "mandatory" && k.provisional) tags.push({ ...t, text: "provisional", title: `${mandatoryOf(r, y).text} · ${t.title}` });
-  }
+  tags.push(...classTags(r, current ? focusYear(current.grid) : G.fy, inMandatory));
   return el("tr", { class: cls, dataset: { account: id, testid: "compare-row", ...(r.member_of ? { memberOf: r.member_of } : {}) } },
     nameCell({ id, name, title: accountTitle(r), lvl, tags, move: moveLine(r), abbr: cls.includes("top") ? abbrOf(id) : "" }),
     ...cellsFor(r, cols, name));
@@ -1370,6 +1515,37 @@ function relNote(rel, ncols, abbr) {
 function labelRow(cls, name, ncols, testidName) {
   return el("tr", { class: cls, dataset: { testid: testidName } },
     el("td", { class: "acct", text: name }), el("td", { colspan: String(ncols) }));
+}
+
+// "incl. mandatory" on an agency (budget_class): its lines in view include a mandatory or mixed account (their own class)
+function inclMandatory(lines, y) {
+  const withMand = lines.map((m) => mandatoryOf(m, y)).filter(Boolean);
+  return withMand.length ? [{ cls: "cls", testid: "class-tag", text: "incl. mandatory", title: withMand.map((x) => x.text).join("; ") }] : [];
+}
+// a title's rows as the grid lays them out (SPEC section 4): agencies, accounts outside an agency total, general
+// provisions, proposed-only accounts. The grid and the phone list (SPEC section 6) both read it.
+function partsOf(group, F) {
+  const rows = group.rows.map((id) => ROW_OF.get(id));
+  // agencies: shown with themselves or any of their accounts
+  const membersOf = (id) => rows.filter((m) => m.member_of === id);
+  const shownAgency = (r) => F.ok(r) || membersOf(r.account.canonical_account_id).some(F.ok);
+  const agencies = rows.filter((r) => r.rollup === "agency" && !proposedOnly(r) && shownAgency(r));
+  const loose = rows.filter((r) => !r.rollup && !r.member_of && F.ok(r));
+  const gp = loose.filter((r) => isGP(r) && !proposedOnly(r));
+  const other = loose.filter((r) => !isGP(r) && !proposedOnly(r));
+  const proposed = rows.filter((r) => !r.member_of && proposedOnly(r) && (r.rollup === "agency" ? shownAgency(r) : F.ok(r))
+                                      && (r.rollup !== "agency" || F.inView(r) || membersOf(r.account.canonical_account_id).some(F.inView)));
+  // an agency's lines: listed when it is expanded, or opened for a line a filter matches
+  const agency = (r) => {
+    const id = r.account.canonical_account_id, all = membersOf(id);
+    const members = all.filter((m) => F.ok(m) || (F.ok(r) && !F.filtering && F.inView(m)));
+    // N: the total's rollup_members inside their life in the columns in view, which are the lines listed (SPEC section 4)
+    const n = (r.rollup_members || []).filter((m) => ROW_OF.get(m) && F.inView(ROW_OF.get(m))).length;
+    const auto = F.filtering && !F.ok(r) && members.length > 0;          // shown for a line that matches: opened
+    return { all, n, isOpen: all.length > 0 && (open.has(id) || auto), lines: F.filtering ? members : all.filter((m) => F.inView(m)) };
+  };
+  const gpKey = "gp:" + (group.title || "");
+  return { agencies, other, gp, proposed, agency, gpKey, gpOpen: open.has(gpKey) || (F.filtering && !!G.search.trim()) };
 }
 
 function buildRows(grid, cols) {
@@ -1397,7 +1573,6 @@ function buildRows(grid, cols) {
   const lvl = (m) => (m.account.parent_account_id ? "lvl2" : "");
   const filtered = !!G.agency;
   for (const group of grid.titles) {
-    const rows = group.rows.map((id) => ROW_OF.get(id));
     if (group.total) {
       out.push(el("tr", { class: "title", dataset: { account: group.total.account.canonical_account_id, testid: "compare-row" } },
         nameCell({ name: `Total, ${group.title} (printed${filtered ? ", all accounts" : ""})`, tags: [] }), ...cellsFor(group.total, cols, `Total, ${group.title}`)));
@@ -1405,53 +1580,37 @@ function buildRows(grid, cols) {
     } else {
       out.push(labelRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
     }
-    // agencies: shown with themselves or any of their accounts
-    const membersOf = (id) => rows.filter((m) => m.member_of === id);
-    const shownAgency = (r) => F.ok(r) || membersOf(r.account.canonical_account_id).some(F.ok);
-    const agencies = rows.filter((r) => r.rollup === "agency" && !proposedOnly(r) && shownAgency(r));
-    const loose = rows.filter((r) => !r.rollup && !r.member_of && F.ok(r));
-    const gp = loose.filter((r) => isGP(r) && !proposedOnly(r));
-    const other = loose.filter((r) => !isGP(r) && !proposedOnly(r));
-    const proposed = rows.filter((r) => !r.member_of && proposedOnly(r) && (r.rollup === "agency" ? shownAgency(r) : F.ok(r))
-                                        && (r.rollup !== "agency" || F.inView(r) || membersOf(r.account.canonical_account_id).some(F.inView)));
-    if (agencies.length) out.push(labelRow("section", `Agencies · ${agencies.length}`, ncols, "section-label"));
-    for (const r of agencies) {
+    const P = partsOf(group, F);
+    if (P.agencies.length) out.push(labelRow("section", `Agencies · ${P.agencies.length}`, ncols, "section-label"));
+    for (const r of P.agencies) {
       const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name), abbr = abbrOf(id);
-      const all = membersOf(id);
-      const members = all.filter((m) => F.ok(m) || (F.ok(r) && !F.filtering && F.inView(m)));
-      // N: the total's rollup_members inside their life in the columns in view, which are the lines listed (SPEC section 4)
-      const n = (r.rollup_members || []).filter((m) => ROW_OF.get(m) && F.inView(ROW_OF.get(m))).length;
-      const auto = F.filtering && !F.ok(r) && members.length > 0;          // shown for a line that matches: opened
-      const isOpen = all.length > 0 && (open.has(id) || auto);
-      // "incl. mandatory": the agency's lines in view include a mandatory or mixed account (their own budget_class)
-      const withMand = all.filter((m) => F.inView(m)).map((m) => mandatoryOf(m, y)).filter(Boolean);
-      const tags = withMand.length ? [{ cls: "cls", testid: "class-tag", text: "incl. mandatory",
-        title: withMand.map((x) => x.text).join("; ") }] : [];
+      const { all, n, isOpen, lines } = P.agency(r);
+      const tags = inclMandatory(all.filter((m) => F.inView(m)), y);
       out.push(el("tr", { class: "agency top" + (isOpen ? " open" : ""), dataset: { account: id, testid: "compare-row" } },
         nameCell({ id, key: id, name, title: accountTitle(r), abbr, chev: all.length > 0, spacer: !all.length, open: isOpen, tags,
                    note: isOpen ? (n ? `Agency total · sum of the ${n} line${n === 1 ? "" : "s"} below` : "Agency total") : "",
                    noteTestid: "total" }),
         ...cellsFor(r, cols, name)));
-      if (isOpen) pushMembers(F.filtering ? members : all.filter((m) => F.inView(m)), lvl);
+      if (isOpen) pushMembers(lines, lvl);
     }
-    if (other.length) {
-      out.push(labelRow("section", `Accounts outside an agency total · ${other.length}`, ncols, "section-label"));
-      for (const r of other) out.push(accountRow(r, cols, "child loose top", ""));
+    if (P.other.length) {
+      out.push(labelRow("section", `Accounts outside an agency total · ${P.other.length}`, ncols, "section-label"));
+      for (const r of P.other) out.push(accountRow(r, cols, "child loose top", ""));
     }
-    if (gp.length) {
+    if (P.gp.length) {
       out.push(labelRow("section", "General provisions", ncols, "section-label"));
-      const key = "gp:" + (group.title || ""), isOpen = open.has(key) || (F.filtering && !!G.search.trim());
-      const label = `${group.title ? group.title + " general" : "General"} provisions (${gp.length} line${gp.length === 1 ? "" : "s"})`;
+      const key = P.gpKey, isOpen = P.gpOpen;
+      const label = `${group.title ? group.title + " general" : "General"} provisions (${P.gp.length} line${P.gp.length === 1 ? "" : "s"})`;
       const tr = el("tr", { class: "group top" + (isOpen ? " open" : ""), dataset: { testid: "group-head", group: key } },
         nameCell({ key, name: label, chev: true, open: isOpen,
                    note: isOpen ? `No printed total · each line counts in the ${group.title || "bill"} total` : "" }),
         el("td", { colspan: String(ncols) }));
       out.push(tr);
-      if (isOpen) for (const r of gp) out.push(accountRow(r, cols, "child", lvl(r)));
+      if (isOpen) for (const r of P.gp) out.push(accountRow(r, cols, "child", lvl(r)));
     }
-    if (proposed.length) {
+    if (P.proposed.length) {
       out.push(labelRow("section", proposedLabel, ncols, "section-label"));
-      for (const r of proposed) {
+      for (const r of P.proposed) {
         const a = r.account, id = a.canonical_account_id, name = plainName(a.canonical_name), abbr = abbrOf(id);
         const incoming = r.rollup === "agency" ? r.relationships.filter((x) => x.to_account_id === id) : [];
         const isOpen = incoming.length > 0 && open.has(id);
@@ -1721,12 +1880,20 @@ function renderSource(grid, box) {
   box.replaceChildren(...kids);
 }
 function renderAccountPanel(grid, box) {
-  const row = gridRow(grid, SEL.id), a = row.account, id = a.canonical_account_id;
-  const y = focusYear(grid), lead = (G.grid === "stages" ? leadStage(grid, y) : 3) ?? 3;
+  const A = accountView(grid, SEL.id, false);
+  box.setAttribute("aria-label", "Account");
+  box.replaceChildren(backRow(grid), el("div", { class: "srcpath", "data-testid": "acct-path", text: A.path }),
+                      el("div", { class: "ovtitle", "data-testid": "acct-name", text: A.name }), ...A.kids);
+}
+// one account (SPEC 5.2): its headline, every stage of the year with its source, enacted history, Open account page.
+// The side panel shows it; on a phone the bottom sheet does (SPEC section 6), with the stage figures as plain text
+// (the sheet already names each figure's document, page and bill).
+function accountView(grid, id0, phone) {
+  const row = gridRow(grid, id0), a = row.account, id = a.canonical_account_id;
+  const y = phone ? G.fy : focusYear(grid), lead = (phone || G.grid === "stages" ? leadStage(grid, y) : 3) ?? 3;
   const agencyTotal = row.rollup === "agency";
   const path = [a.title, agencyTotal ? null : a.agency].filter(Boolean).join(" › ");
-  const kids = [backRow(grid), el("div", { class: "srcpath", "data-testid": "acct-path", text: path }),
-                el("div", { class: "ovtitle", "data-testid": "acct-name", text: plainName(a.canonical_name) })];
+  const kids = [];
   // the headline: the lead stage's printed figure (Enacted, or the latest stage in a year not yet enacted)
   const hx = headOf(row, y, STAGES4[lead]), ho = cellObs(row, y, STAGES4[lead]);
   const v = ho ? ho.amount : null, when = stageText(grid, y, lead);
@@ -1746,11 +1913,12 @@ function renderAccountPanel(grid, box) {
     const st = STAGES4[i], o = cellObs(row, yy, st), x = headOf(row, yy, st);
     const label = yy !== y ? stageText(grid, yy, i) : STAGE_LONG[i] + (isDraft(grid, yy, st) ? " (draft)" : "");
     const state = x && x.h ? (x.cell.outside_life ? "outside the account’s life" : STATE_WORDS[x.h.state] || x.h.state) : "outside the account’s life";
-    const amt = o ? el("button", { type: "button", class: "fig", "data-testid": "acct-stage-fig",
+    const amt = o && phone ? el("span", { class: "val", "data-testid": "acct-stage-fig", text: o.amount === 0 ? "—" : GridMath.number(o.amount, G.units) })
+      : o ? el("button", { type: "button", class: "fig", "data-testid": "acct-stage-fig",
                                    "aria-label": `Source for ${plainName(a.canonical_name)}, ${stageText(grid, yy, i)}`,
                                    text: o.amount === 0 ? "—" : GridMath.number(o.amount, G.units) })
                   : el("span", { class: "val state", text: state });
-    if (o) amt.addEventListener("click", () => select({ kind: "fig", id, y: yy, st }));
+    if (o && !phone) amt.addEventListener("click", () => select({ kind: "fig", id, y: yy, st }));
     const line = el("div", { class: "acctstage", "data-testid": "acct-stage", dataset: { fy: String(yy), stage: st } },
       el("div", { class: "ovline" }, el("span", { class: "k", text: label }), amt));
     if (o) line.append(el("div", { class: "ovsmall", "data-testid": "acct-stage-src" }, docLink(o),
@@ -1774,18 +1942,21 @@ function renderAccountPanel(grid, box) {
       bars.append(el("div", { class: "barcol", role: "listitem", title: label, "aria-label": label,
                               dataset: { fy: String(yy), testid: "acct-bar", value: val == null ? "" : String(val), cr: String(cr) } },
         el("div", { class: "barbox" }, h ? el("div", { class: "bar" + (cr ? " cr" : ""), style: `height:${h}px` }) : null),
-        el("div", { class: "barlbl", text: `’${String(yy).slice(2)}` })));
+        phone ? null : el("div", { class: "barlbl", text: `’${String(yy).slice(2)}` })));
     });
     kids.push(bars);
-    if (years.some((yy) => crOf(grid, yy))) kids.push(el("div", { class: "ovsmall", text: "Lighter bar: a full-year continuing resolution" }));
+    const crs = years.filter((yy) => crOf(grid, yy));
+    // the phone's bar caption (the design): first year · the CR years · last year
+    if (phone) kids.push(el("div", { class: "barfoot", "data-testid": "acct-bars-caption" }, el("span", { text: `FY${years[0]}` }),
+      el("span", { text: crs.length ? `${crs.map((yy) => "FY" + yy).join(", ")} lighter = CR` : "" }), el("span", { text: `FY${years[years.length - 1]}` })));
+    else if (crs.length) kids.push(el("div", { class: "ovsmall", text: "Lighter bar: a full-year continuing resolution" }));
   }
   if (ownPage(grid, id)) {
     const b = el("button", { type: "button", class: "pbtn primary", "data-testid": "acct-open", text: "Open account page" });
     b.addEventListener("click", () => openAccount(id));
     kids.push(b);
   }
-  box.setAttribute("aria-label", "Account");
-  box.replaceChildren(...kids);
+  return { path, name: plainName(a.canonical_name), kids };
 }
 // a selection still on file in this grid (a link from another subcommittee, or a figure no longer held, is dropped)
 function validSel(grid, s) {
@@ -1806,16 +1977,24 @@ function renderPanel(grid) {
     renderOverview(grid);
     box.dataset.mode = "overview";
   }
+  renderSheet(grid);
 }
 // the selected figure (yellow fill and outline) and the selected account row (light yellow): drawn over hover
 function markSelection() {
   for (const n of document.querySelectorAll("#compare-grid [data-sel]")) delete n.dataset.sel;
+  markPhone();
   if (!SEL) return;
   const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(SEL.id)}"]`);
   if (!tr) return;
   if (SEL.kind === "acct") { tr.dataset.sel = "row"; return; }
   const td = tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
   if (td) td.dataset.sel = "fig";
+}
+// the phone list: the selected account's line (a figure's account too) gets the light yellow fill
+function markPhone() {
+  for (const n of document.querySelectorAll("#p-list [data-sel]")) delete n.dataset.sel;
+  const r = SEL && document.querySelector(`#p-list .prow[data-account="${CSS.escape(SEL.id)}"]`);
+  if (r) r.dataset.sel = "row";
 }
 function select(s) {
   if (!current) return;
@@ -1832,7 +2011,12 @@ function clearSelection(returnFocus) {
   markSelection();
   renderPanel(current.grid);
   commit();
-  if (returnFocus) {
+  if (returnFocus && isPhone()) {
+    // the line that opened the sheet; its agency's row when the line isn't listed; else the picker
+    const row = gridRow(current.grid, was.id), q = (id) => document.querySelector(`#p-list .prow[data-account="${CSS.escape(id)}"] .pmain`);
+    const n = q(was.id) || (row && row.member_of && q(row.member_of)) || $("#p-context");
+    n.focus();
+  } else if (returnFocus) {
     const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(was.id)}"]`);
     const n = tr && (was.kind === "fig" ? tr.querySelector(`td[data-fy="${was.y}"][data-stage="${CSS.escape(was.st)}"] button.fig`)
                                         : tr.querySelector("[data-testid=row-name]"));
@@ -1847,6 +2031,7 @@ function renderBody() {
   if (!current) return;
   clearHover();
   $("#compare-grid tbody").replaceWith(el("tbody", {}, ...buildRows(current.grid, current.cols)));
+  if (isPhone()) keepFocus($("#phone"), () => renderPhoneList(current.grid));
   markSelection();
 }
 function headingOf(grid) {
@@ -1875,6 +2060,7 @@ function renderCompare(grid) {
     + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
   const groups = layout(grid), cols = flatCols(groups);
   current = { grid, cols };
+  renderPhoneTop(grid);
   const note = (c) => c.fig ? (grid.stage_notes || {})[`${c.fig[0]}|${STAGES4[c.fig[1]]}`] : null;
   const r1 = el("tr", {}, el("th", { class: "acct", scope: "col", rowspan: "2", text: "Account" }));
   for (const g of groups)
@@ -2034,6 +2220,8 @@ function compareURL() {
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
   if (open.size) q.set("open", [...open].sort().join(","));
+  if (G.pstage != null) q.set("pstage", STAGE_WORD[G.pstage].toLowerCase());
+  if (G.table) q.set("table", "1");
   if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}`);
   if (SEL && SEL.kind === "acct") q.set("acct", SEL.id);
   return "?" + q.toString();
@@ -2088,6 +2276,9 @@ function settle(grid, want) {
     G.minPct = num(want.minpct); G.minK = num(want.mink);
     G.drafts = want.drafts !== "0";
     G.review = want.review === "1";
+    const si = STAGE_WORD.findIndex((w) => w.toLowerCase() === String(want.pstage || "").toLowerCase());
+    G.pstage = si < 0 ? null : si;
+    G.table = want.table === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
     const f = String(want.fig || "").split("|");
     SEL = f.length === 3 && /^\d{4}$/.test(f[1]) && STAGES4.includes(f[2]) ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2] }
@@ -2132,6 +2323,10 @@ function renderControls(grid) {
     box.classList.add("fy");
   }
   $("#search").value = G.search;
+  if (document.activeElement !== $("#p-search")) $("#p-search").value = G.search;
+  $("#p-search-btn").hidden = !has("search_filter");
+  $("#p-filter-btn").hidden = !has("search_filter");
+  renderPicker(grid);
   $("#search-field").hidden = !has("search_filter");
   $("#filter-btn").hidden = !has("search_filter");
   $("#share").hidden = !has("interaction_state");
@@ -2172,17 +2367,23 @@ function renderChips(grid) {
   badge.textContent = String(chips.length);
   $("#filter-btn").classList.toggle("active", chips.length > 0);
   $("#filter-btn").setAttribute("aria-label", chips.length ? `Filter, ${chips.length} applied` : "Filter");
-  const box = $("#chips");
-  box.hidden = !chips.length;
-  box.replaceChildren(el("span", { class: "lbl", text: "Applied:" }),
-    ...chips.map((c) => {
-      const x = el("button", { type: "button", "aria-label": `Remove ${c.label}`, text: "×" });
-      x.addEventListener("click", () => { c.clear(); redraw(); $("#filter-btn").focus(); });
-      return el("span", { class: "chip", "data-testid": "chip" }, c.label, x);
-    }));
-  const all = el("button", { type: "button", class: "textlink", "data-testid": "clear-all", text: "Clear all" });
-  all.addEventListener("click", () => { resetFilters(); redraw(); $("#filter-btn").focus(); });
-  box.append(all);
+  const pbadge = $("#p-filter-badge");
+  pbadge.hidden = !chips.length;
+  pbadge.textContent = String(chips.length);
+  $("#p-filter-btn").setAttribute("aria-label", chips.length ? `Filter, ${chips.length} applied` : "Filter");
+  // the same chips on the desktop control row and under the phone's
+  for (const [box, button, p] of [[$("#chips"), $("#filter-btn"), ""], [$("#p-chips"), $("#p-filter-btn"), "p-"]]) {
+    box.hidden = !chips.length;
+    box.replaceChildren(el("span", { class: "lbl", text: "Applied:" }),
+      ...chips.map((c) => {
+        const x = el("button", { type: "button", "aria-label": `Remove ${c.label}`, text: "×" });
+        x.addEventListener("click", () => { c.clear(); redraw(); button.focus(); });
+        return el("span", { class: "chip", "data-testid": p + "chip" }, c.label, x);
+      }));
+    const all = el("button", { type: "button", class: "textlink", "data-testid": p + "clear-all", text: "Clear all" });
+    all.addEventListener("click", () => { resetFilters(); redraw(); button.focus(); });
+    box.append(all);
+  }
 }
 function renderFilterPanel(grid) {
   const panel = $("#filter-panel");
@@ -2353,6 +2554,7 @@ $("#view-btn").addEventListener("click", () => (openMenu && openMenu.panel.id ==
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
   if (openMenu) { e.preventDefault(); closeMenu(true); }
+  else if ($(".appbar").classList.contains("navopen")) { e.preventDefault(); setNav(false, true); }
   else if (!$("#compare-view").hidden && SEL) { e.preventDefault(); clearSelection(true); }
 });
 let menuClosedBy = null;  // the press that closed a menu does only that
@@ -2379,6 +2581,284 @@ $("#share").addEventListener("click", async () => {
 });
 $("#export").addEventListener("click", (e) => e.preventDefault());
 
+// ---- the phone layout (SPEC section 6): below 640px there is no grid. The same data and state (G, SEL, the
+// expanded rows, the URL) as a list of one stage at a time; the account opens in a bottom sheet. Compare modes,
+// the View menu and Export are not offered; a link with another compare mode shows its fiscal year's stages.
+const PHONE = window.matchMedia("(max-width: 639px)");
+const PHONE_LINES = 6;                      // lines listed before "Show N more"
+const phoneOn = () => has("phone") && !G.table;
+const isPhone = () => PHONE.matches && phoneOn();
+const morePhone = new Set();                // agencies (and general-provision groups) with every line listed
+let psearchOpen = false;                    // the phone's search row (not in the URL: it changes nothing shown)
+function applyLayout() {
+  document.body.classList.toggle("phone-on", phoneOn());
+  document.body.classList.toggle("table", !!G.table);
+}
+// the phone reads one fiscal year's Stages layout (G.fy) whatever compare mode the desktop is in
+function asStages(fn) {
+  const keep = G.grid;
+  G.grid = "stages";
+  try { return fn(); } finally { G.grid = keep; }
+}
+// the stage shown: the one picked, else the lead stage (Enacted, or the latest stage of a year not yet enacted)
+const phoneStage = (grid) => (G.pstage != null ? G.pstage : leadStage(grid, G.fy) ?? 3);
+function setNav(on, focusBack) {
+  $(".appbar").classList.toggle("navopen", on);
+  $("#menu-btn").setAttribute("aria-expanded", String(on));
+  if (on) $(".tabs button[aria-selected=true]").focus();
+  else if (focusBack) $("#menu-btn").focus();
+}
+// the control row, the summary card and the pinned stage switch
+function renderPhoneTop(grid) {
+  applyLayout();
+  const box = $("#phone");
+  box.hidden = !isPhone();
+  if (box.hidden) return;
+  asStages(() => {
+    const y = G.fy, lead = leadStage(grid, y), i = phoneStage(grid);
+    const ctx = `${scLabels[grid.subcommittee] || grid.subcommittee} · FY${y}`;
+    $("#p-context-text").textContent = ctx;
+    $("#p-context").setAttribute("aria-label", `Subcommittee and fiscal year: ${ctx}`);
+    $("#p-search-row").hidden = !(psearchOpen || G.search.trim());
+    $("#p-search-btn").setAttribute("aria-expanded", String(!$("#p-search-row").hidden));
+    renderSummary(grid, y, lead);
+    keepFocus($("#p-stages"), () => $("#p-stages").replaceChildren(...[0, 1, 2, 3].map((k) => {
+      const b = el("button", { type: "button", dataset: { stage: String(k), key: "pst-" + k }, text: STAGE_NAME[k] });
+      pressed(b, k === i);
+      if (!G.drafts && isDraft(grid, y, STAGES4[k])) { b.disabled = true; b.title = "Committee draft left out (Filter › Advanced)"; }
+      b.addEventListener("click", () => {
+        G.pstage = k === (lead ?? 3) ? null : k;
+        keepFocus($("#phone"), () => { renderPhoneTop(grid); renderPhoneList(grid); });
+        commit();
+      });
+      return b;
+    })));
+    $("#p-stage-note").textContent = `Showing FY${y} ${STAGE_NAME[i]}${isDraft(grid, y, STAGES4[i]) ? " (draft)" : ""}`
+      + (basisOf() === "printed" ? "" : ` · ${basisLabel()}, advances when ${G.timing}`)
+      + ` · % change vs FY${y - 1} enacted · tap a line for sources`;
+  });
+  $("#p-full").href = compareURL() + "&table=1";
+}
+// the summary card: the headline printed total, its change vs last year's enacted and vs the request (SPEC 5.4's figures)
+function renderSummary(grid, y, lead) {
+  const S = scopeOf(grid), row = S.row, box = $("#p-summary");
+  if (!row || lead == null) {
+    box.replaceChildren(el("div", { class: "l", "data-testid": "p-no-total",
+      text: !row ? (G.agency ? "No printed total for this agency. The page never adds accounts into one."
+                             : "No printed title or bill total on file. The page never adds accounts into one.")
+                 : `No printed totals yet for FY${y}.` }));
+    return;
+  }
+  const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
+  const basisWord = basisOf() === "printed" ? "as printed" : `${basisLabel().toLowerCase()}, advances when ${G.timing}, checked`;
+  const chg = (a, what, tid) => {
+    const c = GridMath.change(a, v);
+    return c ? el("span", { class: GridMath.direction(c.delta) || "flat", "data-testid": tid,
+                            text: `${GridMath.signedShort(c.delta)} (${GridMath.pctText(a, v)}) ${what}` }) : null;
+  };
+  box.replaceChildren(
+    el("div", { class: "l", text: (lead === 3 ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`) + " · "
+                                  + (v == null && gap ? `${gap} · ${basisLabel()}` : basisWord) }),
+    el("div", { class: "v", "data-testid": "p-headline", text: v == null ? (gap ? "Not checked" : "—") : GridMath.short(v) }),
+    el("div", { class: "chgs" }, chg(figure(row, y - 1, "Enacted"), `vs FY${y - 1} enacted`, "p-vs-prior"),
+       lead !== 0 ? chg(figure(row, y, STAGES4[0]), "vs request", "p-vs-request") : null));
+}
+// a row's figure at the stage shown, in short form; a state shows its token; outside the account's life: blank
+function phoneValue(row, y, st) {
+  const x = headOf(row, y, st);
+  if (!x || !x.h || x.cell.outside_life) return el("span", { class: "pval", "data-testid": "p-value", "data-state": "", text: "",
+                                                             ...(x && x.cell.outside_life ? { title: lifeText(row, y, st) } : {}) });
+  const h = x.h;
+  // under an Amount basis (UI-3): the published view of a printed figure, as the grid shows it
+  if (basisOf() !== "printed" && printedFig(row, y, st) != null) {
+    const e = viewOf(row, y, st), v = viewText(e), title = viewHead(e) + (v.why ? " — " + v.why : "");
+    if (v.text == null)
+      return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title,
+                          text: e.amount === 0 && printedFig(row, y, st) === 0 ? "—" : GridMath.short(e.amount) });
+    return el("span", { class: "pval", "data-testid": "p-value", "data-state": h.state, "data-view": e ? e.status : "none" },
+      el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title, text: v.text }));
+  }
+  if (h.state === "value") return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", text: GridMath.short(h.observations[0].amount) });
+  const [text, meaning] = TOKENS[h.state] || [h.state, h.state];
+  const why = h.state === "not_funded" && h.absence ? "Not funded: confirmed absent in the bill or law text" : meaning;
+  return el("span", { class: "pval", "data-testid": "p-value", "data-state": h.state },
+    el("span", { class: "tok" + (DASHES.has(h.state) ? " dash" : "") + (h.state === "missing" ? " miss" : ""), title: why, text }));
+}
+// the list: agencies with their short figure and % change; an expanded agency keeps the parent/line formatting
+// (bold total, "sum of the N lines below", lighter lines on a rail), its lines largest first, 6 then "Show N more"
+function renderPhoneList(grid) {
+  if (!isPhone()) return;
+  asStages(() => {
+    const y = G.fy, i = phoneStage(grid), st = STAGES4[i];
+    const F = rowFilters(grid, flatCols(layout(grid)));
+    const out = [];
+    const chgOf = (r) => {
+      const a = figure(r, y - 1, "Enacted"), b = figure(r, y, st), c = GridMath.change(a, b);
+      return el("span", { class: "pchg " + (c ? GridMath.direction(c.delta) || "flat" : ""), "data-testid": "p-change", text: c ? GridMath.pctText(a, b) : "" });
+    };
+    // one row: a button that expands (an agency with lines, the general provisions) or opens the account sheet
+    const prow = (r, cls, o) => {
+      const id = r ? r.account.canonical_account_id : "";
+      const sheet = !o.chev && r && has("account_panel") && ownPage(grid, id);
+      const name = el("span", { class: "pname" }, sheet ? el("span", { class: "nm", text: o.name }) : o.name,
+        ...(o.tags || []).map((t) => el("span", { class: "tag " + t.cls, text: t.text, ...(t.title ? { title: t.title } : {}),
+                                                  ...(t.testid ? { "data-testid": "p-" + t.testid } : {}) })),
+        o.note ? el("span", { class: "rownote", "data-testid": "p-row-note", text: o.note }) : null);
+      const fig = r ? el("span", { class: "pfig" }, phoneValue(r, y, st), chgOf(r)) : null;
+      const kids = [o.chev ? el("span", { class: "pchev", "aria-hidden": "true", text: o.open ? "▾" : "▸" }) : null, name, fig];
+      const b = sheet || o.chev ? el("button", { type: "button", class: "pmain", "data-testid": "p-row-btn", dataset: { key: "p-" + (o.key || id) } }, ...kids)
+        : el("span", { class: "pmain" }, ...kids);
+      if (o.chev) {
+        b.setAttribute("aria-expanded", String(!!o.open));
+        b.addEventListener("click", () => phoneToggle(o.key));
+      } else if (sheet) {
+        b.setAttribute("aria-haspopup", "dialog");
+        b.addEventListener("click", () => select({ kind: "acct", id }));
+      }
+      return el("div", { class: "prow " + cls + (o.open ? " open" : ""), dataset: { testid: "p-row", ...(id ? { account: id } : {}),
+                                                                                   ...(o.key && !id ? { group: o.key } : {}),
+                                                                                   ...(o.memberOf ? { memberOf: o.memberOf } : {}) } }, b);
+    };
+    const tagsOf = (r) => [proposedOnly(r) ? { cls: "prop", text: "proposed" } : null,
+                           r.account.parent_account_id ? { cls: "inside", text: "inside the line above · not added" } : null,
+                           ...classTags(r, y)].filter(Boolean);
+    // lines largest first at the stage shown (no figure last, in data order); a line inside another follows it
+    const pushLines = (key, lines, label) => {
+      const ids = new Set(lines.map((m) => m.account.canonical_account_id)), kidsOf = new Map(), tops = [];
+      for (const m of lines) {
+        const p = m.account.parent_account_id;
+        if (p && ids.has(p)) { if (!kidsOf.has(p)) kidsOf.set(p, []); kidsOf.get(p).push(m); } else tops.push(m);
+      }
+      const val = (m) => { const v = figure(m, y, st); return v == null ? -Infinity : v; };
+      tops.sort((a, b) => (val(b) > val(a)) - (val(b) < val(a)));
+      const all = tops.flatMap((m) => [m, ...(kidsOf.get(m.account.canonical_account_id) || [])]);
+      const every = morePhone.has(key) || (F.filtering && !!G.search.trim());
+      const shown = every ? all : all.slice(0, PHONE_LINES);
+      for (const m of shown)
+        out.push(prow(m, "line" + (kidsOf.has(m.account.parent_account_id) ? " lvl2" : ""), { name: plainName(m.account.canonical_name), tags: tagsOf(m), memberOf: key }));
+      if (all.length > shown.length) {
+        const n = all.length - shown.length;
+        const b = el("button", { type: "button", class: "pmore", "data-testid": "p-more", dataset: { key: "pmore-" + key },
+                                 text: `Show ${n} more ${label} line${n === 1 ? "" : "s"}` });
+        b.addEventListener("click", () => {
+          morePhone.add(key);
+          renderPhoneList(grid);
+          const next = document.querySelectorAll(`#p-list .prow.line[data-member-of="${CSS.escape(key)}"] .pmain`)[shown.length];
+          if (next) next.focus();
+        });
+        out.push(el("div", { class: "prow line more", dataset: { testid: "p-more-row", memberOf: key } }, b));
+      }
+    };
+    for (const group of grid.titles) {
+      const P = partsOf(group, F);
+      if (grid.titles.length > 1)
+        out.push(el("div", { class: "prow label", "data-testid": "p-label", text: group.title || "Not yet placed in a title" }));
+      for (const r of P.agencies) {
+        const id = r.account.canonical_account_id, A = P.agency(r);
+        out.push(prow(r, "agency top", { name: plainName(r.account.canonical_name), key: id, chev: A.all.length > 0, open: A.isOpen,
+          tags: inclMandatory(A.all.filter((m) => F.inView(m)), y),
+          note: A.isOpen ? (A.n ? `Agency total · sum of the ${A.n} line${A.n === 1 ? "" : "s"} below` : "Agency total") : "" }));
+        if (A.isOpen) pushLines(id, A.lines, abbrOf(id) || plainName(r.account.canonical_name));
+      }
+      for (const r of P.other) out.push(prow(r, "top acct", { name: plainName(r.account.canonical_name), tags: tagsOf(r) }));
+      if (P.gp.length) {
+        const label = `${group.title ? group.title + " general" : "General"} provisions (${P.gp.length} line${P.gp.length === 1 ? "" : "s"})`;
+        out.push(prow(null, "group top", { name: label, key: P.gpKey, chev: true, open: P.gpOpen,
+          note: P.gpOpen ? `No printed total · each line counts in the ${group.title || "bill"} total` : "" }));
+        if (P.gpOpen) pushLines(P.gpKey, P.gp, "general provision");
+      }
+      for (const r of P.proposed) out.push(prow(r, "top acct", { name: plainName(r.account.canonical_name), tags: [{ cls: "prop", text: "proposed" }] }));
+    }
+    $("#p-list").replaceChildren(...out);
+  });
+  markPhone();
+}
+function phoneToggle(key) {
+  if (open.has(key)) open.delete(key); else open.add(key);
+  renderBody();
+  commit();
+  const b = document.querySelector(`#p-list [data-key="${CSS.escape("p-" + key)}"]`);
+  if (b) b.focus();
+}
+// the account sheet (SPEC section 6): the selected account, or a selected figure's account; closes with ×, Esc or a
+// tap on the dimmed page, and focus goes back to the line that opened it
+let sheetOf = null;
+function renderSheet(grid) {
+  const id = isPhone() && SEL && has("account_panel") && ownPage(grid, SEL.id) && gridRow(grid, SEL.id) ? SEL.id : null;
+  const was = sheetOf;
+  sheetOf = id;
+  document.body.classList.toggle("sheet-open", !!id);
+  $("#p-sheet-back").hidden = !id;
+  if (!id) { $("#p-sheet").replaceChildren(); return; }
+  const A = asStages(() => accountView(grid, id, true));
+  const close = el("button", { type: "button", class: "sclose", "data-testid": "p-sheet-close", "aria-label": "Close", text: "×" });
+  close.addEventListener("click", () => clearSelection(true));
+  $("#p-sheet").replaceChildren(
+    el("div", { class: "shead" }, el("div", { class: "grab", "aria-hidden": "true" }),
+      el("div", { class: "shrow" }, el("div", { style: "min-width:0" }, el("div", { class: "srcpath", "data-testid": "acct-path", text: A.path }),
+        el("div", { class: "ovtitle", id: "p-sheet-title", "data-testid": "acct-name", text: A.name })), close)),
+    el("div", { class: "sbody" }, ...A.kids));
+  if (was !== id) close.focus();
+}
+function renderPicker(grid) {
+  const panel = $("#p-picker");
+  keepFocus(panel, () => {
+    const close = el("button", { type: "button", class: "x", "aria-label": "Close", "data-key": "close", text: "×" });
+    close.addEventListener("click", () => closeMenu(true));
+    const sc = el("select", { id: "p-sc", "data-testid": "p-sc", "data-key": "p-sc" }, ...(scNames || []).map((n) => el("option", { value: n, text: scLabels[n] || n })));
+    sc.value = G.sc;
+    sc.addEventListener("change", () => { $("#sc").value = sc.value; $("#sc").dispatchEvent(new Event("change")); });
+    const fy = el("select", { id: "p-fy", "data-testid": "p-fy", "data-key": "p-fy" }, ...grid.fiscal_years.map((y) => el("option", { value: y, text: `FY${y}` })));
+    fy.value = String(G.fy);
+    fy.addEventListener("change", () => { G.fy = Number(fy.value); redraw(); });
+    const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "p-picker-done", "data-key": "done", text: "Done" });
+    done.addEventListener("click", () => closeMenu(true));
+    panel.replaceChildren(el("div", { class: "phead" }, el("div", { class: "ptitle", id: "p-picker-title", text: "Subcommittee and year" }), close),
+      el("label", { class: "block" }, "Subcommittee", sc), el("label", { class: "block" }, "Fiscal year", fy),
+      el("div", { class: "pfoot" }, el("span"), done));
+  });
+}
+function renderPhone(grid) {
+  renderPhoneTop(grid);
+  renderPhoneList(grid);
+  renderSheet(grid);
+}
+PHONE.addEventListener("change", () => {
+  if (!current || $("#compare-view").hidden) return;
+  closeMenu(false);
+  setNav(false);
+  renderPhone(current.grid);
+  pinHeader();
+});
+$("#menu-btn").addEventListener("click", () => setNav(!$(".appbar").classList.contains("navopen"), true));
+$("#p-context").addEventListener("click", () => (openMenu && openMenu.panel.id === "p-picker" ? closeMenu(true) : showMenu($("#p-picker"), $("#p-context"))));
+$("#p-filter-btn").addEventListener("click", () => (openMenu && openMenu.panel.id === "filter-panel" ? closeMenu(true) : showMenu($("#filter-panel"), $("#p-filter-btn"))));
+$("#p-search-btn").addEventListener("click", () => {
+  psearchOpen = $("#p-search-row").hidden;
+  $("#p-search-row").hidden = !psearchOpen;
+  $("#p-search-btn").setAttribute("aria-expanded", String(psearchOpen));
+  if (psearchOpen) $("#p-search").focus();
+});
+$("#p-sheet-back").addEventListener("click", (e) => { if (e.target === e.currentTarget) clearSelection(true); });
+// the sheet is modal: Tab stays inside it
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Tab" || $("#p-sheet-back").hidden || !isPhone()) return;
+  const sheet = $("#p-sheet"), f = [...sheet.querySelectorAll("button, a[href], input, select")].filter((n) => n.offsetParent);
+  if (!f.length) return;
+  const inside = sheet.contains(document.activeElement);
+  if (e.shiftKey && (!inside || document.activeElement === f[0])) { e.preventDefault(); f[f.length - 1].focus(); }
+  else if (!e.shiftKey && (!inside || document.activeElement === f[f.length - 1])) { e.preventDefault(); f[0].focus(); }
+});
+// "Open the full table": the grid on a phone (table=1 in the URL; Back returns to the list)
+$("#p-full").addEventListener("click", (e) => {
+  e.preventDefault();
+  G.table = true;
+  commit();
+  if (current) renderPhone(current.grid);
+  pinHeader();
+  window.scrollTo(0, 0);
+});
+
 async function redraw(replace) {
   const grid = await loadSubcommittee(G.sc);
   settle(grid);
@@ -2393,6 +2873,7 @@ async function showCompare(want, replace = true) {
   try {
     if (!scNames) {
       await loadFeatures();
+      applyLayout();
       const list = await source.subcommittees();
       scNames = list.subcommittees;                 // stored codes (CJS, LHHS); the option shows the display name
       scLabels = list.names || {};
@@ -2429,17 +2910,23 @@ $("#sc").addEventListener("change", () => {
   G.sc = $("#sc").value; G.agency = ""; open = new Set(); SEL = null;
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
                 cols: G.reqcol ? "request" : "", status: G.status, search: G.search, review: G.review ? "1" : "",
-                minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0" }, false);
+                minpct: G.minPct, mink: G.minK, drafts: G.drafts ? "" : "0",
+                pstage: G.pstage == null ? "" : STAGE_WORD[G.pstage], table: G.table ? "1" : "" }, false);
 });
 for (const b of document.querySelectorAll("#view-switch button")) b.addEventListener("click", () => { G.grid = b.dataset.grid; redraw(); });
 let searchTimer = null;
-$("#search").addEventListener("input", () => {
-  G.search = $("#search").value;
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => { if (current) { renderBody(); commit(true); } }, 120);
-});
+// Search: the control row's box and the phone's are one control
+for (const box of [$("#search"), $("#p-search")]) {
+  box.addEventListener("input", () => {
+    G.search = box.value;
+    for (const other of [$("#search"), $("#p-search")]) if (other !== box) other.value = G.search;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => { if (current) { renderBody(); commit(true); } }, 120);
+  });
+}
 for (const b of document.querySelectorAll(".tabs button")) {
   b.addEventListener("click", () => {
+    setNav(false);
     if (b.dataset.view === "compare") {
       if (scNames && G.sc) { showView("compare"); history.pushState(null, "", compareURL()); pinHeader(); }
       else showCompare({}, false);
@@ -2462,7 +2949,7 @@ function route() {
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "show", "density", "cols",
                                    "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct",
-                                   "amt", "timing", "type"].map((k) => [k, params.get(k)]));
+                                   "amt", "timing", "type", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
