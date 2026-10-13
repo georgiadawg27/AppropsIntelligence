@@ -1,5 +1,18 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-3b: Exclude earmarks and the nondefense column (2026-10-13)
+
+- Page only (web/index.html, docs/index.html as the export writes it). BUILT gains `exclude_earmarks` and `nondefense`.
+- Filter › Advanced "Exclude earmarks (CDS / CPF)": every printed figure reads `views_excluding_earmarks.<basis>` (printed
+  included) with UI-3's tokens; chip "Earmarks excluded"; URL `earmarks=excl`; label/overview/panel add "· excl.
+  earmarks". The source panel lists the earmark components the view used (amount, document, page or statute location)
+  and the published result, under the view figure.
+- View › Columns "Nondefense" (URL `cols=nondefense`), after Defense portion: the lead stage's `views_nondefense` for the
+  basis in view; empty with the reason on hover where not computable. Exclude earmarks doesn't change it.
+- Tests: tests/test_compare.py `ExcludeEarmarks` (5); test 12 and the filter-panel test now expect both controls.
+- SAMHSA HSPS FY2026 Senate: its earmark (CMP-LHHS-1326, 54,611, S.Rept. 119-55 p.436) was a tagging miss fixed in D-2
+  (#67); after merging main, the test asserts the excluding-earmarks figure 121,255 and that the panel lists the earmark.
+- Open: the panel names SRC-PLAW-119PUBL75 by its ID (web/documents.js has no label for it), as the UI-3 component list does.
 ## D-2: request-stage components and the document-dependent D-1 items (2026-10-13, this PR)
 
 Start here. Rules: `reference/ACCOUNTING_RULES.md`; owner decisions: `reference/review/accounting/decisions-D2.md`

@@ -58,7 +58,7 @@ There are no tiles above the grid: the headline figures live in the overview pan
 - Its lines follow, indented, each on a white row with a 2 px rail (`#b9c6dc`) in the name column joining them to the total. Line names are 13 px regular; a name that opens the account panel uses the link style (navy `#16325f`, light underline offset 3 px; owner, 2026-10-12, #59), otherwise `#3a4150`; line figures 13 px regular `#4a5160`. They must look visibly subordinate to the bold total they add up to.
 - Sub-groups inside an agency (e.g. "Proposed in the FY2026 request", "Appropriated mandatory") are small caps labels on the rail. "Appropriated mandatory" depends on `budget_class` (section 9).
 - **Class tags** (`budget_class`; owner, 2026-10-12, #61). A line's class for the year is its enacted-basis record, else its request-basis record (a proposed account). A line whose class is mandatory sits under "Appropriated mandatory" in its agency (a line outside an agency gets a "mandatory" tag). A mixed line gets "incl. mandatory" only when a `mandatory_portion` component is tagged on its figure at the lead stage; a mixed line with none tagged counts as discretionary (ACCOUNTING_RULES) and gets no tag. A mixed line's mandatory portion is read at the lead stage (the stage the grid leads with for the year in view), not at other stages of the year. An agency gets "incl. mandatory" when it holds such a line in view. FY2026 Labor-HHS: HRSA, CDC, CMS, ACF and OS. The hover names each line behind the tag and its mandatory amount, e.g. "Vaccine Injury Compensation Program Trust Fund: mandatory portion 272,062" (a mandatory account: its whole printed figure); portions are listed, never added. A provisional class has a dashed tag outline (a mandatory line under the sub-group gets a "provisional" tag), and the footer legend says "dashed tag = provisional budget class".
-- **Defense portion column** (View › Columns, `defense_split`): the lead stage's `defense_portion` amount where one is tagged, a button to the figure's source; empty where none is tagged (untagged is not zero). Nondefense is a view the data doesn't publish yet; it stays hidden behind the `nondefense` flag (owner, #61).
+- **Defense portion column** (View › Columns, `defense_split`): the lead stage's `defense_portion` amount where one is tagged, a button to the figure's source; empty where none is tagged (untagged is not zero). **Nondefense column** (View › Columns, `nondefense`; UI-3b), right after Defense portion: the lead stage's published `views_nondefense` for the Amount basis and timing in view (UI-0b, #62), a button to the figure's source. Empty where the view is not computable, the reason on hover; never zero. Exclude earmarks does not change it (no view takes both out).
 
 **Cell states** (from the data; no new ones):
 
@@ -130,9 +130,14 @@ A dialog under the button: Agency (select), Account type (All · Discretionary �
 
 Adopted in UI-3 (owner, 2026-10-12, #61):
 - The basis definitions follow `reference/ACCOUNTING_RULES.md` as `accounting.BASES` applies it; Program level adds transfers in and trust-fund limitations only (no fees, no transfers out; owner decision on #57).
-- Exclude earmarks is hidden behind its own flag, `exclude_earmarks` (false until UI-0b publishes a view that leaves earmarks out); the page never computes one.
+- Exclude earmarks is behind its own flag, `exclude_earmarks` (true since UI-0b, #62; built in UI-3b); the page never computes one.
 - Under a basis other than As printed, the units-and-basis label adds the timing: "$ thousands · all appropriations · advances when available".
 - Under such a basis, the overview shows a total only where the data marks it checked, otherwise "not checked (n accounts)"; the figure-source panel adds the view, the printed headline, each component (type, amount, source) and the arithmetic (the printed figure, the components the view used, "=" the published amount).
+
+Adopted in UI-3b (UI-0b #62):
+- "Exclude earmarks (CDS / CPF)" sits in Advanced after the advance timing. On, every printed figure shows its published `views_excluding_earmarks` for the basis and timing in view, As printed included, with the UI-3 tokens (`excl.`, `n/a` with the reason, `not checked`). The chip reads "Earmarks excluded"; the URL carries `earmarks=excl`; the units-and-basis label, the overview and the panel add "· excl. earmarks"; the Advanced summary reads "earmarks excluded".
+- With it on, the figure-source panel adds "Earmarks taken out (CDS / CPF)": each earmark component the published view used (amount, document, page, or the statute or bill location where the component has no page), then the published result. The page adds nothing up.
+- The URL carries the nondefense column as `cols=nondefense`.
 
 ### 5.7 View menu, Share, Export
 - **View**: Units ($ thousands · $ millions), Density (Comfortable · Compact), Columns (Change vs FY2026 request), Expand all / Collapse all, Reviewer mode.
@@ -207,8 +212,8 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Amount basis, timing | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
-| Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | data ready (UI-0b #62); page controls in UI-3b |
-| Nondefense (`nondefense`) | a published nondefense figure per cell | data ready (UI-0b #62); page controls in UI-3b |
+| Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | ready (UI-0b #62, UI-3b) |
+| Nondefense (`nondefense`) | a published nondefense figure per cell | ready (UI-0b #62, UI-3b) |
 | Watch | browser storage only; no alerts or email | later (UI-6) |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)
