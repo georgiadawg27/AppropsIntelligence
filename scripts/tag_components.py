@@ -25,8 +25,8 @@ Six sources, in this order (a later one never records money an earlier one alrea
   mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2): PSSF's section 436
                    amount (auto_text from the bill or law text; appendix_text from the request's language) and
                    EEOICP (report_text: the report states the program's funds are mandatory) -> mandatory_portion
-  auto_text        AUTO_CELLS: the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026) and the component backfill (Labor-HHS
-                   and CJS FY2017-FY2023), House, Senate and Enacted: each amount in
+  auto_text        AUTO_CELLS: the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026), the component backfill (Labor-HHS
+                   and CJS FY2017-FY2023), House, Senate and Enacted, and FY2027 House (D-1): each amount in
                    the headline's own bill or law paragraph, read by the phrase rules below
   carried_forward  Labor-HHS FY2025 Enacted (the full-year CR, P.L. 119-4): the FY2024 Enacted components continue,
                    except what an anomaly naming the account changes (CR_ANOMALIES) or the CR ends (earmarks, sec. 1111)
@@ -70,7 +70,10 @@ PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | 
 # The component backfill (owner, 2026-10-12): the same phrase rules over Labor-HHS and CJS FY2017-FY2023, every stage
 # whose bill or law text we hold. AUTO_CELLS are the cells auto_text reads and measure_reconcile checks in full.
 BACKFILL = {(sc, fy, st) for sc in ("LHHS", "CJS") for fy in range(2017, 2024) for st in TEXT_STAGES}
-AUTO_CELLS = PILOT | BACKFILL
+# FY2027 House (owner, D-1 follow-up, 2026-10-12): the reported bills' text is held (H.R. 9260 Labor-HHS, H.R. 8845
+# CJS). FY2027 Senate and Enacted hold no figures.
+FY2027_HOUSE = {("LHHS", 2027, "House Reported"), ("CJS", 2027, "House Reported")}
+AUTO_CELLS = PILOT | BACKFILL | FY2027_HOUSE
 CR_YEAR = ("LHHS", 2025, "Enacted")
 # P.L. 119-4 div. A (the FY2025 full-year CR) anomalies that name an account we hold -> (the section, the
 # components its text changes, the components its text states in their place). Every other component of the account
@@ -144,6 +147,10 @@ CAP_ADJUSTMENT = re.compile(r"is additional new budget authority specified for p
 CURES = re.compile(r"section 1001\(b\)\(4\) of the 21st Century Cures Act", re.I)
 PRIF = re.compile(r"from the 10-year Pediatric Research Initiative Fund", re.I)
 TO_OIG = re.compile(r"transferred to and merged with the appropriation for the\W{0,3}Office of Inspector General", re.I)
+# an evaluation tap worded 'in addition to amounts provided herein, $X is available to this appropriation, for the
+# purposes under this heading, from amounts provided pursuant to section 241' (S. 3062, CDC FY2022 Senate; D-1). The
+# held phrase window may end inside 'pursuant', so the source is named only when '241' is printed in it.
+EVAL_TAP = re.compile(r"^\W*is available to this appropriation\b[^$;:]{0,80}?\bfrom (?:amounts|funds) provided", re.I)
 # phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported
 NOT_COMPONENT = [
     ("set-aside", re.compile(r"shall be for Indian tribes|amounts required to be reserved|set[- ]aside", re.I), "both"),
@@ -151,6 +158,11 @@ NOT_COMPONENT = [
      "before"),
     ("program table", re.compile(r"for the purposes and in the amounts specified in the table", re.I), "after"),
     ("sub-allocation", THIS_HEADING, "after"),
+    # 'of the amounts provided under this heading from amounts available under section 241 of the PHS Act, $6,800,000
+    # shall be available to carry out evaluations' (OS-GDM): part of the heading's section 241 amount, already tagged
+    # with it (D-1)
+    ("sub-allocation", re.compile(r"of the amounts provided under this heading from amounts available under section "
+                                  r"241\b[^$]*$", re.I), "before"),
     ("cap-adjustment base", re.compile(r"is provided to meet the terms of section 251\(b\)\(2\)\(C\)\(ii\)", re.I),
      "after"),
 ]
@@ -224,6 +236,9 @@ def classify(a):
         return "transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", PRIF.search(seg_a).group(0)
     if TO_OIG.search(seg_a):
         return "transfer_out", "", "", "transferred to and merged with the appropriation for the Office of Inspector General"
+    if EVAL_TAP.search(seg_a):
+        return ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)" if "241" in seg_a
+                else "not named in the phrase", "is available to this appropriation ... from amounts provided")
     t = TRANSFER.search(both)
     if t and THIS_HEADING.search(seg_a):
         return None                     # part of this heading's own amounts, not a transfer
@@ -554,6 +569,12 @@ def autotag(data, heads, held, report):
                                         # Directed Spending' is no heading of HRSA's)
             x = next(x for x in p["amounts"] if x["amount"] == amt)
             cl = classify(x)
+            if cl is None and main is not None and main["amount"] + amt == o["amount"]:
+                # the headline prints the paragraph's amount plus this one (OS-GDM FY2023 Senate: $565,394,000 and
+                # sec. 243's additional $350,000,000 = $915,394,000): the headline's own appropriation (D-1)
+                if LOOKS_LIKE.search(" ".join(segments(x))):
+                    report["not_a_component"]["the headline's own appropriation"] += 1
+                continue
             if cl is None:
                 report["untagged"].append({"observation_id": oid, "document": doc, "where": w, "amount": amt,
                                            "phrase": x["phrase"] + " [a general provision's additional amount; "
