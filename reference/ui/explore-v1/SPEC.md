@@ -13,7 +13,7 @@ This is the design the owner approved for the Explore workspace (the subcommitte
 2. **Blank is not zero.** Each non-value cell shows its state (section 4) and is never used in a sum, difference or percentage. A **printed zero is a figure**: it counts in dollar differences (AHRQ's FY2026 request of 0 is −369,000 vs FY2025 enacted). A percentage from a zero base shows "new" (or "—" when both are zero). A confirmed absence with no printed figure is not used.
 3. **Every figure is one click from its source** (section 5.1).
 4. **Colour has one meaning each** (section 8): blue fill = hover only; yellow = selection only; green/orange = direction of change only.
-5. Keep the standing behaviour: a window-height scroll box, sticky header rows, a sticky first column, an always-visible bottom scrollbar.
+5. Keep the standing behaviour: one vertical scrollbar, the page's own (the grid is never a scroll box); header rows pinned under the top of the window; the account column pinned when the grid moves sideways; a pinned horizontal bar at the window's bottom edge whenever the grid is wider than its space; no figure ever clipped. (Owner decision, 2026-10-13, UI-2c; this replaces the window-height scroll box and its always-visible bottom scrollbar from UI-2b.)
 
 ## 2. Screenshots (the states every PR reproduces)
 
@@ -37,16 +37,26 @@ Top to bottom:
 2. **Control row** (white band): Search (grows), Subcommittee, Fiscal year (**default: the current fiscal year**, FY2027 as of Oct 1, 2026; owner decision 2026-10-12; the screenshots use FY2026 only because it shows every stage), Compare (three joined buttons: Stages · Two years · Enacted history), Filter button with a count badge. Nothing else is always visible.
 3. **Applied chips** (only when something is applied): `Applied: [Agency: National Institutes of Health ×] … Clear all`.
 4. **Title row**: eyebrow `LABOR-HHS-EDUCATION · TITLE II · FY2026` (condensed caps); heading = department name, or the agency name when an agency filter is applied. Right side: a units-and-basis label (`$ thousands · as printed`), then View ▾, Share, Export.
-5. **Workspace**: the grid (flex 999 1 600px) and the docked side panel (flex 1 1 340px) side by side, same height. Below ~980 px the panel wraps under the grid. The panel never overlays the grid.
-6. **Footer legend** (one line): units · "click an account name for details · click a figure for its source" · `—` not funded · `missing` · blank = outside the account's life.
+5. **Workspace**: the grid (flex 1 1 600px) and the docked side panel (300 px) side by side, tops aligned, each as tall as its content. Below ~980 px the panel wraps under the grid at full width. The panel never overlays the grid.
+6. **Definitions and data sources** (one line, below the grid's last row, expanding on click; UI-2c). Inside: the legend (units · "click an account name for details · click a figure for its source" · `—` not funded · `missing` · blank = outside the account's life), Reviewer mode's mark key and counts, stage notes and the provenance line.
 
-Adopted in UI-2b (owner decision, 2026-10-13): the grid box (and the docked panel beside it) fills the window from below the title row to the window's bottom edge, and follows window resizes; the sticky header rows, sticky first column and the box's own bottom scrollbar are kept. The legend, definitions and provenance sit below it, reached by scrolling the page.
+~~Adopted in UI-2b (owner decision, 2026-10-13): the grid box (and the docked panel beside it) fills the window from below the title row to the window's bottom edge, and follows window resizes; the sticky header rows, sticky first column and the box's own bottom scrollbar are kept. The legend, definitions and provenance sit below it, reached by scrolling the page.~~ Replaced by UI-2c below.
+
+Adopted in UI-2c (owner decisions, 2026-10-13; these replace the UI-2b window-height scroll box):
+- **One vertical scrollbar, the page's own.** The grid is not a scroll box: it shows every row at full length, and the definitions come after its last row, so they appear only when the page is scrolled to the bottom. Neither the grid nor the panel has vertical overflow.
+- **Pinned headers.** The grid's two header rows stick under the top of the window while the page scrolls. The account-name column stays pinned on the left when the grid moves sideways.
+- **Sideways.** When the grid is wider than its space, a thin horizontal scrollbar is pinned to the bottom of the window (inside the grid's box, so it rests at the grid's bottom edge once that is on screen), synced with the grid, and gone when not needed. The grid is not an overflow container in either axis (`overflow-x: clip`), so the sticky headers keep working; the bar, a sideways wheel or trackpad swipe over the grid, and keyboard focus move it.
+- **Side panel**: 300 px wide at every desktop width (≥ 980 px), its type sized to fit (title 17 px, headline figure 24 px, overview figures 20 px); it scrolls with the page (no sticky, no scrollbar of its own). **Hide panel / Show panel** (title row, before View) gives the grid the full width; the choice is in the URL (`panel=hidden`). Selecting a figure or an account while hidden shows the panel again.
+- **Scrollbars** are slim and muted (`scrollbar-width: thin`, `scrollbar-color`, and matching `::-webkit-scrollbar`), since Windows draws them full size.
+- The phone layout (section 6) is unchanged.
 
 There are no tiles above the grid: the headline figures live in the overview panel.
 
 ## 4. The grid
 
 **Columns (Stages mode).** Account | FY2025 Enacted (CR) | FY2026 Request | House | Senate | Enacted | Change vs FY2025 enacted. "Change vs FY2026 request" is an extra column under View › Columns, off by default. Two header rows: years (FY2026 spans its four stages; the change header reads "Change vs"), then stage names. Column template: `minmax(250px, 2.2fr) repeat(5, minmax(98px, 1fr)) minmax(112px, 1fr)`.
+
+**Never clip a figure** (owner decision, 2026-10-13, UI-2c). Each figure column's minimum width is the larger of the template's minimum and its widest figure in the current view (tabular numerals, the total row's bold and expanded agencies' weight included, measured after each render and resize). The account-name column gives way first: below 250 px, down to 200 px, its names wrap. Beyond that the grid is wider than its space and moves sideways under the pinned bar (section 3); digits are never cut.
 
 **Default rows** (collapsed):
 1. Total band: `Total, Title II (printed)`. With an agency filter it reads `Total, Title II (printed, all accounts)` and stays as printed; filtering never re-sums.
@@ -249,6 +259,7 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 13. `phone_layout`: at 390 × 844 there is no grid; the stage switch is present; tapping NCI opens the sheet with five stages and their sources.
 14. `keyboard_and_focus`: every control is reachable by Tab; dialogs and the sheet return focus on close.
 15. `default_year_and_lead_stage`: with no `fy` in the URL the page opens on FY2027. For Labor-HHS the change header reads "House vs FY2026 enacted"; the Senate and Enacted columns show `n/c` and `n/e`; the overview's first figure is the House total 1,606,033,805 and its change is +52,771,448 (+3.4%). Switching to FY2026 restores the Enacted layout.
+16. `page_scrolling` (UI-2c, class `PageScroll`): no element other than the page scrolls vertically (the grid and panel have no vertical overflow); the header rows stay in view after scrolling the page 1,000 px; the account column stays in view after the grid moves sideways; the pinned horizontal bar appears only when the grid is wider than its space, and scrolls the grid; the panel is 300 px, and Hide / Show panel survives a reload; at 1280 × 720, 1366 × 768, 1440 × 900 and 1536 × 864 (device scale 1.25) no figure overflows its cell (`scrollWidth <= clientWidth`) in the Title II and CMS rows, FY2026 and FY2027, Stages and Enacted history; the definitions sit below the last row.
 
 ## 11. Screenshot comparison in every UI PR
 

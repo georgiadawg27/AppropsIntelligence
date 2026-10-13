@@ -506,3 +506,22 @@ docs/CNAME (custom domain, added on main by the owner, 64413f7): `web/CNAME` hol
 newline) and `export_static.export()` writes it into docs/ beside `.nojekyll`, so `test_committed_docs_are_current`
 sees it as export output. The domain and Pages settings are unchanged; to change the domain, edit web/CNAME and
 re-export.
+
+## UI-2c: Page scrolling and laptop widths (owner decisions, 2026-10-13)
+Recorded in SPEC §1 rule 5, §3 (UI-2c block; the UI-2b window-height box is struck through), §4 ("Never clip a
+figure") and §10 item 16. Built in web/index.html:
+- `#grid-wrap` is `overflow-x: clip` (no scroll container in either axis), so `thead th` stick to the window top.
+  Sideways movement is `--sx`: the table shifts left by it (`position: relative; left`), the `.acct` cells shift back
+  (`transform`, sticky `left` set to auto). `#grid-hbar` (sticky bottom, inside the box) drives `--sx`; a sideways wheel
+  over the grid and keyboard focus (focusin) also move it. `syncBar` hides the bar when the table fits.
+- `fitColumns` (called from `pinHeader`, which `renderBody`, resize and fonts.ready call): measures each figure
+  column at 1px (cell scrollWidth = content width) including header row 2, then shares the box width as the template's
+  fr units with minimum = max(98/112 floor, widest figure). Account column 250px, giving way to `ACCT_MIN` 200px.
+- Side panel 300px (`flex: 0 0 300px`; full width under the grid below 980px), type 17/24/20px scoped to `.sidepanel`
+  (phone sheet keeps SPEC §7 sizes). `#panel-toggle` / `G.panelOff` / URL `panel=hidden`; `select()` re-shows it.
+- Footers moved inside `<details id="definitions">` ("Definitions and data sources"); testids unchanged. Tests open it
+  with `GridBrowser.definitions()`.
+- Tests: new class `PageScroll` in tests/test_compare.py; `test_grid_box_fills_the_window` removed (behaviour retired),
+  test_layout / header seam / first-screen / footer / reviewer tests updated.
+Open: touch-swipe sideways on the grid is not wired (the bar works on touch); only the phone's "Open the full table"
+would use it.
