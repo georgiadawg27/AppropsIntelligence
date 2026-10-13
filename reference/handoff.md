@@ -526,6 +526,10 @@ figure") and §10 item 16. Built in web/index.html:
 Touch (owner, 2026-10-13): a wide grid has `touch-action: pan-y pinch-zoom` (`.tablebox.wide`, set in `syncBar`);
 touch pointer events on it move the grid through `setSX`, the bar's own path, so grid and bar keep one position.
 Vertical swipes stay the browser's (it cancels the pointer). No click guard: a moved touch is not a tap in Chrome.
+Fonts: `fitColumns` measures in the loaded fonts, so `pinHeader` also runs on every `document.fonts` "loadingdone"
+(a weight first used after the first render loads after `fonts.ready` resolved; CI saw stale widths). Browser tests
+wait for fonts and a frame (`GridBrowser.settle`, called by `open` and the `go` helpers) before reading layout;
+`test_columns_refit_when_a_font_loads_late` covers it.
 Test: `test_touch_swipe_moves_the_grid_with_the_bar` (raw CDP touch events; synthesizeScrollGesture doesn't scroll
 the page headless). Owner approved the departures: panel full width under ~980px, 200px account minimum, 17/20px
 panel type, definitions closed by default and not opened by Reviewer mode.

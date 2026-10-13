@@ -2402,7 +2402,9 @@ function pinHeader() {
   if (h) $("#compare-grid").style.setProperty("--head1", h + "px");
 }
 window.addEventListener("resize", pinHeader);
-if (document.fonts) document.fonts.ready.then(pinHeader);
+// widths are measured in the loaded fonts: refit after every font load, including a weight first used after the
+// first render (fonts.ready may already have resolved by then)
+if (document.fonts) { document.fonts.ready.then(pinHeader); document.fonts.addEventListener("loadingdone", pinHeader); }
 $("#grid-hbar").addEventListener("scroll", () => setSX($("#grid-hbar").scrollLeft));
 // a touchscreen swipe sideways on the grid moves it through setSX, the same path as the bar, so the two never drift
 // apart. touch-action: pan-y leaves vertical pans to the browser (it cancels the pointer when it takes one). A touch

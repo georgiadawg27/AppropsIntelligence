@@ -542,6 +542,12 @@ class GridBrowser(CompareTest):
     def open(self, where="static", query="?view=compare&sc=CJS&fy=2026"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
+
+    def settle(self, page=None):
+        """Wait for every font load in flight and one frame: the grid's column widths are measured in the loaded fonts
+        (UI-2c), so layout is read only once they have settled."""
+        (page or self.page).evaluate("document.fonts.ready.then(() => new Promise((r) => requestAnimationFrame(() => r())))")
 
     def menu(self, action, selector, *args):
         """A control in the View menu (SPEC 5.7): open the menu, use the control, close it with Esc."""
@@ -1446,6 +1452,7 @@ class ExploreV1(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def total(self):
         return self.lhhs["titles"][0]["total"]
@@ -2303,6 +2310,7 @@ class PageScroll(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def test_only_the_page_scrolls_vertically(self):
         for size in ((1440, 900), (1280, 720)):
@@ -2476,12 +2484,29 @@ class PageScroll(GridBrowser):
                         with self.subTest(size=(w, h), fy=fy, grid=grid):
                             page.goto(self.urls["static"] + f"?sc=LHHS&fy={fy}&grid={grid}&open={self.CMS}")
                             page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-                            page.evaluate("document.fonts.ready")
+                            self.settle(page)
                             self.assertGreater(page.locator(f"tr[data-account={self.CMS}]").count(), 0)
                             self.assertGreater(page.locator("#compare-grid tr.title").count(), 0)
                             self.assertEqual(page.evaluate(cut, cms), [])
             finally:
                 ctx.close()
+
+    def test_columns_refit_when_a_font_loads_late(self):
+        # a font that finishes loading after the first render (here a much wider face for the figures' weight)
+        # refits the columns, so no figure is cut by widths measured before it arrived
+        self.page.set_viewport_size({"width": 1280, "height": 720})
+        self.go("?sc=LHHS&fy=2026")
+        cut = """() => [...document.querySelectorAll('#compare-grid td.num')].filter((td) => td.scrollWidth > td.clientWidth).length"""
+        self.assertEqual(self.page.evaluate(cut), 0)
+        before = self.page.eval_on_selector_all("#compare-grid col", "cs => cs.map((c) => c.style.width)")
+        self.page.evaluate("""async () => {
+            const f = new FontFace('IBM Plex Sans', 'local("DejaVu Sans Mono"), local("Liberation Mono"), local("Courier New")', {weight: '500'});
+            document.fonts.add(f);
+            await f.load();
+        }""")
+        self.settle()
+        self.assertNotEqual(self.page.eval_on_selector_all("#compare-grid col", "cs => cs.map((c) => c.style.width)"), before)
+        self.assertEqual(self.page.evaluate(cut), 0)
 
     def test_definitions_below_the_last_row(self):
         self.go("?sc=LHHS&fy=2026")
@@ -2860,6 +2885,7 @@ class AmountBasis(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def text(self, aid, fy, stage):
         return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
@@ -3095,6 +3121,7 @@ class ExcludeEarmarks(GridBrowser):
     def go(self, query="", where="static"):
         self.page.goto(self.urls[where] + query)
         self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
 
     def text(self, aid, fy, stage):
         return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
