@@ -14,6 +14,7 @@ import http.server
 import json
 import multiprocessing
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -165,6 +166,17 @@ class Export(StaticTest):
         static = (self.out / "index.html").read_text()
         self.assertEqual(static, live.replace("<head>", "<head>\n" + E.DATA_META, 1))
         self.assertEqual((self.out / "match.js").read_text(), (ROOT / "web" / "match.js").read_text())
+
+    def test_brand_files_are_exported_and_the_icons_resolve(self):
+        # web/brand/ is copied byte for byte, and every icon the page's <head> links to is in the export
+        src = {p.name: p.read_bytes() for p in (ROOT / "web" / "brand").iterdir() if p.suffix in (".svg", ".png")}
+        got = {p.name: p.read_bytes() for p in (self.out / "brand").iterdir()}
+        self.assertEqual(got, src)
+        page = (self.out / "index.html").read_text()
+        hrefs = re.findall(r'<link rel="(?:icon|apple-touch-icon)" href="([^"]+)"', page)
+        self.assertEqual(len(hrefs), 3)
+        for href in hrefs:
+            self.assertTrue((self.out / href).is_file(), href)
 
     def test_commit_date_does_not_depend_on_the_git_version(self):
         # git 2.55 (the Actions runner) renders %cI as ...Z, older git as

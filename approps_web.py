@@ -50,6 +50,8 @@ PAGE = ROOT / "web" / "index.html"
 ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8",
           "documents.js": "text/javascript; charset=utf-8"}
 FONTS = PAGE.parent / "fonts"                               # IBM Plex Sans, self-hosted (SIL OFL)
+BRAND = PAGE.parent / "brand"                               # the logo set: lockups, marks, icons, favicons
+BRAND_TYPES = {".svg": "image/svg+xml", ".png": "image/png"}
 
 
 def search(db, q, agency=None):
@@ -153,6 +155,12 @@ def make_handler(db):
                     font = FONTS / name
                     if "/" not in name and name.endswith(".woff2") and font.is_file():
                         return self.send(HTTPStatus.OK, font.read_bytes(), "font/woff2")
+                    return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
+                if url.path.startswith("/brand/"):
+                    name = url.path[len("/brand/"):]
+                    asset = BRAND / name
+                    if "/" not in name and asset.suffix in BRAND_TYPES and asset.is_file():
+                        return self.send(HTTPStatus.OK, asset.read_bytes(), BRAND_TYPES[asset.suffix])
                     return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
                 if url.path == "/api/features":
                     return self.json(HTTPStatus.OK, features(db))

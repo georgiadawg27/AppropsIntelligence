@@ -31,7 +31,8 @@ that answers the same questions as approps_web.py without a server.
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map), web/documents.js (the display-only
-    document short names) and web/fonts/ (IBM Plex Sans, SIL OFL).
+    document short names), web/fonts/ (IBM Plex Sans, SIL OFL) and web/brand/
+    (the logo set and favicons).
   - With --publish-workbook (CI's export job on main, the only writer of
     this file), publishes the built workbook as
     docs/Approps_Pilot_Schema_Loaded.xlsx (the page's "Download workbook"
@@ -241,6 +242,18 @@ def export(workbook, out, download=True):
             if not (fonts / src.name).exists() or (fonts / src.name).read_bytes() != src.read_bytes():
                 (fonts / src.name).write_bytes(src.read_bytes())
     for stale in fonts.iterdir():
+        if stale.name not in keep:
+            stale.unlink()
+    # the logo set and favicons (web/brand/), byte for byte
+    brand = out / "brand"
+    brand.mkdir(parents=True, exist_ok=True)
+    keep = set()
+    for src in sorted(W.BRAND.iterdir()):
+        if src.suffix in W.BRAND_TYPES:
+            keep.add(src.name)
+            if not (brand / src.name).exists() or (brand / src.name).read_bytes() != src.read_bytes():
+                (brand / src.name).write_bytes(src.read_bytes())
+    for stale in brand.iterdir():
         if stale.name not in keep:
             stale.unlink()
     if built and download:
