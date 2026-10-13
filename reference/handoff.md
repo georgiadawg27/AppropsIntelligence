@@ -523,5 +523,9 @@ figure") and §10 item 16. Built in web/index.html:
   with `GridBrowser.definitions()`.
 - Tests: new class `PageScroll` in tests/test_compare.py; `test_grid_box_fills_the_window` removed (behaviour retired),
   test_layout / header seam / first-screen / footer / reviewer tests updated.
-Open: touch-swipe sideways on the grid is not wired (the bar works on touch); only the phone's "Open the full table"
-would use it.
+Touch (owner, 2026-10-13): a wide grid has `touch-action: pan-y pinch-zoom` (`.tablebox.wide`, set in `syncBar`);
+touch pointer events on it move the grid through `setSX`, the bar's own path, so grid and bar keep one position.
+Vertical swipes stay the browser's (it cancels the pointer). No click guard: a moved touch is not a tap in Chrome.
+Test: `test_touch_swipe_moves_the_grid_with_the_bar` (raw CDP touch events; synthesizeScrollGesture doesn't scroll
+the page headless). Owner approved the departures: panel full width under ~980px, 200px account minimum, 17/20px
+panel type, definitions closed by default and not opened by Reviewer mode.

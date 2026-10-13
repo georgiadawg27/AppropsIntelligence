@@ -2364,6 +2364,52 @@ class PageScroll(GridBrowser):
         self.assertEqual(self.page.eval_on_selector("#grid-hbar", "b => Math.round(b.scrollLeft)"), 100)
         self.assertEqual(name(), x0)
 
+    def test_touch_swipe_moves_the_grid_with_the_bar(self):
+        # a touchscreen swipe sideways on the grid itself moves it and the pinned bar together; a vertical swipe on
+        # the grid still scrolls the page and leaves the grid where it is; a tap still opens a figure's source
+        ctx = self.browser.new_context(viewport={"width": 1280, "height": 720}, has_touch=True)
+        page = ctx.new_page()
+        try:
+            page.goto(self.urls["static"] + "?sc=LHHS&fy=2026&grid=history")
+            page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            self.assertEqual(page.evaluate("getComputedStyle(document.querySelector('#grid-wrap')).touchAction"), "pan-y pinch-zoom")
+            cdp = ctx.new_cdp_session(page)
+
+            def swipe(x, y, dx, dy, steps=12):
+                cdp.send("Input.dispatchTouchEvent", {"type": "touchStart", "touchPoints": [{"x": x, "y": y}]})
+                for i in range(1, steps + 1):
+                    cdp.send("Input.dispatchTouchEvent", {"type": "touchMove", "touchPoints": [{"x": x + dx * i / steps, "y": y + dy * i / steps}]})
+                    page.wait_for_timeout(16)
+                cdp.send("Input.dispatchTouchEvent", {"type": "touchEnd", "touchPoints": []})
+                page.wait_for_timeout(200)
+
+            state = lambda: page.evaluate("""() => [parseFloat(getComputedStyle(document.querySelector('#grid-wrap')).getPropertyValue('--sx')),
+                Math.round(document.querySelector('#grid-hbar').scrollLeft), scrollY,
+                document.querySelector('tr[data-account=ACC-HHS-CMS-TOTAL] td.acct').getBoundingClientRect().left]""")
+            sx, bar, y, name = state()
+            self.assertEqual((sx, bar, y), (0, 0, 0))
+            # start the swipe on a figure: it moves the grid, and is not a tap on that figure
+            fig = page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] td[data-fy='2020'][data-stage=Enacted] button.fig").bounding_box()
+            swipe(fig["x"] + fig["width"] / 2, fig["y"] + fig["height"] / 2, -300, 0)
+            self.assertEqual(state()[:3], [300, 300, 0])               # the grid and the bar, together; the page stays
+            self.assertEqual(page.get_attribute("#side-panel", "data-mode"), "overview")
+            self.assertEqual(state()[3], name)                         # the account column stays put
+            swipe(700, 600, 0, -300)
+            sx, bar, y, _ = state()
+            self.assertEqual((sx, bar), (300, 300))                     # a vertical swipe doesn't move the grid ...
+            self.assertGreater(y, 200)                                 # ... and scrolls the page
+            swipe(700, 400, 120, 0)
+            self.assertEqual(state()[:2], [180, 180])
+            # the bar moved by hand moves the grid the same way (one position for both)
+            page.eval_on_selector("#grid-hbar", "b => { b.scrollLeft = 40; }")
+            page.wait_for_timeout(50)
+            self.assertEqual(state()[:2], [40, 40])
+            # a tap is not a swipe: it opens the figure's source
+            page.tap("tr[data-account=ACC-HHS-NIH-TOTAL] td[data-fy='2022'][data-stage=Enacted] button.fig")
+            self.assertEqual(page.get_attribute("#side-panel", "data-mode"), "source")
+        finally:
+            ctx.close()
+
     def test_pinned_bar_only_when_the_grid_is_wider_than_its_space(self):
         self.page.set_viewport_size({"width": 1280, "height": 720})
         self.go("?sc=LHHS&fy=2026")

@@ -166,6 +166,8 @@
   .tablebox { flex: 1 1 600px; min-width: 0; overflow-x: clip; overflow-clip-margin: 2px; background: var(--x-surface);
               border: 1px solid #dfe2e8; border-radius: 10px; }
   .tablebox .grid { position: relative; left: calc(-1 * var(--sx, 0px)); }
+  /* a wide grid takes sideways touch swipes itself; the browser keeps vertical panning (the page's scroll) and zoom */
+  .tablebox.wide { touch-action: pan-y pinch-zoom; }
   .tablebox .grid .acct { left: auto; transform: translateX(var(--sx, 0px)); }   /* stays put while the table moves */
   /* the pinned horizontal bar: sticks to the window's bottom edge while the grid is on screen; only when needed */
   .hbar { position: sticky; bottom: 0; z-index: 6; overflow-x: auto; overflow-y: hidden; height: 14px; background: rgba(246, 245, 241, 0.92);
@@ -2386,6 +2388,7 @@ function setSX(x) {
 function syncBar() {
   const table = $("#compare-grid"), wrap = $("#grid-wrap"), bar = $("#grid-hbar");
   bar.hidden = !wrap.offsetParent || table.offsetWidth <= wrap.clientWidth;
+  wrap.classList.toggle("wide", !bar.hidden);
   bar.firstElementChild.style.width = table.offsetWidth + "px";
   setSX(SX);
 }
@@ -2402,6 +2405,25 @@ function pinHeader() {
 window.addEventListener("resize", pinHeader);
 if (document.fonts) document.fonts.ready.then(pinHeader);
 $("#grid-hbar").addEventListener("scroll", () => setSX($("#grid-hbar").scrollLeft));
+// a touchscreen swipe sideways on the grid moves it through setSX, the same path as the bar, so the two never drift
+// apart. touch-action: pan-y leaves vertical pans to the browser (it cancels the pointer when it takes one). A touch
+// that moves past the tap slop is not a tap, so the browser sends no click: a swipe never opens a figure.
+let swipe = null;
+$("#grid-wrap").addEventListener("pointerdown", (e) => {
+  if (e.pointerType !== "touch" || $("#grid-hbar").hidden || e.target.closest("#grid-hbar")) return;
+  swipe = { id: e.pointerId, x: e.clientX, sx: SX, moved: false };
+});
+$("#grid-wrap").addEventListener("pointermove", (e) => {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  const dx = e.clientX - swipe.x;
+  if (Math.abs(dx) > 8) swipe.moved = true;
+  if (swipe.moved) setSX(swipe.sx - dx);
+});
+const endSwipe = (e) => {
+  if (!swipe || e.pointerId !== swipe.id) return;
+  swipe = null;
+};
+for (const t of ["pointerup", "pointercancel"]) $("#grid-wrap").addEventListener(t, endSwipe);
 // a sideways wheel or trackpad swipe (or Shift + wheel) over the grid moves it sideways; vertical scrolling stays the page's
 $("#grid-wrap").addEventListener("wheel", (e) => {
   const dx = e.deltaX || (e.shiftKey ? e.deltaY : 0);
