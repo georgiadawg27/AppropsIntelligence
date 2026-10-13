@@ -196,9 +196,9 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Export CSV | the shown rows | ready (UI-4) |
 | Phone list and sheet | same as grid and account panel | ready |
 | Filter › Advanced: change threshold, Include committee drafts, Show ended and reorganized accounts, Only figures pending review or flagged | cell states, `lifecycle`, verification status | ready (the Advanced section shows these now; the basis items join it when their flag is on) |
-| Amount basis, timing, Exclude earmarks | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
+| Amount basis, timing | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
-| Defense / nondefense column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
+| Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | hidden until UI-0b (views_excluding_earmarks, nondefense) |
 | Nondefense (`nondefense`) | a published nondefense figure per cell | hidden until UI-0b (views_excluding_earmarks, nondefense) |
 | Watch | browser storage only; no alerts or email | later (UI-6) |
