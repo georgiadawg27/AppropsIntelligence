@@ -1148,7 +1148,8 @@ class CompareBrowser(GridBrowser):
         self.assertNotIn("pilot", self.page.inner_text("#grid-title").lower())
         # the header bar: navy, the product name, Explore marked current
         self.assertEqual(self.page.locator(".appbar").evaluate("e => getComputedStyle(e).backgroundColor"), "rgb(22, 33, 58)")
-        self.assertEqual(self.page.inner_text(".appbar .brand"), "Appropriations Intelligence")
+        self.assertEqual(self.page.inner_text(".appbar .brand"), "Approps Intelligence")
+        self.assertEqual(self.page.locator(".appbar .brand .mark").count(), 1)
 
     def test_rules_and_bands(self):
         self.open("static", "?view=compare&sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
