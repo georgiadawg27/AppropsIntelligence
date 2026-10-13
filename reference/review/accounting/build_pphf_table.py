@@ -19,8 +19,16 @@ view prints in H.Rept. 116-450, whose table pages are images: its rows are the F
 2020 column (text layer). Each cell's account sums are checked against the comparative table (or, for the FY2017 House
 report, whose table pages are images, the narrative's 'in transfers from the PPH Fund' amount per account).
 
+FY2027 House (D-2): H.Rept. 119-696's allocation table (sec. 221 of H.R. 9260; PDF pp.265-266, text layer), the
+committee column. The table names the agency only; each activity's account is the one the comparative table prints
+its Fund line under (PDF pp.371-373 and 377, committee column), read from the page images (those table pages have no
+text layer): Immunization 696,933; Emerging and Zoonotic 67,000; Chronic Disease 438,442; Public Health Scientific
+Services 45,000; Environmental Health 51,000; CDC-Wide Activities 100,000; Mental Health 12,000 (thousands).
+
 Run locally (document_store/ is gitignored; it needs the report PDFs and pdftotext):
     python reference/review/accounting/build_pphf_table.py
+A document not in document_store/ (the committee drafts on appropriations.senate.gov and .house.gov, which some
+sessions cannot reach) keeps its rows from the committed pphf_table.csv unchanged, and the script says so.
 """
 
 import collections
@@ -99,6 +107,14 @@ ROWS = [
   ("Public Health and Scientific Services",P,"Data Modernization Initiative",150000000),
   (H,H,"Childhood Lead Poisoning",51000000),(W,W,"Preventive Health and Health Services Block Grants",160000000),
   (W,W,"Public Health Data Modernization",90000000),(M,M,"Garrett Lee Smith-Youth Suicide Prevention",12000000)]),
+ (2027,"House Reported","SRC-CRPT-119HRPT696",265,[
+  ("ACL",ALD,"Alzheimer's Disease Program",14700000),("ACL",ALD,"Chronic Disease Self-Management",8000000),
+  ("ACL",ALD,"Falls Prevention",5000000),("CDC",I,"Section 317 Immunization Grants",696933000),
+  ("CDC",E,"Epidemiology and Laboratory Capacity",55000000),("CDC",E,"Healthcare-Associated Infections",12000000),
+  ("CDC",C,"Tobacco",200000000),("CDC",C,"Heart Disease and Stroke",115312000),("CDC",C,"Diabetes",118130000),
+  ("CDC",C,"National Early Child Care Collaboratives",5000000),("CDC",P,"Public Health Data Modernization",45000000),
+  ("CDC",H,"Childhood Lead Poisoning",51000000),("CDC",W,"Public Health Infrastructure and Capacity",100000000),
+  ("SAMHSA",M,"Garrett Lee Smith—Youth Suicide Prevention",12000000)]),
  (2026,"Enacted","SRC-EXPL-LHHS-FY2026-ENACTED",245,[
   ("ACL",ALD,"Alzheimer's Disease Program",14700000),("ACL",ALD,"Chronic Disease Self-Management",8000000),
   ("ACL",ALD,"Elder Falls Prevention",5000000),("CDC",C,"Hospitals Promoting Breastfeeding",9750000),
@@ -125,11 +141,15 @@ COMPARATIVE = {  # per-account PPHF lines printed in the same document's compara
  (2026,"House Reported"): {I:699933000,E:45000000,C:417442000,P:185000000,H:51000000},
  (2026,"Senate Reported"): {I:554958000,E:52000000,C:340417000,P:150000000,H:51000000,W:250000000},
  (2026,"Enacted"): {I:596390000,E:52000000,C:448985000,H:51000000,W:250000000},
+ # read from the page images (PDF pp.371-373; the comparative table has no text layer)
+ (2027,"House Reported"): {I:696933000,E:67000000,C:438442000,P:45000000,H:51000000,W:100000000},
 }
 BILL = {(2024,"House Reported"):"SRC-BILLS-118HR5894IH",(2024,"Senate Reported"):"SRC-BILLS-118S2624RS",
         (2024,"Enacted"):"SRC-PLAW-118PUBL47",(2025,"House Reported"):"SRC-BILLS-118HR9029RH",
         (2025,"Senate Reported"):"SRC-BILLS-118S4942RS",(2026,"House Reported"):"SRC-BILLS-119HR5304RH",
-        (2026,"Senate Reported"):"SRC-BILLS-119S2587RS",(2026,"Enacted"):"SRC-PLAW-119PUBL75"}
+        (2026,"Senate Reported"):"SRC-BILLS-119S2587RS",(2026,"Enacted"):"SRC-PLAW-119PUBL75",
+        (2027,"House Reported"):"SRC-BILLS-119HR9260RH"}
+SECTION = {(2027,"House Reported"): "sec. 221"}    # every other ROWS cell: sec. 222
 
 
 def page(doc, p):
@@ -145,15 +165,32 @@ def find(doc, p, words, amount, tok, thousands=False):
                     line = line[line.find(tok):line.find(fmt(amount)) + len(fmt(amount))]
                 return q, re.sub(r"\.{3,}", " ... ", re.sub(r"\s{2,}", "  ", line.strip()))
     raise SystemExit(f"not found: {doc} p{p} {words} {amount}")
+def held(doc):
+    return (ROOT / "document_store" / f"{doc}.pdf").exists()
+with open(OUT) as f:
+    COMMITTED = list(csv.DictReader(f))
+def kept(fy, st, doc):
+    """The committed rows of a cell whose document is not in document_store/, unchanged."""
+    rows = [dict(r, fiscal_year=int(r["fiscal_year"]), page=int(r["page"]), amount=int(r["amount"]))
+            for r in COMMITTED if int(r["fiscal_year"]) == fy and r["stage"] == st and r["source_document_id"] == doc]
+    print(f"kept from the committed CSV ({doc} not in document_store/): FY{fy} {st}, {len(rows)} rows")
+    return rows
 out = []
 cdc = collections.Counter(); acct = collections.defaultdict(collections.Counter)
 for fy, st, doc, p, rows in ROWS:
+    if not held(doc):
+        for r in kept(fy, st, doc):
+            out.append(r)
+            if r["account_id"]:
+                acct[(fy, st)][next(k for k, v in ACCOUNT.items() if v == r["account_id"])] += r["amount"]
+        continue
     for printed_acct, acc_name, activity, amt in rows:
         q, line = find(doc, p, activity.replace("Alzheimer's","Alzheimer"), amt, printed_acct)
         acc = ACCOUNT[acc_name]
         out.append(dict(fiscal_year=fy, stage=st, source_document_id=doc, page=q, table="allocation",
                         account_printed=printed_acct, activity=activity, amount=amt, account_id=acc,
-                        bill_document_id=BILL[(fy,st)], bill_section="sec. 222", printed_line=line, read_from="text layer"))
+                        bill_document_id=BILL[(fy,st)], bill_section=SECTION.get((fy,st), "sec. 222"),
+                        printed_line=line, read_from="text layer"))
         if acc: acct[(fy,st)][acc_name] += amt
 fy, st, doc, rows = FY2024_ENACTED
 for acc_name, label, amt in rows:
@@ -257,6 +294,12 @@ def account_of(cells):
 
 
 for fy, st, doc, first, thousands, bill, sec in BACKFILL:
+    if not held(doc):
+        for r in kept(fy, st, doc):
+            out.append(r)
+            if r["account_id"]:
+                acct[(fy, st)][next(k for k, v in ACCOUNT.items() if v == r["account_id"])] += r["amount"] // 1000
+        continue
     for q, cells, amt, line in allocation_rows(doc, first, thousands):
         printed_acct, acc_name = account_of(cells)
         acc = ACCOUNT[acc_name]
@@ -265,6 +308,9 @@ for fy, st, doc, first, thousands, bill, sec in BACKFILL:
                         bill_document_id=bill, bill_section=sec, printed_line=line, read_from="text layer"))
         if acc: acct[(fy, st)][acc_name] += amt // 1000
 for fy, st, doc, column, bill, sec, rows in COMPARATIVE_ROWS:
+    if not held(doc):
+        out += kept(fy, st, doc)
+        continue
     for acc_name, amt, p in rows:
         hit = [l for l in page(doc, p).splitlines() if re.search(r"(?i)prevention and public health fund", l)
                and str(amt) in re.sub(r"[^\d]", "", l)]

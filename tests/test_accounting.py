@@ -398,18 +398,20 @@ class TaggingRules(unittest.TestCase):
             o = obs[c["observation_id"]]
             if o["canonical_account_id"].startswith("ACC-HHS-CDC-"):
                 cdc[(o["fiscal_year"], o["stage"])] += c["amount"]
-        # the Fund's CDC share after sequestration, each cell (the reports' totals); FY2023 House and Senate leave
-        # out the $160,000,000 block grant, printed on the CDC-wide line, which holds no headline those stages
+        # the Fund's CDC share after sequestration, each cell (the reports' totals); FY2023 House and Senate count
+        # the $160,000,000 block grant on the CDC-wide line since D-2 recorded its headlines from the bill text
+        # (decision 4 A); FY2027 House from H.Rept. 119-696's allocation table (D-2)
         want = {(fy, st): v for fy, h, s, e in ((2017, 908300000, 891300000, 891300000),
                                                (2018, 840600000, 800900000, 800900000),
                                                (2019, 848000000, 808300000, 804500000),
                                                (2020, 854250000, None, 854250000),
                                                (2021, 856150000, 856150000, 856150000),
                                                (2022, 903300000, 903300000, 903300000),
-                                               (2023, 743300000, 743300000, 903300000),
+                                               (2023, 903300000, 903300000, 903300000),
                                                (2024, 1186200000, 1186200000, 1186200000),
                                                (2025, 1186200000, 1186200000, 1186200000),
-                                               (2026, 1398375000, 1398375000, 1398375000))
+                                               (2026, 1398375000, 1398375000, 1398375000),
+                                               (2027, 1398375000, None, None))
                 for st, v in (("House Reported", h), ("Senate Reported", s), ("Enacted", e)) if v}
         self.assertEqual(dict(cdc), want)
 
@@ -490,6 +492,59 @@ class MeasureReconcile(unittest.TestCase):
     def test_never_a_confirming_rule(self):
         import validate_approps as V
         self.assertNotIn("measure_reconcile", V.CONFIRMING_RULES)
+
+
+class D2(unittest.TestCase):
+    """D-2: the President's Budget request language, the earmark rule check, CJS FY2024-FY2025."""
+
+    def test_earmark_rule_check_passes_and_fails_when_a_component_is_missing(self):
+        _, outcomes = MR.run(STAGED)
+        got = {o["observation_id"]: o["result"] for o in outcomes if o["kind"] == "earmark"}
+        self.assertEqual(got, {"OBS-LHHS-4109": "pass", "OBS-LHHS-4110": "pass", "OBS-LHHS-4111": "pass",
+                               "OBS-LHHS-4112": "pass"})
+        data = copy.deepcopy(STAGED)
+        data["observation_components"] = [c for c in data["observation_components"]
+                                          if not (c["observation_id"] == "OBS-LHHS-4112" and c["component_type"] == "earmark")]
+        records, outcomes = MR.run(data)
+        r = next(r for r in records if r["validation_id"] == "VAL-MRE-LHHS-4112")
+        self.assertEqual((r["result"], r["human_review_status"]), ("fail", "pending"))
+        self.assertIn("differs by $54,611,000", r["observed_result"])
+        # it never adjusts the figure
+        self.assertEqual(next(o for o in data["observations"] if o["observation_id"] == "OBS-LHHS-4112")["amount"],
+                         175866000)
+
+    def test_request_language_coverage_is_account_by_account(self):
+        rl = TC.request_language()
+        read = next(k for k, r in rl.items() if r["status"] == "read")
+        missing = next(k for k, r in rl.items() if r["status"] == "not found")
+        acc = {a["canonical_account_id"]: a["subcommittee"] for a in STAGED["accounts"]}
+        self.assertTrue(TC.covered(read[0], acc[read[0]], read[1], "President's Budget"))
+        self.assertFalse(TC.covered(missing[0], acc[missing[0]], missing[1], "President's Budget"))
+        self.assertIn("request language not found", TC.not_covered_reason(missing[0], missing[1], "President's Budget"))
+        # every appendix_text component cites a Budget Appendix chapter or (the 7d ruling) the report's own line
+        for c in STAGED["observation_components"]:
+            if c["tag_method"] == "appendix_text":
+                self.assertTrue(c["source_document_id"].startswith("SRC-BUDGET-APP-"), c["component_id"])
+
+    def test_a_default_never_leaves_a_negative_base(self):
+        _, outcomes = MR.run(STAGED)
+        self.assertFalse([o for o in outcomes if o["kind"] == "base" and o["result"] == "fail"])
+        c = next(c for c in STAGED["observation_components"] if c["observation_id"] == "OBS-LHHS-0209"
+                 and c["component_type"] == "trust_fund_limitation")
+        self.assertEqual(c["in_headline"], "FALSE")
+        self.assertIn("cannot be inside the headline", c["notes"])
+
+    def test_cjs_fy2024_fy2025_are_auto_tagged_and_fy2025_follows_the_cr(self):
+        for fy in (2024, 2025):
+            for st in TC.TEXT_STAGES:
+                self.assertIn(("CJS", fy, st), TC.AUTO_CELLS)
+        self.assertIn(("CJS", 2025, "Enacted"), TC.CR_CELLS)
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        cjs25 = [c for c in STAGED["observation_components"] if obs[c["observation_id"]]["canonical_account_id"]
+                 .startswith(("ACC-NASA", "ACC-NSF", "ACC-DOJ", "ACC-NOAA", "ACC-OSTP", "ACC-NSC"))
+                 and obs[c["observation_id"]]["fiscal_year"] == 2025 and obs[c["observation_id"]]["stage"] == "Enacted"]
+        # sec. 1111: FY2024 earmark language has no legal effect for FY2025
+        self.assertFalse([c for c in cjs25 if c["component_type"] == "earmark"])
 
 
 class LikeWithLike(unittest.TestCase):

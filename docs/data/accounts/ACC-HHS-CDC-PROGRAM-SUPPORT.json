@@ -1717,29 +1717,65 @@
      ],
      "House Reported": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0038",
-        "confirmed_date": "2026-10-06",
-        "document_type": "committee_report",
-        "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.813) for FY2023 House Reported: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-        "fiscal_year": 2023,
-        "publication_date": "2022-07-05",
-        "source_agency": "House Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-117HRPT403",
-        "stage": "House Reported",
-        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_funded"
+       "observations": [
+        {
+         "amount": 958570000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8295",
+         "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "cell_note": "H.Rept. 117-403 p.813 prints no budget-authority line for the account, only its 'Subtotal' (1,118,570) in thousands in the Bill column: the bill's 958,570 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- reported in House (BILLS-117hr8295rh). The bill or law text for BR-LHHS-FY2023-HOUSE; parsed into data/legislative_text/SRC-BILLS-117HR8295RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+         "document_stage": "House Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4127",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-05",
+         "report_id": "H.Rept.117-403",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-117HR8295RH",
+         "source_page": "64",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in H.R. 8295 under 'CDC-Wide Activities and Program Support': $958,570,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 117-403 p.813 prints no budget-authority line for the account, only its 'Subtotal' (1,118,570) in thousands in the Bill column: the bill's 958,570 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+         "stage": "House Reported",
+         "status_text": "Resolved by rule: bill text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-4127"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-4127"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -1771,30 +1807,65 @@
      ],
      "Senate Reported": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0039",
-        "confirmed_date": "2026-10-06",
-        "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
-        "document_type": "explanatory_statement",
-        "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.405) for FY2023 Senate Reported: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-        "fiscal_year": 2023,
-        "publication_date": "2022-07-28",
-        "source_agency": "Senate Committee on Appropriations",
-        "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
-        "stage": "Senate Reported",
-        "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
        "missing": false,
-       "observations": [],
-       "state": "not_funded"
+       "observations": [
+        {
+         "amount": 817070000,
+         "amount_type": "budget authority",
+         "bill_id": "S.4659",
+         "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "cell_note": "the FY2023 Senate explanatory statement prints the account's 'Subtotal' 977,070 thousand (VAL-LHHS-02215): the bill's 817,070 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- introduced in Senate (BILLS-117s4659is). The bill or law text for BR-LHHS-FY2023-SENATE; parsed into data/legislative_text/SRC-BILLS-117S4659IS.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+         "document_stage": "Senate Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4128",
+         "offsetting_collections": 0,
+         "publication_date": "2022-07-28",
+         "report_id": "N/A",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+         "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-117S4659IS",
+         "source_page": "69",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in S. 4659 under 'CDC-Wide Activities and Program Support': $817,070,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: the FY2023 Senate explanatory statement prints the account's 'Subtotal' 977,070 thousand (VAL-LHHS-02215): the bill's 817,070 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+         "stage": "Senate Reported",
+         "status_text": "Resolved by rule: bill text controls (explanatory table prints 977,070,000)",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-4128"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-4128"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -2050,6 +2121,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-03719"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-0936"
           }
          ],
          "verification_status": "unverified"
@@ -2694,6 +2771,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-03756"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-0943"
           }
          ],
          "verification_status": "auto-validated"
@@ -2886,6 +2969,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-0945"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "bill_text",
            "validation_id": "VAL-TXT-LHHS-0945"
           }
@@ -3013,21 +3102,6 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
     "component": null,
-    "confirmed_absence_id": "CA-LHHS-0038",
-    "confirmed_date": "2026-10-06",
-    "document_type": "committee_report",
-    "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.813) for FY2023 House Reported: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-    "fiscal_year": 2023,
-    "publication_date": "2022-07-05",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-117HRPT403",
-    "stage": "House Reported",
-    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-    "component": null,
     "confirmed_absence_id": "CA-LHHS-0037",
     "confirmed_date": "2026-10-06",
     "document_type": "committee_report",
@@ -3038,22 +3112,6 @@
     "source_document_id": "SRC-CRPT-117HRPT403",
     "stage": "President's Budget",
     "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf"
-   },
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0039",
-    "confirmed_date": "2026-10-06",
-    "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
-    "document_type": "explanatory_statement",
-    "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.405) for FY2023 Senate Reported: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-    "fiscal_year": 2023,
-    "publication_date": "2022-07-28",
-    "source_agency": "Senate Committee on Appropriations",
-    "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
-    "stage": "Senate Reported",
-    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf"
    }
   ],
   "account": {
@@ -4514,6 +4572,104 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 958570000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8295",
+    "bill_report_reference_id": "BR-LHHS-FY2023-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "cell_note": "H.Rept. 117-403 p.813 prints no budget-authority line for the account, only its 'Subtotal' (1,118,570) in thousands in the Bill column: the bill's 958,570 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- reported in House (BILLS-117hr8295rh). The bill or law text for BR-LHHS-FY2023-HOUSE; parsed into data/legislative_text/SRC-BILLS-117HR8295RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4127",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-05",
+    "report_id": "H.Rept.117-403",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117HR8295RH",
+    "source_page": "64",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in H.R. 8295 under 'CDC-Wide Activities and Program Support': $958,570,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 117-403 p.813 prints no budget-authority line for the account, only its 'Subtotal' (1,118,570) in thousands in the Bill column: the bill's 958,570 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+    "stage": "House Reported",
+    "status_text": "Resolved by rule: bill text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-4127"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-4127"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
+    "amount": 817070000,
+    "amount_type": "budget authority",
+    "bill_id": "S.4659",
+    "bill_report_reference_id": "BR-LHHS-FY2023-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "cell_note": "the FY2023 Senate explanatory statement prints the account's 'Subtotal' 977,070 thousand (VAL-LHHS-02215): the bill's 817,070 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- introduced in Senate (BILLS-117s4659is). The bill or law text for BR-LHHS-FY2023-SENATE; parsed into data/legislative_text/SRC-BILLS-117S4659IS.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+    "document_stage": "Senate Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4128",
+    "offsetting_collections": 0,
+    "publication_date": "2022-07-28",
+    "report_id": "N/A",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117S4659IS",
+    "source_page": "69",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in S. 4659 under 'CDC-Wide Activities and Program Support': $817,070,000; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: the FY2023 Senate explanatory statement prints the account's 'Subtotal' 977,070 thousand (VAL-LHHS-02215): the bill's 817,070 plus the Prevention and Public Health Fund block grant's 160,000 (decision 4 A, owner 2026-10-13)",
+    "stage": "Senate Reported",
+    "status_text": "Resolved by rule: bill text controls (explanatory table prints 977,070,000)",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117s4659is/pdf/BILLS-117s4659is.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-4128"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-4128"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
     "amount": 563570000,
     "amount_type": "budget authority",
     "bill_id": "P.L.117-328",
@@ -4645,6 +4801,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-03719"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-0936"
      }
     ],
     "verification_status": "unverified"
@@ -5163,6 +5325,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-03756"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-0943"
      }
     ],
     "verification_status": "auto-validated"
@@ -5530,6 +5698,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-03766"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-0945"
      },
      {
       "human_review_status": null,
