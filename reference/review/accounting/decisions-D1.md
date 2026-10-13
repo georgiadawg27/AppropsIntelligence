@@ -1,8 +1,28 @@
 # Decisions for the owner: D-1 accounting follow-up (2026-10-13)
 
 One section per open item. Each gives what the check found, the documents, pages and amounts side by side, what
-each option would change, and a recommendation. Nothing here has been applied: every validation named below is
-still flagged and pending. No option changes a headline figure unless it says so.
+each option would change, and a recommendation. No option changes a headline figure unless it says so.
+
+**Owner rulings (2026-10-13)**, applied in this PR unless marked D-2:
+
+| Item | Ruling | Outcome |
+|---|---|---|
+| 1 headline_superseded | A | applied: `VAL-MRC-HEADLINE-SUPERSEDED` resolved (reviewer "owner (2026-10-13)"); the 4 cells still differ, explained |
+| 2 agency_total_only | A | applied: AHRQ's total read from its own paragraph; 4 section 241 transfer_in components; the 3 cells pass and the cause item is no longer produced |
+| 3 emergency_lines_not_held | — | moved to D-2 (network); still flagged |
+| 4 member_no_headline | A approved | moved to D-2: the two CDC-Wide headlines need the bill's printed page, and H.R. 8295 / S. 4659 are held only as govinfo XML (no page numbers); the PDFs can't be fetched here. Still flagged |
+| 5 onc_no_headline | A approved | moved to D-2, same reason (S. 4659's page for ONC). Still flagged |
+| 6 prif_outside_printed_program_level | A | applied: `VAL-MRC-PRIF-OUTSIDE-PRINTED-PROGRAM-LEVEL` resolved (reviewer "owner (2026-10-13)") |
+| 7a OBS-LHHS-1582 | A | applied: CMP-LHHS-0542 is now beside by arithmetic (in_headline unchanged) |
+| 7b OBS-LHHS-1664 | — | moved to D-2; default kept |
+| 7c OBS-LHHS-3755 | A | applied: default kept (no change); the text-check follow-up (B) is not in this PR |
+| 7d request advances | — | moved to D-2; defaults kept |
+| FY2027 PPHF item | — | moved to D-2; still flagged |
+| Quarantine (handoff open item) | not a component | applied: added to the not-a-component list; CMP-LHHS-0238 and -0239 (FY2026) retired; FY2027 gets none (CMP-LHHS-1113, new in this branch, retired) |
+
+Rulings 2, 7a, 7c and Quarantine have no validation record to carry them (the tagger defaults are component notes,
+and the agency_total_only item is no longer produced once its cells pass), so they are recorded here and in the
+handoff. Items 4 and 5 stay pending on their validations until D-2 records the headlines.
 
 Amounts are dollars. "Report" figures are printed in thousands; the dollar form is the figure x 1,000.
 
