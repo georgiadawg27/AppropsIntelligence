@@ -199,7 +199,10 @@ line in parentheses (a non-add) and no budget-authority line; FY2025 Enacted use
 House report's table.
 
 **Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026; the component
-backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted). Each
+backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted); the D-1 follow-up adds FY2027 House
+(H.R. 9260 Labor-HHS, H.R. 8845 CJS; FY2027 Senate and Enacted hold no figures). An agency held only as its total
+(AHRQ; owner, D-1) is read from the agency's one appropriation paragraph, as an account would be (ACL and the
+Administration for a Healthy America are also held only as totals and are not read). Each
 amount in the headline's paragraph is read by its own clause:
 
 | phrase | component |
@@ -215,6 +218,7 @@ amount in the headline's paragraph is read by its own clause:
 | "from the 10-year Pediatric Research Initiative Fund" | `transfer_in` (from PRIF) |
 | "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
 | "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
+| "in addition to amounts provided herein, $X is (shall be) available to this appropriation ... from amounts provided" (an evaluation tap; D-1) | `transfer_in` (section 241 where the held phrase prints '241'; else "not named in the phrase") |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
 
@@ -222,7 +226,15 @@ amount in the headline's paragraph is read by its own clause:
 tribes", "amounts required to be reserved"); sub-allocations ("not less than $X for", "of such amount: (1)",
 "from amounts made available under this heading"); program tables ("for the purposes and in the amounts specified
 in the table"); the 251(b)(2)(C)(ii) base ("is provided to meet the terms of section 251(b)(2)(C)(ii)"); and the
-headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline.
+headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline, or a
+general provision's additional amount under the account's heading where the paragraph's amount plus it is the
+headline (OS-GDM FY2023 Senate: $565,394,000 and sec. 243's $350,000,000 = $915,394,000; D-1), which the in_headline
+arithmetic counts with the paragraph's amount (owner, D-1); an availability clause on the heading's own money ("of the
+amounts made available under this heading, up to $1,000,000 from amounts made available for Quarantine
+appropriations shall remain available until expended", CDC Emerging and Zoonotic; owner, D-1). A section 241
+sub-allocation ("of the amounts provided under this heading from amounts available under section 241 of the PHS Act,
+$X shall be available to carry out evaluations") is part of the heading's section 241 amount, already tagged with it
+(D-1).
 
 When the paragraph's main amount is itself a component (HCFAC: all of it transferred from the trust funds), each
 of-which component on the same side of the headline is within it.
@@ -256,16 +268,21 @@ whose named headline the bill text superseded is computed from the replacement. 
    | `headline_superseded` | the view counts the report's headline, which the bill text superseded with a figure that differs by the report's rounding |
    | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags |
    | `pandemic_flu_balances` | the FY2017 program level counts 'Pandemic Flu balances (Public Law 111-32)', which no phrase rule tags |
-   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241' |
+   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241'; none since D-1 (the phrase rule above tags it) |
    | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ) |
    | `prif_outside_printed_program_level` | the report's program level leaves out the PRIF transfer the bill makes in addition (NIH FY2023) |
-   | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total |
+   | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total; none since D-1 (the line is checked as below) |
    | `emergency_lines_not_held` | the total counts emergency appropriations from the law's other divisions, which we don't hold as lines |
    | `request_stage_class` | (discretionary) a President's Budget total where an account's request-stage class differs from how the report's total treats it |
    | `unexplained` | anything else |
 
    `account_not_held` (the money is in an account we don't hold: ACL program level) is not a failure; the view
    counts as not checked.
+
+   ONC's 'Evaluation Tap Funding' line (recorded as `program_level`; the retag rule reads it as ONC's section 241
+   `transfer_in`) is not a program-level total: it is checked against the sum of the cell's section 241
+   `transfer_in` components (D-1). A $0 line where ONC's paragraph appropriates budget authority with no section 241
+   amount (FY2017 House, FY2019 Enacted) passes.
 
 The check never adjusts a figure and never confirms one: it is not a confirming rule, and a flag counts neither
 way in the verification status.

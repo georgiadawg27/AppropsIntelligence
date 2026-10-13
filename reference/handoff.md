@@ -23,6 +23,59 @@
 
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
+## D-1 accounting follow-up (2026-10-13, this PR)
+
+- FY2027 House is auto-tagged (`FY2027_HOUSE` in `AUTO_CELLS`): 15 auto_text components, all Labor-HHS. CJS FY2027
+  House: nothing beyond its retagged lines. The FY2027 House bill text prints no PPHF provision with an amount and
+  `build_pphf_table.py` has no FY2027 rows (needs H.Rept. 119-696), so CDC and SAMHSA FY2027 House program levels
+  fail as `pphf_general_provision_table` (2); CDC's $1,398,375,000 equals the FY2026 House CDC allocation.
+- Rules: 'is (shall be) available to this appropriation ... from amounts prov[ided]' -> transfer_in (CDC FY2022 S
+  $132M, $7M; AHRQ FY2022 S $27M); not a component: OS-GDM's section 241 evaluation sub-allocation, a general
+  provision's additional amount that is the headline's own appropriation (counted in the in_headline arithmetic), and
+  CDC's Quarantine availability clause; AHRQ's total is read from its own paragraph (`TOTAL_ONLY`; ACL and AHA are
+  also held only as totals and are not read); measure_reconcile checks ONC's 'Evaluation Tap Funding' line against
+  the cell's section 241 transfers.
+- Owner rulings (2026-10-13), recorded in `reference/review/accounting/decisions-D1.md`: 1 A and 6 A resolved on
+  their VAL-MRC items (reviewer "owner (2026-10-13)"); 2 A, 7a A, 7c A and Quarantine applied; 4 A and 5 A approved
+  but moved to D-2 (bill pages); 3, 7b, 7d and the FY2027 PPHF item moved to D-2.
+- Components 1,185 (main) -> 1,204: 21 new, CMP-LHHS-0238 and -0239 retired (Quarantine; CMP-LHHS-1113, created in
+  this branch for FY2027, retired too). Existing changed, notes only (in_headline unchanged): CMP-LHHS-0542 (ruling
+  7a), CMP-LHHS-1061 and -1098 (FY2027 House advance_available, now by arithmetic). No figure changed.
+- measure_reconcile: base 797 -> 813 pass, 0 fail. Views 213 / 25 / 121 -> 220 / 21 / 118. Text check ambiguous
+  4 -> 4, mismatch 0.
+- Site views, "no component tagged (outside the auto-tagged cells)": CJS 1,092 -> 1,067, LHHS 3,400 -> 3,111 (FY2027
+  House 314 -> 0). President's Budget unchanged.
+
+Moved to D-2 (needs network: www.govinfo.gov and the report PDFs):
+1. Step 2, the President's Budget request language (FY2017-FY2027): fetch the 66 Appendix chapters
+   (`appendix_attributes.fetch`), extract each held account's proposed language with chapter and page into a
+   committed file, run the phrase rules (`appendix_text`), record "language read" per account so views can compute,
+   keep the existing request advance_enacted records. Nothing was extracted in D-1.
+2. Rulings 4 A and 5 A (approved): CDC-Wide FY2023 House $958,570,000 (H.R. 8295 P0050) and Senate $817,070,000
+   (S. 4659 P0050), ONC FY2023 Senate $0 (S. 4659 P0099, phase 1b ONC rule). Each needs the bill's printed page; the
+   committed text is govinfo XML with no pages. CDC's agency sum: House 8,637,484 of 9,596,054 thousand held, gap
+   958,570 -> 0 with the new headline; Senate gap 1,103,488 -> 286,418 (Birth Defects and EEOICP Senate headlines
+   not held). No double count. The Senate explanatory statement's 'Subtotal' 977,070 thousand (VAL-LHHS-02215) is
+   the bill's $817,070,000 plus the $160,000,000 PPHF block grant.
+3. Items 3 (ACF emergency lines, S.Rept. 118-84 pp.386-387), 7b (SAMHSA MH FY2023 E, S.Rept. 118-84 p.380), 7d (the
+   three request advances, after step 2) and the FY2027 House PPHF table (H.Rept. 119-696).
+4. `nef_transfer_untagged` (4) and `pandemic_flu_balances` (4): the report-table lines ('Transfers from Nonrecurring
+   Expenses Fund', 'Pandemic Flu balances (Public Law 111-32)') are not recorded and the held text lacks the NEF
+   general provisions (P.L. 116-94, the FY2021 Senate draft) or ends before naming the source (P.L. 115-141 CDC B&F
+   $240,000,000).
+
+Open (no network needed):
+- ACL and the Administration for a Healthy America are held only as totals; reading their paragraphs like AHRQ's
+  would add components (ACL's trust fund limitations, earmarks) and may turn ACL's `account_not_held` cells into
+  checked ones. Owner to decide.
+- Untagged candidates from #54, decided: CDC Scientific Services FY2022 S $132M tagged; OS-GDM $6.8M not a component;
+  OS-GDM FY2023 S $350M the headline's own appropriation; CDC B&F FY2018 E $240M and FY2020 E NEF $225M not tagged
+  (source not named in, or amount not in, the held text).
+- NOAA ORF (CJS) "$659,190,000 is provided by transfer, and $28,000,000 is derived from recoveries" is untagged in
+  every year; no rule reads "is provided by transfer".
+- Text check follow-up (ruling 7c B, not applied): the main-amount reader takes CMS PM FY2017 House's "$710,533,000
+  shall be for Federal Administration" proviso as the paragraph's amount.
+
 ## Component backfill FY2017-FY2023 (this PR)
 
 - The tagger now auto-tags every Labor-HHS and CJS cell FY2017-FY2023, every stage (`AUTO_CELLS` = the pilot

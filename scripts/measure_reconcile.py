@@ -68,13 +68,8 @@ KNOWN_CELL_CAUSES = {
         ("ACC-HHS-CDC-TOTAL", 2021, "Senate Reported"), ("ACC-HHS-OS-TOTAL", 2021, "Senate Reported"))},
     **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
        for st in ("Senate Reported", "Enacted")},
-    ("ACC-HHS-CDC-TOTAL", 2022, "Senate Reported", "program_level"): "evaluation_tap_phrase_untagged",
-    **{("ACC-HHS-AHRQ-TOTAL", fy, st, "program_level"): "agency_total_only" for fy, st in (
-        (2021, "House Reported"), (2022, "House Reported"), (2022, "Senate Reported"))},
     **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
        for st in ("House Reported", "Senate Reported")},
-    **{("ACC-HHS-OS-ONC", fy, st, "program_level"): "onc_evaluation_tap_line" for fy, st in (
-        (2017, "House Reported"), (2019, "Enacted"))},
     ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",
 }
 CAUSE_TEXT = {
@@ -115,6 +110,13 @@ def named_headline(obs, v):
     while h is not None and h["verification_status"] == "superseded" and h.get("superseded_by_observation_id"):
         h = obs.get(h["superseded_by_observation_id"])
     return h
+
+
+def is_evaluation_tap_line(a, v):
+    """ONC's 'Evaluation Tap Funding' line, recorded as program_level (the tagger's retag rule reads it as ONC's
+    section 241 transfer_in)."""
+    return (a["canonical_account_id"] == "ACC-HHS-OS-ONC" and v.get("component") == "program_level"
+            and "Evaluation Tap Funding" in TC.printed(v))
 
 
 def suffix(oid):
@@ -254,6 +256,32 @@ def run(data):
         h = named_headline(obs, v)
         if h is None:
             outcomes.append(dict(base_out, result="not checked", detail="names no headline"))
+            continue
+        if is_evaluation_tap_line(a, v):
+            # ONC's 'Evaluation Tap Funding' line is the line the tagger reads as ONC's section 241 transfer_in
+            # (retagged), not a program-level total: it is checked against the cell's section 241 transfers (D-1)
+            taps = [c for c in comps[h["observation_id"]] if c["component_type"] == "transfer_in"
+                    and "241" in (c.get("transfer_from") or "")]
+            if cell not in TC.AUTO_CELLS and not taps:
+                outcomes.append(dict(base_out, result="not checked",
+                                     detail="no component the view uses is tagged for this cell"))
+                continue
+            computed = sum(c["amount"] for c in taps)
+            ok = computed == v["amount"]
+            expected = (f"the 'Evaluation Tap Funding' line is ONC's section 241 transfer_in, not a program-level "
+                        f"total: the section 241 transfer_in components of the headline {h['observation_id']} "
+                        f"({describe(taps)}) = {AC.money(computed)}")
+            observed = (f"{AC.money(v['amount'])} printed ('{TC.printed(v)}', {v['source_document_id']} "
+                        f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
+                        f" -- differs by {AC.money(v['amount'] - computed)} (printed - computed); for review, no "
+                        "figure changed; cause: unexplained (reviewed once for every cell, VAL-MRC-UNEXPLAINED)"))
+            records.append({"validation_id": "VAL-MRV-" + suffix(v["observation_id"]),
+                            "observation_id": v["observation_id"], "rule_applied": RULE, "expected_result": expected,
+                            "observed_result": observed, "result": "pass" if ok else "info",
+                            "human_review_status": "", "reviewer": "", "resolution": ""})
+            outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=None if ok else "unexplained",
+                                 detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
+                                        f"difference {AC.money(v['amount'] - computed)}"))
             continue
         used = []
         if a.get("total_scope") == "agency":

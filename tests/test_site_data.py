@@ -97,7 +97,7 @@ class SiteReadsData(unittest.TestCase):
         for v in data["validations"]:
             if v["human_review_status"] == "resolved":
                 self.assertTrue(v["resolution"].strip(), v["validation_id"])
-                self.assertIn(v["reviewer"], ("owner (2026-10-12)",) if v["validation_id"].startswith("VAL-MRC-")
+                self.assertIn(v["reviewer"], ("owner (2026-10-12)", "owner (2026-10-13)") if v["validation_id"].startswith("VAL-MRC-")
                               else ("owner (2026-10-11)",) if v["validation_id"].startswith("VAL-TXT-")
                               or (v["observation_id"] in corrected and v["reviewer"] == "owner (2026-10-11)")
                               else ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
@@ -545,8 +545,8 @@ class AccountingLayer(unittest.TestCase):
         self.assertGreater(n, 20)
 
     def test_untagged_stages_are_never_computed(self):
-        # outside the auto-tagged cells (the President's Budget, FY2027, ...) untagged is never 'no earmarks' or
-        # 'no defense portion': every entry is not_computable with the coverage reason
+        # outside the auto-tagged cells (the President's Budget, FY2027 but its House stage (D-1), ...) untagged is
+        # never 'no earmarks' or 'no defense portion': every entry is not_computable with the coverage reason
         import site_accounting as SA
         import tag_components as TC
         seen = set()
@@ -554,10 +554,13 @@ class AccountingLayer(unittest.TestCase):
             fy, stage = key.split("|", 1)
             if (sc, int(fy), stage) in TC.AUTO_CELLS:
                 self.assertNotEqual(stage, "President's Budget")
-                self.assertNotEqual(fy, "2027")
+                if fy == "2027":
+                    self.assertIn((sc, 2027, stage), TC.FY2027_HOUSE)
                 continue
             for exclusion, field, basis, entries in self.exclusion_entries(cell):
                 seen.add(stage if stage == "President's Budget" else fy)
+                if fy == "2027":
+                    seen.add("2027")
                 self.assertEqual(len(entries), 1)
                 e = entries[0]
                 self.assertEqual((e["status"], e["amount"], e["reason"]),
