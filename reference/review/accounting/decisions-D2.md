@@ -115,7 +115,7 @@ $27,830,000).
 
 Recommendation: review each against the report's request column; no change in this PR.
 
-## A default that would leave a negative base (rule added in D-2; confirm)
+## A default that would leave a negative base (rule added in D-2; confirmed, owner 2026-10-13)
 
 CMS Program Management FY2026 request (OBS-LHHS-0209, 3,464,391 thousand, the report's request column): the
 Appendix language's trust-fund limitation is $3,518,440,000. No assignment turns the language into the headline, and
@@ -131,12 +131,29 @@ limitation (CMP-LHHS-1175) is beside, with a note. No figure changes; it fired o
 
 - **Appendix misprints.** The FY2022 NASA (p.1201, '$46,00,0000'), FY2024 HHS (p.433, '$552,500,0000') and FY2027
   HHS (p.477, '$3,527,479,00') chapters print amounts with misplaced commas; they are listed in
-  `request_language.json` and not read. The FY2027 HHS chapter prints NEI's request as '$833,000' (p.454) against the
-  report's 833,000 thousand; read as printed, nothing depends on it. Each was checked on the page image.
+  `request_language.json` and not read. Each was checked on the page image.
+
+## NEI FY2027 request: '$833,000' (probable misprint; for review)
+
+The FY2027 HHS chapter prints NEI's proposed appropriation as '$833,000' (p.454; checked on the page image), against
+the report's request column, 833,000 thousand ($833,000,000; OBS for ACC-HHS-NIH-NEI FY2027 President's Budget).
+Owner, D-2: treat it as a probable misprint like the three above. It is listed under `misprinted_amounts`
+(`request_language.PROBABLE_MISPRINTS`) and not read, so no component or view uses it. NEI's FY2027 language holds no
+other amount and no component phrase, so the account stays "read, no match" and its views are the report's headline.
+Nothing changes. For review: confirm against the FY2027 Congressional Justification, or a corrected Appendix if
+one is published.
+
+## Owner confirmations (2026-10-13, on this PR)
+
+- The never-negative default rule (above): confirmed, A.
+- Retiring CA-LHHS-0038 and -0039: confirmed.
+- Decisions 1-3 (NSF R&RA; President's Budget PPHF rows; the 5 unexplained President's Budget cells, including the
+  phrase-window follow-up) go to a follow-up PR, D-3.
+
 - **OBS-LHHS-1711** (the brief's "HSPS FY2026 House 35,395,000") is the FY2026 President's Budget line in H.Rept.
   119-271's request column, not the House figure; the FY2026 House line is OBS-LHHS-1710 (129,895,000). Neither is an
   earmark-rule headline (the table prints no CDS line for HSPS in any FY2026 column), so neither needs an earmark.
-- **Confirmed absences retired.** CA-LHHS-0038 and -0039 (CDC-Wide FY2023 House and Senate) rested on the tables'
+- **Confirmed absences retired** (confirmed, owner 2026-10-13). CA-LHHS-0038 and -0039 (CDC-Wide FY2023 House and Senate) rested on the tables'
   silence; the bill-text headlines of decision 4 A replace them (`reference/review/lhhs/retired_ids.json`).
 - **Not held.** The FY2023 Senate explanatory statement (appropriations.senate.gov) could not be fetched in D-2, so the
   Birth Defects, EEOICP and ONC FY2023 Senate headlines carry no table figure as a note; CDC-Wide's cites the held

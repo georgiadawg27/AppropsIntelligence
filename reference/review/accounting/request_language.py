@@ -57,9 +57,12 @@ PAGE_IMAGES = [
     {"document_id": "SRC-BUDGET-APP-FY2027-HHS", "page": 477, "amount_as_printed": "$3,527,479,00",
      "account": "ACC-HHS-ACF-REFUGEE", "finding": "printed so (misplaced commas): not read as a figure"},
     {"document_id": "SRC-BUDGET-APP-FY2027-HHS", "page": 454, "amount_as_printed": "$833,000",
-     "account": "ACC-HHS-NIH-NEI", "finding": "printed so; the report's request column prints 833,000 thousand. Read "
-                                              "as printed; no component, nothing changed"},
-]    # an agency held only as its total, read as an account (owner, D-1 ruling 2)
+     "account": "ACC-HHS-NIH-NEI", "finding": "printed so; the report's request column prints 833,000 thousand: a "
+                                              "probable misprint (owner, D-2), listed under misprinted_amounts and "
+                                              "not read"},
+]
+# well-formed amounts the owner treats as probable misprints (D-2): (FY, chapter, printed page, amount as printed)
+PROBABLE_MISPRINTS = {(2027, "HHS", 454, "$833,000")}    # an agency held only as its total, read as an account (owner, D-1 ruling 2)
 CHAPTER_TITLE = {"HHS": "DEPARTMENT OF HEALTH AND HUMAN SERVICES", "COM": "DEPARTMENT OF COMMERCE",
                  "DOJ": "DEPARTMENT OF JUSTICE", "NASA": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION",
                  "NSF": "NATIONAL SCIENCE FOUNDATION", "EOP": "EXECUTIVE OFFICE OF THE PRESIDENT"}
@@ -280,9 +283,13 @@ def chapter_paragraphs(fy, chapter):
             pt = proposed(t)
             bad = {m.start() for m in TOKEN.finditer(pt) if not WELL_FORMED.fullmatch(m.group().rstrip("."))}
             for m, x in zip(L.AMOUNT.finditer(pt), L.amounts_in(pt, block=b)):
+                block_page = p["_blocks"][b - 1][0]
                 if m.start() in bad:
                     # printed with misplaced commas ('$46,00,0000'): no dollar figure can be read from it
                     misprints.append(next(t_.group() for t_ in TOKEN.finditer(pt) if t_.start() == m.start()))
+                elif (fy, chapter, block_page, m.group(0)) in PROBABLE_MISPRINTS:
+                    # well formed but a probable misprint (owner, D-2): not read, so no component or view uses it
+                    misprints.append(m.group(0))
                 else:
                     amounts.append(x)
         # a heading the request renames or deletes prints its old words in brackets: the proposed heading drops
@@ -471,7 +478,7 @@ def build(data):
                     "text as printed ([brackets] = enacted language the request would delete); `text` and `amounts` "
                     "are the proposed language (brackets dropped). The text layer read every chapter; page images "
                     "were read only to check the amounts listed in page_images, each printed as the text layer reads "
-                    "it. An amount printed with misplaced commas is listed under misprinted_amounts and not read.",
+                    "it. An amount printed with misplaced commas, or one the owner treats as a probable misprint (NEI FY2027's '$833,000'), is listed under misprinted_amounts and not read.",
             "page_images": PAGE_IMAGES, "documents": dict(sorted(docs.items())), "accounts": accounts}
 
 

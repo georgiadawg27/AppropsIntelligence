@@ -13,8 +13,8 @@ Start here. Rules: `reference/ACCOUNTING_RULES.md`; owner decisions: `reference/
   each with its reason). The tagger reads them (`request_text`, `appendix_text`): 123 read with components, 761 read
   with no match, 156 not found. Coverage is per account (`tag_components.covered` / `not_covered_reason`), used by
   site_accounting and measure_reconcile; President's Budget agency totals are checked where every account behind
-  them was read. Page images: 4 (Appendix amounts checked: three printed with misplaced commas, listed as misprints
-  and not read; NEI FY2027's '$833,000' as printed), plus 6 for other items (H.Rept. 116-62 p.349; H.Rept. 119-696
+  them was read. Page images: 4 (Appendix amounts checked: three printed with misplaced commas, and NEI FY2027's
+  '$833,000', a probable misprint (owner), all listed as misprints and not read), plus 6 for other items (H.Rept. 116-62 p.349; H.Rept. 119-696
   PDF pp.371-373, 375, 377; H.Rept. 119-271 p.348). All from cached PDFs; no paid service.
 - Ruling 7d: CMP-LHHS-1005 inside; CMP-LHHS-1007 retired for CMP-LHHS-1262 (the report's 'New Advance' $2,800,000,000,
   table_line, inside; the Appendix's $3,000,000,000 kept in its note); 1933 unchanged. In `advance_lines.py`.
@@ -34,13 +34,14 @@ Start here. Rules: `reference/ACCOUNTING_RULES.md`; owner decisions: `reference/
 - Item 6: CJS FY2024-FY2025 House/Senate/Enacted in AUTO_CELLS (3 earmarks); FY2025 Enacted under the CR
   (`CR_CELLS`, `CR_LEVEL_ONLY`: sec. 1301(3) NOAA ORF and 1301(6) NASA SSMS set levels only).
 - Item 7: decision section only (decisions-D2.md); nothing applied.
-- New rule: a default never leaves a negative base (CMP-LHHS-1175, CMS PM FY2026 request, beside); for the owner to
-  confirm.
+- New rule: a default never leaves a negative base (CMP-LHHS-1175, CMS PM FY2026 request, beside); confirmed by the
+  owner, as is the retirement of CA-LHHS-0038/-0039.
 - measure_reconcile: base 813/0 -> 977/0; views 220/21/118 -> 252/30/77; earmark rule 4/0. Text check: match 2,529 ->
   2,534, ambiguous 4 -> 4, mismatch 0 -> 0. Components 1,204 -> 1,401 (198 new, 1 retired).
 
-Open:
-- President's Budget PPHF rows (10 cells) and 5 unexplained President's Budget cells (decisions-D2.md).
+Open (D-3, owner 2026-10-13: decisions 1-3 of decisions-D2.md):
+- NSF R&RA headline (decision 1); President's Budget PPHF rows, 10 cells (2); 5 unexplained President's Budget cells (3).
+- NEI FY2027 request '$833,000': probable misprint, not read; for review.
 - The phrase window ends before 'are designated ...' on the FY2025 request's Refugee emergency amount
   ($2,914,179,000); widening it is a parser change (every text file reparsed).
 - The FY2023 Senate explanatory statement and the other committee drafts need a session that can reach the committee

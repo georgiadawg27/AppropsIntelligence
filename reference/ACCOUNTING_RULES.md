@@ -240,7 +240,8 @@ stay with the advance records. General provisions are not read for the request. 
 where no phrase matches ("read, no match"), so its views compute; one whose language was not found (no heading of
 its own, or the request deletes it: all its language in brackets) stays not computable, with the reason. A
 President's Budget agency total is checked by measure_reconcile where every account behind it was read. An amount
-the Appendix prints with misplaced commas ('$46,00,0000') is listed as a misprint and not read.
+the Appendix prints with misplaced commas ('$46,00,0000'), or one the owner treats as a probable misprint (NEI
+FY2027's '$833,000', D-2), is listed as a misprint and not read, so no component or view uses it.
 
 **Lines printed inside a headline** (D-2): a supplemental '(emergency)' line or another act's line that the
 headline's own table prints inside the account's total (ACF FY2023 'Formula Grants (emergency)' inside 'Total,

@@ -1,5 +1,5 @@
 {
- "note": "The President's Budget request language for each held account, read from FY N's Budget Appendix text layer by reference/review/accounting/request_language.py (D-2 step 1). `printed` is the text as printed ([brackets] = enacted language the request would delete); `text` and `amounts` are the proposed language (brackets dropped). The text layer read every chapter; page images were read only to check the amounts listed in page_images, each printed as the text layer reads it. An amount printed with misplaced commas is listed under misprinted_amounts and not read.",
+ "note": "The President's Budget request language for each held account, read from FY N's Budget Appendix text layer by reference/review/accounting/request_language.py (D-2 step 1). `printed` is the text as printed ([brackets] = enacted language the request would delete); `text` and `amounts` are the proposed language (brackets dropped). The text layer read every chapter; page images were read only to check the amounts listed in page_images, each printed as the text layer reads it. An amount printed with misplaced commas, or one the owner treats as a probable misprint (NEI FY2027's '$833,000'), is listed under misprinted_amounts and not read.",
  "page_images": [
   {
    "document_id": "SRC-BUDGET-APP-FY2022-NASA",
@@ -27,7 +27,7 @@
    "page": 454,
    "amount_as_printed": "$833,000",
    "account": "ACC-HHS-NIH-NEI",
-   "finding": "printed so; the report's request column prints 833,000 thousand. Read as printed; no component, nothing changed"
+   "finding": "printed so; the report's request column prints 833,000 thousand: a probable misprint (owner, D-2), listed under misprinted_amounts and not read"
   }
  ],
  "documents": {
@@ -47357,15 +47357,10 @@
      "For carrying out section 301 and title IV of the PHS Act with respect to eye diseases and visual disorders, $833,000."
     ],
     "cites": [],
-    "amounts": [
-     {
-      "amount": 833000,
-      "block": 1,
-      "proviso": false,
-      "phrase": "For carrying out section 301 and title IV of the PHS Act with respect to eye diseases and visual disorders, [$833,000] ."
-     }
+    "amounts": [],
+    "misprinted_amounts": [
+     "$833,000"
     ],
-    "misprinted_amounts": [],
     "location": {
      "position": "Budget Appendix p.454",
      "pages": "p.454"
