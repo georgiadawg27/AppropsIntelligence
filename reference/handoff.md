@@ -2,6 +2,50 @@
 
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
+## D-1 accounting follow-up (2026-10-13, this PR)
+
+- FY2027 House is auto-tagged (`FY2027_HOUSE` in `AUTO_CELLS`): 16 new auto_text components, all Labor-HHS (10
+  transfer_in, 3 trust_fund_limitation, 2 advance_enacted, 1 transfer_out). CJS FY2027 House: nothing beyond its
+  retagged lines. The FY2027 House bill text prints no PPHF provision with an amount, and `build_pphf_table.py` has no
+  FY2027 rows (it needs H.Rept. 119-696), so CDC and SAMHSA FY2027 House program levels fail as
+  `pphf_general_provision_table` (2). CDC's difference ($1,398,375,000) equals the FY2026 House CDC allocation.
+- New rules: 'is available to this appropriation ... from amounts provided' -> transfer_in (CDC FY2022 Senate $132M,
+  $7M; clears `evaluation_tap_phrase_untagged`); not a component: OS-GDM's section 241 evaluation sub-allocation and a
+  general provision's additional amount that is the headline's own appropriation (OS-GDM FY2023 S sec. 243 $350M);
+  measure_reconcile checks ONC's 'Evaluation Tap Funding' line against the cell's section 241 transfers (clears
+  `onc_evaluation_tap_line`).
+- Components 1,185 -> 1,203 (18 new; 0 retired). Existing changed: 2 notes only (CMP-LHHS-1061, -1098, FY2027 House
+  advance_available, "by default" -> "by arithmetic"; in_headline FALSE unchanged). No figure changed.
+- measure_reconcile: base 797 -> 810 pass, 0 fail. Views 213 / 25 / 121 -> 217 / 24 / 118. Text check ambiguous
+  4 -> 4, mismatch 0. Untagged phrase candidates 197 -> 186 (FY2027 House adds 14).
+- Site views, "no component tagged (outside the auto-tagged cells)": CJS 1,092 -> 1,067, LHHS 3,400 -> 3,111 (FY2027
+  House 314 -> 0). President's Budget unchanged (LHHS FY2017-26 2,818, FY2027 293; CJS 670).
+- Decision pack: `reference/review/accounting/decisions-D1.md` (nothing in it applied).
+
+Blocked (missing input; nothing guessed):
+1. Step 2, President's Budget request language: the environment's network policy denies www.govinfo.gov (and every
+   other outside host), `document_store/appendix/` is not in the container, and `appendix_schedules.json` holds the
+   schedules, not the language. Nothing was extracted; the request stage is unchanged ("not computable", reason as
+   before). To do: allow www.govinfo.gov, fetch the 66 chapters (`appendix_attributes.fetch`), extract each held
+   account's proposed language with chapter and page into a committed file, run the phrase rules (`appendix_text`),
+   record "language read" per account so views can compute, keep the existing request advance_enacted records.
+2. `nef_transfer_untagged` (4) and `pandemic_flu_balances` (4) can't clear by rule from what is held: the
+   'Transfers from Nonrecurring Expenses Fund' and 'Pandemic Flu balances (Public Law 111-32)' lines are report-table
+   lines the backfill left unrecorded (`backfill_unmatched_2021.csv` lists CDC FY2021 S 60,000 p.249), the
+   extraction files are not committed, and the held text either lacks the NEF general provisions (P.L. 116-94, the
+   FY2021 Senate draft) or ends before naming the source (P.L. 115-141 CDC B&F: "in addition to the amount provided,
+   $240,000,000 ... for the purposes described in the previous proviso"). Needs the report pages.
+3. Untagged candidates from #54: CDC Scientific Services FY2022 S $132M -> tagged (new rule). OS-GDM $6.8M section 241
+   evaluations -> not a component (sub-allocation). OS-GDM FY2023 S $350M sec. 243 -> the headline's own
+   appropriation. CDC B&F FY2018 E $240M BSL-4 -> not tagged: the held window names no source. FY2020 E NEF $225M ->
+   not tagged: no such amount in the held text of P.L. 116-94 (its title II general provisions are not in it).
+4. Review: CDC Emerging and Zoonotic "up to $1,000,000 from amounts made available for Quarantine ... shall remain
+   available until expended" is tagged transfer_in (inside) by the existing rule in FY2026 E/S (CMP-LHHS-0238, -0239)
+   and now FY2027 H (CMP-LHHS-1113). It reads like an availability clause on the heading's own money, not a transfer.
+   Inside the headline, it moves no view. Left as the rule gives it.
+5. NOAA ORF (CJS) "$659,190,000 is provided by transfer, and $28,000,000 is derived from recoveries" appears untagged
+   in FY2027 House (and the backfill years); no current rule reads "is provided by transfer".
+
 ## Component backfill FY2017-FY2023 (this PR)
 
 - The tagger now auto-tags every Labor-HHS and CJS cell FY2017-FY2023, every stage (`AUTO_CELLS` = the pilot
