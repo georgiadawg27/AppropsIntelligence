@@ -282,10 +282,10 @@ class Features(StaticTest):
         self.assertTrue(got["figure_source"])
         for name in ("accounting_views", "budget_class", "defense_split"):
             self.assertTrue(got[name], name)
-        # UI-0b (contract_version 3): the excluding-earmarks and nondefense views
+        # UI-0b (contract_version 4): the excluding-earmarks and nondefense views
         for name in ("exclude_earmarks", "nondefense"):
             self.assertTrue(got[name], name)
-        self.assertGreaterEqual(self.index["contract_version"], 3)
+        self.assertGreaterEqual(self.index["contract_version"], 4)
 
     def test_a_missing_field_turns_its_feature_off(self):
         with tempfile.TemporaryDirectory() as d:
