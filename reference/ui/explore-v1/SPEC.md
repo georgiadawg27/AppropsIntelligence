@@ -55,8 +55,10 @@ There are no tiles above the grid: the headline figures live in the overview pan
 
 **Expanding an agency** (caret, or Expand all in View):
 - The agency row keeps a white background and gains: a 4 px navy bar on the left edge of its name cell, a 1 px rule and 6 px gap above it, bold figures, and the note "Agency total · sum of the N lines below". N is the number of the row's `rollup_members` that are inside their life in the selected fiscal year, which is the number of lines actually listed. For NIH in FY2026 that is 32: the data holds 33 members, and National Institute of Substance Use and Addiction Research is outside its life in FY2026, so it is not listed.
-- Its lines follow, indented, each on a white row with a 2 px rail (`#b9c6dc`) in the name column joining them to the total. Line names are 13 px regular `#3a4150`; line figures 13 px regular `#4a5160`. They must look visibly subordinate to the bold total they add up to.
+- Its lines follow, indented, each on a white row with a 2 px rail (`#b9c6dc`) in the name column joining them to the total. Line names are 13 px regular; a name that opens the account panel uses the link style (navy `#16325f`, light underline offset 3 px; owner, 2026-10-12, #59), otherwise `#3a4150`; line figures 13 px regular `#4a5160`. They must look visibly subordinate to the bold total they add up to.
 - Sub-groups inside an agency (e.g. "Proposed in the FY2026 request", "Appropriated mandatory") are small caps labels on the rail. "Appropriated mandatory" depends on `budget_class` (section 9).
+- **Class tags** (`budget_class`; owner, 2026-10-12, #61). A line's class for the year is its enacted-basis record, else its request-basis record (a proposed account). A line whose class is mandatory sits under "Appropriated mandatory" in its agency (a line outside an agency gets a "mandatory" tag). A mixed line gets "incl. mandatory" only when a `mandatory_portion` component is tagged on its figure at the lead stage; a mixed line with none tagged counts as discretionary (ACCOUNTING_RULES) and gets no tag. A mixed line's mandatory portion is read at the lead stage (the stage the grid leads with for the year in view), not at other stages of the year. An agency gets "incl. mandatory" when it holds such a line in view. FY2026 Labor-HHS: HRSA, CDC, CMS, ACF and OS. The hover names each line behind the tag and its mandatory amount, e.g. "Vaccine Injury Compensation Program Trust Fund: mandatory portion 272,062" (a mandatory account: its whole printed figure); portions are listed, never added. A provisional class has a dashed tag outline (a mandatory line under the sub-group gets a "provisional" tag), and the footer legend says "dashed tag = provisional budget class".
+- **Defense portion column** (View › Columns, `defense_split`): the lead stage's `defense_portion` amount where one is tagged, a button to the figure's source; empty where none is tagged (untagged is not zero). Nondefense is a view the data doesn't publish yet; it stays hidden behind the `nondefense` flag (owner, #61).
 
 **Cell states** (from the data; no new ones):
 
@@ -69,6 +71,8 @@ There are no tiles above the grid: the headline figures live in the overview pan
 | `not_collected` / `not_enacted` / `not_reported` | `n/c` / `n/e` / `n/r` small muted | the state's meaning |
 | `no_printed_total` / `no_figure` | `—` muted | the state's meaning |
 | `outside_life` | blank | "Outside the account's life" |
+
+**Under an Amount basis other than As printed** (section 5.6; owner, #61), a cell holding a printed figure shows its published view (`views.<basis>`, the timing's entry): the amount when checked or computed; `excl.` when the basis leaves the account out; `n/a` for an account and `not checked` for a total when not computable. The reason is on hover, each is a button to the figure's source, and a legend line explains the three. Only checked or computed amounts feed a difference. Cells without a printed figure keep their state tokens.
 
 **Emphasis.** The FY2026 Enacted column has a warm wash (`#f7f5ef`) on every row except the total band, and a bold header. The change column shows `±amount` over `±%`: green when up, orange when down, figures only (never the fill).
 
@@ -122,7 +126,13 @@ In a year without an Enacted stage, the three figures become: the lead stage's t
 Hovering a figure cell tints its whole row `#ecf1f9` (including the sticky name cell) and its whole column `#f1f5fb`; the crossing cell is `#d6e2f5`; the column's header turns `#dfe8f6`, bold, with a 2 px `#1f4e8c` underline. Hovering a name tints the row only. Section labels and header-only rows don't highlight. Leaving the grid clears it. Selection fills are drawn over hover.
 
 ### 5.6 Filter panel (the Filter button)
-A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `accounting-views-spec.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts (on by default; draft columns are labelled "(draft)"; owner, 2026-10-12, #58), Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
+A dialog under the button: Agency (select), Account type (All · Discretionary · Mandatory · Mixed), Status in FY<n> (Any · Enacted · Still moving · Proposed only), then an **Advanced** disclosure whose one-line summary reads e.g. "As printed · advances when available · earmarks included". Advanced holds Amount basis (five options with one-line definitions from `reference/ACCOUNTING_RULES.md`), "Advance appropriations count" (When available · When enacted), Change of at least (%) or at least ($K), and checkboxes for Exclude earmarks, Include committee drafts (on by default; draft columns are labelled "(draft)"; owner, 2026-10-12, #58), Show ended and reorganized accounts, and Only figures pending review or flagged. Footer: Reset · Done. Each non-default choice becomes a chip. The badge on the Filter button counts the chips.
+
+Adopted in UI-3 (owner, 2026-10-12, #61):
+- The basis definitions follow `reference/ACCOUNTING_RULES.md` as `accounting.BASES` applies it; Program level adds transfers in and trust-fund limitations only (no fees, no transfers out; owner decision on #57).
+- Exclude earmarks is hidden behind its own flag, `exclude_earmarks` (false until UI-0b publishes a view that leaves earmarks out); the page never computes one.
+- Under a basis other than As printed, the units-and-basis label adds the timing: "$ thousands · all appropriations · advances when available".
+- Under such a basis, the overview shows a total only where the data marks it checked, otherwise "not checked (n accounts)"; the figure-source panel adds the view, the printed headline, each component (type, amount, source) and the arithmetic (the printed figure, the components the view used, "=" the published amount).
 
 ### 5.7 View menu, Share, Export
 - **View**: Units ($ thousands · $ millions), Density (Comfortable · Compact), Columns (Change vs FY2026 request), Expand all / Collapse all, Reviewer mode.
@@ -141,6 +151,14 @@ There is no grid on a phone.
 - Last on the page: the link "Open the full table (best on a larger screen)".
 
 Compare modes, the View menu and Export are not offered on phones.
+
+Adopted on the phone (owner, 2026-10-12, #60):
+- The picker reads the data's subcommittee name, "Labor-HHS-Education · FY2026", on one line; if it doesn't fit it is cut with an ellipsis, never wrapped.
+- Lines are sorted strictly largest first at the stage shown (a line inside another line stays right after it).
+- Every line name that opens the sheet carries the link style (as on desktop, #59).
+- Tapping an agency that has lines expands it; the sheet opens from a line, or from a row with no lines below it.
+- The summary card's changes read "vs FY<n−1> enacted" and "vs request".
+- A % change from a zero base shows "new" ("—" when both are zero), as section 1 rule 2.
 
 ## 7. Typography
 
@@ -164,7 +182,7 @@ IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 
 | selected figure | `#fff1c2` + inset `#d9a400` | selection only |
 | selected account row | `#fff6dc` | selection only |
 | rail | `#b9c6dc` | lines under an expanded agency |
-| tag: incl. mandatory | bg `#eeeaf8`, text `#4b3f72` | class tags (UI-0) |
+| tag: incl. mandatory | bg `#eeeaf8`, text `#4b3f72`; provisional class: 1 px dashed outline `#8a7fb0` (owner, #61) | class tags (UI-0) |
 | tag: proposed | bg `#fdf1d8`, text `#7a4b00` | proposed-only accounts |
 | badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412`; human-verified → Verified by a person (green, as auto-validated) | verification status |
 
@@ -186,9 +204,11 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Export CSV | the shown rows | ready (UI-4) |
 | Phone list and sheet | same as grid and account panel | ready |
 | Filter › Advanced: change threshold, Include committee drafts, Show ended and reorganized accounts, Only figures pending review or flagged | cell states, `lifecycle`, verification status | ready (the Advanced section shows these now; the basis items join it when their flag is on) |
-| Amount basis, timing, Exclude earmarks | published views per cell (UI-0) | **hidden until UI-0** |
-| Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | **hidden until UI-0** |
-| Defense / nondefense column | `defense_portion` components (UI-0) | **hidden until UI-0** |
+| Amount basis, timing | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
+| Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
+| Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
+| Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | data ready (UI-0b #62); page controls in UI-3b |
+| Nondefense (`nondefense`) | a published nondefense figure per cell | data ready (UI-0b #62); page controls in UI-3b |
 | Watch | browser storage only; no alerts or email | later (UI-6) |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)

@@ -1,5 +1,26 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-0b: excluding-earmarks and nondefense views (2026-10-13)
+
+- Every cell with `views` now also gets `views_excluding_earmarks.<basis>` and `views_nondefense.<basis>`, the same
+  shape as `views`, the printed basis included (`site_accounting.Layer.account_exclusion` / `total_exclusion`;
+  the arithmetic is `accounting.excluded_amount`: the basis amount less that type's components inside the headline
+  that the basis hasn't already taken out).
+- Coverage = `tag_components.AUTO_CELLS`. Outside it every entry is `not_computable`, "earmarks not tagged for this
+  stage" / "defense not tagged for this stage": the President's Budget, FY2027, and also CJS FY2024-FY2025 (not
+  in AUTO_CELLS). This leaves out NSF R&RA's President's Budget defense lines FY2017-FY2026 and the one FY2027 House
+  earmark (a table line), although they are tagged. Owner, #62: a table-line tag does not make its cell covered
+  (keep not_computable); CJS FY2024-FY2025 will be tagged in D-2; NSF's headline decision comes with D-2.
+- Accounts: always `computed`, never `checked`. NSF's defense_portion is printed beside its headline, so its
+  nondefense view takes nothing out.
+- Totals: `checked` only where `views.<basis>` is checked (a printed total measure_reconcile matched), the cell is
+  auto-tagged, and neither the total nor any of its accounts has a component of that type. Otherwise not checked,
+  with `accounts_behind`. The printed basis on a total is always not checked. Owner, #62: reused only when every
+  account behind the total is inside coverage (checked per account; 0 count change today, since every account
+  behind a total shares its subcommittee, year and stage). SPEC §9's two UI-0b rows: data ready, controls in UI-3b.
+- ui_contract v3: `exclude_earmarks` and `nondefense` (both true). Counts in tests/fixtures/grid_counts.json
+  (`views_*_status_counts`). The page doesn't read these fields yet (UI-3).
+
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
 ## D-1 accounting follow-up (2026-10-13, this PR)
@@ -321,3 +342,73 @@ Open items:
 1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
 2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
    "request column") that the data has no field for, so it is left out.
+
+## UI-3: Amount basis and class features (2026-10-12)
+
+- SPEC.md: §4 line-name rule replaced with the owner's #59 wording; §5.6 basis definitions now cite
+  `reference/ACCOUNTING_RULES.md` (was `accounting-views-spec.md`, not in the repo). Nothing else in SPEC changed.
+- `BUILT` gains accounting_views, budget_class, defense_split; each control renders only when its flag is true.
+- Filter › Advanced: Amount basis (five options, `amt=`; definitions paraphrase ACCOUNTING_RULES' Arithmetic table and
+  Discretionary rule as accounting.BASES applies them), "Advance appropriations count" (`timing=enacted`). Account type
+  (`type=`) sits between Agency and Status. Each non-default choice is a chip and counts in the badge; Reset/Clear all
+  restore them. The summary reads "<basis> · advances when <timing> · earmarks included".
+- `figure()` is basis-aware (the published view when status checked/computed, else no figure); `printedFig()` keeps the
+  printed figure for the lead stage, enacted-history years and the account panel. Cells under a basis: the view amount;
+  "excl." (excluded); "n/a" (account not computable) or "not checked" (total not computable); reason on hover; each a
+  button to the figure's source. Overview totals: the view only where checked, else "not checked (n accounts)".
+- Source panel under a basis: view value + status + reason, the printed headline (UI-2 fields), every component (type,
+  amount, in/beside the figure, document, page, ID) and the arithmetic: the printed figure, the components the view
+  used (`component_ids`, less if in the headline, plus if beside), "= " the published amount. The page adds nothing up.
+- budget_class: the enacted-basis record, else the request basis (proposed accounts). Mixed → "incl. mandatory" tag;
+  mandatory lines go under "Appropriated mandatory" in their agency (tag "provisional" where provisional); an agency gets
+  "incl. mandatory" when a line in view is mandatory or mixed. Provisional = dashed outline (legend says so).
+- View › Columns: "Defense / nondefense (defense portion)" (`cols=defense`): the lead stage's `defense_portion` amount
+  where tagged, empty otherwise (untagged is not zero). Only CJS NSF RRA is tagged today.
+- Tests: tests/test_compare.py AmountBasis (basis x timing cells and changes on Medicaid, CURES, SAMHSA HSPS, CMS Program
+  Management, the title total, FY2025 CR; source panel arithmetic; overview totals; Account type and tags; defense
+  column; URL round-trip of every option). Test 12 forces the three flags false and checks the controls appear when on.
+
+Owner answers on #61 (2026-10-12):
+1. Exclude earmarks and nondefense: nothing built; new flags `exclude_earmarks` and `nondefense` in web/ui_contract.json
+   (contract_version 3), false until UI-0b publishes `rows[].cells.*.views_excluding_earmarks.<basis>` and
+   `rows[].cells.*.nondefense` (proposed paths, in the contract's shapes; UI-0b may rename them in the contract).
+   Neither is in `BUILT`; test 12 forces both false and checks no control either way. View › Columns reads
+   "Defense portion".
+2. "incl. mandatory": a line whose class is mandatory, or mixed with a mandatory_portion tagged at the lead stage; an
+   agency holding one. FY2026: HRSA, CDC, CMS, ACF, OS (the mockup's CMS/ACF-only predates the class data). Hover names
+   each line and its mandatory amount (portions listed, never added). Recorded in SPEC §4; test in AmountBasis.
+3. Program level follows ACCOUNTING_RULES (owner decision on #57).
+4. Other departures adopted and recorded in SPEC §4 (basis tokens, class tags, defense column), §5.6 (definitions,
+   Exclude earmarks flag, label timing, overview/source panel under a basis), §8 (provisional dashed outline).
+
+Open: SPEC §9's table still says "hidden until UI-0" for the accounting rows and has no rows for the two new flags
+(the owner's answer named §4/§5.6/§8 only).
+
+## UI-P: Phone layout (2026-10-12)
+
+- Below 640px (`matchMedia("(max-width: 639px)")`) with `features.phone` on (`phone` now in `BUILT`) the body gets
+  `phone-on` and CSS hides the grid, the panel and the desktop control row; `#phone` shows the list. The desktop grid is
+  still rendered underneath (so a resize is instant); the phone list and sheet are rendered only while the phone layout
+  is active, so no test id appears twice on a desktop.
+- Same state: G, SEL, `open`, filters and the URL. New URL params: `pstage=<request|house|senate>` (not `stage=`: old links carry `stage=Enacted`) (the phone's stage
+  when it differs from the lead stage) and `table=1` ("Open the full table": the grid on a phone; Back returns).
+- The phone always reads the Stages layout of `fy` (`asStages`), whatever `grid=` a desktop link carries.
+- `partsOf(group, F)` now holds the row grouping both the grid and the phone list use; `accountView(grid, id, phone)`
+  builds the account panel and the sheet.
+- Agency rows with lines expand on tap (the design's caret); every other line opens the sheet. A selected figure
+  (`fig=`) opens its account's sheet; a printed total's figure opens nothing.
+- Tests: `tests/test_compare.py` `PhoneV1` (13, 14, desktop link -> sheet, FY2027/CJS, full table);
+  `test_no_page_scroll_at_390px` now checks the phone list and `table=1`.
+
+Open items:
+1. Watch stays hidden (UI-6).
+
+Owner decisions on #60 (2026-10-12), recorded in SPEC.md section 6 as adopted: the picker keeps "Labor-HHS-Education"
+on one line with an ellipsis (never wraps); lines strictly largest first; link style on every line name; an agency
+with lines expands on tap; "vs FY<n-1> enacted" in the summary card; "new" from a zero base.
+
+Merged main after UI-3 (#61): `BUILT` keeps both lists; `buildRows` uses `partsOf` with UI-3's "incl. mandatory"
+(`inclMandatory`) and class tags (`classTags`, factored out of `accountRow`). The phone list shows the same tags
+(an agency "incl. mandatory"; a line "mandatory" / "incl. mandatory"; no "Appropriated mandatory" sub-group since
+lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid does: view amounts, "excl.",
+"n/a" / "not checked"; the summary card and the stage note name the basis.

@@ -799,17 +799,19 @@
    "historical_names": []
   }
  ],
- "contract_version": 2,
+ "contract_version": 4,
  "features": {
   "abbreviations": true,
   "account_panel": true,
   "accounting_views": true,
   "budget_class": true,
   "defense_split": true,
+  "exclude_earmarks": true,
   "export_csv": true,
   "figure_source": true,
   "grid": true,
   "interaction_state": true,
+  "nondefense": true,
   "overview_panel": true,
   "phone": true,
   "search_filter": true,
@@ -822,8 +824,8 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-13T03:50:46+00:00",
-  "data_sha256": "5d81fe196d3d70d7e633ecdca2e84f81996a16608a25e48a0bfdffbe929eee47",
+  "data_committed": "2026-10-12T08:21:33+00:00",
+  "data_sha256": "dfae1088756ac038cc1c5c2d1f44cc5d29f853383c0abc0169afb27e547bff2d",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 130,
@@ -834,9 +836,9 @@
    "component": 29,
    "confirmed_absence": 311,
    "historical_name": 14,
-   "observation_component": 1204,
+   "observation_component": 1185,
    "source_document": 151,
-   "validation_record": 21306
+   "validation_record": 21289
   },
   "version": "v38",
   "warnings": [],

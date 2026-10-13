@@ -461,6 +461,144 @@ class AccountingLayer(unittest.TestCase):
             for basis in ("all_appropriations", "program_level"):
                 self.assertFalse([k for k in got[basis] if k.endswith("excluded")], basis)
 
+    # ------------------------------------------------------------ UI-0b: excluding earmarks, nondefense
+    def exclusion_entries(self, cell):
+        import site_accounting as SA
+        for exclusion, field in SA.EXCLUSION_FIELDS.items():
+            for basis, entries in cell.get(field, {}).items():
+                yield exclusion, field, basis, entries
+
+    def test_exclusion_views_on_every_view_cell(self):
+        import site_accounting as SA
+        for sc, row, key, cell in self.cells():
+            for field in SA.EXCLUSION_FIELDS.values():
+                self.assertEqual(field in cell, "views" in cell, (key, field))
+                if field not in cell:
+                    continue
+                self.assertEqual(set(cell[field]), set(self.AC.BASES), key)
+                for basis, entries in cell[field].items():
+                    self.assertIn(len(entries), (1, 2))
+                    self.assertEqual(entries[0]["timing"], None if basis == "printed" else "available")
+                    if len(entries) == 2:
+                        self.assertEqual(entries[1]["timing"], "enacted")
+                        self.assertNotEqual((entries[0]["amount"], entries[0]["status"]),
+                                            (entries[1]["amount"], entries[1]["status"]))
+                    for e in entries:
+                        self.assertIn(e["status"], ("checked", "computed", "excluded", "not_computable"))
+                        self.assertTrue(e["reason"])
+                        self.assertEqual(e["amount"] is None, e["status"] in ("excluded", "not_computable"))
+
+    def test_each_account_exclusion_view_is_accountings_result(self):
+        # every published entry of an account cell equals accounting.excluded_amount for that cell, basis and timing
+        import tag_components as TC
+        attrs = self.AC.attribute_index(self.data)
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if row["rollup"] or "views" not in cell:
+                continue
+            aid = row["account"]["canonical_account_id"]
+            fy, stage = key.split("|", 1)
+            if (sc, int(fy), stage) not in TC.AUTO_CELLS:
+                continue
+            h = self.headline(cell)
+            cs = self.by_obs.get(h["observation_id"], [])
+            if self.AC.split(h["amount"], cs)[0] < 0:
+                for _, field, basis, entries in self.exclusion_entries(cell):
+                    self.assertEqual(entries, cell["views"][basis])
+                continue
+            rec = self.AC.attribute_value(attrs, aid, int(fy), "budget_class", stage)
+            for exclusion, field, basis, entries in self.exclusion_entries(cell):
+                timings = [None] if basis == "printed" else self.AC.TIMINGS
+                want = [self.AC.excluded_amount(h["amount"], cs, basis, t, rec["value"] if rec else None, exclusion)
+                        for t in timings]
+                got = {e["timing"]: e for e in entries}
+                for t, w in zip(timings, want):
+                    e = got.get(t) or got[timings[0]]          # no 'enacted' entry: 'available' holds for both
+                    if w[0] != "value":
+                        self.assertEqual((e["status"], e["amount"], e["reason"]), (w[0], None, w[1]))
+                        continue
+                    self.assertEqual(e["status"], "computed", (aid, key, field, basis))   # an account's is never checked
+                    self.assertEqual(e["amount"], w[1], (aid, key, field, basis, t))
+                    if e["timing"] != t:
+                        continue        # the 'available' entry holds for 'enacted' too: same amount and status
+                    self.assertEqual(e["component_ids"], sorted(c["component_id"] for c in w[2]))
+                    # and from the published components alone: the headline less those inside, plus those beside
+                    used = [self.comps[c] for c in e["component_ids"]]
+                    self.assertEqual(e["amount"], h["amount"] + sum(c["amount"] if c["in_headline"] != "TRUE"
+                                                                    else -c["amount"] for c in used))
+                    taken = [c for c in used if c["component_type"] == self.AC.EXCLUSIONS[exclusion]]
+                    self.assertTrue(all(c["in_headline"] == "TRUE" for c in taken))
+                    n += 1
+        self.assertGreater(n, 20000)
+
+    def test_earmarks_come_out_where_tagged(self):
+        # a cell with an earmark inside its headline: the excluding-earmarks printed view is the headline less it
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if row["rollup"] or "earmark" not in cell or cell["views_excluding_earmarks"]["printed"][0]["status"] != "computed":
+                continue
+            h = self.headline(cell)
+            inside = sum(self.comps[i]["amount"] for i in cell["earmark"]["component_ids"]
+                         if self.comps[i]["in_headline"] == "TRUE")
+            self.assertEqual(cell["views_excluding_earmarks"]["printed"][0]["amount"], h["amount"] - inside)
+            n += 1
+        self.assertGreater(n, 20)
+
+    def test_untagged_stages_are_never_computed(self):
+        # outside the auto-tagged cells (the President's Budget, FY2027, ...) untagged is never 'no earmarks' or
+        # 'no defense portion': every entry is not_computable with the coverage reason
+        import site_accounting as SA
+        import tag_components as TC
+        seen = set()
+        for sc, row, key, cell in self.cells():
+            fy, stage = key.split("|", 1)
+            if (sc, int(fy), stage) in TC.AUTO_CELLS:
+                self.assertNotEqual(stage, "President's Budget")
+                self.assertNotEqual(fy, "2027")
+                continue
+            for exclusion, field, basis, entries in self.exclusion_entries(cell):
+                seen.add(stage if stage == "President's Budget" else fy)
+                self.assertEqual(len(entries), 1)
+                e = entries[0]
+                self.assertEqual((e["status"], e["amount"], e["reason"]),
+                                 ("not_computable", None, SA.UNTAGGED[exclusion]), (key, field, basis))
+                self.assertNotIn("component_ids", e)
+                if row["rollup"]:
+                    self.assertIsInstance(e["accounts_behind"], int)
+        self.assertTrue({"President's Budget", "2027"} <= seen)
+        self.assertEqual(SA.UNTAGGED, {"excluding_earmarks": "earmarks not tagged for this stage",
+                                       "nondefense": "defense not tagged for this stage"})
+
+    def test_total_exclusion_views_only_where_a_printed_total_confirms(self):
+        # a total is never summed: checked only as its views.<basis> entry (a printed total measure_reconcile
+        # matched) where the total has no component of the type; otherwise not checked, with its accounts
+        n = 0
+        for sc, row, key, cell in self.cells():
+            if not row["rollup"] or "views" not in cell:
+                continue
+            h = self.headline(cell)
+            for exclusion, field, basis, entries in self.exclusion_entries(cell):
+                for e in entries:
+                    self.assertIn(e["status"], ("checked", "not_computable"), (key, field, basis))
+                    if e["status"] == "not_computable":
+                        self.assertIsInstance(e["accounts_behind"], int)
+                        continue
+                    self.assertNotEqual(basis, "printed")
+                    base = next(b for b in cell["views"][basis] if b["timing"] == e["timing"])
+                    self.assertEqual((e["amount"], e["printed_observation_id"], e["validation_id"]),
+                                     (base["amount"], base["printed_observation_id"], base["validation_id"]))
+                    self.assertEqual(self.records[e["validation_id"]]["result"], "pass")
+                    self.assertFalse([c for c in self.by_obs.get(h["observation_id"], [])
+                                      if c["component_type"] == self.AC.EXCLUSIONS[exclusion]])
+                    n += 1
+        self.assertGreater(n, 50)
+
+    def test_exclusion_status_counts_per_basis(self):
+        import site_accounting as SA
+        for sc, g in self.grids.items():
+            for field in SA.EXCLUSION_FIELDS.values():
+                self.assertEqual(SA.status_counts(g, field), GRID_COUNTS[f"{field}_status_counts"][sc], (sc, field))
+
     def test_attributes_cite_their_records(self):
         recs = {r["account_attribute_id"]: r for r in self.data["account_attributes"]}
         n = 0
