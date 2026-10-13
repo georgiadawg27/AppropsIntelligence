@@ -789,7 +789,7 @@ class CompareBrowser(GridBrowser):
     def test_aha_only_in_its_requests_never_in_enacted_history(self):
         # proposed in the FY2026 and FY2027 requests, never enacted: its row shows where a request column is in
         # view; Enacted cells blank; not in Enacted history unless 'proposed-only accounts' is ticked
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
         self.assertIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
         self.assertEqual(self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").get_attribute("data-state"), "value")
         enacted = self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted")
@@ -797,9 +797,9 @@ class CompareBrowser(GridBrowser):
                          ("", "outside", ""))
         note = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").locator("[data-testid=cell-note]")
         self.assertEqual(note.get_attribute("title"), "Proposed in the FY2026 request; never enacted.")
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025&rev=1")
         self.assertNotIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
-        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.open("static", "?view=compare&sc=LHHS&grid=history&rev=1")
         self.assertFalse(self.page.locator("[data-testid=show-proposed]").is_checked())
         self.assertNotIn("ACC-HHS-AHA-TOTAL", self.rows_shown())
         self.advanced("check", "[data-testid=show-proposed]")
@@ -808,11 +808,11 @@ class CompareBrowser(GridBrowser):
         self.assertEqual(self.cell("ACC-HHS-AHA-TOTAL", 2026, "Enacted").get_attribute("data-outside-life"), "outside")
         # the filter defaults on in the two compare views
         for grid in ("stages", "years"):
-            self.open("static", f"?view=compare&sc=LHHS&grid={grid}")
+            self.open("static", f"?view=compare&sc=LHHS&grid={grid}&rev=1")
             self.assertTrue(self.page.locator("[data-testid=show-proposed]").is_checked(), grid)
 
     def test_arpa_h_appears_from_fy2022(self):
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2021&open=ACC-HHS-NIH-TOTAL")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2021&open=ACC-HHS-NIH-TOTAL&rev=1")
         self.assertNotIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
         # 'new accounts before their first year': the row, blank
         self.advanced("check", "[data-testid=show-created]")
@@ -820,18 +820,18 @@ class CompareBrowser(GridBrowser):
         for st in FOUR:
             c = self.cell("ACC-HHS-NIH-ARPA-H", 2021, st)
             self.assertEqual((c.get_attribute("data-outside-life"), c.inner_text()), ("before", ""), st)
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2022&open=ACC-HHS-NIH-TOTAL")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2022&open=ACC-HHS-NIH-TOTAL&rev=1")
         self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
         self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2022, "Enacted").locator("[data-testid=cell-note]").get_attribute("title"),
                          "Created FY2022.")
         # in Enacted history its row shows, blank before FY2022
-        self.open("static", "?view=compare&sc=LHHS&grid=history&open=ACC-HHS-NIH-TOTAL")
+        self.open("static", "?view=compare&sc=LHHS&grid=history&open=ACC-HHS-NIH-TOTAL&rev=1")
         self.assertIn("ACC-HHS-NIH-ARPA-H", self.rows_shown())
         self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2021, "Enacted").get_attribute("data-outside-life"), "before")
         self.assertEqual(self.cell("ACC-HHS-NIH-ARPA-H", 2022, "Enacted").get_attribute("data-state"), "value")
 
     def test_a_created_note_links_its_predecessor(self):
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2024")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2024&rev=1")
         self.menu("click", "#expand-all")
         n = self.cell("ACC-HHS-ASPR-TOTAL", 2024, "Enacted").locator("a[data-testid=cell-note]")
         self.assertEqual(n.get_attribute("data-link"), "ACC-HHS-OS-PHSSEF")
@@ -1122,7 +1122,8 @@ class CompareBrowser(GridBrowser):
                     nums: getComputedStyle(document.querySelector('#compare-grid td.num')).fontVariantNumeric,
                     size: getComputedStyle(document.querySelector('#compare-grid')).fontSize,
                     hscroll: w.scrollWidth > w.clientWidth}; }""")
-        self.assertEqual(m["height"], 900 - 380)                    # the window-height scroll box: calc(100vh - 380px)
+        # the window-height scroll box: from below the title row to the window's bottom edge (UI-2b)
+        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 900), 2)
         self.assertTrue(m["scrollable"])
         self.assertTrue(m["hscroll"])                               # history is wide: the box's own bottom scrollbar
         self.assertEqual(m["overflow"], "auto")
@@ -1251,7 +1252,7 @@ class CompareBrowser(GridBrowser):
                     for k in r["cells"] if other_lines(r, *k.split("|")))
         self.assertGreater(total, 0)
         for sc in ("LHHS", "CJS"):
-            self.open("static", f"?view=compare&sc={sc}&grid=history")
+            self.open("static", f"?view=compare&sc={sc}&grid=history&rev=1")
             self.menu("click", "#expand-all")
             marks = self.page.locator("#compare-grid [data-testid=more]")
             self.assertGreater(marks.count(), 0)
@@ -1264,7 +1265,7 @@ class CompareBrowser(GridBrowser):
         # a law_text match combined across divisions of the law carries its note (VAL-LHHS-07183, OBS-LHHS-0014)
         note = ("Includes $2,500,000,000 from Division N (Disaster Relief Supplemental Appropriations Act, 2023) "
                 "of P.L. 117-328.")
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023&rev=1")
         self.menu("click", "#expand-all")
         notes = self.page.locator("#compare-grid [data-testid=cell-note]")
         # the view's other notes: Refugee FY2022 Enacted (the prior-year column), ASPR's FY2023 cells (funded within
@@ -1288,7 +1289,7 @@ class CompareBrowser(GridBrowser):
         # the other-law note names the two CRs (VAL-LHHS-08860, OBS-LHHS-2113)
         note = ("Includes $1,600,000,000 ('CR Funding - P.L 117-70') and $2,500,000,000 ('CR Funding - P.L. 117-43 "
                 "(emergency)'), continuing-resolution funding printed within this figure (SRC-CRPT-117HRPT403 p.825).")
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2022")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2022&rev=1")
         self.menu("click", "#expand-all")
         n = self.cell("ACC-HHS-ACF-REFUGEE", 2022, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.get_attribute("title"), note)
@@ -1299,7 +1300,7 @@ class CompareBrowser(GridBrowser):
         note = ("The House subcommittee draft's explanatory table prints 'Global Health' 370,722 thousand "
                 "(SRC-EXPL-LHHS-FY2024-HOUSE p.258), $50,000 less than the bill.")
         for sc in ("CJS", "LHHS"):
-            self.open("static", f"?view=compare&sc={sc}&grid=stages&fy=2024")
+            self.open("static", f"?view=compare&sc={sc}&grid=stages&fy=2024&rev=1")
             self.menu("click", "#expand-all")
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
@@ -1348,7 +1349,7 @@ class CompareBrowser(GridBrowser):
         cases.append(("CJS", "stages&fy=2024", [(2023, "Enacted")] + [(2024, st) for st in FOUR], self.grid))
         for sc, q, pairs, grid in cases:
             with self.subTest(sc=sc, view=q):
-                self.open("static", f"?view=compare&sc={sc}&grid={q}")
+                self.open("static", f"?view=compare&sc={sc}&grid={q}&rev=1")
                 self.menu("click", "#expand-all")
                 # the rows the view shows (the lifecycle: Enacted history leaves out the proposed-only accounts)
                 rows = shown_rows(grid, pairs, "history" if q == "history" else "stages")
@@ -1364,7 +1365,7 @@ class CompareBrowser(GridBrowser):
                 self.assertEqual(self.markers(), want)
 
     def test_other_lines_examples(self):
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026")
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
         m = self.cell("ACC-HHS-AHA-TOTAL", 2026, "President's Budget").locator("[data-testid=more]")
         self.assertEqual((m.get_attribute("data-lines"), m.get_attribute("title")),
                          ("1", "1 other line on file, $ thousands:\n"
@@ -1386,7 +1387,7 @@ class CompareBrowser(GridBrowser):
         legend = self.page.inner_text("[data-testid=mark-legend]")          # beneath the legend, in Reviewer mode
         self.assertIn("note on this figure: hover to read, click to open the account", legend)
         self.assertNotIn("other lines on file for this cell", legend)
-        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024")
+        self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2024&rev=1")
         self.menu("click", "#expand-all")
         cell = self.cell("ACC-NASA-EXPLORATION", 2024, "Enacted")
         m = cell.locator("[data-testid=more]")
@@ -1711,29 +1712,30 @@ class ExploreV1(GridBrowser):
                 text = lambda t: self.page.inner_text(f"[data-testid={t}]")
                 self.assertEqual(text("src-account"), "National Cancer Institute")
                 self.assertEqual(text("src-stage"), "FY2026 enacted")
-                self.assertEqual(text("src-value"), o["amount"])
-                self.assertEqual(text("src-value"), "7,352,159")
-                self.assertEqual(text("src-short"), "$7.35B · $ thousands · as printed")
+                # in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
+                self.assertEqual(o["amount"], "7,352,159")
+                self.assertEqual(text("src-value"), "$7,352,159,000")
+                self.assertEqual(text("src-short"), "printed as 7,352,159 in $ thousands")
                 self.assertEqual(self.page.get_attribute("[data-testid=src-badge]", "data-status"), obs["verification_status"])
                 self.assertEqual(text("src-badge"), "Auto-validated")
-                # the document by its short name (the display map keyed by source_document_id), linked; its page
-                doc = self.page.locator("[data-testid=src-doc] a")
+                # one "Source document" block: the short name (plain text), its page, "Printed as", one button to the page
                 self.assertEqual(self.page.get_attribute("[data-testid=src-doc]", "data-doc"), "SRC-EXPL-LHHS-FY2026-ENACTED")
-                self.assertEqual((doc.inner_text(), doc.get_attribute("href")),
-                                 ("Explanatory statement, Cong. Rec. Jan. 22, 2026", obs["url_or_identifier"]))
+                self.assertEqual(text("src-doc"), "Explanatory statement, Cong. Rec. Jan. 22, 2026")
+                self.assertEqual(self.page.locator("[data-testid=src-doc] a").count(), 0)
+                self.assertIn("SOURCE DOCUMENT", text("src-docblock").upper())
                 self.assertEqual(text("src-page"), "Page 285")
                 self.assertEqual(text("src-printed"), obs["source_table_or_section"])
                 self.assertIn("Printed as", panel.inner_text())
                 bill = self.page.locator("[data-testid=src-bill]")
-                self.assertIn("P.L. 119-75", bill.inner_text())
+                self.assertEqual(bill.inner_text(), "Bill / law: P.L. 119-75, Div. B")
                 self.assertEqual(bill.get_attribute("href"), obs["bill_url"])
                 self.assertEqual(text("src-record"), f"Record {obs['observation_id']}")
                 btn = self.page.locator("[data-testid=src-open]")
-                self.assertEqual(btn.inner_text(), "Open page 285 of the document")
+                self.assertEqual(btn.inner_text(), "Open source document at page 285")
                 self.assertEqual(btn.get_attribute("href"), obs["url_or_identifier"] + "#page=285")
                 self.assertEqual(text("src-account-btn"), "See every stage for this account")
                 self.assertEqual(text("panel-back"), "‹ Title II overview")
-                self.assertEqual(text("panel-hint"), "or click outside · Esc")
+                self.assertEqual(self.page.locator("[data-testid=panel-hint]").count(), 0)     # the hint is gone (UI-2b)
                 # the cell is marked selected: yellow fill, 2px #d9a400 inset outline
                 self.assertEqual(cell.get_attribute("data-sel"), "fig")
                 self.page.mouse.move(2, 2)
@@ -1749,10 +1751,97 @@ class ExploreV1(GridBrowser):
                 self.page.evaluate("""() => { const o = headOf(ROW_OF.get('ACC-HHS-NIH-NCI'), 2026, 'Senate Reported').h.observations[0];
                                              delete o.bill_url; renderPanel(current.grid); }""")
                 self.assertEqual(self.page.locator("[data-testid=src-bill]").count(), 0)
-                self.assertNotIn("Bill or law", panel.inner_text())
+                self.assertNotIn("Bill / law", panel.inner_text())
                 # "See every stage for this account" opens the account
                 self.page.click("[data-testid=src-account-btn]")
                 self.assertEqual(panel.get_attribute("data-mode"), "account")
+
+    # ---- UI-2b: grid and panel polish (owner review, 2026-10-13) ---------------------------------------------
+
+    def test_note_marks_only_in_reviewer_mode(self):
+        # no corner triangles (notes, other lines) and no key for them in the default view; both in Reviewer mode
+        marks = "#compare-grid [data-testid=cell-note], #compare-grid [data-testid=more]"
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
+        self.assertEqual(self.page.locator(marks).count(), 0)
+        self.assertTrue(self.page.is_hidden("[data-testid=mark-legend]"))
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL&rev=1")
+        self.assertGreater(self.page.locator("#compare-grid [data-testid=cell-note]").count(), 0)
+        self.assertGreater(self.page.locator("#compare-grid [data-testid=more]").count(), 0)
+        self.assertTrue(self.page.is_visible("[data-testid=mark-legend]"))
+        # turning Reviewer mode off in the View menu takes them away again
+        self.menu("uncheck", "[data-testid=reviewer]")
+        self.assertEqual(self.page.locator(marks).count(), 0)
+
+    def test_figure_notes_in_its_panel(self):
+        # AHA's FY2026 request: its cell note and its other line show under "Notes" in the source panel
+        self.go("?sc=LHHS&fy=2026&fig=ACC-HHS-AHA-TOTAL|2026|President's%20Budget")
+        notes = self.page.locator("[data-testid=src-notes]")
+        self.assertTrue(notes.is_visible())
+        self.assertIn("NOTES", notes.inner_text().upper())
+        items = self.page.eval_on_selector_all("[data-testid=src-note]", "es => es.map(e => e.innerText)")
+        self.assertEqual(items[0], "Proposed in the FY2026 request; never enacted.")
+        self.assertTrue(items[1].startswith("1 other line on file, $ thousands (listed, never added): "
+                                            "program level \u2014 the figure above, scoped another way; not added: 579,688."), items[1])
+        # a figure with no note has no Notes block
+        self.go("?sc=LHHS&fy=2026&fig=ACC-HHS-NIH-NCI|2026|Enacted")
+        self.assertEqual(self.page.locator("[data-testid=src-notes]").count(), 0)
+        # a lifecycle note naming another account links to it (ASPR, created FY2024 from PHSSEF)
+        self.go("?sc=LHHS&fy=2024&fig=ACC-HHS-ASPR-TOTAL|2024|Enacted")
+        self.assertIn("Created FY2024", self.page.inner_text("[data-testid=src-notes]"))
+        self.assertEqual(self.page.get_attribute("[data-testid=src-note-link]", "data-link"), "ACC-HHS-OS-PHSSEF")
+
+    def test_grid_box_fills_the_window(self):
+        for w, h in ((1440, 900), (1280, 720)):
+            with self.subTest(size=(w, h)):
+                self.page.set_viewport_size({"width": w, "height": h})
+                self.go("?sc=LHHS&fy=2026")
+                box = lambda: self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom")
+                self.assertLessEqual(abs(box() - h), 2)
+                # the legend and provenance sit below it, reached by scrolling the page
+                self.assertGreaterEqual(self.page.evaluate("document.querySelector('[data-testid=legend]').getBoundingClientRect().top"), h)
+                self.assertGreater(self.page.evaluate("document.documentElement.scrollHeight"), h)
+        # resize-aware: a taller window, then an applied chip row, keep the bottom on the edge
+        self.page.set_viewport_size({"width": 1440, "height": 1000})
+        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 1000), 2)
+        self.go("?sc=LHHS&fy=2026&agency=National+Institutes+of+Health")
+        self.assertTrue(self.page.is_visible("[data-testid=chips]") if self.page.locator("[data-testid=chips]").count() else True)
+        self.assertLessEqual(abs(self.page.evaluate("document.querySelector('#grid-wrap').getBoundingClientRect().bottom") - 1000), 2)
+
+    def test_source_panel_full_dollars_and_one_source_link(self):
+        self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
+        self.cell("ACC-HHS-NIH-NCI", 2026, "Enacted").locator("button.fig").click()
+        obs = next(l for l in self.lrow("ACC-HHS-NIH-NCI")["cells"]["2026|Enacted"]["lines"]
+                   if l["amount_type"] == "budget authority" and not l["component"])["observations"][0]
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$7,352,159,000")
+        self.assertEqual(self.page.inner_text("[data-testid=src-short]"), "printed as 7,352,159 in $ thousands")
+        hrefs = self.page.eval_on_selector_all("#side-panel a[href]", "as => as.map(a => a.getAttribute('href'))")
+        to_doc = [h for h in hrefs if h.split("#")[0] == obs["url_or_identifier"]]
+        self.assertEqual(len(to_doc), 1, hrefs)
+        self.assertTrue(to_doc[0].endswith("#page=285"))
+        # the bill or law is a separate, secondary link
+        bill = self.page.locator("[data-testid=src-bill]")
+        self.assertEqual(bill.inner_text(), "Bill / law: P.L. 119-75, Div. B")
+        self.assertEqual(self.page.locator("[data-testid=src-docblock] [data-testid=src-bill]").count(), 0)
+        self.assertNotIn("or click outside", self.page.inner_text("#side-panel"))
+        # Esc and a click outside still return the overview
+        self.page.keyboard.press("Escape")
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "overview")
+
+    def test_account_table_one_source_link_per_stage(self):
+        self.go("?sc=LHHS&fy=2026&acct=ACC-HHS-NIH-NCI")
+        rows = self.page.locator("[data-testid=acct-table] tbody tr[data-testid=acct-stage]")
+        self.assertEqual(rows.count(), 5)
+        for r in rows.all():
+            self.assertEqual(r.locator("td").count(), 2)                                  # Stage (th) | Amount | Source
+            self.assertEqual(r.locator("a").count(), 1)
+            self.assertIn("#page=", r.locator("a").get_attribute("href"))
+        self.assertEqual(self.page.locator("[data-testid=acct-bills] a").count(), 4)
+        self.assertNotIn("Budget Appendix", self.page.inner_text("[data-testid=acct-bills]"))
+        self.assertEqual(self.page.locator("[data-testid=panel-hint]").count(), 0)          # no hint in the account panel
+        self.assertNotIn("or click outside", self.page.inner_text("#side-panel"))
+        # a request figure's secondary link is the budget document
+        self.page.locator("[data-testid=acct-stage][data-stage=\"President's Budget\"] [data-testid=acct-stage-fig]").click()
+        self.assertEqual(self.page.inner_text("[data-testid=src-bill]"), "Budget document: FY2026 Budget Appendix")
 
     # 3
     def test_every_value_cell_is_clickable(self):
@@ -1880,9 +1969,9 @@ class ExploreV1(GridBrowser):
                 self.assertEqual(text("acct-path"), "Title II › National Institutes of Health")
                 self.assertEqual(text("acct-name"), "National Cancer Institute")
                 self.assertEqual(text("acct-headline"), "$7.35B")
-                self.assertEqual(text("acct-exact"), "7,352,159 in $ thousands · FY2026 enacted, as printed")
+                self.assertEqual(text("acct-exact"), "FY2026 enacted, as printed")
                 self.assertEqual(text("acct-change"), "+$128.0M (+1.8%) vs FY2025 enacted (full-year CR)")
-                # every stage with its source: amount, then document · page · bill
+                # every stage in a table: Stage | Amount ($K) | Source, the source one link to its page (UI-2b)
                 row = self.lrow("ACC-HHS-NIH-NCI")
                 stages = self.page.locator("[data-testid=acct-stage]")
                 self.assertEqual(stages.count(), 5)
@@ -1893,10 +1982,15 @@ class ExploreV1(GridBrowser):
                     obs = next(l for l in row["cells"][f"{fy}|{st}"]["lines"] if l["amount_type"] == "budget authority"
                                and not l["component"])["observations"][0]
                     src = line.locator("[data-testid=acct-stage-src]")
-                    self.assertIn(f"p. {obs['source_page']}", src.inner_text())
-                    self.assertEqual(src.locator("a").first.get_attribute("href"), obs["url_or_identifier"])
-                    self.assertEqual(src.locator("a").last.get_attribute("href"), obs["bill_url"])
+                    self.assertIn(f"p.\u00a0{obs['source_page']}", src.inner_text())
+                    self.assertEqual(src.locator("a").count(), 1)
+                    self.assertEqual(src.locator("a").get_attribute("href"),
+                                     obs["url_or_identifier"] + "#page=" + str(obs["source_page"]).split("-")[0])
                 self.assertEqual(stages.nth(0).locator(".k").inner_text(), "FY2025 enacted (full-year CR)")
+                self.assertEqual(self.page.eval_on_selector_all("[data-testid=acct-table] thead th", "ts => ts.map(t => t.innerText)"),
+                                 ["Stage", "Amount ($K)", "Source"])
+                # the bill and law text once, on one line under the table
+                self.assertEqual(text("acct-bills"), "Bill text: FY2025: P.L. 119-4 (full-year CR) · H.R. 5304 · S. 2587 · P.L. 119-75")
                 # a stage's figure opens its source
                 stages.nth(2).locator("[data-testid=acct-stage-fig]").click()
                 self.assertEqual(self.page.inner_text("[data-testid=src-stage]"), "FY2026 House")
@@ -1940,7 +2034,7 @@ class ExploreV1(GridBrowser):
         self.assertIn("Not funded: printed zero", z.get_attribute("title"))
         z.click()                                                              # it opens its source (UI-2)
         self.assertEqual((self.page.inner_text("[data-testid=src-value]"), self.page.inner_text("[data-testid=src-short]")),
-                         ("0", "Not funded: printed zero · $ thousands · as printed"))
+                         ("$0", "Not funded: printed zero · printed as 0 in $ thousands"))
         self.assertEqual(td.get_attribute("data-sel"), "fig")
         self.page.keyboard.press("Escape")                                     # back to the overview
         # FY2027 AHRQ House (0) vs FY2026 enacted (345,380); Request (0) vs FY2026 enacted
@@ -2321,18 +2415,18 @@ class PhoneV1(GridBrowser):
                 self.assertEqual(sheet.locator("[data-testid=acct-name]").inner_text(), "National Cancer Institute")
                 self.assertEqual(sheet.locator("[data-testid=acct-path]").inner_text(), "Title II › National Institutes of Health")
                 nci = self.lrow(self.NCI)
-                self.assertEqual(sheet.locator("[data-testid=acct-exact]").inner_text(),
-                                 f"{thousands(printed(nci, 2026, 'Enacted'))} in $ thousands · FY2026 enacted, as printed")
+                self.assertEqual(sheet.locator("[data-testid=acct-exact]").inner_text(), "FY2026 enacted, as printed")
                 st = sheet.locator("[data-testid=acct-stage]")
                 self.assertEqual(st.count(), 5)
                 for k, (y, s) in enumerate([(2025, "Enacted")] + [(2026, x) for x in FOUR]):
                     self.assertEqual(st.nth(k).locator("[data-testid=acct-stage-fig]").inner_text(), thousands(printed(nci, y, s)))
                     src = st.nth(k).locator("[data-testid=acct-stage-src]")
-                    self.assertRegex(src.inner_text(), r" · p\. \d+")
-                    self.assertGreaterEqual(src.locator("a").count(), 2)          # the document and the bill
-                enacted = st.nth(4).locator("[data-testid=acct-stage-src]").inner_text()
-                self.assertIn("p. 285", enacted)
-                self.assertIn("P.L. 119-75", enacted)
+                    self.assertRegex(src.inner_text(), r",\u00a0p\.\u00a0\d+$")
+                    self.assertEqual(src.locator("a").count(), 1)                 # the document at its page (UI-2b)
+                enacted = st.nth(4).locator("[data-testid=acct-stage-src] a")
+                self.assertIn("p.\u00a0285", enacted.inner_text())
+                self.assertTrue(enacted.get_attribute("href").endswith("#page=285"))
+                self.assertEqual(sheet.locator("[data-testid=acct-bills]").inner_text(), "Bill text: FY2025: P.L. 119-4 (full-year CR) · H.R. 5304 · S. 2587 · P.L. 119-75")
                 self.assertEqual(sheet.locator("[data-testid=acct-bar]").count(), 10)
                 self.assertTrue(sheet.locator("[data-testid=acct-open]").is_visible())
                 self.assertIn(f"acct={self.NCI}", self.page.url)
@@ -2623,12 +2717,12 @@ class AmountBasis(GridBrowser):
             return terms, comps
         terms, comps = panel(f"?sc=LHHS&fy=2026&amt=all_appropriations&fig={self.MEDICAID}|2026|Enacted")
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "769,212,611")
-        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "508,148,791")       # the printed headline
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$508,148,791,000")  # the printed headline
         self.assertEqual(terms, ["Printed figure 508,148,791", "plus advance, available this year +261,063,820"])
         self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], "769,212,611")
         self.assertEqual(comps, [["CMP-LHHS-0009", "false"], ["CMP-LHHS-0010", "true"]])
         self.assertIn("p. 289", self.page.inner_text("[data-testid=src-component]"))
-        self.assertIn("Open page 289", self.page.inner_text("#side-panel"))
+        self.assertIn("Open source document at page 289", self.page.inner_text("#side-panel"))
         terms, _ = panel(f"?sc=LHHS&fy=2026&amt=discretionary&fig={self.CURES}|2026|Enacted")
         self.assertEqual(terms, ["Printed figure 226,000", "less designated (other) −226,000"])
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "0")
@@ -2861,7 +2955,13 @@ class ExcludeEarmarks(GridBrowser):
         self.assertIn("54,611", t)
         self.assertIn("p. 436", t)
         self.assertIn("121,255", self.page.inner_text("[data-testid=src-earmark-result]"))
-        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "175,866")
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$175,866,000")
+        # the earmark list sits inside the "Source document" block, before its one button (UI-2b layout); its page is
+        # the earmark's one link, to that page
+        self.assertEqual(self.page.locator("[data-testid=src-docblock] [data-testid=src-earmark]").count(), 1)
+        self.assertTrue(self.page.evaluate("""() => { const e = document.querySelector('[data-testid=src-earmark]'),
+            b = document.querySelector('[data-testid=src-open]'); return !!(e.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING); }"""))
+        self.assertTrue(ears.first.locator("a").get_attribute("href").endswith("#page=436"))
         self.page.keyboard.press("Escape")
         pb = self.cell(self.HSPS, 2026, "President's Budget")
         self.assertEqual(pb.evaluate(CELL_TEXT_JS), "n/a")
@@ -2881,7 +2981,7 @@ class ExcludeEarmarks(GridBrowser):
         self.assertIn("SRC-PLAW-119PUBL75", t)
         self.assertIn("140 STAT. 271", t)
         self.assertIn("117,255", self.page.inner_text("[data-testid=src-earmark-result]"))
-        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "171,566")
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$171,566,000")
         # the box off: the cell is as printed again
         self.advanced("uncheck", "#f-noear")
         self.page.wait_for_function("!location.search.includes('earmarks=')")

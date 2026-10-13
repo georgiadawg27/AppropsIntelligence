@@ -224,7 +224,9 @@ def export(workbook, out, download=True):
     if "<head>" not in page:
         raise SystemExit("web/index.html has no <head> to mark as static")
     page = page.replace("<head>", "<head>\n" + DATA_META, 1)
-    files = [("index.html", page), (".nojekyll", "")] + [(n, (ROOT / "web" / n).read_text()) for n in W.ASSETS]
+    # CNAME: the site's custom domain, set by the owner (web/CNAME, copied byte for byte like .nojekyll is written)
+    files = [("index.html", page), (".nojekyll", ""), ("CNAME", (ROOT / "web" / "CNAME").read_text())] \
+        + [(n, (ROOT / "web" / n).read_text()) for n in W.ASSETS]
     for name, text in files:
         target = out / name
         if not target.exists() or target.read_text() != text:

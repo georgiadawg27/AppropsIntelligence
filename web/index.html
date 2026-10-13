@@ -159,9 +159,9 @@
   .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; position: relative; }
   .unitlabel { font-size: 13px; color: var(--x-ink2); background: #ebe9e2; border-radius: 6px; padding: 5px 10px; }
   .workspace { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
-  .tablebox { flex: 999 1 600px; min-width: 0; height: calc(100vh - 380px); min-height: 420px; overflow: auto; background: var(--x-surface);
+  .tablebox { flex: 999 1 600px; min-width: 0; height: calc(100vh - var(--box-top, 380px)); min-height: 420px; overflow: auto; background: var(--x-surface);
               border: 1px solid #dfe2e8; border-radius: 10px; }
-  .sidepanel { flex: 1 1 340px; min-width: 0; height: calc(100vh - 380px); min-height: 420px; overflow: auto; background: var(--x-surface);
+  .sidepanel { flex: 1 1 340px; min-width: 0; height: calc(100vh - var(--box-top, 380px)); min-height: 420px; overflow: auto; background: var(--x-surface);
                border: 1px solid #dfe2e8; border-radius: 10px; padding: 18px 20px 20px; }
   @media (max-width: 979px) { .sidepanel { height: auto; min-height: 0; } }
   .gfooter { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--x-muted); }
@@ -307,10 +307,25 @@
           border: 1px solid var(--x-input); border-radius: 8px; background: var(--x-surface); color: var(--x-ink); font: inherit; cursor: pointer; text-decoration: none; }
   .pbtn.primary { border-color: var(--x-accent); background: var(--x-accent); color: #fff; font-weight: 600; }
   .acctchg { font-size: 13px; margin-top: 4px; }
-  .acctstage { padding: 4px 0 6px; border-bottom: 1px solid #eef0f3; }
-  .acctstage .ovline { border-bottom: 0; padding: 4px 0 0; }
-  .acctstage .ovsmall { margin-top: 0; }
-  .acctstage button.fig { font-weight: 600; }
+  .accttable { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 6px; }
+  .accttable th, .accttable td { text-align: left; vertical-align: top; padding: 7px 6px 7px 0; border-bottom: 1px solid #eef0f3; font-weight: 400; }
+  .accttable thead th { font-size: 12px; color: var(--x-muted); padding-top: 2px; }
+  .accttable .amt { text-align: right; padding-right: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .accttable th.k { color: var(--x-ink2); }
+  .accttable td.src { font-size: 12px; overflow-wrap: break-word; }
+  .accttable a, .acctbills a, .srcbill a { color: var(--x-accent); }
+  .accttable button.fig { font-weight: 600; }
+  .accttable .val.state { font-size: 12px; color: var(--x-muted); white-space: normal; }
+  .acctbills { font-size: 12px; color: var(--x-muted); margin-top: 8px; }
+  .srcdoc { margin-bottom: 4px; }
+  .srcdoc .srcdocname { font-size: 14px; color: var(--x-ink); margin-top: 6px; }
+  .srcdoc .srcpage { font-size: 13px; color: var(--x-ink2); margin: 2px 0 10px; }
+  .srcdoc .srck { font-size: 12px; color: var(--x-muted); margin-bottom: 2px; }
+  .srcbill { font-size: 12px; margin: 14px 0 0; padding-top: 10px; border-top: 1px solid var(--x-rule); }
+  .srcnotes { margin-top: 14px; font-size: 13px; color: var(--x-ink2); }
+  .srcnotes ul { margin: 6px 0 0; padding-left: 18px; }
+  .srcnotes li { margin-bottom: 6px; }
+  .linkbtn { appearance: none; border: 0; background: none; padding: 0; font: inherit; color: var(--x-accent); text-decoration: underline; cursor: pointer; }
   .bars { display: flex; align-items: flex-end; gap: 4px; margin-top: 8px; }
   .barcol { flex: 1 1 0; min-width: 0; text-align: center; }
   .barbox { height: 64px; display: flex; align-items: flex-end; border-bottom: 1px solid var(--x-rule-strong); }
@@ -413,7 +428,7 @@
   .sheet .ovsmall[data-testid=acct-exact] { font-size: 13px; color: var(--x-ink2); }
   .sheet .srcrule { display: none; }
   .sheet .ovk { margin: 16px 0 2px; }
-  .sheet .acctstage { padding: 10px 0; }
+  .sheet .accttable th, .sheet .accttable td { padding: 9px 6px 9px 0; }
   .sheet .acctstage .val { font-weight: 600; }
   .sheet .barbox { height: 70px; }
   .sheet .bars { gap: 5px; }
@@ -1172,11 +1187,15 @@ function figureCell(row, y, st, c, name) {
   if (printedHere && usesViews()) td.append(viewCell(row, y, st, o, ctx, td));
   else if (h.state === "value") td.append(numberLink(o, G.units, ctx));
   else td.append(token(h.state, h, ctx));
-  const more = otherLines(row, y, st, x.lines, h);
+  // the corner marks (other lines, notes) are drawn in Reviewer mode only (owner, 2026-10-13, UI-2b): by default a
+  // figure's notes show in its source panel under "Notes", and a cell with no figure keeps its note on hover
+  const more = G.reviewer && otherLines(row, y, st, x.lines, h);
   if (more) td.append(more);
   // the corner note: the headline observation's, or (a cell with no figure) its line's own
   const note = (o && o.cell_note) || h.note;
-  if (note && x.cell.note_link) {
+  if (note && !G.reviewer) {
+    if (!o) td.title = (td.title ? td.title + "\n" : "") + note;
+  } else if (note && x.cell.note_link) {
     // a lifecycle note naming another account (Created FY2024 from PHSSEF): the corner opens that account
     const a = el("a", { class: "cn", role: "note", "data-testid": "cell-note", href: "?account=" + encodeURIComponent(x.cell.note_link),
                         title: note, "aria-label": note, "data-link": x.cell.note_link });
@@ -1834,18 +1853,14 @@ function badge(o) {
   const [cls, text] = BADGES[o.verification_status] || ["unv", o.status_text || o.verification_status];
   return el("span", { class: "vbadge " + cls, "data-testid": "src-badge", "data-status": o.verification_status, text });
 }
-const docLink = (o, cls) => {
-  const href = /^https?:/.test(o.url_or_identifier || "") ? o.url_or_identifier : null;
-  return href ? el("a", { href, target: "_blank", rel: "noopener", class: cls || "", text: docName(o.source_document_id) })
-              : el("span", { text: docName(o.source_document_id) });
-};
 // the back link and its hint (SPEC 5.3): "‹ Title II overview", "‹ NIH overview" with an agency filter
+// no "or click outside · Esc" hint in any panel mode (owner, 2026-10-13, UI-2b); click-away and Esc still work
 function backRow(grid) {
   const S = scopeOf(grid), T = printedTotal(grid);
   const what = G.agency ? S.back : T && T.label !== "Bill" ? T.label : scLabels[grid.subcommittee] || grid.subcommittee;
   const b = el("button", { type: "button", class: "backlink", "data-testid": "panel-back", text: `‹ ${what} overview` });
   b.addEventListener("click", () => clearSelection(true));
-  return el("div", { class: "panelback" }, b, el("span", { class: "ovhint", "data-testid": "panel-hint", text: "or click outside · Esc" }));
+  return el("div", { class: "panelback" }, b);
 }
 function field(label, ...kids) {
   return el("div", { class: "srcfield" }, el("div", { class: "srck", text: label }), ...kids);
@@ -1860,7 +1875,7 @@ const componentWord = (k) => (COMPONENT_WORDS[k.type] || k.type.replace(/_/g, " 
 // (component_ids); the result is the published amount. The page adds nothing up.
 function viewBlock(grid, row, y, st, o) {
   const x = headOf(row, y, st), e = viewOf(row, y, st), v = viewText(e), comps = (x && x.cell.components) || [];
-  const used = new Set((e && e.component_ids) || []);
+  const used = new Set((e && e.component_ids) || []), ears = [];
   const head = [el("div", { class: "bigfig", "data-testid": "src-view-value", "data-view": e ? e.status : "none",
                             text: v.text == null ? GridMath.number(e.amount, G.units) : v.text }),
     el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${viewHead(e)}` })];
@@ -1870,8 +1885,7 @@ function viewBlock(grid, row, y, st, o) {
   for (const k of comps)
     tail.push(el("div", { class: "comp", "data-testid": "src-component", dataset: { component: k.component_id, used: String(used.has(k.component_id)) } },
       el("span", { text: componentWord(k) }), el("span", { class: "cv", text: GridMath.number(k.amount, G.units) }),
-      el("span", { class: "cs" }, `${k.in_headline ? "in the printed figure" : "beside the printed figure"} · `, docLink(k),
-        k.source_page ? ` · p. ${k.source_page}` : "", ` · ${k.component_id}`)));
+      el("span", { class: "cs" }, `${k.in_headline ? "in the printed figure" : "beside the printed figure"} · `, ...compSource(k, o), ` · ${k.component_id}`)));
   if (e && VALUED.has(e.status)) {
     const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
     const terms = comps.filter((k) => used.has(k.component_id));
@@ -1885,22 +1899,65 @@ function viewBlock(grid, row, y, st, o) {
   // Exclude earmarks (brief UI-3b item 3): the earmark components the published view took out, each with its amount,
   // document and page, then the published result. Listed, never added: the result is the data's amount
   if (noEar()) {
-    const ears = comps.filter((k) => k.type === "earmark" && used.has(k.component_id));
+    const tagged = comps.filter((k) => k.type === "earmark" && used.has(k.component_id));
     const where = (k) => k.source_page ? `p. ${k.source_page}` : ((k.source_table_or_section || "").match(/\(([^()]*)\)\s*$/) || [])[1]?.split(";")[0] || "";
-    const box = [el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Earmarks taken out (CDS / CPF)" })];
-    if (!ears.length)
+    // inside the "Source document" block (UI-2b layout), after "Printed as" and before the button
+    const box = [el("div", { class: "srck", style: "margin-top:10px", text: "Earmarks taken out (CDS / CPF)" })];
+    if (!tagged.length)
       box.push(el("div", { class: "ovsmall", "data-testid": "src-no-earmarks",
         text: e && VALUED.has(e.status) ? "None tagged inside this figure." : "No published figure excluding earmarks for this cell." }));
-    for (const k of ears)
+    for (const k of tagged)
       box.push(el("div", { class: "comp", "data-testid": "src-earmark", dataset: { component: k.component_id } },
         el("span", { text: componentWord(k) }), el("span", { class: "cv", text: `−${GridMath.number(k.amount, G.units)}` }),
-        el("span", { class: "cs" }, docLink(k), where(k) ? ` · ${where(k)}` : "", ` · ${k.component_id}`)));
+        el("span", { class: "cs" }, ...compSource(k, o, where(k)), ` · ${k.component_id}`)));
     if (e && VALUED.has(e.status))
       box.push(el("div", { class: "ovline eq", "data-testid": "src-earmark-result" }, el("span", { class: "k", text: `= ${basisPhrase()} (published)` }),
         el("span", { class: "val", text: GridMath.number(e.amount, G.units) })));
-    head.push(...box);
+    ears.push(...box);
   }
-  return { head, tail };
+  return { head, tail, ears };
+}
+// a component's source as the UI-2b panel names documents: the short name as plain text, then its page (or
+// location) as the one link, to that page. Components carry no URL of their own: a component printed in the
+// figure's own document links through the figure's url_or_identifier; any other stays plain text
+function compSource(k, o, where) {
+  const page = (k.source_page || "").split("-")[0], at = k.source_page ? `p. ${k.source_page}` : where || "";
+  const url = k.url_or_identifier || (o && k.source_document_id === o.source_document_id ? o.url_or_identifier : null);
+  const base = /^https?:/.test(url || "") ? url : null;
+  const href = base && (page ? `${base}#page=${page}` : base);
+  return [docName(k.source_document_id), ...(at ? [" · ", href ? el("a", { href, target: "_blank", rel: "noopener", text: at }) : at] : [])];
+}
+// a figure in full dollars: "$7,352,159,000" (the data holds dollars; the documents print $ thousands)
+const fullDollars = (v) => (v < 0 ? "\u2212$" : "$") + Math.abs(v).toLocaleString("en-US");
+// the figure's notes (owner, 2026-10-13, UI-2b): its cell note (a lifecycle note naming another account links
+// to it) and the cell's other lines with a figure (listed, never added); in the default view these show here
+// and not as corner marks in the grid
+function figureNotes(grid, row, y, st) {
+  const x = headOf(row, y, st), out = [];
+  if (!x || !x.h) return out;
+  const o = x.h.observations[0], note = (o && o.cell_note) || x.h.note;
+  if (note) {
+    const li = el("li", { "data-testid": "src-note", text: note });
+    if (x.cell.note_link && gridRow(grid, x.cell.note_link)) {
+      const to = gridRow(grid, x.cell.note_link);
+      const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-note-link", "data-link": x.cell.note_link,
+                               text: `Open ${plainName(to.account.canonical_name)}` });
+      b.addEventListener("click", () => openAccount(x.cell.note_link));
+      li.append(" ", b);
+    }
+    out.push(li);
+  }
+  const rest = x.lines.filter((l) => l !== x.h && l.state === "value" && l.observations.length);
+  if (rest.length) {
+    const li = el("li", { "data-testid": "src-note", dataset: { lines: String(rest.length) } },
+      `${rest.length} other line${rest.length === 1 ? "" : "s"} on file, ${unitsLong()} (listed, never added): ` +
+      rest.map((l) => `${seriesText(l)}: ${GridMath.number(l.observations[0].amount, G.units)}`).join("; ") + ". ");
+    const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-note-more", text: "Open account page at this stage" });
+    b.addEventListener("click", () => openAccount(row.account.canonical_account_id, { fy: y, stage: st }));
+    li.append(b);
+    out.push(li);
+  }
+  return out;
 }
 function renderSource(grid, box) {
   const { id, y, st } = SEL, row = gridRow(grid, id), o = cellObs(row, y, st);
@@ -1908,27 +1965,39 @@ function renderSource(grid, box) {
   const zero = o.amount === 0;
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
   const VB = usesViews() ? viewBlock(grid, row, y, st, o) : null;
+  // the figure in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
   const kids = [backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
     el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
     ...(VB ? [...VB.head, el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Printed headline" })] : []),
-    el("div", { class: VB ? "medfig" : "bigfig", "data-testid": "src-value", text: GridMath.number(o.amount, G.units) }),
+    el("div", { class: VB ? "medfig" : "bigfig", "data-testid": "src-value", text: fullDollars(o.amount) }),
     el("div", { class: "ovsmall", "data-testid": "src-short",
-                text: (zero ? "Not funded: printed zero" : GridMath.short(o.amount)) + ` · ${unitsLong()} · as printed` }),
+                text: (zero ? "Not funded: printed zero · " : "") + `printed as ${GridMath.number(o.amount, "k")} in $ thousands` }),
     el("div", { style: "margin-top:8px" }, badge(o)),
-    el("hr", { class: "srcrule" }),
-    field("Document", el("div", { "data-testid": "src-doc", "data-doc": o.source_document_id }, docLink(o)),
-          o.source_page ? el("div", { "data-testid": "src-page", text: `Page ${o.source_page}` }) : null)];
+    el("hr", { class: "srcrule" })];
+  // one block: the source document (plain name), its page, the "Printed as" line, and one button to that page
+  const doc = el("div", { class: "srcdoc", "data-testid": "src-docblock" },
+    el("div", { class: "ovk", text: "Source document" }),
+    el("div", { class: "srcdocname", "data-testid": "src-doc", "data-doc": o.source_document_id, text: docName(o.source_document_id) }),
+    o.source_page ? el("div", { class: "srcpage", "data-testid": "src-page", text: `Page ${o.source_page}` }) : null);
   if (o.source_table_or_section)
-    kids.push(field("Printed as", el("div", { class: "printed", "data-testid": "src-printed", text: o.source_table_or_section })));
+    doc.append(el("div", { class: "srck", text: "Printed as" }), el("div", { class: "printed", "data-testid": "src-printed", text: o.source_table_or_section }));
+  if (VB && VB.ears.length) doc.append(...VB.ears);
+  if (href)
+    doc.append(el("a", { class: "pbtn primary", "data-testid": "src-open", href, target: "_blank", rel: "noopener",
+                         text: first ? `Open source document at page ${first}` : "Open source document" }));
+  kids.push(doc);
+  // the bill or law: a small secondary link, apart from the source document; a request figure's is the budget
+  // document (owner, 2026-10-13)
   if (o.bill_url)
-    kids.push(field("Bill or law", el("a", { href: o.bill_url, target: "_blank", rel: "noopener", "data-testid": "src-bill", text: billText(grid, o, y, st) })));
+    kids.push(el("div", { class: "srcbill" }, el("a", { href: o.bill_url, target: "_blank", rel: "noopener", "data-testid": "src-bill",
+      text: `${/^PREX /.test(o.bill_id || "") ? "Budget document" : "Bill / law"}: ${billText(grid, o, y, st)}` })));
+  const notes = figureNotes(grid, row, y, st);
+  if (notes.length)
+    kids.push(el("div", { class: "srcnotes", "data-testid": "src-notes" }, el("div", { class: "ovk", text: "Notes" }), el("ul", {}, ...notes)));
   kids.push(el("div", { class: "srcrec", "data-testid": "src-record", text: `Record ${o.observation_id}` }));
   if (VB) kids.push(...VB.tail, el("hr", { class: "srcrule" }));
-  if (href)
-    kids.push(el("a", { class: "pbtn primary", "data-testid": "src-open", href, target: "_blank", rel: "noopener",
-                        text: first ? `Open page ${first} of the document` : "Open the document" }));
   if (ownPage(grid, id)) {
     const b = el("button", { type: "button", class: "pbtn", "data-testid": "src-account-btn", text: "See every stage for this account" });
     b.addEventListener("click", () => select({ kind: "acct", id }));
@@ -1955,9 +2024,11 @@ function accountView(grid, id0, phone) {
   // the headline: the lead stage's printed figure (Enacted, or the latest stage in a year not yet enacted)
   const hx = headOf(row, y, STAGES4[lead]), ho = cellObs(row, y, STAGES4[lead]);
   const v = ho ? ho.amount : null, when = stageText(grid, y, lead);
+  // the header (owner, 2026-10-13, UI-2b): the short headline and the change vs the prior year; the exact figures
+  // are in the table below
   if (v != null) {
     kids.push(el("div", { class: "bigfig", "data-testid": "acct-headline", text: v === 0 ? "—" : GridMath.short(v) }),
-      el("div", { class: "ovsmall", "data-testid": "acct-exact", text: `${GridMath.number(v, G.units)} in ${unitsLong()} · ${when}, as printed` }));
+      el("div", { class: "ovsmall", "data-testid": "acct-exact", text: `${when}, as printed` }));
     const p = printedFig(row, y - 1, "Enacted"), c = GridMath.change(p, printedFig(row, y, STAGES4[lead]));
     if (c) kids.push(el("div", { class: "acctchg " + (GridMath.direction(c.delta) || "flat"), "data-testid": "acct-change",
       text: `${GridMath.signedShort(c.delta)} (${GridMath.pctText(p, p + c.delta)}) vs ${stageText(grid, y - 1, 3)}` }));
@@ -1965,8 +2036,10 @@ function accountView(grid, id0, phone) {
     const st = hx && hx.h && !hx.cell.outside_life ? hx.h.state : null;
     kids.push(el("div", { class: "ovsmall", "data-testid": "acct-exact", text: `${when}: ${st ? STATE_WORDS[st] || st : "outside the account’s life"}` }));
   }
-  // every stage of the year, with its source: document · page · bill
+  // every stage of the year in a table: Stage | Amount | Source, the source one link to its page (owner, 2026-10-13)
   kids.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: `FY${y} by stage, with sources` }));
+  const body = el("tbody");
+  const bills = new Map();
   for (const [yy, i] of [[y - 1, 3], [y, 0], [y, 1], [y, 2], [y, 3]]) {
     const st = STAGES4[i], o = cellObs(row, yy, st), x = headOf(row, yy, st);
     const label = yy !== y ? stageText(grid, yy, i) : STAGE_LONG[i] + (isDraft(grid, yy, st) ? " (draft)" : "");
@@ -1977,11 +2050,29 @@ function accountView(grid, id0, phone) {
                                    text: o.amount === 0 ? "—" : GridMath.number(o.amount, G.units) })
                   : el("span", { class: "val state", text: state });
     if (o && !phone) amt.addEventListener("click", () => select({ kind: "fig", id, y: yy, st }));
-    const line = el("div", { class: "acctstage", "data-testid": "acct-stage", dataset: { fy: String(yy), stage: st } },
-      el("div", { class: "ovline" }, el("span", { class: "k", text: label }), amt));
-    if (o) line.append(el("div", { class: "ovsmall", "data-testid": "acct-stage-src" }, docLink(o),
-      o.source_page ? ` · p. ${o.source_page}` : "",
-      ...(o.bill_url ? [" · ", el("a", { href: o.bill_url, target: "_blank", rel: "noopener", text: billText(grid, o, yy, st) })] : [])));
+    let src = null;
+    if (o) {
+      const href = sourceHref(o), what = docName(o.source_document_id) + (o.source_page ? `,\u00a0p.\u00a0${o.source_page}` : "");
+      // a short name ("H.Rept. 119-271, p. 343") stays on one line; a long one wraps between words
+      const keep = docName(o.source_document_id).length <= 22 ? { style: "white-space:nowrap" } : {};
+      src = href ? el("a", { href, target: "_blank", rel: "noopener", ...keep, text: what }) : el("span", { ...keep, text: what });
+      // the bill and law text, listed once under the table: the year's stages, and the prior year's law as
+      // "FY2025: P.L. 119-4 (full-year CR)" (owner, 2026-10-13); the Budget Appendix is not bill text
+      if (o.bill_url && !/^PREX /.test(o.bill_id || "") && !bills.has(o.bill_url)) {
+        const id = (o.bill_id || "").replace(/^(P\.L\.|H\.R\.|S\.)\s*/, "$1 ");
+        bills.set(o.bill_url, yy === y ? id : `FY${yy}: ${id}` + (crOf(grid, yy) ? " (full-year CR)" : ""));
+      }
+    }
+    body.append(el("tr", { class: "acctstage", "data-testid": "acct-stage", dataset: { fy: String(yy), stage: st } },
+      el("th", { scope: "row", class: "k", text: label }), el("td", { class: "amt" }, amt),
+      el("td", { class: "src", "data-testid": "acct-stage-src" }, src)));
+  }
+  kids.push(el("table", { class: "accttable", "data-testid": "acct-table" },
+    el("thead", {}, el("tr", {}, el("th", { scope: "col", text: "Stage" }),
+      el("th", { scope: "col", class: "amt", text: `Amount (${G.units === "m" ? "$M" : "$K"})` }), el("th", { scope: "col", text: "Source" }))), body));
+  if (bills.size) {
+    const line = el("div", { class: "acctbills", "data-testid": "acct-bills" }, "Bill text: ");
+    [...bills].forEach(([href, text], k) => line.append(...(k ? [" · "] : []), el("a", { href, target: "_blank", rel: "noopener", "data-testid": "acct-bill", text })));
     kids.push(line);
   }
   // enacted history: one bar per year, the full-year CR years lighter, a gap (never a zero bar) for a non-value
@@ -2205,10 +2296,19 @@ function renderLegend() {
 
 // the second header row sits right under the first, whatever height the first renders at
 function pinHeader() {
+  sizeBox();
   const th = document.querySelector("#compare-grid thead tr:first-child th.grp");
   if (!th || $("#compare-view").hidden) return;
   const h = th.getBoundingClientRect().height;
   if (h) $("#compare-grid").style.setProperty("--head1", h + "px");
+}
+// the grid box fills the window from below the title row to the bottom edge (owner, 2026-10-13, UI-2b): its top
+// on the page (scrolled to the top) sets --box-top; the legend and provenance sit below, reached by scrolling
+function sizeBox() {
+  const w = $("#grid-wrap");
+  if (!w || $("#compare-view").hidden || !w.offsetParent) return;
+  const top = w.getBoundingClientRect().top + window.scrollY;
+  document.documentElement.style.setProperty("--box-top", Math.round(top) + "px");
 }
 window.addEventListener("resize", pinHeader);
 if (document.fonts) document.fonts.ready.then(pinHeader);

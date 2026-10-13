@@ -474,3 +474,35 @@ Merged main after UI-3 (#61): `BUILT` keeps both lists; `buildRows` uses `partsO
 (an agency "incl. mandatory"; a line "mandatory" / "incl. mandatory"; no "Appropriated mandatory" sub-group since
 lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid does: view amounts, "excl.",
 "n/a" / "not checked"; the summary card and the stage note name the basis.
+
+## UI-2b: Grid and panel polish (owner review, 2026-10-13)
+
+- Note marks: the corner triangles (`cell-note`, `more`) are drawn only in Reviewer mode (`rev=1`); the mark legend
+  was already Reviewer-only. By default a figure's notes (cell note; other lines, listed never added) show in its
+  source panel under "Notes" (`src-notes`, `src-note`, `src-note-link`, `src-note-more`); a cell with no figure keeps
+  its note in the cell's hover text. Existing note/marker tests now open with `rev=1`.
+- Grid box: `sizeBox()` (called from `pinHeader`, so on render, resize and font load) sets `--box-top` to the box's
+  page offset; `.tablebox` / `.sidepanel` height = `calc(100vh - var(--box-top))`, min 420px.
+- Source panel: hint removed (figure mode only; `backRow(grid, false)`); `src-value` in full dollars, `src-short`
+  "printed as N in $ thousands"; "Source document" block (`src-docblock`: plain name, page, Printed as, `src-open`
+  "Open source document at page N"); `src-bill` "Bill / law: …" separate below.
+- Account view / phone sheet: header (path, name, short headline, `acct-exact` "FY2026 enacted, as printed", change);
+  `acct-table` Stage | Amount ($K) | Source (one link to url#page=N per stage); `acct-bills` "Bill text:" = bill_url of
+  the selected year's stages, Budget Appendix excluded, deduplicated, labelled by bill_id.
+- SPEC.md §3, §4, §5.1, §5.2, §6, §8 record the decisions. Screenshots: screenshots/ui-2b/.
+
+Owner answers (2026-10-13, same PR), recorded in SPEC §5.1/§5.2:
+1. The hint is gone from every panel mode (`backRow` has no hint; `panel-hint` no longer rendered).
+2. "Bill text:" adds the prior year's law first, "FY2025: P.L. 119-4 (full-year CR)"; the Budget Appendix stays out.
+3. A request figure's secondary link reads "Budget document: FY2026 Budget Appendix".
+
+Merged main after UI-3b (#65) and D-2 (#67): one conflict (renderSource's `VB` line; kept UI-3b's `usesViews()`).
+UI-3b's "Earmarks taken out (CDS / CPF)" list now sits inside the "Source document" block, after "Printed as" and
+before the button (`viewBlock` returns `ears` beside `head`/`tail`). Earmarks and components name their document as
+plain text with the page as the link (`compSource`; through the figure's URL when the component is in the figure's
+own document; `docLink` removed). UI-3b tests updated for the full-dollar `src-value`. SPEC §5.6 records the placement.
+
+docs/CNAME (custom domain, added on main by the owner, 64413f7): `web/CNAME` holds the same bytes (no trailing
+newline) and `export_static.export()` writes it into docs/ beside `.nojekyll`, so `test_committed_docs_are_current`
+sees it as export output. The domain and Pages settings are unchanged; to change the domain, edit web/CNAME and
+re-export.
