@@ -68,8 +68,6 @@ KNOWN_CELL_CAUSES = {
         ("ACC-HHS-CDC-TOTAL", 2021, "Senate Reported"), ("ACC-HHS-OS-TOTAL", 2021, "Senate Reported"))},
     **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
        for st in ("Senate Reported", "Enacted")},
-    **{("ACC-HHS-AHRQ-TOTAL", fy, st, "program_level"): "agency_total_only" for fy, st in (
-        (2021, "House Reported"), (2022, "House Reported"), (2022, "Senate Reported"))},
     **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
        for st in ("House Reported", "Senate Reported")},
     ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",

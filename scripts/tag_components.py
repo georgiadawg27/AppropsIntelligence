@@ -150,12 +150,17 @@ TO_OIG = re.compile(r"transferred to and merged with the appropriation for the\W
 # an evaluation tap worded 'in addition to amounts provided herein, $X is available to this appropriation, for the
 # purposes under this heading, from amounts provided pursuant to section 241' (S. 3062, CDC FY2022 Senate; D-1). The
 # held phrase window may end inside 'pursuant', so the source is named only when '241' is printed in it.
-EVAL_TAP = re.compile(r"^\W*is available to this appropriation\b[^$;:]{0,80}?\bfrom (?:amounts|funds) provided", re.I)
+# 'of the amounts made available under this heading, up to $1,000,000 from amounts made available for Quarantine
+# appropriations shall remain available until expended' (CDC Emerging and Zoonotic, FY2026 on): the availability of
+# the heading's own money, not a transfer (owner, D-1)
+QUARANTINE = re.compile(r"^\W*from amounts made available for Quarantine", re.I)
+EVAL_TAP = re.compile(r"^\W*(?:is|shall be) available to this appropriation\b[^$;:]{0,80}?\bfrom (?:amounts|funds) prov\w*", re.I)
 # phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported
 NOT_COMPONENT = [
     ("set-aside", re.compile(r"shall be for Indian tribes|amounts required to be reserved|set[- ]aside", re.I), "both"),
     ("sub-allocation", re.compile(r"(?:not|no) less than\s*$|of (?:such|that|the) amounts?[^$]{0,60}?:\s*\(\d+\)\s*$", re.I),
      "before"),
+    ("availability", QUARANTINE, "after"),
     ("program table", re.compile(r"for the purposes and in the amounts specified in the table", re.I), "after"),
     ("sub-allocation", THIS_HEADING, "after"),
     # 'of the amounts provided under this heading from amounts available under section 241 of the PHS Act, $6,800,000
@@ -236,9 +241,11 @@ def classify(a):
         return "transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", PRIF.search(seg_a).group(0)
     if TO_OIG.search(seg_a):
         return "transfer_out", "", "", "transferred to and merged with the appropriation for the Office of Inspector General"
+    if QUARANTINE.search(seg_a):
+        return None                     # an availability clause on the heading's own money (owner, D-1)
     if EVAL_TAP.search(seg_a):
         return ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)" if "241" in seg_a
-                else "not named in the phrase", "is available to this appropriation ... from amounts provided")
+                else "not named in the phrase", "is (shall be) available to this appropriation ... from amounts provided")
     t = TRANSFER.search(both)
     if t and THIS_HEADING.search(seg_a):
         return None                     # part of this heading's own amounts, not a transfer
@@ -507,10 +514,55 @@ def pphf_table(data, heads, report):
     return out
 
 
+# Agency totals read from the agency's own paragraph (owner, D-1 ruling 2: AHRQ). ACL and the Administration for a
+# Healthy America are also held only as totals; they are not read until the owner decides.
+TOTAL_ONLY = ("ACC-HHS-AHRQ-TOTAL",)
+
+
+def total_only_outcomes(data, texts, outcomes, report):
+    """An agency held only as its total (no account lines: AHRQ): the total's headline is read from the agency's one
+    appropriation paragraph, as an account's would be (owner, D-1 ruling 2). -> {observation_id: outcome}, in the
+    shape check_legislative_text.check gives, for the auto-tagged cells where the document has exactly one
+    paragraph under the agency's heading."""
+    cell_doc = {(r["subcommittee"], r["fiscal_year"], r["stage"]): r["document"] for r in outcomes.values()
+                if r.get("document")}
+    refs = {(r["subcommittee"], int(r["fiscal_year"]), r["stage"]): r for r in data["bill_report_refs"]}
+    accounts = data["accounts"]
+    out = {}
+    for a in accounts:
+        if a["canonical_account_id"] not in TOTAL_ONLY or any(
+                x["subcommittee"] == a["subcommittee"] and x["agency"] == a["agency"] and not x.get("total_scope")
+                for x in accounts):
+            continue
+        for o in data["observations"]:
+            if (o["canonical_account_id"] != a["canonical_account_id"] or o["amount_type"] != "budget authority"
+                    or o.get("component") or o["verification_status"] == "superseded"):
+                continue
+            cell = (a["subcommittee"], int(o["fiscal_year"]), o["stage"])
+            doc = cell_doc.get(cell)
+            if cell not in AUTO_CELLS or doc not in texts:
+                continue
+            division = (refs[cell].get("division") or "").strip()
+            agency = a["agency"].upper()
+            paras = [p for p in texts[doc]["paragraphs"] if (not division or not p["division"]
+                     or p["division"] == division) and any(h.upper() == agency for h in p["heading_path"])
+                     and not any("SEC." in h.upper() or "GENERAL PROVISION" in h.upper() for h in p["heading_path"])]
+            if len(paras) != 1:
+                report["pilot_no_paragraph"].append(f"{o['observation_id']} ({a['canonical_name']} FY{cell[1]} "
+                                                    f"{cell[2]}): {len(paras)} paragraphs under '{a['agency']}'")
+                continue
+            out[o["observation_id"]] = {"observation_id": o["observation_id"], "subcommittee": cell[0],
+                                        "fiscal_year": cell[1], "stage": cell[2], "account": a["canonical_account_id"],
+                                        "name": a["canonical_name"], "document": doc, "paragraph": paras[0],
+                                        "result": "match"}
+    return out
+
+
 def autotag(data, heads, held, report):
     """The auto-tagged cells (AUTO_CELLS): each headline's own paragraph, amount by amount."""
     texts, exempt = CT.load_texts(L.TEXT_DIR), CT.load_exempt(L.TEXT_DIR)
     outcomes = CT.check(data, texts, exempt)
+    outcomes.update(total_only_outcomes(data, texts, outcomes, report))
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     former = collections.defaultdict(list)
@@ -562,6 +614,7 @@ def autotag(data, heads, held, report):
                 continue
             tagged.append((x, cl, relation(x, main, o["amount"]), CT.where(para)))
         names = CT.account_names(a, by_acc[a["canonical_account_id"]], former)
+        own_gp = 0                      # general provisions' additional amounts that are the headline's own money
         for amt, w in CT.provision_amounts(a, names, paras):
             p = next(p for p in paras if CT.where(p) == w)
             if not re.match(re.escape((a.get("title") or "").upper()) + r"\b", p["title"]):
@@ -574,6 +627,7 @@ def autotag(data, heads, held, report):
                 # sec. 243's additional $350,000,000 = $915,394,000): the headline's own appropriation (D-1)
                 if LOOKS_LIKE.search(" ".join(segments(x))):
                     report["not_a_component"]["the headline's own appropriation"] += 1
+                own_gp += amt
                 continue
             if cl is None:
                 report["untagged"].append({"observation_id": oid, "document": doc, "where": w, "amount": amt,
@@ -595,6 +649,12 @@ def autotag(data, heads, held, report):
             continue
         # in_headline: the main amount less the of-which parts left out plus the separate parts counted gives the
         # headline. Components already held (retagged, table lines) are part of that arithmetic too.
+        gp_note = ""
+        if own_gp and main is not None:
+            # the arithmetic counts the general provision's additional amount with the paragraph's (owner, D-1 7a)
+            main = {"amount": main["amount"] + own_gp}
+            gp_note = (f" (with {AC.money(own_gp)} a general provision appropriates under the account's heading, the "
+                       "headline's own appropriation)")
         pattern = in_headline_by_arithmetic(o["amount"], main, held[oid], comps)
         ap = [x["amount"] for x in CT.appropriating(para)]
         if pattern is None and len(ap) > 1:
@@ -608,7 +668,7 @@ def autotag(data, heads, held, report):
                 c["notes"] = ("in_headline by arithmetic: the paragraph's amount "
                               + (AC.money(main["amount"]) if main else "(none: every amount is an of-which, "
                                  "limitation, transfer or advance)")
-                              + f" and its components give the headline {AC.money(o['amount'])}")
+                              + gp_note + f" and its components give the headline {AC.money(o['amount'])}")
         else:
             for c, rel in comps:
                 c["in_headline"] = "FALSE" if rel == "separate" else "TRUE"

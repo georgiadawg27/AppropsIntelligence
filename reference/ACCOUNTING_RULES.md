@@ -200,7 +200,9 @@ House report's table.
 
 **Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026; the component
 backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted); the D-1 follow-up adds FY2027 House
-(H.R. 9260 Labor-HHS, H.R. 8845 CJS; FY2027 Senate and Enacted hold no figures). Each
+(H.R. 9260 Labor-HHS, H.R. 8845 CJS; FY2027 Senate and Enacted hold no figures). An agency held only as its total
+(AHRQ; owner, D-1) is read from the agency's one appropriation paragraph, as an account would be (ACL and the
+Administration for a Healthy America are also held only as totals and are not read). Each
 amount in the headline's paragraph is read by its own clause:
 
 | phrase | component |
@@ -216,7 +218,7 @@ amount in the headline's paragraph is read by its own clause:
 | "from the 10-year Pediatric Research Initiative Fund" | `transfer_in` (from PRIF) |
 | "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
 | "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
-| "in addition to amounts provided herein, $X is available to this appropriation ... from amounts provided" (an evaluation tap; D-1) | `transfer_in` (section 241 where the held phrase prints '241'; else "not named in the phrase") |
+| "in addition to amounts provided herein, $X is (shall be) available to this appropriation ... from amounts provided" (an evaluation tap; D-1) | `transfer_in` (section 241 where the held phrase prints '241'; else "not named in the phrase") |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
 
@@ -226,7 +228,10 @@ tribes", "amounts required to be reserved"); sub-allocations ("not less than $X 
 in the table"); the 251(b)(2)(C)(ii) base ("is provided to meet the terms of section 251(b)(2)(C)(ii)"); and the
 headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline, or a
 general provision's additional amount under the account's heading where the paragraph's amount plus it is the
-headline (OS-GDM FY2023 Senate: $565,394,000 and sec. 243's $350,000,000 = $915,394,000; D-1). A section 241
+headline (OS-GDM FY2023 Senate: $565,394,000 and sec. 243's $350,000,000 = $915,394,000; D-1), which the in_headline
+arithmetic counts with the paragraph's amount (owner, D-1); an availability clause on the heading's own money ("of the
+amounts made available under this heading, up to $1,000,000 from amounts made available for Quarantine
+appropriations shall remain available until expended", CDC Emerging and Zoonotic; owner, D-1). A section 241
 sub-allocation ("of the amounts provided under this heading from amounts available under section 241 of the PHS Act,
 $X shall be available to carry out evaluations") is part of the heading's section 241 amount, already tagged with it
 (D-1).
