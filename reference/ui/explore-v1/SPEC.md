@@ -40,6 +40,8 @@ Top to bottom:
 5. **Workspace**: the grid (flex 999 1 600px) and the docked side panel (flex 1 1 340px) side by side, same height. Below ~980 px the panel wraps under the grid. The panel never overlays the grid.
 6. **Footer legend** (one line): units · "click an account name for details · click a figure for its source" · `—` not funded · `missing` · blank = outside the account's life.
 
+Adopted in UI-2b (owner decision, 2026-10-13): the grid box (and the docked panel beside it) fills the window from below the title row to the window's bottom edge, and follows window resizes; the sticky header rows, sticky first column and the box's own bottom scrollbar are kept. The legend, definitions and provenance sit below it, reached by scrolling the page.
+
 There are no tiles above the grid: the headline figures live in the overview panel.
 
 ## 4. The grid
@@ -74,6 +76,8 @@ There are no tiles above the grid: the headline figures live in the overview pan
 
 **Under an Amount basis other than As printed** (section 5.6; owner, #61), a cell holding a printed figure shows its published view (`views.<basis>`, the timing's entry): the amount when checked or computed; `excl.` when the basis leaves the account out; `n/a` for an account and `not checked` for a total when not computable. The reason is on hover, each is a button to the figure's source, and a legend line explains the three. Only checked or computed amounts feed a difference. Cells without a printed figure keep their state tokens.
 
+**Note markers** (owner decision, 2026-10-13, UI-2b). The default view draws no corner triangles. A figure's notes (its cell note, and the other lines on file for the cell, listed and never added) show in its source panel under "Notes" (section 5.1); a cell with no figure keeps its note on hover. The triangles, and their legend line, appear only in Reviewer mode.
+
 **Emphasis.** The FY2026 Enacted column has a warm wash (`#f7f5ef`) on every row except the total band, and a bold header. The change column shows `±amount` over `±%`: green when up, orange when down, figures only (never the fill).
 
 **Weights.** Total band 14/700. Collapsed agency 14/500 (name and figures). Expanded agency 14/600. Lines 13/400. Change column follows its row (600 total and expanded, 500 collapsed, 400 lines).
@@ -106,8 +110,17 @@ There are no tiles above the grid: the headline figures live in the overview pan
   - when the row is an account with its own page: "See every stage for this account"
 - Clicking another figure moves the selection.
 
+Adopted in UI-2b (owner decision, 2026-10-13); this replaces the panel list above where they differ:
+- The panel has no "or click outside · Esc" hint (click-away and Esc still work).
+- The big figure is in full dollars ("$7,352,159,000"), with "printed as 7,352,159 in $ thousands" under it.
+- One block headed "Source document": the document's short name (plain text, not a link), its page, and the "Printed as" line, then one primary button "Open source document at page N" (`url_or_identifier#page=N`). The document name is no longer a separate link to page 1.
+- The bill or law is a small secondary link, "Bill / law: P.L. 119-75, Div. B", visibly separate from the source document.
+- "Notes" when the figure has any (section 4, Note markers).
+
 ### 5.2 Click an account name → account view in the panel
 The panel shows: the path (Title II › agency); the name; the headline in short form ($7.35B) with the exact $K and "FY2026 enacted, as printed"; the change vs the prior year when both are values; "FY2026 by stage, with sources" (each stage: amount, then document · page · bill link); "Enacted, FY2017–FY2026" bars (FY2025 CR bar lighter, gaps for non-values, never zero bars; the bars start at zero); Open account page; Watch (browser-only, section 9). The selected account row gets a light yellow fill (`#fff6dc`).
+
+Adopted in UI-2b (owner decision, 2026-10-13); this replaces the stage list above: the header is the path, the name, the short headline ($7.35B, captioned "FY2026 enacted, as printed") and the change vs the prior year. Then a three-column table, Stage | Amount ($K) | Source, where Source is one link, "H.Rept. 119-271, p. 343", to that page. The bill and law links of the year's stages sit on one line under the table ("Bill text: H.R. 5304 · S. 2587 · P.L. 119-75"); the per-row bill links are gone. History bars as before. The phone sheet (section 6) shares this layout.
 
 ### 5.3 Panel modes and returning to the overview
 Precedence: figure source > account > overview. Each non-overview mode shows "‹ Title II overview" (or "‹ NIH overview" with an agency filter) and the hint "or click outside · Esc". The overview returns when you:
@@ -160,6 +173,8 @@ Adopted on the phone (owner, 2026-10-12, #60):
 - The summary card's changes read "vs FY<n−1> enacted" and "vs request".
 - A % change from a zero base shows "new" ("—" when both are zero), as section 1 rule 2.
 
+Adopted in UI-2b (owner decision, 2026-10-13): the account sheet follows section 5.2's UI-2b layout (header, Stage | Amount ($K) | Source table with one source link per stage, "Bill text:" line, history bars).
+
 ## 7. Typography
 
 IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 14 px / 1.4; all figures `font-variant-numeric: tabular-nums`. IBM Plex Sans Condensed 12 px caps with 0.08em tracking for eyebrows and section labels. Heading 24/600. Panel title 19/600. Panel headline figure 30/600.
@@ -182,6 +197,7 @@ IBM Plex Sans (self-hosted under `web/`, SIL OFL; fall back to system-ui), base 
 | selected figure | `#fff1c2` + inset `#d9a400` | selection only |
 | selected account row | `#fff6dc` | selection only |
 | rail | `#b9c6dc` | lines under an expanded agency |
+| note marks | note `#B7791F`, other lines `#8A93A3` (corner triangles) | Reviewer mode only (owner decision, 2026-10-13, UI-2b) |
 | tag: incl. mandatory | bg `#eeeaf8`, text `#4b3f72`; provisional class: 1 px dashed outline `#8a7fb0` (owner, #61) | class tags (UI-0) |
 | tag: proposed | bg `#fdf1d8`, text `#7a4b00` | proposed-only accounts |
 | badges | auto-validated `#e3f1e7`/`#1d6b3a`; unverified `#eef0f3`/`#3a4150`; flagged `#fde8dc`/`#9a3412`; human-verified → Verified by a person (green, as auto-validated) | verification status |

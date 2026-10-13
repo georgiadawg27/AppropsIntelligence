@@ -412,3 +412,24 @@ Merged main after UI-3 (#61): `BUILT` keeps both lists; `buildRows` uses `partsO
 (an agency "incl. mandatory"; a line "mandatory" / "incl. mandatory"; no "Appropriated mandatory" sub-group since
 lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid does: view amounts, "excl.",
 "n/a" / "not checked"; the summary card and the stage note name the basis.
+
+## UI-2b: Grid and panel polish (owner review, 2026-10-13)
+
+- Note marks: the corner triangles (`cell-note`, `more`) are drawn only in Reviewer mode (`rev=1`); the mark legend
+  was already Reviewer-only. By default a figure's notes (cell note; other lines, listed never added) show in its
+  source panel under "Notes" (`src-notes`, `src-note`, `src-note-link`, `src-note-more`); a cell with no figure keeps
+  its note in the cell's hover text. Existing note/marker tests now open with `rev=1`.
+- Grid box: `sizeBox()` (called from `pinHeader`, so on render, resize and font load) sets `--box-top` to the box's
+  page offset; `.tablebox` / `.sidepanel` height = `calc(100vh - var(--box-top))`, min 420px.
+- Source panel: hint removed (figure mode only; `backRow(grid, false)`); `src-value` in full dollars, `src-short`
+  "printed as N in $ thousands"; "Source document" block (`src-docblock`: plain name, page, Printed as, `src-open`
+  "Open source document at page N"); `src-bill` "Bill / law: …" separate below.
+- Account view / phone sheet: header (path, name, short headline, `acct-exact` "FY2026 enacted, as printed", change);
+  `acct-table` Stage | Amount ($K) | Source (one link to url#page=N per stage); `acct-bills` "Bill text:" = bill_url of
+  the selected year's stages, Budget Appendix excluded, deduplicated, labelled by bill_id.
+- SPEC.md §3, §4, §5.1, §5.2, §6, §8 record the decisions. Screenshots: screenshots/ui-2b/.
+
+Open for the owner:
+1. The account panel keeps "or click outside · Esc" (the brief removed it from the figure panel only).
+2. "Bill text:" leaves out the prior year's law (P.L. 119-4) and the Budget Appendix, following the brief's example.
+3. The figure panel's secondary link reads "Bill / law: FY2026 Budget Appendix" for a request figure.
