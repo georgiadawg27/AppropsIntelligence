@@ -1740,6 +1740,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0249"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-0249"
           }
@@ -1903,6 +1909,12 @@
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt62/CRPT-118srpt62.pdf",
          "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0250"
+          },
           {
            "human_review_status": null,
            "result": "pass",
@@ -2121,6 +2133,12 @@
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
          "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-0246"
+          },
           {
            "human_review_status": null,
            "result": "pass",
@@ -3957,6 +3975,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0250"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-0250"
      }
@@ -3999,6 +4023,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-0214"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0249"
      },
      {
       "human_review_status": null,
@@ -4113,6 +4143,12 @@
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/118/crpt/srpt198/CRPT-118srpt198.pdf",
     "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-0246"
+     },
      {
       "human_review_status": null,
       "result": "pass",

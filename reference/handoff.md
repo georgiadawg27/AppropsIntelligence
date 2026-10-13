@@ -1,5 +1,67 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-3b: Exclude earmarks and the nondefense column (2026-10-13)
+
+- Page only (web/index.html, docs/index.html as the export writes it). BUILT gains `exclude_earmarks` and `nondefense`.
+- Filter › Advanced "Exclude earmarks (CDS / CPF)": every printed figure reads `views_excluding_earmarks.<basis>` (printed
+  included) with UI-3's tokens; chip "Earmarks excluded"; URL `earmarks=excl`; label/overview/panel add "· excl.
+  earmarks". The source panel lists the earmark components the view used (amount, document, page or statute location)
+  and the published result, under the view figure.
+- View › Columns "Nondefense" (URL `cols=nondefense`), after Defense portion: the lead stage's `views_nondefense` for the
+  basis in view; empty with the reason on hover where not computable. Exclude earmarks doesn't change it.
+- Tests: tests/test_compare.py `ExcludeEarmarks` (5); test 12 and the filter-panel test now expect both controls.
+- SAMHSA HSPS FY2026 Senate: its earmark (CMP-LHHS-1326, 54,611, S.Rept. 119-55 p.436) was a tagging miss fixed in D-2
+  (#67); after merging main, the test asserts the excluding-earmarks figure 121,255 and that the panel lists the earmark.
+- Open: the panel names SRC-PLAW-119PUBL75 by its ID (web/documents.js has no label for it), as the UI-3 component list does.
+## D-2: request-stage components and the document-dependent D-1 items (2026-10-13, this PR)
+
+Start here. Rules: `reference/ACCOUNTING_RULES.md`; owner decisions: `reference/review/accounting/decisions-D2.md`
+(new) and `decisions-D1.md` (rulings table updated).
+
+- Access: govinfo.gov (Budget Appendix chapters, bills, reports, P.L. 119-4) and congress.gov (H.Rept. 119-696) were
+  reachable; appropriations.senate.gov and appropriations.house.gov were not (the FY2021-FY2023 Senate drafts and the
+  FY2024 House draft), so `build_pphf_table.py` keeps those cells' committed rows unchanged and says so.
+- Step 1, President's Budget FY2017-FY2027: `reference/review/accounting/request_language.py` reads the 66 Appendix
+  chapters' text layer into `request_language.json` (committed; 1,040 held account-years: 884 read, 156 not found,
+  each with its reason). The tagger reads them (`request_text`, `appendix_text`): 123 read with components, 761 read
+  with no match, 156 not found. Coverage is per account (`tag_components.covered` / `not_covered_reason`), used by
+  site_accounting and measure_reconcile; President's Budget agency totals are checked where every account behind
+  them was read. Page images: 4 (Appendix amounts checked: three printed with misplaced commas, and NEI FY2027's
+  '$833,000', a probable misprint (owner), all listed as misprints and not read), plus 6 for other items (H.Rept. 116-62 p.349; H.Rept. 119-696
+  PDF pp.371-373, 375, 377; H.Rept. 119-271 p.348). All from cached PDFs; no paid service.
+- Ruling 7d: CMP-LHHS-1005 inside; CMP-LHHS-1007 retired for CMP-LHHS-1262 (the report's 'New Advance' $2,800,000,000,
+  table_line, inside; the Appendix's $3,000,000,000 kept in its note); 1933 unchanged. In `advance_lines.py`.
+- Item 3: OBS-LHHS-4123 to -4125, S.Rept. 118-84 pp.384-385 (the lines; the totals are on pp.386-387): 2,500,000 +
+  1,000,000 + 1,775,000 = 5,275,000 thousand; the cell passes. The two CR lines are `supplemental_act` (P.L. 117-180)
+  labelled '(emergency)' -> designated/emergency; 'Formula Grants (emergency)' is inside 'Total, LIHEAP'
+  (`inside_lines.csv`).
+- Item 4: FY2027 House PPHF rows (H.Rept. 119-696 PDF pp.265-266, sec. 221); +2 pass.
+- Item 5 (7b): p.380 prints 'CR Funding—Public Law 117–180 Suicide Lifeline' 62,000 inside the headline: OBS-LHHS-4126,
+  other_law inside (CMP-LHHS-1277); CMP-LHHS-0547 now beside by arithmetic. No view changes.
+- Items 5b/5c: OBS-LHHS-4127 to -4131 (CDC-Wide House/Senate, Birth Defects and EEOICP Senate, ONC Senate $0), each
+  citing the bill's PDF page; CDC's FY2023 agency sums: House gap 958,570,000 -> 0, Senate 1,103,488,000 -> 0, no double
+  count; CA-LHHS-0038/-0039 (table silence) retired. VAL-MRC-MEMBER-NO-HEADLINE and -ONC-NO-HEADLINE are no longer
+  produced (their cells pass). ACL's total is read from its paragraph (TOTAL_ONLY), 45 components, all by arithmetic.
+- Item 5a: CMP-LHHS-1326 (earmark $54,611,000, table_line, S.Rept. 119-55 p.436) on OBS-LHHS-4112; measure_reconcile's
+  permanent earmark-rule check (VAL-MRE-*): 4 cells, 4 pass; 5 views_excluding_earmarks entries change (that cell).
+- Item 6: CJS FY2024-FY2025 House/Senate/Enacted in AUTO_CELLS (3 earmarks); FY2025 Enacted under the CR
+  (`CR_CELLS`, `CR_LEVEL_ONLY`: sec. 1301(3) NOAA ORF and 1301(6) NASA SSMS set levels only).
+- Item 7: decision section only (decisions-D2.md); nothing applied.
+- New rule: a default never leaves a negative base (CMP-LHHS-1175, CMS PM FY2026 request, beside); confirmed by the
+  owner, as is the retirement of CA-LHHS-0038/-0039.
+- measure_reconcile: base 813/0 -> 977/0; views 220/21/118 -> 252/30/77; earmark rule 4/0. Text check: match 2,529 ->
+  2,534, ambiguous 4 -> 4, mismatch 0 -> 0. Components 1,204 -> 1,401 (198 new, 1 retired).
+
+Open (D-3, owner 2026-10-13: decisions 1-3 of decisions-D2.md):
+- NSF R&RA headline (decision 1); President's Budget PPHF rows, 10 cells (2); 5 unexplained President's Budget cells (3).
+- NEI FY2027 request '$833,000': probable misprint, not read; for review.
+- The phrase window ends before 'are designated ...' on the FY2025 request's Refugee emergency amount
+  ($2,914,179,000); widening it is a parser change (every text file reparsed).
+- The FY2023 Senate explanatory statement and the other committee drafts need a session that can reach the committee
+  sites.
+- `request_language.py` and `build_pphf_table.py` need the cached PDFs (document_store/, gitignored); CI does not run
+  them.
+
 ## UI-0b: excluding-earmarks and nondefense views (2026-10-13)
 
 - Every cell with `views` now also gets `views_excluding_earmarks.<basis>` and `views_nondefense.<basis>`, the same
@@ -433,3 +495,9 @@ Owner answers (2026-10-13, same PR), recorded in SPEC §5.1/§5.2:
 1. The hint is gone from every panel mode (`backRow` has no hint; `panel-hint` no longer rendered).
 2. "Bill text:" adds the prior year's law first, "FY2025: P.L. 119-4 (full-year CR)"; the Budget Appendix stays out.
 3. A request figure's secondary link reads "Budget document: FY2026 Budget Appendix".
+
+Merged main after UI-3b (#65) and D-2 (#67): one conflict (renderSource's `VB` line; kept UI-3b's `usesViews()`).
+UI-3b's "Earmarks taken out (CDS / CPF)" list now sits inside the "Source document" block, after "Printed as" and
+before the button (`viewBlock` returns `ears` beside `head`/`tail`). Earmarks and components name their document as
+plain text with the page as the link (`compSource`; through the figure's URL when the component is in the figure's
+own document; `docLink` removed). UI-3b tests updated for the full-dollar `src-value`. SPEC §5.6 records the placement.
