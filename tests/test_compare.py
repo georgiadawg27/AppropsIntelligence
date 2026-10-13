@@ -179,8 +179,9 @@ class GridData(CompareTest):
                     for st in self.grid["stages"]:
                         cell = row["cells"][f"{y}|{st}"]
                         if y in by_year and st in by_year[y]:
-                            # the accounting layer (UI-0, site_accounting.py) adds its own keys beside the lines
-                            layer = {"views", "components", "earmark", "defense_portion"}
+                            # the accounting layer (UI-0, UI-0b; site_accounting.py) adds its own keys beside the lines
+                            layer = {"views", "components", "earmark", "defense_portion", "views_excluding_earmarks",
+                                     "views_nondefense"}
                             self.assertEqual({k: v for k, v in cell.items() if k not in layer},
                                              {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
