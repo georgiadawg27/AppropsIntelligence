@@ -9,12 +9,15 @@
 - Coverage = `tag_components.AUTO_CELLS`. Outside it every entry is `not_computable`, "earmarks not tagged for this
   stage" / "defense not tagged for this stage": the President's Budget, FY2027, and also CJS FY2024-FY2025 (not
   in AUTO_CELLS). This leaves out NSF R&RA's President's Budget defense lines FY2017-FY2026 and the one FY2027 House
-  earmark (a table line), although they are tagged. Owner decision pending.
+  earmark (a table line), although they are tagged. Owner, #62: a table-line tag does not make its cell covered
+  (keep not_computable); CJS FY2024-FY2025 will be tagged in D-2; NSF's headline decision comes with D-2.
 - Accounts: always `computed`, never `checked`. NSF's defense_portion is printed beside its headline, so its
   nondefense view takes nothing out.
 - Totals: `checked` only where `views.<basis>` is checked (a printed total measure_reconcile matched), the cell is
   auto-tagged, and neither the total nor any of its accounts has a component of that type. Otherwise not checked,
-  with `accounts_behind`. The printed basis on a total is always not checked.
+  with `accounts_behind`. The printed basis on a total is always not checked. Owner, #62: reused only when every
+  account behind the total is inside coverage (checked per account; 0 count change today, since every account
+  behind a total shares its subcommittee, year and stage). SPEC §9's two UI-0b rows: data ready, controls in UI-3b.
 - ui_contract v3: `exclude_earmarks` and `nondefense` (both true). Counts in tests/fixtures/grid_counts.json
   (`views_*_status_counts`). The page doesn't read these fields yet (UI-3).
 

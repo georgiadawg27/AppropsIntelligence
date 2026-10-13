@@ -337,9 +337,9 @@ class Layer:
 
     def total_exclusion(self, a, fy, stage, h, exclusion, views):
         """A total's views_excluding_earmarks / views_nondefense: never summed. A basis keeps its checked view (a
-        printed total measure_reconcile matched) only where the cell is auto-tagged and neither the total nor any of
-        its accounts has a component of the exclusion's type tagged, so the printed total is the view; every other
-        basis is not checked, with accounts_behind."""
+        printed total measure_reconcile matched) only where the cell and every account behind it are auto-tagged and
+        neither the total nor any of its accounts has a component of the exclusion's type tagged, so the printed total
+        is the view; every other basis is not checked, with accounts_behind."""
         mh = self.member_heads(a, fy, stage, h)
         behind = len(mh)
         if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS:
@@ -347,10 +347,16 @@ class Layer:
         ctype = AC.EXCLUSIONS[exclusion]
         tagged = [m for m, x in [(a["canonical_account_id"], h)] + mh
                   if any(c["component_type"] == ctype for c in self.comps.get(x["observation_id"], []))]
+        # owner, #62: a matched printed total is reused only when every account behind it is inside coverage
+        outside = [m for m, x in mh if (self.acc[m]["subcommittee"], int(x["fiscal_year"]), x["stage"])
+                   not in TC.AUTO_CELLS]
         word = EXCLUSION_WORD[exclusion]
         out = {}
         for basis in AC.BASES:
-            if tagged:
+            if outside:
+                why = (f"not checked: {len(outside)} of its {behind} accounts are outside the auto-tagged cells, so "
+                       f"their {ctype} components are not known")
+            elif tagged:
                 why = (f"not checked: {len(tagged)} of its accounts ha{'ve' if len(tagged) > 1 else 's'} {ctype} "
                        f"components tagged, and no printed total {word} that measure_reconcile matches "
                        f"({behind} accounts behind it)")
@@ -360,7 +366,7 @@ class Layer:
             nc = {"amount": None, "status": "not_computable", "accounts_behind": behind, "reason": why}
             entries = []
             for e in views[basis]:
-                if basis != "printed" and not tagged and e["status"] == "checked":
+                if basis != "printed" and not tagged and not outside and e["status"] == "checked":
                     article = "an" if ctype[0] in "aeiou" else "a"
                     entries.append(dict(e, reason=f"{e['reason']}; none of its {behind} accounts has {article} "
                                                   f"{ctype} component tagged (an auto-tagged cell)"))

@@ -199,8 +199,8 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Amount basis, timing | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Account type filter, "incl. mandatory" tags, "Appropriated mandatory" sub-group | `budget_class` per account-year (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
-| Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | hidden until UI-0b (views_excluding_earmarks, nondefense) |
-| Nondefense (`nondefense`) | a published nondefense figure per cell | hidden until UI-0b (views_excluding_earmarks, nondefense) |
+| Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | data ready (UI-0b #62); page controls in UI-3b |
+| Nondefense (`nondefense`) | a published nondefense figure per cell | data ready (UI-0b #62); page controls in UI-3b |
 | Watch | browser storage only; no alerts or email | later (UI-6) |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)
