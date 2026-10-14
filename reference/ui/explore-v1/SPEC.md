@@ -165,7 +165,7 @@ Adopted in UI-3b (UI-0b #62):
 ### 5.7 View menu, Share, Export
 - **View**: Units ($ thousands · $ millions), Density (Comfortable · Compact), Columns (Change vs FY2026 request), Expand all / Collapse all, Reviewer mode.
 - **Share**: copies the URL. All state (filters, compare mode, FY, units, density, columns, expanded rows, selected figure) round-trips through the query string, and the button briefly reads "Link copied".
-- **Export**: brief UI-4.
+- **Export**: brief UI-4. Built in UI-4 (2026-10-14): the Export button opens a menu: Rows (Only what's shown, the default · Include collapsed accounts · Only rows I've selected, which puts a tick box on each account row), Include (Figures, always · Source citations: document, page, table · Notes · Verification status), Format (CSV · Excel .xlsx, written by write-excel-file 4.1.1, MIT, vendored unmodified in `web/` with its licence and loaded only on an Excel export), a Download button, and the footer "Uses your current filters, units and amount basis." Not in the URL (it changes no figure). The file starts with a header block (the page URL with its query string, export date, subcommittee, fiscal year, compare mode, units, amount basis, advance timing, filters, rows, what is included, the data build from `docs/data/index.json` source: version, data file, commit date, sha256), a blank row, then the table: Title, Section, Row, Account ID, Account, Within, then one column per grid column in grid order (a figure column followed by its document, page, table, notes and verification columns as included; a change column as its amount and its %). A figure is a number in the units shown, rounded as the cell shows it; a printed zero is a figure and exports as 0 (the screen keeps "—"); a state is its label (Not reported, Missing, Not funded (confirmed absent in the bill or law text) …), never a blank or a zero; a change cell with no value reads "Not computable"; a cell outside the account's life reads "Outside the account's life" (owner, 2026-10-14). Separate from the published workbook, which it never reads or writes.
 
 ## 6. Phone (< 640 px)
 
@@ -232,7 +232,7 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Search, agency filter, status filter | names, former names, `lifecycle`, cell states | ready |
 | Hover, click-away, Esc, Share/URL state | none | ready |
 | Abbreviations | display-only label map in `web/`, keyed by `canonical_account_id` (not data) | ready |
-| Export CSV | the shown rows | ready (UI-4) |
+| Export CSV | the shown rows | ready (UI-4; built, CSV and Excel) |
 | Phone list and sheet | same as grid and account panel | ready |
 | Filter › Advanced: change threshold, Include committee drafts, Show ended and reorganized accounts, Only figures pending review or flagged | cell states, `lifecycle`, verification status | ready (the Advanced section shows these now; the basis items join it when their flag is on) |
 | Amount basis, timing | published views per cell (UI-0) | ready (UI-0 #57, built in UI-3 #61) |

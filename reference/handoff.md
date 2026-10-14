@@ -1,5 +1,34 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-4: Export (2026-10-14)
+
+- web/index.html: the Export button (title row) opens `#export-menu` (Rows, Include, Format, Download, footer). Built
+  behind the existing `export_csv` flag (added to BUILT). One builder for both formats: `exportTable()` reads the
+  `<tr>`s buildRows lays out (the tbody itself for "Only what's shown"; a detached build with every agency and
+  general-provision group open for "Include collapsed accounts" and "Only rows I've selected") and each cell's own
+  text, so rows, columns, units and rounding are the screen's. `exportHeader()` writes the header block.
+- "Only rows I've selected": a tick box per account row (`row-pick`) while that choice is on; the set (`PICKED`) is
+  not in the URL, like the rest of the export choices.
+- Excel: web/write-excel-file.min.js (write-excel-file 4.1.1 from npm, MIT, bundles fflate 0.8.2, unmodified,
+  sha256 in web/write-excel-file.LICENSE.txt). Served by approps_web (ASSETS) and copied by export_static like
+  documents.js; loaded only when someone exports to Excel. cdn.sheetjs.com is blocked by the proxy, and npm's xlsx
+  0.18.5 carries known advisories, so SheetJS was not used. The workbook build is untouched.
+- Account page "Export history (CSV)" now uses the shared `saveBlob` (same file, same name).
+- Tests: tests/test_compare.py `Export` (5): rows and columns equal the screen for three LHHS filter combinations plus
+  CJS history on the live server; the header block; a not_reported cell exports "Not reported"; $M rounding
+  (NCI FY2026 enacted 7,352.2 on screen, 7352.2 in the file); Rows choices and the .xlsx (read with openpyxl).
+  ExploreV1 first-screen test now expects Export enabled; keyboard test adds the Export dialog. Screenshots:
+  screenshots/ui-4/.
+
+Owner answers (2026-10-14, same PR):
+1. A printed zero exports as the number 0 (a figure; "no zeros" meant a blank or a state never becomes 0). The screen
+   keeps "—". Test: `Export.test_printed_zero_exports_as_zero` (AHRQ FY2026 House, $K, $M and .xlsx).
+2. No commit hash: the data's commit date, version and sha256 are the provenance. export_static unchanged.
+3. A change cell with no value exports "Not computable" (amount and % columns); "Outside the account's life" stays.
+   Test: `Export.test_change_with_no_value_exports_not_computable`; `assert_matches_screen` checks both.
+Still as built: Include options default to all ticked; an untagged defense / nondefense cell exports blank.
+Merged main after D-3 (#72): one conflict, reference/handoff.md (both sections kept).
+
 ## D-3: owner rulings 1-3 of decisions-D2.md (2026-10-14, this PR)
 
 Three commits, reviewable apart (part 2, part 3, part 1 in that order).
