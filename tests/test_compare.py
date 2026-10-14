@@ -1498,8 +1498,7 @@ class ExploreV1(GridBrowser):
                 self.assertLess(g["x"] + g["width"], p["x"])
                 self.assertEqual(g["y"], p["y"])
                 self.assertEqual(self.page.inner_text("#grid-title"), "Department of Health and Human Services")
-                self.assertEqual(self.page.locator("#export").get_attribute("title"), "Coming in UI-4")
-                self.assertEqual(self.page.locator("#export").get_attribute("aria-disabled"), "true")
+                self.assertEqual(self.page.locator("#export").get_attribute("aria-disabled"), "false")   # UI-4
 
     def test_the_panel_wraps_below_a_narrow_grid(self):
         self.page.set_viewport_size({"width": 900, "height": 900})
@@ -2151,7 +2150,7 @@ class ExploreV1(GridBrowser):
             self.page.keyboard.press("Tab")
         self.assertTrue(self.page.evaluate("document.activeElement.closest('#compare-grid') !== null"))
         # each dialog closes on Esc and returns focus to its button
-        for button, panel in (("#filter-btn", "#filter-panel"), ("#view-btn", "#view-menu")):
+        for button, panel in (("#filter-btn", "#filter-panel"), ("#view-btn", "#view-menu"), ("#export", "#export-menu")):
             self.page.focus(button)
             self.page.keyboard.press("Enter")
             self.assertTrue(self.page.is_visible(panel))
@@ -3663,6 +3662,248 @@ def stage_words(y, st, grid):
         return f"FY{y} enacted" + (" (full-year CR)" if e and e["funding_type"] == "full_year_cr" else "")
     draft = " (draft)" if f"{y}|{st}" in (grid.get("drafts") or {}) else ""
     return f"FY{y} " + {"President's Budget": "President’s request", "House Reported": "House", "Senate Reported": "Senate"}[st] + draft
+
+
+# the grid's account rows as rendered, each cell as it reads: for the Export tests (brief UI-4)
+SCREEN_JS = """() => {
+    const [r1, r2] = document.querySelectorAll('#compare-grid thead tr');
+    const groups = [...r1.querySelectorAll('th[scope=colgroup]')].flatMap(th => Array(th.colSpan).fill(th.textContent.trim()));
+    const heads = [...r2.querySelectorAll('th')].map((th, i) => groups[i] + ' ' + th.textContent.replace(/^\\u2020\\s*/, '').trim());
+    const rows = [...document.querySelectorAll('#compare-grid tbody tr[data-testid=compare-row]')].map(tr => ({
+        id: tr.dataset.account,
+        cells: [...tr.querySelectorAll('td[data-col]')].map(td => {
+            const s = td.querySelector('[data-testid=amount], [data-testid=view-state], .tok, [data-testid=change], '
+                                       + '[data-testid=defense], [data-testid=nondefense]');
+            const p = td.querySelector('.pct');
+            return {kind: td.dataset.testid, state: td.dataset.state || '', outside: !!td.dataset.outsideLife,
+                    testid: s ? s.dataset.testid || '' : '', text: s ? s.textContent.trim() : '', pct: p ? p.textContent.trim() : ''};
+        })}));
+    return {heads, rows};
+}"""
+EXPORT_STATE = {"missing": "Missing", "not_collected": "Not yet collected", "not_enacted": "Not yet enacted",
+                "not_reported": "Not reported", "no_printed_total": "No printed total", "no_figure": "No figure for this year"}
+EXPORT_VIEW = {"excl.": "Excluded", "n/a": "Not computable", "not checked": "Not checked"}
+
+
+def screen_number(text):
+    """A number as the grid prints it ("−1,234.5", "+12", "+3.2%") as a float."""
+    return float(text.replace(",", "").replace("%", "").replace("+", "").replace("−", "-"))
+
+
+def as_screen(v, units):
+    """GridMath.number: the exported number printed back the way the grid prints it."""
+    s = f"{abs(v):,.1f}" if units == "m" else f"{abs(v):,.0f}"
+    return ("−" if v < 0 and s not in ("0", "0.0") else "") + s
+
+
+class Export(GridBrowser):
+    """Brief UI-4: the Export menu in the title row. The export holds the rows and columns the grid shows, in the units
+    shown and rounded as shown, after a header block; a state exports as its label, never a blank or a zero."""
+
+    def go(self, query, where="static"):
+        self.page.goto(self.urls[where] + query)
+        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle()
+
+    def download(self, rows=None, fmt="csv", untick=()):
+        """Open Export, make the choices, download; the menu is opened afresh each time."""
+        if self.page.is_hidden("#export-menu"):
+            self.page.click("#export")
+        if rows:
+            self.page.check(f"[data-testid=export-rows-{rows}]")
+        for k in untick:
+            self.page.uncheck(f"[data-testid=export-{k}]")
+        self.page.check(f"[data-testid=export-format-{fmt}]")
+        with self.page.expect_download() as dl:
+            self.page.click("[data-testid=export-go]")
+        return dl.value
+
+    def read_csv(self, d):
+        """(header block as {label: value}, the table's rows as lists)."""
+        with open(d.path(), encoding="utf-8", newline="") as f:
+            lines = list(csv.reader(f))
+        gap = lines.index([])
+        return {r[0]: r[1] for r in lines[:gap]}, lines[gap + 1:]
+
+    def assert_matches_screen(self, table, units="k"):
+        screen = self.page.evaluate(SCREEN_JS)
+        head, body = table[0], table[1:]
+        self.assertEqual(head[:6], ["Title", "Section", "Row", "Account ID", "Account", "Within"])
+        unit = "$M" if units == "m" else "$K"
+        # every column on screen, in order: a figure column then its citation, notes and verification columns;
+        # a change column as its amount and its %
+        want, k = [], 6
+        for name, cell in zip(screen["heads"], screen["rows"][0]["cells"]):
+            want.append(f"{name} ({unit})")
+            if cell["kind"] == "compare-cell":
+                want += [f"{name} · document", f"{name} · page", f"{name} · table", f"{name} · notes", f"{name} · verification"]
+            elif cell["kind"] == "change-cell":
+                want.append(f"{name} (%)")
+        self.assertEqual(head[6:], want)
+        # the rows on screen, in order
+        self.assertEqual([r[3] for r in body], [r["id"] for r in screen["rows"]])
+        figures = 0
+        for got, row in zip(body, screen["rows"]):
+            vals = iter(got[6:])
+            for c in row["cells"]:
+                v = next(vals)
+                if c["kind"] == "compare-cell":
+                    cite = [next(vals) for _ in range(5)]
+                    if c["outside"]:
+                        self.assertEqual(v, "Outside the account’s life", (row["id"], c))
+                    elif c["testid"] == "view-state":
+                        self.assertEqual(v, EXPORT_VIEW[c["text"]], (row["id"], c))
+                    elif c["testid"] == "amount" and c["text"] != "—":
+                        figures += 1
+                        self.assertEqual(as_screen(float(v), units), c["text"], (row["id"], c))
+                        self.assertTrue(cite[0] and cite[1] and cite[4], (row["id"], cite))
+                    elif c["state"] == "not_funded":
+                        self.assertTrue(v.startswith("Not funded ("), (row["id"], v))
+                    elif c["state"]:
+                        self.assertEqual(v, EXPORT_STATE[c["state"]], (row["id"], c))
+                    if c["state"] and not c["outside"]:
+                        self.assertNotIn(v, ("", "0"), (row["id"], c))        # a state never exports blank or zero
+                elif c["kind"] == "change-cell":
+                    pct = next(vals)
+                    self.assertEqual("" if v == "" else screen_number(v), "" if not c["text"] else screen_number(c["text"]), (row["id"], c))
+                    want_pct = (screen_number(c["pct"]) if any(ch.isdigit() for ch in c["pct"])
+                                else "No change (both zero)" if c["pct"] == "—" else c["pct"])
+                    self.assertEqual("" if pct == "" else float(pct) if isinstance(want_pct, float) else pct, want_pct, (row["id"], c))
+                else:
+                    self.assertEqual("" if v == "" else as_screen(float(v), units), c["text"], (row["id"], c))
+            self.assertEqual(next(vals, None), None)
+        self.assertGreater(figures, 0)
+
+    def test_rows_and_columns_equal_the_screen(self):
+        # three filter combinations: the default view; an agency filter with NIH expanded in $ millions; two years
+        # with a search under another amount basis. Then CJS (no title total) on the live server.
+        for where, query, units in (
+                ("static", "?sc=LHHS&fy=2026", "k"),
+                ("static", "?sc=LHHS&fy=2026&agency=National+Institutes+of+Health&units=m&open=ACC-HHS-NIH-TOTAL", "m"),
+                ("static", "?sc=LHHS&grid=years&a=2024&b=2026&search=health&amt=all_appropriations", "k"),
+                ("live", "?sc=CJS&grid=history&units=m", "m")):
+            with self.subTest(query=query):
+                self.go(query, where)
+                _, table = self.read_csv(self.download())
+                self.assert_matches_screen(table, units)
+
+    def test_header_block(self):
+        self.go("?sc=LHHS&fy=2026&agency=National+Institutes+of+Health&units=m")
+        d = self.download()
+        self.assertEqual(d.suggested_filename, "LHHS-FY2026-export.csv")
+        head, table = self.read_csv(d)
+        self.assertEqual(head["Page"], self.page.url)
+        self.assertIn("agency=National+Institutes+of+Health", head["Page"])
+        self.assertEqual(head["Exported"][:10], datetime.datetime.now(datetime.timezone.utc).date().isoformat())
+        self.assertEqual(head["Subcommittee"], "Labor-HHS-Education (LHHS)")
+        self.assertEqual(head["Fiscal year"], "FY2026")
+        self.assertEqual(head["Compare mode"], "Stages")
+        self.assertEqual(head["Units"], "$ millions")
+        self.assertEqual(head["Amount basis"], "As printed")
+        self.assertEqual(head["Advance timing"], "When available (not used: As printed)")
+        self.assertEqual(head["Filters"], "Agency: National Institutes of Health")
+        self.assertEqual(head["Rows"], f"Only what’s shown ({len(table) - 1} rows)")
+        self.assertEqual(head["Included"], "Figures; source citations (document, page, table); notes; verification status")
+        src = json.loads((self.out / "data" / "index.json").read_text())["source"]
+        self.assertTrue(head["Data build"].startswith(f"{src['version']} · {src['data']} committed {src['data_committed']}"), head["Data build"])
+        self.assertIn(src["data_sha256"], head["Data build"])
+        # two years, another basis and timing, earmarks out: each named
+        self.go("?sc=LHHS&grid=years&a=2024&b=2026&basis=request&amt=all_appropriations&timing=enacted&earmarks=excl&search=cancer")
+        head, _ = self.read_csv(self.download())
+        self.assertEqual(head["Fiscal year"], "FY2024 vs FY2026")
+        self.assertEqual(head["Compare mode"], "Two years (stages shown: Request, House, Senate, Enacted; change measured on Request)")
+        self.assertEqual(head["Amount basis"], "All appropriations · excl. earmarks")
+        self.assertEqual(head["Advance timing"], "When enacted")
+        self.assertEqual(head["Filters"], "Search: “cancer”; Basis: All appropriations; Advances: when enacted; Earmarks excluded")
+        # the live server publishes no build snapshot: the header says so
+        self.go("?sc=CJS&fy=2026", "live")
+        head, _ = self.read_csv(self.download())
+        self.assertEqual(head["Data build"], "Live server (no published build)")
+
+    def test_not_reported_exports_as_its_label(self):
+        self.go("?sc=LHHS&fy=2020")
+        td = self.cell("ACC-HHS-HRSA-TOTAL", 2020, "Senate Reported")
+        self.assertEqual(td.get_attribute("data-state"), "not_reported")
+        self.assertEqual(td.inner_text().strip(), "n/r")
+        _, table = self.read_csv(self.download())
+        col = next(i for i, h in enumerate(table[0]) if h.startswith("FY2020 Senate") and h.endswith("($K)"))
+        hrsa = next(r for r in table[1:] if r[3] == "ACC-HHS-HRSA-TOTAL")
+        self.assertEqual(hrsa[col], "Not reported")
+        self.assertTrue(all(r[col] == "Not reported" for r in table[1:]), "the committee reported no FY2020 bill")
+
+    def test_millions_round_as_the_screen(self):
+        self.go(f"?sc=LHHS&fy=2026&units=m&open=ACC-HHS-NIH-TOTAL")
+        shown = self.cell(self.NCI, 2026, "Enacted").inner_text().strip()
+        self.assertEqual(shown, "7,352.2")
+        _, table = self.read_csv(self.download())
+        col = table[0].index("FY2026 Enacted ($M)")
+        nci = next(r for r in table[1:] if r[3] == self.NCI)
+        self.assertEqual(nci[col], "7352.2")                     # a number in $ millions, one decimal, as shown
+        self.assertEqual(nci[col + 2], "285")                    # its page
+        self.assert_matches_screen(table, "m")
+        # in $ thousands: whole thousands
+        self.go(f"?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL")
+        _, table = self.read_csv(self.download())
+        nci = next(r for r in table[1:] if r[3] == self.NCI)
+        self.assertEqual(nci[table[0].index("FY2026 Enacted ($K)")], "7352159")
+
+    NCI = "ACC-HHS-NIH-NCI"
+
+    def test_rows_choices_and_excel(self):
+        self.go("?sc=LHHS&fy=2026")
+        self.assertEqual(self.page.get_attribute("#export", "aria-disabled"), "false")
+        self.page.click("#export")
+        self.assertEqual(self.page.inner_text("[data-testid=export-foot]"), "Uses your current filters, units and amount basis.")
+        self.assertTrue(self.page.is_checked("[data-testid=export-rows-shown]"))
+        self.assertTrue(self.page.is_checked("[data-testid=export-figures]"))
+        self.assertTrue(self.page.is_disabled("[data-testid=export-figures]"))
+        self.page.keyboard.press("Escape")
+        self.assertTrue(self.page.is_hidden("#export-menu"))
+        shown = self.page.locator("#compare-grid tbody tr[data-testid=compare-row]").count()
+        # include collapsed accounts: every agency's lines too, after their agency
+        _, table = self.read_csv(self.download(rows="all"))
+        ids = [r[3] for r in table[1:]]
+        self.assertGreater(len(ids), shown)
+        self.assertIn(self.NCI, ids)
+        self.assertLess(ids.index("ACC-HHS-NIH-TOTAL"), ids.index(self.NCI))
+        nci = table[1:][ids.index(self.NCI)]
+        self.assertEqual((nci[2], nci[5]), ("Line", "National Institutes of Health"))
+        self.assertEqual(self.page.locator("#compare-grid tbody tr[data-testid=compare-row]").count(), shown)  # the grid unchanged
+        # only rows I've selected: tick boxes appear; nothing ticked, nothing to download
+        self.page.check("[data-testid=export-rows-picked]")
+        self.assertTrue(self.page.is_disabled("[data-testid=export-go]"))
+        self.page.keyboard.press("Escape")
+        picks = self.page.locator("[data-testid=row-pick]")
+        self.assertEqual(picks.count(), shown)
+        picks.nth(0).check()
+        picks.nth(2).check()
+        head, table = self.read_csv(self.download(untick=("notes", "verif")))
+        want = [self.page.locator("#compare-grid tbody tr[data-testid=compare-row]").nth(i).get_attribute("data-account") for i in (0, 2)]
+        self.assertEqual([r[3] for r in table[1:]], want)
+        self.assertEqual(head["Rows"], "Only rows I’ve selected (2 rows)")
+        self.assertFalse(any(h.endswith(("· notes", "· verification")) for h in table[0]))
+        self.assertTrue(any(h.endswith("· document") for h in table[0]))
+        # back to what's shown: the tick boxes go; Excel holds the same header block and table as the CSV
+        self.page.check("[data-testid=export-rows-shown]")
+        self.page.keyboard.press("Escape")
+        self.assertEqual(picks.count(), 0)
+        csv_head, csv_table = self.read_csv(self.download())
+        d = self.download(fmt="xlsx")
+        self.assertEqual(d.suggested_filename, "LHHS-FY2026-export.xlsx")
+        import openpyxl
+        path = Path(self.tmp.name) / d.suggested_filename        # openpyxl reads by the file's extension
+        d.save_as(path)
+        ws = openpyxl.load_workbook(path).active
+        cells = [["" if v is None else v for v in r] for r in ws.iter_rows(values_only=True)]
+        gap = cells.index(next(r for r in cells if not any(r)))
+        self.assertEqual({r[0]: r[1] for r in cells[:gap]}.keys(), csv_head.keys())
+        xl = [r[:len(csv_table[0])] for r in cells[gap + 1:]]
+        self.assertEqual(xl[0], csv_table[0])
+        fy26 = csv_table[0].index("FY2026 Enacted ($K)")
+        for x, c in zip(xl[1:], csv_table[1:]):
+            self.assertEqual(x[3], c[3])
+            self.assertEqual(x[fy26], c[fy26] if isinstance(x[fy26], str) else float(c[fy26]))
+        self.assertTrue(any(isinstance(x[fy26], (int, float)) for x in xl[1:]))   # amounts are numbers
 
 
 class GridMathUnits(unittest.TestCase):

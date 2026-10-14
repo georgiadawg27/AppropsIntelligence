@@ -158,6 +158,14 @@
   .chk { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--x-ink2); min-height: 32px; }
   .chk input { width: 18px; height: 18px; margin: 0; }
   #view-menu .xbtn { width: 100%; justify-content: center; }
+  #export-menu { top: 48px; right: 0; width: 320px; padding: 16px; max-height: 80vh; overflow: auto; }
+  #export-menu .glabel { font-size: 12px; color: var(--x-muted); margin-top: 6px; }
+  #export-menu .opts { gap: 2px; margin-bottom: 8px; }
+  #export-menu .chk .sub { color: var(--x-muted); }
+  #export-menu .xbtn { width: 100%; justify-content: center; margin-top: 8px; }
+  #export-menu .efoot { font-size: 12px; color: var(--x-muted); margin-top: 12px; padding-top: 10px; border-top: 1px solid #e3e5ea; }
+  #export-menu .enote { font-size: 12px; color: var(--x-muted); margin: 0 0 6px 26px; }
+  .pick { width: 16px; height: 16px; margin: 0 4px 0 0; flex: 0 0 auto; }
   .explore { padding: 20px 24px 28px; position: relative; }
   .titlerow { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
   .eyebrow { font-family: var(--x-cond); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--x-muted); font-weight: 500; }
@@ -688,8 +696,9 @@
           <button type="button" class="xbtn" id="panel-toggle" data-testid="panel-toggle" aria-controls="side-panel" aria-expanded="true">Hide panel</button>
           <button type="button" class="xbtn" id="view-btn" data-testid="view-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="view-menu">View &#9662;</button>
           <button type="button" class="xbtn" id="share" data-testid="share">Share</button>
-          <button type="button" class="xbtn primary" id="export" data-testid="export" aria-disabled="true" title="Coming in UI-4">Export</button>
+          <button type="button" class="xbtn primary" id="export" data-testid="export" aria-haspopup="dialog" aria-expanded="false" aria-controls="export-menu">Export</button>
           <div class="xpanel" id="view-menu" role="dialog" aria-label="View options" data-testid="view-menu" hidden></div>
+          <div class="xpanel" id="export-menu" role="dialog" aria-label="Export" data-testid="export-menu" hidden></div>
         </div>
       </div>
       <div class="workspace">
@@ -1326,11 +1335,7 @@ function apCSV() {
   return out.map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n";
 }
 function apExport() {
-  const blob = new Blob([apCSV()], { type: "text/csv;charset=utf-8" });
-  const a = el("a", { href: URL.createObjectURL(blob), download: `${AP.id}-history.csv` });
-  document.body.append(a);
-  a.click();
-  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+  saveBlob(new Blob([apCSV()], { type: "text/csv;charset=utf-8" }), `${AP.id}-history.csv`);
 }
 
 // An Account Relationship, as it reads from this account's side (each relationship shows on
@@ -1575,7 +1580,7 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
-                        "account_page"]);
+                        "account_page", "export_csv"]);
 let FEAT = {}, featLoaded = false;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -2763,7 +2768,9 @@ let current = null;     // { grid, cols }
 function renderBody() {
   if (!current) return;
   clearHover();
-  $("#compare-grid tbody").replaceWith(el("tbody", {}, ...buildRows(current.grid, current.cols)));
+  const tbody = el("tbody", {}, ...buildRows(current.grid, current.cols));
+  addPicks(tbody);
+  $("#compare-grid tbody").replaceWith(tbody);
   if (isPhone()) keepFocus($("#phone"), () => renderPhoneList(current.grid));
   markSelection();
   pinHeader();
@@ -3185,6 +3192,10 @@ function renderControls(grid) {
   $("#search-field").hidden = !has("search_filter");
   $("#filter-btn").hidden = !has("search_filter");
   $("#share").hidden = !has("interaction_state");
+  // Export (brief UI-4): offered when the data publishes what it reads (export_csv)
+  const ex = $("#export");
+  ex.setAttribute("aria-disabled", String(!has("export_csv")));
+  if (has("export_csv")) ex.removeAttribute("title"); else ex.title = "Export isn’t in this build yet";
   renderFilterPanel(grid);
   renderViewMenu(grid);
 }
@@ -3390,6 +3401,262 @@ function renderViewMenu(grid) {
   });
 }
 
+// ---- Export (brief UI-4): the grid as shown, as a file. One builder for CSV and Excel: the rows buildRows lays out
+// (the expanded rows as they are, every agency's lines, or the rows a person ticked) and, per column in view, what
+// the cell shows: a figure as a number in the units shown, rounded as the screen rounds it (read from the cell's own
+// text), a state as its label (never a blank or a zero). A header block says what the export holds. Separate from
+// the published workbook (export_static.py), which it never reads or writes. Not in the URL: it changes no figure.
+const EXP = { rows: "shown", cite: true, notes: true, verif: true, format: "csv" };
+const PICKED = new Set();       // "Only rows I've selected": the rows ticked in the grid (account ids)
+const pickOn = () => EXP.rows === "picked" && has("export_csv");
+const XLSX_LIB = "write-excel-file.min.js";      // write-excel-file 4.1.1 (MIT), vendored in web/, loaded on demand
+const EXP_ROWS = [["shown", "Only what’s shown"], ["all", "Include collapsed accounts"], ["picked", "Only rows I’ve selected"]];
+const EXP_STATE = { not_funded: "Not funded (printed zero)", missing: "Missing", not_collected: "Not yet collected",
+                    not_enacted: "Not yet enacted", not_reported: "Not reported", no_printed_total: "No printed total",
+                    no_figure: "No figure for this year" };
+const EXP_VIEW = { "excl.": "Excluded", "n/a": "Not computable", "not checked": "Not checked" };
+const MODE_NAME = { stages: "Stages", years: "Two years", history: "Enacted history" };
+// a number as the cell prints it ("−1,234.5", "+12", "+3.2%") back to a number: the screen's rounding, kept
+const shownNumber = (t) => Number(t.replace(/[,%+]/g, "").replace("−", "-"));
+function saveBlob(blob, name) {
+  const a = el("a", { href: URL.createObjectURL(blob), download: name });
+  document.body.append(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
+}
+// the columns as the header shows them: "<group> <column>" ("FY2026 Enacted", "Change vs FY2025 enacted")
+function exportColNames() {
+  const [r1, r2] = document.querySelectorAll("#compare-grid thead tr");
+  const groups = [...r1.querySelectorAll("th[scope=colgroup]")].flatMap((th) => Array(Number(th.colSpan)).fill(th.textContent.trim()));
+  return [...r2.querySelectorAll("th")].map((th, i) => `${groups[i]} ${th.textContent.replace(/^†\s*/, "").trim()}`);
+}
+// the rows the export holds, as <tr> elements laid out by buildRows (never attached to the page)
+function exportTrs() {
+  const { grid, cols } = current;
+  if (EXP.rows === "shown") return [...document.querySelectorAll("#compare-grid tbody tr")];
+  const keep = open;
+  open = new Set(expandable(grid));
+  try {
+    const trs = buildRows(grid, cols);
+    return EXP.rows === "all" ? trs : trs.filter((tr) => tr.dataset.testid === "compare-row" && PICKED.has(tr.dataset.account));
+  } finally { open = keep; }
+}
+// a figure cell: what it shows (a number, a state's label) and, from the cell's headline line, its source
+function exportFigure(td, row, y, st) {
+  if (td.dataset.outsideLife) return { v: "Outside the account’s life" };
+  const x = headOf(row, y, st);
+  if (!x || !x.h) return { v: "" };
+  const h = x.h, o = h.observations[0], src = o || h.absence || {};
+  const shown = td.querySelector("[data-testid=amount], [data-testid=view-state], .tok");
+  const text = shown ? shown.textContent.trim() : "";
+  let v;
+  if (shown && shown.dataset.testid === "view-state") v = EXP_VIEW[text] || text;
+  else if (shown && shown.dataset.testid === "amount" && text !== "—") v = shownNumber(text);
+  else if (h.state === "not_funded" && h.absence) v = "Not funded (confirmed absent in the bill or law text)";
+  else v = EXP_STATE[h.state] || h.state;
+  const notes = [(o && o.cell_note) || h.note, o && o.document_notes, h.absence && h.absence.evidence].filter(Boolean);
+  const rest = x.lines.filter((l) => l !== h && l.state === "value" && l.observations.length);
+  if (rest.length)
+    notes.push(`${rest.length} other line${rest.length === 1 ? "" : "s"} on file, ${unitsLong()} (listed, never added): `
+      + rest.map((l) => `${seriesText(l)}: ${GridMath.number(l.observations[0].amount, G.units)}`).join("; "));
+  return { v, doc: src.source_document_id ? docName(src.source_document_id) : "", page: src.source_page || "",
+           table: (o && o.source_table_or_section) || "", notes: notes.join(" · "),
+           verif: o ? (BADGES[o.verification_status] || [0, o.verification_status])[1] : "" };
+}
+// the table: a header row, then one row per account row in the export (label rows give the Section and Within columns)
+function exportTable() {
+  const { grid, cols } = current, names = exportColNames(), unit = G.units === "m" ? "$M" : "$K";
+  const titleOf = new Map();
+  for (const t of grid.titles) for (const id of t.rows.concat(t.total ? [t.total.account.canonical_account_id] : [])) titleOf.set(id, t.title || "");
+  const head = ["Title", "Section", "Row", "Account ID", "Account", "Within"];
+  cols.forEach((c, i) => {
+    if (c.fig) {
+      head.push(`${names[i]} (${unit})`);
+      if (EXP.cite) head.push(`${names[i]} · document`, `${names[i]} · page`, `${names[i]} · table`);
+      if (EXP.notes) head.push(`${names[i]} · notes`);
+      if (EXP.verif) head.push(`${names[i]} · verification`);
+    } else if (c.chg !== undefined) head.push(`${names[i]} (${unit})`, `${names[i]} (%)`);
+    else head.push(`${names[i]} (${unit})`);
+  });
+  const out = [head];
+  let section = "", agency = "", sub = "";
+  for (const tr of exportTrs()) {
+    const t = tr.dataset.testid, cls = tr.classList;
+    if (t === "section-label") { section = tr.cells[0].textContent.replace(/\s·\s[\d,]+$/, ""); agency = ""; sub = ""; continue; }
+    if (t === "subgroup-label" || t === "subgroup-mandatory") { sub = tr.cells[0].textContent; continue; }
+    if (t === "group-head") { agency = "General provisions"; sub = ""; continue; }
+    if (t !== "compare-row") continue;
+    const id = tr.dataset.account, row = ROW_OF.get(id);
+    const nameEl = tr.querySelector(".namebox > a, .namebox > .plain");
+    const name = nameEl ? nameEl.textContent : "";
+    let kind, within = "";
+    if (cls.contains("title")) { kind = "Title total"; section = ""; agency = ""; sub = ""; }
+    else if (cls.contains("agency")) { kind = "Agency total"; agency = name; sub = ""; }
+    else if (cls.contains("loose")) { kind = "Account"; agency = ""; sub = ""; }
+    else if (row.account.parent_account_id) {
+      kind = "Line inside the line above"; within = plainName(NAME_OF.get(row.account.parent_account_id) || row.account.parent_account_id);
+    } else { kind = "Line"; within = [agency, sub].filter(Boolean).join(" · "); }
+    const line = [titleOf.get(id) || "", section, kind, id, name, within];
+    cols.forEach((c, i) => {
+      const td = tr.querySelector(`td[data-col="${c.col}"]`);
+      if (c.fig) {
+        const f = exportFigure(td, row, c.fig[0], STAGES4[c.fig[1]]);
+        line.push(f.v);
+        if (EXP.cite) line.push(f.doc || "", f.page || "", f.table || "");
+        if (EXP.notes) line.push(f.notes || "");
+        if (EXP.verif) line.push(f.verif || "");
+      } else if (c.chg !== undefined) {
+        const d = td.querySelector("[data-testid=change]"), p = td.querySelector(".pct");
+        const pct = p ? p.textContent.trim() : "";
+        line.push(d ? shownNumber(d.textContent) : "", /\d/.test(pct) ? shownNumber(pct) : pct === "—" ? "No change (both zero)" : pct);
+      } else {
+        const n = td.querySelector("[data-testid=defense], [data-testid=nondefense]");
+        line.push(n ? shownNumber(n.textContent) : "");
+      }
+    });
+    out.push(line);
+  }
+  return out;
+}
+// the header block: where the export came from and every choice that shaped it
+async function exportHeader(rowsOut) {
+  const { grid, cols } = current;
+  const label = scLabels[grid.subcommittee] || grid.subcommittee;
+  const ys = cols.filter((c) => c.fig).map((c) => c.fig[0]);
+  const fy = G.grid === "years" ? `FY${G.a} vs FY${G.b}` : G.grid === "history" ? `FY${Math.min(...ys)}–FY${Math.max(...ys)}` : `FY${G.fy}`;
+  const mode = MODE_NAME[G.grid] + (G.grid === "years" ? ` (stages shown: ${shownStages().map((i) => STAGE_NAME[i]).join(", ")}; `
+    + `change measured on ${STAGE_NAME[G.basis]})` : "");
+  const filters = filterChips(grid).map((c) => c.label);
+  if (G.search.trim()) filters.unshift(`Search: “${G.search.trim()}”`);
+  let build = "Live server (no published build)";
+  if (STATIC_BASE) {
+    const m = (await source.loadIndex()).source;
+    build = [m.version, m.data && `${m.data}${m.data_committed ? " committed " + m.data_committed : ""}`, m.data_sha256 && `sha256 ${m.data_sha256}`]
+      .filter(Boolean).join(" · ");
+  }
+  const shownKeys = cols.filter((x) => x.fig).map((x) => `${x.fig[0]}|${STAGES4[x.fig[1]]}`);
+  const notes = Object.entries(grid.stage_notes || {}).filter(([k]) => shownKeys.includes(k))
+    .map(([k, n]) => ["Stage note", `FY${k.split("|")[0]} ${k.split("|")[1]}: ${n}`]);
+  return [
+    ["Approps Intelligence export", ""],
+    ["Page", location.href],
+    ["Exported", new Date().toISOString()],
+    ["Subcommittee", `${label} (${grid.subcommittee})`],
+    ["Fiscal year", fy],
+    ["Compare mode", mode],
+    ["Units", unitsLong()],
+    ["Amount basis", basisLabel() + (noEar() ? " · excl. earmarks" : "")],
+    ["Advance timing", TIMINGS.find(([k]) => k === G.timing)[1] + (basisOf() === "printed" ? " (not used: As printed)" : "")],
+    ["Filters", filters.join("; ") || "None"],
+    ["Rows", EXP_ROWS.find(([k]) => k === EXP.rows)[1] + ` (${rowsOut} row${rowsOut === 1 ? "" : "s"})`],
+    ["Included", ["Figures", EXP.cite && "source citations (document, page, table)", EXP.notes && "notes",
+                  EXP.verif && "verification status"].filter(Boolean).join("; ")],
+    ["Data build", build],
+    ...notes,
+    ["Blank is not zero", "A state exports as its label; a figure as a number in the units above, rounded as the page shows it."],
+  ];
+}
+async function exportRows() {
+  const table = exportTable();
+  return { head: await exportHeader(table.length - 1), table };
+}
+function exportName(ext) {
+  const when = G.grid === "years" ? `FY${G.a}-FY${G.b}` : G.grid === "history" ? "enacted-history" : `FY${G.fy}`;
+  return `${G.sc}-${when}-export.${ext}`;
+}
+async function exportCSV() {
+  const { head, table } = await exportRows();
+  return [...head, [], ...table].map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n";
+}
+let xlsxLib = null;
+function loadXlsx() {
+  if (window.writeXlsxFile) return Promise.resolve(window.writeXlsxFile);
+  if (!xlsxLib) xlsxLib = new Promise((ok, fail) => {
+    const s = el("script", { src: XLSX_LIB });
+    s.onload = () => ok(window.writeXlsxFile);
+    s.onerror = () => { xlsxLib = null; fail(new Error("the Excel writer did not load")); };
+    document.head.append(s);
+  });
+  return xlsxLib;
+}
+async function exportXlsx() {
+  const [write, { head, table }] = await Promise.all([loadXlsx(), exportRows()]);
+  const fmt = G.units === "m" ? "#,##0.0" : "#,##0";
+  const cell = (v, bold) => v === "" || v == null ? null
+    : typeof v === "number" ? { value: v, type: Number, format: fmt } : { value: String(v), type: String, ...(bold ? { fontWeight: "bold" } : {}) };
+  const data = [...head.map((r, i) => r.map((v, j) => cell(v, i === 0 || j === 0))), [null],
+                table[0].map((v) => cell(v, true)), ...table.slice(1).map((r) => r.map((v) => cell(v)))];
+  return write(data, { sheet: "Export" }).toBlob();
+}
+async function doExport(b) {
+  b.disabled = true;
+  const was = b.textContent;
+  b.textContent = "Preparing…";
+  try {
+    if (EXP.format === "xlsx") saveBlob(await exportXlsx(), exportName("xlsx"));
+    else saveBlob(new Blob([await exportCSV()], { type: "text/csv;charset=utf-8" }), exportName("csv"));
+    b.textContent = was;
+  } catch (e) {
+    b.textContent = was;
+    $("#export-error").textContent = "Export failed: " + e.message;
+  } finally { b.disabled = false; }
+}
+// the tick boxes for "Only rows I've selected": one per account row while that choice is on
+function addPicks(tbody) {
+  if (!pickOn()) return;
+  for (const tr of tbody.querySelectorAll("tr[data-testid=compare-row]")) {
+    const id = tr.dataset.account, nameEl = tr.querySelector(".namebox > a, .namebox > .plain");
+    const c = el("input", { type: "checkbox", class: "pick", "data-testid": "row-pick", "aria-label": `Select ${nameEl ? nameEl.textContent : id} for export` });
+    c.checked = PICKED.has(id);
+    c.addEventListener("change", () => {
+      if (c.checked) PICKED.add(id); else PICKED.delete(id);
+      const n = $("#export-picked");
+      if (n) n.textContent = pickedText();
+      const go = $("#export-go");
+      if (go) go.disabled = !PICKED.size;
+    });
+    tr.querySelector(".namecell").prepend(c);
+  }
+}
+const pickedText = () => `${PICKED.size} row${PICKED.size === 1 ? "" : "s"} selected · tick rows in the table`;
+function renderExportMenu() {
+  const menu = $("#export-menu");
+  keepFocus(menu, () => {
+    const radio = (name, value, label, on, set) => {
+      const r = el("input", { type: "radio", name, value, "data-testid": `${name}-${value}` });
+      r.checked = on;
+      r.addEventListener("change", () => { if (r.checked) set(value); });
+      return el("label", { class: "chk" }, r, label);
+    };
+    const check = (key, label, extra = {}) => {
+      const c = el("input", { type: "checkbox", "data-testid": `export-${key}`, ...extra });
+      c.checked = extra.disabled ? true : EXP[key];
+      if (!extra.disabled) c.addEventListener("change", () => { EXP[key] = c.checked; });
+      return el("label", { class: "chk" }, c, label);
+    };
+    const rows = EXP_ROWS.map(([k, l]) => radio("export-rows", k, l + (k === "shown" ? " (default)" : ""), EXP.rows === k, (v) => {
+      EXP.rows = v;
+      renderBody();               // the tick boxes come and go with "Only rows I've selected"
+      renderExportMenu();
+    }));
+    const kids = [el("div", { class: "glabel", text: "Rows" }), el("div", { class: "opts", role: "radiogroup", "aria-label": "Rows" }, ...rows)];
+    if (EXP.rows === "picked") kids.push(el("div", { class: "enote", id: "export-picked", "data-testid": "export-picked", text: pickedText() }));
+    kids.push(el("div", { class: "glabel", text: "Include" }),
+      el("div", { class: "opts" }, check("figures", "Figures (always)", { disabled: true }),
+        check("cite", "Source citations: document, page, table"), check("notes", "Notes"), check("verif", "Verification status")),
+      el("div", { class: "glabel", text: "Format" }),
+      el("div", { class: "opts", role: "radiogroup", "aria-label": "Format" },
+        radio("export-format", "csv", "CSV", EXP.format === "csv", (v) => { EXP.format = v; }),
+        radio("export-format", "xlsx", "Excel (.xlsx)", EXP.format === "xlsx", (v) => { EXP.format = v; })));
+    const go = el("button", { type: "button", class: "xbtn primary", id: "export-go", "data-testid": "export-go", text: "Download" });
+    go.disabled = EXP.rows === "picked" && !PICKED.size;
+    go.addEventListener("click", () => doExport(go));
+    kids.push(go, el("div", { class: "error", id: "export-error", "data-testid": "export-error", role: "status" }),
+      el("div", { class: "efoot", "data-testid": "export-foot", text: "Uses your current filters, units and amount basis." }));
+    menu.replaceChildren(...kids);
+  });
+}
+
 // ---- menus: one open at a time; Esc or a click outside closes it and focus returns to its button
 let openMenu = null;      // { panel, button }
 function showMenu(panel, button) {
@@ -3449,7 +3716,12 @@ $("#share").addEventListener("click", async () => {
     t.remove();
   }
 });
-$("#export").addEventListener("click", (e) => e.preventDefault());
+$("#export").addEventListener("click", () => {
+  if (!has("export_csv") || !current) return;
+  if (openMenu && openMenu.panel.id === "export-menu") { closeMenu(true); return; }
+  renderExportMenu();
+  showMenu($("#export-menu"), $("#export"));
+});
 
 // ---- the phone layout (SPEC section 6): below 640px there is no grid. The same data and state (G, SEL, the
 // expanded rows, the URL) as a list of one stage at a time; the account opens in a bottom sheet. Compare modes,

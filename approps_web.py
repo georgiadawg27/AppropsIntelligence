@@ -48,7 +48,9 @@ ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
 # the page's own files beside index.html (export_static.py copies the same ones): name -> content type
 ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8",
-          "documents.js": "text/javascript; charset=utf-8"}
+          "documents.js": "text/javascript; charset=utf-8",
+          # the Excel writer Export loads on demand (write-excel-file 4.1.1, MIT, vendored unmodified) and its licence
+          "write-excel-file.min.js": "text/javascript; charset=utf-8", "write-excel-file.LICENSE.txt": "text/plain; charset=utf-8"}
 FONTS = PAGE.parent / "fonts"                               # IBM Plex Sans, self-hosted (SIL OFL)
 BRAND = PAGE.parent / "brand"                               # the logo set: lockups, marks, icons, favicons
 BRAND_TYPES = {".svg": "image/svg+xml", ".png": "image/png"}

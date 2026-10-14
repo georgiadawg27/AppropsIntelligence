@@ -1,5 +1,35 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-4: Export (2026-10-14)
+
+- web/index.html: the Export button (title row) opens `#export-menu` (Rows, Include, Format, Download, footer). Built
+  behind the existing `export_csv` flag (added to BUILT). One builder for both formats: `exportTable()` reads the
+  `<tr>`s buildRows lays out (the tbody itself for "Only what's shown"; a detached build with every agency and
+  general-provision group open for "Include collapsed accounts" and "Only rows I've selected") and each cell's own
+  text, so rows, columns, units and rounding are the screen's. `exportHeader()` writes the header block.
+- "Only rows I've selected": a tick box per account row (`row-pick`) while that choice is on; the set (`PICKED`) is
+  not in the URL, like the rest of the export choices.
+- Excel: web/write-excel-file.min.js (write-excel-file 4.1.1 from npm, MIT, bundles fflate 0.8.2, unmodified,
+  sha256 in web/write-excel-file.LICENSE.txt). Served by approps_web (ASSETS) and copied by export_static like
+  documents.js; loaded only when someone exports to Excel. cdn.sheetjs.com is blocked by the proxy, and npm's xlsx
+  0.18.5 carries known advisories, so SheetJS was not used. The workbook build is untouched.
+- Account page "Export history (CSV)" now uses the shared `saveBlob` (same file, same name).
+- Tests: tests/test_compare.py `Export` (5): rows and columns equal the screen for three LHHS filter combinations plus
+  CJS history on the live server; the header block; a not_reported cell exports "Not reported"; $M rounding
+  (NCI FY2026 enacted 7,352.2 on screen, 7352.2 in the file); Rows choices and the .xlsx (read with openpyxl).
+  ExploreV1 first-screen test now expects Export enabled; keyboard test adds the Export dialog. Screenshots:
+  screenshots/ui-4/.
+
+Open items for the owner:
+1. A printed zero shows "—" and exports as the label "Not funded (printed zero)", per the brief's "state tokens
+   export as their labels, never blanks or zeros". SPEC §1 counts a printed zero as a figure (0); say if the export
+   should write 0 there instead.
+2. "The data build's commit": docs/data/index.json carries the data file, its commit date, version and sha256, not a
+   commit hash; the header writes those. A hash would need export_static to record one (not done here).
+3. Cells that are blank on screen and are not states (a change with no value, an untagged defense cell) export
+   blank; outside-life cells export "Outside the account's life".
+4. Include options default to all ticked.
+
 ## UI-5: Account page (2026-10-14)
 
 - web/index.html (docs/ by export_static.py): the One account view is the account page. Header (path, name, proposed
