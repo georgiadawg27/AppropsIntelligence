@@ -476,7 +476,8 @@
   /* ---- the account page (brief UI-5): header, enacted history, every stage of every year beside the source panel
      (SPEC 5.1), related; the same tokens, hover and selection rules as the grid (SPEC 5.5, section 8) */
   .ahead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 16px; }
-  .ahead .hmain { min-width: 0; flex: 1 1 420px; }
+  .ahead .hmain { min-width: 0; flex: 1 1 420px; display: flex; flex-direction: column; }
+  .ahead .hmain > .eyebrow { order: -1; }
   .ahead h1 { margin: 2px 0 4px; font-size: 24px; font-weight: 600; letter-spacing: -0.015em; }
   .ahead h1 .tag { vertical-align: middle; margin-left: 8px; font-size: 12px; }
   .ahead .meta { margin-top: 2px; }
@@ -877,9 +878,10 @@ async function showAccount(data, at) {
   const panel = $("#account-panel");
   const name = el("span", { "data-testid": "account-name", text: a.canonical_name });
   const tags = el("span", { "data-testid": "ap-tags" });
+  // the name first in reading order; the path shows above it (CSS order)
   const main = el("div", { class: "hmain" },
-    el("div", { class: "eyebrow", "data-testid": "ap-path", text: [a.title, a.agency].filter(Boolean).join(" · ") }),
     el("h1", {}, name, tags),
+    el("div", { class: "eyebrow", "data-testid": "ap-path", text: [a.title, a.agency].filter(Boolean).join(" · ") }),
     el("div", { class: "meta", text: `${a.agency} / ${a.bureau || "—"} · ${a.status} · ${a.fund_type} fund · ${a.canonical_account_id}` }));
   const facts = el("div", { class: "hfacts" }, el("span", { "data-testid": "figures-on-file", text: figuresOnFile(h.observations.concat(h.absences)) }));
   main.append(facts);
