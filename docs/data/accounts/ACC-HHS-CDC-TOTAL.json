@@ -5407,14 +5407,8 @@
            "validation_id": "VAL-LHHS-00585"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MRC-REQUEST-EVALUATION-TAP-PAST-WINDOW"
-          },
-          {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0135"
           }
@@ -11074,14 +11068,8 @@
       "validation_id": "VAL-LHHS-00585"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
-      "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MRC-REQUEST-EVALUATION-TAP-PAST-WINDOW"
-     },
-     {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0135"
      }

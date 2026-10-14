@@ -1786,29 +1786,15 @@
      ],
      "President's Budget": [
       {
-       "absence": {
-        "amount_type": "budget authority",
-        "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-        "component": null,
-        "confirmed_absence_id": "CA-LHHS-0037",
-        "confirmed_date": "2026-10-06",
-        "document_type": "committee_report",
-        "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.813) for FY2023 President's Budget: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-        "fiscal_year": 2023,
-        "publication_date": "2022-07-05",
-        "source_agency": "House Committee on Appropriations",
-        "source_document_id": "SRC-CRPT-117HRPT403",
-        "stage": "President's Budget",
-        "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf"
-       },
+       "absence": null,
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": false,
+       "missing": true,
        "observations": [],
-       "state": "not_funded"
+       "state": "missing"
       }
      ],
      "Senate Reported": [
@@ -3109,23 +3095,7 @@
   ]
  },
  "history": {
-  "absences": [
-   {
-    "amount_type": "budget authority",
-    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
-    "component": null,
-    "confirmed_absence_id": "CA-LHHS-0037",
-    "confirmed_date": "2026-10-06",
-    "document_type": "committee_report",
-    "evidence": "No budget-authority row for 'CDC-Wide Activities and Program Support' in the Title II table (PDF p.813) for FY2023 President's Budget: the section prints its lines and a parenthesized 'Subtotal' that includes the Prevention and Public Health Fund transfer (program level) -- not recorded.",
-    "fiscal_year": 2023,
-    "publication_date": "2022-07-05",
-    "source_agency": "House Committee on Appropriations",
-    "source_document_id": "SRC-CRPT-117HRPT403",
-    "stage": "President's Budget",
-    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt403/pdf/CRPT-117hrpt403.pdf"
-   }
-  ],
+  "absences": [],
   "account": {
    "agency": "Centers for Disease Control and Prevention",
    "bureau": "CDC-Wide Activities and Program Support",
@@ -3321,6 +3291,10 @@
   },
   "historical_names": [],
   "missing_cells": [
+   [
+    2023,
+    "President's Budget"
+   ],
    [
     2025,
     "House Reported"
@@ -5743,6 +5717,10 @@
    [
     2020,
     "Senate Reported"
+   ],
+   [
+    2023,
+    "President's Budget"
    ],
    [
     2025,

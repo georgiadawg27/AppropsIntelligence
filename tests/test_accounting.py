@@ -415,11 +415,44 @@ class TaggingRules(unittest.TestCase):
                 for st, v in (("House Reported", h), ("Senate Reported", s), ("Enacted", e)) if v}
         # the President's Budget (D-3): the request column's Fund lines, each cell the column's printed CDC Fund
         # total (FY2019, FY2026 and FY2027 print none); FY2023 less the CDC-wide block grant's 160,000,000, whose
-        # account has no FY2023 request headline (CA-LHHS-0037), so the row is reported, not recorded
+        # account has no FY2023 request headline (missing: CA-LHHS-0037 retired, D-3b), so the row is reported, not
+        # recorded
         want.update({(fy, "President's Budget"): v for fy, v in (
             (2017, 944470000), (2018, 840600000), (2020, 893950000), (2021, 893950000), (2022, 903300000),
             (2023, 743300000), (2024, 1186200000), (2025, 1186200000))})
         self.assertEqual(dict(cdc), want)
+
+    def test_cdc_wide_fy2023_request_is_missing_not_absent(self):
+        # D-3b: CA-LHHS-0037 rested on the table's silence; the FY2023 Appendix language under the heading
+        # appropriates all of CDC, so the cell is missing (no headline, no absence) and the Fund row is not recorded
+        retired = json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text())
+        self.assertIn("CA-LHHS-0037", retired["confirmed_absences"])
+        cell = ("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget")
+        self.assertFalse([c for c in STAGED["confirmed_absences"]
+                          if (c["canonical_account_id"], c["fiscal_year"], c["stage"]) == cell])
+        self.assertFalse([o for o in STAGED["observations"]
+                          if (o["canonical_account_id"], o["fiscal_year"], o["stage"]) == cell])
+
+    def test_cdc_injury_fy2025_request_section_241_past_the_window(self):
+        # D-3b: 'in addition to amounts provided under this heading, $100,000,000 shall be available for ... from
+        # amounts made available under section 241 of the PHS Act' (Budget Appendix p.405): section 241, never PPHF
+        rows = [c for c in STAGED["observation_components"] if c["observation_id"] == "OBS-LHHS-0892"
+                and c["amount"] == 100000000]
+        self.assertEqual([(c["component_type"], c["transfer_from"], c["in_headline"], c["tag_method"]) for c in rows],
+                         [("transfer_in", "section 241 of the PHS Act (evaluation funds)", "FALSE", "appendix_text")])
+        para = {"text": ["For injury prevention and control, $843,379,000: Provided, That in addition to amounts "
+                         "provided under this heading, $100,000,000 shall be available for implementation of the "
+                         "Community Violence Intervention initiative from amounts made available under section 241 of "
+                         "the PHS Act."]}
+        x = {"amount": 100000000, "phrase": "control, $843,379,000: Provided, That in addition to amounts provided "
+                                            "under this heading, [$100,000,000] shall be available for implementation "
+                                            "of the Community Violence Intervention initiative from amount"}
+        self.assertEqual(TC.past_window_241(x, para)[:3],
+                         ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)"))
+        other = dict(para, text=[para["text"][0].replace("section 241 of the PHS Act", "section 4002 of the PPACA")])
+        self.assertIsNone(TC.past_window_241(x, other))
+        v = next(v for v in STAGED["validations"] if v["validation_id"] == "VAL-MRV-LHHS-0135")
+        self.assertEqual(v["result"], "pass")
 
     def test_onc_headline_is_zero_with_its_241_transfer(self):
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
