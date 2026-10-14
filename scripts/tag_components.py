@@ -222,6 +222,12 @@ NOT_COMPONENT = [
     ("cap-adjustment base", re.compile(r"is provided to meet the terms of section 251\(b\)\(2\)\(C\)\(ii\)", re.I),
      "after"),
 ]
+# D-3b: a section 241 amount whose source is named past the phrase window, 'in addition to amounts provided under
+# this heading, $100,000,000 shall be available for implementation of the Community Violence Intervention initiative
+# from amounts made available under section 241 of the PHS Act' (CDC Injury Prevention, FY2025 request, Budget
+# Appendix p.405). Only this wording is read on into the paragraph's text (no other phrase is widened); never PPHF.
+PAST_WINDOW_241 = re.compile(r"^\W*shall be available for [^$;:]{0,120}?\bfrom amounts made available under section "
+                             r"241 of the PHS Act\b", re.I)
 NOT_TO_EXCEED = re.compile(r"not to exceed\s*$", re.I)
 TRUST_FUND = re.compile(r"trust fund", re.I)
 # a phrase that looks like a component though no rule above tags it (reported, never tagged)
@@ -252,6 +258,25 @@ def list_241(x, open_list):
     if open_list and LIST_ITEM.match(seg_b):
         return True, True
     return False, False
+
+
+def past_window_241(x, para):
+    """-> the classification for an amount whose 'from amounts made available under section 241 of the PHS Act' is
+    printed past the phrase window (PAST_WINDOW_241), read on in the paragraph's own text; else None."""
+    before, after = CT.split_phrase(x)
+    printed = re.search(r"\[(\$[^\]]*)\]", x["phrase"])
+    if not printed or not after.strip():
+        return None
+    key = before[-60:] + printed.group(1) + after
+    for t in para.get("text") or []:
+        k = t.find(key)
+        if k >= 0:
+            m = PAST_WINDOW_241.match(t[k + len(before[-60:]) + len(printed.group(1)):])
+            if m:
+                return ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)",
+                        "from amounts made available under section 241 of the PHS Act (read past the phrase window, "
+                        "D-3b)")
+    return None
 
 
 def segments(a):
@@ -760,7 +785,7 @@ def read_amounts(oid, doc, para, main, headline, loc, report):
                                "the following amounts shall be available under section 241 (a numbered item)"),
                            "separate", loc))
             continue
-        cl = classify(x)
+        cl = classify(x) or past_window_241(x, para)
         if cl is None:
             seg_b, seg_a = segments(x)
             kind = not_a_component(x) or ("the headline's own appropriation" if x["amount"] in own else None)

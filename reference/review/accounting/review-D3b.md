@@ -44,3 +44,21 @@ outcomes (record from text, re-cite to text, or retire), for review.
   `pphf_table.csv`), stays reported, not recorded (tag_components: "PPHF rows with no headline in their cell").
   FY2024's Appendix also prints one CDC-wide appropriation under this heading ($10,217,311,000); that cell keeps the
   report table's headline (not in this brief).
+
+## Part 2: CDC FY2025 request, the section 241 amount
+
+- FY2025 Budget Appendix p.405, Injury Prevention and Control: "Provided, That in addition to amounts provided under
+  this heading, $100,000,000 shall be available for implementation of the Community Violence Intervention initiative
+  from amounts made available under section 241 of the PHS Act" (S.Rept. 118-207 p.435 prints it as 'Evaluation
+  Funding (PHS Act Sec 241)').
+- Component type: the one the repo already uses for section 241 money (ONC's evaluation tap, the SAMHSA and CDC
+  section 241 lists): `transfer_in`, transfer_from "section 241 of the PHS Act (evaluation funds)". Never PPHF.
+- Rule: `tag_components.PAST_WINDOW_241`, read only where no other rule classifies the amount, and only this wording
+  ("shall be available for ... from amounts made available under section 241 of the PHS Act") is read on into the
+  paragraph's text past the 100-character window. Across every committed bill/law text and Appendix paragraph the
+  wording appears twice: this proviso, and CDC-Wide FY2024 request ("for health statistics"), which the existing
+  rule already tags inside the window. One new component: CMP-LHHS-1372 on OBS-LHHS-0892, beside the headline (in
+  addition: $843,379,000 headline unchanged).
+- PPHF: the 10th President's Budget cell closes. CDC FY2025 request program level computed $9,638,690,000 ->
+  $9,738,690,000 = printed (S.Rept. 118-207 p.436). The cause request_evaluation_tap_past_window is gone (its
+  VAL-MRC record is no longer produced).

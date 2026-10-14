@@ -340934,9 +340934,9 @@
    "validation_id": "VAL-MRV-LHHS-0135",
    "observation_id": "OBS-LHHS-0135",
    "rule_applied": "measure_reconcile",
-   "expected_result": "program level (with transfers in and trust-fund limitations): the agency total $8,452,490,000 (OBS-LHHS-0134) + its accounts' components, less the included components the view leaves out, plus the components beside it the view counts (CMP-LHHS-1363 transfer_in $469,350,000; CMP-LHHS-1364 transfer_in $52,000,000; CMP-LHHS-1365 transfer_in $254,950,000; CMP-LHHS-1366 transfer_in $182,900,000; CMP-LHHS-1367 transfer_in $17,000,000; CMP-LHHS-1368 transfer_in $160,000,000; CMP-LHHS-1369 transfer_in $50,000,000) = $9,638,690,000",
-   "observed_result": "$9,738,690,000 printed ('Total, Centers for Disease Control, program level', SRC-CRPT-118SRPT207 p.436) -- differs by $100,000,000 (printed - computed); for review, no figure changed; cause: request_evaluation_tap_past_window (reviewed once for every cell, VAL-MRC-REQUEST-EVALUATION-TAP-PAST-WINDOW)",
-   "result": "info",
+   "expected_result": "program level (with transfers in and trust-fund limitations): the agency total $8,452,490,000 (OBS-LHHS-0134) + its accounts' components, less the included components the view leaves out, plus the components beside it the view counts (CMP-LHHS-1363 transfer_in $469,350,000; CMP-LHHS-1364 transfer_in $52,000,000; CMP-LHHS-1365 transfer_in $254,950,000; CMP-LHHS-1366 transfer_in $182,900,000; CMP-LHHS-1367 transfer_in $17,000,000; CMP-LHHS-1372 transfer_in $100,000,000; CMP-LHHS-1368 transfer_in $160,000,000; CMP-LHHS-1369 transfer_in $50,000,000) = $9,738,690,000",
+   "observed_result": "$9,738,690,000 printed ('Total, Centers for Disease Control, program level', SRC-CRPT-118SRPT207 p.436) -- equal",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
@@ -341767,17 +341767,6 @@
    "resolution": ""
   },
   {
-   "validation_id": "VAL-MRC-REQUEST-EVALUATION-TAP-PAST-WINDOW",
-   "observation_id": "OBS-LHHS-0135",
-   "rule_applied": "measure_reconcile",
-   "expected_result": "printed view totals equal the views computed from the components; cause request_evaluation_tap_past_window: the request column prints Injury Prevention and Control's 'Evaluation Funding (PHS Act Sec 241)' line, $100,000,000 (S.Rept. 118-207 p.435): the FY2025 request language's proviso ('in addition to amounts provided under this heading, $100,000,000 shall be available for implementation of the Community Violence Intervention initiative from amounts made available under section 241 of the PHS Act', Budget Appendix p.405) names section 241 past the phrase window (100 characters), so no phrase rule tags it",
-   "observed_result": "1 printed view(s) differ: OBS-LHHS-0135 ACC-HHS-CDC-TOTAL FY2025 President's Budget [program_level] $100,000,000 -- for review, no figure changed",
-   "result": "flag",
-   "human_review_status": "pending",
-   "reviewer": "",
-   "resolution": ""
-  },
-  {
    "validation_id": "VAL-MR-LHHS-0679",
    "observation_id": "OBS-LHHS-0679",
    "rule_applied": "measure_reconcile",
@@ -342433,6 +342422,17 @@
    "expected_result": "P.L. 119-74 div. A (public law; PLAW-119publ74, uslm), TITLE III SCIENCE, 'NATIONAL SCIENCE FOUNDATION > RESEARCH AND RELATED ACTIVITIES' (140 STAT. 45; P0068): $7,176,500,000 (the paragraph's main appropriated amount)",
    "observed_result": "$7,176,500,000 as recorded (SRC-PLAW-119PUBL74 p.41) -- the same document as the figure's source, so not a second document",
    "result": "info",
+   "human_review_status": "",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-MR-LHHS-0892",
+   "observation_id": "OBS-LHHS-0892",
+   "rule_applied": "measure_reconcile",
+   "expected_result": "headline $843,379,000 = base + the components it includes (none); beside it: CMP-LHHS-1372 transfer_in $100,000,000",
+   "observed_result": "base $843,379,000",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
@@ -372314,6 +372314,24 @@
    "source_observation_id": "",
    "carried_from_component_id": "",
    "notes": "in_headline by arithmetic: the paragraph's amount $9,341,393,000 and its components give the headline $9,341,393,000",
+   "within_component_id": ""
+  },
+  {
+   "component_id": "CMP-LHHS-1372",
+   "observation_id": "OBS-LHHS-0892",
+   "component_type": "transfer_in",
+   "designation": "",
+   "transfer_from": "section 241 of the PHS Act (evaluation funds)",
+   "amount": 100000000,
+   "in_headline": "FALSE",
+   "source_document_id": "SRC-BUDGET-APP-FY2025-HHS",
+   "source_location": "p.405, proposed appropriations language under 'INJURY PREVENTION AND CONTROL'",
+   "quoted_text": "I, III, and XVII of the PHS Act with respect to injury prevention and control, $843,379,000: Provided, That in addition to amounts provided under this heading, [$100,000,000] shall be available for implementation of the Community Violence Intervention initiative from amount",
+   "tag_method": "appendix_text",
+   "tag_rule": "from amounts made available under section 241 of the PHS Act (read past the phrase window, D-3b)",
+   "source_observation_id": "",
+   "carried_from_component_id": "",
+   "notes": "in_headline by arithmetic: the paragraph's amount $843,379,000 and its components give the headline $843,379,000",
    "within_component_id": ""
   },
   {

@@ -240,6 +240,7 @@ amount in the headline's paragraph is read by its own clause:
 | "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
 | "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
 | "in addition to amounts provided herein, $X is (shall be) available to this appropriation ... from amounts provided" (an evaluation tap; D-1) | `transfer_in` (section 241 where the held phrase prints '241'; else "not named in the phrase") |
+| "$X shall be available for ... from amounts made available under section 241 of the PHS Act", the source printed past the phrase window (D-3b: only this wording is read on into the paragraph's text; CDC Injury Prevention, FY2025 request) | `transfer_in` (section 241; never PPHF) |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
 

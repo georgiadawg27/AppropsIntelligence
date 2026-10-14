@@ -433,6 +433,27 @@ class TaggingRules(unittest.TestCase):
         self.assertFalse([o for o in STAGED["observations"]
                           if (o["canonical_account_id"], o["fiscal_year"], o["stage"]) == cell])
 
+    def test_cdc_injury_fy2025_request_section_241_past_the_window(self):
+        # D-3b: 'in addition to amounts provided under this heading, $100,000,000 shall be available for ... from
+        # amounts made available under section 241 of the PHS Act' (Budget Appendix p.405): section 241, never PPHF
+        rows = [c for c in STAGED["observation_components"] if c["observation_id"] == "OBS-LHHS-0892"
+                and c["amount"] == 100000000]
+        self.assertEqual([(c["component_type"], c["transfer_from"], c["in_headline"], c["tag_method"]) for c in rows],
+                         [("transfer_in", "section 241 of the PHS Act (evaluation funds)", "FALSE", "appendix_text")])
+        para = {"text": ["For injury prevention and control, $843,379,000: Provided, That in addition to amounts "
+                         "provided under this heading, $100,000,000 shall be available for implementation of the "
+                         "Community Violence Intervention initiative from amounts made available under section 241 of "
+                         "the PHS Act."]}
+        x = {"amount": 100000000, "phrase": "control, $843,379,000: Provided, That in addition to amounts provided "
+                                            "under this heading, [$100,000,000] shall be available for implementation "
+                                            "of the Community Violence Intervention initiative from amount"}
+        self.assertEqual(TC.past_window_241(x, para)[:3],
+                         ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)"))
+        other = dict(para, text=[para["text"][0].replace("section 241 of the PHS Act", "section 4002 of the PPACA")])
+        self.assertIsNone(TC.past_window_241(x, other))
+        v = next(v for v in STAGED["validations"] if v["validation_id"] == "VAL-MRV-LHHS-0135")
+        self.assertEqual(v["result"], "pass")
+
     def test_onc_headline_is_zero_with_its_241_transfer(self):
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
         cells = {(2024, "House Reported"), (2024, "Senate Reported"), (2025, "Senate Reported"), (2025, "Enacted"),
