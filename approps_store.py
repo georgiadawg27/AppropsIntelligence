@@ -37,6 +37,7 @@ import sys
 from pathlib import Path
 
 import accounts as A
+import paths
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA = ROOT / "store_schema.sql"
@@ -68,7 +69,7 @@ class LoadError(Exception):
 # build is followed by calculate_lookups(), which stores each formula's result next
 # to it, as a spreadsheet does when it recalculates and saves; CI checks those
 # results against LibreOffice's (scripts/recalc_check.py --compare-cached).
-STAGED = ROOT / "data" / "staged.json"
+STAGED = paths.staged()                           # data/staged.json (APPROPS_DATA_ROOT: another data root's)
 BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
 BUILT_WORKBOOK = ROOT / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
 

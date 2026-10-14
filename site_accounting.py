@@ -285,7 +285,7 @@ class Layer:
 
     # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
     def untagged(self, exclusion, behind=None, why=None):
-        """The entries of a cell whose stage the tagger has not read (outside tag_components.AUTO_CELLS, or a
+        """The entries of a cell whose stage the tagger has not read (outside tag_components.coverage(), or a
         President's Budget account whose request language was not found): untagged is never 'none tagged'."""
         e = {"amount": None, "status": "not_computable",
              "reason": UNTAGGED[exclusion] + (f" ({why})" if why else "")}
@@ -345,7 +345,7 @@ class Layer:
         is the view; every other basis is not checked, with accounts_behind."""
         mh = self.member_heads(a, fy, stage, h)
         behind = len(mh)
-        if (a["subcommittee"], fy, stage) not in TC.AUTO_CELLS and stage != TC.REQUEST_STAGE:
+        if (a["subcommittee"], fy, stage) not in TC.auto_cells() and stage != TC.REQUEST_STAGE:
             return self.untagged(exclusion, behind)
         ctype = AC.EXCLUSIONS[exclusion]
         tagged = [m for m, x in [(a["canonical_account_id"], h)] + mh

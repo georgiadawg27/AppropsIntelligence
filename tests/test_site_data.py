@@ -498,7 +498,7 @@ class AccountingLayer(unittest.TestCase):
                 continue
             aid = row["account"]["canonical_account_id"]
             fy, stage = key.split("|", 1)
-            if (sc, int(fy), stage) not in TC.AUTO_CELLS:
+            if (sc, int(fy), stage) not in TC.auto_cells():
                 continue
             h = self.headline(cell)
             cs = self.by_obs.get(h["observation_id"], [])
@@ -554,10 +554,10 @@ class AccountingLayer(unittest.TestCase):
         seen = set()
         for sc, row, key, cell in self.cells():
             fy, stage = key.split("|", 1)
-            if (sc, int(fy), stage) in TC.AUTO_CELLS:
+            if (sc, int(fy), stage) in TC.auto_cells():
                 self.assertNotEqual(stage, "President's Budget")
                 if fy == "2027":
-                    self.assertIn((sc, 2027, stage), TC.FY2027_HOUSE)
+                    self.assertEqual(stage, "House Reported")     # FY2027: only the House bills' text is held
                 continue
             account = row["account"]["canonical_account_id"]
             if stage == "President's Budget" and (row["rollup"] or TC.covered(account, sc, int(fy), stage)):

@@ -59,6 +59,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import legislative_text as L  # noqa: E402
+import rules_registry as R  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RESULTS = ("match", "mismatch", "ambiguous", "no paragraph", "component match")
@@ -78,31 +79,27 @@ def norm(s):
     return " ".join(w for w in s.split() if w not in ("the",))
 
 
-# the agency an account's heading sits under, as words of the enclosing headings and title
-AGENCY_WORDS = {
-    "National Aeronautics and Space Administration": "aeronautics space administration",
-    "National Science Foundation": "national science foundation",
-    "Department of Justice": "justice",
-    "Executive Office of the President": "science",          # Title III -- Science
-}
-BUREAU_WORDS = {"U.S. Patent and Trademark Office": "patent trademark",
-                "National Oceanic and Atmospheric Administration": "oceanic atmospheric"}
+# the agency an account's heading sits under, as words of the enclosing headings and title: the agency's own name
+# unless the subcommittee's rule file says how its bills print it (hook 'layout': agency_words, bureau_words) or
+# what other names they use for it (agency_aliases)
+def layout(acc):
+    return R.active().data("layout", acc["subcommittee"])
 
 
 def agency_words(acc):
-    return BUREAU_WORDS.get(acc["bureau"]) or AGENCY_WORDS.get(acc["agency"]) or norm(acc["agency"])
+    lay = layout(acc)
+    return (lay.get("bureau_words", {}).get(acc["bureau"]) or lay.get("agency_words", {}).get(acc["agency"])
+            or norm(acc["agency"]))
 
 
-# an agency's other names in the bill text (SAMHSA is 'Substance Use and Mental Health Services Administration' in
-# the FY2023 bills)
-AGENCY_ALIASES = {"Substance Abuse and Mental Health Services Administration":
-                  ["substance use and mental health services administration"]}
+def agency_aliases(acc):
+    return layout(acc).get("agency_aliases", {}).get(acc["agency"], [])
 
 
 def in_context(acc, para):
     ctx = set(norm(" ".join(para["heading_path"][:-1] + [para["title"]])).split())
     return any(all(w in ctx for w in words.split())
-               for words in [agency_words(acc)] + AGENCY_ALIASES.get(acc["agency"], []))
+               for words in [agency_words(acc)] + agency_aliases(acc))
 
 
 def other_agency(para, words):

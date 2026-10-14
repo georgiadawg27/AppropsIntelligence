@@ -36,7 +36,23 @@ DISPLAY_NAMES = {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Educati
 
 
 def display_name(code):
-    return DISPLAY_NAMES.get(code, code)
+    """The name people read: DISPLAY_NAMES, else the subcommittee's rule file (hook 'display'), else the code."""
+    if code in DISPLAY_NAMES:
+        return DISPLAY_NAMES[code]
+    import rules_registry
+    return rules_registry.active().data("display", code).get("name") or code
+
+
+def codes(data):
+    """The subcommittees the data holds (every account's subcommittee), sorted: the list the workbook, the export
+    and the page read -- never a list in code."""
+    return sorted({a["subcommittee"] for a in data["accounts"]})
+
+
+def known():
+    """Every subcommittee code the code knows: SUBCOMMITTEES' values and every rule file's (reference/rules/)."""
+    import rules_registry
+    return set(SUBCOMMITTEES.values()) | set(rules_registry.active().codes)
 
 
 def normalize(text):

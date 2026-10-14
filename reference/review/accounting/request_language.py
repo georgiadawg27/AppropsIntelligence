@@ -323,7 +323,7 @@ def in_appendix_context(acc, para):
     ctx = set(CT.norm(" ".join(para["heading_path"] + [para["title"]])).split())
     words_ = APPENDIX_AGENCY_WORDS.get(acc["agency"]) or CT.agency_words(acc)
     return any(all(w in ctx for w in words.split())
-               for words in [words_] + CT.AGENCY_ALIASES.get(acc["agency"], []))
+               for words in [words_] + CT.agency_aliases(acc))
 
 
 def held_requests(data):

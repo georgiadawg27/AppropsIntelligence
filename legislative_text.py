@@ -25,10 +25,12 @@ import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import paths
+
 ROOT = Path(__file__).resolve().parent
-TEXT_DIR = ROOT / "data" / "legislative_text"
+TEXT_DIR = paths.text_dir()              # data/legislative_text (APPROPS_DATA_ROOT: another data root's)
 EXEMPTIONS = TEXT_DIR / "exemptions.json"
-STAGED = ROOT / "data" / "staged.json"
+STAGED = paths.staged()
 
 BILL_STAGES = ("House Reported", "Senate Reported", "Enacted", "House Passed", "Senate Passed")
 TEXT_DOC_TYPES = ("bill", "public_law")
