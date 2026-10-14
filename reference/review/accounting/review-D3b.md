@@ -89,9 +89,42 @@ CMP-0116 ... CMP-0123; CMP-0015, -0019, -0027, -0031, -0035, -0039, -0047, -0051
 headline IDs change. The resolved-by-rule status reads "Appendix language controls" for these figures.
 
 Left as they are (the Appendix prints a paragraph total, but it is not the table's nondefense + defense, so the
-second proof cannot hold; for review, no figure changed):
-- FY2019: the Appendix paragraph (p.1091) appropriates $4,230,510,000; H.Rept. 115-704's request column prints
-  6,079,680 + 71,000 = 6,150,680 thousand ($1,920,170,000 more).
-- FY2024: the Appendix paragraph (p.1141) appropriates $9,029,900,000; S.Rept. 118-62's request column prints
-  8,915,900 + 102,000 = 9,017,900 thousand ($12,000,000 less).
+second proof cannot hold). Owner, 2026-10-14: one review item each, no figure change.
+
+### Review item: NSF R&RA FY2019 request (OBS-0719 $6,079,680,000 + defense OBS-0759 $71,000,000)
+
+Hypothesis (owner): the committee tables use the request as amended after the February 2018 budget agreement (the
+addendum), the Appendix the original request. What each document shows:
+- FY2019 Budget Appendix, NSF chapter (BUDGET-2019-APP-1-27), p.1091: the proposed R&RA language appropriates
+  $4,230,510,000; the schedule's budget authority line 4070 prints 4,231 ($ millions) for 2019. The chapter never
+  mentions an addendum or amendment.
+- FY2019 Budget volume (BUDGET-2019-BUD), Table S-8 '2019 Discretionary Overview by Major Agency', PDF p.148: NSF
+  2017 7.5, 2018 7.4, 2019 request 5.3 ($ billions), -29.5%: the original request.
+- S.Rept. 115-275, PDF p.129: NSF 'Budget estimate, 2019' $7,472,000,000; R&RA 'Budget estimate, 2019'
+  $6,150,680,000 (= the table's 6,079,680 + 71,000 thousand); comparative table p.158 the same.
+- H.Rept. 115-704, PDF p.77: the Committee's $6,651,500,000 for R&RA is "$500,820,000 above the request", so the
+  request it uses is $6,150,680,000 (its table pages 128-129 are images).
+- The addendum itself ('Addendum to the President's Fiscal Year 2019 Budget', OMB, February 2018) is not on govinfo
+  and its White House copy could not be reached from this session (the host is blocked), so its NSF line is not
+  read. Secondary sources (FASEB, COSSA, AAU summaries) describe it as raising NSF's request to about $7.47 billion.
+- Reading: the documents fit the hypothesis (Appendix and Budget volume: original; both committee reports: the
+  $7,472,000,000 NSF figure). The difference, $6,150,680,000 - $4,230,510,000 = $1,920,170,000, would sit under the
+  existing `budget_amendment` component in a later brief, once the addendum's own page is read.
+
+### Review item: NSF R&RA FY2024 request (OBS-0699 $8,915,900,000 + defense OBS-0739 $102,000,000)
+
+- FY2024 Budget Appendix, NSF chapter (BUDGET-2024-APP-1-26), p.1141: the proposed R&RA language appropriates
+  $9,029,900,000; schedule line 1100 (appropriation) prints 9,030 ($ millions) for 2024, with no transfer line.
+- S.Rept. 118-62, PDF p.167: NSF 'Budget estimate, 2024' $11,354,680,000; R&RA 'Budget estimate, 2024'
+  $9,017,900,000; comparative table p.219 (R&RA 8,915,900) and p.220 (Defense function 102,000; Subtotal 9,017,900
+  thousand). R&RA is $12,000,000 below the Appendix.
+- The other NSF accounts: STEM Education, Appendix $1,444,180,000 vs the report's request $1,496,180,000
+  (+$52,000,000); MREFC, AOAM, NSB and OIG equal. NSF in all: the report's $11,354,680,000 is $40,000,000 above the
+  Appendix accounts' $11,314,680,000. So this is not a scope difference inside R&RA alone: money moves between R&RA
+  and STEM Education.
+- Amendment: the President's FY2024 budget amendments of May 9, 2023 include "increased amounts for the National
+  Science Foundation (NSF) STEM Education account ... fully offset from amounts provided from within NSF and the
+  Department of Agriculture" (the transmittal letter, as quoted in search results). The amendment's own pages
+  (bidenwhitehouse.archives.gov) could not be reached from this session, so the $12,000,000 is not confirmed as the
+  within-NSF offset. If it is, R&RA's -$12,000,000 is a `budget_amendment` too (a later brief).
 No year's Appendix language lacks a paragraph total (FY2027 is outside the brief).

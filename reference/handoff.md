@@ -22,12 +22,16 @@ Details and review items: `reference/review/accounting/review-D3b.md`. One commi
   mismatch 0, ambiguous 4 (unchanged).
 
 Open:
-- The 218 remaining absences of `absence_audit.csv`: each needs record-from-text, re-cite, or retire (owner to
-  scope).
+- The 218 remaining absences of `absence_audit.csv`: unchanged; D-3c re-cites them (owner, 2026-10-14).
 - CDC-Wide FY2023 request: missing; its $160,000,000 PPHF row is not recorded. FY2024's Appendix also prints one
   CDC-wide appropriation ($10,217,311,000) under that heading; the cell keeps the report table's headline.
-- NSF R&RA FY2019 request (Appendix $4,230,510,000 vs table 6,150,680 thousand) and FY2024 (Appendix $9,029,900,000
-  vs table 9,017,900 thousand): for review.
+- NSF R&RA FY2019 and FY2024 requests: one review item each in review-D3b.md (owner, 2026-10-14; no figure change).
+  FY2019: the Appendix and Budget volume print the original request; both committee reports the $7,472,000,000 NSF
+  figure after the February 2018 addendum (not readable here: whitehouse.gov blocked). FY2024: R&RA -$12,000,000 and
+  STEM Education +$52,000,000 against the Appendix; the May 9, 2023 budget amendments raise STEM Education, offset
+  partly within NSF (amendment pages not readable here). Both for `budget_amendment` in a later brief.
+- Accepted by the owner (2026-10-14): CA-LHHS-0037 retired, the section 241 transfer_in, the 8 NSF supersedes, the
+  "Appendix language controls" label.
 
 ## UI-4: Export (2026-10-14)
 
