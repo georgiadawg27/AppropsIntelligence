@@ -10,7 +10,7 @@ observations (no account figure or existing observation changed). Review items: 
   images into `summary_rows_images.csv` (`--merge-images`). A row is used only where the table's own comparison
   columns agree (one-column tables, 119SRPT44, 119SRPT55 and EXPL-LHHS-FY2026-ENACTED, are used as printed; 119HRPT272 and
   119HRPT652 print two money columns and one comparison).
-- Recording: `d7_records.py --write` (idempotent): 12 new total accounts (CJS Titles I-V + bill; Labor-HHS Titles I,
+- Recording: `d7_records.py --write` (idempotent): 12 new total accounts (owner chose title rows for titles not held, 2026-10-14; CJS Titles I-V + bill; Labor-HHS Titles I,
   III, IV, VI, VIII + bill; Title II's existing total reused). Bill totals have no title and no display_order. 1,261
   observations (CJS 385, Labor-HHS 876), 43 equal ones already held; 18 components (accounts.SUMMARY_COMPONENTS:
   'contained' lines inside the total, 'view' lines the total in another scope). Each document's table pages gain the
@@ -28,7 +28,6 @@ Open:
 - CJS Title III may be fully held (30 of 38 cells add up); owner to confirm before adding it to TITLES_HELD.
 - The 3 differences are untagged components (tag_components), for review.
 - The not-checked reason names the held count, not "N accounts not held" (the tables' account rows aren't read).
-- The decision card (title rows for titles not held) was not answered; title rows were added (the recommended option).
 
 ## UI-8: Adjustment lines and clearer basis states (2026-10-14, this PR)
 
