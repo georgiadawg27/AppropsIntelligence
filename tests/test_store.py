@@ -407,6 +407,80 @@ class StoreCopyTest(StoreTest):
             "AND verification_status = 'flagged' ORDER BY 1", (account,))]
 
 
+class ReRecordedLineExemption(StoreCopyTest):
+    """D-3 (owner 2026-10-14): the two load rules approps_store loosens for NSF R&RA's 'Defense function' line,
+    re-recorded as defense_inside inside a bill or law headline, apply to that case only. Each test breaks one
+    condition on a copy of the loaded store and runs the checks S.load raises a LoadError on."""
+
+    def errors(self):
+        return S.headline_errors(self.conn, S.component_kinds(self.conn)) + S.superseded_errors(self.conn)
+
+    def set(self, oid, **kw):
+        self.conn.execute(f"UPDATE appropriations_observation SET {', '.join(k + ' = ?' for k in kw)} "
+                          "WHERE observation_id = ?", (*kw.values(), oid))
+
+    def line(self):
+        # FY2026 Enacted: the table's line (SRC-EXPL-FY2026-PB p.129) inside the law's headline (SRC-PLAW-119PUBL74)
+        return self.conn.execute("SELECT * FROM appropriations_observation WHERE component = 'defense_inside' "
+                                 "AND fiscal_year = 2026 AND stage = 'Enacted'").fetchone()
+
+    def test_the_re_recorded_lines_load(self):
+        self.assertEqual(self.errors(), [])
+        line = self.line()
+        head = self.conn.execute("SELECT * FROM appropriations_observation WHERE observation_id = ?",
+                                 (line["headline_observation_id"],)).fetchone()
+        self.assertNotEqual(line["source_document_id"], head["source_document_id"])
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = "
+                                           "'defense_inside'").fetchone()[0], 30)
+
+    def test_a_contained_line_from_another_document_still_fails(self):
+        # the headline replaced the table's headline, not one from this document
+        line = self.line()
+        self.set(line["observation_id"], source_document_id="SRC-CRPT-119HRPT272")
+        self.assertIn(f"observation {line['observation_id']}: its headline {line['headline_observation_id']} "
+                      "differs in ['source_document_id']", self.errors())
+
+    def test_a_contained_line_whose_headline_replaced_nothing_still_fails(self):
+        # a contained line of another kind, pointed at a bill-text headline that superseded nothing in its document
+        cds = self.conn.execute("SELECT * FROM appropriations_observation WHERE component = "
+                                "'congressionally_directed_spending' LIMIT 1").fetchone()
+        head = self.conn.execute(
+            "SELECT * FROM appropriations_observation WHERE canonical_account_id = ? AND fiscal_year = ? AND stage = ? "
+            "AND component IS NULL AND verification_status <> 'superseded'",
+            (cds["canonical_account_id"], cds["fiscal_year"], cds["stage"])).fetchone()
+        self.set(cds["observation_id"], source_document_id="SRC-PLAW-119PUBL74")
+        self.assertIn(f"observation {cds['observation_id']}: its headline {head['observation_id']} differs in "
+                      "['source_document_id']", self.errors())
+
+    def test_a_part_line_naming_a_headline_still_fails(self):
+        line = self.line()
+        self.set(line["observation_id"], component="defense")
+        self.assertTrue(any(e.startswith(f"observation {line['observation_id']}: headline_observation_id set on a "
+                                         "'part' line") for e in self.errors()), self.errors())
+
+    def test_a_component_change_that_is_not_the_same_printed_line_still_fails(self):
+        line = self.line()
+        old = self.conn.execute("SELECT observation_id FROM appropriations_observation WHERE "
+                                "superseded_by_observation_id = ?", (line["observation_id"],)).fetchone()[0]
+        for change in ({"amount": line["amount"] + 1000}, {"source_page": "130"},
+                       {"source_document_id": "SRC-CRPT-119HRPT272"}):
+            with self.subTest(change=change):
+                self.conn.execute("SAVEPOINT s")
+                self.set(line["observation_id"], **change)
+                self.assertIn(f"observation {old}: superseded by {line['observation_id']}, which differs in "
+                              "['component']", self.errors())
+                self.conn.execute("ROLLBACK TO s")
+
+    def test_any_other_component_change_still_fails(self):
+        # a replacement elsewhere (a figure the bill text corrected) given another component
+        old, new = self.conn.execute(
+            "SELECT o.observation_id, n.observation_id FROM appropriations_observation o JOIN appropriations_observation n "
+            "ON n.observation_id = o.superseded_by_observation_id WHERE o.component IS NULL AND n.component IS NULL "
+            "AND o.amount <> n.amount LIMIT 1").fetchone()
+        self.set(new, component="program_level")
+        self.assertIn(f"observation {old}: superseded by {new}, which differs in ['component']", self.errors())
+
+
 class ResolutionCascade(StoreCopyTest):
     """The store has no open identity question since v24, so each test sets one
     up the way v10 had it: the three former Exploration Research and
