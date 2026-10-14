@@ -212,7 +212,7 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
         # is re-recorded as defense_inside (contained) and the account's figure is the headline alone
         rows = self.conn.execute("SELECT canonical_account_id, fiscal_year, stage, headline_observation_id FROM "
                                  "appropriations_observation WHERE component = 'defense_inside'").fetchall()
-        self.assertEqual(len(rows), 30)
+        self.assertEqual(len(rows), 38)          # D-3: 30 bill/law cells; D-3b: 8 President's Budget cells
         for a, fy, st, hid in rows:
             head = self.conn.execute("SELECT amount FROM appropriations_observation WHERE observation_id = ?",
                                      (hid,)).fetchone()[0]

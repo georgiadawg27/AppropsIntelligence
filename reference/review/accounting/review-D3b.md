@@ -62,3 +62,36 @@ outcomes (record from text, re-cite to text, or retire), for review.
 - PPHF: the 10th President's Budget cell closes. CDC FY2025 request program level computed $9,638,690,000 ->
   $9,738,690,000 = printed (S.Rept. 118-207 p.436). The cause request_evaluation_tap_past_window is gone (its
   VAL-MRC record is no longer produced).
+
+## Part 3: NSF Research and Related Activities, President's Budget headlines (owner-approved; D-3 part 1's rule)
+
+Headline = the amount the FY N Budget Appendix's proposed language appropriates for the R&RA paragraph (nondefense +
+defense, less an amount it designates an emergency requirement, which stays beside), from `request_language.json`;
+the report table's 'Defense function' line is re-recorded as `defense_inside` (contained) with the new headline as
+its headline, and tagged `defense_portion` inside. Supersede and link, new IDs (`d3b_records.py`).
+
+| FY | Old headline | Defense line | New headline | Source, page | Old figure's source | Defense line old -> new |
+|---|---|---|---|---|---|---|
+| 2017 | OBS-0727 $6,011,910,000 | $67,520,000 | OBS-1057 $6,079,430,000 | SRC-BUDGET-APP-FY2017-NSF p.1195 | SRC-CRPT-114HRPT605 p.114-115 | OBS-0767 -> OBS-1058 |
+| 2018 | OBS-0723 $5,290,650,000 | $71,000,000 | OBS-1059 $5,361,650,000 | SRC-BUDGET-APP-FY2018-NSF p.1083 | SRC-CRPT-115HRPT231 p.120-121 | OBS-0763 -> OBS-1060 |
+| 2020 | OBS-0715 $5,591,960,000 | $71,000,000 | OBS-1061 $5,662,960,000 | SRC-BUDGET-APP-FY2020-NSF p.1107 | SRC-CRPT-116HRPT101 p.148-149 | OBS-0755 -> OBS-1062 |
+| 2021 | OBS-0711 $6,142,020,000 | $71,000,000 | OBS-1063 $6,213,020,000 | SRC-BUDGET-APP-FY2021-NSF p.1187 | SRC-CRPT-116HRPT455 p.187-188 | OBS-0751 -> OBS-1064 |
+| 2022 | OBS-0707 $8,062,710,000 | $77,000,000 | OBS-1065 $8,139,710,000 | SRC-BUDGET-APP-FY2022-NSF p.1205 | SRC-CRPT-117HRPT97 p.213-214 | OBS-0747 -> OBS-1066 |
+| 2023 | OBS-0703 $8,335,987,000 | $90,000,000 | OBS-1067 $8,425,987,000 | SRC-BUDGET-APP-FY2023-NSF p.1173 | SRC-CRPT-117HRPT395 p.219-220 | OBS-0743 -> OBS-1068 |
+| 2025 | OBS-0695 $7,519,320,000 | $106,000,000 | OBS-1069 $7,625,320,000 (paragraph $8,045,320,000 less the $420,000,000 emergency, beside) | SRC-BUDGET-APP-FY2025-NSF p.1083 | SRC-CRPT-118HRPT582 p.247-248 | OBS-0735 -> OBS-1070 |
+| 2026 | OBS-0691 $3,166,840,000 | $109,310,000 | OBS-1071 $3,276,150,000 | SRC-BUDGET-APP-FY2026-NSF p.1007 | SRC-EXPL-FY2026-PB p.129 | OBS-0731 -> OBS-1072 |
+
+Proofs, every cell: the store total equals the new headline; `views_nondefense` equals the old nondefense line (every
+basis); the grid shows `defense_inside` contained, `adds_to_headline` false, and no 'defense' part row (no phantom
+missing line); VAL-MR passes. Components: the 8 defense_portion components move inside the new headlines (new IDs
+CMP-0116 ... CMP-0123; CMP-0015, -0019, -0027, -0031, -0035, -0039, -0047, -0051 retired) and the FY2025 emergency
+(CMP-0053 -> CMP-0115, designated/emergency $420,000,000, beside, unchanged). `request_language.json`: only the 8
+headline IDs change. The resolved-by-rule status reads "Appendix language controls" for these figures.
+
+Left as they are (the Appendix prints a paragraph total, but it is not the table's nondefense + defense, so the
+second proof cannot hold; for review, no figure changed):
+- FY2019: the Appendix paragraph (p.1091) appropriates $4,230,510,000; H.Rept. 115-704's request column prints
+  6,079,680 + 71,000 = 6,150,680 thousand ($1,920,170,000 more).
+- FY2024: the Appendix paragraph (p.1141) appropriates $9,029,900,000; S.Rept. 118-62's request column prints
+  8,915,900 + 102,000 = 9,017,900 thousand ($12,000,000 less).
+No year's Appendix language lacks a paragraph total (FY2027 is outside the brief).

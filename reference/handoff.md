@@ -1,5 +1,34 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-3b: follow-ups from #72 (2026-10-14, this PR)
+
+Details and review items: `reference/review/accounting/review-D3b.md`. One commit per part.
+
+- Part 1: `absence_audit.py` -> `absence_audit.csv`: 219 of 309 confirmed absences cite a report or explanatory
+  statement, not bill/law text or Appendix language (CJS 197, Labor-HHS 22; 33 name a bill or law in the evidence).
+  More than 10: listed, not fixed. CA-LHHS-0037 retired (`d3b_records.py`): the FY2023 Appendix language under
+  'CDC-WIDE ACTIVITIES AND PROGRAM SUPPORT' (pp.437-438) appropriates $9,620,961,000 for all of CDC (= the report's
+  CDC request total less EEOICP), not the account's scope; the cell is missing and the $160,000,000 Fund row stays
+  reported, not recorded.
+- Part 2: `tag_components.PAST_WINDOW_241` reads 'shall be available for ... from amounts made available under
+  section 241 of the PHS Act' past the window (only that wording). CMP-LHHS-1372, transfer_in from section 241,
+  $100,000,000 beside OBS-LHHS-0892 (CDC Injury Prevention FY2025 request). CDC FY2025 request program level equals
+  the printed $9,738,690,000; cause request_evaluation_tap_past_window removed.
+- Part 3: NSF R&RA request headlines from the Appendix paragraph (8 cells: OBS-1057 ... OBS-1071 odd; defense_inside
+  OBS-1058 ... OBS-1072 even). FY2019 and FY2024 left as is (Appendix total is not the table's nondefense + defense).
+  `request_language.json` regenerated (only the 8 headline IDs change). `validate_approps.rule_status_text` reads
+  "Appendix language controls" for an SRC-BUDGET-APP figure.
+- measure_reconcile: base 1012/0 -> 1013/0; views 262/20/77 -> 263/19/77; earmark rule 4/0. Text check: match 2,534,
+  mismatch 0, ambiguous 4 (unchanged).
+
+Open:
+- The 218 remaining absences of `absence_audit.csv`: each needs record-from-text, re-cite, or retire (owner to
+  scope).
+- CDC-Wide FY2023 request: missing; its $160,000,000 PPHF row is not recorded. FY2024's Appendix also prints one
+  CDC-wide appropriation ($10,217,311,000) under that heading; the cell keeps the report table's headline.
+- NSF R&RA FY2019 request (Appendix $4,230,510,000 vs table 6,150,680 thousand) and FY2024 (Appendix $9,029,900,000
+  vs table 9,017,900 thousand): for review.
+
 ## D-3: owner rulings 1-3 of decisions-D2.md (2026-10-14, this PR)
 
 Three commits, reviewable apart (part 2, part 3, part 1 in that order).

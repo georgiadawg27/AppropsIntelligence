@@ -157,8 +157,10 @@ counted as printed and named in the check.
    plus its 'Defense function' line; an amount the paragraph designates an emergency stays beside), citing the bill
    or law page, with the table's nondefense figure as the note. The table's defense line is re-recorded under
    `defense_inside` (kind `contained`, never added to the account's figure), naming the new headline, and is tagged
-   a `defense_portion` inside it. The President's Budget keeps the table's nondefense headline with its `defense`
-   line (a part) beside. Store exemption, for this case only (`approps_store.headline_errors` /
+   a `defense_portion` inside it. The President's Budget takes the same rule from the Budget Appendix's proposed
+   language (D-3b, owner-approved 2026-10-14; FY2017-FY2018, FY2020-FY2023, FY2025-FY2026). FY2019 and FY2024 keep the
+   table's nondefense headline with its `defense` line (a part) beside: their Appendix paragraph total is not the
+   table's nondefense + defense (for review). Store exemption, for this case only (`approps_store.headline_errors` /
    `superseded_errors`; tests `test_store.ReRecordedLineExemption`):
    - a contained line may name a headline from another document only when that headline superseded the line's own
      document's headline in the same cell (bill or law text over the report table);
