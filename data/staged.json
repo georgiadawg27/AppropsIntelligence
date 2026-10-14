@@ -339843,10 +339843,10 @@
   },
   {
    "validation_id": "VAL-MRC-UNEXPLAINED",
-   "observation_id": "OBS-LHHS-0043",
+   "observation_id": "OBS-LHHS-0095",
    "rule_applied": "measure_reconcile",
    "expected_result": "printed view totals equal the views computed from the components; cause unexplained: not explained yet",
-   "observed_result": "5 printed view(s) differ: OBS-LHHS-0043 ACC-HHS-ACF-TOTAL FY2025 President's Budget [excluding_emergencies] -$2,914,179,000; OBS-LHHS-0095 ACC-HHS-AHRQ-TOTAL FY2024 President's Budget [program_level] $45,000,000; OBS-LHHS-0531 ACC-HHS-OS-TOTAL FY2023 President's Budget [program_level] $103,614,000; OBS-LHHS-3123 ACC-HHS-NIH-TOTAL FY2019 President's Budget [program_level] $728,400,000; OBS-LHHS-3827 ACC-HHS-ACF-TOTAL FY2017 President's Budget [program_level] $15,000,000 -- for review, no figure changed",
+   "observed_result": "4 printed view(s) differ: OBS-LHHS-0095 ACC-HHS-AHRQ-TOTAL FY2024 President's Budget [program_level] $45,000,000; OBS-LHHS-0531 ACC-HHS-OS-TOTAL FY2023 President's Budget [program_level] $103,614,000; OBS-LHHS-3123 ACC-HHS-NIH-TOTAL FY2019 President's Budget [program_level] $728,400,000; OBS-LHHS-3827 ACC-HHS-ACF-TOTAL FY2017 President's Budget [program_level] $15,000,000 -- for review, no figure changed",
    "result": "flag",
    "human_review_status": "pending",
    "reviewer": "",
@@ -339911,9 +339911,9 @@
    "validation_id": "VAL-MRV-LHHS-0043",
    "observation_id": "OBS-LHHS-0043",
    "rule_applied": "measure_reconcile",
-   "expected_result": "excluding emergency designations: the agency total $55,039,423,000 (OBS-LHHS-0042) + its accounts' components, less the included components the view leaves out, plus the components beside it the view counts (CMP-LHHS-1132 designated/emergency $2,575,000,000) = $52,464,423,000",
-   "observed_result": "$49,550,244,000 printed ('Total, ACF (excluding emergencies)', SRC-CRPT-118SRPT207 p.447) -- differs by -$2,914,179,000 (printed - computed); for review, no figure changed; cause: unexplained (reviewed once for every cell, VAL-MRC-UNEXPLAINED)",
-   "result": "info",
+   "expected_result": "excluding emergency designations: the agency total $55,039,423,000 (OBS-LHHS-0042) + its accounts' components, less the included components the view leaves out, plus the components beside it the view counts (CMP-LHHS-1132 designated/emergency $2,575,000,000; CMP-LHHS-1371 designated/emergency $2,914,179,000) = $49,550,244,000",
+   "observed_result": "$49,550,244,000 printed ('Total, ACF (excluding emergencies)', SRC-CRPT-118SRPT207 p.447) -- equal",
+   "result": "pass",
    "human_review_status": "",
    "reviewer": "",
    "resolution": ""
@@ -340784,6 +340784,17 @@
    "observed_result": "1 printed view(s) differ: OBS-LHHS-0135 ACC-HHS-CDC-TOTAL FY2025 President's Budget [program_level] $100,000,000 -- for review, no figure changed",
    "result": "flag",
    "human_review_status": "pending",
+   "reviewer": "",
+   "resolution": ""
+  },
+  {
+   "validation_id": "VAL-MR-LHHS-0679",
+   "observation_id": "OBS-LHHS-0679",
+   "rule_applied": "measure_reconcile",
+   "expected_result": "headline $9,341,393,000 = base + the components it includes (CMP-LHHS-1371 designated/emergency $2,914,179,000); beside it: none",
+   "observed_result": "base $6,427,214,000",
+   "result": "pass",
+   "human_review_status": "",
    "reviewer": "",
    "resolution": ""
   }
@@ -370651,6 +370662,24 @@
    "source_observation_id": "",
    "carried_from_component_id": "",
    "notes": "beside the headline: the Fund's money is transferred in, not appropriated here",
+   "within_component_id": ""
+  },
+  {
+   "component_id": "CMP-LHHS-1371",
+   "observation_id": "OBS-LHHS-0679",
+   "component_type": "designated",
+   "designation": "emergency",
+   "transfer_from": "",
+   "amount": 2914179000,
+   "in_headline": "TRUE",
+   "source_document_id": "SRC-BUDGET-APP-FY2025-HHS",
+   "source_location": "p.439, proposed appropriations language under 'REFUGEE AND ENTRANT ASSISTANCE'",
+   "quoted_text": "n and Nationality Act and section 501 of the Refugee Education Assistance Act of 1980: Provided further, That of the amounts made available under this heading, [$2,914,179,000] , along with any amounts made available pursuant to the preceding proviso, are designated by the Congress as being for an emergency requirement",
+   "tag_method": "appendix_text",
+   "tag_rule": "designated by the Congress as being for an emergency requirement",
+   "source_observation_id": "",
+   "carried_from_component_id": "",
+   "notes": "in_headline by arithmetic: the paragraph's amount $9,341,393,000 and its components give the headline $9,341,393,000",
    "within_component_id": ""
   },
   {

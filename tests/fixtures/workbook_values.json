@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13; D-3: the President's Budget PPHF rows (request column), 2026-10-14)",
- "data_sha256": "6597a8b1093678504ac88c791e6853342d640b3a139ebc8dbed4e8aa6b8fb215",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13; D-3: the President's Budget PPHF rows (request column), 2026-10-14; D-3: the designation read to its end (parser), 2026-10-14)",
+ "data_sha256": "ed7d2187e7b4b6f08aa1f23ffc0d46a96d86c14b9c39976621c579a537406760",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 85,
    "columns": 1,
-   "sha256": "2b27cc36072a01ff2360ceac4d6728e24dc2f1ae32a3aeea7228e00bd2933354"
+   "sha256": "53d59e31af58f459e888b1092736de8c89bc63c27e37565452848215e1fa7262"
   },
   "Account": {
    "rows": 131,
@@ -44,9 +44,9 @@
    "sha256": "1947917600e4ed957dc6a1015f2a4897dcd61b7f308e738ebab126357e3366b7"
   },
   "Validation Record": {
-   "rows": 21553,
+   "rows": 21554,
    "columns": 9,
-   "sha256": "c1d28abeecfffcd537a6dce72a9cb168964a7daedd7af650a605cdef9a303b5a"
+   "sha256": "f2a16075bd533c11c0ce99bceda0dfef1d14f5691e735ce3045c6c42364858d4"
   },
   "Component": {
    "rows": 30,
@@ -54,9 +54,9 @@
    "sha256": "b7511e0ec768d15ff57d0561c2be8c3aad2b35d13805d2730c10b7ee34aabc23"
   },
   "Observation Component": {
-   "rows": 1446,
+   "rows": 1447,
    "columns": 16,
-   "sha256": "e1a0441d641710b8427e2223b6dd2598c45b02065332bef53d063f65b429604d"
+   "sha256": "dff9aac195dc6f857f7aed91f89cfd7715cccf856cac76dda15cc0642fa9159b"
   },
   "Account Attribute": {
    "rows": 4293,
