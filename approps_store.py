@@ -2035,6 +2035,15 @@ def whats_new(conn):
             "basis": "source_document.retrieval_timestamp: the date each document was retrieved into the record"}
 
 
+def documents(conn, names=None):
+    """The source documents the page cites, for its links (brief UI-8): each one's id, short name (names: the page's
+    display-only map, web/documents.js; None where it has none) and address, in id order. Read, nothing derived."""
+    names = names or {}
+    return {"documents": [{"document_id": d["document_id"], "short_name": names.get(d["document_id"]),
+                           "url_or_identifier": d["url_or_identifier"]}
+                          for d in conn.execute("SELECT document_id, url_or_identifier FROM source_document ORDER BY document_id")]}
+
+
 def accounting_data(conn):
     """The store's accounting records in data/staged.json's shape (accounts, observations, the Component
     vocabulary, observation_components, account_attributes), for accounting.py and measure_reconcile, which read
