@@ -3403,14 +3403,15 @@ function renderViewMenu(grid) {
 // ---- Export (brief UI-4): the grid as shown, as a file. One builder for CSV and Excel: the rows buildRows lays out
 // (the expanded rows as they are, every agency's lines, or the rows a person ticked) and, per column in view, what
 // the cell shows: a figure as a number in the units shown, rounded as the screen rounds it (read from the cell's own
-// text), a state as its label (never a blank or a zero). A header block says what the export holds. Separate from
+// text), a printed zero as the number 0 (a figure; the screen keeps "—"), a state as its label (never a blank or a
+// zero), a change with no value as "Not computable". A header block says what the export holds. Separate from
 // the published workbook (export_static.py), which it never reads or writes. Not in the URL: it changes no figure.
 const EXP = { rows: "shown", cite: true, notes: true, verif: true, format: "csv" };
 const PICKED = new Set();       // "Only rows I've selected": the rows ticked in the grid (account ids)
 const pickOn = () => EXP.rows === "picked" && has("export_csv");
 const XLSX_LIB = "write-excel-file.min.js";      // write-excel-file 4.1.1 (MIT), vendored in web/, loaded on demand
 const EXP_ROWS = [["shown", "Only what’s shown"], ["all", "Include collapsed accounts"], ["picked", "Only rows I’ve selected"]];
-const EXP_STATE = { not_funded: "Not funded (printed zero)", missing: "Missing", not_collected: "Not yet collected",
+const EXP_STATE = { missing: "Missing", not_collected: "Not yet collected",
                     not_enacted: "Not yet enacted", not_reported: "Not reported", no_printed_total: "No printed total",
                     no_figure: "No figure for this year" };
 const EXP_VIEW = { "excl.": "Excluded", "n/a": "Not computable", "not checked": "Not checked" };
@@ -3450,8 +3451,10 @@ function exportFigure(td, row, y, st) {
   const text = shown ? shown.textContent.trim() : "";
   let v;
   if (shown && shown.dataset.testid === "view-state") v = EXP_VIEW[text] || text;
-  else if (shown && shown.dataset.testid === "amount" && text !== "—") v = shownNumber(text);
+  // a printed zero is a figure: 0, as it counts in the page's differences (SPEC section 1), though the cell shows "—"
+  else if (shown && shown.dataset.testid === "amount") v = text === "—" ? 0 : shownNumber(text);
   else if (h.state === "not_funded" && h.absence) v = "Not funded (confirmed absent in the bill or law text)";
+  else if (h.state === "not_funded" && o) v = 0;
   else v = EXP_STATE[h.state] || h.state;
   const notes = [(o && o.cell_note) || h.note, o && o.document_notes, h.absence && h.absence.evidence].filter(Boolean);
   const rest = x.lines.filter((l) => l !== h && l.state === "value" && l.observations.length);
@@ -3507,7 +3510,9 @@ function exportTable() {
       } else if (c.chg !== undefined) {
         const d = td.querySelector("[data-testid=change]"), p = td.querySelector(".pct");
         const pct = p ? p.textContent.trim() : "";
-        line.push(d ? shownNumber(d.textContent) : "", /\d/.test(pct) ? shownNumber(pct) : pct === "—" ? "No change (both zero)" : pct);
+        // no change value (a figure is missing): "Not computable", never a blank
+        if (!d) line.push("Not computable", "Not computable");
+        else line.push(shownNumber(d.textContent), /\d/.test(pct) ? shownNumber(pct) : pct === "—" ? "No change (both zero)" : pct);
       } else {
         const n = td.querySelector("[data-testid=defense], [data-testid=nondefense]");
         line.push(n ? shownNumber(n.textContent) : "");
@@ -3552,7 +3557,8 @@ async function exportHeader(rowsOut) {
                   EXP.verif && "verification status"].filter(Boolean).join("; ")],
     ["Data build", build],
     ...notes,
-    ["Blank is not zero", "A state exports as its label; a figure as a number in the units above, rounded as the page shows it."],
+    ["Blank is not zero", "A figure is a number in the units above, rounded as the page shows it (a printed zero is 0); "
+      + "a state is its label; a change with no value reads Not computable."],
   ];
 }
 async function exportRows() {

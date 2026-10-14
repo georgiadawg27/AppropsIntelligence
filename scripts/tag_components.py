@@ -447,6 +447,9 @@ def retag(data, heads, report):
             spec = ("designated", "emergency", "", "the table's '(emergency)' line")
         elif comp == "defense" and at == "budget authority":
             spec = ("defense_portion", "", "", "the table's 'Defense function' line (defense)")
+        elif comp == "defense_inside" and at == "budget authority":
+            spec = ("defense_portion", "", "", "the table's 'Defense function' line, inside the bill or law "
+                                               "paragraph's amount (defense_inside; D-3)")
         elif at == "advance" and not comp:
             spec = ("advance_enacted", "", "", "the table's new advance line (enacted in this bill, available the "
                                                "next fiscal year)")
@@ -471,7 +474,7 @@ def retag(data, heads, report):
         if o["amount"] == 0:
             report["retag_zero"].append(o["observation_id"])
             continue
-        named = o.get("headline_observation_id") if comp == "congressionally_directed_spending" else \
+        named = o.get("headline_observation_id") if comp in ("congressionally_directed_spending", "defense_inside") else \
             inside_lines.get(o["observation_id"], {}).get("headline_observation_id")
         t_inside = bool(named)
         if t_inside:
@@ -498,6 +501,8 @@ def retag(data, heads, report):
                     "carried_from_component_id": "",
                     "notes": "inside the headline: the CDS line is printed as part of the account's total"
                              if t == "earmark" else
+                             f"inside the headline: the bill or law paragraph's amount ({h['observation_id']}) counts "
+                             "the defense line" if comp == "defense_inside" else
                              f"inside the headline: the table prints the line inside it ({h['observation_id']})"
                              if t_inside else "a line printed beside the headline; never inside it"})
     return out
@@ -583,14 +588,19 @@ def pphf_table(data, heads, report):
                 continue
             table = ("the Prevention and Public Health Fund allocation table" if r["table"] == "allocation"
                      else f"the comparative table ({r['table'].split(', ', 1)[1]})")
+            # the request allocates the Fund outside its appropriations language: no bill section (D-3)
+            request = r["stage"] == REQUEST_STAGE
             out.append({"observation_id": h["observation_id"], "component_type": "transfer_in", "designation": "",
                         "transfer_from": PPHF, "amount": int(r["amount"]), "in_headline": "FALSE",
                         "source_document_id": r["source_document_id"],
-                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'; "
-                                           f"{r['bill_document_id']} {r['bill_section']}",
+                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'"
+                                           + ("" if request else f"; {r['bill_document_id']} {r['bill_section']}"),
                         "quoted_text": f"{r['account_printed']} | {r['printed_line']}",
                         "tag_method": "table_line",
-                        "tag_rule": f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
+                        "tag_rule": (f"PPHF allocation: the President's request allocates the Fund outside its "
+                                     f"appropriations language; the report's comparative table prints the request's "
+                                     f"Fund line ({r['read_from']})") if request else
+                                    f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
                                     f"the amounts the report's table specifies ({r['read_from']})",
                         "source_observation_id": "", "carried_from_component_id": "",
                         "notes": "beside the headline: the Fund's money is transferred in, not appropriated here"})

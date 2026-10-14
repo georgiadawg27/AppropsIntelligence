@@ -150,7 +150,8 @@ class Api(WebTest):
         # four FY/stage cells without a supplemental row say so
         g = self.search("NSF Research and Related Activities")["grid"]
         self.assertEqual([(s["amount_type"], s["component"]) for s in g["series"]],
-                         [("budget authority", None), ("budget authority", "defense"), ("supplemental", None),
+                         [("budget authority", None), ("budget authority", "defense"),
+                          ("budget authority", "defense_inside"), ("supplemental", None),
                           ("supplemental", "supplemental_act")])
 
 

@@ -1063,9 +1063,14 @@ class CompareBrowser(GridBrowser):
         self.menu("click", "#expand-all")
         dots = self.page.locator("[data-testid=status-dot]")
         # CJS: no flagged or unconfirmed cell in view (the four House figures the bill text disagreed with were
-        # re-sourced to H.Rept. 119-652 and now match it)
-        self.assertEqual(dots.count(), 1)
-        d = dots.first
+        # re-sourced to H.Rept. 119-652 and now match it); NSF R&RA FY2026 Enacted is the law's paragraph total,
+        # resolved by rule (D-3), with nothing pending
+        self.assertEqual(dots.count(), 2)
+        rule = self.page.locator("tr[data-account=ACC-NSF-RRA] [data-testid=status-dot]")
+        self.assertEqual((rule.count(), rule.first.get_attribute("data-status"), rule.first.get_attribute("data-pending")),
+                         (1, "resolved-by-rule", "0"))
+        self.assertIn("law text controls (explanatory table prints 7,057,700,000)", rule.first.get_attribute("title"))
+        d = self.page.locator("[data-testid=status-dot].pend").first
         self.assertEqual(d.get_attribute("class"), "dot pend")
         self.assertEqual(d.get_attribute("data-status"), "human-verified")
         self.assertEqual(d.get_attribute("data-pending"), "1")
@@ -1319,9 +1324,11 @@ class CompareBrowser(GridBrowser):
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
             self.assertEqual(sum(1 for x in titles if x == note), 1 if sc == "LHHS" else 0, sc)
+            # NSF R&RA's headlines are the paragraph's total (D-3): the table's nondefense and defense lines are the note
             self.assertTrue(all(x.startswith(("The House subcommittee draft's", "Includes $2,500,000,000",
                                               "Funded within PHSSEF", "S.Rept. 118-84 restates FY2023",
-                                              "The table prints 'Health Surveillance")) for x in titles), titles)
+                                              "The table prints 'Health Surveillance"))
+                                or "the paragraph's amount counts both" in x for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
@@ -3676,6 +3683,7 @@ SCREEN_JS = """() => {
                                        + '[data-testid=defense], [data-testid=nondefense]');
             const p = td.querySelector('.pct');
             return {kind: td.dataset.testid, state: td.dataset.state || '', outside: !!td.dataset.outsideLife,
+                    fig: !!(s && s.classList.contains('fig')),
                     testid: s ? s.dataset.testid || '' : '', text: s ? s.textContent.trim() : '', pct: p ? p.textContent.trim() : ''};
         })}));
     return {heads, rows};
@@ -3698,7 +3706,9 @@ def as_screen(v, units):
 
 class Export(GridBrowser):
     """Brief UI-4: the Export menu in the title row. The export holds the rows and columns the grid shows, in the units
-    shown and rounded as shown, after a header block; a state exports as its label, never a blank or a zero."""
+    shown and rounded as shown, after a header block. A printed zero is a figure and exports as 0 (the screen shows
+    "—"); a state exports as its label, never a blank or a zero; a change with no value as "Not computable"
+    (owner, 2026-10-14)."""
 
     def go(self, query, where="static"):
         self.page.goto(self.urls[where] + query)
@@ -3753,18 +3763,25 @@ class Export(GridBrowser):
                         self.assertEqual(v, "Outside the account’s life", (row["id"], c))
                     elif c["testid"] == "view-state":
                         self.assertEqual(v, EXPORT_VIEW[c["text"]], (row["id"], c))
-                    elif c["testid"] == "amount" and c["text"] != "—":
+                    elif c["state"] == "not_funded" and (c["fig"] or c["testid"] == "amount"):
+                        # a printed zero: a figure, 0, with its source; the screen shows "—"
+                        self.assertEqual((c["text"], v), ("—", "0"), (row["id"], c))
+                        self.assertTrue(cite[0] and cite[1], (row["id"], cite))
+                    elif c["testid"] == "amount":
                         figures += 1
                         self.assertEqual(as_screen(float(v), units), c["text"], (row["id"], c))
                         self.assertTrue(cite[0] and cite[1] and cite[4], (row["id"], cite))
                     elif c["state"] == "not_funded":
-                        self.assertTrue(v.startswith("Not funded ("), (row["id"], v))
+                        self.assertEqual(v, "Not funded (confirmed absent in the bill or law text)", (row["id"], c))
                     elif c["state"]:
                         self.assertEqual(v, EXPORT_STATE[c["state"]], (row["id"], c))
-                    if c["state"] and not c["outside"]:
+                    if c["state"] and not c["outside"] and not (c["state"] == "not_funded" and (c["fig"] or c["testid"] == "amount")):
                         self.assertNotIn(v, ("", "0"), (row["id"], c))        # a state never exports blank or zero
                 elif c["kind"] == "change-cell":
                     pct = next(vals)
+                    if not c["text"]:                                          # no change value
+                        self.assertEqual((v, pct), ("Not computable", "Not computable"), (row["id"], c))
+                        continue
                     self.assertEqual("" if v == "" else screen_number(v), "" if not c["text"] else screen_number(c["text"]), (row["id"], c))
                     want_pct = (screen_number(c["pct"]) if any(ch.isdigit() for ch in c["pct"])
                                 else "No change (both zero)" if c["pct"] == "—" else c["pct"])
@@ -3848,6 +3865,45 @@ class Export(GridBrowser):
         self.assertEqual(nci[table[0].index("FY2026 Enacted ($K)")], "7352159")
 
     NCI = "ACC-HHS-NIH-NCI"
+
+    def test_printed_zero_exports_as_zero(self):
+        # AHRQ's FY2026 House figure is a printed zero: "—" on screen, 0 in the file, in both units and in Excel,
+        # with its source
+        aid = "ACC-HHS-AHRQ-TOTAL"
+        for units in ("k", "m"):
+            with self.subTest(units=units):
+                self.go("?sc=LHHS&fy=2026" + ("&units=m" if units == "m" else ""))
+                td = self.cell(aid, 2026, "House Reported")
+                self.assertEqual(td.get_attribute("data-state"), "not_funded")
+                self.assertEqual(td.inner_text().strip(), "—")
+                _, table = self.read_csv(self.download())
+                unit = "$M" if units == "m" else "$K"
+                col = table[0].index(f"FY2026 House ({unit})")
+                row = next(r for r in table[1:] if r[3] == aid)
+                self.assertEqual(row[col], "0")
+                self.assertTrue(row[col + 1] and row[col + 2], row[col:col + 6])     # its document and page
+                self.assert_matches_screen(table, units)
+        d = self.download(fmt="xlsx")
+        path = Path(self.tmp.name) / ("zero-" + d.suggested_filename)
+        d.save_as(path)
+        import openpyxl
+        cells = [list(r) for r in openpyxl.load_workbook(path).active.iter_rows(values_only=True)]
+        head = next(i for i, r in enumerate(cells) if r[0] == "Title")
+        col = cells[head].index("FY2026 House ($M)")
+        xl = next(r for r in cells[head + 1:] if r[3] == aid)
+        self.assertEqual(xl[col], 0)
+        self.assertIsInstance(xl[col], (int, float))
+
+    def test_change_with_no_value_exports_not_computable(self):
+        # FY2020: the committee reported no Senate bill, so a change measured on the Senate stage has no value. On
+        # screen the change cell is empty; in the file it reads "Not computable", never a blank
+        self.go("?sc=LHHS&grid=years&a=2019&b=2020&basis=senate")
+        empty = self.page.locator("td[data-testid=change-cell]:not([data-delta])")
+        self.assertGreater(empty.count(), 0)
+        _, table = self.read_csv(self.download())
+        col = next(i for i, h in enumerate(table[0]) if h.startswith("Change") and h.endswith("($K)"))
+        self.assertTrue(all(r[col] == "Not computable" and r[col + 1] == "Not computable" for r in table[1:]))
+        self.assert_matches_screen(table)
 
     def test_rows_choices_and_excel(self):
         self.go("?sc=LHHS&fy=2026")

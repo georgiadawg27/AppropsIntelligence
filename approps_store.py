@@ -650,11 +650,16 @@ def headline_errors(conn, kinds):
     document, and itself a headline (no component). A part names none.
     A load error, not a warning: a line pointed at a headline from another
     document (or at no headline) would be summed or shown against the wrong
-    figure."""
+    figure. One exception: the headline replaced (superseded_by) the line's
+    own document's headline in the cell -- bill or law text over the report
+    table, the table's line inside the paragraph's total (NSF R&RA's
+    'Defense function' line, defense_inside; D-3)."""
     out = []
     obs = {r["observation_id"]: r for r in conn.execute(
         "SELECT observation_id, canonical_account_id, fiscal_year, stage, source_document_id, component, "
-        "headline_observation_id FROM appropriations_observation")}
+        "headline_observation_id, superseded_by_observation_id FROM appropriations_observation")}
+    replaced = {(r["superseded_by_observation_id"], r["source_document_id"]) for r in obs.values()
+                if r["superseded_by_observation_id"] and r["component"] is None}
     for o in obs.values():
         kind, h = kinds.get(o["component"]), o["headline_observation_id"]
         if kind in ("contained", "view") and h is None:
@@ -668,6 +673,8 @@ def headline_errors(conn, kinds):
             if t is None:
                 continue                                  # the foreign-key check reports it
             diff = [k for k in ("canonical_account_id", "fiscal_year", "stage", "source_document_id") if t[k] != o[k]]
+            if diff == ["source_document_id"] and kind == "contained" and (h, o["source_document_id"]) in replaced:
+                diff = []
             if diff or t["component"] is not None:
                 out.append(f"observation {o['observation_id']}: its headline {h} differs in "
                            f"{diff + (['component'] if t['component'] is not None else [])}")
@@ -678,7 +685,10 @@ def superseded_errors(conn):
     """A superseded observation names the observation that replaced it: the
     same fact (account, fiscal year, stage, amount type, component), itself
     current. (That it is set exactly when verification_status is
-    'superseded' is a CHECK in the schema.)"""
+    'superseded' is a CHECK in the schema.) The component may differ only when
+    the replacement re-records the same printed line -- same document, page
+    and amount -- under another component (NSF R&RA's 'Defense function'
+    line, defense -> defense_inside; D-3)."""
     out = []
     key = ("canonical_account_id", "fiscal_year", "stage", "amount_type", "component")
     for o in conn.execute("SELECT * FROM appropriations_observation WHERE superseded_by_observation_id IS NOT NULL"):
@@ -687,6 +697,8 @@ def superseded_errors(conn):
         if t is None:
             continue                                      # the foreign-key check reports it
         diff = [k for k in key if t[k] != o[k]]
+        if diff == ["component"] and all(t[k] == o[k] for k in ("source_document_id", "source_page", "amount")):
+            diff = []
         if diff:
             out.append(f"observation {o['observation_id']}: superseded by {t['observation_id']}, which differs in {diff}")
         elif t["verification_status"] == "superseded":
@@ -826,7 +838,19 @@ def add_observations(conn, rows):
         raise ValueError(f"incoming rows repeat a fact: {dup[:5]}")
     existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation "
                                               "WHERE verification_status <> 'superseded'")]
+    # an incoming row that repeats a figure the store holds as superseded (the same fact and amount: a report
+    # table's line that bill or law text replaced, or re-recorded under another component -- NSF R&RA's nondefense
+    # and 'Defense function' lines, D-3) confirms that record: never a conflict with its replacement, never a
+    # second copy of the line
+    current = {(fact_key(o), o["amount"]) for o in existing}
+    replaced = {}
+    for r in conn.execute("SELECT * FROM appropriations_observation WHERE verification_status = 'superseded'"):
+        replaced.setdefault((fact_key(dict(r)), r["amount"]), dict(r))
+    seen = [(n, replaced[(fact_key(n), n["amount"])]) for n in rows
+            if (fact_key(n), n["amount"]) not in current and (fact_key(n), n["amount"]) in replaced]
+    rows = [n for n in rows if not any(n is x for x, _ in seen)]
     pairs, diffs, new_only, _ = compare(rows, existing, key=fact_key)
+    pairs = seen + pairs
     differing = {id(n) for n, _ in diffs}
     vocabulary = {}
     for o in existing:
@@ -1522,6 +1546,12 @@ def history_grid(h):
     # a superseded observation stays in history() (queryable, citing what replaced it); a cell shows
     # only the current one
     obs = [o for o in h["observations"] if o["verification_status"] != "superseded"]
+    # a line re-recorded under another component (NSF R&RA's 'Defense function' line, defense -> defense_inside;
+    # D-3): its old series is not listed in that cell -- nothing is missing there
+    every = {o["observation_id"]: o for o in h["observations"]}
+    rerecorded = {(o["fiscal_year"], o["stage"], o["amount_type"], o["component"]) for o in h["observations"]
+                  if o["verification_status"] == "superseded" and o.get("superseded_by_observation_id") in every
+                  and every[o["superseded_by_observation_id"]]["component"] != o["component"]}
     absent = h.get("absences", [])
     kind = {o["component"]: (o.get("component_kind"), o.get("component_label")) for o in obs if o["component"]}
     series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
@@ -1542,8 +1572,8 @@ def history_grid(h):
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
                 k, label = kind.get(c, (None, None))
-                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS) \
-                        and not found and not absence:
+                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS
+                        or (y, st, t, c) in rerecorded) and not found and not absence:
                     continue
                 state = cell_state(found, absence, y, st, h["coverage"])
                 if absence and t == "budget authority" and c is None and (scoped or any(k[:2] == (y, st) for k in by)):
