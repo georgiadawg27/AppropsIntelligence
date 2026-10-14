@@ -71,7 +71,7 @@ class LoadError(Exception):
 # results against LibreOffice's (scripts/recalc_check.py --compare-cached).
 STAGED = paths.staged()                           # data/staged.json (APPROPS_DATA_ROOT: another data root's)
 BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
-BUILT_WORKBOOK = ROOT / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
+BUILT_WORKBOOK = paths.data_root() / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
 
 # A workbook file in a folder (load a specific workbook with `load PATH`):
 # Approps_Pilot_Schema_Loaded_vNN.xlsx, the highest vNN wins.
@@ -1387,10 +1387,13 @@ def history(conn, account_id):
         if a["document_notes"] is None:
             del a["document_notes"]
     # gaps in the four-stage series, from the account's first fiscal year to
-    # the latest one the store holds for any account -- a cell with neither an
+    # the latest one the store holds for any account of its subcommittee (another
+    # subcommittee's years don't widen this one's grid) -- a cell with neither an
     # observation nor a confirmed absence is missing, never zero
     first = min((o["fiscal_year"] for o in obs + absences), default=None)
-    last = conn.execute("SELECT max(fiscal_year) FROM appropriations_observation").fetchone()[0]
+    last = conn.execute("SELECT max(o.fiscal_year) FROM appropriations_observation o JOIN account a "
+                        "ON a.canonical_account_id = o.canonical_account_id WHERE a.subcommittee = ?",
+                        (acct["subcommittee"],)).fetchone()[0]
     have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
     cov = coverage(conn, acct["subcommittee"])
     # the cells the grid spans (first record to the last fiscal year on file) with

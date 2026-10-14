@@ -32,7 +32,8 @@ HOOKS = {
               "'bureau_words': {bureau: words}, 'agency_aliases': {agency: [words]}} "
               "(check_legislative_text.agency_words / in_context: which paragraph is an account's)",
     "appendix": "data {'chapters': (...)}: the Budget Appendix chapters the subcommittee's accounts are in "
-                "(appendix_attributes)",
+                "(reference/review/accounting/request_language.py reads the request language from them; intake names "
+                "them when it is missing)",
     "extract": "accounts scope only: an account held only as its agency total, whose headline is read from the "
                "agency's one appropriation paragraph (tag_components.total_only_outcomes)",
     "list_item": "fn(x, ctx) -> (type, designation, transfer_from, rule) | None: an amount that is an item of a list "

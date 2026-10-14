@@ -1,5 +1,40 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## G-1: any-subcommittee pipeline (2026-10-14, this PR)
+
+Refactor only: data/staged.json and docs/data unchanged (export compared byte for byte with the committed
+docs/data); the workbook fixture changes only on the Read Me sheet (title made generic, one line per subcommittee).
+Runbook: `reference/ADDING_A_SUBCOMMITTEE.md`.
+
+- Coverage from data (`tag_components.coverage()`): every cell whose bill or law text is committed, plus the
+  full_year_cr Enacted cells, plus the President's Budget accounts read from the Appendix extract. Equals the old
+  PILOT | BACKFILL | FY2027_HOUSE | CJS_2024_2025 set except Labor-HHS FY2020 Senate (no bill ever; no figure).
+  CR cells from funding_type: {(LHHS, 2025), (CJS, 2025)}, as CR_CELLS was.
+- IDs: `ids.py`, one allocator (`<TYPE>-<CODE>-####`, CJS `<TYPE>-####`), used by tag_components and
+  appendix_attributes; accounting.py and store_schema.sql accept any code.
+- Rules: `rules_registry.py` (hooks, scope, conflicts) and `reference/rules/LHHS.py`, `CJS.py` (31 rules; the list
+  with old -> new is in the G-1 PR description). Every amount of every committed paragraph and request paragraph
+  (22,289) classifies the same before and after.
+- Subcommittee list from data: build_workbook (validation list, Read Me lines), export/page (already from the
+  store), `subcommittees.codes()`/`known()`/`display_name()` (rule-file display hook for codes not in
+  DISPLAY_NAMES). approps_store: an account's grid spans its own subcommittee's fiscal years (was: the latest FY
+  of any account; same result for CJS and Labor-HHS today, both FY2027).
+- `scripts/intake.py --subcommittee CODE --fy N --stage S [--write]`; `paths.py` (APPROPS_DATA_ROOT,
+  APPROPS_RULES_DIRS) lets the pipeline run on another data root.
+- `tests/test_any_subcommittee.py`: the synthetic SYNLB fixture end to end, plus SYNLB added beside the real data
+  (CJS and Labor-HHS export files byte-identical; the page shows SYNLB's grid). Also run in the browser job.
+
+Open:
+- No real case in the committed data for three moved rules: LHHS-PPHF-SOURCE (no text prints 'from amounts made
+  available under section 4002'), LHHS-241-SUBALLOCATION beside a core transfer phrase (the real ones are
+  'available under section 241' alone, handled inside LHHS-241-AVAILABLE), CJS-CR-LEVEL-ONLY (NOAA ORF and NASA
+  SSMS hold no FY2024 Enacted component to carry). Tested on their wording.
+- The page has no cell state for "not carried by custom" (the synthetic quirk): the intake explains it, the page
+  shows the cell as it shows any cell with no figure. Needs a state in approps_store.cell_state and the page.
+- Still in the core and named in the PR: LOOKS_LIKE (the detector of unread phrases) lists 'section 241' and
+  'Prevention and Public Health Fund'; check_legislative_text's TAP_241 / BEFORE_NOT_MAIN (main-amount reading)
+  name section 241; approps_store's ONC $0-headline note; web/index.html prefers LHHS as the default subcommittee.
+
 ## D-3b: follow-ups from #72 (2026-10-14, this PR)
 
 Details and review items: `reference/review/accounting/review-D3b.md`. One commit per part.

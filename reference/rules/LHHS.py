@@ -53,10 +53,11 @@ def available_241(x, ctx):
 
 
 def sub_allocation_241(x, ctx):
-    """'of the amounts ... section 241': a part of an amount from section 241, already tagged with it -- not a
-    transfer of its own (vetoes the core's transfer rule)."""
+    """'of the amounts ... section 241' before an amount the core's transfer rule reads: a part of an amount from
+    section 241, already tagged with it -- not a transfer of its own (vetoes the core's transfer rule). Where no core
+    transfer phrase is printed, LHHS-241-AVAILABLE makes the same exception."""
     seg_b, seg_a, both = parts(x, ctx)
-    if not (ctx.tc.TRANSFER.search(both) or TRANSFER_241.search(both)) or ctx.tc.THIS_HEADING.search(seg_a):
+    if not ctx.tc.TRANSFER.search(both) or ctx.tc.THIS_HEADING.search(seg_a):
         return None
     return NotComponent(None) if SUB_ALLOCATION.search(seg_b) else None
 
