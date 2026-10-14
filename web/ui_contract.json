@@ -1,5 +1,5 @@
 {
- "contract_version": 4,
+ "contract_version": 5,
  "spec": "reference/ui/explore-v1/SPEC.md section 9",
  "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
  "features": {
@@ -159,6 +159,23 @@
    "brief": "UI-0b / UI-3",
    "fields": [
     "subcommittees/*.json:rows[].cells.*.views_nondefense.*[].amount"
+   ]
+  },
+  "account_page": {
+   "spec_row": "Account page (the One account view): header, enacted history, every stage every year, related",
+   "brief": "UI-5",
+   "fields": [
+    "accounts/*.json:history.account.canonical_name",
+    "accounts/*.json:history.account.subcommittee",
+    "accounts/*.json:history.historical_names[].former_name",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.outside_life",
+    "subcommittees/*.json:rows[].member_of",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:enactments.*.funding_type"
    ]
   },
   "watchlist": {

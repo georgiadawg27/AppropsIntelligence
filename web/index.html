@@ -45,22 +45,20 @@
                          color: #c9d2e3; font: inherit; padding: 16px 10px 13px; cursor: pointer; }
   .appbar .tabs button[aria-selected=true] { color: #fff; border-bottom-color: #8fb3ec; font-weight: 600; }
   .appbar .tabs button:focus-visible { outline-color: #8fb3ec; outline-offset: -4px; }
-  /* ---- One account (unchanged until UI-5) */
-  #account-view { max-width: 1180px; margin: 0 auto; padding: 24px 16px 64px; }
-  #account-view h1 { font-size: 20px; margin: 0 0 4px; }
-  .sub { color: var(--muted); margin: 0 0 20px; }
-  #account-view form { display: flex; gap: 8px; margin-bottom: 16px; }
-  #account-view input[type=search] { flex: 1; min-width: 0; font: inherit; padding: 9px 12px; border: 1px solid var(--x-input);
-                       border-radius: 8px; background: var(--card); color: var(--fg); }
-  #account-view button { font: inherit; padding: 9px 16px; border-radius: 8px; border: 1px solid var(--x-accent);
-           background: var(--x-accent); color: #fff; cursor: pointer; }
-  .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  /* ---- the account page (brief UI-5; the Explore v1 tokens, SPEC sections 7-8) */
+  #account-view { padding: 0 0 64px; }
+  .acctmain { padding: 20px 24px 0; }
+  #account-view h1#page-title { font-size: 24px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 4px; }
+  .sub { color: var(--x-muted); margin: 0 0 20px; }
+  .acctsearch .xrow { align-items: flex-end; }
+  .panel { background: var(--x-surface); border: 1px solid #dfe2e8; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
   .candidates button { display: block; width: 100%; text-align: left; margin-top: 8px; background: var(--card) !important;
+                       font: inherit; padding: 9px 16px; border: 1px solid; border-radius: 8px; cursor: pointer;
                        color: var(--fg) !important; border-color: var(--line) !important; }
   .candidates button:hover { border-color: var(--accent) !important; }
   .candidates small { color: var(--muted); }
   #account-view h2 { font-size: 18px; margin: 0 0 4px; }
-  .meta { color: var(--muted); font-size: 13px; }
+  .meta { color: var(--x-muted); font-size: 13px; }
   .note { border-radius: 8px; padding: 10px 12px; margin-top: 12px; font-size: 14px; }
   .former { background: var(--former-bg); color: var(--former-fg); }
   .rel { background: var(--warn-bg); color: var(--warn-fg); }
@@ -475,6 +473,86 @@
   .sheet .bar { background: #2f5d9e; border-radius: 3px 3px 0 0; }
   .sheet .bar.cr { background: #a9bfe0; }
   .sheet .pbtn.primary { min-height: 48px; margin-top: 18px; }
+  /* ---- the account page (brief UI-5): header, enacted history, every stage of every year beside the source panel
+     (SPEC 5.1), related; the same tokens, hover and selection rules as the grid (SPEC 5.5, section 8) */
+  .ahead { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 16px; }
+  .ahead .hmain { min-width: 0; flex: 1 1 420px; }
+  .ahead h1 { margin: 2px 0 4px; font-size: 24px; font-weight: 600; letter-spacing: -0.015em; }
+  .ahead h1 .tag { vertical-align: middle; margin-left: 8px; font-size: 12px; }
+  .ahead .meta { margin-top: 2px; }
+  .ahead .hfacts { display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 13px; color: var(--x-ink2); margin-top: 6px; }
+  .ahead .hfacts b { font-weight: 600; color: var(--x-ink); }
+  .ahead .note { font-size: 13px; padding: 8px 10px; margin-top: 8px; }
+  .ahead .tools { align-self: flex-start; }
+  .apcard { background: var(--x-surface); border: 1px solid #dfe2e8; border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; min-width: 0; }
+  #account-view h2.apsec { font-size: 16px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .aphint { font-size: 12px; color: var(--x-muted); margin: 0 0 10px; }
+  .apwork { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; margin-bottom: 16px; }
+  .apwork > .apcard { flex: 1 1 600px; margin-bottom: 0; }
+  .apwork > .sidepanel { flex: 0 0 300px; }
+  @media (max-width: 979px) { .apwork > .sidepanel { flex: 1 1 100%; width: auto; } }
+  /* the enacted history chart: one series, values only; the full-year CR bars lighter; a gap, never a zero bar */
+  .apchart { position: relative; display: flex; align-items: flex-end; gap: 6px; height: 168px; margin-top: 10px; padding-top: 18px; }
+  .apchart .apcol { flex: 1 1 0; min-width: 0; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch;
+                    appearance: none; border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; border-radius: 4px; }
+  .apchart .apcol[disabled] { cursor: default; }
+  .apchart .apbox { flex: 1 1 auto; display: flex; align-items: flex-end; justify-content: center; border-bottom: 1px solid var(--x-rule-strong); }
+  .apchart .apbar { width: 100%; max-width: 44px; background: #2f5d9e; border-radius: 4px 4px 0 0; }
+  .apchart .apbar.cr { background: #a9bfe0; }
+  .apchart .apgap { font-size: 12px; color: var(--x-muted); padding-bottom: 4px; }
+  .apchart .aplbl { font-size: 12px; color: var(--x-muted); margin-top: 4px; text-align: center; font-variant-numeric: tabular-nums; }
+  .apchart .apcol:hover .apbox, .apchart .apcol:focus-visible .apbox { background: var(--x-hov-col); }
+  .apchart .apcol[data-sel=fig] .apbox { background: var(--x-sel-fig); box-shadow: inset 0 0 0 2px var(--x-sel-fig-line); }
+  .aptip { position: absolute; z-index: 5; pointer-events: none; background: var(--x-surface); border: 1px solid var(--x-input); border-radius: 6px;
+           box-shadow: 0 4px 14px rgba(22, 33, 58, 0.12); padding: 6px 9px; font-size: 12px; color: var(--x-ink); white-space: nowrap;
+           transform: translate(-50%, -100%); font-variant-numeric: tabular-nums; }
+  .aptip .tv { font-weight: 600; font-size: 13px; }
+  .aptip .ts { color: var(--x-muted); }
+  .apsent { font-size: 13px; color: var(--x-ink2); margin-top: 10px; }
+  .apsent .up, .apsent .down { font-weight: 600; }
+  /* every stage, every year: the grid's cells, hover crosshair and selection */
+  .aptable { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .aptable th { text-align: right; font-weight: 400; font-size: 13px; color: var(--x-ink2); padding: 6px 12px 8px; border-bottom: 1px solid #d5d9e1;
+                background: #fbfbfa; vertical-align: bottom; }
+  .aptable th.fy, .aptable td.fy { text-align: left; padding-left: 4px; position: sticky; left: 0; z-index: 1; border-right: 1px solid var(--x-rule); }
+  .aptable th.lead { background: var(--x-wash); color: var(--x-ink); font-weight: 600; }
+  .aptable td { text-align: right; padding: 10px 12px; border-bottom: 1px solid var(--x-rule); white-space: nowrap; background: var(--x-surface); vertical-align: top; }
+  .aptable td.fy { font-weight: 600; color: var(--x-ink); }
+  .aptable td.lead { background: var(--x-wash); }
+  .aptable td.delta { line-height: 1.25; border-left: 1px solid var(--x-rule); }
+  .aptable th.delta { border-left: 1px solid var(--x-rule); }
+  .aptable .draft { display: block; font-size: 11px; color: var(--x-muted); }
+  .aptable tr[data-hov] > td { background-color: var(--x-hov-row); }
+  .aptable tr > td[data-hovcol] { background-color: var(--x-hov-col); }
+  .aptable tr[data-hov] > td[data-hovcol] { background-color: var(--x-hov-cross); }
+  .aptable th[data-hovcol] { background-color: var(--x-hov-head); color: var(--x-accent-text); font-weight: 600; box-shadow: inset 0 -2px 0 var(--x-accent); }
+  .aptable tr[data-sel=row] > td { background-color: var(--x-sel-row); }
+  .aptable td[data-sel=fig] { background-color: var(--x-sel-fig) !important; box-shadow: inset 0 0 0 2px var(--x-sel-fig-line); }
+  .apscroll { overflow-x: auto; }
+  #sources { overflow-wrap: anywhere; }
+  /* related */
+  .aprel { display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); gap: 10px 16px; font-size: 13px; }
+  .aprel > .k { color: var(--x-muted); font-family: var(--x-cond); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; padding-top: 2px; }
+  .aprel ul { margin: 0; padding: 0; list-style: none; }
+  .aprel li { margin: 0 0 6px; }
+  .aprel a, .aprel .linkish { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb0cc; text-underline-offset: 3px; font-size: 13px; }
+  .aprel .note.rel { margin-top: 0; margin-bottom: 8px; }
+  .aprel .muted { color: var(--x-muted); }
+  .aplines { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; width: 100%; }
+  .aplines th, .aplines td { padding: 5px 10px 5px 0; border-bottom: 1px solid #eef0f3; text-align: right; font-weight: 400; vertical-align: top; }
+  .aplines th { font-size: 12px; color: var(--x-muted); }
+  .aplines th:first-child, .aplines td:first-child { text-align: left; white-space: normal; }
+  .aplines a { color: var(--x-accent-text); }
+  @media (max-width: 639px) {
+    .acctmain { padding: 16px 16px 0; }
+    .acctsearch { padding: 12px 16px; }
+    .ahead h1 { font-size: 21px; }
+    .apcard { padding: 14px 12px; }
+    .aprel { grid-template-columns: 1fr; gap: 4px; }
+    .aprel > .k { margin-top: 8px; }
+    .apchart { gap: 3px; }
+    .apchart .aplbl { font-size: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -491,21 +569,32 @@
 <noscript><p class="error" style="padding:16px 24px">This page needs JavaScript to show the grid and account histories.</p></noscript>
 
 <main id="account-view" hidden>
-  <h1 id="page-title">Appropriations history</h1>
-  <p class="sub" id="page-sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
+  <!-- the account page (brief UI-5): the search for an account, then its header, enacted history, every stage of every
+       year with a source panel, related accounts, and every line on file -->
+  <section class="xcontrols acctsearch" aria-label="Find an account">
+    <form id="search-form" role="search" class="xrow">
+      <label class="xfield grow">Account
+        <input id="q" type="search" name="q" autocomplete="off" aria-label="Account name"
+               placeholder="Account name, e.g. NASA Science, Deep Space Exploration Systems, Office of Inspector General"></label>
+      <button type="submit" class="xbtn tall primary">Search</button>
+    </form>
+  </section>
+  <div class="acctmain">
+  <div id="acct-intro">
+    <h1 id="page-title">Appropriations history</h1>
+    <p class="sub" id="page-sub">Federal appropriations by account, fiscal year and stage &middot; read-only &middot; every figure cites the document and page it came from</p>
+  </div>
   <p class="sub" id="freshness" hidden data-testid="freshness"></p>
-  <form id="search-form" role="search">
-    <input id="q" type="search" name="q" autocomplete="off" aria-label="Account name"
-           placeholder="Account name, e.g. NASA Science, Deep Space Exploration Systems, Office of Inspector General">
-    <button type="submit">Search</button>
-  </form>
 
   <div id="message" role="status"></div>
   <section id="candidates" class="panel candidates" hidden data-testid="candidates"></section>
   <section id="result" hidden data-testid="result">
-    <div class="panel" id="account-panel"></div>
-    <div class="panel">
-      <div class="legend">Amounts in dollars. Each cell is in one of six states: a <strong>$ figure</strong>;
+    <div class="ahead" id="account-panel" data-testid="ap-header"></div>
+    <div id="ap-body" data-testid="account-page"></div>
+    <div class="panel apcard" id="ap-lines" data-testid="ap-lines">
+      <h2 class="apsec">Every line on file</h2>
+      <div class="legend">Every line the record holds for this account, every year and stage (the table above shows the
+        headline line). Amounts in dollars. Each cell is in one of six states: a <strong>$ figure</strong>;
         <span class="na-chip">Not funded</span> (<span class="na-chip">None</span> on a rescission line) = printed as a dash or
         zero, or checked and confirmed absent &mdash; hover for why; <span class="na-chip">No printed total</span> = the
         document prints the account but not this line (a total it leaves out, or a line beside figures it does print); <span class="missing-chip">Missing</span> = a document on
@@ -514,8 +603,9 @@
         for that year yet.</div>
       <div class="table-wrap"><table id="grid" data-testid="grid"></table></div>
     </div>
-    <div class="panel" id="sources"></div>
+    <div class="panel apcard" id="sources"></div>
   </section>
+  </div>
 </main>
 
 <div id="compare-view" data-testid="compare-view">
@@ -731,6 +821,7 @@ if (STATIC_BASE) {
 function reset(msg, isError) {
   $("#candidates").hidden = true;
   $("#result").hidden = true;
+  $("#acct-intro").hidden = false;
   $("#message").textContent = msg || "";
   $("#message").className = isError ? "error" : "";
 }
@@ -772,35 +863,444 @@ function showCandidates(q, data) {
   box.hidden = false;
 }
 
-function showAccount(data) {
+// ---- the account page (brief UI-5; reference/ui/explore-v1/SPEC.md tokens and rules): the header, the enacted history,
+// every stage of every year beside a source panel (SPEC 5.1), related accounts, then every line on file (the record as
+// the store gives it). Every figure is the data's own; the page shows differences between two figures it holds and
+// never adds, totals or classifies anything.
+let AP = null;                  // { id, grid, row, h, sel: {y, st} | null, fy }
+let apTicket = 0;
+async function showAccount(data, at) {
   reset("");
+  const ticket = ++apTicket;
   const h = data.history, a = h.account, r = data.resolved;
+  AP = null;
   const panel = $("#account-panel");
-  panel.replaceChildren(
-    el("h2", { text: a.canonical_name, "data-testid": "account-name" }),
-    el("div", { class: "meta", text: `${a.agency} / ${a.bureau || "—"} · ${a.status} · ${a.fund_type} fund · ${a.canonical_account_id}` }),
-    el("div", { class: "meta", "data-testid": "figures-on-file", text: figuresOnFile(h.observations.concat(h.absences)) }));
-
+  const name = el("span", { "data-testid": "account-name", text: a.canonical_name });
+  const tags = el("span", { "data-testid": "ap-tags" });
+  const main = el("div", { class: "hmain" },
+    el("div", { class: "eyebrow", "data-testid": "ap-path", text: [a.title, a.agency].filter(Boolean).join(" · ") }),
+    el("h1", {}, name, tags),
+    el("div", { class: "meta", text: `${a.agency} / ${a.bureau || "—"} · ${a.status} · ${a.fund_type} fund · ${a.canonical_account_id}` }));
+  const facts = el("div", { class: "hfacts" }, el("span", { "data-testid": "figures-on-file", text: figuresOnFile(h.observations.concat(h.absences)) }));
+  main.append(facts);
+  // former names: what documents printed for this account before (reviewed or not, each with its evidence on hover)
+  if (h.historical_names.length)
+    main.append(el("div", { class: "hfacts", "data-testid": "ap-former-names" }, el("span", {}, "Former names: ",
+      ...h.historical_names.flatMap((n, k) => [k ? ", " : "", el("span", { title: n.evidence || "", text: `“${n.former_name}”` })]))));
   if (r && r.via === "historical_name") {
     const hn = h.historical_names.find((n) => n.former_name === r.matched_name) || {};
-    panel.append(el("div", { class: "note former", "data-testid": "former-name" },
+    main.append(el("div", { class: "note former", "data-testid": "former-name" },
       `Matched through a former name: “${r.matched_name}” is what documents printed for this account` +
       (r.match === "ocr_corrected" ? ` (you typed “${r.name}”, ${r.distance} edit${r.distance === 1 ? "" : "s"} away)` : "") +
       `. ` + (hn.evidence ? `Evidence: ${hn.evidence}` : "")));
   } else if (r && r.match === "ocr_corrected") {
-    panel.append(el("div", { class: "note former", "data-testid": "fuzzy" },
+    main.append(el("div", { class: "note former", "data-testid": "fuzzy" },
       `You typed “${r.name}”; matched “${r.matched_name}” (${r.distance} edit${r.distance === 1 ? "" : "s"} away).`));
   } else if (r && r.via === "agency_total") {
-    panel.append(el("div", { class: "note former" }, `“${r.query}” is an agency: showing its agency total.`));
+    main.append(el("div", { class: "note former" }, `“${r.query}” is an agency: showing its agency total.`));
   } else if (data.pickedFrom) {
-    panel.append(el("div", { class: "note", "data-testid": "picked" }, `Picked from the matches for “${data.pickedFrom}”.`));
+    main.append(el("div", { class: "note", "data-testid": "picked" }, `Picked from the matches for “${data.pickedFrom}”.`));
   }
-  const others = h.historical_names.filter((n) => !r || n.former_name !== r.matched_name).map((n) => n.former_name);
-  if (others.length) panel.append(el("div", { class: "meta", text: "Also printed as: " + others.map((n) => `“${n}”`).join(", ") }));
-  for (const rel of h.relationships) panel.append(relationshipNote(rel));
+  const tools = el("div", { class: "tools", "data-testid": "ap-actions" });
+  panel.replaceChildren(main, tools);
   renderGrid(data.grid, h);
   renderSources(h);
+  const rels = h.relationships.map(relationshipNote);
+  const body = $("#ap-body");
+  body.replaceChildren();
+  try {
+    if (!featLoaded) await loadFeatures();
+    if (ticket !== apTicket) return;
+    if (!has("account_page")) {
+      panel.append(...rels);
+    } else {
+      if (!Object.keys(scLabels).length) { const list = await source.subcommittees(); scLabels = list.names || {}; }
+      if (STATIC_BASE && !dataVersion) dataVersion = (await source.loadIndex()).source.version || "";
+      const grid = a.subcommittee ? await loadSubcommittee(a.subcommittee) : null;
+      if (ticket !== apTicket) return;
+      if (grid) for (const x of grid.rows) ROW_OF.set(x.account.canonical_account_id, x);
+      const row = grid && gridRow(grid, a.canonical_account_id);
+      if (!row) {
+        // an account outside every subcommittee grid: its record only
+        body.append(el("div", { class: "apcard" }, el("h2", { class: "apsec", text: "Related" }),
+          el("div", { class: "aprel", "data-testid": "ap-related" }, el("div", { class: "k", text: "Relationships" }),
+            el("div", {}, ...(rels.length ? rels : [el("span", { class: "muted", text: "None on file." })])))));
+      } else {
+        AP = { id: a.canonical_account_id, grid, row, h, sel: null, fy: null };
+        AP.fy = at && grid.fiscal_years.includes(at.fy) ? at.fy : apLatestYear();
+        renderAccountPage(rels, main, tags, tools);
+        if (at && at.stage && cellObs(row, at.fy, at.stage)) apSelect(at.fy, at.stage, false);
+        else { apMark(); apPanel(); }
+      }
+    }
+  } catch (e) {
+    body.replaceChildren(el("p", { class: "error", text: "Error: " + e.message }));
+  }
+  if (ticket !== apTicket) return;
+  document.title = `${plainName(a.canonical_name)} · Approps Intelligence`;
+  $("#acct-intro").hidden = true;
   $("#result").hidden = false;
+}
+// the latest fiscal year in which the account holds a figure at any stage (the year the page opens on without fy=)
+function apLatestYear() {
+  const ys = AP.grid.fiscal_years.filter((y) => STAGES4.some((st) => cellObs(AP.row, y, st)));
+  return ys.length ? ys[ys.length - 1] : AP.grid.fiscal_years[AP.grid.fiscal_years.length - 1];
+}
+const apName = () => plainName(AP.row.account.canonical_name);
+function renderAccountPage(rels, main, tags, tools) {
+  const { grid, row, h } = AP, a = h.account, y = AP.fy;
+  // the header: the path, the tags (proposed; the budget class as the record gives it for the year), the Appendix
+  // account code where one is held, the start of the record where it is not identified
+  const agencyTotal = row.rollup === "agency";
+  main.querySelector("[data-testid=ap-path]").textContent =
+    [scLabels[grid.subcommittee] || grid.subcommittee, a.title, agencyTotal ? null : a.agency].filter(Boolean).join(" · ");
+  if (proposedOnly(row)) tags.append(el("span", { class: "tag prop", "data-testid": "ap-tag-proposed", text: "proposed", title: "Proposed in a request or bill; never enacted" }));
+  const cy = classYear(row, y), k = cy != null ? classOf(row, cy) : null;
+  if (k) tags.append(el("span", { class: "tag cls" + (k.provisional ? " prov" : ""), "data-testid": "ap-class-tag", "data-provisional": String(k.provisional),
+                                  title: classTitle(k, cy), text: k.cls + (cy !== y ? ` (FY${cy})` : "") }));
+  const facts = main.querySelector(".hfacts");
+  const code = appendixCode(row, y);
+  if (code) facts.append(el("span", { "data-testid": "ap-appendix", title: code.where },
+    "Appendix account ", el("b", { text: code.code }), el("span", { class: "muted", text: ` · FY${code.y}, ${code.where}` })));
+  const L = lifeOf(row), basis = L.start_basis || a.start_basis;
+  if (basis === "unidentified")
+    facts.append(el("span", { "data-testid": "ap-start", text: `Start not identified: ${L.start_basis_reason || a.start_basis_reason || "earlier years unknown"}` }));
+  // the actions: Copy citation, Export history (CSV). Watch is UI-6 (hidden until then)
+  const copy = el("button", { type: "button", class: "xbtn", "data-testid": "ap-copy-citation", text: "Copy citation" });
+  copy.addEventListener("click", () => apCopy(copy));
+  const exp = el("button", { type: "button", class: "xbtn primary", "data-testid": "ap-export", text: "Export history (CSV)" });
+  exp.addEventListener("click", apExport);
+  tools.append(copy, exp);
+
+  const body = $("#ap-body");
+  body.append(apChart());
+  const work = el("div", { class: "apwork" }, apStages(),
+    el("aside", { class: "sidepanel", id: "ap-panel", "data-testid": "ap-panel", "aria-label": "Source for this figure", "aria-live": "polite" }));
+  body.append(work, apRelated(rels));
+}
+// the budget class: the year in view's record, else the latest year that holds one
+function classYear(row, y) {
+  if (!has("budget_class")) return null;
+  if (classOf(row, y)) return y;
+  const ys = Object.keys(row.attributes || {}).map(Number).filter((yy) => classOf(row, yy)).sort((p, q) => q - p);
+  return ys.length ? ys[0] : null;
+}
+function appendixCode(row, y) {
+  const at = row.attributes || {};
+  const ys = [y, ...Object.keys(at).map(Number).sort((p, q) => q - p)];
+  for (const yy of ys) {
+    const rec = at[String(yy)], code = rec && (rec.account_id_code || (rec.request || {}).account_id_code);
+    if (!code) continue;
+    const c = (rec.citations || {}).account_id_code || ((rec.request || {}).citations || {}).account_id_code || {};
+    return { code, y: yy, where: `${docName(c.source_document_id || "")}${c.source_page ? ", p. " + c.source_page : ""}` };
+  }
+  return null;
+}
+
+// the enacted history: FY2017 onward, one bar per enacted year, values only. A printed zero or any other state is a
+// gap with its token; the full-year CR years are lighter; hover or focus shows the figure and its source
+function apChart() {
+  const { grid, row } = AP;
+  const years = grid.fiscal_years.filter((y) => y >= 2017 && (grid.enactments || {})[String(y)]);
+  const card = el("section", { class: "apcard", "data-testid": "ap-history", "aria-label": "Enacted history" });
+  if (!years.length) {
+    card.append(el("h2", { class: "apsec", text: "Enacted history" }), el("p", { class: "aphint", text: "No enacted year on file." }));
+    return card;
+  }
+  card.append(el("h2", { class: "apsec", text: `Enacted, FY${years[0]}–FY${years[years.length - 1]}` }),
+    el("p", { class: "aphint", text: `${unitsLong()} as printed · lighter bar: a full-year continuing resolution · a gap is not zero · click a bar for its source` }));
+  const val = (y) => { const x = headOf(row, y, "Enacted"); return x && x.h && !x.cell.outside_life && x.h.state === "value" ? x.h.observations[0].amount : null; };
+  const max = Math.max(0, ...years.map(val).filter((v) => v != null && v > 0));
+  const chart = el("div", { class: "apchart", role: "list", "data-testid": "ap-chart" });
+  const tip = el("div", { class: "aptip", "data-testid": "ap-tip", hidden: "" });
+  for (const y of years) {
+    const x = headOf(row, y, "Enacted"), cr = !!crOf(grid, y), v = val(y), o = cellObs(row, y, "Enacted");
+    const outside = !x || x.cell.outside_life, st = !outside && x.h ? x.h.state : null;
+    const what = v != null ? `${GridMath.number(v, G.units)} ${unitsLong()}` : outside ? "outside the account’s life" : STATE_WORDS[st] || st;
+    const src = o ? `${docName(o.source_document_id)}${o.source_page ? ", p. " + o.source_page : ""}` : "";
+    const label = `FY${y} enacted${cr ? " (full-year CR)" : ""}: ${what}${src ? " · " + src : ""}`;
+    const hpx = v != null && v > 0 && max > 0 ? Math.max(2, Math.round((v / max) * 120)) : 0;
+    const box = el("span", { class: "apbox" }, hpx ? el("span", { class: "apbar" + (cr ? " cr" : ""), style: `height:${hpx}px` })
+      : el("span", { class: "apgap", "aria-hidden": "true", text: outside ? "" : (TOKENS[st] || ["?"])[0] }));
+    const col = el(o ? "button" : "div", { class: "apcol", role: "listitem", "aria-label": label,
+      dataset: { fy: String(y), testid: "ap-bar", value: v == null ? "" : String(v), cr: String(cr), state: outside ? "outside_life" : st || "" },
+      ...(o ? { type: "button" } : {}) }, box, el("span", { class: "aplbl", "aria-hidden": "true", text: `’${String(y).slice(2)}` }));
+    const show = () => {
+      tip.replaceChildren(el("div", { class: "tv", text: v != null ? GridMath.number(v, G.units) : what }),
+        el("div", { class: "ts", text: `FY${y} enacted${cr ? " (full-year CR)" : ""}${v != null ? " · " + unitsLong() : ""}` }),
+        src ? el("div", { class: "ts", text: src }) : null);
+      const cb = col.getBoundingClientRect(), pb = chart.getBoundingClientRect();
+      tip.style.left = `${Math.min(Math.max(cb.left - pb.left + cb.width / 2, 70), pb.width - 70)}px`;
+      tip.style.top = `${Math.max(0, cb.bottom - pb.top - 22 - (hpx || 14))}px`;
+      tip.hidden = false;
+    };
+    col.addEventListener("mouseenter", show);
+    col.addEventListener("focus", show);
+    col.addEventListener("mouseleave", () => { tip.hidden = true; });
+    col.addEventListener("blur", () => { tip.hidden = true; });
+    if (o) col.addEventListener("click", () => apSelect(y, "Enacted"));
+    chart.append(col);
+  }
+  chart.append(tip);
+  card.append(chart, apSentence(years));
+  return card;
+}
+// the sentence under the chart: the change since the first year on file, only when both ends are values
+function apSentence(years) {
+  const { row } = AP, L = lifeOf(row);
+  const inLife = years.filter((y) => { const x = headOf(row, y, "Enacted"); return x && !x.cell.outside_life; });
+  const p = el("p", { class: "apsent", "data-testid": "ap-sentence" });
+  if (L.start_basis === "unidentified") {
+    p.textContent = `The start of this account’s record is not identified (${(L.start_basis_reason || "earlier years unknown").replace(/\.$/, "")}), so no change is stated.`;
+    return p;
+  }
+  if (inLife.length < 2) { p.textContent = inLife.length ? `One enacted year on file (FY${inLife[0]}): no change is stated.` : "No enacted year on file."; return p; }
+  const first = inLife[0], last = inLife[inLife.length - 1];
+  const st = (y) => headOf(row, y, "Enacted").h.state;
+  const bad = [first, last].find((y) => st(y) !== "value");
+  if (bad != null) {
+    p.textContent = `No change is stated: FY${bad} enacted is not a figure (${STATE_WORDS[st(bad)] || st(bad)}).`;
+    return p;
+  }
+  const a = headOf(row, first, "Enacted").h.observations[0].amount, b = headOf(row, last, "Enacted").h.observations[0].amount;
+  const c = GridMath.change(a, b);
+  p.append(`FY${last} enacted, ${GridMath.number(b, G.units)}, is `,
+    el("span", { class: GridMath.direction(c.delta) || "flat", "data-testid": "ap-sentence-change",
+                 text: `${GridMath.signedNumber(c.delta, G.units)} (${GridMath.pctText(a, b)})` }),
+    ` since FY${first}, the first year on file (${GridMath.number(a, G.units)}); ${unitsLong()}, as printed.`);
+  return p;
+}
+
+// every stage, every year: FY rows newest first; the state tokens of SPEC section 4; a figure opens its source in the panel
+function apStages() {
+  const { grid, row } = AP, name = apName();
+  const card = el("section", { class: "apcard", "data-testid": "ap-stages", "aria-label": "Every stage, every year" });
+  card.append(el("h2", { class: "apsec", text: "Every stage, every year" }),
+    el("p", { class: "aphint", text: `${unitsLong()} as printed · click a figure for its source · blank = outside the account’s life` }));
+  const heads = ["Request", "House", "Senate", "Enacted"];
+  const thead = el("thead", {}, el("tr", {}, el("th", { class: "fy", scope: "col", text: "FY" }),
+    ...heads.map((t, i) => el("th", { scope: "col", class: i === 3 ? "lead" : "", dataset: { col: String(i) }, text: t })),
+    el("th", { scope: "col", class: "delta", dataset: { col: "4" }, text: "Enacted vs request" })));
+  const tbody = el("tbody");
+  const years = grid.fiscal_years.filter((y) => STAGES4.some((st) => { const c = row.cells[`${y}|${st}`]; return c && !c.outside_life; })).reverse();
+  for (const y of years) {
+    const tr = el("tr", { dataset: { fy: String(y), testid: "ap-row" } }, el("td", { class: "fy", text: `FY${y}` }));
+    for (const i of [0, 1, 2, 3]) tr.append(apCell(y, i, name));
+    const ch = changeCell(printedFig(row, y, STAGES4[0]), printedFig(row, y, "Enacted"), { what: `FY${y} enacted vs request`, col: 4 });
+    ch.dataset.testid = "ap-change";
+    tr.append(ch);
+    tbody.append(tr);
+  }
+  const table = el("table", { class: "aptable", "data-testid": "ap-table" }, thead, tbody);
+  table.addEventListener("click", (e) => {
+    const b = e.target.closest("button.fig");
+    if (!b) return;
+    const td = b.closest("td");
+    apSelect(Number(td.dataset.fy), td.dataset.stage);
+  });
+  // the hover crosshair (SPEC 5.5): the row, the column, their crossing and the column's header; a name cell tints the row only
+  table.addEventListener("mouseover", (e) => {
+    const td = e.target.closest("td");
+    apHover(td && td.closest("tr"), td && td.dataset.col != null ? td.dataset.col : null);
+  });
+  table.addEventListener("mouseleave", () => apHover(null, null));
+  card.append(el("div", { class: "apscroll" }, table));
+  return card;
+}
+function apHover(tr, col) {
+  const t = $("[data-testid=ap-table]");
+  if (!t) return;
+  for (const n of t.querySelectorAll("[data-hov]")) delete n.dataset.hov;
+  for (const n of t.querySelectorAll("[data-hovcol]")) delete n.dataset.hovcol;
+  if (!tr) return;
+  tr.dataset.hov = "1";
+  if (col == null) return;
+  for (const n of t.querySelectorAll(`[data-col="${col}"]`)) n.dataset.hovcol = "1";
+}
+function apCell(y, i, name) {
+  const { grid, row, h } = AP, st = STAGES4[i];
+  const td = el("td", { class: "num" + (i === 3 ? " lead" : ""), dataset: { fy: String(y), stage: st, col: String(i), testid: "ap-cell" } });
+  const x = headOf(row, y, st);
+  if (!x || x.cell.outside_life) { td.dataset.outside = "true"; td.title = "Outside the account’s life"; return td; }
+  if (!x.h) return td;
+  td.dataset.state = x.h.state;
+  const ctx = { name, stage: stageText(grid, y, i) + (isDraft(grid, y, st) ? " (draft)" : "") };
+  const o = x.h.observations[0];
+  let n;
+  if (x.h.state === "value" && o) n = figButton(o, GridMath.number(o.amount, G.units), ctx, { "data-testid": "ap-amount", title: clickFor(o) });
+  else n = token(x.h.state, x.h, ctx);
+  const note = (h.stage_notes || {})[`${y}|${st}`];
+  if (note) n.title = `${n.title} · ${note}`;
+  td.append(n);
+  if (isDraft(grid, y, st)) td.append(el("span", { class: "draft", text: "draft" }));
+  return td;
+}
+
+// the source panel: identical to the grid's (SPEC 5.1); with nothing selected, a hint
+function apPanel() {
+  const box = $("#ap-panel");
+  if (!box) return;
+  if (AP.sel) {
+    const back = el("div", { class: "panelback" });
+    const b = el("button", { type: "button", class: "backlink", "data-testid": "panel-back", text: "‹ Every stage, every year" });
+    b.addEventListener("click", () => apClear(true));
+    back.append(b);
+    renderSource(AP.grid, box, { kind: "fig", id: AP.id, y: AP.sel.y, st: AP.sel.st }, back);
+    box.dataset.mode = "source";
+    return;
+  }
+  box.dataset.mode = "hint";
+  box.replaceChildren(el("div", { class: "ovk", text: "Source for a figure" }), el("div", { class: "ovtitle", text: apName() }),
+    el("div", { class: "ovhint", "data-testid": "ap-panel-hint", text: "Select a figure in the table, or a bar in the chart, to see its document, page and record here." }));
+}
+function apMark() {
+  for (const n of document.querySelectorAll("#ap-body [data-sel]")) delete n.dataset.sel;
+  if (!AP) return;
+  const row = document.querySelector(`[data-testid=ap-table] tbody tr[data-fy="${AP.fy}"]`);
+  if (!AP.sel) { if (row) row.dataset.sel = "row"; return; }
+  const td = document.querySelector(`[data-testid=ap-table] td[data-fy="${AP.sel.y}"][data-stage="${CSS.escape(AP.sel.st)}"]`);
+  if (td) td.dataset.sel = "fig";
+  if (AP.sel.st === "Enacted") { const bar = document.querySelector(`[data-testid=ap-bar][data-fy="${AP.sel.y}"]`); if (bar) bar.dataset.sel = "fig"; }
+}
+function apURL() {
+  const q = "?account=" + encodeURIComponent(AP.id) + (AP.fy ? `&fy=${AP.fy}` : "") + (AP.sel ? `&stage=${encodeURIComponent(AP.sel.st)}` : "");
+  if (location.search !== q) history.replaceState(null, "", q);
+}
+function apSelect(y, st, url = true) {
+  if (!AP || !cellObs(AP.row, y, st)) return;
+  AP.sel = { y, st };
+  AP.fy = y;
+  apMark();
+  apPanel();
+  if (url) apURL();
+}
+// back to the hint; focus returns to the figure that was selected
+function apClear(returnFocus) {
+  if (!AP || !AP.sel) return false;
+  const was = AP.sel;
+  AP.sel = null;
+  apMark();
+  apPanel();
+  apURL();
+  if (returnFocus) {
+    const n = document.querySelector(`[data-testid=ap-table] td[data-fy="${was.y}"][data-stage="${CSS.escape(was.st)}"] button.fig`);
+    if (n) n.focus();
+  }
+  return true;
+}
+
+// related: the totals this account counts in, the accounts inside it, its relationships, its other lines on file
+function apRelated(rels) {
+  const { grid, row, h } = AP, id = AP.id, y = AP.fy;
+  const card = el("section", { class: "apcard", "data-testid": "ap-related-card", "aria-label": "Related" });
+  const box = el("div", { class: "aprel", "data-testid": "ap-related" });
+  const link = (aid, text, testid) => {
+    const target = gridRow(grid, aid);
+    const nm = text || (target ? plainName(target.account.canonical_name) : aid);
+    const a = el("a", { href: "?account=" + encodeURIComponent(aid) + `&fy=${y}`, "data-testid": testid, "data-account": aid, text: nm });
+    a.addEventListener("click", (e) => { e.preventDefault(); openAccount(aid, { fy: y }); });
+    return a;
+  };
+  const section = (k, testid, ...kids) => box.append(el("div", { class: "k", text: k }), el("div", { "data-testid": testid }, ...kids));
+  // the parent total: the agency total it is a line of, and the printed title total; the page never re-sums either
+  const parents = [];
+  if (row.member_of) parents.push(el("li", {}, link(row.member_of, null, "ap-parent"), el("span", { class: "muted", text: " · agency total, a line of it" })));
+  const pid = h.account.parent_account_id || row.account.parent_account_id;
+  if (pid) parents.push(el("li", {}, "Inside ", link(pid, null, "ap-parent"), el("span", { class: "muted", text: "’s figure · never added again" })));
+  const t = grid.titles.find((tt) => (tt.rows || []).includes(id));
+  if (t && t.total && t.total.account.canonical_account_id !== id)
+    parents.push(el("li", { "data-testid": "ap-title-total" }, `Total, ${t.title} (printed)`, el("span", { class: "muted", text: isGP(row) ? " · each general-provision line counts in it" : " · counts in it" })));
+  section("Parent total", "ap-parents", parents.length ? el("ul", {}, ...parents) : el("span", { class: "muted", text: "None: this is a printed total." }));
+  // the lines of an agency total, and accounts printed inside this one
+  const kids = (row.rollup_members || []).filter((m) => gridRow(grid, m));
+  const inside = grid.rows.filter((x) => x.account.parent_account_id === id).map((x) => x.account.canonical_account_id);
+  if (kids.length || inside.length) {
+    const lis = [...kids.map((m) => el("li", {}, link(m, null, "ap-member"), proposedOnly(gridRow(grid, m)) ? el("span", { class: "tag prop", style: "margin-left:6px", text: "proposed" }) : null)),
+                 ...inside.map((m) => el("li", {}, link(m, null, "ap-inside"), el("span", { class: "muted", text: " · printed inside this account’s figure" })))];
+    section(kids.length ? `Lines of this total · ${kids.length}` : "Inside this account", "ap-members", el("ul", {}, ...lis));
+  }
+  section("Relationships", "ap-relationships", ...(rels.length ? rels : [el("span", { class: "muted", text: "None on file." })]));
+  // the other lines on file for the year in view: listed with their sources, never added to anything
+  const others = (row.series || []).filter((s) => !isHeadline(s)).map((s) => ({ s, cells: STAGES4.map((st) => {
+    const x = headOf(row, y, st);
+    return x && !x.cell.outside_life ? x.lines.find((l) => l.amount_type === s.amount_type && (l.component || null) === (s.component || null)) || null : null;
+  }) })).filter((o) => o.cells.some((l) => l && l.observations.length));
+  if (others.length) {
+    const tb = el("tbody");
+    for (const o of others) {
+      // the line's label as its own record gives it (a view or contained line says it is not added)
+      const tr = el("tr", { "data-testid": "ap-other-line", dataset: { series: seriesLabel(o.s) } }, el("td", { text: seriesText(o.cells.find(Boolean)) }));
+      o.cells.forEach((l, i) => {
+        const td = el("td", { dataset: { stage: STAGES4[i] } });
+        const ob = l && l.observations[0];
+        if (ob && (l.state === "value" || (l.state === "not_funded" && !l.absence))) {
+          const txt = ob.amount === 0 ? "—" : GridMath.number(ob.amount, G.units), href = sourceHref(ob);
+          td.append(href ? el("a", { href, target: "_blank", rel: "noopener", title: clickFor(ob), "data-testid": "ap-other-fig", text: txt })
+                         : el("span", { title: clickFor(ob), text: txt }));
+        } else if (l) td.append(token(l.state, l, { name: apName(), stage: stageText(grid, y, i) }));
+        tr.append(td);
+      });
+      tb.append(tr);
+    }
+    section(`Other lines on file · FY${y}`, "ap-other-lines", el("table", { class: "aplines" },
+      el("thead", {}, el("tr", {}, el("th", { text: `Line (${unitsLong()}; listed, never added)` }), ...["Request", "House", "Senate", "Enacted"].map((x) => el("th", { text: x })))), tb));
+  }
+  card.append(el("h2", { class: "apsec", text: "Related" }), box);
+  return card;
+}
+
+// Copy citation: the account, its path and the page's address; nothing computed
+function apCitation() {
+  const a = AP.h.account, ys = AP.h.observations.concat(AP.h.absences).map((o) => o.fiscal_year);
+  const path = $("[data-testid=ap-path]").textContent;
+  const today = new Date().toISOString().slice(0, 10);
+  const url = location.origin + location.pathname + "?account=" + encodeURIComponent(AP.id);
+  return `${plainName(a.canonical_name)} (${AP.id}). ${path}. Appropriations by fiscal year and stage` +
+    (ys.length ? `, FY${Math.min(...ys)}–FY${Math.max(...ys)}` : "") + `, as printed in the documents cited. Approps Intelligence` +
+    (dataVersion ? `, data ${dataVersion}` : "") + `. ${url} (accessed ${today}).`;
+}
+async function apCopy(b) {
+  const text = apCitation();
+  b.dataset.copied = text;
+  b.textContent = "Citation copied";
+  setTimeout(() => { b.textContent = "Copy citation"; }, 2000);
+  try { await navigator.clipboard.writeText(text); } catch (err) {
+    const t = el("textarea", { style: "position:fixed;opacity:0" }); t.value = text; document.body.append(t); t.select();
+    try { document.execCommand("copy"); } catch (e2) { /* the text stays on the button's data-copied */ }
+    t.remove();
+  }
+}
+// Export history (CSV): one row per line, fiscal year and stage, as the data holds it: a figure only where a document
+// prints one (blank is not zero), its state, its source; nothing summed
+const csvCell = (v) => { const s = v == null ? "" : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+function apCSV() {
+  const { grid, row } = AP, a = row.account;
+  const head = ["canonical_account_id", "account", "fiscal_year", "stage", "line", "state", "amount_dollars", "source_document_id", "source_page",
+                "printed_as", "bill_id", "observation_id", "verification_status", "source_url"];
+  const out = [head];
+  for (const y of grid.fiscal_years) for (const st of STAGES4) {
+    const cell = row.cells[`${y}|${st}`];
+    if (!cell) continue;
+    if (cell.outside_life) { out.push([a.canonical_account_id, a.canonical_name, y, st, "", "outside_life", "", "", "", "", "", "", "", ""]); continue; }
+    for (const l of cell.lines) {
+      const obs = l.observations.length ? l.observations : [null];
+      for (const o of obs) {
+        const printed = o && (l.state === "value" || (l.state === "not_funded" && !l.absence));
+        const src = o || l.absence || {};
+        out.push([a.canonical_account_id, a.canonical_name, y, st, seriesText(l), l.state, printed ? o.amount : "", src.source_document_id || "",
+                  src.source_page || "", (o && o.source_table_or_section) || "", (o && o.bill_id) || "", (o && o.observation_id) || "",
+                  (o && o.verification_status) || "", sourceHref(src) || ""]);
+      }
+    }
+  }
+  return out.map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n";
+}
+function apExport() {
+  const blob = new Blob([apCSV()], { type: "text/csv;charset=utf-8" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: `${AP.id}-history.csv` });
+  document.body.append(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 0);
 }
 
 // An Account Relationship, as it reads from this account's side (each relationship shows on
@@ -1044,14 +1544,16 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
-                        "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone"]);
-let FEAT = {};
+                        "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
+                        "account_page"]);
+let FEAT = {}, featLoaded = false;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
 const linksToSource = () => has("figure_source");
 async function loadFeatures() {
   const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
   FEAT = f.features || {};
+  featLoaded = true;
 }
 
 function showView(view) {
@@ -1977,7 +2479,7 @@ const fullDollars = (v) => (v < 0 ? "\u2212$" : "$") + Math.abs(v).toLocaleStrin
 // the figure's notes (owner, 2026-10-13, UI-2b): its cell note (a lifecycle note naming another account links
 // to it) and the cell's other lines with a figure (listed, never added); in the default view these show here
 // and not as corner marks in the grid
-function figureNotes(grid, row, y, st) {
+function figureNotes(grid, row, y, st, onPage) {
   const x = headOf(row, y, st), out = [];
   if (!x || !x.h) return out;
   const o = x.h.observations[0], note = (o && o.cell_note) || x.h.note;
@@ -1997,21 +2499,26 @@ function figureNotes(grid, row, y, st) {
     const li = el("li", { "data-testid": "src-note", dataset: { lines: String(rest.length) } },
       `${rest.length} other line${rest.length === 1 ? "" : "s"} on file, ${unitsLong()} (listed, never added): ` +
       rest.map((l) => `${seriesText(l)}: ${GridMath.number(l.observations[0].amount, G.units)}`).join("; ") + ". ");
-    const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-note-more", text: "Open account page at this stage" });
-    b.addEventListener("click", () => openAccount(row.account.canonical_account_id, { fy: y, stage: st }));
-    li.append(b);
+    // on the account page itself the other lines are listed under Related
+    if (!onPage) {
+      const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-note-more", text: "Open account page at this stage" });
+      b.addEventListener("click", () => openAccount(row.account.canonical_account_id, { fy: y, stage: st }));
+      li.append(b);
+    }
     out.push(li);
   }
   return out;
 }
-function renderSource(grid, box) {
-  const { id, y, st } = SEL, row = gridRow(grid, id), o = cellObs(row, y, st);
+// sel: the figure (the grid's SEL by default); back: the account page's own back link (it has no overview, and no
+// "See every stage" button: it is that page)
+function renderSource(grid, box, sel = SEL, back = null) {
+  const { id, y, st } = sel, row = gridRow(grid, id), o = cellObs(row, y, st);
   const i = STAGES4.indexOf(st), name = plainName(row.account.canonical_name);
   const zero = o.amount === 0;
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
   const VB = usesViews() ? viewBlock(grid, row, y, st, o) : null;
   // the figure in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
-  const kids = [backRow(grid),
+  const kids = [back || backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
     el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
@@ -2038,12 +2545,12 @@ function renderSource(grid, box) {
   if (o.bill_url)
     kids.push(el("div", { class: "srcbill" }, el("a", { href: o.bill_url, target: "_blank", rel: "noopener", "data-testid": "src-bill",
       text: `${/^PREX /.test(o.bill_id || "") ? "Budget document" : "Bill / law"}: ${billText(grid, o, y, st)}` })));
-  const notes = figureNotes(grid, row, y, st);
+  const notes = figureNotes(grid, row, y, st, !!back);
   if (notes.length)
     kids.push(el("div", { class: "srcnotes", "data-testid": "src-notes" }, el("div", { class: "ovk", text: "Notes" }), el("ul", {}, ...notes)));
   kids.push(el("div", { class: "srcrec", "data-testid": "src-record", text: `Record ${o.observation_id}` }));
   if (VB) kids.push(...VB.tail, el("hr", { class: "srcrule" }));
-  if (ownPage(grid, id)) {
+  if (!back && ownPage(grid, id)) {
     const b = el("button", { type: "button", class: "pbtn", "data-testid": "src-account-btn", text: "See every stage for this account" });
     b.addEventListener("click", () => select({ kind: "acct", id }));
     kids.push(b);
@@ -2147,7 +2654,7 @@ function accountView(grid, id0, phone) {
   }
   if (ownPage(grid, id)) {
     const b = el("button", { type: "button", class: "pbtn primary", "data-testid": "acct-open", text: "Open account page" });
-    b.addEventListener("click", () => openAccount(id));
+    b.addEventListener("click", () => openAccount(id, { fy: y }));
     kids.push(b);
   }
   return { path, name: plainName(a.canonical_name), kids };
@@ -2880,6 +3387,7 @@ document.addEventListener("keydown", (e) => {
   if (openMenu) { e.preventDefault(); closeMenu(true); }
   else if ($(".appbar").classList.contains("navopen")) { e.preventDefault(); setNav(false, true); }
   else if (!$("#compare-view").hidden && SEL) { e.preventDefault(); clearSelection(true); }
+  else if (!$("#account-view").hidden && AP && AP.sel) { e.preventDefault(); apClear(true); }
 });
 let menuClosedBy = null;  // the press that closed a menu does only that
 document.addEventListener("mousedown", (e) => {
@@ -3217,17 +3725,23 @@ async function showCompare(want, replace = true) {
   } catch (e) { compareStatus("Error: " + e.message, true); }
 }
 
+// the account page at an account, and optionally a fiscal year (that year's row marked) and a stage (that figure's source
+// open): ?account=<id>&fy=<FY>&stage=<stage>
 async function openAccount(id, at) {
   showView("account");
-  history.pushState(null, "", "?account=" + encodeURIComponent(id) + (at ? `&fy=${at.fy}&stage=${encodeURIComponent(at.stage)}` : ""));
+  history.pushState(null, "", "?account=" + encodeURIComponent(id) + (at && at.fy ? `&fy=${at.fy}` : "") + (at && at.stage ? `&stage=${encodeURIComponent(at.stage)}` : ""));
+  window.scrollTo(0, 0);
   await showAccountAt(id, at);
 }
 async function showAccountAt(id, at) {
   reset("Loading…");
-  try { showAccount(await source.account(id)); } catch (e) { reset("Error: " + e.message, true); return; }
+  try { await showAccount(await source.account(id), at); } catch (e) { reset("Error: " + e.message, true); return; }
   // a cell asked for: mark it and bring it into view
-  const td = at && document.querySelector(`#grid tr[data-fy="${at.fy}"] td[data-stage="${CSS.escape(at.stage)}"]`);
-  if (td) { td.classList.add("focus"); td.dataset.focus = "true"; td.scrollIntoView({ block: "center" }); }
+  const td = at && at.stage && document.querySelector(`#grid tr[data-fy="${at.fy}"] td[data-stage="${CSS.escape(at.stage)}"]`);
+  if (td) { td.classList.add("focus"); td.dataset.focus = "true"; }
+  // the figure asked for, selected in "Every stage, every year" (its source in the panel beside it); else the record's cell
+  const sel = at && at.stage && document.querySelector("[data-testid=ap-table] td[data-sel=fig]");
+  if (sel || td) (sel || td).scrollIntoView({ block: "center", inline: "nearest" });
 }
 
 $("#sc").addEventListener("change", () => {
@@ -3277,7 +3791,7 @@ function route() {
                                    "amt", "timing", "type", "earmarks", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
-    showAccountAt(params.get("account"), params.get("fy") && params.get("stage") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
+    showAccountAt(params.get("account"), params.get("fy") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);
   } else if (params.get("q")) {
     showView("account");
     $("#q").value = params.get("q"); runSearch(params.get("q"));
