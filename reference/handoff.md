@@ -1,5 +1,17 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Amount basis plan: anchored totals spec (2026-10-14, this PR)
+
+Docs only. `reference/specs/anchored-totals.md` (owner-approved): totals build down from the printed anchor
+(table lines, D-7's summary lines, the 302(b) comparison), with known adjustments, a named "not itemised"
+remainder, and cause codes; accounts stay strict. Owner decisions A-E and G are recorded there. Brief order: UI-9,
+D-8 (after D-7), UI-10, D-9. Investigation findings (counts by basis and cause, CDC House FY2025 cause, Σ on 750
+unchanged totals) are in the spec.
+
+Open:
+- The 302(b) comparison tables in the House and Senate reports: not yet inventoried by report (D-8).
+- Whole-bill holding (Labor, Education, the rest of CJS) for closing the chain to accounts: later phase.
+
 ## UI-8: Adjustment lines and clearer basis states (2026-10-14, this PR)
 
 Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). The page reads
