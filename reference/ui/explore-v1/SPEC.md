@@ -240,7 +240,9 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | ready (UI-0b #62, UI-3b) |
 | Nondefense (`nondefense`) | a published nondefense figure per cell | ready (UI-0b #62, UI-3b) |
-| Watch | browser storage only; no alerts or email | later (UI-6) |
+| Watch | browser storage only; no alerts or email | ready (UI-6; built: ☆ Watch on Find changes results, the account panel, the phone sheet and the account page; the list on Find changes, with its link export / import) |
+| Find changes (`find_changes`, `find_moves`) | cell states, printed figures and their sources; `rows[].relationships` for Moves | ready (UI-6) |
+| What's new (`whats_new`) | each source document's retrieval date (`data/whats_new.json`, written at export time) | ready (UI-6) |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)
 

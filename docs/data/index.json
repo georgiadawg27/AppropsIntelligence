@@ -799,7 +799,7 @@
    "historical_names": []
   }
  ],
- "contract_version": 5,
+ "contract_version": 6,
  "features": {
   "abbreviations": true,
   "account_page": true,
@@ -810,13 +810,16 @@
   "exclude_earmarks": true,
   "export_csv": true,
   "figure_source": true,
+  "find_changes": true,
+  "find_moves": true,
   "grid": true,
   "interaction_state": true,
   "nondefense": true,
   "overview_panel": true,
   "phone": true,
   "search_filter": true,
-  "watchlist": true
+  "watchlist": true,
+  "whats_new": true
  },
  "matching": {
   "accept_max_distance": 2,

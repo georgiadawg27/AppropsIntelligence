@@ -2012,9 +2012,9 @@ class ExploreV1(GridBrowser):
                 self.assertEqual(self.page.locator("[data-testid=acct-bar][data-fy='2025'] .bar.cr").count(), 1)
                 self.assertEqual(self.page.locator("[data-testid=acct-bar] .bar.cr").count(), 1)
                 self.assertIn("Enacted, FY2017–FY2026", self.page.inner_text("#side-panel").replace("ENACTED", "Enacted"))
-                # Open account page: the account page (UI-5); Watch hidden until UI-6
+                # Open account page: the account page (UI-5); Watch, this browser only (UI-6)
                 self.assertEqual(text("acct-open"), "Open account page")
-                self.assertNotIn("Watch", self.page.inner_text("#side-panel"))
+                self.assertEqual(self.page.inner_text("#side-panel [data-testid=watch]"), "☆ Watch")
                 self.page.click("[data-testid=acct-open]")
                 self.page.wait_for_selector("[data-testid=result]:not([hidden])")
                 self.assertEqual(self.page.inner_text("[data-testid=account-name]"), "National Cancer Institute")
@@ -3373,8 +3373,8 @@ class AccountPage(GridBrowser):
                 self.page.click("[data-testid=ap-lines-toggle]")
                 self.assertTrue(self.page.is_visible("#grid"))
                 self.assertEqual(self.page.text_content("[data-testid=figures-on-file]"), "Figures on file: FY2017–FY2027")
-                # Watch is UI-6: hidden
-                self.assertNotIn("Watch", self.page.inner_text("[data-testid=ap-actions]"))
+                # Watch (UI-6): this browser only
+                self.assertEqual(self.page.inner_text("[data-testid=ap-actions] [data-testid=watch]"), "☆ Watch")
                 # the chart: FY2017 onward, one bar per enacted year, values only; the FY2025 CR bar lighter
                 bars = self.page.locator("[data-testid=ap-bar]")
                 years = self.enacted_years()
