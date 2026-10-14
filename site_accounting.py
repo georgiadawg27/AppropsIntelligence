@@ -78,6 +78,8 @@ UNTAGGED = {"excluding_earmarks": "earmarks not tagged for this stage",
 
 
 VALUED = ("checked", "computed")
+# the printed defense lines of a cell (Component vocabulary): NSF R&RA's 'Defense function'
+DEFENSE_LINES = ("defense", "defense_inside")
 STATE_WORDS = {"missing": "document on file, figure not yet entered", "not_collected": "not yet collected",
                "not_enacted": "not yet enacted", "not_reported": "not reported", "no_printed_total": "no printed total"}
 
@@ -491,9 +493,51 @@ class Layer:
             e["accounts_behind"] = behind
         return {b: [dict(e, timing=None if b == "printed" else "available")] for b in AC.BASES}
 
+    def structural(self, a, fy, stage, h, exclusion, cell):
+        """A structural rule (owner, D-6; ACCOUNTING_RULES 'Structural rules') that makes the exclusion take nothing
+        out of the cell, whatever was read: -> the reason, or None.
+          excluding_earmarks: a request carries no earmarks (CDS / CPF are added by Congress), so every President's
+            Budget cell's excluding-earmarks view is its view.
+          nondefense: an account whose subfunction (FY N's own Budget Appendix volume) is outside function 050
+            (not 05x), with no defense line printed in the cell and no defense_portion tagged, holds no defense.
+            Subfunction 999 (spans functions) or none on file doesn't qualify."""
+        if exclusion == "excluding_earmarks":
+            return "a request carries no earmarks" if stage == TC.REQUEST_STAGE else None
+        rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_subfunction", stage)
+        if not rec or not rec["source_document_id"].startswith(f"SRC-BUDGET-APP-FY{fy}"):
+            return None
+        sub = rec["value"]
+        if sub == "999" or sub.startswith("05"):
+            return None
+        if any(l["component"] in DEFENSE_LINES and l["observations"] for l in (cell or {}).get("lines", [])):
+            return None
+        if any(c["component_type"] == "defense_portion" for c in self.cell_components(h)):
+            return None
+        return f"not a defense function (subfunction {sub})"
+
+    @staticmethod
+    def same_as_views(views, rule):
+        """The cell's views, entry for entry, as the exclusion view a structural rule gives. A view that is itself
+        excluded or not computable stays so (the rule fills in nothing)."""
+        out = {}
+        for basis, entries in views.items():
+            out[basis] = []
+            for e in entries:
+                if e["status"] in VALUED:
+                    e = {k: v for k, v in e.items() if k not in ("printed_observation_id", "validation_id")} | {
+                        "status": "computed",
+                        "reason": f"{rule}: equals the {'figure as printed' if basis == 'printed' else basis + ' view'}"
+                                  + (f" (checked: {e['validation_id']})" if e["status"] == "checked"
+                                     and e.get("validation_id") else "")}
+                out[basis].append(dict(e))
+        return out
+
     def account_exclusion(self, a, fy, stage, h, exclusion, views, cell=None):
         """views_excluding_earmarks / views_nondefense of an account cell: each basis's view (account_views) with the
         exclusion's components inside the headline taken out (accounting.excluded_amount)."""
+        rule = self.structural(a, fy, stage, h, exclusion, cell)
+        if rule:
+            return self.same_as_views(views, rule)
         if not TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage):
             return self.untagged(exclusion, why=TC.not_covered_reason(a["canonical_account_id"], fy, stage)
                                  if stage == TC.REQUEST_STAGE else None)

@@ -125,6 +125,41 @@ bill appropriates it, advances when enacted, comes off); a mixed account counts 
 `mandatory_portion` components (`accounting.discretionary_adjustment`). An account with no class on file is
 counted as printed and named in the check.
 
+### Structural rules (owner, D-6, 2026-10-14)
+
+Two facts about where a component can exist, applied to every account cell of the published views
+(`site_accounting.Layer.structural`), whether or not the cell's text was read for components. Neither fills in a
+basis view that is itself not computable or excluded: the exclusion view copies the cell's view entry for entry.
+
+1. **No earmarks in a request.** Earmarks (Congressionally Directed Spending, Community Project Funding) are added
+   by Congress, so every President's Budget cell's `views_excluding_earmarks.<basis>` equals its `views.<basis>`.
+   Reason: "a request carries no earmarks".
+2. **No defense outside function 050.** An account whose `budget_subfunction` for the year, read from FY N's own
+   Budget Appendix volume (the attribute's source is `SRC-BUDGET-APP-FY<N>...`), is not 05x, with no defense line
+   printed in the cell (`defense`, `defense_inside`) and no `defense_portion` tagged, has `views_nondefense.<basis>`
+   equal to `views.<basis>`. Reason: "not a defense function (subfunction NNN)". Subfunction 999 (the account spans
+   more than one function), a subfunction read from a later volume, or none on file doesn't qualify: those cells
+   keep the tagging rule (untagged is not none tagged).
+
+### Totals (owner, D-6, 2026-10-14)
+
+A total's view, on every basis, timing and exclusion, is the sum of its lines' published views: an agency total's
+accounts; a title or bill total's accounts plus each agency held only as its total. Lines outside their life are
+not behind it; a confirmed absence counts as nothing; accounts a basis leaves out (excluded) are not summed and are
+counted in the reason. checked where a printed total measure_reconcile matched equals the sum; otherwise computed,
+with the printed total's difference and its `VAL-MRC-<cause>` where measure_reconcile flagged it. Not computable
+where a line is (named, with its reason), where a line has no figure, or where the lines as printed don't add up to
+the printed total -- the money is in no account held, so their sum is not the total
+(`reference/review/accounting/total_gaps.csv`). As printed is always the printed total.
+
+### Adjustments (D-6)
+
+Every published view entry with an amount lists `adjustments`: what turns the As printed figure into it. An
+account's: one item per component the view takes out (sign -) or adds (sign +), with its id, type, label, amount
+and source document and page. A total's: grouped by component type and sign, with the accounts behind each, plus
+the accounts the basis leaves out (their As printed figure, sign -). As printed + the adjustments = the amount,
+exactly (tests/test_site_data.py checks every entry). An entry equal to As printed has an empty list.
+
 ## Defaults (the owner's decisions)
 
 1. **Advances count when available (CBO)** by default.
