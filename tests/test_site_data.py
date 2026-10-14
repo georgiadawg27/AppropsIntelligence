@@ -6,6 +6,7 @@ committed workbook. These tests hold the switch to what the site showed before i
 
 import collections
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -601,7 +602,13 @@ class AccountingLayer(unittest.TestCase):
             h = self.headline(cell)
             base = self.AC.split(h["amount"], self.by_obs.get(h["observation_id"], []))[0]
             if base < 0:
-                for entries in cell["views"].values():
+                for basis, entries in cell["views"].items():
+                    if basis == "printed" and h["amount"] < 0 and re.search(r"-(TITLE-[IVX]+|BILL)-TOTAL$",
+                                                                             row["account"]["canonical_account_id"]):
+                        # a total printed negative (CJS Title V, General Provisions: net of its rescissions, D-7)
+                        # is shown as printed, and only as printed
+                        self.assertEqual([(e["amount"], e["status"]) for e in entries], [(h["amount"], "checked")])
+                        continue
                     self.assertTrue(all(e["amount"] is None and e["status"] == "not_computable" for e in entries))
 
     def test_views_only_on_cells_with_a_printed_figure(self):

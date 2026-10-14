@@ -48,6 +48,9 @@ def with_sourced_totals(src, dst):
     shape a workbook would give them -- total_scope title / bill."""
     shutil.copy(src, dst)
     c = sqlite3.connect(dst)
+    # D-7's own Title III and bill total rows give way to these
+    for t in ("appropriations_observation", "account"):
+        c.execute(f"DELETE FROM {t} WHERE canonical_account_id IN ('ACC-CJS-TITLE-III-TOTAL', 'ACC-CJS-BILL-TOTAL')")
     for aid, name, scope in (("ACC-T3-TOTAL", "Total, Title III, Science", "title"),
                              ("ACC-CJS-TOTAL", "Grand total", "bill")):
         c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, "
@@ -153,7 +156,8 @@ class CompareTest(unittest.TestCase):
 class GridData(CompareTest):
     def test_rows_are_every_account_of_the_subcommittee(self):
         conn = S.connect(self.db, readonly=True)
-        want = sorted(r[0] for r in conn.execute("SELECT canonical_account_id FROM account WHERE subcommittee = 'CJS'"))
+        want = sorted(r[0] for r in conn.execute("SELECT canonical_account_id FROM account WHERE subcommittee = 'CJS' "
+                                                 "AND ifnull(total_scope, '') NOT IN ('title', 'bill')"))   # D-7: totals
         conn.close()
         got = [r["account"]["canonical_account_id"] for r in self.grid["rows"]]
         self.assertEqual(sorted(got), want)
@@ -230,9 +234,13 @@ class GridData(CompareTest):
 
     def test_rows_follow_the_bill(self):
         # by title, then display_order; a rollup heads the accounts it totals
-        self.assertEqual([(t["title"], t["total"]) for t in self.grid["titles"]],
-                         [("Title I", None), ("Title II", None), ("Title III", None), ("Title V", None), (None, None)])
-        self.assertIsNone(self.grid["bill_total"])
+        # D-7: each printed title has its total row (Title IV: the total only, no account held) and the bill its own
+        self.assertEqual([(t["title"], t["total"] and t["total"]["account"]["canonical_account_id"])
+                          for t in self.grid["titles"]],
+                         [("Title I", "ACC-CJS-TITLE-I-TOTAL"), ("Title II", "ACC-CJS-TITLE-II-TOTAL"),
+                          ("Title III", "ACC-CJS-TITLE-III-TOTAL"), ("Title IV", "ACC-CJS-TITLE-IV-TOTAL"),
+                          ("Title V", "ACC-CJS-TITLE-V-TOTAL"), (None, None)])
+        self.assertEqual(self.grid["bill_total"]["account"]["canonical_account_id"], "ACC-CJS-BILL-TOTAL")
         by = {t["title"]: t["rows"] for t in self.grid["titles"]}
         self.assertEqual(by["Title I"], ["ACC-NOAA-ORF", "ACC-USPTO-SE", "ACC-NOAA-PDF"])
         self.assertEqual(by["Title II"], ["ACC-DOJ-AFF", "ACC-DOJ-ANTITRUST-SE", "ACC-DOJ-USTSF", "ACC-DOJ-VAWA"])
@@ -269,8 +277,9 @@ class GridData(CompareTest):
         self.assertEqual((ostp["rollup"], ostp["rollup_members"]), ("agency", ["ACC-NSC"]))
 
     def test_title_and_bill_totals_come_only_from_sourced_rows(self):
-        # v26 has none: no total at all, never a sum of the rows
-        self.assertEqual([t["total"] for t in self.grid["titles"]], [None] * 5)
+        # D-7: each title's total and the bill total are the printed rows' own accounts, never a sum of the rows
+        self.assertEqual([t["total"] and t["total"]["account"]["canonical_account_id"] for t in self.grid["titles"]],
+                         [f"ACC-CJS-TITLE-{r}-TOTAL" for r in ("I", "II", "III", "IV", "V")] + [None])
         # a sourced total -- a rollup noted as a title / bill total -- is the total, not a row
         other = with_sourced_totals(self.db, Path(self.tmp.name) / "totals.db")
         g = plain(W.subcommittee(str(other), "CJS"))
@@ -1034,7 +1043,7 @@ class CompareBrowser(GridBrowser):
                 self.assertGreater(pending + resolved, 0)
             else:
                 self.assertEqual(d.get_attribute("class"), "dot flag" if status == "flagged" else "dot unv")
-        rows = self.lhhs["rows"] + [self.lhhs["titles"][0]["total"]]
+        rows = self.lhhs["rows"] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         flagged = sum(1 for r in rows for y, st in [(2025, "Enacted")] + [(2026, s) for s in FOUR]
                       for c in [r["cells"].get(f"{y}|{st}")] if c and c["lines"]
                       for h in [next((l for l in c["lines"] if l["amount_type"] == "budget authority" and not l["component"]), c["lines"][0])]
@@ -1463,7 +1472,7 @@ class ExploreV1(GridBrowser):
         self.settle()
 
     def total(self):
-        return self.lhhs["titles"][0]["total"]
+        return next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
 
     def thousands_of(self, row, fy, stage):
         return expected_headline(row, fy, stage)["amount"]
@@ -2591,7 +2600,7 @@ class PhoneV1(GridBrowser):
 
     # 13
     def test_phone_layout(self):
-        total = self.lhhs["titles"][0]["total"]
+        total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         nih = self.lrow(self.NIH)
         for where in self.urls:
             with self.subTest(where=where):
@@ -2696,7 +2705,7 @@ class PhoneV1(GridBrowser):
 
     def test_phone_year_without_enacted_and_no_total(self):
         # FY2027 (the default year): the lead stage leads the switch and the card; CJS prints no title total
-        total = self.lhhs["titles"][0]["total"]
+        total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         self.go("?sc=LHHS&fy=2027")
         self.assertEqual(self.page.locator("#p-stages button[aria-pressed=true]").inner_text(), "House")
         v, p = printed(total, 2027, "House Reported"), printed(total, 2026, "Enacted")
@@ -2902,7 +2911,7 @@ class AmountBasis(GridBrowser):
         # Innovation Account, CURES), an earmark account (SAMHSA HSPS), a mixed-class account (CMS Program
         # Management), the title total; FY2025 is a full-year CR year. Each cell shows its published view, "excl."
         # or its state; the change is the difference of the two shown figures, or empty
-        rows = [self.lrow(a) for a in (self.MEDICAID, self.CURES, self.HSPS, self.PM)] + [self.lhhs["titles"][0]["total"]]
+        rows = [self.lrow(a) for a in (self.MEDICAID, self.CURES, self.HSPS, self.PM)] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         for basis in BASES:
             for timing in TIMINGS:
                 for where in (("static", "live") if timing == "available" else ("static",)):
@@ -2982,7 +2991,7 @@ class AmountBasis(GridBrowser):
         self.assertEqual(self.page.locator("[data-testid=src-view-value], [data-testid=src-component]").count(), 0)
 
     def test_overview_view_totals(self):
-        total = self.lhhs["titles"][0]["total"]
+        total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         for basis in BASES[1:]:
             with self.subTest(basis=basis):
                 self.go(f"?sc=LHHS&fy=2026&amt={basis}")
@@ -3044,7 +3053,7 @@ class AmountBasis(GridBrowser):
                 self.assertEqual(self.page.inner_text("#filter-badge"), "1")
                 self.assertIn(f"Account type: {kind.capitalize()}", self.page.inner_text("#chips"))
                 # the printed total stays as printed
-                total = self.lhhs["titles"][0]["total"]
+                total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
                 self.assertEqual(self.text(total["account"]["canonical_account_id"], 2026, "Enacted"), thousands(printed(total, 2026, "Enacted")))
 
     def test_defense_column(self):
@@ -3150,7 +3159,7 @@ class ExcludeEarmarks(GridBrowser):
     def test_exclude_earmarks_cells(self):
         # the box on: every cell of SAMHSA's lines and the title total shows views_excluding_earmarks for the basis and
         # timing in view (the printed basis included), with UI-3's tokens; the label, chip, badge and URL say so
-        rows = [self.lrow(m) for m in self.members_in_view(self.OPEN)] + [self.lhhs["titles"][0]["total"]]
+        rows = [self.lrow(m) for m in self.members_in_view(self.OPEN)] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         self.go(f"?sc=LHHS&fy=2026&open={self.OPEN}")
         self.assertNotIn("excl. earmarks", self.page.inner_text("#grid-subline"))
         self.advanced("check", "#f-noear")
@@ -3214,7 +3223,7 @@ class ExcludeEarmarks(GridBrowser):
         self.assertEqual(pb.evaluate(CELL_TEXT_JS), thousands(x["amount"]))
         self.assertIn("a request carries no earmarks", pb.locator("button.fig").get_attribute("title"))
         # the title total: what its published entry says (D-6: the sum of its accounts, or not computable, why)
-        trow = self.lhhs["titles"][0]["total"]
+        trow = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),

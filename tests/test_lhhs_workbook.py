@@ -176,9 +176,12 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
 
     def test_the_title_ii_total_is_the_titles_total_not_a_bill_total(self):
         grid = S.subcommittee_grid(self.conn, "LHHS")
-        self.assertIsNone(grid["bill_total"])                         # no Labor-HHS bill total is on file
+        # D-7: the bill total is the printed grand total's own row; each printed title has its total row
+        self.assertEqual(grid["bill_total"]["account"]["canonical_account_id"], "ACC-LHHS-BILL-TOTAL")
         self.assertEqual([(t["title"], t["total"]["account"]["canonical_account_id"]) for t in grid["titles"]],
-                         [("Title II", "ACC-HHS-TITLE-II-TOTAL")])
+                         [("Title I", "ACC-LHHS-TITLE-I-TOTAL"), ("Title II", "ACC-HHS-TITLE-II-TOTAL"),
+                          ("Title III", "ACC-LHHS-TITLE-III-TOTAL"), ("Title IV", "ACC-LHHS-TITLE-IV-TOTAL"),
+                          ("Title VI", "ACC-LHHS-TITLE-VI-TOTAL"), ("Title VIII", "ACC-LHHS-TITLE-VIII-TOTAL")])
         # ... whatever its notes say: total_scope 'title' decides it, even under a note that reads as a bill total
         import shutil, sqlite3, tempfile
         with tempfile.TemporaryDirectory() as d:
@@ -192,9 +195,10 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
             conn = S.connect(db, readonly=True)
             g = S.subcommittee_grid(conn, "LHHS")
             conn.close()
-        self.assertIsNone(g["bill_total"])
-        self.assertEqual(g["titles"][0]["total"]["account"]["canonical_account_id"], "ACC-HHS-TITLE-II-TOTAL")
-        t = g["titles"][0]["total"]["cells"]["2024|Senate Reported"]["lines"]
+        self.assertEqual(g["bill_total"]["account"]["canonical_account_id"], "ACC-LHHS-BILL-TOTAL")
+        t2 = next(t for t in g["titles"] if t["title"] == "Title II")
+        self.assertEqual(t2["total"]["account"]["canonical_account_id"], "ACC-HHS-TITLE-II-TOTAL")
+        t = t2["total"]["cells"]["2024|Senate Reported"]["lines"]
         head = next(l for l in t if l["component"] is None)["observations"][0]
         self.assertEqual((head["observation_id"], head["amount"]), ("OBS-LHHS-0436", 1_266_744_593_000))
 

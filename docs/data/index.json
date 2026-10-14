@@ -1,6 +1,42 @@
 {
  "accounts": [
   {
+   "agency": "Bill total",
+   "canonical_account_id": "ACC-CJS-BILL-TOTAL",
+   "canonical_name": "Bill total (grand total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Commerce",
+   "canonical_account_id": "ACC-CJS-TITLE-I-TOTAL",
+   "canonical_name": "Title I, Department of Commerce (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Justice",
+   "canonical_account_id": "ACC-CJS-TITLE-II-TOTAL",
+   "canonical_name": "Title II, Department of Justice (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Science",
+   "canonical_account_id": "ACC-CJS-TITLE-III-TOTAL",
+   "canonical_name": "Title III, Science (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Related Agencies",
+   "canonical_account_id": "ACC-CJS-TITLE-IV-TOTAL",
+   "canonical_name": "Title IV, Related Agencies (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "General Provisions",
+   "canonical_account_id": "ACC-CJS-TITLE-V-TOTAL",
+   "canonical_name": "Title V, General Provisions (title total)",
+   "historical_names": []
+  },
+  {
    "agency": "Department of Justice",
    "canonical_account_id": "ACC-DOJ-AFF",
    "canonical_name": "Assets Forfeiture Fund",
@@ -655,6 +691,42 @@
    "historical_names": []
   },
   {
+   "agency": "Bill total",
+   "canonical_account_id": "ACC-LHHS-BILL-TOTAL",
+   "canonical_name": "Bill total (grand total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Labor",
+   "canonical_account_id": "ACC-LHHS-TITLE-I-TOTAL",
+   "canonical_name": "Title I, Department of Labor (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Education",
+   "canonical_account_id": "ACC-LHHS-TITLE-III-TOTAL",
+   "canonical_name": "Title III, Department of Education (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Related Agencies",
+   "canonical_account_id": "ACC-LHHS-TITLE-IV-TOTAL",
+   "canonical_name": "Title IV, Related Agencies (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Emergency Funding",
+   "canonical_account_id": "ACC-LHHS-TITLE-VI-TOTAL",
+   "canonical_name": "Title VI, Emergency Funding (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Title VIII",
+   "canonical_account_id": "ACC-LHHS-TITLE-VIII-TOTAL",
+   "canonical_name": "Title VIII (title total)",
+   "historical_names": []
+  },
+  {
    "agency": "National Aeronautics and Space Administration",
    "canonical_account_id": "ACC-NASA-AERONAUTICS",
    "canonical_name": "Aeronautics",
@@ -831,20 +903,20 @@
  "source": {
   "data": "data/staged.json",
   "data_committed": "2026-10-14T02:56:20+00:00",
-  "data_sha256": "b59901c5e498f1ee02b0a2cdd4633a6714ae9e5e7de3a328e83f96ea3966f783",
+  "data_sha256": "3d58d709315386a1c163f6d2f6f326d94f2833c844928e3adb3f8ada13748037",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
-   "account": 130,
+   "account": 142,
    "account_attribute": 4292,
    "account_relationship": 14,
-   "appropriations_observation": 5074,
+   "appropriations_observation": 6335,
    "bill_report_reference": 83,
-   "component": 30,
+   "component": 48,
    "confirmed_absence": 308,
    "historical_name": 14,
    "observation_component": 1447,
    "source_document": 151,
-   "validation_record": 21582
+   "validation_record": 21621
   },
   "version": "v38",
   "warnings": [],

@@ -89,14 +89,15 @@ class Load(StoreTest):
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], staged_rows())
-        # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
+        # each total's scope is Account.total_scope: 13 agency totals, the title totals (Labor-HHS Title II; D-7: + 5
+        # CJS, + 5 Labor-HHS) and each subcommittee's bill total (D-7)
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
-                                                "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
+                                                "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 11, "bill": 2})
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (946, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request)
+                          cjs("confirmed_absence", "canonical_account_id")), (1331, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -580,8 +581,13 @@ class FactKey(StoreCopyTest):
             "SELECT DISTINCT o.component FROM appropriations_observation o JOIN account a USING (canonical_account_id) "
             "WHERE a.subcommittee = ?", (sub,))}
         # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's,
-        # but for NSF R&RA's defense line inside the paragraph's total (defense_inside, D-3)
-        self.assertEqual(used("CJS"), {None, "defense_inside"} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        # but for NSF R&RA's defense line inside the paragraph's total (defense_inside, D-3) and the summary lines its
+        # tables print under the bill and title totals (D-7: no mandatory or discretionary line in a CJS table)
+        cjs_summary = {"appropriations", "emergency_appropriations", "rescissions", "rescissions_emergency",
+                       "advance_appropriations_emergency", "excluding_other_appropriations"}
+        self.assertLessEqual(cjs_summary, set(accounts.SUMMARY_COMPONENTS))
+        self.assertEqual(used("CJS"), {None, "defense_inside"} | cjs_summary
+                         | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
         self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"} | set(accounts.PROPOSAL_COMPONENTS))
         # v33: the CURES Act money is its own account, no longer a component of NIH's total
         self.assertNotIn("CURES", used("LHHS"))
@@ -854,7 +860,7 @@ class Coverage(StoreCopyTest):
 
     def test_first_and_last_observed_years_and_unchecked_cells(self):
         rows = {r["canonical_account_id"]: r for r in self.rows()}
-        self.assertEqual(len(rows), 130)
+        self.assertEqual(len(rows), 142)                 # D-7: + 10 title totals, + 2 bill totals
         self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
         # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
         self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
@@ -1169,7 +1175,7 @@ class LoadRefuses(unittest.TestCase):
         db = Path(self.tmp.name) / "dates.db"
         with contextlib.redirect_stdout(io.StringIO()):
             report = S.load(self.mutate(add), db)
-        self.assertEqual(report["rows"]["account"], 130)
+        self.assertEqual(report["rows"]["account"], 142)
         conn = S.connect(db, readonly=True)
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()

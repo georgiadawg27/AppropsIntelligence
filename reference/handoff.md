@@ -1,5 +1,35 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-7: Printed summary lines (2026-10-14, this PR)
+
+The summary lines each held Labor-HHS and CJS report prints under its grand total and title totals, recorded as
+observations (no account figure or existing observation changed). Review items: `reference/review/accounting/review-D7.md`.
+
+- Reading: `summary_rows.py` reads the text layer of the 43 report PDFs in document_store/ (gitignored; fetched from
+  govinfo, H.Rept. 118-585 from congress.gov) into `summary_rows.csv`; the 15 scanned tables were read from page
+  images into `summary_rows_images.csv` (`--merge-images`). A row is used only where the table's own comparison
+  columns agree (one-column tables, 119SRPT44, 119SRPT55 and EXPL-LHHS-FY2026-ENACTED, are used as printed; 119HRPT272 and
+  119HRPT652 print two money columns and one comparison).
+- Recording: `d7_records.py --write` (idempotent): 12 new total accounts (CJS Titles I-V + bill; Labor-HHS Titles I,
+  III, IV, VI, VIII + bill; Title II's existing total reused). Bill totals have no title and no display_order. 1,261
+  observations (CJS 385, Labor-HHS 876), 43 equal ones already held; 18 components (accounts.SUMMARY_COMPONENTS:
+  'contained' lines inside the total, 'view' lines the total in another scope). Each document's table pages gain the
+  pages cited (33 documents). Per-line outcome and every line not recorded, with why: `summary_lines.csv`.
+- Checking: measure_reconcile section 4 (VAL-MRS-*): mandatory (total less its discretionary view), emergency
+  (designated-emergency components), advance (all advance lines against advance_enacted components), rescissions
+  (rescission lines). Discretionary lines go through section 2 as before. TITLES_HELD (in measure_reconcile, not the
+  rule file: config not edited) = Labor-HHS Title II only; any other title or bill line is "not checked: accounts
+  not held". 34 pass, 3 differ (emergency_line_untagged 2, advance_line_untagged 1), 223 not checked.
+- D-6 carry-over: the four CMS cells read inside (total_lines_inside.csv); CMS gap cells published 35 -> 39 of 41.
+  total_gaps.csv now also lists 8 CJS Title III cells (title totals exist now).
+
+Open:
+- 11 Labor-HHS cells have no bill total: those House reports print only the RECAP's 'Grand Total, current year'.
+- CJS Title III may be fully held (30 of 38 cells add up); owner to confirm before adding it to TITLES_HELD.
+- The 3 differences are untagged components (tag_components), for review.
+- The not-checked reason names the held count, not "N accounts not held" (the tables' account rows aren't read).
+- The decision card (title rows for titles not held) was not answered; title rows were added (the recommended option).
+
 ## D-6: Amount basis data fixes (2026-10-14, this PR)
 
 Published views only (site_accounting.py, ACCOUNTING_RULES.md, ui_contract); no headline or printed figure changed,

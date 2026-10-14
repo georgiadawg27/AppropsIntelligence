@@ -35,6 +35,7 @@ TITLE_RE = re.compile(r"^\s*Title\s+([IVXL]+)\b", re.I)
 def candidates(conn):
     out = []
     for a in conn.execute("SELECT canonical_account_id, canonical_name, agency FROM account WHERE title IS NULL "
+                          "AND ifnull(total_scope, '') <> 'bill' "                  # a bill total has no title (D-7)
                           "ORDER BY agency, canonical_account_id"):
         own, other, cites = OrderedDict(), OrderedDict(), []
         for o in conn.execute("SELECT observation_id, amount_type, amount, source_table_or_section FROM appropriations_observation "
