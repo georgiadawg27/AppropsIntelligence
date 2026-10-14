@@ -4196,7 +4196,10 @@ class Export(GridBrowser):
         col = next(i for i, h in enumerate(table[0]) if h.startswith("FY2020 Senate") and h.endswith("($K)"))
         hrsa = next(r for r in table[1:] if r[3] == "ACC-HHS-HRSA-TOTAL")
         self.assertEqual(hrsa[col], "Not reported")
-        self.assertTrue(all(r[col] == "Not reported" for r in table[1:]), "the committee reported no FY2020 bill")
+        # D-7: Labor-HHS Titles VI and VIII are printed in other years only, so FY2020 is outside their life
+        self.assertTrue(all(r[col] == "Not reported" for r in table[1:]
+                            if r[3] not in ("ACC-LHHS-TITLE-VI-TOTAL", "ACC-LHHS-TITLE-VIII-TOTAL")),
+                        "the committee reported no FY2020 bill")
 
     def test_millions_round_as_the_screen(self):
         self.go(f"?sc=LHHS&fy=2026&units=m&open=ACC-HHS-NIH-TOTAL")
