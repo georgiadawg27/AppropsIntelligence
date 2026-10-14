@@ -31,6 +31,9 @@ that answers the same questions as approps_web.py without a server.
   - Writes docs/data/whats_new.json: approps_web.whats_new() (the live
     /api/whats-new answer), every source document with the date it was
     retrieved into the record, newest first, for the page's "What's new".
+  - Writes docs/data/documents.json: approps_web.documents() (the live
+    /api/documents answer), every source document's id, short name and
+    address, for the page's source links (brief UI-8).
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map), web/documents.js (the display-only
@@ -194,6 +197,7 @@ def export(workbook, out, download=True):
         names = listing["subcommittees"]
         dump(listing, out / "data" / "subcommittees.json")
         dump(W.whats_new(str(db)), out / "data" / "whats_new.json")
+        dump(W.documents(str(db)), out / "data" / "documents.json")
         split = []
         for name in names:
             g = W.subcommittee(str(db), name)

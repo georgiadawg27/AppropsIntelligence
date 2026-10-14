@@ -33,10 +33,14 @@ API
   GET /api/whats-new
       -> approps_store.whats_new(): every source document with the date it was retrieved into the record,
          newest first (the page's "What's new"; the export writes the same answer to data/whats_new.json)
+  GET /api/documents
+      -> approps_store.documents(): every source document's id, short name (web/documents.js) and address, for
+         the page's source links (the export writes the same answer to data/documents.json)
 """
 
 import argparse
 import json
+import re
 import sys
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -100,6 +104,20 @@ def subcommittee(db, name):
         conn.close()
 
 
+def document_names():
+    """web/documents.js's short names ({source_document_id: name}): the page's display-only map, read as written."""
+    text = (PAGE.parent / "documents.js").read_text()
+    return {k: json.loads(f'"{v}"') for k, v in re.findall(r'^\s*"([^"]+)":\s*"((?:[^"\\]|\\.)*)",?\s*$', text, re.M)}
+
+
+def documents(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.documents(conn, document_names())
+    finally:
+        conn.close()
+
+
 def whats_new(db):
     conn = S.connect(db, readonly=True)
     try:
@@ -121,6 +139,7 @@ def payloads(db):
     listing = subcommittees(db)
     out["subcommittees.json"] = listing
     out["whats_new.json"] = whats_new(db)
+    out["documents.json"] = documents(db)
     for name in listing["subcommittees"]:
         out[f"subcommittees/{name}.json"] = subcommittee(db, name)
     for a in pool:
@@ -192,6 +211,8 @@ def make_handler(db):
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
                 if url.path == "/api/whats-new":
                     return self.json(HTTPStatus.OK, whats_new(db))
+                if url.path == "/api/documents":
+                    return self.json(HTTPStatus.OK, documents(db))
                 if url.path == "/api/subcommittees":
                     return self.json(HTTPStatus.OK, subcommittees(db))
                 if url.path.startswith("/api/subcommittee/"):
