@@ -24,9 +24,11 @@ that add up to the gap exactly (`explains` yes). Blank: no held line explains it
 | ASPR (LHHS) | 2 | 0 | not named (FY2024 request $400,000,000, FY2024 Senate $75,000,000) |
 | HRSA (LHHS) | 1 | 1 | FY2017 Enacted: a $15,000,000 MCH line from another law (P.L. 114-254 p.18) |
 
-Decision for each: whether the held lines that explain a gap (supplemental, the Medicaid advance) should count in
-the sum on a basis (as a component of the account, or a line of the total), or the account the table counts should
-be held; until then the cells stay not computable.
+Owner, D-6 round 2 (2026-10-14): where held lines explain the gap exactly, they count in the total's sum (each as
+its basis counts it; ACCOUNTING_RULES 'Totals') and the total is published: 56 cells (`published` yes: NASA 5, NSF
+7, CMS 39, ACF 1, HRSA 1, SAMHSA 1 -- 2 CJS totals and 42 LHHS cells in all). Still not computable, for review (40
+cells, `published` no): ACF 13, OS 10, NIH 8, CDC 5, ASPR 2, CMS 2 (FY2021 House and Senate: $1,000 over the
+advance), SAMHSA 2 (FY2026 and FY2027 requests). Each needs the table read for the line we don't hold.
 
 ## Notes
 

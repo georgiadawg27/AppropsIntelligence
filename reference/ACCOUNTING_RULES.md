@@ -152,12 +152,23 @@ where a line is (named, with its reason), where a line has no figure, or where t
 the printed total -- the money is in no account held, so their sum is not the total
 (`reference/review/accounting/total_gaps.csv`). As printed is always the printed total.
 
+Held lines (owner, D-6 round 2): where the table prints a line inside the total that we hold beside an account's
+headline (a supplemental, Medicaid's advance for next year, NSF's request 'Defense function' line, a program line
+printed under the account, a rescission), the fewest of those lines that make the accounts' As printed sum equal the
+printed total exactly count in the total's sum, and the total is published (computed; the reason names the lines).
+On a basis each line counts as its basis would count it: out with its account when the basis leaves the account
+out; a line matching a component the basis decides by itself (an advance by timing, a transfer in) is in the
+account's view where the basis counts it and never added twice; a designated line (a supplemental) is out of
+Discretionary; a defense line out of Nondefense, an earmark out of excluding earmarks; any other line counts as
+printed. A total still short stays not computable.
+
 ### Adjustments (D-6)
 
 Every published view entry with an amount lists `adjustments`: what turns the As printed figure into it. An
 account's: one item per component the view takes out (sign -) or adds (sign +), with its id, type, label, amount
 and source document and page. A total's: grouped by component type and sign, with the accounts behind each, plus
-the accounts the basis leaves out (their As printed figure, sign -). As printed + the adjustments = the amount,
+the accounts the basis leaves out (their As printed figure, sign -), and the held lines the basis doesn't count
+separately (sign -). As printed + the adjustments = the amount,
 exactly (tests/test_site_data.py checks every entry). An entry equal to As printed has an empty list.
 
 ## Defaults (the owner's decisions)

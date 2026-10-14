@@ -420,7 +420,10 @@ class AccountingLayer(unittest.TestCase):
         # measure_reconcile matched; not computable only where a line is, or has no figure, or the lines as printed
         # don't add up to the printed total
         import site_accounting as SA
+        import csv
         rows = {sc: {r["account"]["canonical_account_id"]: r for r in grid_rows(g)} for sc, g in self.grids.items()}
+        published = {(r["total"], f"{r['fiscal_year']}|{r['stage']}"): r["published"] for r in
+                     csv.DictReader((ROOT / "reference" / "review" / "accounting" / "total_gaps.csv").open())}
         seen = collections.Counter()
         for sc, row, key, cell in self.cells():
             if not row["rollup"] or "views" not in cell:
@@ -453,10 +456,17 @@ class AccountingLayer(unittest.TestCase):
                             self.assertEqual(self.records[e["validation_id"]]["result"], "pass")
                             seen["kept"] += 1
                             continue
-                        self.assertFalse(gap, (row["account"]["canonical_account_id"], key, field, basis))
                         self.assertTrue(all(x["status"] in ("checked", "computed", "excluded") for x in mine))
-                        self.assertEqual(e["amount"], sum(x["amount"] for x in mine if x["status"] != "excluded"),
-                                         (row["account"]["canonical_account_id"], key, field, basis, e["timing"]))
+                        accounts = sum(x["amount"] for x in mine if x["status"] != "excluded")
+                        if gap:
+                            # owner, D-6 round 2: lines the table prints inside the total, held beside an account's
+                            # headline, count in the sum where they make it the printed total exactly
+                            self.assertEqual(published[(row["account"]["canonical_account_id"], key)], "yes")
+                            self.assertIn("the table prints inside the total", e["reason"])
+                            seen["with_lines"] += 1
+                        else:
+                            self.assertEqual(e["amount"], accounts,
+                                             (row["account"]["canonical_account_id"], key, field, basis, e["timing"]))
                         self.assertTrue(e["reason"].startswith("sum of "), e["reason"])
                         left = sum(1 for x in mine if x["status"] == "excluded")
                         if left:
@@ -467,6 +477,7 @@ class AccountingLayer(unittest.TestCase):
         self.assertGreater(seen["computed"], 3000)
         self.assertGreater(seen["checked"], 100)
         self.assertGreater(seen["kept"], 10)
+        self.assertGreater(seen["with_lines"], 500)
 
     def test_gap_totals_are_listed_for_review(self):
         # owner, 2026-10-14: a total whose accounts as printed don't add up to it is not computable (As printed keeps
@@ -484,8 +495,12 @@ class AccountingLayer(unittest.TestCase):
                 self.assertEqual(int(r["printed_total"]), cell["views"]["printed"][0]["amount"])
                 self.assertEqual(int(r["printed_total"]) - int(r["sum_held"]), int(r["gap"]))
                 self.assertIn(f"not the printed ${int(r['printed_total']):,}", e["reason"])
-        self.assertEqual(found, set(listed))
-        self.assertGreater(len(found), 50)
+        # the cells whose held lines make the sum the printed total are published (test_totals_are_the_sum_of_their_
+        # lines); the rest stay not computable
+        self.assertEqual(found, {k for k, r in listed.items() if r["published"] == "no"})
+        self.assertEqual({r["published"] for r in listed.values()}, {"yes", "no"})
+        self.assertTrue(all(r["explains"] == "yes" for r in listed.values() if r["published"] == "yes"))
+        self.assertGreater(len(found), 30)
 
     def test_every_component_is_in_staged(self):
         n = 0
@@ -745,7 +760,9 @@ class AccountingLayer(unittest.TestCase):
                                 n["component"] += 1
                             else:
                                 self.assertTrue(row["rollup"])
-                                if x["type"] not in ("printed_total",):
+                                if x["type"] == "held_line_not_counted":
+                                    self.assertEqual(x["amount"], abs(sum(l["amount"] for l in x["lines"])))
+                                elif x["type"] != "printed_total":
                                     self.assertEqual(x["amount"], sum(a["amount"] for a in x["accounts"]))
                                 n[x["type"] if x["type"] in ("left_out_by_basis", "printed_total") else "group"] += 1
                         n["entries"] += 1
@@ -765,6 +782,11 @@ class AccountingLayer(unittest.TestCase):
         self.assertEqual([(x["sign"], x["amount"], x["type"]) for x in e["adjustments"]],
                          [("-", 118_800_000, "defense_portion")])
         self.assertEqual(e["amount"], 7_057_700_000)
+        # CMS FY2024 Enacted (D-6 round 2): Medicaid's advance for FY2025, printed inside the total, held beside its
+        # headline; advances when enacted the sum is the printed total, when available the prior year's advance instead
+        cms = rows["ACC-HHS-CMS-TOTAL"]["cells"]["2024|Enacted"]["views"]["all_appropriations"]
+        self.assertEqual({e["timing"]: e["amount"] for e in cms},
+                         {"available": 1_085_847_068_000, "enacted": 1_133_847_008_000})
         e = rows["ACC-HHS-HRSA-TOTAL"]["cells"]["2025|President's Budget"]["views_excluding_earmarks"]["all_appropriations"][0]
         self.assertEqual((e["status"], e["amount"]), ("computed", 8_530_564_000))
 

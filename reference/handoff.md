@@ -22,11 +22,14 @@ data/staged.json unchanged (measure_reconcile --ci clean; workbook digest unchan
   (`test_adjustments_turn_as_printed_into_every_entry`). 195 entries equal As printed keep a non-empty list: offsetting
   adjustments (an advance in and an advance out).
 - Part 4: ui_contract v7, `basis_adjustments` (true in the export). The page does not read it yet.
+- Round 2 (owner, 2026-10-14): held lines that explain a gap count in the total's sum (`held_lines`, `line_counts`);
+  56 of the 96 gap cells are published, 40 stay not computable (`total_gaps.csv` column `published`). Accepted: the
+  non-empty offsetting adjustment lists; AHRQ, ACL and AHA as one line each. The "not checked" page label goes to UI-8
+  (page left alone).
 
 Open:
-- The page still says "not checked (n accounts)" for a not computable total (it keys on accounts_behind); the reason
-  on hover says why. A page change for the new wording is a UI brief.
-- review-D6.md: the 96 gap cells (decide whether held supplemental / advance lines count in a total's sum).
+- The page still says "not checked (n accounts)" for a not computable total (it keys on accounts_behind): UI-8.
+- review-D6.md: the 40 gap cells no held line explains (the table's line we don't hold).
 - Title II: General Provisions rescission lines have no published view (not BA headlines), so the title sum is not
   computable where they print.
 

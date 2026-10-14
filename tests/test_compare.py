@@ -3279,14 +3279,14 @@ class ExcludeEarmarks(GridBrowser):
         self.go("?sc=CJS&fy=2026&cols=nondefense&open=ACC-NSF-TOTAL")
         self.assertEqual(self.page.inner_text("tr[data-account=ACC-NSF-TOTAL] [data-testid=nondefense-cell]").strip(),
                          "8,631,200")
-        # a not computable view (NASA's FY2025 Enacted total: its accounts as printed don't add up to it -- the
-        # supplemental lines are in no account's headline): empty, the reason on hover
-        nasa = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == "ACC-NASA-TOTAL")
-        e = view_entry_of(nasa, 2025, "Enacted", "printed", None, "views_nondefense")
+        # a not computable view (NIH's FY2022 Enacted total: its accounts as printed don't add up to it, and no held
+        # line explains the difference): empty, the reason on hover
+        nih = self.lrow("ACC-HHS-NIH-TOTAL")
+        e = view_entry_of(nih, 2022, "Enacted", "printed", None, "views_nondefense")
         self.assertEqual(e["status"], "not_computable")
         self.assertIn("is in no account held", e["reason"])
-        self.go("?sc=CJS&fy=2025&cols=nondefense&open=ACC-NASA-TOTAL")
-        nd = self.page.locator("tr[data-account=ACC-NASA-TOTAL] [data-testid=nondefense-cell]")
+        self.go("?sc=LHHS&fy=2022&cols=nondefense&open=ACC-HHS-NIH-TOTAL")
+        nd = self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=nondefense-cell]")
         self.assertEqual(nd.inner_text().strip(), "")
         self.assertEqual(nd.get_attribute("data-view"), "not_computable")
         self.assertIn(e["reason"], nd.get_attribute("title"))
