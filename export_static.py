@@ -31,8 +31,9 @@ that answers the same questions as approps_web.py without a server.
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map), web/documents.js (the display-only
-    document short names), web/fonts/ (IBM Plex Sans, SIL OFL) and web/brand/
-    (the logo set and favicons).
+    document short names), web/write-excel-file.min.js and its licence (the
+    Excel writer the page's Export loads on demand; not the published workbook),
+    web/fonts/ (IBM Plex Sans, SIL OFL) and web/brand/ (the logo set and favicons).
   - With --publish-workbook (CI's export job on main, the only writer of
     this file), publishes the built workbook as
     docs/Approps_Pilot_Schema_Loaded.xlsx (the page's "Download workbook"
