@@ -9,30 +9,35 @@ table_lines.csv), and gives the same records every run.
     python scripts/tag_components.py --ci         # fail when data/staged.json is not up to date with this
     python scripts/tag_components.py --report X   # every tag and every untagged component-like phrase as CSV
 
+This is the core: the general rules only. What is true of one subcommittee's documents or accounts lives in its
+rule file, reference/rules/<CODE>.py, called at the hook points rules_registry.HOOKS names (phrase, list_item,
+past_window, transfer_source, not_component, line, table_line, components, extract, advances, carry_forward).
+
+Which cells are read (coverage(), G-1: from the data, not a list): every (subcommittee, fiscal year, stage) whose
+bill or law text is committed (data/legislative_text/, the document its Bill Report Reference names), every
+Enacted cell under a full-year CR (Bill Report Reference funding_type full_year_cr: its components continue from
+the year before), and each President's Budget account whose request language was read from the Appendix extract
+(reference/review/accounting/request_language.json).
+
 Six sources, in this order (a later one never records money an earlier one already holds for the headline):
 
   retagged         lines we already hold that act as components of their headline (the same account, year and
                    stage): a supplemental '(emergency)' line -> designated/emergency; a separate supplemental act's
-                   line -> other_law; the NSF defense line -> defense_portion; Medicaid's new advance ->
-                   advance_enacted and its prior-year advance -> advance_available; HRSA's congressionally
-                   directed spending -> earmark (inside the headline); ONC's 'Evaluation Tap Funding' (recorded as
-                   a program_level line) -> transfer_in from section 241; the CJS FY2027 transfers and offsetting
-                   collections -> transfer_in / transfer_out / fees_offsets. The line keeps its ID; the component
-                   names it (source_observation_id).
-  table_line       a line the headline's own table prints inside it, read for this (table_lines.csv): VICTF's
-                   'HRSA Administrative expenses' -> trust_fund_limitation, its 'Post-FY 1988 Claims' ->
-                   mandatory_portion (phase 2)
-  mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2): PSSF's section 436
-                   amount (auto_text from the bill or law text; appendix_text from the request's language) and
-                   EEOICP (report_text: the report states the program's funds are mandatory) -> mandatory_portion
-  auto_text        AUTO_CELLS: the pilot (Labor-HHS FY2024-FY2026 and CJS FY2026), the component backfill (Labor-HHS
-                   and CJS FY2017-FY2023), House, Senate and Enacted, and FY2027 House (D-1): each amount in
-                   the headline's own bill or law paragraph, read by the phrase rules below
-  carried_forward  Labor-HHS FY2025 Enacted (the full-year CR, P.L. 119-4): the FY2024 Enacted components continue,
-                   except what an anomaly naming the account changes (CR_ANOMALIES) or the CR ends (earmarks, sec. 1111)
-  advances         Child Support, Foster Care and Medicaid, every year and stage (component backfill): the request's
-                   advance from FY N's Appendix language (advance_lines.csv, appendix_text) and, on every headline,
-                   the advance an earlier law appropriated for this year -> advance_available (advances() below)
+                   line -> other_law; the table's new advance -> advance_enacted and its prior-year advance ->
+                   advance_available; congressionally directed spending -> earmark (inside the headline); and the
+                   rule files' line rules (hook 'line'). The line keeps its ID; the component names it
+                   (source_observation_id).
+  table_line       a line the headline's own table prints inside it, read for this (table_lines.csv): the CDS line
+                   beside the account line -> earmark; other lines by the rule files (hook 'table_line'); and the
+                   rule files' own sources (hook 'components')
+  mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2) -> mandatory_portion
+  auto_text        the covered cells: each amount in the headline's own bill or law paragraph, read by the phrase
+                   rules below and the rule files' (appendix_text: the President's Budget request language)
+  carried_forward  an Enacted cell under a full-year CR: the year before's Enacted components continue, except what
+                   an anomaly naming the account changes (hook 'carry_forward') or the CR ends (CR_LAWS)
+  advances         the accounts a rule file names as appropriating the next year's first-quarter advance (hook
+                   'advances'), every year and stage: the request's advance (advance_lines.csv, appendix_text) and,
+                   on every headline, the advance an earlier law appropriated for this year -> advance_available
 
 A component is never fitted to a figure: its amount is printed in the text or the table. Only in_headline -- is
 the money inside the printed headline or beside it -- is decided by arithmetic for an auto_text component: the
@@ -56,36 +61,25 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import accounting as AC  # noqa: E402
 import check_legislative_text as CT  # noqa: E402
+import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
+import paths  # noqa: E402
+import rules_registry as R  # noqa: E402
 
-TABLE_LINES = ROOT / "reference" / "review" / "accounting" / "table_lines.csv"
-PPHF_TABLE = ROOT / "reference" / "review" / "accounting" / "pphf_table.csv"
-MANDATORY_LINES = ROOT / "reference" / "review" / "accounting" / "mandatory_lines.csv"
-ADVANCE_LINES = ROOT / "reference" / "review" / "accounting" / "advance_lines.csv"
+ACCOUNTING = paths.accounting_dir()
+TABLE_LINES = ACCOUNTING / "table_lines.csv"
+MANDATORY_LINES = ACCOUNTING / "mandatory_lines.csv"
+ADVANCE_LINES = ACCOUNTING / "advance_lines.csv"
 # supplemental lines the headline's own table prints inside it (D-2): line -> headline, with the printed arithmetic
-INSIDE_LINES = ROOT / "reference" / "review" / "accounting" / "inside_lines.csv"
-# the accounts that appropriate an advance for the next year's first quarter (owner, component backfill)
-ADVANCE_ACCOUNTS = ("ACC-HHS-ACF-CHILD-SUPPORT", "ACC-HHS-ACF-FOSTER-CARE", "ACC-HHS-CMS-MEDICAID")
-PPHF = "the Prevention and Public Health Fund (section 4002 of the PPACA)"
+INSIDE_LINES = ACCOUNTING / "inside_lines.csv"
 TEXT_STAGES = ("House Reported", "Senate Reported", "Enacted")
-PILOT = {("LHHS", fy, st) for fy in (2024, 2025, 2026) for st in TEXT_STAGES} | {("CJS", 2026, st) for st in TEXT_STAGES}
-# The component backfill (owner, 2026-10-12): the same phrase rules over Labor-HHS and CJS FY2017-FY2023, every stage
-# whose bill or law text we hold. AUTO_CELLS are the cells auto_text reads and measure_reconcile checks in full.
-BACKFILL = {(sc, fy, st) for sc in ("LHHS", "CJS") for fy in range(2017, 2024) for st in TEXT_STAGES}
-# FY2027 House (owner, D-1 follow-up, 2026-10-12): the reported bills' text is held (H.R. 9260 Labor-HHS, H.R. 8845
-# CJS). FY2027 Senate and Enacted hold no figures.
-FY2027_HOUSE = {("LHHS", 2027, "House Reported"), ("CJS", 2027, "House Reported")}
-# CJS FY2024-FY2025 (D-2 item 6; owner, #62): the bill and law text is committed for FY2024 House (H.R. 5893), Senate
-# (S. 2321) and Enacted (P.L. 118-42 div. C), and FY2025 House (H.R. 9026) and Senate (S. 4795); FY2025 Enacted is the
-# full-year CR (P.L. 119-4), its components continued from FY2024 (carry_forward, CR_CELLS).
-CJS_2024_2025 = {("CJS", fy, st) for fy in (2024, 2025) for st in TEXT_STAGES}
-AUTO_CELLS = PILOT | BACKFILL | FY2027_HOUSE | CJS_2024_2025
 # The President's Budget (D-2): each held account's proposed language in FY N's Budget Appendix, read by
 # reference/review/accounting/request_language.py; an account whose language was read is read for components
 # (appendix_text) like an auto-tagged cell, account by account. 'not found' stays outside, with its reason.
-REQUEST_LANGUAGE = ROOT / "reference" / "review" / "accounting" / "request_language.json"
+REQUEST_LANGUAGE = ACCOUNTING / "request_language.json"
 REQUEST_STAGE = "President's Budget"
 _REQUEST = {}
+_COVERAGE = {}
 
 
 def request_language():
@@ -96,10 +90,47 @@ def request_language():
     return _REQUEST
 
 
+def text_cells(data, text_dir=None):
+    """Every (subcommittee, fiscal year, stage) whose bill or law text is committed: the document its Bill Report
+    Reference names (legislative_text.required_documents) has a text file."""
+    text_dir = Path(text_dir or L.TEXT_DIR)
+    held = {p.stem for p in text_dir.glob("*.json") if p.name != "exemptions.json"}
+    reqs, _ = L.required_documents(data)
+    refs = {r["reference_id"]: r for r in data["bill_report_refs"]}
+    return {(refs[ref]["subcommittee"], int(refs[ref]["fiscal_year"]), refs[ref]["stage"])
+            for doc, r in reqs.items() if doc in held for ref in r["references"]}
+
+
+def cr_laws(data):
+    """{(subcommittee, fiscal_year): the law} for every Enacted cell under a full-year CR (Bill Report Reference
+    funding_type full_year_cr): its components continue from the year before (carry_forward)."""
+    return {(r["subcommittee"], int(r["fiscal_year"])): r.get("bill_id") or "" for r in data["bill_report_refs"]
+            if r["stage"] == "Enacted" and r.get("funding_type") == "full_year_cr"}
+
+
+def coverage(data=None):
+    """-> (auto cells, CR cells): the cells read for components, from the data (G-1). data None: data/staged.json
+    (paths.staged()), read once."""
+    if data is None:
+        if "default" not in _COVERAGE:
+            _COVERAGE["default"] = coverage(json.loads(paths.staged().read_text()))
+        return _COVERAGE["default"]
+    cr = {(sc, fy, "Enacted") for sc, fy in cr_laws(data)}
+    return text_cells(data) | cr, cr
+
+
+def auto_cells(data=None):
+    return coverage(data)[0]
+
+
+def cr_cells(data=None):
+    return coverage(data)[1]
+
+
 def covered(account, subcommittee, fiscal_year, stage):
     """Was the account's headline in this cell read for components: an auto-tagged cell, or a President's Budget
     account whose request language was read."""
-    if (subcommittee, int(fiscal_year), stage) in AUTO_CELLS:
+    if (subcommittee, int(fiscal_year), stage) in auto_cells():
         return True
     if stage == REQUEST_STAGE:
         r = request_language().get((account, int(fiscal_year)))
@@ -115,66 +146,18 @@ def not_covered_reason(account, fiscal_year, stage):
             return f"request language not found: {r['reason']}"
         return "no request language read for the account"
     return "outside the auto-tagged cells"
-CR_YEAR = ("LHHS", 2025, "Enacted")
-# every FY2025 Enacted cell under the full-year CR whose FY2024 components continue (CJS: D-2 item 6)
-CR_CELLS = {("LHHS", 2025, "Enacted"), ("CJS", 2025, "Enacted")}
-# anomalies that name a held account but set only its level, changing none of its components (P.L. 119-4 div. A
-# title III): each component continues, and the carry-forward list says so
-CR_LEVEL_ONLY = {
-    "ACC-NOAA-ORF": "P.L. 119-4 div. A sec. 1301(3) sets the level, $4,408,986,000 for 'Department of Commerce--National "
-                    "Oceanic and Atmospheric Administration--Operations, Research and Facilities', and names no component",
-    "ACC-NASA-SAFETY-SECURITY": "P.L. 119-4 div. A sec. 1301(6) sets the level, $3,092,327,000 for 'National Aeronautics "
-                                "and Space Administration--Safety, Security and Mission Services', and names no component",
+
+
+# A full-year CR, by the law that enacts it (a general rule: it holds for every subcommittee the law covers). The
+# year before's Enacted components continue (sec. 1101); every earmark ends (sec. 1111). An anomaly that names an
+# account is the account's subcommittee's rule (hook 'carry_forward').
+CR_LAWS = {
+    "P.L.119-4": {
+        "source": "SRC-PLAW-119PUBL4", "label": "P.L. 119-4",
+        "continues": "FY2025 full-year CR (P.L. 119-4 div. A sec. 1101: FY2024 levels, authority and conditions)",
+        "earmarks_end": "P.L. 119-4 div. A sec. 1111: FY2024 earmark language has no legal effect for FY2025",
+    },
 }
-# P.L. 119-4 div. A (the FY2025 full-year CR) anomalies that name an account we hold -> (the section, the
-# components its text changes, the components its text states in their place). Every other component of the account
-# continues from FY2024 (owner, 2026-10-11). Where the anomaly states the new amount, a new FY2025 component is
-# recorded from its text (tag_method cr_anomaly); a changed component is dropped with nothing in its place only when
-# the anomaly ends the item (CDS to $0; sec. 1111 for every earmark). A selector is a component type, or
-# (type, designation). A stated component: (type, designation, amount, in_headline, the anomaly's words, within:
-# the type of the stated component it is part of).
-CR_SOURCE = "SRC-PLAW-119PUBL4"
-CR_ANOMALIES = {
-    "ACC-HHS-CMS-MEDICAID": ("P.L. 119-4 div. A sec. 1109(b)(2)", ("advance_enacted",), [
-        ("advance_enacted", "", 261063820000, "FALSE",
-         "the following amounts shall be available for the following accounts for advance payments for the first "
-         "quarter of fiscal year 2026: ... (2) \u201cDepartment of Health and Human Services\u2014Centers for "
-         "Medicare & Medicaid Services\u2014Grants to States for Medicaid\u201d, ... $261,063,820,000", None)]),
-    "ACC-HHS-ACF-CHILD-SUPPORT": ("P.L. 119-4 div. A sec. 1109(b)(3)", ("advance_enacted",), [
-        ("advance_enacted", "", 1600000000, "TRUE",
-         "the following amounts shall be available for the following accounts for advance payments for the first "
-         "quarter of fiscal year 2026: ... (3) \u201cDepartment of Health and Human Services\u2014Administration "
-         "for Children and Families\u2014Payments to States for Child Support Enforcement and Family Support "
-         "Programs\u201d, ... $1,600,000,000", None)]),
-    "ACC-HHS-ACF-FOSTER-CARE": ("P.L. 119-4 div. A sec. 1109(b)(4)", ("advance_enacted",), [
-        ("advance_enacted", "", 3600000000, "TRUE",
-         "the following amounts shall be available for the following accounts for advance payments for the first "
-         "quarter of fiscal year 2026: ... (4) \u201cDepartment of Health and Human Services\u2014Administration "
-         "for Children and Families\u2014Payments for Foster Care and Permanency\u201d, ... $3,600,000,000", None)]),
-    "ACC-HHS-CMS-HCFAC": ("P.L. 119-4 div. A sec. 1902(b)", ("trust_fund_limitation", ("designated", "cap_adjustment")), [
-        ("trust_fund_limitation", "", 941000000, "TRUE",
-         "Notwithstanding section 1101, the level for \u201cDepartment of Health and Human Services\u2014Centers "
-         "for Medicare & Medicaid Services\u2014Health Care Fraud and Abuse Control Account\u201d shall be "
-         "$941,000,000", None),
-        ("designated", "cap_adjustment", 630000000, "TRUE",
-         "of the funds made available by section 1101 under such heading, $630,000,000 is additional new budget "
-         "authority specified for purposes of section 251(b)(2)(C) of the Balanced Budget and Emergency Deficit "
-         "Control Act of 1985", "trust_fund_limitation")]),
-    "ACC-HHS-HRSA-HEALTH-SYSTEMS": ("P.L. 119-4 div. A sec. 1904 (OPTN registration fees credited to the account)",
-                                    ("fees_offsets",), []),
-    "ACC-HHS-NIH-CURES": ("P.L. 119-4 div. A sec. 1905", (("designated", "other"),), [
-        ("designated", "other", 127000000, "TRUE",
-         "the level for \u201cDepartment of Health and Human Services\u2014National Institutes of Health\u2014NIH "
-         "Innovation Account, CURES Act\u201d shall be applied by substituting \u201c$127,000,000\u201d for "
-         "\u201c$407,000,000\u201d", None)]),
-    "ACC-HHS-HRSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(2) (CDS $890,788,000 -> $0)", ("earmark",), []),
-    "ACC-HHS-SAMHSA-PROGRAM-SUPPORT": ("P.L. 119-4 div. A sec. 1908(3) (CDS $72,090,000 -> $0)", ("earmark",), []),
-    "ACC-HHS-ACF-CFSP": ("P.L. 119-4 div. A sec. 1908(4) (CDS $40,011,000 -> $0)", ("earmark",), []),
-}
-# P.L. 119-4 div. A sec. 1906: the FY2025 Fund transferred "in the amounts specified ... in subsection (a) of section
-# 222 of division D of Public Law 118-47" -- the FY2024 allocation, continued
-CR_PPHF = "P.L. 119-4 div. A sec. 1906: the FY2024 Prevention and Public Health Fund allocation (P.L. 118-47 div. D sec. 222(a))"
-CR_EARMARKS = "P.L. 119-4 div. A sec. 1111: FY2024 earmark language has no legal effect for FY2025"
 
 # ------------------------------------------------------------------------------------------------ phrase rules
 
@@ -184,7 +167,7 @@ EMERGENCY = re.compile(r"designated by the Congress as (?:being )?for an emergen
 ADVANCE_BEFORE = re.compile(r"first quarter of fiscal year \d{4},?\s*$", re.I)
 ADVANCE_AFTER = re.compile(r"^\s*,?\s*(?:to remain available until expended,? )?(?:which )?shall become available on "
                            r"October 1", re.I)
-TRANSFER = re.compile(r"derived by transfer|available under section 241|from (?:amounts|funds) made available under"
+TRANSFER = re.compile(r"derived by transfer|from (?:amounts|funds) made available under"
                       r"|from (?:amounts|funds) made ava[\w ]*$", re.I)
 FROM_MADE_AVAILABLE = re.compile(r"from (?:amounts|funds) made ava\w*(?:\s+under)?", re.I)
 THIS_HEADING = re.compile(r"from (?:amounts|funds) made available (?:under|in) this (?:heading|Act)", re.I)
@@ -193,90 +176,37 @@ THIS_HEADING = re.compile(r"from (?:amounts|funds) made available (?:under|in) t
 # inside the fund's name
 TRUST_TRANSFER = re.compile(r"transferred (?:in appropriate part )?from(?: the)?(?: Fed| [^$;:]{0,80}Trust Funds?|\s*$)",
                             re.I)
-CAP_ADJUSTMENT = re.compile(r"is additional new budget authority specified for purposes of section 251\(b\)\(2\)\(C\)",
-                            re.I)
-CURES = re.compile(r"section 1001\(b\)\(4\) of the 21st Century Cures Act", re.I)
-PRIF = re.compile(r"from the 10-year Pediatric Research Initiative Fund", re.I)
 TO_OIG = re.compile(r"transferred to and merged with the appropriation for the\W{0,3}Office of Inspector General", re.I)
-# an evaluation tap worded 'in addition to amounts provided herein, $X is available to this appropriation, for the
-# purposes under this heading, from amounts provided pursuant to section 241' (S. 3062, CDC FY2022 Senate; D-1). The
-# held phrase window may end inside 'pursuant', so the source is named only when '241' is printed in it.
-# 'of the amounts made available under this heading, up to $1,000,000 from amounts made available for Quarantine
-# appropriations shall remain available until expended' (CDC Emerging and Zoonotic, FY2026 on): the availability of
-# the heading's own money, not a transfer (owner, D-1)
-QUARANTINE = re.compile(r"^\W*from amounts made available for Quarantine", re.I)
-EVAL_TAP = re.compile(r"^\W*(?:is|shall be) available to this appropriation\b[^$;:]{0,80}?\bfrom (?:amounts|funds) prov\w*", re.I)
-# phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported
+# phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported. The rule
+# files add their own (hook 'not_component').
 NOT_COMPONENT = [
     ("set-aside", re.compile(r"shall be for Indian tribes|amounts required to be reserved|set[- ]aside", re.I), "both"),
     ("sub-allocation", re.compile(r"(?:not|no) less than\s*$|of (?:such|that|the) amounts?[^$]{0,60}?:\s*\(\d+\)\s*$", re.I),
      "before"),
-    ("availability", QUARANTINE, "after"),
     ("program table", re.compile(r"for the purposes and in the amounts specified in the table", re.I), "after"),
     ("sub-allocation", THIS_HEADING, "after"),
-    # 'of the amounts provided under this heading from amounts available under section 241 of the PHS Act, $6,800,000
-    # shall be available to carry out evaluations' (OS-GDM): part of the heading's section 241 amount, already tagged
-    # with it (D-1)
-    ("sub-allocation", re.compile(r"of the amounts provided under this heading from amounts available under section "
-                                  r"241\b[^$]*$", re.I), "before"),
-    ("cap-adjustment base", re.compile(r"is provided to meet the terms of section 251\(b\)\(2\)\(C\)\(ii\)", re.I),
-     "after"),
 ]
-# D-3b: a section 241 amount whose source is named past the phrase window, 'in addition to amounts provided under
-# this heading, $100,000,000 shall be available for implementation of the Community Violence Intervention initiative
-# from amounts made available under section 241 of the PHS Act' (CDC Injury Prevention, FY2025 request, Budget
-# Appendix p.405). Only this wording is read on into the paragraph's text (no other phrase is widened); never PPHF.
-PAST_WINDOW_241 = re.compile(r"^\W*shall be available for [^$;:]{0,120}?\bfrom amounts made available under section "
-                             r"241 of the PHS Act\b", re.I)
 NOT_TO_EXCEED = re.compile(r"not to exceed\s*$", re.I)
 TRUST_FUND = re.compile(r"trust fund", re.I)
-# a phrase that looks like a component though no rule above tags it (reported, never tagged)
+# a phrase that looks like a component though no rule tags it (reported for review, never tagged); a rule file adds
+# its subcommittee's words (hook 'looks_like')
 LOOKS_LIKE = re.compile(r"transfer|trust fund|designated|rescind|offsetting|collections|fees|advance|"
-                        r"Prevention and Public Health Fund|Nonrecurring|in addition|derived from|section 241|"
-                        r"first quarter|October 1|emergency|limitation", re.I)
+                        r"Nonrecurring|in addition|derived from|first quarter|October 1|emergency|limitation", re.I)
+
+
+def looks_like(text, ctx):
+    if LOOKS_LIKE.search(text):
+        return True
+    pattern = R.active().data("looks_like", ctx.subcommittee, ctx.account, ctx.fiscal_year, ctx.stage).get("pattern")
+    return bool(pattern and re.search(pattern, text, re.I))
 NUMBER = re.compile(r"\$[\d,]+(?:\.\d+)?")
 SEPARATE = re.compile(r"(?:\bin addition\b|together with|first quarter of fiscal year|and for such purposes)", re.I)
 
 
 CLAUSE = re.compile(r"[:;]|\bProvided\b")
-SUB_ALLOCATION = re.compile(r"of (?:the )?(?:amounts?|funds)\b[^$]*\bsection 241\b", re.I)
-# SAMHSA's 'in addition to amounts provided herein, the following amounts shall be available under section 241 of
-# the PHS Act: (1) $79,200,000 ...; and (2) $2,000,000 ...': each numbered item is a transfer_in beside the main amount
-LIST_241 = re.compile(r"following amounts shall be available under section 241", re.I)
-LIST_ITEM = re.compile(r"^[;:,\s]*(?:and\s+)?\(\d+\)\s*$")
-
-
-def list_241(x, open_list):
-    """-> (in the list, still open) for one amount: a numbered item of a 'following amounts shall be available
-    under section 241' list."""
-    before, _ = CT.split_phrase(x)
-    ms = list(NUMBER.finditer(before))
-    since = before[ms[-1].end():] if ms else before
-    if LIST_241.search(since):
-        return True, True
-    seg_b, _ = segments(x)
-    if open_list and LIST_ITEM.match(seg_b):
-        return True, True
-    return False, False
-
-
-def past_window_241(x, para):
-    """-> the classification for an amount whose 'from amounts made available under section 241 of the PHS Act' is
-    printed past the phrase window (PAST_WINDOW_241), read on in the paragraph's own text; else None."""
-    before, after = CT.split_phrase(x)
-    printed = re.search(r"\[(\$[^\]]*)\]", x["phrase"])
-    if not printed or not after.strip():
-        return None
-    key = before[-60:] + printed.group(1) + after
-    for t in para.get("text") or []:
-        k = t.find(key)
-        if k >= 0:
-            m = PAST_WINDOW_241.match(t[k + len(before[-60:]) + len(printed.group(1)):])
-            if m:
-                return ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)",
-                        "from amounts made available under section 241 of the PHS Act (read past the phrase window, "
-                        "D-3b)")
-    return None
+# the core's phrase rules, by the names a rule file's `overrides` may give
+CORE_PHRASE = ("earmark", "emergency", "advance", "trust_fund_limitation", "trust_transfer", "transfer_out_oig",
+               "this_heading", "transfer")
 
 
 def segments(a):
@@ -293,53 +223,73 @@ def segments(a):
     return seg_b, seg_a
 
 
-def classify(a):
-    """-> (component_type, designation, transfer_from, rule) or None for one amount of a paragraph."""
+def phrase_parts(a):
+    """-> (the raw words before the amount, since the amount before it; segments())"""
+    before = CT.split_phrase(a)[0]
+    ms = list(NUMBER.finditer(before))
+    return (before[ms[-1].end():] if ms else before,) + segments(a)
+
+
+def ctx_for(sc, account, fy, stage, para=None):
+    return R.Ctx(sc, account, int(fy), stage, para=para, tc=sys.modules[__name__])
+
+
+def line_of(a, ctx):
+    return (f"{ctx.subcommittee} {ctx.account} FY{ctx.fiscal_year} {ctx.stage}: ${a['amount']:,} "
+            f"'{a['phrase'][:120]}'")
+
+
+def core_classify(a):
+    """The core's phrase rules -> (name, (type, designation, transfer_from, rule) | None | match)."""
     seg_b, seg_a = segments(a)
     both = seg_b + " [$] " + seg_a
     if EARMARK.search(both):
-        return "earmark", "", "", "earmark: " + EARMARK.search(both).group(0)
+        return "earmark", ("earmark", "", "", "earmark: " + EARMARK.search(both).group(0))
     if EMERGENCY.search(seg_a):
-        return "designated", "emergency", "", "designated by the Congress as being for an emergency requirement"
+        return "emergency", ("designated", "emergency", "", "designated by the Congress as being for an emergency "
+                             "requirement")
     if ADVANCE_BEFORE.search(seg_b) or ADVANCE_AFTER.search(seg_a):
-        return "advance_enacted", "", "", ("for the first quarter of fiscal year" if ADVANCE_BEFORE.search(seg_b)
-                                           else "shall become available on October 1")
+        return "advance", ("advance_enacted", "", "", ("for the first quarter of fiscal year"
+                                                       if ADVANCE_BEFORE.search(seg_b)
+                                                       else "shall become available on October 1"))
     if NOT_TO_EXCEED.search(seg_b) and TRUST_FUND.search(seg_a + seg_b):
-        return "trust_fund_limitation", "", "", "not to exceed ... from the ... Trust Fund"
+        return "trust_fund_limitation", ("trust_fund_limitation", "", "", "not to exceed ... from the ... Trust Fund")
     if TRUST_TRANSFER.search(seg_a):
-        return "trust_fund_limitation", "", "", "transferred from the ... Trust Fund(s)"
-    if CAP_ADJUSTMENT.search(seg_a):
-        return ("designated", "cap_adjustment", "",
-                "additional new budget authority specified for purposes of section 251(b)(2)(C)")
-    if CURES.search(seg_b):
-        return "designated", "other", "", "21st Century Cures (NIH Innovation Account, sec. 1001(b)(4))"
-    if PRIF.search(seg_a):
-        return "transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", PRIF.search(seg_a).group(0)
+        return "trust_transfer", ("trust_fund_limitation", "", "", "transferred from the ... Trust Fund(s)")
     if TO_OIG.search(seg_a):
-        return "transfer_out", "", "", "transferred to and merged with the appropriation for the Office of Inspector General"
-    if QUARANTINE.search(seg_a):
-        return None                     # an availability clause on the heading's own money (owner, D-1)
-    if EVAL_TAP.search(seg_a):
-        return ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)" if "241" in seg_a
-                else "not named in the phrase", "is (shall be) available to this appropriation ... from amounts provided")
+        return "transfer_out_oig", ("transfer_out", "", "", "transferred to and merged with the appropriation for "
+                                    "the Office of Inspector General")
     t = TRANSFER.search(both)
     if t and THIS_HEADING.search(seg_a):
-        return None                     # part of this heading's own amounts, not a transfer
-    if t and SUB_ALLOCATION.search(seg_b):
-        return None                     # a part of an amount from section 241, already tagged with it
+        return "this_heading", None     # part of this heading's own amounts, not a transfer
     if t:
-        rest = after_text(a)
-        if "241" in t.group(0) or (t.group(0).lower().startswith("from") and re.match(r"\W*section 241", rest)):
-            src = "section 241 of the PHS Act (evaluation funds)"
-        elif t.group(0).lower().startswith("from"):
-            src = ("the Prevention and Public Health Fund (section 4002 of the PPACA)"
-                   if re.match(r"\W*section 4002|\W*the Prevention and Public Health Fund", rest, re.I)
-                   else "not named in the phrase")
-        else:
-            m = re.search(r"derived by transfer from (?:the )?([^,;:$]+)", both, re.I)
-            src = m.group(1).strip() if m else "not named in the phrase"
-        return "transfer_in", "", src, t.group(0)
-    return None
+        return "transfer", t
+    return None, None
+
+
+def classify(a, ctx=None):
+    """-> (component_type, designation, transfer_from, rule) or None for one amount of a paragraph: the core's rules
+    and the in-scope phrase rules of the rule files (ctx: the cell; None: the core alone). A rule that acts where a
+    core rule does, without naming it in `overrides`, or two rules that act: RuleConflict."""
+    name, got = core_classify(a)
+    if ctx is not None:
+        hit = R.active().first("phrase", line_of(a, ctx), ctx, a)
+        if hit:
+            rule, res = hit
+            if name is not None and name not in rule.overrides:
+                raise R.RuleConflict(f"{line_of(a, ctx)}: rule {rule.id} and the core rule '{name}' both act on it")
+            return None if isinstance(res, R.NotComponent) else res
+    if name != "transfer":
+        return got
+    t = got
+    src = R.active().first("transfer_source", line_of(a, ctx), ctx, a, t) if ctx is not None else None
+    if src:
+        return ("transfer_in", "") + tuple(src[1])
+    if t.group(0).lower().startswith("from"):
+        return "transfer_in", "", "not named in the phrase", t.group(0)
+    seg_b, seg_a = segments(a)
+    m = re.search(r"derived by transfer from (?:the )?([^,;:$]+)", seg_b + " [$] " + seg_a, re.I)
+    return "transfer_in", "", m.group(1).strip() if m else "not named in the phrase", t.group(0)
 
 
 def after_text(a):
@@ -357,18 +307,21 @@ def after_text(a):
     return rest
 
 
-def not_a_component(a):
-    """-> the owner's 'not a component' kind for a phrase, or None."""
-    seg_b, seg_a = segments(a)
-    # a list's lead-in ("of such amount: (1)") sits before the clause break the colon makes
-    before = CT.split_phrase(a)[0]
-    ms = list(NUMBER.finditer(before))
-    raw_b = before[ms[-1].end():] if ms else before
+def not_a_component(a, ctx=None):
+    """-> the 'not a component' kind for a phrase (the core's list, then the rule files'), or None."""
+    raw_b, seg_b, seg_a = phrase_parts(a)
+    core = None
     for kind, rx, where_ in NOT_COMPONENT:
         if ((where_ == "before" and rx.search(raw_b)) or (where_ == "both" and rx.search(seg_b))
                 or (where_ in ("after", "both") and rx.search(seg_a))):
-            return kind
-    return None
+            core = kind
+            break
+    hit = R.active().first("not_component", line_of(a, ctx), ctx, a) if ctx is not None else None
+    if hit and core:
+        raise R.RuleConflict(f"{line_of(a, ctx)}: rule {hit[0].id} and the core's '{core}' both name it")
+    return hit[1] if hit else core
+
+
 
 
 def relation(a, main, headline=None):
@@ -449,6 +402,7 @@ def printed(o):
     return m.group(1) if m else (o.get("source_table_or_section") or "")[:160]
 
 
+
 def retag(data, heads, report):
     out = []
     inside_lines = {}
@@ -470,11 +424,6 @@ def retag(data, heads, report):
             spec = ("other_law", "", "", "a separate supplemental appropriations act's line (supplemental_act)")
         elif at == "supplemental" and not comp and AC_EMERGENCY_LABEL.search(o.get("source_table_or_section") or ""):
             spec = ("designated", "emergency", "", "the table's '(emergency)' line")
-        elif comp == "defense" and at == "budget authority":
-            spec = ("defense_portion", "", "", "the table's 'Defense function' line (defense)")
-        elif comp == "defense_inside" and at == "budget authority":
-            spec = ("defense_portion", "", "", "the table's 'Defense function' line, inside the bill or law "
-                                               "paragraph's amount (defense_inside; D-3)")
         elif at == "advance" and not comp:
             spec = ("advance_enacted", "", "", "the table's new advance line (enacted in this bill, available the "
                                                "next fiscal year)")
@@ -484,22 +433,21 @@ def retag(data, heads, report):
         elif comp == "congressionally_directed_spending":
             spec = ("earmark", "", "", "the table's Community Project Funding / Congressionally Directed Spending "
                                        "line (inside the headline)")
-        elif comp == "program_level" and a == "ACC-HHS-OS-ONC":
-            spec = ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)",
-                    "the table's 'Evaluation Tap Funding' line (recorded as program_level)")
-        elif at == "transfer" and acc[a]["subcommittee"] == "CJS" and fy == 2027:
-            if o["amount"] >= 0:
-                spec = ("transfer_in", "", o.get("transfer_link_account_id") or printed(o), "the table's '(by transfer)' line")
-            else:
-                spec = ("transfer_out", "", "", "the table's transfer-out line")
-        elif at == "offsetting_collection" and acc[a]["subcommittee"] == "CJS" and fy == 2027:
-            spec = ("fees_offsets", "", "", "the table's offsetting fee collections line")
+        ctx = ctx_for(acc[a]["subcommittee"], a, fy, st)
+        hit = R.active().first("line", f"{o['observation_id']} ({a} FY{fy} {st}, {at} {comp})", ctx, o)
+        opts = {}
+        if hit:
+            if spec is not None:
+                raise R.RuleConflict(f"{o['observation_id']}: rule {hit[0].id} and the core's line rule both act on it")
+            spec = tuple(hit[1][:4])
+            opts = hit[1][4] if len(hit[1]) > 4 else {}
         if spec is None:
             continue
         if o["amount"] == 0:
             report["retag_zero"].append(o["observation_id"])
             continue
-        named = o.get("headline_observation_id") if comp in ("congressionally_directed_spending", "defense_inside") else \
+        named = o.get("headline_observation_id") if (comp == "congressionally_directed_spending"
+                                                     or opts.get("names_headline")) else \
             inside_lines.get(o["observation_id"], {}).get("headline_observation_id")
         t_inside = bool(named)
         if t_inside:
@@ -526,8 +474,7 @@ def retag(data, heads, report):
                     "carried_from_component_id": "",
                     "notes": "inside the headline: the CDS line is printed as part of the account's total"
                              if t == "earmark" else
-                             f"inside the headline: the bill or law paragraph's amount ({h['observation_id']}) counts "
-                             "the defense line" if comp == "defense_inside" else
+                             opts["inside_note"].format(headline=h["observation_id"]) if opts.get("inside_note") else
                              f"inside the headline: the table prints the line inside it ({h['observation_id']})"
                              if t_inside else "a line printed beside the headline; never inside it"})
     return out
@@ -540,11 +487,12 @@ CDS_LINES = ("Congressionally Directed Spending", "Community Project Funding/Con
              "Community Project Funding / Congressionally Directed Spending")
 
 
-def table_lines(data, heads):
+def table_lines(data, heads, report):
     out = []
     if not TABLE_LINES.exists():
         return out
     obs = {o["observation_id"]: o for o in data["observations"]}
+    acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     with open(TABLE_LINES) as f:
         for r in csv.DictReader(f):
             o = obs[r["observation_id"]]
@@ -560,18 +508,30 @@ def table_lines(data, heads):
                             "notes": "inside the headline: the earmark rule's headline is the account line plus this "
                                      "line (owner 2026-10-11)"})
                 continue
-            claims = r["line"] == "Post-FY 1988 Claims"
-            out.append({"observation_id": o["observation_id"],
-                        "component_type": "mandatory_portion" if claims else "trust_fund_limitation",
+            a = o["canonical_account_id"]
+            ctx = ctx_for(acc[a]["subcommittee"], a, o["fiscal_year"], o["stage"])
+            hit = R.active().first("table_line", f"table_lines.csv {o['observation_id']} '{r['line']}'", ctx, r)
+            if hit is None:
+                # a line of a kind neither the core nor a rule reads: for review, never forced into a rule
+                report["unknown_table_line"].append(f"{o['observation_id']} ({a} FY{o['fiscal_year']} {o['stage']}): "
+                                                    f"'{r['line']}' {r['amount']}")
+                continue
+            x = hit[1]
+            out.append({"observation_id": o["observation_id"], "component_type": x["component_type"],
                         "designation": "", "transfer_from": "", "amount": int(r["amount"]), "in_headline": "TRUE",
                         "source_document_id": r["source_document_id"], "source_location": f"p.{r['page']}",
                         "quoted_text": r["printed_line"] + " | " + r["printed_total"],
-                        "tag_method": "table_line", "tag_rule": f"the table's '{r['line']}' line, "
-                        "printed inside 'Total, Vaccine Injury Compensation Trust Fund' (" + r["read_from"] + ")"
-                        + ("; the claims are the mandatory part of the mixed account 075-8175" if claims else ""),
-                        "source_observation_id": "", "carried_from_component_id": "",
-                        "notes": "inside the headline: the table's total adds this line to the "
-                                 + ("administrative line" if claims else "claims line")})
+                        "tag_method": "table_line", "tag_rule": x["tag_rule"],
+                        "source_observation_id": "", "carried_from_component_id": "", "notes": x["notes"]})
+    return out
+
+
+def rule_components(data, heads, report):
+    """The rule files' own component sources (hook 'components'), subcommittee by subcommittee."""
+    out = []
+    for sc in sorted({a["subcommittee"] for a in data["accounts"]}):
+        for rule in R.active().rules("components", sc):
+            out += rule.fn(data, heads, report, ctx_for(sc, None, 0, None))
     return out
 
 
@@ -592,63 +552,20 @@ def mandatory_lines(data, heads):
     return out
 
 
-def pphf_table(data, heads, report):
-    """The Prevention and Public Health Fund allocation (pphf_table.csv): the general provision (sec. 222) transfers
-    the Fund "to the accounts specified, in the amounts specified" in the report's table; each row is a transfer_in
-    beside the receiving account's headline. A row for an account we don't hold (ACL) is reported, not recorded."""
-    out = []
-    if not PPHF_TABLE.exists():
-        return out
-    with open(PPHF_TABLE) as f:
-        for r in csv.DictReader(f):
-            fy = int(r["fiscal_year"])
-            if not r["account_id"]:
-                report["pphf_not_held"].append(f"FY{fy} {r['stage']} {r['account_printed']}: {r['activity']} "
-                                               f"{AC.money(int(r['amount']))}")
-                continue
-            h = heads[(r["account_id"], fy, r["stage"])]
-            h = pick_headline(h, r["source_document_id"]) if h else None
-            if h is None:
-                report["pphf_no_headline"].append(f"FY{fy} {r['stage']} {r['account_id']}: {r['activity']}")
-                continue
-            table = ("the Prevention and Public Health Fund allocation table" if r["table"] == "allocation"
-                     else f"the comparative table ({r['table'].split(', ', 1)[1]})")
-            # the request allocates the Fund outside its appropriations language: no bill section (D-3)
-            request = r["stage"] == REQUEST_STAGE
-            out.append({"observation_id": h["observation_id"], "component_type": "transfer_in", "designation": "",
-                        "transfer_from": PPHF, "amount": int(r["amount"]), "in_headline": "FALSE",
-                        "source_document_id": r["source_document_id"],
-                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'"
-                                           + ("" if request else f"; {r['bill_document_id']} {r['bill_section']}"),
-                        "quoted_text": f"{r['account_printed']} | {r['printed_line']}",
-                        "tag_method": "table_line",
-                        "tag_rule": (f"PPHF allocation: the President's request allocates the Fund outside its "
-                                     f"appropriations language; the report's comparative table prints the request's "
-                                     f"Fund line ({r['read_from']})") if request else
-                                    f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
-                                    f"the amounts the report's table specifies ({r['read_from']})",
-                        "source_observation_id": "", "carried_from_component_id": "",
-                        "notes": "beside the headline: the Fund's money is transferred in, not appropriated here"})
-    return out
-
-
-# Agency totals read from the agency's own paragraph (owner, D-1 ruling 2: AHRQ). ACL and the Administration for a
-# Healthy America are also held only as totals; they are not read until the owner decides.
-TOTAL_ONLY = ("ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL")    # ACL: owner, D-2 item 5c
-
 
 def total_only_outcomes(data, texts, outcomes, report):
-    """An agency held only as its total (no account lines: AHRQ): the total's headline is read from the agency's one
-    appropriation paragraph, as an account's would be (owner, D-1 ruling 2). -> {observation_id: outcome}, in the
-    shape check_legislative_text.check gives, for the auto-tagged cells where the document has exactly one
-    paragraph under the agency's heading."""
+    """An agency held only as its total (no account lines; a rule file names it, hook 'extract'): the total's
+    headline is read from the agency's one appropriation paragraph, as an account's would be (owner, D-1 ruling 2).
+    -> {observation_id: outcome}, in the shape check_legislative_text.check gives, for the auto-tagged cells where
+    the document has exactly one paragraph under the agency's heading."""
     cell_doc = {(r["subcommittee"], r["fiscal_year"], r["stage"]): r["document"] for r in outcomes.values()
                 if r.get("document")}
     refs = {(r["subcommittee"], int(r["fiscal_year"]), r["stage"]): r for r in data["bill_report_refs"]}
     accounts = data["accounts"]
+    cells = auto_cells(data)
     out = {}
     for a in accounts:
-        if a["canonical_account_id"] not in TOTAL_ONLY or any(
+        if not R.active().rules("extract", a["subcommittee"], a["canonical_account_id"]) or any(
                 x["subcommittee"] == a["subcommittee"] and x["agency"] == a["agency"] and not x.get("total_scope")
                 for x in accounts):
             continue
@@ -658,7 +575,7 @@ def total_only_outcomes(data, texts, outcomes, report):
                 continue
             cell = (a["subcommittee"], int(o["fiscal_year"]), o["stage"])
             doc = cell_doc.get(cell)
-            if cell not in AUTO_CELLS or doc not in texts:
+            if cell not in cells or doc not in texts:
                 continue
             division = (refs[cell].get("division") or "").strip()
             agency = a["agency"].upper()
@@ -677,10 +594,11 @@ def total_only_outcomes(data, texts, outcomes, report):
 
 
 def autotag(data, heads, held, report):
-    """The auto-tagged cells (AUTO_CELLS): each headline's own paragraph, amount by amount."""
+    """The auto-tagged cells (coverage()): each headline's own paragraph, amount by amount."""
     texts, exempt = CT.load_texts(L.TEXT_DIR), CT.load_exempt(L.TEXT_DIR)
     outcomes = CT.check(data, texts, exempt)
     outcomes.update(total_only_outcomes(data, texts, outcomes, report))
+    cells = auto_cells(data)
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     former = collections.defaultdict(list)
@@ -692,7 +610,7 @@ def autotag(data, heads, held, report):
     refs = {(r["subcommittee"], int(r["fiscal_year"]), r["stage"]): r for r in data["bill_report_refs"]}
     out = []
     for oid, res in sorted(outcomes.items()):
-        if (res["subcommittee"], res["fiscal_year"], res["stage"]) not in AUTO_CELLS:
+        if (res["subcommittee"], res["fiscal_year"], res["stage"]) not in cells:
             continue
         report["pilot_headlines"] += 1
         para = res.get("paragraph")
@@ -705,11 +623,12 @@ def autotag(data, heads, held, report):
         text = texts[doc]
         division = (refs[(res["subcommittee"], res["fiscal_year"], res["stage"])].get("division") or "").strip()
         paras = [p for p in text["paragraphs"] if not division or not p["division"] or p["division"] == division]
-        main, _ = CT.main_amount(para)
+        ctx = ctx_for(res["subcommittee"], res["account"], res["fiscal_year"], res["stage"], para)
+        main, _ = CT.main_amount(para, ctx)
         if main is None and res["result"] == "ambiguous":
             report["pilot_no_paragraph"].append(f"{oid} ({res['name']} FY{res['fiscal_year']} {res['stage']}): "
                                                 "no main amount in the paragraph")
-        tagged = read_amounts(oid, doc, para, main, o["amount"], CT.where(para), report)
+        tagged = read_amounts(oid, doc, para, main, o["amount"], CT.where(para), report, ctx)
         names = CT.account_names(a, by_acc[a["canonical_account_id"]], former)
         own_gp = 0                      # general provisions' additional amounts that are the headline's own money
         for amt, w in CT.provision_amounts(a, names, paras):
@@ -718,11 +637,12 @@ def autotag(data, heads, held, report):
                 continue                # a general provision of another title (Education's sec. 311 'Congressionally
                                         # Directed Spending' is no heading of HRSA's)
             x = next(x for x in p["amounts"] if x["amount"] == amt)
-            cl = classify(x)
+            pctx = ctx_for(res["subcommittee"], res["account"], res["fiscal_year"], res["stage"], p)
+            cl = classify(x, pctx)
             if cl is None and main is not None and main["amount"] + amt == o["amount"]:
                 # the headline prints the paragraph's amount plus this one (OS-GDM FY2023 Senate: $565,394,000 and
                 # sec. 243's additional $350,000,000 = $915,394,000): the headline's own appropriation (D-1)
-                if LOOKS_LIKE.search(" ".join(segments(x))):
+                if looks_like(" ".join(segments(x)), pctx):
                     report["not_a_component"]["the headline's own appropriation"] += 1
                 own_gp += amt
                 continue
@@ -732,7 +652,7 @@ def autotag(data, heads, held, report):
                                                                    "no type rule fits]"})
                 continue
             tagged.append((x, cl, "separate", w))
-        comps = place(oid, o, para, main, tagged, held, report, doc, own_gp, "auto_text")
+        comps = place(oid, o, para, main, tagged, held, report, doc, own_gp, "auto_text", ctx)
         if comps:
             out += comps
     return out
@@ -740,8 +660,8 @@ def autotag(data, heads, held, report):
 
 def request_text(data, heads, held, report):
     """The President's Budget (D-2): each read account's proposed language from FY N's Budget Appendix
-    (request_language.json), amount by amount, by the same phrase rules (appendix_text). The advances of Child
-    Support, Foster Care and Medicaid are left to advances() (advance_lines.csv and the retagged Medicaid lines:
+    (request_language.json), amount by amount, by the same phrase rules (appendix_text). The advances of the
+    accounts a rule file names (hook 'advances') are left to advances() (advance_lines.csv and the retagged lines:
     the existing request records are kept). General provisions are not read for the request."""
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
@@ -758,40 +678,45 @@ def request_text(data, heads, held, report):
                                            "reference/review/accounting/request_language.py")
             continue
         para, doc = r["paragraph"], r["document_id"]
-        main, _ = CT.main_amount(para)
+        ctx = ctx_for(sc, account, fy, REQUEST_STAGE, para)
+        main, _ = CT.main_amount(para, ctx)
         loc = f"{para['location']['pages']}, proposed appropriations language under '{para['account_heading']}'"
-        tagged = read_amounts(oid, doc, para, main, o["amount"], loc, report)
-        if account in ADVANCE_ACCOUNTS:
+        tagged = read_amounts(oid, doc, para, main, o["amount"], loc, report, ctx)
+        if R.active().rules("advances", sc, account, fy, REQUEST_STAGE):
             for x in [t for t in tagged if t[1][0] in ("advance_enacted", "advance_available")]:
                 report["request_advance_kept"].append(f"{oid} {x[1][0]} {AC.money(x[0]['amount'])}")
             tagged = [t for t in tagged if t[1][0] not in ("advance_enacted", "advance_available")]
-        comps = place(oid, o, para, main, tagged, held, report, doc, 0, "appendix_text")
+        comps = place(oid, o, para, main, tagged, held, report, doc, 0, "appendix_text", ctx)
         report["request"][(sc, fy, "read" if comps else "read, no match")] += 1
         out += comps
     return out
 
 
-def read_amounts(oid, doc, para, main, headline, loc, report):
+def read_amounts(oid, doc, para, main, headline, loc, report, ctx):
     """The phrase rules over one paragraph's amounts -> [(amount, (type, designation, from, rule), relation, where)];
-    untagged component-like phrases go to the report."""
+    untagged component-like phrases go to the report (for review: never forced into the nearest rule)."""
     tagged = []
-    open_list = False
-    own = [x["amount"] for x in CT.appropriating(para)] + ([main["amount"]] if main else [])
+    ctx.state = {}
+    own = [x["amount"] for x in CT.appropriating(para, ctx)] + ([main["amount"]] if main else [])
     for i, x in enumerate(para["amounts"]):
         x = dict(x, _next=para["amounts"][i + 1] if i + 1 < len(para["amounts"]) else None)
-        item, open_list = list_241(x, open_list)
+        item = R.active().first("list_item", line_of(x, ctx), ctx, x)
         if item:
-            tagged.append((x, ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)",
-                               "the following amounts shall be available under section 241 (a numbered item)"),
-                           "separate", loc))
+            core = core_classify(x)[0]
+            if core is not None:
+                raise R.RuleConflict(f"{line_of(x, ctx)}: rule {item[0].id} and the core rule '{core}' both act on it")
+            tagged.append((x, item[1], "separate", loc))
             continue
-        cl = classify(x) or past_window_241(x, para)
+        cl = classify(x, ctx)
+        if cl is None:
+            past = R.active().first("past_window", line_of(x, ctx), ctx, x)
+            cl = past[1] if past else None
         if cl is None:
             seg_b, seg_a = segments(x)
-            kind = not_a_component(x) or ("the headline's own appropriation" if x["amount"] in own else None)
-            if kind and LOOKS_LIKE.search(seg_b + " " + seg_a):
+            kind = not_a_component(x, ctx) or ("the headline's own appropriation" if x["amount"] in own else None)
+            if kind and looks_like(seg_b + " " + seg_a, ctx):
                 report["not_a_component"][kind] += 1
-            elif LOOKS_LIKE.search(seg_b + " " + seg_a):
+            elif looks_like(seg_b + " " + seg_a, ctx):
                 report["untagged"].append({"observation_id": oid, "document": doc, "where": loc,
                                            "amount": x["amount"], "phrase": x["phrase"]})
             continue
@@ -799,7 +724,7 @@ def read_amounts(oid, doc, para, main, headline, loc, report):
     return tagged
 
 
-def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_text"):
+def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_text", ctx=None):
     """Component records for the tagged amounts of one headline's paragraph, with in_headline by arithmetic (the
     paragraph's main amount less the of-which parts left out plus the separate parts counted gives the headline;
     components already held count too) or, where no single assignment does, by the default with a note."""
@@ -824,7 +749,7 @@ def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_
         gp_note = (f" (with {AC.money(own_gp)} a general provision appropriates under the account's heading, the "
                    "headline's own appropriation)")
     pattern = in_headline_by_arithmetic(o["amount"], main, held[oid], comps)
-    ap = [x["amount"] for x in CT.appropriating(para)]
+    ap = [x["amount"] for x in CT.appropriating(para, ctx)]
     if pattern is None and len(ap) > 1:
         # the paragraph appropriates more than one amount (GDM's 'for ... cybersecurity threats, $108,983,000'):
         # their sum is the paragraph's figure
@@ -868,8 +793,10 @@ def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_
     return [c for c, _ in comps]
 
 
+
 def advances(data, heads, records, report):
-    """Child Support, Foster Care and Medicaid advances in every year and stage (owner, component backfill):
+    """The advances of the accounts a rule file names (hook 'advances': Labor-HHS's Child Support, Foster Care and
+    Medicaid) in every year and stage (owner, component backfill):
     the request's advance (advance_lines.csv: FY N's Appendix language) -> advance_enacted on the President's Budget
     headline; and on every headline, the advance an earlier law appropriated for this year's first quarter ->
     advance_available: FY N-1's law text (the advance its paragraph appropriates, read by the advance phrase rule;
@@ -900,6 +827,13 @@ def advances(data, heads, records, report):
                             "source_observation_id": "",
                             "carried_from_component_id": "", "notes": r["notes"]})
 
+    acc_sc = {a["canonical_account_id"]: a["subcommittee"] for a in data["accounts"]}
+    first_fy = {}
+    for a in sorted(acc_sc):
+        rs = R.active().rules("advances", acc_sc[a], a)
+        if rs:
+            first_fy[a] = min((r.data or {}).get("first_available_fy", 0) for r in rs)
+
     def law_advance(account, fy):
         """The advance FY fy's law appropriated for the next year's first quarter -> component fields, or None."""
         for h in heads[(account, fy, "Enacted")]:
@@ -910,15 +844,15 @@ def advances(data, heads, records, report):
             res = outcomes.get(h["observation_id"])
             para = res and res.get("paragraph")
             for x in (para or {}).get("amounts", []):
-                cl = classify(x)
+                cl = classify(x, ctx_for(acc_sc[account], account, fy, "Enacted", para))
                 if cl and cl[0] == "advance_enacted":
                     return {"amount": x["amount"], "source_document_id": res["document"],
                             "source_location": CT.where(para), "quoted_text": x["phrase"]}
         return None
 
-    for account in ADVANCE_ACCOUNTS:
+    for account in first_fy:
         for (acc, fy, st), hs in sorted(heads.items()):
-            if acc != account or fy < 2018:
+            if acc != account or fy < first_fy[account]:
                 continue
             for h in hs:
                 if any(c["component_type"] == "advance_available" for c in by_obs[h["observation_id"]]):
@@ -943,7 +877,8 @@ def advances(data, heads, records, report):
         cur = current.get(o["observation_id"])
         if cur is None:
             res = outcomes.get(o["observation_id"])
-            main = CT.main_amount(res["paragraph"])[0] if res and res.get("paragraph") else None
+            main = CT.main_amount(res["paragraph"], ctx_for(res["subcommittee"], res["account"], res["fiscal_year"],
+                                                            res["stage"]))[0] if res and res.get("paragraph") else None
             cur = main["amount"] if main else None
         inside = sum(x["amount"] for x in by_obs[o["observation_id"]] + [y for y in out if y is not c and
                      y["observation_id"] == c["observation_id"]] if x["in_headline"] == "TRUE")
@@ -963,11 +898,19 @@ def advances(data, heads, records, report):
 
 
 def carry_forward(data, heads, records, report):
-    """FY2025 Enacted (Labor-HHS; CJS from D-2): the FY2024 Enacted components, continued; where an anomaly changes
-    one, what the anomaly's text states in its place (CR_ANOMALIES). report["cr_list"] lists each one: dropped,
-    replaced (old -> new) or carried forward."""
+    """Every Enacted cell under a full-year CR (cr_laws(): Bill Report Reference funding_type full_year_cr): the year
+    before's Enacted components, continued; where an anomaly changes one (a rule file's hook 'carry_forward'), what
+    the anomaly's text states in its place. report["cr_list"] lists each one: dropped, replaced (old -> new) or
+    carried forward. A CR whose law CR_LAWS doesn't know carries nothing and is reported."""
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc_sc = {a["canonical_account_id"]: a["subcommittee"] for a in data["accounts"]}
+    laws = {}
+    for (sc, fy), law in cr_laws(data).items():
+        if law in CR_LAWS:
+            laws[(sc, fy)] = CR_LAWS[law]
+        else:
+            report["cr_unknown_law"].append(f"{sc} FY{fy} Enacted: full-year CR {law or '(no bill_id)'} -- not in "
+                                            "tag_components.CR_LAWS; nothing carried")
     out = []
     by_obs = collections.defaultdict(list)
     for c in records:
@@ -976,44 +919,52 @@ def carry_forward(data, heads, records, report):
     for c in records:
         o = obs[c["observation_id"]]
         a = o["canonical_account_id"]
-        sc = acc_sc[a]
-        if not (int(o["fiscal_year"]) == 2024 and o["stage"] == "Enacted" and (sc, 2025, "Enacted") in CR_CELLS):
+        sc, prior = acc_sc[a], int(o["fiscal_year"])
+        fy = prior + 1
+        if not (o["stage"] == "Enacted" and (sc, fy) in laws):
             continue
+        law = laws[(sc, fy)]
         what = f"{c['component_id']} {c['component_type']}{'/' + c['designation'] if c.get('designation') else ''} " \
                f"{AC.money(c['amount'])} ({a})"
-        h = pick_headline(heads[(a, 2025, "Enacted")], None) if heads[(a, 2025, "Enacted")] else None
+        h = pick_headline(heads[(a, fy, "Enacted")], None) if heads[(a, fy, "Enacted")] else None
         if h is None:
             report["carry_no_headline"].append(what)
-            report["cr_list"].append(("not carried: no FY2025 Enacted headline", what, ""))
+            report["cr_list"].append((f"not carried: no FY{fy} Enacted headline", what, ""))
             continue
-        if a in CR_ANOMALIES and AC._selected(c, CR_ANOMALIES[a][1]):
-            section, _, stated = CR_ANOMALIES[a]
+        ctx = ctx_for(sc, a, fy, "Enacted")
+        hit = R.active().first("carry_forward", what, ctx, c)
+        act = hit[1] if hit else {}
+        if c["component_type"] == "earmark" and hit and "cr_earmarks" not in hit[0].overrides:
+            raise R.RuleConflict(f"{what}: rule {hit[0].id} and the CR's earmark rule both act on it")
+        if "anomaly" in act:
+            section, stated = act["anomaly"]
             report["carry_anomaly"].append(f"{what}: {section}")
             if stated:
-                replaced[(a, h["observation_id"])].append(c)
+                replaced[(a, h["observation_id"])].append((c, section, stated, law))
             else:
                 report["cr_list"].append(("dropped", what, f"{section} ends it"))
             continue
         if c["component_type"] == "earmark":
-            report["carry_anomaly"].append(f"{what}: {CR_EARMARKS}")
-            report["cr_list"].append(("dropped", what, CR_EARMARKS))
+            report["carry_anomaly"].append(f"{what}: {law['earmarks_end']}")
+            report["cr_list"].append(("dropped", what, law["earmarks_end"]))
             continue
         if any(x["component_type"] == c["component_type"] for x in by_obs[h["observation_id"]]):
             report["carry_already_held"].append(f"{c['component_id']} -> {h['observation_id']}")
-            report["cr_list"].append(("not carried: FY2025 already holds the type", what, h["observation_id"]))
+            report["cr_list"].append((f"not carried: FY{fy} already holds the type", what, h["observation_id"]))
             continue
-        rule = (CR_PPHF if c.get("transfer_from") == PPHF else
-                "FY2025 full-year CR (P.L. 119-4 div. A sec. 1101: FY2024 levels, authority and conditions); no "
-                "anomaly changes it" + (f" ({CR_LEVEL_ONLY[a]})" if a in CR_LEVEL_ONLY else ""))
+        rule = act.get("rule") or (f"{law['continues']}; no anomaly changes it"
+                                   + (f" ({act['note']})" if act.get("note") else ""))
         out.append(dict(c, observation_id=h["observation_id"], tag_method="carried_forward", tag_rule=rule,
                         carried_from_component_id=c["component_id"], source_observation_id="",
-                        notes=c.get("notes", "") + " | carried forward from FY2024 Enacted "
+                        notes=c.get("notes", "") + f" | carried forward from FY{prior} Enacted "
                                                    f"({c['observation_id']}); in_headline as there"))
         report["cr_list"].append(("carried forward", what, rule.split(":")[0]))
     for (a, hid), old in sorted(replaced.items()):
-        section, _, stated = CR_ANOMALIES[a]
+        _, section, stated, law = old[0]
         olds = ", ".join(f"{c['component_id']} {c['component_type']}"
-                         f"{'/' + c['designation'] if c.get('designation') else ''} {AC.money(c['amount'])}" for c in old)
+                         f"{'/' + c['designation'] if c.get('designation') else ''} {AC.money(c['amount'])}"
+                         for c, *_ in old)
+        prior = int(obs[old[0][0]["observation_id"]]["fiscal_year"])
         for typ, des, amount, inside, words, within in stated:
             new = f"{typ}{'/' + des if des else ''} {AC.money(amount)}"
             held = [x for x in by_obs[hid] if x["component_type"] == typ and x.get("designation", "") == des
@@ -1024,16 +975,21 @@ def carry_forward(data, heads, records, report):
                                           f"({held[0]['tag_method']}), which equals the anomaly's amount"))
                 continue
             out.append({"observation_id": hid, "component_type": typ, "designation": des, "transfer_from": "",
-                        "amount": amount, "in_headline": inside, "source_document_id": CR_SOURCE,
-                        "source_location": section.replace("P.L. 119-4 ", ""), "quoted_text": words,
+                        "amount": amount, "in_headline": inside, "source_document_id": law["source"],
+                        "source_location": section.replace(law["label"] + " ", ""), "quoted_text": words,
                         "tag_method": "cr_anomaly",
-                        "tag_rule": f"FY2025 full-year CR anomaly: {section} states the amount in place of the "
-                                    "FY2024 component",
+                        "tag_rule": f"FY{prior + 1} full-year CR anomaly: {section} states the amount in place of the "
+                                    f"FY{prior} component",
                         "source_observation_id": "", "carried_from_component_id": "",
-                        "notes": f"replaces {olds} (FY2024 Enacted)",
+                        "notes": f"replaces {olds} (FY{prior} Enacted)",
                         "within_component_id": ("cr", within) if within else ""})
             report["cr_list"].append(("replaced", f"{olds} ({a})", f"-> {new}, {section}"))
     return out
+
+
+def cr_anomalies(sc, account, fy):
+    """{account: (section, selectors, stated)} of the anomalies a rule file holds for the cell (measure_reconcile)."""
+    return R.active().data("carry_forward", sc, account, fy, "Enacted").get("anomalies", {})
 
 
 # ------------------------------------------------------------------------------------------------ IDs
@@ -1047,27 +1003,24 @@ def key(c):
 
 
 def number(cid):
-    return int(cid.rsplit("-", 1)[1])
+    return IDS.number(cid)
 
 
 def assign_ids(data, proposed, obs):
-    """Keep the ID of every record whose identity is unchanged; give new ones the next number per subcommittee.
-    A record no longer produced is retired: its ID goes to observation_components_retired, never reused."""
+    """Keep the ID of every record whose identity is unchanged; give new ones the next number in the headline's
+    subcommittee's namespace (ids.Allocator: CMP-<CODE>-####, CJS's CMP-####). A record no longer produced is
+    retired: its ID goes to observation_components_retired, never reused."""
     old = {key(c): c for c in data.get("observation_components", [])}
-    used = {c["component_id"] for c in data.get("observation_components", [])} | set(
-        data.get("observation_components_retired", []))
-    nxt = {"CJS": 1 + max([number(i) for i in used if not i.startswith("CMP-LHHS-")] or [0]),
-           "LHHS": 1 + max([number(i) for i in used if i.startswith("CMP-LHHS-")] or [0])}
+    sc_of = {a["canonical_account_id"]: a["subcommittee"] for a in data["accounts"]}
+    alloc = IDS.Allocator([c["component_id"] for c in data.get("observation_components", [])]
+                          + list(data.get("observation_components_retired", [])))
     out = []
     for c in proposed:
         k = key(c)
         if k in old:
             c = dict(c, component_id=old[k]["component_id"])
         else:
-            sc = "LHHS" if obs[c["observation_id"]]["observation_id"].startswith("OBS-LHHS-") else "CJS"
-            cid = f"CMP-LHHS-{nxt[sc]:04d}" if sc == "LHHS" else f"CMP-{nxt[sc]:04d}"
-            nxt[sc] += 1
-            c = dict(c, component_id=cid)
+            c = dict(c, component_id=alloc.next("CMP", sc_of[obs[c["observation_id"]]["canonical_account_id"]]))
         out.append({k2: c.get(k2, "") for k2 in AC.COMPONENT_COLUMNS})
     keep = {c["component_id"] for c in out}
     retired = sorted(set(data.get("observation_components_retired", []))
@@ -1084,8 +1037,8 @@ def build(data):
     heads = headline_of(data)
     obs = {o["observation_id"]: o for o in data["observations"]}
     first = retag(data, heads, report)
-    first += table_lines(data, heads)
-    first += pphf_table(data, heads, report)
+    first += table_lines(data, heads, report)
+    first += rule_components(data, heads, report)
     first += mandatory_lines(data, heads)
     held = collections.defaultdict(list)
     for c in first:
@@ -1114,7 +1067,8 @@ def build(data):
     for c in records:
         if isinstance(c.get("within_component_id"), tuple) and c["within_component_id"][0] == "cr":
             c["within_component_id"] = stated[(c["observation_id"], c["within_component_id"][1])]
-    records.sort(key=lambda c: (not c["component_id"].startswith("CMP-LHHS-"), number(c["component_id"])))
+    order = IDS.order([c["component_id"] for c in data.get("observation_components", [])])
+    records.sort(key=lambda c: order(c["component_id"]))
     return records, retired, report
 
 
@@ -1154,8 +1108,10 @@ def summarize(records, data, report):
     lines += ["### FY2025 full-year CR: each FY2024 Enacted component", "",
               "| outcome | FY2024 component | why / in its place |", "|---|---|---|"]
     lines += [f"| {k} | {w} | {x} |" for k, w, x in sorted(report["cr_list"])]
-    lines += ["", "PPHF rows for an account we don't hold: " + str(len(report["pphf_not_held"])) +
-              "; PPHF rows with no headline in their cell: " + (", ".join(report["pphf_no_headline"]) or "none"), ""]
+    lines += [""] + [x for s in report["rule_summary"] for x in (s, "")]
+    if report["unknown_table_line"] or report["cr_unknown_law"]:
+        lines += ["For review (no rule reads them): " + "; ".join(report["unknown_table_line"]
+                                                                  + report["cr_unknown_law"]), ""]
     return "\n".join(lines)
 
 
@@ -1165,7 +1121,7 @@ def main(argv=None):
     ap.add_argument("--ci", action="store_true")
     ap.add_argument("--report", type=Path)
     a = ap.parse_args(argv)
-    data = json.loads(L.STAGED.read_text())
+    data = json.loads(paths.staged().read_text())
     records, retired, report = build(data)
     errs = AC.component_errors(records, {o["observation_id"]: o for o in data["observations"]},
                                {d["document_id"] for d in data["source_docs"]})
@@ -1175,7 +1131,7 @@ def main(argv=None):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as f:
             f.write(text + "\n")
     for k in ("retag_no_headline", "carry_anomaly", "pilot_no_paragraph", "auto_default", "advance_not_read",
-              "advance_default", "request_stale"):
+              "advance_default", "request_stale", "unknown_table_line", "cr_unknown_law"):
         for x in report[k]:
             print(f"  {k}: {x}")
     if errs:
@@ -1195,7 +1151,7 @@ def main(argv=None):
     if a.write and stale:
         data["observation_components"] = records
         data["observation_components_retired"] = retired
-        L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
         print("data/staged.json updated")
     if a.ci and stale:
         print("data/staged.json is not up to date with the component tagging -- run "

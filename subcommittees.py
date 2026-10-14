@@ -33,10 +33,35 @@ SUBCOMMITTEES = {
 # form, matching the ID prefixes (BR-LHHS-..., OBS-LHHS-...). A name for people
 # to read is a display mapping, never stored; a code not listed displays as itself.
 DISPLAY_NAMES = {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}
+# the subcommittee the page opens on, published with the data (docs/data/index.json and /api/features
+# "default_subcommittee"); used only when the data holds it, else the first code
+DEFAULT_SUBCOMMITTEE = "LHHS"
 
 
 def display_name(code):
-    return DISPLAY_NAMES.get(code, code)
+    """The name people read: DISPLAY_NAMES, else the subcommittee's rule file (hook 'display'), else the code."""
+    if code in DISPLAY_NAMES:
+        return DISPLAY_NAMES[code]
+    import rules_registry
+    return rules_registry.active().data("display", code).get("name") or code
+
+
+def default_subcommittee(codes_):
+    """DEFAULT_SUBCOMMITTEE when the data holds it, else the first of codes_ (None for none)."""
+    codes_ = list(codes_)
+    return DEFAULT_SUBCOMMITTEE if DEFAULT_SUBCOMMITTEE in codes_ else (codes_[0] if codes_ else None)
+
+
+def codes(data):
+    """The subcommittees the data holds (every account's subcommittee), sorted: the list the workbook, the export
+    and the page read -- never a list in code."""
+    return sorted({a["subcommittee"] for a in data["accounts"]})
+
+
+def known():
+    """Every subcommittee code the code knows: SUBCOMMITTEES' values and every rule file's (reference/rules/)."""
+    import rules_registry
+    return set(SUBCOMMITTEES.values()) | set(rules_registry.active().codes)
 
 
 def normalize(text):

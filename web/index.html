@@ -1643,13 +1643,14 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
                         "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new"]);
-let FEAT = {}, featLoaded = false;
+let FEAT = {}, featLoaded = false, DEFAULT_SC = null;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
 const linksToSource = () => has("figure_source");
 async function loadFeatures() {
   const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
   FEAT = f.features || {};
+  DEFAULT_SC = f.default_subcommittee || null;   // the data's choice (index.json / /api/features), not the page's
   featLoaded = true;
   $("#tab-changes").hidden = !has("find_changes");
 }
@@ -4092,13 +4093,15 @@ async function initLists() {
   $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
   if (STATIC_BASE) dataVersion = (await source.loadIndex()).source.version || "";
 }
+// the subcommittee the page opens on: the one the data names (default_subcommittee), else the first listed
+const defaultSc = () => (scNames.includes(DEFAULT_SC) ? DEFAULT_SC : scNames[0]);
 async function showCompare(want, replace = true) {
   showView("compare");
   compareStatus("Loading…");
   try {
     await initLists();
     if (!has("grid")) { compareStatus("The grid's data isn't in this build yet.", true); return; }
-    G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || (scNames.includes("LHHS") ? "LHHS" : scNames[0]);
+    G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || defaultSc();
     $("#sc").value = G.sc;
     const grid = await loadSubcommittee(G.sc);
     for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
@@ -4209,7 +4212,7 @@ async function showChanges(want, replace = true) {
     await initLists();
     if (!has("find_changes")) { msg.textContent = "Find changes needs the grid's data, which isn't in this build yet."; msg.className = "error"; return; }
     if (want && want.watch) fcImport = [...new Set(String(want.watch).split(",").map((x) => x.trim()).filter(Boolean))];
-    FC.sc = want && scNames.includes(want.sc) ? want.sc : FC.sc || G.sc || (scNames.includes("LHHS") ? "LHHS" : scNames[0]);
+    FC.sc = want && scNames.includes(want.sc) ? want.sc : FC.sc || G.sc || defaultSc();
     const grid = await loadSubcommittee(FC.sc);
     for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
     fcSettle(grid, want);

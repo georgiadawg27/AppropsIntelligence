@@ -45,7 +45,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 
 import approps_store as S
 import features as F
-from subcommittees import display_name
+from subcommittees import default_subcommittee, display_name
 
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
@@ -138,7 +138,8 @@ def features(db):
     key = (str(path.resolve()), path.stat().st_mtime_ns)
     if key not in _FEATURES:
         data = payloads(db)
-        _FEATURES[key] = F.flags(list(data), data.__getitem__)
+        _FEATURES[key] = dict(F.flags(list(data), data.__getitem__),
+                              default_subcommittee=default_subcommittee(subcommittees(db)["subcommittees"]))
     return _FEATURES[key]
 
 

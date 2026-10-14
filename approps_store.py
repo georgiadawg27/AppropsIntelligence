@@ -37,6 +37,7 @@ import sys
 from pathlib import Path
 
 import accounts as A
+import paths
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA = ROOT / "store_schema.sql"
@@ -68,9 +69,9 @@ class LoadError(Exception):
 # build is followed by calculate_lookups(), which stores each formula's result next
 # to it, as a spreadsheet does when it recalculates and saves; CI checks those
 # results against LibreOffice's (scripts/recalc_check.py --compare-cached).
-STAGED = ROOT / "data" / "staged.json"
+STAGED = paths.staged()                           # data/staged.json (APPROPS_DATA_ROOT: another data root's)
 BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
-BUILT_WORKBOOK = ROOT / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
+BUILT_WORKBOOK = paths.data_root() / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
 
 # A workbook file in a folder (load a specific workbook with `load PATH`):
 # Approps_Pilot_Schema_Loaded_vNN.xlsx, the highest vNN wins.
@@ -1347,15 +1348,14 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
-    # a 0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
-    # the program is funded, just not by new budget authority
+    # a note a subcommittee's rule puts on a cell's headline (hook 'cell_note'; Labor-HHS: ONC's $0 headline funded
+    # through the PHS evaluation set-aside)
+    import rules_registry
     for rec in obs:
-        if rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"] \
-                or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or ""):
-            continue
-        head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
-        if head and head["amount"] == 0:
-            note = f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+        ctx = rules_registry.Ctx(acct["subcommittee"], account_id, rec["fiscal_year"], rec["stage"])
+        hit = rules_registry.active().first("cell_note", f"{rec['observation_id']} (cell note)", ctx, rec, obs)
+        if hit:
+            head, note = hit[1]
             if note not in (head.get("cell_note") or ""):
                 head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
     # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the
@@ -1386,10 +1386,13 @@ def history(conn, account_id):
         if a["document_notes"] is None:
             del a["document_notes"]
     # gaps in the four-stage series, from the account's first fiscal year to
-    # the latest one the store holds for any account -- a cell with neither an
+    # the latest one the store holds for any account of its subcommittee (another
+    # subcommittee's years don't widen this one's grid) -- a cell with neither an
     # observation nor a confirmed absence is missing, never zero
     first = min((o["fiscal_year"] for o in obs + absences), default=None)
-    last = conn.execute("SELECT max(fiscal_year) FROM appropriations_observation").fetchone()[0]
+    last = conn.execute("SELECT max(o.fiscal_year) FROM appropriations_observation o JOIN account a "
+                        "ON a.canonical_account_id = o.canonical_account_id WHERE a.subcommittee = ?",
+                        (acct["subcommittee"],)).fetchone()[0]
     have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
     cov = coverage(conn, acct["subcommittee"])
     # the cells the grid spans (first record to the last fiscal year on file) with

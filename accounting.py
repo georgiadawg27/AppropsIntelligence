@@ -48,7 +48,7 @@ COMPONENT_COLUMNS = ["component_id", "observation_id", "component_type", "design
                      "within_component_id"]
 COMPONENT_REQUIRED = ["component_id", "observation_id", "component_type", "amount", "in_headline",
                       "source_document_id", "source_location", "quoted_text", "tag_method", "tag_rule"]
-COMPONENT_ID = re.compile(r"CMP-(?:LHHS-)?\d{4}")
+COMPONENT_ID = re.compile(r"CMP-(?:[A-Z][A-Z0-9]{1,9}-)?\d{4,}")      # ids.py: CMP-<CODE>-####, CJS CMP-####
 
 # Account attributes: one value per account, fiscal year, attribute and stage basis, each with its evidence (phase 2
 # fills them from the Budget Appendix; scripts/appendix_attributes.py). stage_basis 'enacted' serves the Enacted,
@@ -63,7 +63,7 @@ ATTRIBUTE_FUND_TYPE = ["general", "trust", "special", "revolving"]
 STAGE_BASES = ["enacted", "request"]
 ATTRIBUTE_COLUMNS = ["account_attribute_id", "canonical_account_id", "fiscal_year", "attribute", "value",
                      "source_document_id", "source_location", "evidence", "stage_basis", "provisional"]
-ATTRIBUTE_ID = re.compile(r"AAT-(?:LHHS-)?\d{4}")
+ATTRIBUTE_ID = re.compile(r"AAT-(?:[A-Z][A-Z0-9]{1,9}-)?\d{4,}")     # ids.py: AAT-<CODE>-####, CJS AAT-####
 SUBFUNCTION = re.compile(r"\d{3}")
 # the Budget Appendix's account identification code: agency (3) - account (4) - transmittal (1) - fund (1) -
 # subfunction (3), e.g. 075-0849-0-1-550
@@ -115,7 +115,7 @@ def component_errors(components, observations, documents):
             if _blank(c.get(k)) and not (k == "amount" and c.get(k) == 0):
                 errs.append(f"{cid}: {k} is blank")
         if not COMPONENT_ID.fullmatch(cid):
-            errs.append(f"{cid}: component_id is not CMP-NNNN (CJS) or CMP-LHHS-NNNN (Labor-HHS)")
+            errs.append(f"{cid}: component_id is not CMP-<CODE>-NNNN (CJS: CMP-NNNN; ids.py)")
         if cid in seen:
             errs.append(f"duplicate component_id {cid}")
         seen.add(cid)
@@ -207,7 +207,7 @@ def attribute_errors(rows, accounts, documents):
             if _blank(r.get(k)) and k not in ("source_location", "stage_basis", "provisional"):
                 errs.append(f"{rid}: {k} is blank (every value carries its evidence)")
         if not ATTRIBUTE_ID.fullmatch(rid):
-            errs.append(f"{rid}: account_attribute_id is not AAT-NNNN or AAT-LHHS-NNNN")
+            errs.append(f"{rid}: account_attribute_id is not AAT-<CODE>-NNNN (CJS: AAT-NNNN; ids.py)")
         if rid in seen:
             errs.append(f"duplicate account_attribute_id {rid}")
         seen.add(rid)

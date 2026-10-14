@@ -41,6 +41,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import appendix_attributes as A  # noqa: E402
 import check_legislative_text as CT  # noqa: E402
 import legislative_text as L  # noqa: E402
+import rules_registry as R  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "request_language.json"
 STAGE = "President's Budget"
@@ -76,6 +77,12 @@ PAREN = re.compile(r"^\s*\[?\(.*\)\]?\s*$")
 SUPPLEMENTAL = re.compile(r"Supplemental|Appropriations Act, \d{4}|Public Law|P\.L\.", re.I)
 LEGISLATIVE = re.compile(r"Legislative proposal", re.I)
 CAPS = re.compile(r"^[A-Z][A-Z ,.'’\-–—/&\[\]]{6,}$")     # a heading line: capitals only, no amount
+
+
+
+def chapters_of(sc):
+    """The subcommittee's Budget Appendix chapters: its rule file's (reference/rules/<CODE>.py, hook 'appendix')."""
+    return R.active().data("appendix", sc).get("chapters", ())
 
 
 def kind(span_fonts, text, size):
@@ -323,7 +330,7 @@ def in_appendix_context(acc, para):
     ctx = set(CT.norm(" ".join(para["heading_path"] + [para["title"]])).split())
     words_ = APPENDIX_AGENCY_WORDS.get(acc["agency"]) or CT.agency_words(acc)
     return any(all(w in ctx for w in words.split())
-               for words in [words_] + CT.AGENCY_ALIASES.get(acc["agency"], []))
+               for words in [words_] + CT.agency_aliases(acc))
 
 
 def held_requests(data):
@@ -366,7 +373,7 @@ def build(data):
     for (account, fy) in want:
         a = acc[account]
         names = CT.account_names(a, by_acc[account], former)
-        hits = [(ch, p) for ch in A.SUBCOMMITTEE_CHAPTERS[a["subcommittee"]] for p in chapter(fy, ch)
+        hits = [(ch, p) for ch in chapters_of(a["subcommittee"]) for p in chapter(fy, ch)
                 if request(p) and heading_keys(p) & names and in_appendix_context(a, p)]
         named[(account, fy)] = (names, hits)
         for ch, p in hits:
@@ -374,7 +381,7 @@ def build(data):
     fallback = {}
     for (account, fy) in want:
         a = acc[account]
-        chapters = A.SUBCOMMITTEE_CHAPTERS[a["subcommittee"]]
+        chapters = chapters_of(a["subcommittee"])
         names, hits = named[(account, fy)]
         how = "by the account's name"
         if not hits:
@@ -403,7 +410,7 @@ def build(data):
                                 if not named[(account, fy)][1] for ch, p in hits)
     for (account, fy), o in sorted(want.items(), key=lambda kv: (acc[kv[0][0]]["subcommittee"], kv[0][1], kv[0][0])):
         a = acc[account]
-        chapters = A.SUBCOMMITTEE_CHAPTERS[a["subcommittee"]]
+        chapters = chapters_of(a["subcommittee"])
         names = named[(account, fy)][0]
         hits, how = fallback[(account, fy)]
         shared = [p for ch, p in hits if reach[(fy, ch, p["paragraph_id"])] > 1] if not named[(account, fy)][1] else []

@@ -54,6 +54,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import accounting as AC  # noqa: E402
+import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
 
 CACHE = ROOT / "document_store" / "appendix"
@@ -100,7 +101,7 @@ CHAPTERS = [
 PUBLISHED = {2017: "2016-02-09", 2018: "2017-05-23", 2019: "2018-02-12", 2020: "2019-03-18", 2021: "2020-02-10",
              2022: "2021-05-28", 2023: "2022-03-28", 2024: "2023-03-13", 2025: "2024-03-11", 2026: "2025-05-30",
              2027: "2026-04-03"}
-SUBCOMMITTEE_CHAPTERS = {"LHHS": ("HHS",), "CJS": ("COM", "DOJ", "NASA", "NSF", "EOP")}
+# a subcommittee's chapters: its rule file (reference/rules/<CODE>.py, hook 'appendix')
 ENACTED_STAGES = ("Enacted", "House Reported", "Senate Reported")
 REQUEST = "President's Budget"
 CODE = re.compile(r"Identification code (\d{3})[–-](\d{4})[–-](\d)[–-](\d)[–-](\d{3})")
@@ -611,22 +612,16 @@ def assign_ids(data, recs):
     record no longer produced is retired (account_attributes_retired), never reused."""
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     old = {key(r): r["account_attribute_id"] for r in data.get("account_attributes", [])}
-    used = set(old.values()) | set(data.get("account_attributes_retired", []))
-    nxt = {"CJS": 1 + max([number(i) for i in used if not i.startswith("AAT-LHHS-")] or [0]),
-           "LHHS": 1 + max([number(i) for i in used if i.startswith("AAT-LHHS-")] or [0])}
+    alloc = IDS.Allocator(list(old.values()) + list(data.get("account_attributes_retired", [])))
     out = []
     for r in recs:
         k = key(r)
-        if k in old:
-            rid = old[k]
-        else:
-            sc = acc[r["canonical_account_id"]]["subcommittee"]
-            rid = f"AAT-LHHS-{nxt['LHHS']:04d}" if sc == "LHHS" else f"AAT-{nxt['CJS']:04d}"
-            nxt["LHHS" if sc == "LHHS" else "CJS"] += 1
+        rid = old[k] if k in old else alloc.next("AAT", acc[r["canonical_account_id"]]["subcommittee"])
         out.append({c: (rid if c == "account_attribute_id" else r[c]) for c in AC.ATTRIBUTE_COLUMNS})
     keep = {r["account_attribute_id"] for r in out}
     retired = sorted(set(data.get("account_attributes_retired", [])) | (set(old.values()) - keep))
-    out.sort(key=lambda r: (r["account_attribute_id"].startswith("AAT-LHHS-") is False, number(r["account_attribute_id"])))
+    order = IDS.order([r["account_attribute_id"] for r in data.get("account_attributes", [])])
+    out.sort(key=lambda r: order(r["account_attribute_id"]))
     return out, retired
 
 
@@ -656,7 +651,7 @@ def summary(recs, cover):
     c = collections.Counter((r["subcommittee"], r["stage_basis"], status(r)) for r in cover)
     cols = ("filled", "mixed", "partly filled", "same as enacted", "differs from enacted", "empty")
     lines += ["| subcommittee | basis | " + " | ".join(cols) + " |", "|---" * (len(cols) + 2) + "|"]
-    for sc in ("LHHS", "CJS"):
+    for sc in dict.fromkeys(r["subcommittee"] for r in cover):
         for b in ("enacted", "request"):
             lines.append(f"| {sc} | {b} | " + " | ".join(str(c[(sc, b, s)]) for s in cols) + " |")
     lines += ["", f"{len(recs)} attribute records"]

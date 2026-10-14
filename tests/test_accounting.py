@@ -298,9 +298,27 @@ def amt(amount, before, after=""):
     return {"amount": amount, "block": 1, "proviso": False, "phrase": f"{before} [${amount:,}] {after}"}
 
 
+# a Labor-HHS cell: the phrase rules below are the core's and Labor-HHS's rule file's (reference/rules/LHHS.py)
+def lx(para=None):
+    return TC.ctx_for("LHHS", "ACC-HHS-CDC-INJURY-PREVENTION", 2026, "House Reported", para)
+
+
+def lclassify(a):
+    return TC.classify(a, lx())
+
+
+def lnot_a_component(a):
+    return TC.not_a_component(a, lx())
+
+
+def lhhs_rules():
+    import rules_registry as R
+    return R.active().modules["LHHS"]
+
+
 class TaggingRules(unittest.TestCase):
     def kind(self, a):
-        r = TC.classify(a)
+        r = TC.classify(a, lx())
         return r and r[:2]
 
     def test_phrase_rules(self):
@@ -315,20 +333,20 @@ class TaggingRules(unittest.TestCase):
                          ("trust_fund_limitation", ""))
         self.assertEqual(self.kind(amt(5, "Provided, That", "shall be for the projects specified in the table")),
                          ("earmark", ""))
-        self.assertIsNone(TC.classify(amt(5, "Provided, That", "shall be for grants")))
+        self.assertIsNone(lclassify(amt(5, "Provided, That", "shall be for grants")))
 
     def test_the_owners_rules_of_2026_10_11(self):
         self.assertEqual(self.kind(amt(915, "program management,", ", to remain available through September 30, "
                                    "2025, to be transferred from the Federal Hospital Insura")), ("trust_fund_limitation", ""))
         self.assertEqual(self.kind(amt(604, "Act of 1985, and", "is additional new budget authority specified for "
                                    "purposes of section 251(b)(2)(C) of such Act")), ("designated", "cap_adjustment"))
-        self.assertIsNone(TC.classify(amt(311, "Provided further, That of the amount provided under this heading,",
+        self.assertIsNone(lclassify(amt(311, "Provided further, That of the amount provided under this heading,",
                                           "is provided to meet the terms of section 251(b)(2)(C)(ii) of the Act")))
-        self.assertEqual(TC.not_a_component(amt(311, "Provided further, That", "is provided to meet the terms of "
+        self.assertEqual(lnot_a_component(amt(311, "Provided further, That", "is provided to meet the terms of "
                                                 "section 251(b)(2)(C)(ii) of the Act")), "cap-adjustment base")
         self.assertEqual(self.kind(amt(407, "described in section 1001(b)(4) of the 21st Century Cures Act, in "
                                    "addition to amounts available,", ", to remain available")), ("designated", "other"))
-        self.assertEqual(TC.classify(amt(12, "In addition,", "is appropriated from the 10-year Pediatric Research "
+        self.assertEqual(lclassify(amt(12, "In addition,", "is appropriated from the 10-year Pediatric Research "
                                      "Initiative Fund described in"))[:3],
                          ("transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)"))
         self.assertEqual(self.kind(amt(5, "Provided further, That", "shall be transferred to and merged with the "
@@ -336,15 +354,16 @@ class TaggingRules(unittest.TestCase):
         self.assertEqual(self.kind(amt(244, "Provided, That in addition to amounts provided under this heading,",
                                    "shall be available for surveillance from amounts made available under section "
                                    "4002 of the PPACA")), ("transfer_in", ""))
-        self.assertIsNone(TC.classify(amt(35, "the Secretary shall provide not less than", "from amounts made "
+        self.assertIsNone(lclassify(amt(35, "the Secretary shall provide not less than", "from amounts made "
                                            "available under this heading")))
-        self.assertEqual(TC.not_a_component(amt(285, "is provided, not less than", "is provided for HEAL")),
+        self.assertEqual(lnot_a_component(amt(285, "is provided, not less than", "is provided for HEAL")),
                          "sub-allocation")
-        self.assertEqual(TC.not_a_component(amt(363, "health,", ", which shall be for the purposes and in the amounts "
+        self.assertEqual(lnot_a_component(amt(363, "health,", ", which shall be for the purposes and in the amounts "
                                                 "specified in the table under this heading")), "program table")
 
     def test_the_cr_drops_only_what_an_anomaly_changes(self):
-        sections, changes, stated = TC.CR_ANOMALIES["ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
+        sections, changes, stated = TC.cr_anomalies("LHHS", "ACC-HHS-SAMHSA-PROGRAM-SUPPORT", 2025)[
+            "ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
         self.assertEqual(stated, [])
         self.assertTrue(AC._selected(comp(t="earmark"), changes))
         self.assertFalse(AC._selected(comp(t="transfer_in", transfer_from="241"), changes))
@@ -389,7 +408,7 @@ class TaggingRules(unittest.TestCase):
                          {"not carried: FY2025 already holds the type"})
 
     def test_pphf_allocation_rows(self):
-        rows = [c for c in STAGED["observation_components"] if c["transfer_from"] == TC.PPHF]
+        rows = [c for c in STAGED["observation_components"] if c["transfer_from"] == lhhs_rules().PPHF]
         self.assertTrue(rows)
         self.assertTrue(all(c["component_type"] == "transfer_in" and c["in_headline"] == "FALSE" for c in rows))
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
@@ -447,10 +466,10 @@ class TaggingRules(unittest.TestCase):
         x = {"amount": 100000000, "phrase": "control, $843,379,000: Provided, That in addition to amounts provided "
                                             "under this heading, [$100,000,000] shall be available for implementation "
                                             "of the Community Violence Intervention initiative from amount"}
-        self.assertEqual(TC.past_window_241(x, para)[:3],
+        self.assertEqual(lhhs_rules().past_window_241(x, lx(para))[:3],
                          ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)"))
         other = dict(para, text=[para["text"][0].replace("section 241 of the PHS Act", "section 4002 of the PPACA")])
-        self.assertIsNone(TC.past_window_241(x, other))
+        self.assertIsNone(lhhs_rules().past_window_241(x, lx(other)))
         v = next(v for v in STAGED["validations"] if v["validation_id"] == "VAL-MRV-LHHS-0135")
         self.assertEqual(v["result"], "pass")
 
@@ -485,10 +504,9 @@ class TaggingRules(unittest.TestCase):
                      "section 241 of the PHS Act: (1)", "to carry out subpart II"),
              amt(2, "to carry out subpart II $79; and (2)", "to evaluate programs: Provided further, That"),
              amt(9, "to evaluate programs: Provided further, That", "shall be for grants")]
-        open_list, got = False, []
+        ctx, got = lx(), []
         for a in p:
-            item, open_list = TC.list_241(a, open_list)
-            got.append(item)
+            got.append(lhhs_rules().list_241(a, ctx) is not None)
         self.assertEqual(got, [True, True, False])
 
 
@@ -576,8 +594,8 @@ class D2(unittest.TestCase):
     def test_cjs_fy2024_fy2025_are_auto_tagged_and_fy2025_follows_the_cr(self):
         for fy in (2024, 2025):
             for st in TC.TEXT_STAGES:
-                self.assertIn(("CJS", fy, st), TC.AUTO_CELLS)
-        self.assertIn(("CJS", 2025, "Enacted"), TC.CR_CELLS)
+                self.assertIn(("CJS", fy, st), TC.auto_cells())
+        self.assertIn(("CJS", 2025, "Enacted"), TC.cr_cells())
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
         cjs25 = [c for c in STAGED["observation_components"] if obs[c["observation_id"]]["canonical_account_id"]
                  .startswith(("ACC-NASA", "ACC-NSF", "ACC-DOJ", "ACC-NOAA", "ACC-OSTP", "ACC-NSC"))

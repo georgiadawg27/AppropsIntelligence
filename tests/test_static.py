@@ -256,7 +256,8 @@ class Features(StaticTest):
         # approps_web.py's /api/features reads the payloads it serves; the export, the files it wrote from the
         # same answers: the two modes give the page the same flags
         live = W.features(str(self.db))
-        self.assertEqual(live, {"features": self.index["features"], "contract_version": self.index["contract_version"]})
+        self.assertEqual(live, {"features": self.index["features"], "contract_version": self.index["contract_version"],
+                                "default_subcommittee": self.index["default_subcommittee"]})
         # each payload the server reads is the file the export wrote
         served = W.payloads(str(self.db))
         written = sorted(p.relative_to(self.out / "data").as_posix() for p in (self.out / "data").rglob("*.json"))

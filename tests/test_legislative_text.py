@@ -206,7 +206,9 @@ class Comparison(unittest.TestCase):
                  amt(100, "of which", "shall be from funds available under section 241 of the PHS Act"),
                  amt(300, "For making payments for the first quarter of fiscal year 2025,", "."))
         self.assertFalse(C.is_main_candidate(p["amounts"][2]))
-        self.assertEqual(C.compare(self.obs(900), p, [])[0], "match")     # less the 241 tap
+        # the section 241 tap is Labor-HHS's rule (reference/rules/LHHS.py LHHS-241-DERIVATION): a Labor-HHS cell
+        lhhs = C.R.Ctx("LHHS", "ACC-HHS-CDC-TOTAL", 2025, "Enacted")
+        self.assertEqual(C.compare(self.obs(900), p, [], ctx=lhhs)[0], "match")     # less the 241 tap
         self.assertEqual(C.compare(self.obs(1300), p, [])[0], "match")    # plus the advance
 
     def test_recorded_part_component(self):
