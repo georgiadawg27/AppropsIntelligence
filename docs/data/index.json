@@ -799,13 +799,14 @@
    "historical_names": []
   }
  ],
- "contract_version": 6,
+ "contract_version": 7,
  "default_subcommittee": "LHHS",
  "features": {
   "abbreviations": true,
   "account_page": true,
   "account_panel": true,
   "accounting_views": true,
+  "basis_adjustments": true,
   "budget_class": true,
   "defense_split": true,
   "exclude_earmarks": true,

@@ -1,5 +1,41 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-6: Amount basis data fixes (2026-10-14, this PR)
+
+Published views only (site_accounting.py, ACCOUNTING_RULES.md, ui_contract); no headline or printed figure changed,
+data/staged.json unchanged (measure_reconcile --ci clean; workbook digest unchanged). Review items:
+`reference/review/accounting/review-D6.md`.
+
+- Part 1, totals: every basis, timing, Exclude earmarks and Nondefense of an agency/title/bill total is the sum of its
+  lines' published views (`Layer.total_layer`): an agency's accounts (measure_reconcile.members); a title's accounts
+  plus each agency held only as its total (AHRQ, ACL, AHA: read as accounts, their own headline and components).
+  checked where a printed total measure_reconcile matched equals the sum; computed "sum of N accounts[, M left out by
+  this basis]; no printed total to check" / "differs from the printed total by $X (VAL-MRC-<cause>)"; not computable
+  naming a line that is, a line with no figure, or (owner, 2026-10-14) where the lines as printed don't add up to the
+  printed total: 96 cells in `total_gaps.csv` (`total_gaps.py`), one review item per agency. A matched printed total
+  keeps its checked view in those cells (no checked entry lost). Every total entry carries accounts_behind.
+- Part 2, structural rules (ACCOUNTING_RULES 'Structural rules'): a request carries no earmarks (148 account cells
+  fixed: LHHS 145, CJS 3; plus 24 lone-total cells); no defense outside function 050 (106 account cells fixed: LHHS
+  105, CJS 1). Still not computable for nondefense: subfunction 999 (35), from a later volume (ASPR Operations FY2024-25
+  PB, National Space Council FY2017-18 PB), none on file (3).
+- Part 3, adjustments on every entry with an amount; As printed + adjustments = amount on all 59,648 entries
+  (`test_adjustments_turn_as_printed_into_every_entry`). 195 entries equal As printed keep a non-empty list: offsetting
+  adjustments (an advance in and an advance out).
+- Part 4: ui_contract v7, `basis_adjustments` (true in the export). The page does not read it yet.
+- Round 2 (owner, 2026-10-14): held lines count in the total's sum (`held_lines`, `line_counts`). Round 3 (owner):
+  only lines the table prints inside that total (position or the table's printed arithmetic), never chosen by the
+  sum: evidence `total_lines_inside.csv` (from `total_lines.py`, needs the PDFs in document_store/, and page images for
+  scanned tables). 48 of the 96 gap cells published, 48 not computable (`total_gaps.csv`); round 2's arithmetic
+  selection had published 54 (reported as 56 by mistake). CMS FY2021 House/Senate ($1,000 over) not rounded. Accepted: the
+  non-empty offsetting adjustment lists; AHRQ, ACL and AHA as one line each. The "not checked" page label goes to UI-8
+  (page left alone).
+
+Open:
+- The page still says "not checked (n accounts)" for a not computable total (it keys on accounts_behind): UI-8.
+- review-D6.md: the 40 gap cells no held line explains (the table's line we don't hold).
+- Title II: General Provisions rescission lines have no published view (not BA headlines), so the title sum is not
+  computable where they print.
+
 ## G-1: any-subcommittee pipeline (2026-10-14, this PR)
 
 Refactor only: data/staged.json and docs/data unchanged (export compared byte for byte with the committed

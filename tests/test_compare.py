@@ -2988,14 +2988,15 @@ class AmountBasis(GridBrowser):
                 self.go(f"?sc=LHHS&fy=2026&amt={basis}")
                 e = view_entry(total, 2026, "Enacted", basis, "available")
                 head = self.page.inner_text("[data-testid=ov-headline]")
-                if e["status"] == "checked":
+                # D-6: a total's view is the sum of its accounts (computed) or a printed total (checked)
+                if e["status"] in ("checked", "computed"):
                     self.assertIn(thousands(e["amount"]), head)
                 else:
                     self.assertIn(f"not checked ({e['accounts_behind']} accounts)", head)
                 stages = self.page.eval_on_selector_all("[data-testid=ov-stage] .val", "es => es.map(e => e.innerText)")
                 for i, st in enumerate(("President's Budget", "House Reported", "Senate Reported", "Enacted")):
                     x = view_entry(total, 2026, st, basis, "available")
-                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] == "checked"
+                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed")
                                      else f"not checked ({x['accounts_behind']} accounts)")
         self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
         self.assertIn("114,797,239", self.page.inner_text("[data-testid=ov-headline]"))
@@ -3206,12 +3207,19 @@ class ExcludeEarmarks(GridBrowser):
             b = document.querySelector('[data-testid=src-open]'); return !!(e.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING); }"""))
         self.assertTrue(ears.first.locator("a").get_attribute("href").endswith("#page=436"))
         self.page.keyboard.press("Escape")
+        # the President's Budget: a request carries no earmarks (D-6), so the view is the figure as printed
         pb = self.cell(self.HSPS, 2026, "President's Budget")
-        self.assertEqual(pb.evaluate(CELL_TEXT_JS), "n/a")
-        self.assertIn("earmarks not tagged for this stage", pb.locator("button.fig").get_attribute("title"))
-        total = self.lhhs["titles"][0]["total"]["account"]["canonical_account_id"]
-        self.assertEqual(self.text(total, 2026, "Enacted"), "not checked")
-        self.assertIn("earmark components tagged", self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
+        x = view_entry_of(hsps, 2026, "President's Budget", "printed", None, "views_excluding_earmarks")
+        self.assertEqual(x["amount"], view_entry_of(hsps, 2026, "President's Budget", "printed", None, "views")["amount"])
+        self.assertEqual(pb.evaluate(CELL_TEXT_JS), thousands(x["amount"]))
+        self.assertIn("a request carries no earmarks", pb.locator("button.fig").get_attribute("title"))
+        # the title total: what its published entry says (D-6: the sum of its accounts, or not computable, why)
+        trow = self.lhhs["titles"][0]["total"]
+        total = trow["account"]["canonical_account_id"]
+        t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
+        self.assertEqual(self.text(total, 2026, "Enacted"),
+                         thousands(t["amount"]) if t["status"] in ("checked", "computed") else "not checked")
+        self.assertIn(t["reason"], self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
         # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
@@ -3264,13 +3272,21 @@ class ExcludeEarmarks(GridBrowser):
         self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), "7,057,700")
         self.page.click(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell] button.fig")
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
-        # a not computable view (NSF's total: one of its accounts has a defense portion and no printed nondefense total
-        # confirms it): empty, the reason on hover
+        # NSF's total (D-6): the sum of its accounts' nondefense views, R&RA's defense portion out
         nsf = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == "ACC-NSF-TOTAL")
         e = view_entry_of(nsf, 2026, "Enacted", "printed", None, "views_nondefense")
-        self.assertEqual(e["status"], "not_computable")
+        self.assertEqual((e["status"], e["amount"]), ("computed", 8_631_200_000))
         self.go("?sc=CJS&fy=2026&cols=nondefense&open=ACC-NSF-TOTAL")
-        nd = self.page.locator("tr[data-account=ACC-NSF-TOTAL] [data-testid=nondefense-cell]")
+        self.assertEqual(self.page.inner_text("tr[data-account=ACC-NSF-TOTAL] [data-testid=nondefense-cell]").strip(),
+                         "8,631,200")
+        # a not computable view (NIH's FY2022 Enacted total: its accounts as printed don't add up to it, and no held
+        # line explains the difference): empty, the reason on hover
+        nih = self.lrow("ACC-HHS-NIH-TOTAL")
+        e = view_entry_of(nih, 2022, "Enacted", "printed", None, "views_nondefense")
+        self.assertEqual(e["status"], "not_computable")
+        self.assertIn("is in no account held", e["reason"])
+        self.go("?sc=LHHS&fy=2022&cols=nondefense&open=ACC-HHS-NIH-TOTAL")
+        nd = self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=nondefense-cell]")
         self.assertEqual(nd.inner_text().strip(), "")
         self.assertEqual(nd.get_attribute("data-view"), "not_computable")
         self.assertIn(e["reason"], nd.get_attribute("title"))
