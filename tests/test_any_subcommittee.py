@@ -285,7 +285,8 @@ class MovedRules(unittest.TestCase):
             "LHHS-PPHF-SOURCE", "LHHS-241-SUBALLOCATION", "LHHS-LAYOUT", "CJS-LAYOUT", "LHHS-APPENDIX", "CJS-APPENDIX", "LHHS-ONC-EVAL-TAP-LINE",
             "CJS-NSF-DEFENSE", "CJS-FY2027-TRANSFER", "CJS-FY2027-OFFSETTING", "LHHS-VICTF-LINES", "LHHS-PPHF-TABLE",
             "LHHS-TOTAL-ONLY", "LHHS-ADVANCES", "LHHS-CR-ANOMALIES", "LHHS-CR-PPHF", "CJS-CR-LEVEL-ONLY",
-            "LHHS-CHECKS", "LHHS-ONC-VIEW-CHECK"}
+            "LHHS-CHECKS", "LHHS-ONC-VIEW-CHECK", "LHHS-LOOKS-LIKE", "LHHS-241-NOT-MAIN", "LHHS-241-DERIVATION",
+            "LHHS-241-NO-MAIN", "LHHS-ONC-CELL-NOTE"}
         self.assertEqual({r.id for r in R.active().all}, covered)
 
     # phrase rules ------------------------------------------------------------------------------------------
@@ -495,6 +496,96 @@ class MovedRules(unittest.TestCase):
         self.assertFalse(rule("LHHS-ONC-VIEW-CHECK").scope.contains("LHHS", "ACC-HHS-CDC-TOTAL", 2022, "Enacted"))
 
 
+class MovedRulesTextCheckAndSite(unittest.TestCase):
+    """The rules moved in the second round (owner, 2026-10-14): the unread-phrase detector's Labor-HHS words, the
+    text check's section 241 main-amount rules, ONC's $0 headline note."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.exempt = CT.load_exempt(L.TEXT_DIR)
+        cls.outcomes = CT.check(STAGED, TEXTS, cls.exempt)
+        cls.val = {v["validation_id"]: v for v in STAGED["validations"]}
+
+    def outcome_without(self, rule_id, oid):
+        with without(rule_id):
+            return CT.check(STAGED, TEXTS, self.exempt)[oid]
+
+    def test_looks_like(self):
+        # a section 241 sub-allocation no rule tags (S. FY2021 Senate draft, OS-GDM P0098): a review item only in a
+        # Labor-HHS cell, by the Labor-HHS words
+        x = paragraph("SRC-BILL-LHHS-FY2021-SENATE", "P0098")["amounts"][4]
+        text = " ".join(TC.segments(x))
+        lx, cx = TC.ctx_for("LHHS", "ACC-X", 2021, "Senate Reported"), TC.ctx_for("CJS", "ACC-X", 2021, "Senate Reported")
+        self.assertFalse(TC.LOOKS_LIKE.search(text))
+        self.assertTrue(TC.looks_like(text, lx))
+        with without("LHHS-LOOKS-LIKE"):
+            self.assertFalse(TC.looks_like(text, lx))
+        self.assertFalse(TC.looks_like(text, cx))
+        _, rep = read("SRC-BILL-LHHS-FY2021-SENATE", "P0098", "LHHS", 2021, "Senate Reported")
+        self.assertEqual(rep["not_a_component"]["sub-allocation"], 1)
+
+    def test_not_main(self):
+        # GDM, S. FY2021 Senate draft: '$64,828,000 to be derived from amounts available under section 241'
+        p = paragraph("SRC-BILL-LHHS-FY2021-SENATE", "P0098")
+        a = p["amounts"][1]
+        lx = CT.R.Ctx("LHHS", "ACC-HHS-OS-GDM", 2021, "Senate Reported")
+        self.assertTrue(CT.is_main_candidate(a))                    # the core alone would read it
+        self.assertFalse(CT.is_main_candidate(a, lx))
+        self.assertNotIn(64828000, [x["amount"] for x in CT.appropriating(p, lx)])
+        with without("LHHS-241-NOT-MAIN"):
+            self.assertTrue(CT.is_main_candidate(a, lx))
+        self.assertTrue(CT.is_main_candidate(a, CT.R.Ctx("CJS", "ACC-X", 2021, "Senate Reported")))
+
+    def check_case(self, vid, rule_id, phrase):
+        oid = self.val[vid]["observation_id"]
+        res = self.outcomes[oid]
+        self.assertEqual(res["result"], "match")
+        self.assertIn(phrase, res["how"])
+        self.assertIn(phrase, self.val[vid]["expected_result"])
+        other = self.outcome_without(rule_id, oid)
+        self.assertNotIn(phrase, other.get("how") or "")
+        o = next(x for x in STAGED["observations"] if x["observation_id"] == oid)
+        cjs = CT.compare(o, res["paragraph"], [], ctx=CT.R.Ctx("CJS", "ACC-X", int(o["fiscal_year"]), o["stage"]))
+        self.assertNotIn(phrase, cjs[2] or "")
+
+    def test_derivation(self):
+        self.check_case("VAL-TXT-LHHS-1442", "LHHS-241-DERIVATION", "from section 241 (PHS evaluation funds, not new")
+
+    def test_no_main(self):
+        self.check_case("VAL-TXT-LHHS-1647", "LHHS-241-NO-MAIN", "no new budget authority: the paragraph")
+        self.assertFalse(rule("LHHS-241-NO-MAIN").scope.contains("LHHS", "ACC-HHS-CDC-TOTAL", 2022, "Enacted"))
+
+    def test_onc_cell_note(self):
+        import approps_store as S
+        with tempfile.TemporaryDirectory() as d:
+            db = Path(d) / "x.db"
+            S.load(S.reference_workbook(), db)
+            conn = S.connect(db, readonly=True)
+            try:
+                notes = lambda: {(o["fiscal_year"], o["stage"]): o.get("cell_note") or ""  # noqa: E731
+                                 for o in S.history(conn, "ACC-HHS-OS-ONC")["observations"]
+                                 if "PHS evaluation set-aside" in (o.get("cell_note") or "")}
+                got = notes()
+                self.assertIn((2022, "Senate Reported"), got)
+                self.assertIn("Funded through the PHS evaluation set-aside ($86,614,000)", got[(2022, "Senate Reported")])
+                with without("LHHS-ONC-CELL-NOTE"):
+                    self.assertEqual(notes(), {})
+            finally:
+                conn.close()
+        self.assertFalse(rule("LHHS-ONC-CELL-NOTE").scope.contains("LHHS", "ACC-HHS-CDC-TOTAL", 2022, "Enacted"))
+        self.assertFalse(rule("LHHS-ONC-CELL-NOTE").scope.contains("CJS", "ACC-HHS-OS-ONC", 2022, "Enacted"))
+
+
+class DefaultSubcommittee(unittest.TestCase):
+    def test_the_page_opens_on_the_datas_default(self):
+        idx = json.loads((ROOT / "docs" / "data" / "index.json").read_text())
+        self.assertEqual(idx["default_subcommittee"], "LHHS")
+        self.assertEqual(SC.default_subcommittee(["CJS", "LHHS"]), "LHHS")
+        self.assertEqual(SC.default_subcommittee(["SYNLB"]), "SYNLB")       # not held: the first listed
+        page = (ROOT / "web" / "index.html").read_text()
+        self.assertNotIn('"LHHS"', page)
+
+
 # ------------------------------------------------------------------------------------------------ the synthetic subcommittee
 
 class SyntheticSubcommittee(unittest.TestCase):
@@ -634,11 +725,18 @@ class SyntheticSubcommittee(unittest.TestCase):
             self.assertEqual(listing["subcommittees"], ["CJS", "LHHS", "SYNLB"])
             self.assertEqual(listing["names"]["SYNLB"], "Synthetic Legislative Branch (test fixture)")
             committed = ROOT / "docs" / "data"
+            # the site-wide files list every subcommittee (index.json, subcommittees.json, whats_new.json's
+            # documents); every other file -- CJS's and Labor-HHS's grids, every account -- is byte for byte the same
             same = [p.relative_to(committed) for p in committed.rglob("*.json")
-                    if p.name not in ("index.json", "subcommittees.json")]
+                    if p.name not in ("index.json", "subcommittees.json", "whats_new.json")]
             self.assertTrue(same)
             for rel in same:
                 self.assertEqual((out / "data" / rel).read_bytes(), (committed / rel).read_bytes(), rel)
+            mine = {d["document_id"] for d in self.data["source_docs"]}
+            new, old = (json.loads((x / "whats_new.json").read_text()) for x in (out / "data", committed))
+            for k in ("documents", "undated"):
+                new[k] = [x for x in new[k] if not (set(json.dumps(x).split('"')) & mine)]
+            self.assertEqual(new, old)
             if not (sync_playwright and chromium_path()):
                 self.skipTest("playwright / chromium not available: the page check runs in the browser job")
             self.page_shows(out)

@@ -34,6 +34,16 @@ HOOKS = {
     "appendix": "data {'chapters': (...)}: the Budget Appendix chapters the subcommittee's accounts are in "
                 "(reference/review/accounting/request_language.py reads the request language from them; intake names "
                 "them when it is missing)",
+    "not_main": "fn(a, ctx) -> reason | None: an amount the core would take as the paragraph's main appropriated "
+                "amount, which the rule says is not (check_legislative_text.is_main_candidate)",
+    "derivation": "fn(para, ctx) -> (amounts, how, how beside another term) | None: amounts the text check takes off "
+                  "the main amount when it derives the headline (check_legislative_text.derivations)",
+    "no_main": "fn(para, ours, ctx) -> (result, text figure, how) | None: the text check's outcome for a paragraph "
+               "with no main amount (check_legislative_text.compare)",
+    "looks_like": "data {'pattern': regex}: more words that make a phrase no rule reads a review item "
+                  "(tag_components.looks_like)",
+    "cell_note": "fn(rec, observations, ctx) -> (headline, note) | None: a note a line puts on its cell's headline "
+                 "(approps_store.history)",
     "extract": "accounts scope only: an account held only as its agency total, whose headline is read from the "
                "agency's one appropriation paragraph (tag_components.total_only_outcomes)",
     "list_item": "fn(x, ctx) -> (type, designation, transfer_from, rule) | None: an amount that is an item of a list "

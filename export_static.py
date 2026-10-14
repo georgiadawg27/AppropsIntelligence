@@ -66,6 +66,7 @@ from pathlib import Path
 import accounts as A
 import approps_store as S
 import approps_web as W
+import subcommittees as SC
 import features as F
 
 ROOT = Path(__file__).resolve().parent
@@ -222,6 +223,7 @@ def export(workbook, out, download=True):
         "matching": {"accept_max_distance": A.ACCEPT_MAX_DISTANCE, "accept_max_fraction": A.ACCEPT_MAX_FRACTION,
                      "ambiguity_margin": A.AMBIGUITY_MARGIN},
         "split_subcommittees": split,
+        "default_subcommittee": SC.default_subcommittee(names),
         "accounts": F.index_accounts(pool),
     }
     index.update(features(out / "data", index))

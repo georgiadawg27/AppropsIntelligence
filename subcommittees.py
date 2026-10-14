@@ -33,6 +33,9 @@ SUBCOMMITTEES = {
 # form, matching the ID prefixes (BR-LHHS-..., OBS-LHHS-...). A name for people
 # to read is a display mapping, never stored; a code not listed displays as itself.
 DISPLAY_NAMES = {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}
+# the subcommittee the page opens on, published with the data (docs/data/index.json and /api/features
+# "default_subcommittee"); used only when the data holds it, else the first code
+DEFAULT_SUBCOMMITTEE = "LHHS"
 
 
 def display_name(code):
@@ -41,6 +44,12 @@ def display_name(code):
         return DISPLAY_NAMES[code]
     import rules_registry
     return rules_registry.active().data("display", code).get("name") or code
+
+
+def default_subcommittee(codes_):
+    """DEFAULT_SUBCOMMITTEE when the data holds it, else the first of codes_ (None for none)."""
+    codes_ = list(codes_)
+    return DEFAULT_SUBCOMMITTEE if DEFAULT_SUBCOMMITTEE in codes_ else (codes_[0] if codes_ else None)
 
 
 def codes(data):

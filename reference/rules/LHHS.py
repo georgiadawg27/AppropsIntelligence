@@ -196,6 +196,63 @@ def not_component(kind, rx, where_):
     return fn
 
 
+# ------------------------------------------------------------------------------------------------ the text check
+
+def split(a):
+    """(the words before the amount, the words after it) -- check_legislative_text.split_phrase"""
+    m = re.match(r"(.*)\[\$[^\]]*\](.*)", a["phrase"], re.S)
+    return (m.group(1), m.group(2)) if m else (a["phrase"], "")
+
+
+def money(xs):
+    return " + ".join(f"${x:,}" for x in xs)
+
+
+# an amount printed as coming from section 241 is not the paragraph's main appropriated amount
+NOT_MAIN_241 = re.compile(r"^\s*,?\s*(to be derived from amounts? (?:available|made available) under section 241|"
+                          r"from (?:the )?(?:funds|amounts) (?:made )?available under section 241)", re.I)
+TAP_241 = re.compile(r"^\s*,?\s*(?:shall|is to) be (?:from|derived from) (?:funds|amounts) (?:made )?available under "
+                     r"section 241", re.I)
+
+
+def not_main_241(a, ctx):
+    return "from section 241 (PHS evaluation funds)" if NOT_MAIN_241.search(split(a)[1]) else None
+
+
+def derivation_241(para, ctx):
+    """'of which $X shall be from funds available under section 241': PHS evaluation funds, not new budget
+    authority, taken off the main amount -> (amounts, how, how beside another term) or None."""
+    tap = [a["amount"] for a in para["amounts"]
+           if TAP_241.search(split(a)[1]) and re.search(r"of which\s*$", split(a)[0], re.I)]
+    if not tap:
+        return None
+    return (tuple(tap), f" - {money(tap)} from section 241 (PHS evaluation funds, not new budget authority)",
+            f" - {money(tap)} from section 241")
+
+
+def no_main_241(para, ours, ctx):
+    """A paragraph whose every amount is from section 241 and a $0 headline (ONC): no new budget authority."""
+    tap = [a["amount"] for a in para["amounts"] if TAP_241.search(split(a)[1])]
+    if tap and ours == 0 and len(tap) == len(para["amounts"]):
+        return "match", 0, (f"no new budget authority: the paragraph's {money(tap)} is all from section 241 "
+                            "(PHS evaluation funds)")
+    return None
+
+
+# ------------------------------------------------------------------------------------------------ the site
+
+def onc_cell_note(rec, obs, ctx):
+    """A $0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
+    the program is funded, just not by new budget authority -> (the headline, the note) or None."""
+    if (rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"]
+            or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or "")):
+        return None
+    head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
+    if head and head["amount"] == 0:
+        return head, f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+    return None
+
+
 # ------------------------------------------------------------------------------------------------ lines
 
 def onc_evaluation_tap(o, ctx):
@@ -395,6 +452,7 @@ CHECKS = {
 ADVANCE_ACCOUNTS = {"ACC-HHS-ACF-CHILD-SUPPORT", "ACC-HHS-ACF-FOSTER-CARE", "ACC-HHS-CMS-MEDICAID"}
 TOTAL_ONLY = {"ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL"}
 TC_FILE = "scripts/tag_components.py"
+CT_FILE = "scripts/check_legislative_text.py"
 MR_FILE = "scripts/measure_reconcile.py"
 
 RULES = [
@@ -431,6 +489,20 @@ RULES = [
     *[Rule(f"LHHS-NOT-COMPONENT-{kind.upper().replace(' ', '-')}", "not_component", ALL,
            fn=not_component(kind, rx, where_), moved_from=f"{TC_FILE} NOT_COMPONENT ({kind!r})",
            doc=f"not a component: {kind}") for kind, rx, where_ in NOT_COMPONENT],
+    Rule("LHHS-LOOKS-LIKE", "looks_like", ALL, data={"pattern": r"Prevention and Public Health Fund|section 241"},
+         moved_from=f"{TC_FILE} LOOKS_LIKE ('section 241', 'Prevention and Public Health Fund')",
+         doc="the Labor-HHS words that make an unread phrase a review item"),
+    Rule("LHHS-241-NOT-MAIN", "not_main", ALL, fn=not_main_241,
+         moved_from=f"{CT_FILE} AFTER_NOT_MAIN (the two section 241 alternatives)",
+         doc="an amount printed as from section 241 is not the paragraph's main amount"),
+    Rule("LHHS-241-DERIVATION", "derivation", ALL, fn=derivation_241,
+         moved_from=f"{CT_FILE} TAP_241 in derivations()", doc="the main amount less its section 241 of-which"),
+    Rule("LHHS-241-NO-MAIN", "no_main", Scope(CODE, accounts={"ACC-HHS-OS-ONC"}, fiscal_years=ANY, stages=ANY),
+         fn=no_main_241, moved_from=f"{CT_FILE} TAP_241 in compare()",
+         doc="ONC: every amount from section 241 and a $0 headline -- no new budget authority, a match"),
+    Rule("LHHS-ONC-CELL-NOTE", "cell_note", Scope(CODE, accounts={"ACC-HHS-OS-ONC"}, fiscal_years=ANY, stages=ANY),
+         fn=onc_cell_note, moved_from="approps_store.py history(): the PHS evaluation set-aside note",
+         doc="ONC's $0 headline: 'Funded through the PHS evaluation set-aside ..., not new budget authority.'"),
     Rule("LHHS-ONC-EVAL-TAP-LINE", "line", Scope(CODE, accounts={"ACC-HHS-OS-ONC"}, fiscal_years=ANY, stages=ANY),
          fn=onc_evaluation_tap, moved_from=f"{TC_FILE} retag(): ONC program_level",
          doc="ONC's 'Evaluation Tap Funding' line (recorded as program_level) -> transfer_in from section 241"),

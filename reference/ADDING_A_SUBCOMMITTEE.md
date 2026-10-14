@@ -78,6 +78,11 @@ Each item names what was found and where. For each one, decide:
   | `past_window` | an amount nothing classifies, read on past the phrase window |
   | `transfer_source` | the source a transfer names |
   | `not_component` | a phrase that looks like a component but is not (counted, never tagged) |
+  | `looks_like` | more words that make a phrase no rule reads a review item |
+  | `not_main` | an amount the text check would take as the paragraph's main amount that is not |
+  | `derivation` | amounts the text check takes off the main amount when it derives the headline |
+  | `no_main` | the text check's outcome for a paragraph with no main amount |
+  | `cell_note` | a note a line puts on its cell's headline on the site |
   | `line` | a held table line re-tagged as a component of its headline |
   | `table_line` | a row of `table_lines.csv` the core's CDS rule doesn't read |
   | `components` | components from the rule's own source file (e.g. Labor-HHS's PPHF table) |
@@ -126,7 +131,9 @@ figures it holds; a pull request never commits `docs/Approps_Pilot_Schema_Loaded
 
 - A new cell state on the page (e.g. "not carried by custom" shown as its own state instead of an empty cell):
   the `absence` hook explains the cell in the intake's review file, but the page has no state for it
-  (`web/index.html` `cell_state`/`NONFIG`; `approps_store.cell_state`).
+  (`web/index.html` `cell_state`/`NONFIG`; `approps_store.cell_state`) -- left for the Legislative Branch brief.
+- The subcommittee the page opens on is `subcommittees.DEFAULT_SUBCOMMITTEE`, published as
+  `default_subcommittee` (docs/data/index.json, /api/features); the page falls back to the first listed.
 - A new full-year CR law: `tag_components.CR_LAWS` (its continuing and earmark sections), shared by every
   subcommittee the law covers.
 - Report-table extraction for a new title (`extract_approps.py`, the per-year `reference/review/lhhs/backfill/`

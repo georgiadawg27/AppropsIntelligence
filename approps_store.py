@@ -1348,15 +1348,14 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
-    # a 0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
-    # the program is funded, just not by new budget authority
+    # a note a subcommittee's rule puts on a cell's headline (hook 'cell_note'; Labor-HHS: ONC's $0 headline funded
+    # through the PHS evaluation set-aside)
+    import rules_registry
     for rec in obs:
-        if rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"] \
-                or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or ""):
-            continue
-        head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
-        if head and head["amount"] == 0:
-            note = f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+        ctx = rules_registry.Ctx(acct["subcommittee"], account_id, rec["fiscal_year"], rec["stage"])
+        hit = rules_registry.active().first("cell_note", f"{rec['observation_id']} (cell note)", ctx, rec, obs)
+        if hit:
+            head, note = hit[1]
             if note not in (head.get("cell_note") or ""):
                 head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
     # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the

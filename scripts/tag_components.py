@@ -188,10 +188,17 @@ NOT_COMPONENT = [
 ]
 NOT_TO_EXCEED = re.compile(r"not to exceed\s*$", re.I)
 TRUST_FUND = re.compile(r"trust fund", re.I)
-# a phrase that looks like a component though no rule tags it (reported for review, never tagged)
+# a phrase that looks like a component though no rule tags it (reported for review, never tagged); a rule file adds
+# its subcommittee's words (hook 'looks_like')
 LOOKS_LIKE = re.compile(r"transfer|trust fund|designated|rescind|offsetting|collections|fees|advance|"
-                        r"Prevention and Public Health Fund|Nonrecurring|in addition|derived from|section 241|"
-                        r"first quarter|October 1|emergency|limitation", re.I)
+                        r"Nonrecurring|in addition|derived from|first quarter|October 1|emergency|limitation", re.I)
+
+
+def looks_like(text, ctx):
+    if LOOKS_LIKE.search(text):
+        return True
+    pattern = R.active().data("looks_like", ctx.subcommittee, ctx.account, ctx.fiscal_year, ctx.stage).get("pattern")
+    return bool(pattern and re.search(pattern, text, re.I))
 NUMBER = re.compile(r"\$[\d,]+(?:\.\d+)?")
 SEPARATE = re.compile(r"(?:\bin addition\b|together with|first quarter of fiscal year|and for such purposes)", re.I)
 
@@ -616,11 +623,11 @@ def autotag(data, heads, held, report):
         text = texts[doc]
         division = (refs[(res["subcommittee"], res["fiscal_year"], res["stage"])].get("division") or "").strip()
         paras = [p for p in text["paragraphs"] if not division or not p["division"] or p["division"] == division]
-        main, _ = CT.main_amount(para)
+        ctx = ctx_for(res["subcommittee"], res["account"], res["fiscal_year"], res["stage"], para)
+        main, _ = CT.main_amount(para, ctx)
         if main is None and res["result"] == "ambiguous":
             report["pilot_no_paragraph"].append(f"{oid} ({res['name']} FY{res['fiscal_year']} {res['stage']}): "
                                                 "no main amount in the paragraph")
-        ctx = ctx_for(res["subcommittee"], res["account"], res["fiscal_year"], res["stage"], para)
         tagged = read_amounts(oid, doc, para, main, o["amount"], CT.where(para), report, ctx)
         names = CT.account_names(a, by_acc[a["canonical_account_id"]], former)
         own_gp = 0                      # general provisions' additional amounts that are the headline's own money
@@ -635,7 +642,7 @@ def autotag(data, heads, held, report):
             if cl is None and main is not None and main["amount"] + amt == o["amount"]:
                 # the headline prints the paragraph's amount plus this one (OS-GDM FY2023 Senate: $565,394,000 and
                 # sec. 243's additional $350,000,000 = $915,394,000): the headline's own appropriation (D-1)
-                if LOOKS_LIKE.search(" ".join(segments(x))):
+                if looks_like(" ".join(segments(x)), pctx):
                     report["not_a_component"]["the headline's own appropriation"] += 1
                 own_gp += amt
                 continue
@@ -645,7 +652,7 @@ def autotag(data, heads, held, report):
                                                                    "no type rule fits]"})
                 continue
             tagged.append((x, cl, "separate", w))
-        comps = place(oid, o, para, main, tagged, held, report, doc, own_gp, "auto_text")
+        comps = place(oid, o, para, main, tagged, held, report, doc, own_gp, "auto_text", ctx)
         if comps:
             out += comps
     return out
@@ -671,15 +678,15 @@ def request_text(data, heads, held, report):
                                            "reference/review/accounting/request_language.py")
             continue
         para, doc = r["paragraph"], r["document_id"]
-        main, _ = CT.main_amount(para)
-        loc = f"{para['location']['pages']}, proposed appropriations language under '{para['account_heading']}'"
         ctx = ctx_for(sc, account, fy, REQUEST_STAGE, para)
+        main, _ = CT.main_amount(para, ctx)
+        loc = f"{para['location']['pages']}, proposed appropriations language under '{para['account_heading']}'"
         tagged = read_amounts(oid, doc, para, main, o["amount"], loc, report, ctx)
         if R.active().rules("advances", sc, account, fy, REQUEST_STAGE):
             for x in [t for t in tagged if t[1][0] in ("advance_enacted", "advance_available")]:
                 report["request_advance_kept"].append(f"{oid} {x[1][0]} {AC.money(x[0]['amount'])}")
             tagged = [t for t in tagged if t[1][0] not in ("advance_enacted", "advance_available")]
-        comps = place(oid, o, para, main, tagged, held, report, doc, 0, "appendix_text")
+        comps = place(oid, o, para, main, tagged, held, report, doc, 0, "appendix_text", ctx)
         report["request"][(sc, fy, "read" if comps else "read, no match")] += 1
         out += comps
     return out
@@ -690,7 +697,7 @@ def read_amounts(oid, doc, para, main, headline, loc, report, ctx):
     untagged component-like phrases go to the report (for review: never forced into the nearest rule)."""
     tagged = []
     ctx.state = {}
-    own = [x["amount"] for x in CT.appropriating(para)] + ([main["amount"]] if main else [])
+    own = [x["amount"] for x in CT.appropriating(para, ctx)] + ([main["amount"]] if main else [])
     for i, x in enumerate(para["amounts"]):
         x = dict(x, _next=para["amounts"][i + 1] if i + 1 < len(para["amounts"]) else None)
         item = R.active().first("list_item", line_of(x, ctx), ctx, x)
@@ -707,9 +714,9 @@ def read_amounts(oid, doc, para, main, headline, loc, report, ctx):
         if cl is None:
             seg_b, seg_a = segments(x)
             kind = not_a_component(x, ctx) or ("the headline's own appropriation" if x["amount"] in own else None)
-            if kind and LOOKS_LIKE.search(seg_b + " " + seg_a):
+            if kind and looks_like(seg_b + " " + seg_a, ctx):
                 report["not_a_component"][kind] += 1
-            elif LOOKS_LIKE.search(seg_b + " " + seg_a):
+            elif looks_like(seg_b + " " + seg_a, ctx):
                 report["untagged"].append({"observation_id": oid, "document": doc, "where": loc,
                                            "amount": x["amount"], "phrase": x["phrase"]})
             continue
@@ -717,7 +724,7 @@ def read_amounts(oid, doc, para, main, headline, loc, report, ctx):
     return tagged
 
 
-def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_text"):
+def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_text", ctx=None):
     """Component records for the tagged amounts of one headline's paragraph, with in_headline by arithmetic (the
     paragraph's main amount less the of-which parts left out plus the separate parts counted gives the headline;
     components already held count too) or, where no single assignment does, by the default with a note."""
@@ -742,7 +749,7 @@ def place(oid, o, para, main, tagged, held, report, doc, own_gp=0, method="auto_
         gp_note = (f" (with {AC.money(own_gp)} a general provision appropriates under the account's heading, the "
                    "headline's own appropriation)")
     pattern = in_headline_by_arithmetic(o["amount"], main, held[oid], comps)
-    ap = [x["amount"] for x in CT.appropriating(para)]
+    ap = [x["amount"] for x in CT.appropriating(para, ctx)]
     if pattern is None and len(ap) > 1:
         # the paragraph appropriates more than one amount (GDM's 'for ... cybersecurity threats, $108,983,000'):
         # their sum is the paragraph's figure
@@ -870,7 +877,8 @@ def advances(data, heads, records, report):
         cur = current.get(o["observation_id"])
         if cur is None:
             res = outcomes.get(o["observation_id"])
-            main = CT.main_amount(res["paragraph"])[0] if res and res.get("paragraph") else None
+            main = CT.main_amount(res["paragraph"], ctx_for(res["subcommittee"], res["account"], res["fiscal_year"],
+                                                            res["stage"]))[0] if res and res.get("paragraph") else None
             cur = main["amount"] if main else None
         inside = sum(x["amount"] for x in by_obs[o["observation_id"]] + [y for y in out if y is not c and
                      y["observation_id"] == c["observation_id"]] if x["in_headline"] == "TRUE")

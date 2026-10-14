@@ -31,9 +31,15 @@ Open:
   SSMS hold no FY2024 Enacted component to carry). Tested on their wording.
 - The page has no cell state for "not carried by custom" (the synthetic quirk): the intake explains it, the page
   shows the cell as it shows any cell with no figure. Needs a state in approps_store.cell_state and the page.
-- Still in the core and named in the PR: LOOKS_LIKE (the detector of unread phrases) lists 'section 241' and
-  'Prevention and Public Health Fund'; check_legislative_text's TAP_241 / BEFORE_NOT_MAIN (main-amount reading)
-  name section 241; approps_store's ONC $0-headline note; web/index.html prefers LHHS as the default subcommittee.
+- Round 2 (owner, 2026-10-14): moved to LHHS.py too -- LHHS-LOOKS-LIKE (the unread-phrase detector's 'section
+  241' / 'Prevention and Public Health Fund'), LHHS-241-NOT-MAIN, LHHS-241-DERIVATION, LHHS-241-NO-MAIN (the text
+  check's section 241 main-amount rules), LHHS-ONC-CELL-NOTE (ONC's $0 headline note). New hooks: looks_like,
+  not_main, derivation, no_main, cell_note. The page's default subcommittee is the data's: index.json and
+  /api/features `default_subcommittee` (subcommittees.DEFAULT_SUBCOMMITTEE = LHHS); docs/data/index.json gains
+  that one key, docs/index.html regenerated; nothing else in docs/ changed. Merged main (#75, UI-6): one
+  conflict, this file (both sections kept).
+- "Not carried by custom" as a page state: left for the Legislative Branch brief (owner).
+
 ## UI-6: Find changes and watchlist (2026-10-14)
 
 - web/index.html: a third tab, Find changes (`?view=changes`, `#changes-view`; shown when `find_changes` is built and on).
