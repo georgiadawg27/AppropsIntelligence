@@ -30,6 +30,9 @@ API
       {"features": {name: bool}, "contract_version": n}: the page's feature flags (features.flags),
       computed from the payloads this server answers with -- the same flags the static export writes
       into docs/data/index.json from the same answers
+  GET /api/whats-new
+      -> approps_store.whats_new(): every source document with the date it was retrieved into the record,
+         newest first (the page's "What's new"; the export writes the same answer to data/whats_new.json)
 """
 
 import argparse
@@ -97,6 +100,14 @@ def subcommittee(db, name):
         conn.close()
 
 
+def whats_new(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.whats_new(conn)
+    finally:
+        conn.close()
+
+
 def payloads(db):
     """Every answer the page can read, keyed by the path the static export writes it to under docs/data/:
     index.json (the matching pool), subcommittees.json, subcommittees/<name>.json, accounts/<id>.json --
@@ -109,6 +120,7 @@ def payloads(db):
     out = {"index.json": {"accounts": F.index_accounts(pool)}}
     listing = subcommittees(db)
     out["subcommittees.json"] = listing
+    out["whats_new.json"] = whats_new(db)
     for name in listing["subcommittees"]:
         out[f"subcommittees/{name}.json"] = subcommittee(db, name)
     for a in pool:
@@ -177,6 +189,8 @@ def make_handler(db):
                         return self.json(HTTPStatus.OK, account(db, unquote(url.path[len("/api/account/"):])))
                     except LookupError as e:
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
+                if url.path == "/api/whats-new":
+                    return self.json(HTTPStatus.OK, whats_new(db))
                 if url.path == "/api/subcommittees":
                     return self.json(HTTPStatus.OK, subcommittees(db))
                 if url.path.startswith("/api/subcommittee/"):

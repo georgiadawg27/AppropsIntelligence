@@ -2002,6 +2002,36 @@ def subcommittee_grid(conn, subcommittee):
     return site_accounting.Layer(accounting_data(conn)).annotate(grid)
 
 
+def whats_new(conn):
+    """The page's "What's new" list (brief UI-6): every source document with the date it was added to the record
+    (source_document.retrieval_timestamp, its date part), newest first, with the subcommittees its records belong to,
+    how many figures it gives (observations, superseded ones left out) and how many account attributes cite it. A document with no retrieval date is
+    counted in "undated", never given a date."""
+    docs = []
+    undated = []
+    for d in conn.execute(
+            "SELECT d.document_id, d.source_agency, d.document_type, d.fiscal_year, d.stage, d.publication_date, "
+            "d.retrieval_timestamp, d.url_or_identifier, "
+            "(SELECT COUNT(*) FROM appropriations_observation o WHERE o.source_document_id = d.document_id "
+            " AND o.verification_status != 'superseded') AS figures, "
+            "(SELECT COUNT(*) FROM account_attribute t WHERE t.source_document_id = d.document_id) AS attributes, "
+            "(SELECT GROUP_CONCAT(DISTINCT a.subcommittee) FROM account a WHERE a.canonical_account_id IN "
+            " (SELECT o.canonical_account_id FROM appropriations_observation o WHERE o.source_document_id = d.document_id "
+            "  UNION SELECT t.canonical_account_id FROM account_attribute t WHERE t.source_document_id = d.document_id)) "
+            " AS subcommittees "
+            "FROM source_document d"):
+        row = {"document_id": d["document_id"], "source_agency": d["source_agency"],
+               "document_type": d["document_type"], "fiscal_year": d["fiscal_year"], "stage": d["stage"],
+               "publication_date": d["publication_date"], "url_or_identifier": d["url_or_identifier"],
+               "figures": d["figures"], "attributes": d["attributes"],
+               "subcommittees": sorted((d["subcommittees"] or "").split(",")) if d["subcommittees"] else [],
+               "retrieved": (d["retrieval_timestamp"] or "")[:10] or None}
+        (docs if row["retrieved"] else undated).append(row)
+    docs.sort(key=lambda r: (r["retrieved"], r["document_id"]), reverse=True)
+    return {"documents": docs, "undated": sorted(r["document_id"] for r in undated),
+            "basis": "source_document.retrieval_timestamp: the date each document was retrieved into the record"}
+
+
 def accounting_data(conn):
     """The store's accounting records in data/staged.json's shape (accounts, observations, the Component
     vocabulary, observation_components, account_attributes), for accounting.py and measure_reconcile, which read

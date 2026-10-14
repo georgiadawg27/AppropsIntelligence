@@ -562,6 +562,53 @@
   .aplines th { font-size: 12px; color: var(--x-muted); }
   .aplines th:first-child, .aplines td:first-child { text-align: left; white-space: normal; }
   .aplines a { color: var(--x-accent-text); }
+  /* ---- Find changes (brief UI-6) */
+  .fcmain { padding: 20px 24px 64px; max-width: 1280px; }
+  .fctitle { font-size: 24px; font-weight: 600; letter-spacing: -0.015em; margin: 0 0 4px; }
+  .fcpresets { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .fccard { appearance: none; text-align: left; font: inherit; color: var(--x-ink); background: var(--x-surface); border: 1px solid #dfe2e8;
+            border-radius: 10px; padding: 14px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; }
+  .fccard:hover { border-color: var(--x-accent); }
+  .fccard[aria-pressed=true] { border-color: var(--x-accent); box-shadow: inset 0 0 0 1px var(--x-accent); }
+  .fccard b { font-size: 15px; }
+  .fccard span { color: var(--x-muted); font-size: 13px; }
+  .fcmain h2.apsec { margin: 0 0 12px; font-size: 18px; }
+  .fctools a.xbtn { text-decoration: none; }
+  .fcbuilder .xrow { margin-bottom: 10px; }
+  .fcbuilder select, .fcbuilder input[type=number] { height: 40px; border: 1px solid var(--x-input); border-radius: 8px; padding: 0 8px;
+            font: inherit; font-size: 14px; color: var(--x-ink); background: var(--x-surface); min-width: 0; }
+  .fcbuilder input[type=number] { width: 110px; }
+  .fcbuilder .xfield { max-width: 100%; }
+  .fcbuilder select { max-width: 100%; }
+  .fcbuilder .xfield .pair select { flex: 0 0 auto; }
+  .fcbuilder label.check { display: flex; gap: 6px; align-items: center; font-size: 13px; color: var(--x-ink2); height: 40px; }
+  .fchead { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .fchead h2 { font-size: 18px; margin: 0; }
+  .fctools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .fcwrap { overflow-x: auto; }
+  .fctable { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .fctable th, .fctable td { padding: 7px 10px; border-bottom: 1px solid #eef0f3; text-align: right; vertical-align: top; }
+  .fctable th { font-size: 12px; color: var(--x-muted); font-weight: 600; white-space: nowrap; }
+  .fctable th.l, .fctable td.l { text-align: left; }
+  .fctable td.l a, .fctable td a.fig { color: var(--x-accent-text); }
+  .fctable td a.fig { text-decoration: none; border-bottom: 1px dotted currentColor; }
+  .fctable .up { color: var(--x-up); } .fctable .down { color: var(--x-down); }
+  .fcleft { margin-top: 10px; font-size: 13px; color: var(--x-ink2); }
+  .fcnote { font-size: 13px; color: var(--x-muted); margin: 6px 0 0; }
+  .star { appearance: none; border: 1px solid var(--x-input); background: var(--x-surface); color: var(--x-ink2); border-radius: 6px;
+          font: inherit; font-size: 13px; padding: 2px 8px; cursor: pointer; white-space: nowrap; }
+  .star[aria-pressed=true] { background: #fff6dc; border-color: #d9a400; color: #6b4e00; }
+  .fcwatch li { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid #eef0f3; }
+  ul.fcwatch, .fcnew ul { list-style: none; margin: 8px 0 0; padding: 0; }
+  .fclink { width: 100%; max-width: 640px; height: 36px; border: 1px solid var(--x-input); border-radius: 8px; padding: 0 8px; font: inherit; font-size: 13px; }
+  .fcnew li { padding: 5px 0; border-bottom: 1px solid #eef0f3; font-size: 13px; }
+  .fcnew h3 { font-size: 14px; margin: 14px 0 0; }
+  .acctwatch { margin: 12px 0 4px; }
+  .fcbanner { background: var(--warn-bg); color: var(--warn-fg); border-radius: 8px; padding: 10px 12px; margin: 8px 0; font-size: 14px; }
+  @media (max-width: 639px) {
+    .fcmain { padding: 16px 16px 48px; }
+    .fcbuilder input[type=number] { width: 90px; }
+  }
   @media (max-width: 639px) {
     .acctmain { padding: 16px 16px 0; }
     .acctsearch { padding: 12px 16px; }
@@ -582,7 +629,8 @@
   </button>
   <nav class="tabs" id="main-nav" role="tablist" aria-label="Main">
     <button type="button" role="tab" id="tab-compare" aria-selected="true" data-view="compare">Explore</button>
-    <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">One account</button>
+    <button type="button" role="tab" id="tab-changes" aria-selected="false" data-view="changes" hidden>Find changes</button>
+    <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">Account</button>
   </nav>
 </header>
 <noscript><p class="error" style="padding:16px 24px">This page needs JavaScript to show the grid and account histories.</p></noscript>
@@ -718,6 +766,20 @@
     </section>
   </main>
 </div>
+
+<!-- Find changes (brief UI-6): preset questions that fill a condition builder; the results are differences between two
+     printed figures the data holds; the watchlist lives in this browser only; What's new (built at export time) stays hidden until D-5 -->
+<main id="changes-view" class="fcmain" data-testid="changes-view" hidden>
+  <h1 class="fctitle">Find changes</h1>
+  <p class="sub">Pick a question or set the conditions. Each result is the difference between two figures the documents print;
+    a blank is never read as zero, and an account with no figure in one of the two stages is left out (and listed).</p>
+  <div id="fc-message" role="status"></div>
+  <div class="fcpresets" id="fc-presets" data-testid="fc-presets"></div>
+  <section class="panel fcbuilder" id="fc-builder" data-testid="fc-builder" aria-label="Conditions"></section>
+  <section class="panel" id="fc-results" data-testid="fc-results" aria-live="polite"></section>
+  <section class="panel" id="fc-watch" data-testid="watchlist" aria-labelledby="fc-watch-title" hidden></section>
+  <section class="panel fcnew" id="fc-new" data-testid="whats-new" aria-labelledby="fc-new-title" hidden></section>
+</main>
 
 <script src="match.js"></script>
 <script src="abbreviations.js"></script>
@@ -987,11 +1049,12 @@ function renderAccountPage(rels, main, tags, tools) {
   const L = lifeOf(row), basis = L.start_basis || a.start_basis;
   if (basis === "unidentified")
     facts.append(el("span", { "data-testid": "ap-start", text: `Start not identified: ${L.start_basis_reason || a.start_basis_reason || "earlier years unknown"}` }));
-  // the actions: Copy citation, Export history (CSV). Watch is UI-6 (hidden until then)
+  // the actions: Watch (UI-6: this browser only), Copy citation, Export history (CSV)
   const copy = el("button", { type: "button", class: "xbtn", "data-testid": "ap-copy-citation", text: "Copy citation" });
   copy.addEventListener("click", () => apCopy(copy));
   const exp = el("button", { type: "button", class: "xbtn primary", "data-testid": "ap-export", text: "Export history (CSV)" });
   exp.addEventListener("click", apExport);
+  if (has("watchlist")) tools.append(watchButton(a.canonical_account_id, apName(), grid.subcommittee));
   tools.append(copy, exp);
 
   const body = $("#ap-body");
@@ -1580,7 +1643,7 @@ let open = new Set();           // expanded rows: agency totals by account id, g
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
-                        "account_page", "export_csv"]);
+                        "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new"]);
 let FEAT = {}, featLoaded = false;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -1589,14 +1652,16 @@ async function loadFeatures() {
   const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
   FEAT = f.features || {};
   featLoaded = true;
+  $("#tab-changes").hidden = !has("find_changes");
 }
 
 function showView(view) {
   const compare = view === "compare";
-  $("#account-view").hidden = compare;
+  $("#account-view").hidden = view !== "account";
   $("#compare-view").hidden = !compare;
+  $("#changes-view").hidden = view !== "changes";
   for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.view === view));
-  document.title = compare ? "Explore · Approps Intelligence" : "One account · Approps Intelligence";
+  document.title = (compare ? "Explore" : view === "changes" ? "Find changes" : "Account") + " · Approps Intelligence";
 }
 
 function compareStatus(msg, isError) {
@@ -2687,6 +2752,8 @@ function accountView(grid, id0, phone) {
       el("span", { text: crs.length ? `${crs.map((yy) => "FY" + yy).join(", ")} lighter = CR` : "" }), el("span", { text: `FY${years[years.length - 1]}` })));
     else if (crs.length) kids.push(el("div", { class: "ovsmall", text: "Lighter bar: a full-year continuing resolution" }));
   }
+  // Watch (SPEC 5.2, brief UI-6): this browser only
+  if (has("watchlist")) kids.push(el("div", { class: "acctwatch" }, watchButton(id, plainName(a.canonical_name), grid.subcommittee)));
   if (ownPage(grid, id)) {
     const b = el("button", { type: "button", class: "pbtn primary", "data-testid": "acct-open", text: "Open account page" });
     b.addEventListener("click", () => openAccount(id, { fy: y }));
@@ -4015,19 +4082,22 @@ async function redraw(replace) {
   renderCompare(grid);
 }
 
+// the first view shown loads the feature flags and the subcommittee list (Explore and Find changes share them)
+async function initLists() {
+  if (scNames) return;
+  await loadFeatures();
+  applyLayout();
+  const list = await source.subcommittees();
+  scNames = list.subcommittees;                 // stored codes (CJS, LHHS); the option shows the display name
+  scLabels = list.names || {};
+  $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
+  if (STATIC_BASE) dataVersion = (await source.loadIndex()).source.version || "";
+}
 async function showCompare(want, replace = true) {
   showView("compare");
   compareStatus("Loading…");
   try {
-    if (!scNames) {
-      await loadFeatures();
-      applyLayout();
-      const list = await source.subcommittees();
-      scNames = list.subcommittees;                 // stored codes (CJS, LHHS); the option shows the display name
-      scLabels = list.names || {};
-      $("#sc").replaceChildren(...scNames.map((n) => el("option", { value: n, text: scLabels[n] || n })));
-      if (STATIC_BASE) dataVersion = (await source.loadIndex()).source.version || "";
-    }
+    await initLists();
     if (!has("grid")) { compareStatus("The grid's data isn't in this build yet.", true); return; }
     G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || (scNames.includes("LHHS") ? "LHHS" : scNames[0]);
     $("#sc").value = G.sc;
@@ -4062,6 +4132,578 @@ async function showAccountAt(id, at) {
   if (sel || td) (sel || td).scrollIntoView({ block: "center", inline: "nearest" });
 }
 
+// ---- Find changes (brief UI-6): preset questions fill a condition builder; each result is the difference between two
+// figures the data holds (SPEC section 1: a printed zero is a figure, a blank never is). URL: ?view=changes&preset=..&sc=..
+// &fy=..&a=..&b=..&pct=..&pctop=..&usd=..&usdop=..&agency=..&amt=..&elim=1&sort=..&left=1&years=all, plus watch=<ids> for a
+// shared watchlist
+const FC_KEYS = ["preset", "sc", "fy", "a", "b", "pct", "pctop", "usd", "usdop", "agency", "amt", "elim", "sort", "left", "years", "watch"];
+// the two stages compared, relative to the fiscal year: [year offset, STAGES4 index]
+const FC_STAGES = { prior: [-1, 3], request: [0, 0], house: [0, 1], senate: [0, 2], enacted: [0, 3] };
+const FC_OPS = [["le", "at most"], ["ge", "at least"], ["abs", "either way, at least"]];
+const FC_SORTS = [["pct", "Largest cut first (%)"], ["pctdesc", "Largest increase first (%)"], ["usd", "Largest cut first ($)"],
+                  ["usddesc", "Largest increase first ($)"], ["abs", "Largest change either way ($)"], ["name", "Account name"]];
+const FC_PRESETS = [
+  { key: "cuts", title: "Deepest proposed cuts", text: "The request against last year’s enacted figure, down 20% or more.",
+    set: { a: "prior", b: "request", pct: -20, pctop: "le", sort: "pct" } },
+  { key: "gaps", title: "House vs Senate gaps", text: "Where the House and Senate figures differ by $100 million or more.",
+    set: { a: "house", b: "senate", usd: 100, usdop: "abs", sort: "abs" } },
+  { key: "elim", title: "Proposed eliminations", text: "A printed request of 0 where last year’s enacted figure is above 0. A blank request is not an elimination.",
+    set: { a: "prior", b: "request", elim: true, sort: "usd" } },
+  { key: "moves", title: "Moves and reorganizations", text: "Accounts moved, merged, split or consolidated, from the relationships on file.",
+    set: { moves: true }, needs: "find_moves" },
+];
+const FC = { preset: "", sc: null, fy: null, a: "prior", b: "request", pct: null, pctop: "le", usd: null, usdop: "abs", agency: "",
+             amt: "printed", elim: false, sort: "abs", left: false, years: false, moves: false };
+let fcImport = null;     // the ids a shared watchlist link carries, until added or dismissed
+const fcNum = (v) => (v != null && v !== "" && isFinite(Number(v)) ? Number(v) : null);
+
+function fcSettle(grid, want) {
+  const ys = grid.fiscal_years;
+  if (want) {
+    const p = FC_PRESETS.find((x) => x.key === want.preset);
+    FC.preset = p ? p.key : "";
+    FC.moves = FC.preset === "moves";
+    FC.a = FC_STAGES[want.a] ? want.a : "prior";
+    FC.b = FC_STAGES[want.b] ? want.b : "request";
+    FC.pct = fcNum(want.pct); FC.usd = fcNum(want.usd);
+    FC.pctop = FC_OPS.some(([k]) => k === want.pctop) ? want.pctop : "le";
+    FC.usdop = FC_OPS.some(([k]) => k === want.usdop) ? want.usdop : "abs";
+    FC.amt = BASES.some(([k]) => k === want.amt) ? want.amt : "printed";
+    FC.elim = want.elim === "1";
+    FC.sort = FC_SORTS.some(([k]) => k === want.sort) ? want.sort : "abs";
+    FC.left = want.left === "1";
+    FC.years = want.years === "all";
+    FC.fy = ys.includes(Number(want.fy)) ? Number(want.fy) : null;
+    FC.agency = want.agency || "";
+  }
+  if (!ys.includes(FC.fy)) FC.fy = defaultYear(grid);
+  if (!agencyOptions(grid).includes(FC.agency)) FC.agency = "";
+  if (!has("accounting_views")) FC.amt = "printed";
+}
+function fcURL() {
+  const q = new URLSearchParams({ view: "changes" });
+  if (FC.preset) q.set("preset", FC.preset);
+  q.set("sc", FC.sc); q.set("fy", FC.fy);
+  if (!FC.moves) {
+    q.set("a", FC.a); q.set("b", FC.b);
+    if (FC.pct != null) { q.set("pct", String(FC.pct)); q.set("pctop", FC.pctop); }
+    if (FC.usd != null) { q.set("usd", String(FC.usd)); q.set("usdop", FC.usdop); }
+    if (FC.elim) q.set("elim", "1");
+    if (FC.amt !== "printed") q.set("amt", FC.amt);
+    q.set("sort", FC.sort);
+    if (FC.left) q.set("left", "1");
+  } else if (FC.years) q.set("years", "all");
+  if (FC.agency) q.set("agency", FC.agency);
+  if (fcImport) q.set("watch", fcImport.join(","));
+  return "?" + q.toString();
+}
+function fcCommit(replace) {
+  const url = fcURL();
+  if (url === location.search) return;
+  if (replace) history.replaceState(null, "", url); else history.pushState(null, "", url);
+}
+async function showChanges(want, replace = true) {
+  showView("changes");
+  const msg = $("#fc-message");
+  msg.textContent = "Loading…"; msg.className = "";
+  try {
+    await initLists();
+    if (!has("find_changes")) { msg.textContent = "Find changes needs the grid's data, which isn't in this build yet."; msg.className = "error"; return; }
+    if (want && want.watch) fcImport = [...new Set(String(want.watch).split(",").map((x) => x.trim()).filter(Boolean))];
+    FC.sc = want && scNames.includes(want.sc) ? want.sc : FC.sc || G.sc || (scNames.includes("LHHS") ? "LHHS" : scNames[0]);
+    const grid = await loadSubcommittee(FC.sc);
+    for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
+    fcSettle(grid, want);
+    msg.textContent = "";
+    fcCommit(replace);
+    fcRender(grid);
+  } catch (e) { msg.textContent = "Error: " + e.message; msg.className = "error"; }
+}
+async function fcRedraw(replace) {
+  const grid = await loadSubcommittee(FC.sc);
+  for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
+  fcSettle(grid);
+  fcCommit(replace);
+  fcRender(grid);
+}
+function fcRender(grid) {
+  fcPresets();
+  fcBuilder(grid);
+  if (FC.moves) fcMoves(grid); else fcResults(grid);
+  fcWatchlist();
+  fcWhatsNew();
+}
+function fcPresets() {
+  const box = $("#fc-presets");
+  box.replaceChildren(...FC_PRESETS.filter((p) => !p.needs || has(p.needs)).map((p) => {
+    const b = el("button", { type: "button", class: "fccard", "aria-pressed": String(FC.preset === p.key),
+                             dataset: { testid: "fc-preset", preset: p.key } }, el("b", { text: p.title }), el("span", { text: p.text }));
+    b.addEventListener("click", () => fcApply(p));
+    return b;
+  }));
+}
+// a preset fills the conditions (keeping the subcommittee, year, agency and basis) and runs them
+function fcApply(p) {
+  Object.assign(FC, { preset: p.key, a: "prior", b: "request", pct: null, pctop: "le", usd: null, usdop: "abs", elim: false,
+                      sort: "abs", left: false, years: false, moves: false }, p.set);
+  fcRedraw(false);
+}
+// a condition changed by hand: the preset no longer names the question (Moves keeps its own: only the subcommittee,
+// year and agency apply to it)
+function fcSet(patch) {
+  Object.assign(FC, patch);
+  if (!FC.moves) FC.preset = "";
+  fcRedraw(false);
+}
+const fcStageLabel = (grid, key, fy = FC.fy) => {
+  const [off, i] = FC_STAGES[key], y = fy + off;
+  return `FY${y} ${STAGE_NAME[i]}` + (isDraft(grid, y, STAGES4[i]) ? " (draft)" : "");
+};
+function fcSel(id, options, value, onchange, aria) {
+  const sel = el("select", { id, "data-testid": id, ...(aria ? { "aria-label": aria } : {}) });
+  sel.replaceChildren(...options.map(([v, t]) => el("option", { value: String(v), text: t })));
+  sel.value = String(value);
+  sel.addEventListener("change", () => onchange(sel.value));
+  return sel;
+}
+const fcSelect = (id, label, options, value, onchange) => el("label", { class: "xfield" }, label, fcSel(id, options, value, onchange));
+function fcNumber(id, value, onchange, aria) {
+  const box = el("input", { type: "number", id, "data-testid": id, step: "any", inputmode: "decimal", "aria-label": aria });
+  box.value = value == null ? "" : String(value);
+  box.addEventListener("change", () => onchange(fcNum(box.value)));
+  return box;
+}
+function fcBuilder(grid) {
+  const box = $("#fc-builder");
+  const keep = document.activeElement && box.contains(document.activeElement) ? document.activeElement.id : null;
+  const stages = Object.keys(FC_STAGES).map((k) => [k, fcStageLabel(grid, k)]);
+  const row1 = el("div", { class: "xrow" },
+    fcSelect("fc-sc", "Subcommittee", scNames.map((n) => [n, scLabels[n] || n]), FC.sc, (v) => { FC.sc = v; FC.agency = ""; fcSet({}); }),
+    fcSelect("fc-fy", "Fiscal year", grid.fiscal_years.slice().reverse().map((y) => [y, `FY${y}`]), FC.fy, (v) => fcSet({ fy: Number(v) })),
+    fcSelect("fc-agency", "Agency", [["", "All agencies"], ...agencyOptions(grid).map((a) => [a, a])], FC.agency, (v) => fcSet({ agency: v })));
+  const kids = [el("h2", { class: "apsec", text: "Conditions" }), row1];
+  if (!FC.moves) {
+    const row2 = el("div", { class: "xrow" },
+      fcSelect("fc-a", "Column A (from)", stages, FC.a, (v) => fcSet({ a: v })),
+      fcSelect("fc-b", "Column B (to)", stages, FC.b, (v) => fcSet({ b: v })),
+      el("div", { class: "xfield" }, "Change %", el("span", { class: "pair" },
+        fcSel("fc-pctop", FC_OPS, FC.pctop, (v) => fcSet({ pctop: v }), "Change %: how"),
+        fcNumber("fc-pct", FC.pct, (v) => fcSet({ pct: v }), "Change %: percent (blank: any)"))),
+      el("div", { class: "xfield" }, "Change $ (millions)", el("span", { class: "pair" },
+        fcSel("fc-usdop", FC_OPS, FC.usdop, (v) => fcSet({ usdop: v }), "Change $: how"),
+        fcNumber("fc-usd", FC.usd, (v) => fcSet({ usd: v }), "Change $: millions of dollars (blank: any)"))));
+    const row3 = el("div", { class: "xrow" });
+    if (has("accounting_views"))
+      row3.append(fcSelect("fc-amt", "Amount basis", BASES.map(([k, t]) => [k, t]), FC.amt, (v) => fcSet({ amt: v })));
+    const elim = el("input", { type: "checkbox", id: "fc-elim", "data-testid": "fc-elim" });
+    elim.checked = FC.elim;
+    elim.addEventListener("change", () => fcSet({ elim: elim.checked }));
+    row3.append(el("label", { class: "check" }, elim, "Only eliminations: a printed 0 in column B where column A is above 0"));
+    row3.append(fcSelect("fc-sort", "Sort", FC_SORTS, FC.sort, (v) => { FC.sort = v; fcRedraw(false); }));
+    kids.push(row2, row3);
+    const ops = el("p", { class: "fcnote" }, "Change % and $ compare column B with column A: at most −20 means down 20% or more; ",
+      "“either way” matches a change that large up or down. ",
+      basisNote());
+    kids.push(ops);
+  } else {
+    kids.push(el("p", { class: "fcnote", text: "Relationships take effect in the fiscal year chosen; each lists the two accounts and the documents that record it." }));
+  }
+  box.replaceChildren(...kids);
+  if (keep && document.getElementById(keep)) document.getElementById(keep).focus();
+}
+const basisNote = () => FC.amt === "printed" ? "Figures as printed." :
+  `${BASES.find(([k]) => k === FC.amt)[1]}: the published view of each figure, advances counted when available; a figure with no view on this basis is left out.`;
+// an account the grid lists as an account: every row but an agency total that sums lines below it
+const fcAccounts = (grid) => grid.rows.filter((r) => !r.rollup || !(r.rollup_members || []).length);
+// one side of a pair: the figure on the basis chosen (a value or a printed zero; SPEC section 1), with its printed
+// observation (the source), or null with what the cell holds instead
+function fcSide(row, key) {
+  const [off, i] = FC_STAGES[key], y = FC.fy + off, st = STAGES4[i];
+  const x = headOf(row, y, st);
+  if (!x || !x.h || x.cell.outside_life) return { y, st, none: "outside the account’s life", outside: true };
+  const o = x.h.observations[0];
+  const printed = !o ? null : x.h.state === "value" ? o.amount : x.h.state === "not_funded" && !x.h.absence ? o.amount : null;
+  if (printed == null)
+    return { y, st, none: x.h.absence ? "confirmed absent in the bill or law text (no printed figure)" : STATE_WORDS[x.h.state] || x.h.state };
+  if (FC.amt === "printed") return { y, st, amount: printed, printed, o };
+  const list = x.cell.views && x.cell.views[FC.amt];
+  const e = list && (list.find((v) => v.timing === "available") || list[0]);
+  if (!e || !VALUED.has(e.status)) return { y, st, none: `no figure on this basis (${e ? e.reason || e.status : "no view"})`, printed, o };
+  return { y, st, amount: e.amount, printed, o };
+}
+function fcPairs(grid) {
+  const pairs = [], left = [];
+  for (const row of fcAccounts(grid)) {
+    if (FC.agency && row.account.agency !== FC.agency) continue;
+    const A = fcSide(row, FC.a), B = fcSide(row, FC.b);
+    if (A.outside && B.outside) continue;                       // the account does not exist in either stage
+    if (A.amount == null || B.amount == null) { left.push({ row, A, B }); continue; }
+    const ch = GridMath.change(A.amount, B.amount);
+    pairs.push({ row, A, B, delta: ch.delta, pct: ch.pct });
+  }
+  const test = (v, op, lim) => v != null && (op === "le" ? v <= lim : op === "ge" ? v >= lim : Math.abs(v) >= Math.abs(lim));
+  const hits = pairs.filter((p) => (FC.pct == null || test(p.pct, FC.pctop, FC.pct))
+    && (FC.usd == null || test(p.delta / 1e6, FC.usdop, FC.usd))
+    && (!FC.elim || (p.B.printed === 0 && p.A.amount > 0)));
+  const name = (p) => plainName(p.row.account.canonical_name);
+  const num = (v, dir) => (v == null ? Infinity : dir * v);
+  const by = { pct: (p) => num(p.pct, 1), pctdesc: (p) => num(p.pct, -1), usd: (p) => p.delta, usddesc: (p) => -p.delta,
+               abs: (p) => -Math.abs(p.delta) };
+  hits.sort((p, q) => FC.sort === "name" ? name(p).localeCompare(name(q))
+    : (by[FC.sort](p) - by[FC.sort](q)) || name(p).localeCompare(name(q)));
+  left.sort((p, q) => name(p).localeCompare(name(q)));
+  return { hits, left };
+}
+// a figure as a link to its source page (each figure opens its source)
+function fcFig(side, name) {
+  const text = side.amount === 0 ? "—" : GridMath.number(side.amount, "k");
+  const label = `FY${side.y} ${STAGE_NAME[STAGES4.indexOf(side.st)]}`;
+  const o = side.o, href = sourceHref(o);
+  const where = `${docName(o.source_document_id)}${o.source_page ? ", p. " + o.source_page : ""}`;
+  const title = (side.amount === 0 ? "Not funded: printed zero. " : "") + (side.amount !== side.printed ? `Printed as ${GridMath.number(side.printed, "k")}. ` : "")
+    + `Source: ${where}`;
+  const props = { class: "fig", "data-testid": "fc-fig", title, "aria-label": `Source for ${name}, ${label}: ${where}` };
+  return href ? el("a", { href, target: "_blank", rel: "noopener", ...props, text }) : el("span", { ...props, text });
+}
+function fcAccountLink(id, name) {
+  const a = el("a", { href: `?account=${encodeURIComponent(id)}&fy=${FC.fy}`, "data-testid": "fc-account", text: name });
+  a.addEventListener("click", (e) => { e.preventDefault(); openAccount(id, { fy: FC.fy }); });
+  return a;
+}
+function fcResults(grid) {
+  const box = $("#fc-results");
+  const { hits, left } = fcPairs(grid);
+  const la = fcStageLabel(grid, FC.a), lb = fcStageLabel(grid, FC.b);
+  const save = el("button", { type: "button", class: "xbtn", "data-testid": "fc-save", text: "Save this search" });
+  save.addEventListener("click", () => fcCopy(save, location.href, "Save this search"));
+  const csv = el("button", { type: "button", class: "xbtn", "data-testid": "fc-export-csv", text: "Export CSV" });
+  csv.addEventListener("click", () => fcExport(csv, "csv", grid));
+  const xlsx = el("button", { type: "button", class: "xbtn", "data-testid": "fc-export-xlsx", text: "Export Excel" });
+  xlsx.addEventListener("click", () => fcExport(xlsx, "xlsx", grid));
+  const ex = fcExplore();
+  const tools = el("div", { class: "fctools" }, el("a", { class: "xbtn", href: ex.href, "data-testid": "fc-explore", text: "Open in Explore" }), save);
+  if (has("export_csv")) tools.append(csv, xlsx);
+  const head = el("div", { class: "fchead" },
+    el("h2", { "data-testid": "fc-count", text: `${hits.length} account${hits.length === 1 ? "" : "s"}` + (FC.preset ? ` · ${FC_PRESETS.find((p) => p.key === FC.preset).title}` : "") }),
+    tools);
+  const kids = [head, el("p", { class: "fcnote", "data-testid": "fc-summary",
+    text: `${lb} against ${la}, ${scLabels[FC.sc] || FC.sc}${FC.agency ? ", " + FC.agency : ""}. $ thousands. ${ex.note}` }), el("span", { id: "fc-error", class: "error" })];
+  if (hits.length) {
+    const body = el("tbody");
+    for (const p of hits) {
+      const a = p.row.account, id = a.canonical_account_id, name = plainName(a.canonical_name);
+      const dir = GridMath.direction(p.delta);
+      body.append(el("tr", { "data-testid": "fc-row", dataset: { account: id, delta: String(p.delta) } },
+        el("td", { class: "l" }, fcAccountLink(id, name)),
+        el("td", { class: "l", text: a.agency }),
+        el("td", { "data-testid": "fc-a" }, fcFig(p.A, name)),
+        el("td", { "data-testid": "fc-b" }, fcFig(p.B, name)),
+        el("td", { class: dir, "data-testid": "fc-change", text: GridMath.signedNumber(p.delta, "k") }),
+        el("td", { class: dir, "data-testid": "fc-pct", text: GridMath.pctText(p.A.amount, p.B.amount) }),
+        el("td", {}, has("watchlist") ? watchButton(id, name, FC.sc) : null)));
+    }
+    kids.push(el("div", { class: "fcwrap" }, el("table", { class: "fctable", "data-testid": "fc-table" },
+      el("thead", {}, el("tr", {}, el("th", { class: "l", scope: "col", text: "Account" }), el("th", { class: "l", scope: "col", text: "Agency" }),
+        el("th", { scope: "col", text: la }), el("th", { scope: "col", text: lb }), el("th", { scope: "col", text: "Change" }),
+        el("th", { scope: "col", text: "%" }), el("th", { scope: "col", text: has("watchlist") ? "Watch" : "" }))), body)));
+  } else {
+    kids.push(el("p", { class: "muted", "data-testid": "fc-none", text: "No account matches these conditions." }));
+  }
+  // the accounts with no figure in one of the two stages: never a zero, so left out of every difference (SPEC section 1)
+  if (left.length) {
+    const more = el("a", { href: "#", "data-testid": "fc-left-toggle", "aria-expanded": String(FC.left), text: FC.left ? "Hide them" : "See them" });
+    more.addEventListener("click", (e) => { e.preventDefault(); FC.left = !FC.left; fcCommit(false); fcResults(grid); });
+    kids.push(el("p", { class: "fcleft", "data-testid": "fc-left" },
+      `${left.length} account${left.length === 1 ? "" : "s"} left out: no figure in one stage. `, more));
+    if (FC.left) {
+      const what = (side, name) => side.amount != null ? fcFig(side, name) : el("span", { class: "muted", text: side.none });
+      const body = el("tbody");
+      for (const p of left) {
+        const a = p.row.account, id = a.canonical_account_id, name = plainName(a.canonical_name);
+        body.append(el("tr", { "data-testid": "fc-left-row", dataset: { account: id } },
+          el("td", { class: "l" }, fcAccountLink(id, name)), el("td", { class: "l", text: a.agency }),
+          el("td", { class: "l" }, what(p.A, name)), el("td", { class: "l" }, what(p.B, name))));
+      }
+      kids.push(el("div", { class: "fcwrap" }, el("table", { class: "fctable", "data-testid": "fc-left-table" },
+        el("thead", {}, el("tr", {}, el("th", { class: "l", text: "Account" }), el("th", { class: "l", text: "Agency" }),
+          el("th", { class: "l", text: la }), el("th", { class: "l", text: lb }))), body)));
+    }
+  }
+  box.replaceChildren(...kids);
+}
+// "Open in Explore": the same subcommittee, year, agency and basis in the grid, with columns A and B both shown; the
+// change threshold goes with them only where Explore's first change column is the same comparison (it is "either way")
+function fcExplore() {
+  const [oa, ia] = FC_STAGES[FC.a], [ob, ib] = FC_STAGES[FC.b];
+  const q = new URLSearchParams({ sc: FC.sc });
+  let same = false;
+  if (ia === ib && oa !== ob) {
+    q.set("grid", "years"); q.set("a", FC.fy + Math.min(oa, ob)); q.set("b", FC.fy + Math.max(oa, ob));
+    if (ia !== 3) q.set("basis", STAGE_WORD[ia].toLowerCase());
+    same = oa < ob;
+  } else {
+    q.set("grid", "stages"); q.set("fy", FC.fy);
+    const grid = scCache.get(FC.sc), lead = grid ? leadStage(grid, FC.fy) : 3;
+    same = FC.a === "prior" && oa !== ob && ib === lead;
+    if ((FC.a === "prior" && FC.b === "request" && !same) || (FC.b === "prior" && FC.a === "request")) q.set("cols", "request");
+  }
+  if (FC.amt !== "printed") q.set("amt", FC.amt);
+  if (FC.agency) q.set("agency", FC.agency);
+  if (same && FC.pct != null) q.set("minpct", String(Math.abs(FC.pct)));
+  if (same && FC.usd != null) q.set("mink", String(Math.abs(FC.usd) * 1000));
+  const thresholds = FC.pct != null || FC.usd != null || FC.elim;
+  const note = "Open in Explore shows both columns for the same subcommittee, year, agency and basis"
+    + (!thresholds ? "." : same && !FC.elim ? "; its change threshold counts a change either way, and a row passes on % or $."
+      : "; Explore has no filter for these conditions, so it lists every account.");
+  return { href: "?" + q.toString(), note };
+}
+async function fcCopy(b, text, label) {
+  b.textContent = "Link copied"; b.dataset.copied = text;
+  setTimeout(() => { b.textContent = label; }, 2000);
+  try { await navigator.clipboard.writeText(text); } catch (err) {
+    const t = el("textarea", { style: "position:fixed;opacity:0" }); t.value = text; document.body.append(t); t.select();
+    try { document.execCommand("copy"); } catch (e2) { /* the link is on the page */ }
+    t.remove();
+  }
+}
+// Export results (UI-4's writers): the header block, then one row per result; $ thousands as the page shows them
+async function fcExportRows(grid) {
+  const { hits, left } = fcPairs(grid);
+  const la = fcStageLabel(grid, FC.a), lb = fcStageLabel(grid, FC.b);
+  const k = (v) => Math.round(v / 1000);
+  const src = (s) => `${docName(s.o.source_document_id)}${s.o.source_page ? ", p. " + s.o.source_page : ""} (${s.o.observation_id})`;
+  const conds = [FC.pct != null && `Change % ${FC_OPS.find(([x]) => x === FC.pctop)[1]} ${FC.pct}`,
+                 FC.usd != null && `Change $ ${FC_OPS.find(([x]) => x === FC.usdop)[1]} ${FC.usd} million`,
+                 FC.elim && "Only eliminations (a printed 0 in column B, column A above 0)",
+                 FC.agency && `Agency: ${FC.agency}`].filter(Boolean);
+  let build = "Live server (no published build)";
+  if (STATIC_BASE) {
+    const m = (await source.loadIndex()).source;
+    build = [m.version, m.data && `${m.data}${m.data_committed ? " committed " + m.data_committed : ""}`, m.data_sha256 && `sha256 ${m.data_sha256}`]
+      .filter(Boolean).join(" · ");
+  }
+  const head = [
+    ["Approps Intelligence export: Find changes", ""],
+    ["Page", location.href],
+    ["Exported", new Date().toISOString()],
+    ["Question", FC.preset ? FC_PRESETS.find((p) => p.key === FC.preset).title : "Custom conditions"],
+    ["Subcommittee", `${scLabels[FC.sc] || FC.sc} (${FC.sc})`],
+    ["Column A", la], ["Column B", lb],
+    ["Conditions", conds.join("; ") || "None"],
+    ["Amount basis", basisNote()],
+    ["Units", "$ thousands"],
+    ["Rows", `${hits.length} account${hits.length === 1 ? "" : "s"}`],
+    ["Left out", `${left.length} account${left.length === 1 ? "" : "s"}: no figure in one stage (never read as zero)`],
+    ["Data build", build],
+    ["Blank is not zero", "Only pairs where both figures are printed (a printed zero is 0); a % from a zero base reads new."],
+  ];
+  const table = [["Account", "Account ID", "Agency", la, lb, "Change", "Change %", `${la} source`, `${lb} source`]];
+  for (const p of hits) {
+    const a = p.row.account;
+    table.push([plainName(a.canonical_name), a.canonical_account_id, a.agency, k(p.A.amount), k(p.B.amount), k(p.B.amount) - k(p.A.amount),
+                p.pct == null ? GridMath.pctText(p.A.amount, p.B.amount) : Math.round(p.pct * 10) / 10, src(p.A), src(p.B)]);
+  }
+  return { head, table };
+}
+async function fcExport(b, format, grid) {
+  b.disabled = true;
+  try {
+    const { head, table } = await fcExportRows(grid);
+    const name = `${FC.sc}-FY${FC.fy}-${FC.preset || "changes"}.${format}`;
+    if (format === "csv")
+      saveBlob(new Blob([[...head, [], ...table].map((r) => r.map(csvCell).join(",")).join("\r\n") + "\r\n"], { type: "text/csv;charset=utf-8" }), name);
+    else {
+      const write = await loadXlsx();
+      const cell = (v, bold, pct) => v === "" || v == null ? null
+        : typeof v === "number" ? { value: v, type: Number, format: pct ? "0.0" : "#,##0" } : { value: String(v), type: String, ...(bold ? { fontWeight: "bold" } : {}) };
+      const data = [...head.map((r, i) => r.map((v, j) => cell(v, i === 0 || j === 0))), [null],
+                    table[0].map((v) => cell(v, true)), ...table.slice(1).map((r) => r.map((v, j) => cell(v, false, j === 6)))];
+      saveBlob(await write(data, { sheet: "Find changes" }).toBlob(), name);
+    }
+  } catch (e) {
+    $("#fc-error").textContent = "Export failed: " + e.message;
+  } finally { b.disabled = false; }
+}
+// Moves and reorganizations: the relationships on file (rows[].relationships), each once, effective in the year chosen
+function fcMoves(grid) {
+  const box = $("#fc-results");
+  const seen = new Map();
+  for (const r of grid.rows) for (const rel of r.relationships || []) seen.set(rel.relationship_id, rel);
+  const named = (id) => ROW_OF.get(id);
+  const all = [...seen.values()].filter((rel) => !FC.agency || [rel.from_account_id, rel.to_account_id]
+    .some((id) => named(id) && named(id).account.agency === FC.agency));
+  const shown = all.filter((rel) => FC.years || Number(rel.effective_fiscal_year) === FC.fy)
+    .sort((p, q) => (Number(q.effective_fiscal_year) - Number(p.effective_fiscal_year)) || p.relationship_id.localeCompare(q.relationship_id));
+  const kids = [el("div", { class: "fchead" }, el("h2", { "data-testid": "fc-count",
+    text: `${shown.length} relationship${shown.length === 1 ? "" : "s"} · Moves and reorganizations` }),
+    (() => { const b = el("button", { type: "button", class: "xbtn", "data-testid": "fc-save", text: "Save this search" });
+             b.addEventListener("click", () => fcCopy(b, location.href, "Save this search")); return el("div", { class: "fctools" }, b); })())];
+  const others = all.length - shown.length;
+  if (others || FC.years) {
+    const t = el("a", { href: "#", "data-testid": "fc-years", text: FC.years ? `Only FY${FC.fy}` : `Show all years (${others} more)` });
+    t.addEventListener("click", (e) => { e.preventDefault(); FC.years = !FC.years; fcCommit(false); fcMoves(grid); });
+    kids.push(el("p", { class: "fcnote" }, FC.years ? "Every year on file. " : `Effective in FY${FC.fy}. `, t));
+  }
+  if (!shown.length) kids.push(el("p", { class: "muted", "data-testid": "fc-none", text: "No relationship on file for these conditions." }));
+  else {
+    const body = el("tbody");
+    const acct = (id) => {
+      const r = named(id), name = r ? plainName(r.account.canonical_name) : id;
+      return el("span", {}, r ? fcAccountLink(id, name) : name, " ", has("watchlist") && r ? watchButton(id, name, FC.sc) : null);
+    };
+    for (const rel of shown) {
+      const proposed = /^proposed/.test(rel.relationship_type);
+      body.append(el("tr", { "data-testid": "fc-move", dataset: { rel: rel.relationship_id } },
+        el("td", { class: "l", text: (REL_FROM[rel.relationship_type] || rel.relationship_type) + (proposed ? " (proposed, not enacted)" : "") }),
+        el("td", { class: "l" }, acct(rel.from_account_id)), el("td", { class: "l" }, acct(rel.to_account_id)),
+        el("td", { text: `FY${rel.effective_fiscal_year}` }),
+        el("td", { class: "l", text: rel.human_reviewed ? "reviewed" : "not yet reviewed" }),
+        el("td", { class: "l", "data-testid": "fc-move-src", text: "…" })));
+    }
+    kids.push(el("div", { class: "fcwrap" }, el("table", { class: "fctable", "data-testid": "fc-moves" },
+      el("thead", {}, el("tr", {}, ...["Relationship", "From", "To", "Effective", "Review", "Source"].map((t) => el("th", { class: t === "Effective" ? "" : "l", text: t })))), body)));
+    fcMoveSources(shown);
+  }
+  box.replaceChildren(...kids);
+}
+// each relationship's documents, from its account's record (accounts/<id>.json history.relationships[].cites)
+async function fcMoveSources(rels) {
+  for (const rel of rels) {
+    let cites = [];
+    try { cites = ((await source.account(rel.from_account_id)).history.relationships.find((x) => x.relationship_id === rel.relationship_id) || {}).cites || []; }
+    catch (e) { /* the record is unavailable: say so below */ }
+    const td = document.querySelector(`[data-testid=fc-move][data-rel="${CSS.escape(rel.relationship_id)}"] [data-testid=fc-move-src]`);
+    if (!td) continue;
+    td.replaceChildren(...(cites.length ? cites.flatMap((c, k) => {
+      const label = `${docName(c.document_id)}${c.pages.length ? " " + c.pages.join(", ") : ""}`;
+      return [k ? " · " : "", /^https?:/.test(c.url) ? el("a", { href: c.url, target: "_blank", rel: "noopener", text: label }) : label];
+    }) : [el("span", { class: "muted", text: "no document cited" })]));
+  }
+}
+
+// ---- the watchlist (brief UI-6): this browser only (localStorage), never sent anywhere; no alerts or email. Every read
+// and write is wrapped: with storage blocked the page works and the list lasts until the page is left
+const WATCH_KEY = "approps-intelligence.watchlist";
+const WATCH = { items: [], stored: true, loaded: false };
+function watchLoad() {
+  if (WATCH.loaded) return;
+  WATCH.loaded = true;
+  try {
+    const v = JSON.parse(window.localStorage.getItem(WATCH_KEY) || "[]");
+    WATCH.items = Array.isArray(v) ? v.filter((x) => x && typeof x.id === "string").map((x) => ({ id: x.id, name: String(x.name || x.id), sc: x.sc || "" })) : [];
+  } catch (e) { WATCH.stored = false; }
+}
+function watchSave() {
+  try { window.localStorage.setItem(WATCH_KEY, JSON.stringify(WATCH.items)); WATCH.stored = true; } catch (e) { WATCH.stored = false; }
+}
+const watching = (id) => { watchLoad(); return WATCH.items.some((x) => x.id === id); };
+function watchToggle(id, name, sc) {
+  watchLoad();
+  if (watching(id)) WATCH.items = WATCH.items.filter((x) => x.id !== id); else WATCH.items.push({ id, name, sc });
+  watchSave();
+  watchMark();
+  if (!$("#changes-view").hidden) fcWatchlist();
+}
+function watchMark() {
+  for (const b of document.querySelectorAll("[data-watch]")) {
+    const on = watching(b.dataset.watch);
+    b.setAttribute("aria-pressed", String(on));
+    b.textContent = on ? "★ Watching" : "☆ Watch";
+  }
+}
+function watchButton(id, name, sc) {
+  const b = el("button", { type: "button", class: "star", "data-testid": "watch", "aria-label": `Watch ${name}`, dataset: { watch: id } });
+  const on = watching(id);
+  b.setAttribute("aria-pressed", String(on));
+  b.textContent = on ? "★ Watching" : "☆ Watch";
+  b.addEventListener("click", (e) => { e.stopPropagation(); watchToggle(id, name, sc); });
+  return b;
+}
+const watchLink = (ids) => location.origin + location.pathname + "?view=changes&watch=" + ids.map(encodeURIComponent).join(",");
+async function fcWatchlist() {
+  const box = $("#fc-watch");
+  box.hidden = !has("watchlist");
+  if (box.hidden) return;
+  watchLoad();
+  const kids = [el("h2", { class: "apsec", id: "fc-watch-title", text: `Your watchlist (${WATCH.items.length})` }),
+    el("p", { class: "fcnote", "data-testid": "watch-note", text: "Kept in this browser only: nothing is sent anywhere, there are no alerts or emails, "
+      + "and another browser or device won’t see it. Clearing this site’s data empties it; copy the link below to keep or move it." })];
+  if (!WATCH.stored) kids.push(el("p", { class: "fcbanner", "data-testid": "watch-blocked",
+    text: "This browser is blocking storage, so the watchlist lasts only until you leave this page." }));
+  // a shared list (watch= in the link): offered, never added on its own
+  if (fcImport) {
+    if (scNames) await Promise.all(scNames.map((n) => loadSubcommittee(n).then((g) => g.rows.forEach((r) => ROW_OF.set(r.account.canonical_account_id, r)))));
+    const known = fcImport.filter((id) => ROW_OF.has(id)), unknown = fcImport.filter((id) => !ROW_OF.has(id));
+    const add = el("button", { type: "button", class: "xbtn primary", "data-testid": "watch-import", text: `Add ${known.length} to my watchlist` });
+    add.addEventListener("click", () => {
+      for (const id of known) if (!watching(id)) {
+        const r = ROW_OF.get(id), sc = scNames.find((n) => scCache.get(n) && scCache.get(n).rows.includes(r)) || "";
+        WATCH.items.push({ id, name: plainName(r.account.canonical_name), sc });
+      }
+      watchSave(); fcImport = null; fcCommit(true); watchMark(); fcWatchlist();
+    });
+    const no = el("button", { type: "button", class: "xbtn", "data-testid": "watch-import-dismiss", text: "Dismiss" });
+    no.addEventListener("click", () => { fcImport = null; fcCommit(true); fcWatchlist(); });
+    kids.push(el("div", { class: "fcbanner", "data-testid": "watch-import-banner" },
+      `This link carries a watchlist of ${known.length} account${known.length === 1 ? "" : "s"}: `,
+      known.map((id) => plainName(ROW_OF.get(id).account.canonical_name)).join(", ") + ". ",
+      unknown.length ? `${unknown.length} ID${unknown.length === 1 ? " is" : "s are"} not on file and left out (${unknown.join(", ")}). ` : "",
+      el("div", { class: "fctools", style: "margin-top:8px" }, add, no)));
+  }
+  if (WATCH.items.length) {
+    const list = el("ul", { class: "fcwatch" });
+    for (const it of WATCH.items) {
+      const r = ROW_OF.get(it.id), name = r ? plainName(r.account.canonical_name) : it.name;
+      const rm = el("button", { type: "button", class: "star", "data-testid": "watch-remove", "aria-label": `Remove ${name} from the watchlist`, text: "Remove" });
+      rm.addEventListener("click", () => watchToggle(it.id, name, it.sc));
+      const a = el("a", { href: `?account=${encodeURIComponent(it.id)}`, "data-testid": "watch-item", text: name });
+      a.addEventListener("click", (e) => { e.preventDefault(); openAccount(it.id); });
+      list.append(el("li", { dataset: { account: it.id } }, a, el("span", { class: "muted", text: [r && r.account.agency, scLabels[it.sc] || it.sc].filter(Boolean).join(" · ") }), rm));
+    }
+    const link = el("input", { type: "text", class: "fclink", readonly: "", "data-testid": "watch-link", "aria-label": "Watchlist link" });
+    link.value = watchLink(WATCH.items.map((x) => x.id));
+    const copy = el("button", { type: "button", class: "xbtn", "data-testid": "watch-copy", text: "Copy watchlist link" });
+    copy.addEventListener("click", () => fcCopy(copy, link.value, "Copy watchlist link"));
+    kids.push(list, el("p", { class: "fcnote", text: "Export: this link carries the list. Open it in another browser to import it there." }),
+      el("div", { class: "fctools" }, link, copy));
+  } else {
+    kids.push(el("p", { class: "muted", "data-testid": "watch-empty", text: "No accounts yet. Use ☆ Watch on a result, an account panel or an account page." }));
+  }
+  box.replaceChildren(...kids);
+}
+
+// ---- What's new (brief UI-6): built at export time (data/whats_new.json; live: /api/whats-new). No alerts or email.
+// Hidden behind its flag (owner, 2026-10-14): the retrieval date it lists today changes on every re-fetch or reparse, so
+// it is not an added date; the flag turns on when D-5 publishes first-added dates (web/ui_contract.json "waits_for")
+let whatsNew = null;
+async function fcWhatsNew() {
+  const box = $("#fc-new");
+  box.hidden = !has("whats_new");
+  if (box.hidden) return;
+  try { whatsNew = whatsNew || await getJSON(STATIC_BASE ? STATIC_BASE + "whats_new.json" : "/api/whats-new"); }
+  catch (e) { box.replaceChildren(el("p", { class: "error", text: "What's new did not load: " + e.message })); return; }
+  const docs = whatsNew.documents.filter((d) => !FC.sc || d.subcommittees.includes(FC.sc) || !d.subcommittees.length);
+  const dates = [...new Set(docs.map((d) => d.retrieved))];
+  const kids = [el("h2", { class: "apsec", id: "fc-new-title", text: "What’s new" }),
+    el("p", { class: "fcnote", text: `Source documents for ${scLabels[FC.sc] || FC.sc} by the date each was added to the record (its retrieval date), newest first. `
+      + "Built when the site is published; there are no alerts or emails, so check back here." })];
+  const day = (d) => new Date(d + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const group = (ds) => ds.map((date) => [el("h3", { text: day(date) }), el("ul", {}, ...docs.filter((d) => d.retrieved === date).map((d) => {
+    const name = docName(d.document_id), href = /^https?:/.test(d.url_or_identifier) ? d.url_or_identifier : null;
+    return el("li", { "data-testid": "whats-new-item", dataset: { doc: d.document_id, retrieved: d.retrieved } },
+      href ? el("a", { href, target: "_blank", rel: "noopener", text: name }) : name,
+      el("span", { class: "muted", text: ` · FY${d.fiscal_year} ${d.stage} · `
+        + (!d.figures && !d.attributes ? "on file for its text; no figures recorded from it"
+          : `${d.figures} figure${d.figures === 1 ? "" : "s"}` + (d.attributes ? `, ${d.attributes} account attribute${d.attributes === 1 ? "" : "s"}` : ""))
+        + (d.publication_date ? ` · published ${String(d.publication_date).slice(0, 10)}` : "") }));
+  }))]).flat();
+  kids.push(...group(dates.slice(0, 3)));
+  if (dates.length > 3) kids.push(el("details", {}, el("summary", { text: `Earlier (${dates.length - 3} more dates)` }), ...group(dates.slice(3))));
+  if (whatsNew.undated.length) kids.push(el("p", { class: "fcnote", "data-testid": "whats-new-undated",
+    text: `${whatsNew.undated.length} document${whatsNew.undated.length === 1 ? " has" : "s have"} no retrieval date on file and ${whatsNew.undated.length === 1 ? "is" : "are"} not listed: ${whatsNew.undated.join(", ")}.` }));
+  box.replaceChildren(...kids);
+}
+
 $("#sc").addEventListener("change", () => {
   G.sc = $("#sc").value; G.agency = ""; open = new Set(); SEL = null;
   showCompare({ sc: G.sc, grid: G.grid, fy: G.fy, units: G.units, rev: G.reviewer ? "1" : "", density: G.dense ? "compact" : "",
@@ -4087,6 +4729,8 @@ for (const b of document.querySelectorAll(".tabs button")) {
     if (b.dataset.view === "compare") {
       if (scNames && G.sc) { showView("compare"); history.pushState(null, "", compareURL()); pinHeader(); }
       else showCompare({}, false);
+    } else if (b.dataset.view === "changes") {
+      showChanges(FC.sc ? null : {}, false);
     } else {
       showView("account");
       const q = $("#q").value.trim();
@@ -4115,6 +4759,9 @@ function route() {
     $("#q").value = params.get("q"); runSearch(params.get("q"));
   } else if (params.get("view") === "account") {
     showView("account");
+    if (!featLoaded) loadFeatures().catch(() => {});
+  } else if (params.get("view") === "changes") {
+    showChanges(Object.fromEntries(FC_KEYS.map((k) => [k, params.get(k)])), true);
   } else {
     showCompare(want, true);
   }

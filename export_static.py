@@ -28,6 +28,9 @@ that answers the same questions as approps_web.py without a server.
     attributes). A file past
     SPLIT_BYTES is also written per fiscal year:
     docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid).
+  - Writes docs/data/whats_new.json: approps_web.whats_new() (the live
+    /api/whats-new answer), every source document with the date it was
+    retrieved into the record, newest first, for the page's "What's new".
   - Copies web/index.html (marked to read data/ instead of /api),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map), web/documents.js (the display-only
@@ -189,6 +192,7 @@ def export(workbook, out, download=True):
         listing = W.subcommittees(str(db))
         names = listing["subcommittees"]
         dump(listing, out / "data" / "subcommittees.json")
+        dump(W.whats_new(str(db)), out / "data" / "whats_new.json")
         split = []
         for name in names:
             g = W.subcommittee(str(db), name)

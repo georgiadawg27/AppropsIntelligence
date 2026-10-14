@@ -1,5 +1,5 @@
 {
- "contract_version": 5,
+ "contract_version": 6,
  "spec": "reference/ui/explore-v1/SPEC.md section 9",
  "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
  "features": {
@@ -177,6 +177,43 @@
     "subcommittees/*.json:rows[].lifecycle.type",
     "subcommittees/*.json:enactments.*.funding_type"
    ]
+  },
+  "find_changes": {
+   "spec_row": "Find changes: preset questions, condition builder, results (differences between two printed figures only)",
+   "brief": "UI-6",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.outside_life"
+   ]
+  },
+  "find_moves": {
+   "spec_row": "Find changes: Moves and reorganizations (from relationships)",
+   "brief": "UI-6",
+   "fields": [
+    "subcommittees/*.json:rows[].relationships[].relationship_id",
+    "subcommittees/*.json:rows[].relationships[].relationship_type",
+    "subcommittees/*.json:rows[].relationships[].from_account_id",
+    "subcommittees/*.json:rows[].relationships[].to_account_id",
+    "subcommittees/*.json:rows[].relationships[].effective_fiscal_year"
+   ]
+  },
+  "whats_new": {
+   "spec_row": "What's new: source documents by the date each was added to the record (built at export time; no alerts or email)",
+   "brief": "UI-6",
+   "fields": [
+    "whats_new.json:documents[].document_id",
+    "whats_new.json:documents[].first_added",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date"
+   ],
+   "waits_for": "Off until D-5 publishes a first-added date per source document and an added date per figure (field names as D-5 sets them; update these paths then). retrieval_timestamp is not used: it changes on every re-fetch or reparse (owner, 2026-10-14). The page code and data/whats_new.json stay; the page reads documents[].retrieved today and moves to the first-added date with D-5."
   },
   "watchlist": {
    "spec_row": "Watch (browser storage only; no alerts or email)",
