@@ -1063,9 +1063,14 @@ class CompareBrowser(GridBrowser):
         self.menu("click", "#expand-all")
         dots = self.page.locator("[data-testid=status-dot]")
         # CJS: no flagged or unconfirmed cell in view (the four House figures the bill text disagreed with were
-        # re-sourced to H.Rept. 119-652 and now match it)
-        self.assertEqual(dots.count(), 1)
-        d = dots.first
+        # re-sourced to H.Rept. 119-652 and now match it); NSF R&RA FY2026 Enacted is the law's paragraph total,
+        # resolved by rule (D-3), with nothing pending
+        self.assertEqual(dots.count(), 2)
+        rule = self.page.locator("tr[data-account=ACC-NSF-RRA] [data-testid=status-dot]")
+        self.assertEqual((rule.count(), rule.first.get_attribute("data-status"), rule.first.get_attribute("data-pending")),
+                         (1, "resolved-by-rule", "0"))
+        self.assertIn("law text controls (explanatory table prints 7,057,700,000)", rule.first.get_attribute("title"))
+        d = self.page.locator("[data-testid=status-dot].pend").first
         self.assertEqual(d.get_attribute("class"), "dot pend")
         self.assertEqual(d.get_attribute("data-status"), "human-verified")
         self.assertEqual(d.get_attribute("data-pending"), "1")
@@ -1319,9 +1324,11 @@ class CompareBrowser(GridBrowser):
             notes = self.page.locator("#compare-grid [data-testid=cell-note]")
             titles = notes.evaluate_all("ns => ns.map(n => n.title)")
             self.assertEqual(sum(1 for x in titles if x == note), 1 if sc == "LHHS" else 0, sc)
+            # NSF R&RA's headlines are the paragraph's total (D-3): the table's nondefense and defense lines are the note
             self.assertTrue(all(x.startswith(("The House subcommittee draft's", "Includes $2,500,000,000",
                                               "Funded within PHSSEF", "S.Rept. 118-84 restates FY2023",
-                                              "The table prints 'Health Surveillance")) for x in titles), titles)
+                                              "The table prints 'Health Surveillance"))
+                                or "the paragraph's amount counts both" in x for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
