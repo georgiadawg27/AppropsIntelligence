@@ -725,10 +725,11 @@ class SyntheticSubcommittee(unittest.TestCase):
             self.assertEqual(listing["subcommittees"], ["CJS", "LHHS", "SYNLB"])
             self.assertEqual(listing["names"]["SYNLB"], "Synthetic Legislative Branch (test fixture)")
             committed = ROOT / "docs" / "data"
-            # the site-wide files list every subcommittee (index.json, subcommittees.json, whats_new.json's
-            # documents); every other file -- CJS's and Labor-HHS's grids, every account -- is byte for byte the same
+            # the site-wide files list every subcommittee (index.json, subcommittees.json, whats_new.json's and
+            # documents.json's documents); every other file -- CJS's and Labor-HHS's grids, every account -- is byte
+            # for byte the same
             same = [p.relative_to(committed) for p in committed.rglob("*.json")
-                    if p.name not in ("index.json", "subcommittees.json", "whats_new.json")]
+                    if p.name not in ("index.json", "subcommittees.json", "whats_new.json", "documents.json")]
             self.assertTrue(same)
             for rel in same:
                 self.assertEqual((out / "data" / rel).read_bytes(), (committed / rel).read_bytes(), rel)
@@ -736,6 +737,10 @@ class SyntheticSubcommittee(unittest.TestCase):
             new, old = (json.loads((x / "whats_new.json").read_text()) for x in (out / "data", committed))
             for k in ("documents", "undated"):
                 new[k] = [x for x in new[k] if not (set(json.dumps(x).split('"')) & mine)]
+            self.assertEqual(new, old)
+            new, old = (json.loads((x / "documents.json").read_text()) for x in (out / "data", committed))
+            self.assertTrue([d for d in new["documents"] if d["document_id"] in mine])
+            new["documents"] = [d for d in new["documents"] if d["document_id"] not in mine]
             self.assertEqual(new, old)
             if not (sync_playwright and chromium_path()):
                 self.skipTest("playwright / chromium not available: the page check runs in the browser job")

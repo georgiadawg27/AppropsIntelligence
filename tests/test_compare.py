@@ -3363,7 +3363,7 @@ class AdjustmentLines(GridBrowser):
         cls.cjs = plain(S.subcommittee_grid(conn, "CJS"))
         conn.close()
         cls.docs = {d["document_id"]: d["url_or_identifier"]
-                    for d in json.loads((cls.out / "data" / "whats_new.json").read_text())["documents"]}
+                    for d in json.loads((cls.out / "data" / "documents.json").read_text())["documents"]}
 
     def go(self, query, where="static", page=None):
         page = page or self.page
@@ -3459,6 +3459,83 @@ class AdjustmentLines(GridBrowser):
         buttons.first.click()
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
         self.assertGreater(self.page.locator("[data-testid=arith-src] a").count(), 1)
+
+    def test_links_need_no_whats_new_file(self):
+        # the addresses come from data/documents.json (owner, 2026-10-14), never the What's new list: every
+        # adjustment's document is in it with an address, and the links work with whats_new.json absent
+        need = set()
+        for grid in (self.lhhs, self.cjs):
+            for r in grid["rows"]:
+                for c in r["cells"].values():
+                    for k in ("views", "views_excluding_earmarks", "views_nondefense"):
+                        for es in (c.get(k) or {}).values():
+                            for e in es:
+                                for a in e.get("adjustments") or []:
+                                    need |= {a.get("source_document_id")} | {l["source_document_id"] for l in a.get("lines", [])}
+                                    need |= {x["source_document_id"] for acc in a.get("accounts", []) for x in acc.get("components", [])}
+        need.discard(None)
+        self.assertTrue(need)
+        self.assertEqual({d for d in need if not str(self.docs.get(d, "")).startswith("http")}, set())
+        listed = json.loads((self.out / "data" / "documents.json").read_text())["documents"]
+        self.assertEqual([d["document_id"] for d in listed], sorted(d["document_id"] for d in listed))
+        self.assertTrue(any(d["short_name"] for d in listed))
+        asked = []
+        self.page.on("request", lambda r: asked.append(r.url))
+        self.page.route("**/whats_new.json", lambda route: route.fulfill(status=404, body="not here"))
+        self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC},{self.CHRONIC}")
+        hrefs = self.page.eval_on_selector_all(f"[data-testid=adj-line][data-adj-of={self.CHRONIC}] a[data-testid=adj-amount]",
+                                               "as => as.map(a => a.getAttribute('href'))")
+        self.assertIn(self.docs["SRC-CRPT-118SRPT207"] + "#page=434", hrefs)
+        # an HHS Budget Appendix no figure on the grid cites: its address too
+        self.go(f"?sc=LHHS&fy=2017&amt=program_level&open=ACC-HHS-HRSA-TOTAL,ACC-HHS-HRSA-RYAN-WHITE")
+        self.assertIn(self.docs["SRC-BUDGET-APP-FY2017-HHS"] + "#page=446",
+                      self.page.eval_on_selector_all("a[data-testid=adj-amount]", "as => as.map(a => a.getAttribute('href'))"))
+        self.assertFalse([u for u in asked if "whats_new" in u])
+        # live: /api/documents gives the same list
+        with urllib.request.urlopen(self.urls["live"] + "api/documents") as r:
+            self.assertEqual(json.load(r)["documents"], listed)
+
+    def test_nondefense_panel_build_up(self):
+        # a Nondefense-column adjustment opens that figure's nondefense build-up: As printed, less the defense
+        # portion with its source, "=" the nondefense figure (owner, 2026-10-14)
+        rra = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == self.RRA)
+        e = view_entry_of(rra, 2026, "Enacted", "printed", None, "views_nondefense")
+        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
+        self.page.locator(f"[data-testid=adj-line][data-adj-of={self.RRA}] button[data-testid=adj-amount][data-set=views_nondefense]").click()
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertTrue(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), thousands(e["amount"]))
+        terms = self.page.eval_on_selector_all("[data-testid=arith-term]", "es => es.map(e => e.innerText.replace(/\\s+/g, ' '))")
+        self.assertEqual(terms, [f"As printed {thousands(self.as_printed(rra, 2026, 'Enacted'))}"] +
+                         [f"{a['label']} \u2212{thousands(a['amount'])}" for a in e["adjustments"]])
+        self.assertEqual({a["type"] for a in e["adjustments"]}, {"defense_portion"})
+        self.assertTrue(self.page.inner_text("[data-testid=arith-result]").startswith("= Nondefense"))
+        self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], thousands(e["amount"]))
+        a = e["adjustments"][0]
+        self.assertEqual(self.page.get_attribute("[data-testid=arith-src] a", "href"),
+                         self.docs[a["source_document_id"]] + f"#page={a['source_page'].split('-')[0]}")
+        # the selection is in the URL and survives a reload; the nondefense cell is the one marked
+        self.assertIn("%7Cnondefense", self.page.url)
+        self.page.reload()
+        self.page.wait_for_selector("[data-testid=arith-result]")
+        self.assertTrue(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
+        self.assertEqual(self.page.locator("td[data-sel=fig]").get_attribute("data-testid"), "nondefense-cell")
+        # the stage column's figure keeps the basis panel
+        self.cell(self.RRA, 2026, "Enacted").locator("button.fig").click()
+        self.assertFalse(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
+
+    def test_find_changes_beta(self):
+        # Find changes' Amount basis: the discretionary bases read "(beta)", and the chosen one shows the tag and line
+        for basis, beta in (("discretionary", True), ("discretionary_designated", True), ("program_level", False)):
+            self.page.goto(self.urls["static"] + f"?view=changes&sc=LHHS&fy=2026&amt={basis}")
+            self.page.wait_for_selector("[data-testid=fc-count]")
+            opts = self.page.eval_on_selector_all("#fc-amt option", "os => os.map(o => [o.value, o.textContent])")
+            self.assertEqual([v for v, t in opts if t.endswith(" (beta)")], ["discretionary", "discretionary_designated"])
+            box = self.page.locator("[data-testid=fc-beta]")
+            self.assertEqual(box.count(), int(beta), basis)
+            if beta:
+                self.assertEqual(box.locator("[data-testid=beta-tag]").inner_text(), "beta")
+                self.assertIn("computed from the bill text; not yet confirmed by a printed total for most figures", box.inner_text())
 
     def test_sum_mark_and_not_computable_totals(self):
         # Σ only on a computed total (the sum of its accounts), its reason on hover; a total the data marks not

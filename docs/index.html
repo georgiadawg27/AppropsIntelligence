@@ -278,6 +278,7 @@
   .sigma { margin-left: 3px; font-size: 11px; font-weight: 400; color: var(--x-muted); cursor: help; }
   .tag.beta { background: #e8eef8; color: #16325f; margin-left: 2px; vertical-align: 1px; }
   .betanote { color: var(--x-muted); }
+  .fcbeta { align-self: end; font-size: 12px; padding-bottom: 8px; }
   .opt .optd.betanote { font-style: italic; }
   .arsrc { list-style: none; margin: -2px 0 6px; padding: 0 0 0 10px; font-size: 12px; color: var(--x-muted); }
   .arsrc .muted { color: var(--x-muted); }
@@ -2002,13 +2003,14 @@ function adjLines(row, cols) {
   }
   return [...lines.values()];
 }
-// the documents' addresses: the export's document list (loaded with the features) and the grid's own figures
+// the documents' addresses: the export's source document list (data/documents.json; live: /api/documents), loaded
+// with the features, and the grid's own figures
 const DOC_URL = new Map(), DOC_SEEN = new WeakSet();
 async function loadDocURLs() {
   if (!has("basis_adjustments")) return;
   try {
-    const w = await getJSON(STATIC_BASE ? STATIC_BASE + "whats_new.json" : "/api/whats-new");
-    for (const d of w.documents || []) if (/^https?:/.test(d.url_or_identifier || "")) DOC_URL.set(d.document_id, d.url_or_identifier);
+    const list = await getJSON(STATIC_BASE ? STATIC_BASE + "documents.json" : "/api/documents");
+    for (const d of list.documents || []) if (/^https?:/.test(d.url_or_identifier || "")) DOC_URL.set(d.document_id, d.url_or_identifier);
   } catch (err) { /* the grid's own figures still name most documents; an amount with no address opens the panel */ }
 }
 function docHref(doc, page) {
@@ -2047,9 +2049,11 @@ function adjAmount(row, at, short) {
   const props = { class: "adjfig", "data-testid": "adj-amount", "data-sign": a.sign, "data-amount": String(a.amount), "data-fy": String(y), "data-stage": st, "data-set": set,
                   title: `${a.label}: ${text} (${short ? "dollars" : unitsLong()}) · ${[...new Set(src.map(srcWords))].join("; ")}`,
                   "aria-label": `${a.label}, ${plainName(row.account.canonical_name)}, ${stageText(current.grid, y, STAGES4.indexOf(st))}: ${text}` };
-  if (hrefs.length === 1 && src.every((x) => x.href)) return el("a", { ...props, href: hrefs[0], target: "_blank", rel: "noopener", text });
+  // a Nondefense-column amount opens that figure's nondefense build-up (its source linked there)
+  const nd = set === "views_nondefense";
+  if (!nd && hrefs.length === 1 && src.every((x) => x.href)) return el("a", { ...props, href: hrefs[0], target: "_blank", rel: "noopener", text });
   const b = el("button", { type: "button", ...props, text });
-  b.addEventListener("click", () => select({ kind: "fig", id: row.account.canonical_account_id, y, st }));
+  b.addEventListener("click", () => select({ kind: "fig", id: row.account.canonical_account_id, y, st, ...(nd ? { nd: true } : {}) }));
   return b;
 }
 const lineName = (...kids) => el("td", {}, el("div", { class: "namecell" }, el("span", { class: "namebox" }, el("span", { class: "adjlabel" }, ...kids))));
@@ -2734,12 +2738,14 @@ const componentWord = (k) => (COMPONENT_WORDS[k.type] || k.type.replace(/_/g, " 
 // under a basis other than As printed (brief UI-3 item 5): the view, then the printed headline, each component
 // (type, amount, source) and the arithmetic. The terms are the components the view used, as published
 // (component_ids); the result is the published amount. The page adds nothing up.
-function viewBlock(grid, row, y, st, o) {
-  const x = headOf(row, y, st), e = viewOf(row, y, st), v = viewText(e), comps = (x && x.cell.components) || [];
+function viewBlock(grid, row, y, st, o, nd) {
+  // nd: the Nondefense column's figure (views_nondefense on the basis in view), built up the same way
+  const x = headOf(row, y, st), e = nd ? viewOf(row, y, st, basisOf(), "views_nondefense") : viewOf(row, y, st), v = viewText(e);
+  const comps = (x && x.cell.components) || [], phrase = nd ? `Nondefense, ${basisPhrase(true)}` : basisPhrase();
   const used = new Set((e && e.component_ids) || []), ears = [];
   const head = [el("div", { class: "bigfig", "data-testid": "src-view-value", "data-view": e ? e.status : "none",
                             text: v.text == null ? GridMath.number(e.amount, G.units) : v.text }),
-    el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${viewHead(e)}` })];
+    el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${nd ? "Nondefense, " + viewHead(e).replace(/^./, (c) => c.toLowerCase()) : viewHead(e)}` })];
   if (summed(e)) head.splice(1, 0, el("div", { class: "ovsmall", "data-testid": "src-sum-mark" }, sigma(e), " sum of its accounts (reason below)"));
   if (v.why) head.push(el("div", { class: "ovsmall", "data-testid": "src-view-reason", style: "margin-top:4px", text: v.why.replace(/^./, (c) => c.toUpperCase()) }));
   const tail = [el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Components of the printed figure" })];
@@ -2749,7 +2755,7 @@ function viewBlock(grid, row, y, st, o) {
       el("span", { text: componentWord(k) }), el("span", { class: "cv", text: GridMath.number(k.amount, G.units) }),
       el("span", { class: "cs" }, `${k.in_headline ? "in the printed figure" : "beside the printed figure"} · `, ...compSource(k, o), ` · ${k.component_id}`)));
   if (e && VALUED.has(e.status) && has("basis_adjustments"))
-    tail.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "From As printed" }), buildUp(row, y, st, e, basisPhrase()));
+    tail.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "From As printed" }), buildUp(row, y, st, e, phrase));
   else if (e && VALUED.has(e.status)) {
     const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
     const terms = comps.filter((k) => used.has(k.component_id));
@@ -2762,7 +2768,7 @@ function viewBlock(grid, row, y, st, o) {
   }
   // Exclude earmarks (brief UI-3b item 3): the earmark components the published view took out, each with its amount,
   // document and page, then the published result. Listed, never added: the result is the data's amount
-  if (noEar()) {
+  if (noEar() && !nd) {
     const tagged = comps.filter((k) => k.type === "earmark" && used.has(k.component_id));
     const where = (k) => k.source_page ? `p. ${k.source_page}` : ((k.source_table_or_section || "").match(/\(([^()]*)\)\s*$/) || [])[1]?.split(";")[0] || "";
     // inside the "Source document" block (UI-2b layout), after "Printed as" and before the button
@@ -2833,12 +2839,12 @@ function renderSource(grid, box, sel = SEL, back = null) {
   const i = STAGES4.indexOf(st), name = plainName(row.account.canonical_name);
   const zero = o.amount === 0;
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
-  const VB = usesViews() ? viewBlock(grid, row, y, st, o) : null;
+  const VB = sel.nd ? viewBlock(grid, row, y, st, o, true) : usesViews() ? viewBlock(grid, row, y, st, o) : null;
   // the figure in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
   const kids = [back || backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
-    el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
+    el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) + (sel.nd ? ", nondefense" : "") }),
     ...(VB ? [...VB.head, el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Printed headline" })] : []),
     el("div", { class: VB ? "medfig" : "bigfig", "data-testid": "src-value", text: fullDollars(o.amount) }),
     el("div", { class: "ovsmall", "data-testid": "src-short",
@@ -3011,7 +3017,8 @@ function markSelection() {
   const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(SEL.id)}"]`);
   if (!tr) return;
   if (SEL.kind === "acct") { tr.dataset.sel = "row"; return; }
-  const td = tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
+  const td = SEL.nd ? tr.querySelector(`td[data-nd-fy="${SEL.y}"][data-nd-stage="${CSS.escape(SEL.st)}"]`)
+    : tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
   if (td) td.dataset.sel = "fig";
 }
 // the phone list: the selected account's line (a figure's account too) gets the light yellow fill
@@ -3336,7 +3343,7 @@ $("#compare-grid").addEventListener("click", (e) => {
   if (!b) return;
   const td = b.closest("td"), tr = td.closest("tr");
   select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy || td.dataset.defFy || td.dataset.ndFy),
-          st: td.dataset.stage || td.dataset.defStage || td.dataset.ndStage });
+          st: td.dataset.stage || td.dataset.defStage || td.dataset.ndStage, ...(td.dataset.ndFy ? { nd: true } : {}) });
 });
 
 // ---- state <-> URL (SPEC 5.7): every control and the expanded rows
@@ -3371,7 +3378,7 @@ function compareURL() {
   if (open.size) q.set("open", [...open].sort().join(","));
   if (G.pstage != null) q.set("pstage", STAGE_WORD[G.pstage].toLowerCase());
   if (G.table) q.set("table", "1");
-  if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}`);
+  if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}${SEL.nd ? "|nondefense" : ""}`);
   if (SEL && SEL.kind === "acct") q.set("acct", SEL.id);
   return "?" + q.toString();
 }
@@ -3433,7 +3440,8 @@ function settle(grid, want) {
     G.table = want.table === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
     const f = String(want.fig || "").split("|");
-    SEL = f.length === 3 && /^\d{4}$/.test(f[1]) && STAGES4.includes(f[2]) ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2] }
+    SEL = (f.length === 3 || (f.length === 4 && f[3] === "nondefense")) && /^\d{4}$/.test(f[1]) && STAGES4.includes(f[2])
+      ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2], ...(f[3] ? { nd: true } : {}) }
       : want.acct ? { kind: "acct", id: String(want.acct) } : null;
   }
   SEL = validSel(grid, SEL);
@@ -4527,7 +4535,9 @@ function fcBuilder(grid) {
         fcNumber("fc-usd", FC.usd, (v) => fcSet({ usd: v }), "Change $: millions of dollars (blank: any)"))));
     const row3 = el("div", { class: "xrow" });
     if (has("accounting_views"))
-      row3.append(fcSelect("fc-amt", "Amount basis", BASES.map(([k, t]) => [k, t]), FC.amt, (v) => fcSet({ amt: v })));
+      row3.append(fcSelect("fc-amt", "Amount basis", BASES.map(([k, t]) => [k, t + (BETA.has(k) ? " (beta)" : "")]), FC.amt, (v) => fcSet({ amt: v })));
+      // the discretionary bases: beta, as in the grid (brief UI-8)
+      if (BETA.has(FC.amt)) row3.append(el("span", { class: "fcbeta", "data-testid": "fc-beta" }, betaTag(FC.amt), " ", el("span", { class: "betanote", text: BETA_LINE })));
     const elim = el("input", { type: "checkbox", id: "fc-elim", "data-testid": "fc-elim" });
     elim.checked = FC.elim;
     elim.addEventListener("change", () => fcSet({ elim: elim.checked }));
@@ -4545,7 +4555,7 @@ function fcBuilder(grid) {
   if (keep && document.getElementById(keep)) document.getElementById(keep).focus();
 }
 const basisNote = () => FC.amt === "printed" ? "Figures as printed." :
-  `${BASES.find(([k]) => k === FC.amt)[1]}: the published view of each figure, advances counted when available; a figure with no view on this basis is left out.`;
+  `${BASES.find(([k]) => k === FC.amt)[1]}${BETA.has(FC.amt) ? ` (beta: ${BETA_LINE})` : ""}: the published view of each figure, advances counted when available; a figure with no view on this basis is left out.`;
 // an account the grid lists as an account: every row but an agency total that sums lines below it
 const fcAccounts = (grid) => grid.rows.filter((r) => !r.rollup || !(r.rollup_members || []).length);
 // one side of a pair: the figure on the basis chosen (a value or a printed zero; SPEC section 1), with its printed

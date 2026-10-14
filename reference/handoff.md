@@ -14,8 +14,15 @@ D-6's published `adjustments` (feature `basis_adjustments`, now in BUILT) and co
   the source_location quotes ('Diabetes'). Phone: an expanded agency lists its adjustments for the stage shown; an
   account's are in its sheet (the headline stage's build-up).
 - Amount links: one source with an address -> link to its page; several sources, or none with an address -> button to
-  the figure's source panel. Document addresses: `whats_new.json` documents (live: /api/whats-new) plus the grid's
-  observations, loaded with the features when basis_adjustments is on.
+  the figure's source panel. Document addresses (owner, round 2): the export publishes `docs/data/documents.json`
+  (approps_store.documents(): id, short name from web/documents.js, address; live: /api/documents), loaded with the
+  features when basis_adjustments is on; ui_contract v8 adds it to basis_adjustments. Not whats_new.json.
+- Nondefense (owner, round 2): a Nondefense-column adjustment, and the Nondefense cell itself, open that figure's
+  nondefense build-up (As printed, less the defense portion with its source, = the nondefense figure); the URL keeps
+  it (`fig=<id>|<FY>|<stage>|nondefense`).
+- Find changes (owner, round 2): the discretionary bases read "(beta)" in the Amount basis select; the chosen one
+  shows the beta tag and line, and the export's "Amount basis" note carries it.
+- Offsetting adjustments stay out of the grid, in the panel only (owner, round 2: accepted).
 - Totals: Σ after a computed total (status computed with accounts_behind), its reason on hover and in the panel; a not
   computable total reads "not computable" (was "not checked (n accounts)") in the grid, overview, phone and export.
 - Contained lines: "of which: <label>" with "included above" (muted) in the grid, panel notes, account page and CSV.
@@ -28,10 +35,8 @@ D-6's published `adjustments` (feature `basis_adjustments`, now in BUILT) and co
   screenshots/ui-8/.
 
 Open:
-- Find changes' Amount basis select (a native select) has no beta tag.
-- The Nondefense column's adjustment buttons open the figure's panel, which shows the basis view's build-up, not the
-  nondefense one.
-- Pre-existing on main: on the phone, a single-account agency total (AHRQ, ACL) sits flush left in the list.
+- Pre-existing on main: on the phone, a single-account agency total (AHRQ, ACL) sits flush left in the list (owner:
+  a later polish brief).
 
 ## D-6: Amount basis data fixes (2026-10-14, this PR)
 
