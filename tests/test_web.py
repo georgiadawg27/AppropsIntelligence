@@ -179,11 +179,17 @@ class BrowserBase(WebTest):
         self.page.close()
         self.assertEqual(self.errors, [])
 
+    def open_lines(self):
+        """Open "Every line on file" (the record grid; collapsed by default, owner 2026-10-14) when an account is shown."""
+        if self.page.is_visible("[data-testid=result]") and self.page.get_attribute("[data-testid=ap-lines]", "open") is None:
+            self.page.click("[data-testid=ap-lines-toggle]")
+
     def search_ui(self, q):
         self.page.goto(self.base + "/?view=account")
         self.page.fill("#q", q)
         self.page.click("button[type=submit]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden]), [data-testid=candidates]:not([hidden])")
+        self.open_lines()
 
     def rendered(self):
         """{(fy, stage): [(series, amount text, citation)]} as shown."""
@@ -286,6 +292,7 @@ class Browser(BrowserBase):
         self.assertEqual(ids, ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
         self.page.click("[data-testid=candidate][data-id=ACC-NSF-OIG]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
         self.assertIn("National Science Foundation", self.page.text_content("#account-panel .meta"))
         self.assertIn("Picked from the matches", self.page.text_content("[data-testid=picked]"))
 
@@ -341,6 +348,7 @@ class Browser(BrowserBase):
             self.page.goto(self.base + "/?view=account")
             self.page.evaluate(f"pick({acct!r}, 'test')")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+            self.open_lines()
             # a confirmed absence's chip carries its evidence; a printed zero's says so instead
             n += self.page.eval_on_selector_all("[data-testid=not-funded], [data-testid=no-printed-total]",
                                                 "cs => cs.filter(c => !c.title.startsWith('Printed as a dash')).length")
@@ -358,6 +366,7 @@ class NoPrintedTotalAndCoverage(BrowserBase):
         self.page.goto(self.base + "/?view=account")
         self.page.evaluate(f"pick({acct!r}, 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
 
     def chip(self, fy, stage, series="budget authority"):
         return self.page.locator(f"#grid tr[data-fy='{fy}'] td[data-stage=\"{stage}\"] .line[data-series='{series}']").first
@@ -427,6 +436,7 @@ class V33Page(BrowserBase):
         self.page.goto(self.base + "/?view=account")
         self.page.evaluate(f"pick({acct!r}, 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
 
     def test_a_relationship_on_both_accounts_pages(self):
         self.open("ACC-HHS-NIH-NIEHS")
@@ -448,6 +458,7 @@ class V33Page(BrowserBase):
         self.page.goto(self.base + "/?view=account")
         self.page.evaluate("pick('ACC-HHS-NIH-TOTAL', 'test')")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
         cell = self.page.locator("#grid tr[data-fy='2023'] td[data-stage='Senate Reported']")
         self.assertIn("never reported", cell.locator("[data-testid=stage-note-mark]").get_attribute("title"))
         self.assertIn("FY2023 Senate Reported", self.page.inner_text("#result [data-testid=stage-notes]"))

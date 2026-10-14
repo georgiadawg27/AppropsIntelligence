@@ -3351,11 +3351,21 @@ class AccountPage(GridBrowser):
                 self.assertEqual(self.page.text_content("[data-testid=ap-path]"),
                                  "Labor-HHS-Education · Title II · National Institutes of Health")
                 # the class tag as the record gives it (budget_class), dashed when provisional; the Appendix account code
+                # the record's class for the fiscal year in the URL, naming its year (owner, 2026-10-14)
                 tag = self.page.locator("[data-testid=ap-class-tag]")
                 self.assertEqual((tag.inner_text(), tag.get_attribute("data-provisional")),
-                                 (attrs["budget_class"], str(bool(attrs["provisional"])).lower()))
-                self.assertIn(attrs["account_id_code"], self.page.inner_text("[data-testid=ap-appendix]"))
-                self.assertIn(f"p. {attrs['citations']['account_id_code']['source_page']}", self.page.inner_text("[data-testid=ap-appendix]"))
+                                 (f"{attrs['budget_class'].capitalize()} · FY2026" + (" (provisional)" if attrs["provisional"] else ""),
+                                  str(bool(attrs["provisional"])).lower()))
+                # the Appendix account code with its document's short name and page, never the document's ID
+                code = self.page.inner_text("[data-testid=ap-appendix]")
+                self.assertIn(attrs["account_id_code"], code)
+                self.assertIn(f"FY2026 Budget Appendix, HHS, p. {attrs['citations']['account_id_code']['source_page']}", code)
+                self.assertNotIn("SRC-", code)
+                # "Every line on file" starts collapsed: one line, opening on click
+                self.assertIsNone(self.page.get_attribute("[data-testid=ap-lines]", "open"))
+                self.assertFalse(self.page.is_visible("#grid"))
+                self.page.click("[data-testid=ap-lines-toggle]")
+                self.assertTrue(self.page.is_visible("#grid"))
                 self.assertEqual(self.page.text_content("[data-testid=figures-on-file]"), "Figures on file: FY2017–FY2027")
                 # Watch is UI-6: hidden
                 self.assertNotIn("Watch", self.page.inner_text("[data-testid=ap-actions]"))
@@ -3436,9 +3446,20 @@ class AccountPage(GridBrowser):
                 self.assertEqual(bg(self.ap_cell(2026, "Enacted")), "rgb(255, 241, 194)")
                 self.page.mouse.move(5, 5)
                 self.assertEqual(self.page.locator("[data-testid=ap-table] [data-hov], [data-testid=ap-table] [data-hovcol]").count(), 0)
-                # a bar opens its figure too
+                # a bar opens its figure too; the class tag follows the selected figure's fiscal year
                 self.page.click("[data-testid=ap-bar][data-fy='2024']")
                 self.assertEqual(self.ap_cell(2024, "Enacted").get_attribute("data-sel"), "fig")
+                k24 = self.lrow(self.NCI)["attributes"]["2024"]
+                self.assertEqual(self.page.inner_text("[data-testid=ap-class-tag]"),
+                                 f"{k24['budget_class'].capitalize()} · FY2024" + (" (provisional)" if k24["provisional"] else ""))
+                # a click outside the table, the chart and the panel closes the panel (SPEC 5.3, as in Explore);
+                # a click inside the table does not
+                self.page.click("[data-testid=ap-stages] h2")
+                self.assertEqual(panel.get_attribute("data-mode"), "source")
+                self.page.mouse.click(1430, 300)
+                self.assertEqual(panel.get_attribute("data-mode"), "hint")
+                self.assertEqual(self.page.locator("[data-testid=ap-table] td[data-sel=fig]").count(), 0)
+                self.assertTrue(self.page.url.endswith(f"?account={self.NCI}&fy=2024"), self.page.url)
                 # Esc clears the selection and returns focus to the figure; the URL keeps the year
                 btn.click()
                 self.page.keyboard.press("Escape")
@@ -3498,8 +3519,10 @@ class AccountPage(GridBrowser):
                 notes = self.page.inner_text("[data-testid=ap-panel] [data-testid=src-notes]")
                 self.assertIn("advance", notes)
                 self.assertEqual(self.page.locator("[data-testid=ap-panel] [data-testid=src-note-more]").count(), 0)
-                # Medicaid's class: mandatory, as its record gives it
-                self.assertEqual(self.page.inner_text("[data-testid=ap-class-tag]"), row["attributes"]["2026"]["budget_class"])
+                # Medicaid's class, as its record gives it for FY2026
+                k = row["attributes"]["2026"]
+                self.assertEqual(self.page.inner_text("[data-testid=ap-class-tag]"),
+                                 f"{k['budget_class'].capitalize()} · FY2026" + (" (provisional)" if k["provisional"] else ""))
 
     def test_renamed_account_former_names(self):
         row = self.lrow(self.NIDA)
@@ -3509,6 +3532,9 @@ class AccountPage(GridBrowser):
         for n in row["historical_names"]:
             self.assertIn(f"“{n}”", former)
         self.assertEqual(self.page.text_content("[data-testid=account-name]"), "National Institute on Drug Abuse")
+        # no fiscal year selected: the class of the latest year on file
+        latest = max(int(y) for y, a in row["attributes"].items() if a.get("budget_class") or (a.get("request") or {}).get("budget_class"))
+        self.assertEqual(self.page.get_attribute("[data-testid=ap-class-tag]", "data-fy"), str(latest))
         # its parent total links to that account's page, the year kept
         parent = self.page.locator("[data-testid=ap-parent]")
         self.assertEqual(parent.get_attribute("data-account"), "ACC-HHS-NIH-TOTAL")

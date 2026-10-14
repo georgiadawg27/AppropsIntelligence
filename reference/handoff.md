@@ -14,7 +14,14 @@
 - Tests: tests/test_compare.py `AccountPage` (9). CompareBrowser.test_account_name_opens_the_single_account_view now
   expects `&fy=2026` in the landing URL (brief item 5).
 - Screenshots: screenshots/ui-5/. No design reference exists for the account page; side by sides use 03/02/07.
-- Open: the brief's "keep the window-height scroll box ... always-visible bottom scrollbar" predates UI-2c (SPEC now
+- Owner decisions 2026-10-14: SPEC's single page scrollbar stays. The class tag names its year, "Mixed · FY2026
+  (provisional)", from the selected FY (fy= or the selected figure), else the latest year on file. A click outside the
+  stage table's card, the chart's card and the source panel closes the panel. web/documents.js names the Budget
+  Appendix chapters ("FY2026 Budget Appendix, HHS"). "Every line on file" is a <details>, collapsed; test_web and
+  test_static open it first (open_lines()).
+- Open (owner): the provisional mark follows the record's own flag. Every enacted-basis FY2026/FY2027 record is
+  provisional; the 18 request-basis records (Budget Appendix; e.g. the proposed NIH institutes, FY2027 HRSA lines) are not.
+- Was open: the brief's "keep the window-height scroll box ... always-visible bottom scrollbar" predates UI-2c (SPEC now
   says one page scrollbar); built to SPEC. The Appendix citation names SRC-BUDGET-APP-FY<n>-<AGENCY> by ID
   (web/documents.js has no label for it).
 

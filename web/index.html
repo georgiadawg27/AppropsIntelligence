@@ -539,6 +539,15 @@
   .aprel a, .aprel .linkish { color: var(--x-accent-text); text-decoration: underline; text-decoration-color: #9fb0cc; text-underline-offset: 3px; font-size: 13px; }
   .aprel .note.rel { margin-top: 0; margin-bottom: 8px; }
   .aprel .muted { color: var(--x-muted); }
+  /* "Every line on file": one line, opens on click (owner, 2026-10-14) */
+  .aplines-box > summary { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; cursor: pointer; list-style: none;
+                           font-size: 16px; font-weight: 600; border-radius: 4px; }
+  .aplines-box > summary::-webkit-details-marker { display: none; }
+  .aplines-box > summary::before { content: "\25B8"; color: var(--x-muted); font-size: 12px; }
+  .aplines-box[open] > summary::before { content: "\25BE"; }
+  .aplines-box > summary .aphint { margin: 0; font-weight: 400; }
+  .aplines-box > summary:hover { color: var(--x-accent-text); }
+  .aplines-box[open] > summary { margin-bottom: 8px; }
   .aplines { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; width: 100%; }
   .aplines th, .aplines td { padding: 5px 10px 5px 0; border-bottom: 1px solid #eef0f3; text-align: right; font-weight: 400; vertical-align: top; }
   .aplines th { font-size: 12px; color: var(--x-muted); }
@@ -592,8 +601,8 @@
   <section id="result" hidden data-testid="result">
     <div class="ahead" id="account-panel" data-testid="ap-header"></div>
     <div id="ap-body" data-testid="account-page"></div>
-    <div class="panel apcard" id="ap-lines" data-testid="ap-lines">
-      <h2 class="apsec">Every line on file</h2>
+    <details class="panel apcard aplines-box" id="ap-lines" data-testid="ap-lines">
+      <summary class="apsec" data-testid="ap-lines-toggle">Every line on file <span class="aphint">every line, year and stage the record holds, with its document</span></summary>
       <div class="legend">Every line the record holds for this account, every year and stage (the table above shows the
         headline line). Amounts in dollars. Each cell is in one of six states: a <strong>$ figure</strong>;
         <span class="na-chip">Not funded</span> (<span class="na-chip">None</span> on a rescission line) = printed as a dash or
@@ -603,7 +612,7 @@
         collected</span> = no document on file covers it; <span class="missing-chip">Not yet enacted</span> = no enacted law
         for that year yet.</div>
       <div class="table-wrap"><table id="grid" data-testid="grid"></table></div>
-    </div>
+    </details>
     <div class="panel apcard" id="sources"></div>
   </section>
   </div>
@@ -928,8 +937,10 @@ async function showAccount(data, at) {
           el("div", { class: "aprel", "data-testid": "ap-related" }, el("div", { class: "k", text: "Relationships" }),
             el("div", {}, ...(rels.length ? rels : [el("span", { class: "muted", text: "None on file." })])))));
       } else {
-        AP = { id: a.canonical_account_id, grid, row, h, sel: null, fy: null };
-        AP.fy = at && grid.fiscal_years.includes(at.fy) ? at.fy : apLatestYear();
+        // fySel: the fiscal year asked for (fy= in the URL) or of the selected figure; null when none is
+        AP = { id: a.canonical_account_id, grid, row, h, sel: null, fy: null, fySel: null };
+        AP.fySel = at && grid.fiscal_years.includes(at.fy) ? at.fy : null;
+        AP.fy = AP.fySel != null ? AP.fySel : apLatestYear();
         renderAccountPage(rels, main, tags, tools);
         if (at && at.stage && cellObs(row, at.fy, at.stage)) apSelect(at.fy, at.stage, false);
         else { apMark(); apPanel(); }
@@ -957,13 +968,12 @@ function renderAccountPage(rels, main, tags, tools) {
   main.querySelector("[data-testid=ap-path]").textContent =
     [scLabels[grid.subcommittee] || grid.subcommittee, a.title, agencyTotal ? null : a.agency].filter(Boolean).join(" · ");
   if (proposedOnly(row)) tags.append(el("span", { class: "tag prop", "data-testid": "ap-tag-proposed", text: "proposed", title: "Proposed in a request or bill; never enacted" }));
-  const cy = classYear(row, y), k = cy != null ? classOf(row, cy) : null;
-  if (k) tags.append(el("span", { class: "tag cls" + (k.provisional ? " prov" : ""), "data-testid": "ap-class-tag", "data-provisional": String(k.provisional),
-                                  title: classTitle(k, cy), text: k.cls + (cy !== y ? ` (FY${cy})` : "") }));
+  tags.append(el("span", { id: "ap-class", "data-testid": "ap-class" }));
+  apClassTag();
   const facts = main.querySelector(".hfacts");
   const code = appendixCode(row, y);
   if (code) facts.append(el("span", { "data-testid": "ap-appendix", title: code.where },
-    "Appendix account ", el("b", { text: code.code }), el("span", { class: "muted", text: ` · FY${code.y}, ${code.where}` })));
+    "Appendix account ", el("b", { text: code.code }), el("span", { class: "muted", text: ` · ${code.where.includes(`FY${code.y}`) ? "" : `FY${code.y}, `}${code.where}` })));
   const L = lifeOf(row), basis = L.start_basis || a.start_basis;
   if (basis === "unidentified")
     facts.append(el("span", { "data-testid": "ap-start", text: `Start not identified: ${L.start_basis_reason || a.start_basis_reason || "earlier years unknown"}` }));
@@ -980,10 +990,22 @@ function renderAccountPage(rels, main, tags, tools) {
     el("aside", { class: "sidepanel", id: "ap-panel", "data-testid": "ap-panel", "aria-label": "Source for this figure", "aria-live": "polite" }));
   body.append(work, apRelated(rels));
 }
-// the budget class: the year in view's record, else the latest year that holds one
+// the class tag (owner, 2026-10-14): the record's class for the selected fiscal year, else the latest year on file,
+// naming its year, "(provisional)" where the record marks it so: "Mixed · FY2026 (provisional)"
+function apClassTag() {
+  const box = $("#ap-class");
+  if (!box || !AP) return;
+  const cy = classYear(AP.row, AP.fySel), k = cy != null ? classOf(AP.row, cy) : null;
+  box.replaceChildren();
+  if (!k) return;
+  box.append(el("span", { class: "tag cls" + (k.provisional ? " prov" : ""), "data-testid": "ap-class-tag", "data-provisional": String(k.provisional),
+    "data-fy": String(cy), title: classTitle(k, cy) + (AP.fySel != null && cy !== AP.fySel ? ` · none on file for FY${AP.fySel}` : ""),
+    text: `${k.cls.charAt(0).toUpperCase()}${k.cls.slice(1)} · FY${cy}${k.provisional ? " (provisional)" : ""}` }));
+}
+// the budget class: the year's record (y null: none selected), else the latest year that holds one
 function classYear(row, y) {
   if (!has("budget_class")) return null;
-  if (classOf(row, y)) return y;
+  if (y != null && classOf(row, y)) return y;
   const ys = Object.keys(row.attributes || {}).map(Number).filter((yy) => classOf(row, yy)).sort((p, q) => q - p);
   return ys.length ? ys[0] : null;
 }
@@ -1172,6 +1194,8 @@ function apSelect(y, st, url = true) {
   if (!AP || !cellObs(AP.row, y, st)) return;
   AP.sel = { y, st };
   AP.fy = y;
+  AP.fySel = y;
+  apClassTag();
   apMark();
   apPanel();
   if (url) apURL();
@@ -3403,6 +3427,14 @@ document.addEventListener("click", (e) => {
   if (!(t instanceof Element) || t.closest("#grid-wrap, #side-panel, .xpanel, button, a, input, select, label, textarea, [role=dialog]")) return;
   clearSelection(false);
 });
+// the account page: a click outside the stage table's card, the chart's card and the source panel closes the panel, as in Explore (SPEC 5.3);
+// controls do their own job
+document.addEventListener("click", (e) => {
+  if (!AP || !AP.sel || $("#account-view").hidden) return;
+  const t = e.target;
+  if (!(t instanceof Element) || t.closest("[data-testid=ap-stages], #ap-panel, [data-testid=ap-history], .xpanel, button, a, input, select, label, textarea, summary, [role=dialog]")) return;
+  apClear(false);
+});
 $("#share").addEventListener("click", async () => {
   const url = location.href, b = $("#share");
   b.textContent = "Link copied"; b.dataset.copied = url;
@@ -3743,6 +3775,8 @@ async function showAccountAt(id, at) {
   if (td) { td.classList.add("focus"); td.dataset.focus = "true"; }
   // the figure asked for, selected in "Every stage, every year" (its source in the panel beside it); else the record's cell
   const sel = at && at.stage && document.querySelector("[data-testid=ap-table] td[data-sel=fig]");
+  // without the account page's table (its flag off), the record's cell: "Every line on file" opens to show it
+  if (!sel && td) td.closest("details").open = true;
   if (sel || td) (sel || td).scrollIntoView({ block: "center", inline: "nearest" });
 }
 
