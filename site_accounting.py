@@ -621,6 +621,7 @@ class Layer:
                         "reason": f"{rule}: equals the {'figure as printed' if basis == 'printed' else basis + ' view'}"
                                   + (f" (checked: {e['validation_id']})" if e["status"] == "checked"
                                      and e.get("validation_id") else "")}
+                    e.setdefault("component_ids", [])
                 out[basis].append(dict(e))
         return out
 
