@@ -34,6 +34,58 @@ Open:
 - Still in the core and named in the PR: LOOKS_LIKE (the detector of unread phrases) lists 'section 241' and
   'Prevention and Public Health Fund'; check_legislative_text's TAP_241 / BEFORE_NOT_MAIN (main-amount reading)
   name section 241; approps_store's ONC $0-headline note; web/index.html prefers LHHS as the default subcommittee.
+## UI-6: Find changes and watchlist (2026-10-14)
+
+- web/index.html: a third tab, Find changes (`?view=changes`, `#changes-view`; shown when `find_changes` is built and on).
+  Four preset cards fill the condition builder (and keep the subcommittee, year, agency and basis): Deepest proposed cuts
+  (FY<n-1> enacted -> FY<n> request, change % at most -20), House vs Senate gaps (change $ either way at least $100M),
+  Proposed eliminations (`elim=1`: a printed 0 in column B where column A > 0), Moves and reorganizations (the grid's
+  `rows[].relationships`, each once, effective in the FY; "Show all years"; sources from the from-account's record).
+  Conditions: subcommittee, FY, column A / B (prior enacted, request, House, Senate, enacted), change % and change $
+  (at most / at least / either way), agency, Amount basis (views.<basis>, timing "available"), sort.
+- Results: Account (link to ?account=<id>&fy=<FY>), Agency, A, B, Change, %, Watch; each figure links to its source page
+  (url#page=N). Accounts = every row but an agency total with lines below it (AHRQ, ACL, AHA totals count: no lines).
+  Only pairs where both sides are figures (a printed zero is one; a confirmed absence, missing, n/c, outside life are
+  not). "n accounts left out: no figure in one stage. See them" lists each side's state (`left=1`); an account outside
+  its life in both stages is not counted. Drafts are included (Explore's default).
+- Save this search copies the URL (every condition is in it). Export CSV / Excel reuse UI-4's saveBlob, csvCell and the
+  vendored Excel writer ($ thousands, rounded as shown; a printed 0 exports 0). Open in Explore: same sc, FY, agency,
+  basis; Two years mode for prior enacted vs enacted; the threshold only where Explore's first change column is the
+  same comparison (it is "either way" there, % or $); otherwise the page says Explore has no such filter.
+- Watchlist: localStorage key `approps-intelligence.watchlist` ([{id, name, sc}]), every access in try/catch; blocked
+  storage keeps it for the page and says so. ☆ Watch on results, Moves, the Explore account panel / phone sheet and the
+  account page. The list (on Find changes) has the browser-only note, Remove, and "Copy watchlist link"
+  (`?view=changes&watch=<ids>`); opening that link offers "Add n to my watchlist" (never automatic; IDs not on file are
+  named and left out).
+- What's new (flag off since the owner's decision below): `approps_store.whats_new()` (source_document.retrieval_timestamp, date part; figures not superseded;
+  account attributes citing it; subcommittees) -> `docs/data/whats_new.json` (export_static) and `GET /api/whats-new`
+  (approps_web, also in payloads()). The page lists the subcommittee's documents by date (3 newest dates, the rest under
+  "Earlier"). Missing: SRC-BUDGET-APP-FY2019 has no retrieval date (listed as undated). The date is when a document was
+  retrieved into the record, not when a figure changed: there is no per-figure added date in the data.
+- web/ui_contract.json contract_version 6: `find_changes`, `find_moves`, `whats_new` added; `watchlist` (already true
+  from the data) now in BUILT. SPEC.md section 9 rows updated.
+- Tests: tests/test_find_changes.py (each preset; blank-vs-zero elimination, LHHS FY2023 CDC-Wide confirmed absence and
+  Medicare Operations missing; save/reload; Open in Explore; export; watchlist survives a reload; link export/import;
+  storage blocked; What's new static and live; tab and 390px). Screenshots: screenshots/ui-6/ (no design reference).
+
+Owner decisions (2026-10-14, same PR):
+1. What's new: the flag is off. The retrieval date changes on every re-fetch or reparse, so it is not an added date.
+   The code, `data/whats_new.json` and `/api/whats-new` stay; web/ui_contract.json `whats_new` now lists
+   `whats_new.json:documents[].first_added` and `subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date`
+   (placeholders: set the paths to D-5's field names) with a `waits_for` note. When D-5 lands: whats_new() and the page
+   read the first-added date instead of `retrieved`. Test: test_whats_new_is_hidden_until_first_added_dates (hidden in
+   both modes; with the flag forced on, the list still renders).
+2. The "One account" tab opens the UI-5 account page (the One account view is the account page; no separate old view),
+   so it reads "Account" (title "Account · Approps Intelligence"). Test: test_account_tab_is_named_account.
+3. Accepted as built: single-account agency totals counted, totals with lines not; confirmed absences left out of
+   Proposed eliminations; printed zeros counted; the watchlist and its import offer.
+Merged main after D-3b (#74): CA-LHHS-0037 retired, so CDC-Wide's FY2023 request is now missing (not a confirmed
+absence); the blank-vs-zero test uses Medicare Operations FY2022 (confirmed absence) and FY2023 (missing) instead.
+
+Open:
+- No alerts or digests (static site), by the brief.
+- What's new waits for D-5's first-added dates.
+- The Explore grid has no "Watch" column; Watch is in the panel and sheet (SPEC 5.2).
 
 ## D-3b: follow-ups from #72 (2026-10-14, this PR)
 
