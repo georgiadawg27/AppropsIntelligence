@@ -583,14 +583,19 @@ def pphf_table(data, heads, report):
                 continue
             table = ("the Prevention and Public Health Fund allocation table" if r["table"] == "allocation"
                      else f"the comparative table ({r['table'].split(', ', 1)[1]})")
+            # the request allocates the Fund outside its appropriations language: no bill section (D-3)
+            request = r["stage"] == REQUEST_STAGE
             out.append({"observation_id": h["observation_id"], "component_type": "transfer_in", "designation": "",
                         "transfer_from": PPHF, "amount": int(r["amount"]), "in_headline": "FALSE",
                         "source_document_id": r["source_document_id"],
-                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'; "
-                                           f"{r['bill_document_id']} {r['bill_section']}",
+                        "source_location": f"p.{r['page']}, {table}, '{r['activity']}'"
+                                           + ("" if request else f"; {r['bill_document_id']} {r['bill_section']}"),
                         "quoted_text": f"{r['account_printed']} | {r['printed_line']}",
                         "tag_method": "table_line",
-                        "tag_rule": f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
+                        "tag_rule": (f"PPHF allocation: the President's request allocates the Fund outside its "
+                                     f"appropriations language; the report's comparative table prints the request's "
+                                     f"Fund line ({r['read_from']})") if request else
+                                    f"PPHF allocation: {r['bill_section']} transfers the Fund to the accounts and in "
                                     f"the amounts the report's table specifies ({r['read_from']})",
                         "source_observation_id": "", "carried_from_component_id": "",
                         "notes": "beside the headline: the Fund's money is transferred in, not appropriated here"})

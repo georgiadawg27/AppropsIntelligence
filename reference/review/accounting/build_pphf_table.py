@@ -48,7 +48,10 @@ ACCOUNT = {"Immunization and Respiratory Diseases": "ACC-HHS-CDC-IMMUNIZATION",
          "Environmental Health": "ACC-HHS-CDC-ENVIRONMENTAL-HEALTH",
          "CDC-Wide Activities": "ACC-HHS-CDC-PROGRAM-SUPPORT",
          "Mental Health": "ACC-HHS-SAMHSA-MENTAL-HEALTH",
+         "Birth Defects, Developmental Disabilities, Disabilities and Health": "ACC-HHS-CDC-BIRTH-DEFECTS",
+         "Health Surveillance and Program Support": "ACC-HHS-SAMHSA-PROGRAM-SUPPORT",
          "Aging and Disability Services Programs": ""}
+NAME_OF = {v: k for k, v in ACCOUNT.items() if v}     # the account's name as the checks key it (the later spelling)
 ALD = "Aging and Disability Services Programs"
 I, E, C, P, H, W, M = ("Immunization and Respiratory Diseases", "Emerging and Zoonotic Infectious Diseases",
     "Chronic Disease Prevention and Health Promotion", "Public Health Scientific Services", "Environmental Health",
@@ -182,7 +185,7 @@ for fy, st, doc, p, rows in ROWS:
         for r in kept(fy, st, doc):
             out.append(r)
             if r["account_id"]:
-                acct[(fy, st)][next(k for k, v in ACCOUNT.items() if v == r["account_id"])] += r["amount"]
+                acct[(fy, st)][NAME_OF[r["account_id"]]] += r["amount"]
         continue
     for printed_acct, acc_name, activity, amt in rows:
         q, line = find(doc, p, activity.replace("Alzheimer's","Alzheimer"), amt, printed_acct)
@@ -298,7 +301,7 @@ for fy, st, doc, first, thousands, bill, sec in BACKFILL:
         for r in kept(fy, st, doc):
             out.append(r)
             if r["account_id"]:
-                acct[(fy, st)][next(k for k, v in ACCOUNT.items() if v == r["account_id"])] += r["amount"] // 1000
+                acct[(fy, st)][NAME_OF[r["account_id"]]] += r["amount"] // 1000
         continue
     for q, cells, amt, line in allocation_rows(doc, first, thousands):
         printed_acct, acc_name = account_of(cells)
@@ -320,6 +323,97 @@ for fy, st, doc, column, bill, sec, rows in COMPARATIVE_ROWS:
                         account_printed=acc_name, activity="Prevention and Public Health Fund", amount=amt * 1000,
                         account_id=ACCOUNT[acc_name], bill_document_id=bill, bill_section=sec,
                         printed_line=clean(hit[0]), read_from="text layer"))
+# ---- President's Budget (D-3: decision 2 A of decisions-D2.md, owner 2026-10-13) ---------------------------------
+# The request allocates the Fund outside its appropriations language (no phrase in the Budget Appendix names it), so
+# the rows are the Fund lines of the comparative table that prints the President's Budget figures we hold, in its
+# request column (thousands). Each cell's rows must add up to the request column's printed Fund total for the agency.
+# Where the table pages have no text layer (H.Rept. 114-699, H.Rept. 116-450) the lines are read from the page images,
+# transcribed in `printed`. No rows: FY2019 (H.Rept. 115-862 pp.361-363, 367), FY2026 (H.Rept. 119-271 pp.340-342,
+# 346) and FY2027 (H.Rept. 119-696 pp.371-373, 377) print no Fund line in the request column ('---'), and FY2018,
+# FY2020 and FY2021 print none for SAMHSA.
+# (fy, report, request column, [(account, activity as printed, amount, page, printed line or '' to read the text
+# layer)], {agency: (printed Fund total in the request column, page, printed line or '')})
+F = "Prevention and Public Health Fund"
+B, HS = "Birth Defects, Developmental Disabilities, Disabilities and Health", "Health Surveillance and Program Support"
+REQUEST_ROWS = [
+ (2017, "SRC-CRPT-114HRPT699", "FY 2017 Request", [
+  (I, F, 336350, 236, "Prevention and Public Health Fund 1/ ... NA (324,350) (336,350) (337,300) (+12,950) (+950)"),
+  (E, F, 52000, 236, "Prevention and Public Health Fund 1/ ... NA (52,000) (52,000) (52,000) --- ---"),
+  (C, F, 437400, 236, "Prevention and Public Health Fund 1/ ... NA (338,950) (437,400) (201,500) (-137,450) (-235,900)"),
+  (B, F, 67966, 237, "Prevention and Public Health Fund 1/ ... NA --- (67,966) --- --- (-67,966)"),
+  (P, F, 36276, 237, "Prevention and Public Health Fund 1/ ... NA --- (36,276) --- --- (-36,276)"),
+  (H, F, 14478, 237, "Prevention and Public Health Fund 1/ ... NA (17,000) (14,478) (17,500) (+500) (+3,022)"),
+  (M, F, 10000, 242, "Prevention and Public Health Fund 1/ ... NA (12,000) (10,000) --- (-12,000) (-10,000)"),
+  (HS, F, 17830, 244, "Prevention and Public Health Fund 1/ ... NA --- (17,830) --- --- (-17,830)")],
+  {"CDC": (944470, 238, "Prevention and Public Health Fund 1/ ... NA (892,300) (944,470) (908,300) (+16,000) (-36,170)"),
+   "SAMHSA": (27830, 244, "(Prevention and Public Health Fund 1/) ... (12,000) (27,830) --- (-12,000) (-27,830)")}),
+ (2018, "SRC-CRPT-115HRPT244", "FY 2018 Request", [
+  (I, F, 203600, 211, ""), (E, F, 137000, 211, ""), (C, F, 500000, 211, "")],
+  {"CDC": (840600, 213, "")}),
+ (2020, "SRC-CRPT-116HRPT62", "FY 2020 Request", [
+  (I, F, 152845, 333, ""), (E, F, 137000, 333, ""), (C, F, 604105, 333, "")],
+  {"CDC": (893950, 335, "")}),
+ (2021, "SRC-CRPT-116HRPT450", "FY 2021 Request", [
+  (I, F, 302845, 398, "Prevention and Public Health Fund 1/ ... (370,300) (302,845) (370,300) --- (+67,455)"),
+  (E, F, 137000, 399, "Prevention and Public Health Fund 1/ ... (52,000) (137,000) (52,000) --- (-85,000)"),
+  (C, F, 454105, 399, "Prevention and Public Health Fund 1/ ... (254,950) (454,105) (256,850) (+1,900) (-197,255)")],
+  {"CDC": (893950, 401, "Prevention and Public Health Fund 1/ ... (854,250) (893,950) (856,150) (+1,900) (-37,800)")}),
+ (2022, "SRC-CRPT-117HRPT96", "FY 2022 Request", [
+  (I, F, 419350, 472, ""), (E, F, 52000, 472, ""), (C, F, 254950, 472, ""), (H, F, 17000, 473, ""),
+  (W, F, 160000, 474, ""), (M, F, 12000, 478, "")],
+  {"CDC": (903300, 474, ""), "SAMHSA": (12000, 480, "")}),
+ (2023, "SRC-CRPT-117HRPT403", "FY 2023 Request", [
+  (I, F, 419350, 811, ""), (E, F, 52000, 811, ""), (C, F, 254950, 811, ""), (H, F, 17000, 812, ""),
+  (W, F, 160000, 813, ""), (M, F, 12000, 817, "")],
+  {"CDC": (903300, 813, ""), "SAMHSA": (12000, 819, "")}),
+ (2024, "SRC-CRPT-118SRPT84", "Budget estimate", [
+  (I, F, 505000, 376, ""), (E, F, 52000, 376, ""), (C, F, 262200, 377, ""), (P, F, 140000, 377, ""),
+  (H, F, 17000, 377, ""), (W, F, 160000, 377, ""), (W, F, 50000, 377, ""), (M, F, 12000, 379, "")],
+  {"CDC": (1186200, 378, ""), "SAMHSA": (12000, 381, "")}),
+ (2025, "SRC-CRPT-118SRPT207", "Budget estimate", [
+  (I, F, 469350, 434, ""), (E, F, 52000, 434, ""), (C, F, 254950, 434, ""), (P, F, 182900, 435, ""),
+  (H, F, 17000, 435, ""), (W, "Preventive Health and Health Services Block Grant (Prevention and Public Health Fund)",
+                            160000, 435, ""),
+  (W, F, 50000, 435, ""), (M, F, 12000, 439, "")],
+  {"CDC": (1186200, 436, ""), "SAMHSA": (12000, 441, "")}),
+]
+
+
+def request_line(doc, p, label, amt, taken):
+    """The text layer's Fund line on page p whose figures hold the amount (thousands), not one already read."""
+    for line in page(doc, p).splitlines():
+        if re.search(r"(?i)prevention and public health fund", line) and label.split(" (")[0].split()[0] in line \
+                and f"{amt:,}" in re.sub(r"[\s'.]", "", line).replace("(", " (") and (p, line) not in taken:
+            taken.add((p, line))
+            return clean(line)
+    for line in page(doc, p).splitlines():          # the text layer's OCR spaces digits ('(604, 105)')
+        if re.search(r"(?i)prevention and public health fund", line) and str(amt) in re.sub(r"[^\d]", "", line) \
+                and (p, line) not in taken:
+            taken.add((p, line))
+            return clean(line)
+    raise SystemExit(f"not found: {doc} p{p} {label} {amt}")
+
+
+for fy, doc, column, rows, totals in REQUEST_ROWS:
+    st = "President's Budget"
+    if not held(doc):
+        out += kept(fy, st, doc)
+        continue
+    taken, agency = set(), collections.Counter()
+    for acc_name, label, amt, p, printed in rows:
+        line = printed or request_line(doc, p, label, amt, taken)
+        out.append(dict(fiscal_year=fy, stage=st, source_document_id=doc, page=p, table=f"comparative, {column} column",
+                        account_printed=acc_name, activity=label, amount=amt * 1000, account_id=ACCOUNT[acc_name],
+                        bill_document_id="", bill_section="", printed_line=line,
+                        read_from="page image" if printed else "text layer"))
+        agency[ACCOUNT[acc_name].split("-")[2]] += amt
+    for ag, (total, p, printed) in totals.items():
+        if not printed:
+            request_line(doc, p, F, total, set())
+        if agency[ag] != total:
+            print("MISMATCH request", fy, ag, agency[ag], total); bad += 1
+    if set(agency) != set(totals):
+        print("MISMATCH request agencies", fy, sorted(agency), sorted(totals)); bad += 1
 for k, want in COMPARATIVE_BF.items():
     got = {a: v for a, v in acct[k].items() if a != M and a != ALD}
     if got != want: print("MISMATCH", k, got, want); bad += 0 if k in NO_CHECK else 1

@@ -75,6 +75,8 @@ KNOWN_CELL_CAUSES = {
     **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
        for st in ("House Reported", "Senate Reported")},
     ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",
+    # D-3: with the request's Fund lines read (pphf_table.csv), what is left is not the Fund's
+    ("ACC-HHS-CDC-TOTAL", 2025, "President's Budget", "program_level"): "request_evaluation_tap_past_window",
 }
 CAUSE_TEXT = {
     "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
@@ -103,6 +105,13 @@ CAUSE_TEXT = {
                                "total, so it cannot equal the view where ONC has its own appropriation",
     "emergency_lines_not_held": "the total counts emergency appropriations from the law's other divisions (P.L. "
                                 "117-328), which are not lines we hold, so no designated component takes them off",
+    "request_evaluation_tap_past_window": "the request column prints Injury Prevention and Control's 'Evaluation "
+                                          "Funding (PHS Act Sec 241)' line, $100,000,000 (S.Rept. 118-207 p.435): the "
+                                          "FY2025 request language's proviso ('in addition to amounts provided under "
+                                          "this heading, $100,000,000 shall be available for implementation of the "
+                                          "Community Violence Intervention initiative from amounts made available "
+                                          "under section 241 of the PHS Act', Budget Appendix p.405) names section 241 "
+                                          "past the phrase window (100 characters), so no phrase rule tags it",
     "unexplained": "not explained yet",
 }
 
