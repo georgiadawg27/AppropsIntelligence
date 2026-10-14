@@ -372,6 +372,11 @@ class VerificationStatusRule(unittest.TestCase):
         self.assertEqual(V.observation_status({**o, "source_table_or_section": "printed"}, []), "unverified")
         self.assertEqual(V.rule_status_text(o, {"SRC-EXPL-LHHS-FY2024-HOUSE": "explanatory_statement"}),
                          "Resolved by rule: bill text controls (explanatory table prints 370,722,000)")
+        appendix = {"source_document_id": "SRC-BUDGET-APP-FY2017-NSF", "source_table_or_section":
+                    "... -- Note: H.Rept. 114-605 (SRC-CRPT-114HRPT605 p.114-115) prints the request's nondefense line "
+                    "6,011,910 thousand (OBS-0727) and the 'Defense function' line 67,520 thousand (OBS-0767); ..."}
+        self.assertEqual(V.rule_status_text(appendix, {}),
+                         "Resolved by rule: Appendix language controls (report table prints 6,011,910,000)")
 
     def test_within_rounding_only_on_a_computed_figure_one_unit_off(self):
         obs = [{"observation_id": "O", "amount": 313_904_098_000}]
