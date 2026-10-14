@@ -34,8 +34,9 @@ their life are not behind it; a confirmed absence counts as nothing. Status:
                  the lines as printed don't add up to the printed total (owner, 2026-10-14: "its N accounts as
                  printed sum to $Y, not the printed $Z: $X is in no account held"; the cells are listed in
                  reference/review/accounting/total_gaps.csv), unless lines the table prints inside the total that
-                 we hold beside an account's headline make it equal exactly (owner, D-6 round 2: they count in the
-                 sum, each as its basis counts it -- held_lines, line_counts). A printed total measure_reconcile
+                 we hold beside an account's headline make it equal exactly (owner, D-6 rounds 2-3: only lines with
+                 position evidence in total_lines_inside.csv count, each as its basis counts it -- held_lines,
+                 line_counts). A printed total measure_reconcile
                  matched still gives its checked view there.
 Every total entry but As printed carries accounts_behind (its lines in the cell). As printed stays the printed total.
 
@@ -56,7 +57,7 @@ outcome for the printed view line. Nothing here changes or adds a figure.
 """
 
 import collections
-import itertools
+import csv
 import re
 import sys
 from pathlib import Path
@@ -174,6 +175,20 @@ VIEW_DECIDED = ("advance_enacted", "advance_available", "transfer_in", "trust_fu
                 "transfer_out", "mandatory_portion")
 
 
+# owner, D-6 round 3: a held line counts in a total's sum only where the table prints it inside that total; the
+# evidence, one row per (total, line) with the page and the printed rows, is judged from total_lines.py's report
+INSIDE_FILE = ROOT / "reference" / "review" / "accounting" / "total_lines_inside.csv"
+
+
+def inside_lines(path=None):
+    path = path or INSIDE_FILE
+    if not path.exists():
+        return set()
+    with path.open() as f:
+        return {(r["total_observation_id"], r["line_observation_id"]) for r in csv.DictReader(f)
+                if r["inside"] == "yes"}
+
+
 def held_lines(lines):
     """The lines held in a total's accounts' cells beside their headlines (not the budget-authority headline, not a
     line inside it or a printed parallel total): a supplemental, an advance, a program line printed under the
@@ -278,6 +293,8 @@ class Layer:
         self.unused = set()     # (printed view observation, why it confirms no basis): excluding_emergencies
         self.gaps = []          # D-6: total cells whose lines as printed don't add up to the printed total
         self.rows = {}
+        # D-6 round 3: (total's printed observation, held line's observation) pairs the table prints inside the total
+        self.inside = inside_lines()
         # an agency held only as its total (no account lines): its total is its one line
         self.lone = {a["canonical_account_id"] for a in data["accounts"]
                      if a.get("total_scope") == "agency" and not M.members(data, a)}
@@ -519,18 +536,23 @@ class Layer:
             # (a supplemental, Medicaid's advance for next year, NSF's request defense line ...) count in the sum
             # when the fewest of them that add up to the difference make it equal the printed total exactly
             beside = held_lines(lines)
-            extra = next((list(c) for k in range(1, min(len(beside), 8) + 1)
-                          for c in itertools.combinations(beside, k)
-                          if sum(x["amount"] for x in c) == h["amount"] - held), [])
+            # only the lines the table prints inside this total (evidence: INSIDE_FILE, the row's position under the
+            # total or the table's printed arithmetic), never chosen because they make the sum match
+            inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
+            extra = inside if inside and sum(x["amount"] for x in inside) == h["amount"] - held else []
             self.gaps.append({"subcommittee": a["subcommittee"], "total": a["canonical_account_id"],
                               "agency": a["agency"], "fiscal_year": fy, "stage": stage, "printed": h["amount"],
                               "printed_observation_id": h["observation_id"],
                               "source_document_id": h["source_document_id"], "source_page": h.get("source_page"),
                               "held": held, "gap": h["amount"] - held, "lines": lines, "beside": beside,
-                              "counted": extra})
+                              "inside": inside, "counted": extra})
             if not extra:
-                bar = (f"not computable: its {n} accounts as printed sum to {AC.money(held)}, not the printed "
-                       f"{AC.money(h['amount'])}: {AC.money(h['amount'] - held)} is in no account held")
+                short = h["amount"] - held - sum(x["amount"] for x in inside)
+                bar = (f"not computable: its {n} accounts as printed sum to {AC.money(held)}"
+                       + (f", and the {len(inside)} line{'s' if len(inside) > 1 else ''} the table prints inside the "
+                          f"total held beside their headlines to {AC.money(sum(x['amount'] for x in inside))}"
+                          if inside else "")
+                       + f", not the printed {AC.money(h['amount'])}: {AC.money(short)} is in no account held")
         mh = [(m, self.obs[mc["views"]["printed"][0]["printed_observation_id"]]) for m, mc in lines]
         found, mixed, failed = self.printed_found(a, fy, stage, h, mh)
         out = {}

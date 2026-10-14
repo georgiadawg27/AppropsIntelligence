@@ -152,10 +152,15 @@ where a line is (named, with its reason), where a line has no figure, or where t
 the printed total -- the money is in no account held, so their sum is not the total
 (`reference/review/accounting/total_gaps.csv`). As printed is always the printed total.
 
-Held lines (owner, D-6 round 2): where the table prints a line inside the total that we hold beside an account's
-headline (a supplemental, Medicaid's advance for next year, NSF's request 'Defense function' line, a program line
-printed under the account, a rescission), the fewest of those lines that make the accounts' As printed sum equal the
-printed total exactly count in the total's sum, and the total is published (computed; the reason names the lines).
+Held lines (owner, D-6 rounds 2-3): a line we hold beside an account's headline (a supplemental, Medicaid's advance
+for next year, NSF's request 'Defense function' line, a program line printed under the account, a rescission)
+counts in the total's sum only because the table prints it inside that total -- its position under the total, or
+the table's own printed arithmetic (a subtotal or the total's printed breakdown that includes it) -- never because
+it makes the sum match. The evidence, one row per (total, line) with the page and the printed rows, is
+`reference/review/accounting/total_lines_inside.csv` (judged from `total_lines.py`'s report and, for scanned pages,
+the page image); a line from another document than the total's is outside by definition. Every line with that
+evidence counts; the total is published (computed; the reason names the lines) only if the sum then equals the
+printed total exactly -- no rounding.
 On a basis each line counts as its basis would count it: out with its account when the basis leaves the account
 out; a line matching a component the basis decides by itself (an advance by timing, a transfer in) is in the
 account's view where the basis counts it and never added twice; a designated line (a supplemental) is out of

@@ -24,11 +24,36 @@ that add up to the gap exactly (`explains` yes). Blank: no held line explains it
 | ASPR (LHHS) | 2 | 0 | not named (FY2024 request $400,000,000, FY2024 Senate $75,000,000) |
 | HRSA (LHHS) | 1 | 1 | FY2017 Enacted: a $15,000,000 MCH line from another law (P.L. 114-254 p.18) |
 
-Owner, D-6 round 2 (2026-10-14): where held lines explain the gap exactly, they count in the total's sum (each as
-its basis counts it; ACCOUNTING_RULES 'Totals') and the total is published: 56 cells (`published` yes: NASA 5, NSF
-7, CMS 39, ACF 1, HRSA 1, SAMHSA 1 -- 2 CJS totals and 42 LHHS cells in all). Still not computable, for review (40
-cells, `published` no): ACF 13, OS 10, NIH 8, CDC 5, ASPR 2, CMS 2 (FY2021 House and Senate: $1,000 over the
-advance), SAMHSA 2 (FY2026 and FY2027 requests). Each needs the table read for the line we don't hold.
+Owner, D-6 rounds 2-3 (2026-10-14): a held line counts in the total's sum only where the table prints it inside
+that total (its position under the total, or the table's printed arithmetic), never because it makes the sum match.
+Evidence per line: `total_lines_inside.csv` (from `total_lines.py`'s text-layer report, and the page image where the
+table is scanned). What shows each kind of line is inside:
+
+| line | cells | evidence |
+|---|---|---|
+| Medicaid's 'New advance, 1st quarter, FY N+2' | CMS 35 | the row sits under 'Grants to States for Medicaid', inside 'Total, Grants to States for Medicaid, appropriated in this bill', above 'Total, Centers for Medicare and Medicaid Services' with only CMS's own account totals between (text layer, 25 cells); on the scanned pages the total prints its own parts below it -- 'New advance, FY 2018' / 'FY 2022 Advance' / 'Advance appropriations' (page image, 10 cells: H.Rept. 114-699, 116-450, 119-271, 119-696, CR H1642) |
+| supplementals '(emergency)' | NASA 5, NSF 4 | the '(emergency)' row under the account, inside its 'Subtotal' and above 'Total, National Aeronautics and Space Administration' / 'Total, National Science Foundation' (S.Rept. 118-62, 118-198: text layer; H.Rept. 118-582, 119-272: page image) |
+| NASA Space Operations rescission | NASA FY2025 request | '-1,000' printed under Space Operations in the NASA block (H.Rept. 118-582 p.247, page image) |
+| NSF 'Defense function' | NSF FY2019, FY2024 requests | printed under 'Research and related activities' inside its 'Subtotal', above 'Total, National Science Foundation' (H.Rept. 115-704 p.129 image; S.Rept. 118-62 p.220 text) |
+| ACF 'Discretionary Funds' (SSBG) | ACF FY2019 request | under Social Services Block Grant, above 'Total, ACF' with only ACF account totals between (H.Rept. 115-862 pp.375-377, text) |
+| SAMHSA 'Comprehensive Opioid Response Grants' | SAMHSA FY2017 House | inside 'Total, Substance Abuse Prevention' 711,148, above 'Total, SAMHSA' (H.Rept. 114-699 p.244, image) |
+
+Moved back to not computable (no position evidence): NSF FY2025 request (the line is S.Rept. 118-198's, the total
+H.Rept. 118-582's, whose request column prints no NSF emergency line) and HRSA FY2017 Enacted (the line is P.L.
+114-254's) -- both lines of another document that would have closed the gap exactly; CMS FY2022 Senate, FY2023
+Senate, FY2024 House (the committee documents are not reachable here) and FY2025 House (H.Rept. 118-585's PDF is not
+retrievable here) -- for a session that can read them.
+
+Published: 48 cells (NASA 5, NSF 6, CMS 35, ACF 1, SAMHSA 1). Not computable: 48 (ACF 13, CMS 6, OS 10, NIH 8, CDC 5,
+ASPR 2, SAMHSA 2, HRSA 1, NSF 1).
+
+### CMS FY2021 House and Senate: $1,000 over the advance
+
+The FY2021 House (H.Rept. 116-450) and Senate (Senate explanatory statement) CMS totals are $148,732,316,000 more
+than the accounts held; the advance printed inside the House total is $148,732,315,000 (H.Rept. 116-450 pp.408-410,
+PDF pp.412-414: the total's parts print 'FY 2022 Advance (148,732,315)'). $1,000 is in no account held -- likely the
+rounding of the table's thousands somewhere in CMS's lines, but not shown. Not rounded: both cells stay not
+computable. For review: which CMS line the table rounds (or which line is $1,000 off).
 
 ## Notes
 

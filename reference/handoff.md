@@ -22,8 +22,11 @@ data/staged.json unchanged (measure_reconcile --ci clean; workbook digest unchan
   (`test_adjustments_turn_as_printed_into_every_entry`). 195 entries equal As printed keep a non-empty list: offsetting
   adjustments (an advance in and an advance out).
 - Part 4: ui_contract v7, `basis_adjustments` (true in the export). The page does not read it yet.
-- Round 2 (owner, 2026-10-14): held lines that explain a gap count in the total's sum (`held_lines`, `line_counts`);
-  56 of the 96 gap cells are published, 40 stay not computable (`total_gaps.csv` column `published`). Accepted: the
+- Round 2 (owner, 2026-10-14): held lines count in the total's sum (`held_lines`, `line_counts`). Round 3 (owner):
+  only lines the table prints inside that total (position or the table's printed arithmetic), never chosen by the
+  sum: evidence `total_lines_inside.csv` (from `total_lines.py`, needs the PDFs in document_store/, and page images for
+  scanned tables). 48 of the 96 gap cells published, 48 not computable (`total_gaps.csv`); round 2's arithmetic
+  selection had published 54 (reported as 56 by mistake). CMS FY2021 House/Senate ($1,000 over) not rounded. Accepted: the
   non-empty offsetting adjustment lists; AHRQ, ACL and AHA as one line each. The "not checked" page label goes to UI-8
   (page left alone).
 

@@ -7,10 +7,11 @@ measure_reconcile matched still gives its checked view.
 
 One row per cell: subcommittee, total, FY, stage, the printed total (with its source), the sum of the accounts
 held, the gap, and the lines the data holds in those accounts' cells beside their headlines (supplemental,
-rescission, ...: printed under an account, counted by the table's total but not by the account's headline), with
-document and page: the fewest of them that add up to the gap exactly ('explains' yes), else all of them (no).
-Owner, D-6 round 2: where they explain it, they count in the total's sum (site_accounting.held_lines, line_counts)
-and the total is published ('published' yes); otherwise it stays not computable. Lines no account holds can't be
+rescission, ...), with document and page; 'lines_printed_inside' those the table prints inside the total
+(owner, D-6 round 3: evidence in total_lines_inside.csv -- the row's position under the total or the table's own
+printed arithmetic, never the sum matching). They count in the total's sum (site_accounting.held_lines,
+line_counts); the total is published ('published' yes) only where 'short' is then 0, otherwise it stays not
+computable. Lines no account holds can't be
 named from the data: they need the table (blank).
 """
 
@@ -27,7 +28,7 @@ import site_accounting as SA  # noqa: E402
 OUT = Path(__file__).resolve().parent / "total_gaps.csv"
 COLUMNS = ["subcommittee", "total", "agency", "fiscal_year", "stage", "printed_total", "printed_observation_id",
            "source_document_id", "source_page", "accounts_held", "sum_held", "gap", "lines_beside_headlines",
-           "lines_sum", "explains", "published"]
+           "lines_printed_inside", "inside_sum", "short", "published"]
 
 
 def gaps(db):
@@ -55,15 +56,15 @@ def gaps(db):
 def rows(found):
     out = []
     for g in sorted(found, key=lambda g: (g["subcommittee"], g["total"], g["fiscal_year"], g["stage"])):
-        b = g["counted"] or g["beside"]
         out.append({"subcommittee": g["subcommittee"], "total": g["total"], "agency": g["agency"],
                     "fiscal_year": g["fiscal_year"], "stage": g["stage"], "printed_total": g["printed"],
                     "printed_observation_id": g["printed_observation_id"],
                     "source_document_id": g["source_document_id"], "source_page": g["source_page"] or "",
                     "accounts_held": len(g["lines"]), "sum_held": g["held"], "gap": g["gap"],
-                    "lines_beside_headlines": "; ".join(SA.line_words(x) for x in b),
-                    "lines_sum": sum(x["amount"] for x in b) if b else "",
-                    "explains": ("yes" if g["counted"] else "no") if b else "",
+                    "lines_beside_headlines": "; ".join(SA.line_words(x) for x in g["beside"]),
+                    "lines_printed_inside": "; ".join(SA.line_words(x) for x in g["inside"]),
+                    "inside_sum": sum(x["amount"] for x in g["inside"]) if g["inside"] else "",
+                    "short": g["gap"] - sum(x["amount"] for x in g["inside"]),
                     "published": "yes" if g["counted"] else "no"})
     return out
 

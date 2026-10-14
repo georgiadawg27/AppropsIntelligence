@@ -499,8 +499,71 @@ class AccountingLayer(unittest.TestCase):
         # lines); the rest stay not computable
         self.assertEqual(found, {k for k, r in listed.items() if r["published"] == "no"})
         self.assertEqual({r["published"] for r in listed.values()}, {"yes", "no"})
-        self.assertTrue(all(r["explains"] == "yes" for r in listed.values() if r["published"] == "yes"))
+        # published only where the lines printed inside the total close the gap exactly (no rounding: CMS FY2021
+        # House is $1,000 short and stays not computable)
+        for k, r in listed.items():
+            self.assertEqual(r["published"] == "yes", r["lines_printed_inside"] != "" and int(r["short"]) == 0, k)
+        self.assertEqual(listed[("ACC-HHS-CMS-TOTAL", "2021|House Reported")]["short"], "1000")
         self.assertGreater(len(found), 30)
+
+    # ------------------------------------------------------------ D-6 round 3: held lines need position evidence
+    def total_cell(self, aid, fy, stage):
+        import site_accounting as SA
+        rows = {r["account"]["canonical_account_id"]: r for g in self.grids.values() for r in grid_rows(g)}
+        layer = SA.Layer(self.data)
+        layer.rows = rows
+        a = layer.acc[aid]
+        cell = rows[aid]["cells"][f"{fy}|{stage}"]
+        h = layer.obs[cell["views"]["printed"][0]["printed_observation_id"]]
+        return layer, a, h, cell
+
+    def test_a_held_line_outside_the_total_is_never_counted(self):
+        # owner, 2026-10-14: a held line counts only because the table prints it inside that total (its position or
+        # the table's printed arithmetic: total_lines_inside.csv), never because it makes the sum match
+        import csv
+        import site_accounting as SA
+        evidence = list(csv.DictReader((ROOT / "reference" / "review" / "accounting" / "total_lines_inside.csv").open()))
+        inside = {(r["total_observation_id"], r["line_observation_id"]) for r in evidence if r["inside"] == "yes"}
+        self.assertTrue(all(r["line_document"] == r["document"] for r in evidence if r["inside"] == "yes"))
+        self.assertTrue(all(r["where"] and r["evidence"] for r in evidence if r["inside"] == "yes"))
+        cases = [
+            # printed outside: another document's line (S.Rept. 118-198's supplemental beside H.Rept. 118-582's total;
+            # P.L. 114-254's MCH line beside H.Rept. 115-244's), each closing the gap exactly
+            ("ACC-NSF-TOTAL", 2025, "President's Budget", None),
+            ("ACC-HHS-HRSA-TOTAL", 2017, "Enacted", None),
+            # printed inside, but with its evidence taken away: not counted either
+            ("ACC-NASA-TOTAL", 2024, "Enacted", "drop"),
+        ]
+        for aid, fy, stage, how in cases:
+            with self.subTest(total=aid, fy=fy, stage=stage):
+                layer, a, h, cell = self.total_cell(aid, fy, stage)
+                held = SA.held_lines(layer.behind(a, f"{fy}|{stage}")[0])
+                gap = h["amount"] - sum(mc["views"]["printed"][0]["amount"] for _, mc in layer.behind(a, f"{fy}|{stage}")[0])
+                closing = [x for x in held if x["amount"] == gap] or held
+                self.assertEqual(sum(x["amount"] for x in closing), gap)       # the arithmetic would match
+                pairs = {(h["observation_id"], x["observation_id"]) for x in closing}
+                if how == "drop":
+                    self.assertTrue(pairs <= inside)
+                else:
+                    self.assertFalse(pairs & inside)
+                layer.inside = inside - pairs
+                out = layer.total_layer(a, fy, stage, h, cell)
+                e = out["views"]["all_appropriations"][0]
+                self.assertEqual(e["status"], "not_computable", e)
+                self.assertIn("is in no account held", e["reason"])
+                # the same lines with evidence would be counted: the arithmetic alone is what the rule refuses
+                layer.inside = inside | pairs
+                self.assertEqual(layer.total_layer(a, fy, stage, h, cell)["views"]["printed"][0]["status"], "checked")
+                self.assertIn(layer.total_layer(a, fy, stage, h, cell)["views_excluding_earmarks"]["printed"][0]["status"],
+                              ("computed", "checked"))
+        # a line the evidence marks outside (NASA FY2025 Enacted's 'Other appropriations' $740,200,000, printed on
+        # p.261 after the NASA total) is not counted
+        out_rows = [r for r in evidence if r["inside"] == "no"]
+        self.assertTrue(out_rows)
+        layer, a, h, cell = self.total_cell("ACC-NASA-TOTAL", 2025, "Enacted")
+        for r in out_rows:
+            self.assertNotIn((r["total_observation_id"], r["line_observation_id"]), layer.inside)
+
 
     def test_every_component_is_in_staged(self):
         n = 0
