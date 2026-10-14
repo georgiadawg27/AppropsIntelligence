@@ -838,7 +838,19 @@ def add_observations(conn, rows):
         raise ValueError(f"incoming rows repeat a fact: {dup[:5]}")
     existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation "
                                               "WHERE verification_status <> 'superseded'")]
+    # an incoming row that repeats a figure the store holds as superseded (the same fact and amount: a report
+    # table's line that bill or law text replaced, or re-recorded under another component -- NSF R&RA's nondefense
+    # and 'Defense function' lines, D-3) confirms that record: never a conflict with its replacement, never a
+    # second copy of the line
+    current = {(fact_key(o), o["amount"]) for o in existing}
+    replaced = {}
+    for r in conn.execute("SELECT * FROM appropriations_observation WHERE verification_status = 'superseded'"):
+        replaced.setdefault((fact_key(dict(r)), r["amount"]), dict(r))
+    seen = [(n, replaced[(fact_key(n), n["amount"])]) for n in rows
+            if (fact_key(n), n["amount"]) not in current and (fact_key(n), n["amount"]) in replaced]
+    rows = [n for n in rows if not any(n is x for x, _ in seen)]
     pairs, diffs, new_only, _ = compare(rows, existing, key=fact_key)
+    pairs = seen + pairs
     differing = {id(n) for n, _ in diffs}
     vocabulary = {}
     for o in existing:

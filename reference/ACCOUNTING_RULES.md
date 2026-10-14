@@ -165,6 +165,9 @@ counted as printed and named in the check.
    - a replacement may change component only when it re-records the same printed line: same document, page and
      amount.
    Any other contained line from another document, or component change, still fails to load.
+   Re-ingesting a table that prints a superseded figure (`approps_store.add_observations`: same fact, same
+   amount as a superseded record) confirms that record; it is never a conflict with the replacement and never
+   stored again (so the table's defense line can't come back as a part).
 
 ## Tagging rules
 

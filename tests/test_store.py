@@ -806,11 +806,17 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual({(r["fiscal_year"], r["stage"], r["component"]) for r in defense},
                          {(2026, "Enacted", "defense"), (2027, "House Reported", "defense")})
         out = S.add_observations(self.conn, self.rows)
-        self.assertIn("OBS-0728", out["confirmed"])                     # FY2026 Enacted R&RA defense, 118,800,000
+        # FY2026 Enacted R&RA defense, 118,800,000: the table's line, superseded by its defense_inside copy inside
+        # the law's headline (D-3), is confirmed -- never stored again as a part -- and so is the table's
+        # nondefense line, OBS-0688, which the law's paragraph total replaced
+        self.assertIn("OBS-0728", out["confirmed"])
+        self.assertIn("OBS-0688", out["confirmed"])
+        self.assertEqual(out["conflicting"], [])
         self.assertEqual(out["held"], [])
+        self.assertEqual(S.cell_total(self.conn, "ACC-NSF-RRA", 2026, "Enacted"), 7_176_500_000)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense", "supplemental_act"})
+            {None, "defense", "defense_inside", "supplemental_act"})
 
     def test_unknown_component_name_is_held(self):
         rows = [dict(r, component="Defense base") if r["canonical_account_id"] == "ACC-NSF-RRA" and r["component"]
@@ -819,7 +825,7 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual(len(out["held"]), 2)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense", "supplemental_act"})
+            {None, "defense", "defense_inside", "supplemental_act"})
 
     def test_repeated_fact_in_one_batch_is_refused(self):
         with self.assertRaises(ValueError):
