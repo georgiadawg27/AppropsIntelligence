@@ -447,6 +447,9 @@ def retag(data, heads, report):
             spec = ("designated", "emergency", "", "the table's '(emergency)' line")
         elif comp == "defense" and at == "budget authority":
             spec = ("defense_portion", "", "", "the table's 'Defense function' line (defense)")
+        elif comp == "defense_inside" and at == "budget authority":
+            spec = ("defense_portion", "", "", "the table's 'Defense function' line, inside the bill or law "
+                                               "paragraph's amount (defense_inside; D-3)")
         elif at == "advance" and not comp:
             spec = ("advance_enacted", "", "", "the table's new advance line (enacted in this bill, available the "
                                                "next fiscal year)")
@@ -471,7 +474,7 @@ def retag(data, heads, report):
         if o["amount"] == 0:
             report["retag_zero"].append(o["observation_id"])
             continue
-        named = o.get("headline_observation_id") if comp == "congressionally_directed_spending" else \
+        named = o.get("headline_observation_id") if comp in ("congressionally_directed_spending", "defense_inside") else \
             inside_lines.get(o["observation_id"], {}).get("headline_observation_id")
         t_inside = bool(named)
         if t_inside:
@@ -498,6 +501,8 @@ def retag(data, heads, report):
                     "carried_from_component_id": "",
                     "notes": "inside the headline: the CDS line is printed as part of the account's total"
                              if t == "earmark" else
+                             f"inside the headline: the bill or law paragraph's amount ({h['observation_id']}) counts "
+                             "the defense line" if comp == "defense_inside" else
                              f"inside the headline: the table prints the line inside it ({h['observation_id']})"
                              if t_inside else "a line printed beside the headline; never inside it"})
     return out

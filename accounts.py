@@ -185,8 +185,12 @@ COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President
 #   kids_first / congressionally_directed_spending -- a line printed inside the
 #            account's figure (the Gabriella Miller Kids First line under the NIH
 #            Office of the Director; HRSA's community project funding) (owner, 2026-10-08)
+#   defense_inside -- NSF Research and Related Activities' 'Defense function' line where the
+#            headline is the bill or law paragraph's amount, which already counts it (D-3, owner
+#            2026-10-14); the plain 'defense' line (a part) is the one beside a nondefense headline
 INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending", "request_proposal",
-                       "request_proposal_opioids", "request_proposal_rac_appeals", "request_proposal_childrens_research")
+                       "request_proposal_opioids", "request_proposal_rac_appeals", "request_proposal_childrens_research",
+                       "defense_inside")
 # A chamber's one-off line under an account's heading (Labor-HHS: Diaper Grants, House FY2022): a part of the
 # account's cell, never a new account (owner, 2026-10-08)
 PROPOSAL_COMPONENTS = ("chamber_proposal", "request_proposal_ssbg", "chamber_proposal_opioid_response",
@@ -213,6 +217,8 @@ COMPONENT_KINDS = (
                                    "Director's figure"),
        ("congressionally_directed_spending", "contained", "community project funding / congressionally directed "
                                                           "spending printed as its own line inside the account's figure"),
+       ("defense_inside", "contained", "the NSF Research and Related Activities 'Defense function' line, inside the "
+                                       "headline: the bill or law paragraph's amount counts it (never add it again)"),
        ("chamber_proposal", "part", "a one-off line a chamber proposed under the account's heading (a note)"),
        ("request_proposal", "contained", "a line the President's request proposed, printed inside the account's "
                                          "total (not enacted)"),
@@ -256,6 +262,9 @@ COMPONENT_LABELS = {
                    "H.Rept. 117-96 p.477, under NIH's Office of the Director"),
     "congressionally_directed_spending": ("Community Project Funding / Congressionally Directed Spending", "printed name",
                                           "H.Rept. 118-585, HRSA-Wide Activities and Program Support"),
+    "defense_inside": ("Defense function (inside the paragraph's total)", "heading or line text",
+                       "the NSF Research and Related Activities sub-line 'Defense function' (S.Rept. 118-62 p.220), "
+                       "inside the bill or law paragraph's amount (D-3, owner 2026-10-14)"),
     "chamber_proposal": ("Diaper Grants", "heading or line text", "H.Rept. 117-96 p.485, under Social Services Block Grant"),
     "request_proposal": ("National Institute for Research on Safety and Quality (NIRSQ)", "printed name",
                          "H.Rept. 116-450 p.407, the FY2021 request column under NIH"),

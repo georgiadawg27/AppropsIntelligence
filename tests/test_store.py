@@ -96,7 +96,7 @@ class Load(StoreTest):
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (870, 197))
+                          cjs("confirmed_absence", "canonical_account_id")), (930, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -505,8 +505,9 @@ class FactKey(StoreCopyTest):
         used = lambda sub: {r[0] for r in self.conn.execute(
             "SELECT DISTINCT o.component FROM appropriations_observation o JOIN account a USING (canonical_account_id) "
             "WHERE a.subcommittee = ?", (sub,))}
-        # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's
-        self.assertEqual(used("CJS"), {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's,
+        # but for NSF R&RA's defense line inside the paragraph's total (defense_inside, D-3)
+        self.assertEqual(used("CJS"), {None, "defense_inside"} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
         self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"} | set(accounts.PROPOSAL_COMPONENTS))
         # v33: the CURES Act money is its own account, no longer a component of NIH's total
         self.assertNotIn("CURES", used("LHHS"))
