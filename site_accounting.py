@@ -37,6 +37,14 @@ their life are not behind it; a confirmed absence counts as nothing. Status:
                  its checked view there.
 Every total entry but As printed carries accounts_behind (its lines in the cell). As printed stays the printed total.
 
+Every entry with an amount lists adjustments (D-6): what turns the As printed figure into it. An account's: per
+component the view takes out (sign -) or adds (+): {component_id, type, label, sign, amount, source_document_id,
+source_page, source_location}. A total's: grouped by component type and sign, {type, label, sign, amount,
+accounts: [{canonical_account_id, amount, components}]}, then the accounts the basis leaves out (type
+left_out_by_basis, their As printed figure) -- or, where a printed total gives the view without a sum, that printed
+total (type printed_total). As printed + the adjustments = the amount, exactly; equal to As printed: an empty list
+(unless two adjustments offset, e.g. an advance in and out).
+
 Every row gets attributes.<FY> from account_attributes (the enacted basis, with each attribute's citation; the
 request basis under "request" where the President's Budget has its own value).
 
@@ -82,6 +90,77 @@ VALUED = ("checked", "computed")
 DEFENSE_LINES = ("defense", "defense_inside")
 STATE_WORDS = {"missing": "document on file, figure not yet entered", "not_collected": "not yet collected",
                "not_enacted": "not yet enacted", "not_reported": "not reported", "no_printed_total": "no printed total"}
+
+
+# D-6: the words an adjustment uses for a component type
+TYPE_LABEL = {"advance_enacted": "advance appropriation enacted in this bill",
+              "advance_available": "advance appropriation available this year",
+              "designated": "designated amount", "transfer_in": "transfer in",
+              "transfer_out": "transfer out", "trust_fund_limitation": "trust-fund limitation",
+              "fees_offsets": "fees and offsetting collections", "rescission": "rescission",
+              "defense_portion": "defense portion", "other_law": "amount provided by another law",
+              "earmark": "earmark (CDS / CPF)", "mandatory_portion": "mandatory portion"}
+LEFT_OUT = "left_out_by_basis"
+PRINTED_TOTAL = "printed_total"
+
+
+def label_of(c):
+    words = TYPE_LABEL.get(c["component_type"], c["component_type"])
+    if c.get("designation"):
+        words += f" ({c['designation']})"
+    if c.get("transfer_from"):
+        words += f", from {c['transfer_from']}"
+    return words
+
+
+def sign_of(effect):
+    return "-" if effect < 0 else "+"
+
+
+def account_adjustments(entry, components):
+    """What turns an account's As printed headline into the entry's amount: one item per component the view used --
+    one inside the headline is taken out (its effect: minus its amount), one beside it is added (plus)."""
+    by_id = {c["component_id"]: c for c in components}
+    out = []
+    for cid in entry.get("component_ids") or []:
+        c = by_id[cid]
+        effect = -c["amount"] if c["in_headline"] == "TRUE" else c["amount"]
+        if not effect:
+            continue            # a $0 component changes nothing: an entry equal to As printed lists nothing
+        out.append({"component_id": cid, "type": c["component_type"], "label": label_of(c),
+                    "sign": sign_of(effect), "amount": abs(effect), "source_document_id": c["source_document_id"],
+                    "source_page": page_of(c["source_location"]), "source_location": c["source_location"]})
+    return out
+
+
+def effect_of(adjustment):
+    return adjustment["amount"] if adjustment["sign"] == "+" else -adjustment["amount"]
+
+
+def grouped_adjustments(used, left, field, basis, timing):
+    """A total's adjustments: its lines' adjustments grouped by component type and sign, with the accounts behind
+    each, then the accounts the basis leaves out (their As printed figure, taken out)."""
+    groups = {}
+    for m, mc, e in used:
+        for x in e.get("adjustments") or []:
+            g = groups.setdefault((x["type"], x["sign"]), {"type": x["type"], "label": TYPE_LABEL.get(x["type"], x["type"]),
+                                                           "sign": x["sign"], "amount": 0, "accounts": {}})
+            g["amount"] += x["amount"]
+            a = g["accounts"].setdefault(m, {"canonical_account_id": m, "amount": 0, "components": []})
+            a["amount"] += x["amount"]
+            a["components"].append({k: x[k] for k in ("component_id", "label", "amount", "source_document_id",
+                                                      "source_page")})
+    out = [dict(g, accounts=list(g["accounts"].values())) for _, g in sorted(groups.items())]
+    printed = [(m, mc["views"]["printed"][0]["amount"]) for m, mc, _ in left]
+    effect = -sum(x for _, x in printed)
+    if effect:
+        out.append({"type": LEFT_OUT, "label": "accounts this basis leaves out (their figure as printed)",
+                    "sign": sign_of(effect), "amount": abs(effect),
+                    "accounts": [{"canonical_account_id": m, "amount": x,
+                                  "source_document_id": mc["views"]["printed"][0].get("source_document_id"),
+                                  "printed_observation_id": mc["views"]["printed"][0]["printed_observation_id"]}
+                                 for (m, x), (_, mc, _) in zip(printed, left)]})
+    return out
 
 
 def pick(entries, timing):
@@ -358,10 +437,11 @@ class Layer:
         printed total."""
         key = f"{fy}|{stage}"
         self.cell_key = (fy, stage)
+        self.cell_head = h
         lines, absent, nofig = self.behind(a, key)
         n = len(lines) + len(absent)
         printed = {"amount": h["amount"], "timing": None, "status": "checked", "reason": "the figure as printed",
-                   "printed_observation_id": h["observation_id"]}
+                   "printed_observation_id": h["observation_id"], "adjustments": []}
         held = sum(mc["views"]["printed"][0]["amount"] for _, mc in lines)
         bar = None
         if nofig:
@@ -414,7 +494,17 @@ class Layer:
         why = "; not summed: " + bar.removeprefix("not computable: ")
         if field == "views":
             hit = found.get((basis, timing))
-            return dict(hit, reason=hit["reason"] + why) if hit else None
+            if not hit:
+                return None
+            o = self.obs[hit["printed_observation_id"]]
+            effect = hit["amount"] - self.cell_head["amount"]
+            # the lines aren't summed: the printed parallel total itself turns As printed into the view
+            adj = [{"type": PRINTED_TOTAL, "label": f"the printed '{TC.printed(o)}' total (measure_reconcile matched "
+                                                     f"it) less the total as printed",
+                    "sign": sign_of(effect), "amount": abs(effect), "printed_observation_id": o["observation_id"],
+                    "source_document_id": o["source_document_id"], "source_page": o.get("source_page")}] \
+                if effect else []
+            return dict(hit, reason=hit["reason"] + why, adjustments=adj)
         exclusion = next(x for x, f in EXCLUSION_FIELDS.items() if f == field)
         ctype = AC.EXCLUSIONS[exclusion]
         base = pick(out["views"][basis], timing)
@@ -451,6 +541,7 @@ class Layer:
         head = (f"sum of {n} accounts" + (f", {len(left)} left out by this basis" if left else "")
                 + (f" ({len(absent)} with a confirmed absence, counted as nothing)" if absent else ""))
         e = {"amount": total, "timing": timing, "status": "computed"}
+        adjustments = grouped_adjustments(used, left, field, basis, timing)
         if field == "views":
             hit = found.get((basis, timing))
             if hit and hit["amount"] == total:
@@ -481,6 +572,7 @@ class Layer:
             else:
                 word = EXCLUSION_WORD[next(x for x, f in EXCLUSION_FIELDS.items() if f == field)]
                 e["reason"] = f"{head}; no printed total {word} to check"
+        e["adjustments"] = adjustments
         return e
 
     # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
@@ -603,6 +695,11 @@ class Layer:
                     cell[field] = self.account_exclusion(a, fy, stage, h, exclusion, cell["views"], cell)
                     if aid in self.lone:
                         self.lone_checks(cell, field)
+                for field in ("views",) + tuple(EXCLUSION_FIELDS.values()):
+                    for entries in cell[field].values():
+                        for e in entries:
+                            if e["amount"] is not None:
+                                e["adjustments"] = account_adjustments(e, cs)
             for field, ctype in (("earmark", "earmark"), ("defense_portion", "defense_portion")):
                 picked = AC.counted([c for c in cs if c["component_type"] == ctype])
                 if picked:
