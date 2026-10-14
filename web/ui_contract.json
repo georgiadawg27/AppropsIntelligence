@@ -210,8 +210,10 @@
    "brief": "UI-6",
    "fields": [
     "whats_new.json:documents[].document_id",
-    "whats_new.json:documents[].retrieved"
-   ]
+    "whats_new.json:documents[].first_added",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date"
+   ],
+   "waits_for": "Off until D-5 publishes a first-added date per source document and an added date per figure (field names as D-5 sets them; update these paths then). retrieval_timestamp is not used: it changes on every re-fetch or reparse (owner, 2026-10-14). The page code and data/whats_new.json stay; the page reads documents[].retrieved today and moves to the first-added date with D-5."
   },
   "watchlist": {
    "spec_row": "Watch (browser storage only; no alerts or email)",

@@ -23,7 +23,7 @@
   account page. The list (on Find changes) has the browser-only note, Remove, and "Copy watchlist link"
   (`?view=changes&watch=<ids>`); opening that link offers "Add n to my watchlist" (never automatic; IDs not on file are
   named and left out).
-- What's new: `approps_store.whats_new()` (source_document.retrieval_timestamp, date part; figures not superseded;
+- What's new (flag off since the owner's decision below): `approps_store.whats_new()` (source_document.retrieval_timestamp, date part; figures not superseded;
   account attributes citing it; subcommittees) -> `docs/data/whats_new.json` (export_static) and `GET /api/whats-new`
   (approps_web, also in payloads()). The page lists the subcommittee's documents by date (3 newest dates, the rest under
   "Earlier"). Missing: SRC-BUDGET-APP-FY2019 has no retrieval date (listed as undated). The date is when a document was
@@ -34,8 +34,23 @@
   Medicare Operations missing; save/reload; Open in Explore; export; watchlist survives a reload; link export/import;
   storage blocked; What's new static and live; tab and 390px). Screenshots: screenshots/ui-6/ (no design reference).
 
+Owner decisions (2026-10-14, same PR):
+1. What's new: the flag is off. The retrieval date changes on every re-fetch or reparse, so it is not an added date.
+   The code, `data/whats_new.json` and `/api/whats-new` stay; web/ui_contract.json `whats_new` now lists
+   `whats_new.json:documents[].first_added` and `subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date`
+   (placeholders: set the paths to D-5's field names) with a `waits_for` note. When D-5 lands: whats_new() and the page
+   read the first-added date instead of `retrieved`. Test: test_whats_new_is_hidden_until_first_added_dates (hidden in
+   both modes; with the flag forced on, the list still renders).
+2. The "One account" tab opens the UI-5 account page (the One account view is the account page; no separate old view),
+   so it reads "Account" (title "Account · Approps Intelligence"). Test: test_account_tab_is_named_account.
+3. Accepted as built: single-account agency totals counted, totals with lines not; confirmed absences left out of
+   Proposed eliminations; printed zeros counted; the watchlist and its import offer.
+Merged main after D-3b (#74): CA-LHHS-0037 retired, so CDC-Wide's FY2023 request is now missing (not a confirmed
+absence); the blank-vs-zero test uses Medicare Operations FY2022 (confirmed absence) and FY2023 (missing) instead.
+
 Open:
 - No alerts or digests (static site), by the brief.
+- What's new waits for D-5's first-added dates.
 - The Explore grid has no "Watch" column; Watch is in the panel and sheet (SPEC 5.2).
 
 ## D-3b: follow-ups from #72 (2026-10-14, this PR)

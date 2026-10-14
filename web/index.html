@@ -629,7 +629,7 @@
   <nav class="tabs" id="main-nav" role="tablist" aria-label="Main">
     <button type="button" role="tab" id="tab-compare" aria-selected="true" data-view="compare">Explore</button>
     <button type="button" role="tab" id="tab-changes" aria-selected="false" data-view="changes" hidden>Find changes</button>
-    <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">One account</button>
+    <button type="button" role="tab" id="tab-account" aria-selected="false" data-view="account">Account</button>
   </nav>
 </header>
 <noscript><p class="error" style="padding:16px 24px">This page needs JavaScript to show the grid and account histories.</p></noscript>
@@ -767,7 +767,7 @@
 </div>
 
 <!-- Find changes (brief UI-6): preset questions that fill a condition builder; the results are differences between two
-     printed figures the data holds; the watchlist lives in this browser only; What's new is built at export time -->
+     printed figures the data holds; the watchlist lives in this browser only; What's new (built at export time) stays hidden until D-5 -->
 <main id="changes-view" class="fcmain" data-testid="changes-view" hidden>
   <h1 class="fctitle">Find changes</h1>
   <p class="sub">Pick a question or set the conditions. Each result is the difference between two figures the documents print;
@@ -1660,7 +1660,7 @@ function showView(view) {
   $("#compare-view").hidden = !compare;
   $("#changes-view").hidden = view !== "changes";
   for (const b of document.querySelectorAll(".tabs button")) b.setAttribute("aria-selected", String(b.dataset.view === view));
-  document.title = (compare ? "Explore" : view === "changes" ? "Find changes" : "One account") + " · Approps Intelligence";
+  document.title = (compare ? "Explore" : view === "changes" ? "Find changes" : "Account") + " · Approps Intelligence";
 }
 
 function compareStatus(msg, isError) {
@@ -4671,8 +4671,9 @@ async function fcWatchlist() {
   box.replaceChildren(...kids);
 }
 
-// ---- What's new (brief UI-6): built at export time from the date each source document was retrieved into the record
-// (data/whats_new.json; live: /api/whats-new). No alerts or email: the list is here to check
+// ---- What's new (brief UI-6): built at export time (data/whats_new.json; live: /api/whats-new). No alerts or email.
+// Hidden behind its flag (owner, 2026-10-14): the retrieval date it lists today changes on every re-fetch or reparse, so
+// it is not an added date; the flag turns on when D-5 publishes first-added dates (web/ui_contract.json "waits_for")
 let whatsNew = null;
 async function fcWhatsNew() {
   const box = $("#fc-new");

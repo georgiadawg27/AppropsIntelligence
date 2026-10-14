@@ -819,7 +819,7 @@
   "phone": true,
   "search_filter": true,
   "watchlist": true,
-  "whats_new": true
+  "whats_new": false
  },
  "matching": {
   "accept_max_distance": 2,
@@ -828,7 +828,7 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-14T01:30:07+00:00",
+  "data_committed": "2026-10-14T02:56:20+00:00",
   "data_sha256": "b59901c5e498f1ee02b0a2cdd4633a6714ae9e5e7de3a328e83f96ea3966f783",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {

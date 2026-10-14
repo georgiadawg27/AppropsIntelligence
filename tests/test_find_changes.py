@@ -149,24 +149,31 @@ class FindChanges(GridBrowser):
         self.assertTrue(self.page.is_checked("#fc-elim"))
 
     def test_a_blank_request_is_not_an_elimination(self):
-        # FY2023: CDC-Wide's request is a confirmed absence (bill text, no printed figure) and Medicare Operations'
-        # is missing; with FY2022 enacted figures above 0 neither is an elimination, and both are listed as left out
-        self.go("?view=changes&sc=LHHS&fy=2023")
-        self.preset("elim")
-        both, left = pairs(self.lhhs, (2022, ENACTED), (2023, PB))
-        self.assertEqual(set(self.result_ids()), {i for i, (a, b) in both.items() if b == 0 and a > 0})
-        for aid in ("ACC-HHS-CDC-PROGRAM-SUPPORT", "ACC-HHS-GP-MEDICARE-OPERATIONS"):
-            self.assertIn(aid, left)
-            self.assertGreater(figure(self.lrow(aid), 2022, ENACTED), 0)
-            self.assertNotIn(aid, self.result_ids())
-        self.assertEqual(self.page.inner_text("[data-testid=fc-left]"),
-                         f"{len(left)} accounts left out: no figure in one stage. See them")
-        self.page.click("[data-testid=fc-left-toggle]")
-        self.assertEqual(set(self.left_ids()), left)
-        self.assertIn("left=1", self.page.evaluate("location.search"))
-        cdc = self.page.locator("[data-testid=fc-left-row][data-account=ACC-HHS-CDC-PROGRAM-SUPPORT]")
-        self.assertIn("confirmed absent", cdc.inner_text())
-        self.assertIn("333,570", cdc.inner_text())
+        # a prior enacted figure above 0 and a request that is blank: never an elimination, always listed as left out.
+        # FY2022: Medicare Operations' request is a confirmed absence (bill text, no printed figure); FY2023: CDC-Wide's
+        # and Medicare Operations' requests are missing (a document on file, no figure entered)
+        for fy, cases in ((2022, {"ACC-HHS-GP-MEDICARE-OPERATIONS": "confirmed absent"}),
+                          (2023, {"ACC-HHS-CDC-PROGRAM-SUPPORT": "figure not yet entered",
+                                  "ACC-HHS-GP-MEDICARE-OPERATIONS": "figure not yet entered"})):
+            with self.subTest(fy=fy):
+                self.go(f"?view=changes&sc=LHHS&fy={fy}")
+                self.preset("elim")
+                both, left = pairs(self.lhhs, (fy - 1, ENACTED), (fy, PB))
+                self.assertEqual(set(self.result_ids()), {i for i, (a, b) in both.items() if b == 0 and a > 0})
+                self.assertEqual(self.page.inner_text("[data-testid=fc-left]"),
+                                 f"{len(left)} account{'' if len(left) == 1 else 's'} left out: no figure in one stage. See them")
+                self.page.click("[data-testid=fc-left-toggle]")
+                self.assertEqual(set(self.left_ids()), left)
+                self.assertIn("left=1", self.page.evaluate("location.search"))
+                for aid, state in cases.items():
+                    prior = figure(self.lrow(aid), fy - 1, ENACTED)
+                    self.assertGreater(prior, 0)
+                    self.assertIsNone(figure(self.lrow(aid), fy, PB))
+                    self.assertIn(aid, left)
+                    self.assertNotIn(aid, self.result_ids())
+                    row = self.page.locator(f"[data-testid=fc-left-row][data-account={aid}]").inner_text()
+                    self.assertIn(state, row)
+                    self.assertIn(f"{round(prior / 1000):,}", row)
         # a printed zero, unlike a blank, is a figure: FY2026's eliminations are results, not left out
         self.go("?view=changes&preset=elim&sc=LHHS&fy=2026&a=prior&b=request&elim=1&left=1")
         self.assertIn("ACC-HHS-NIH-NHLBI", self.result_ids())
@@ -335,21 +342,43 @@ class FindChanges(GridBrowser):
         self.assertEqual(self.errors, [])
 
     # ---- What's new
-    def test_whats_new_is_built_at_export_time(self):
+    def test_whats_new_is_hidden_until_first_added_dates(self):
+        # owner, 2026-10-14: the retrieval date changes on every re-fetch or reparse, so it is not an added date; the
+        # flag stays off until D-5 publishes first-added dates (web/ui_contract.json "waits_for"). The export still
+        # writes the list, newest first
         data = json.loads((self.out / "data" / "whats_new.json").read_text())
         self.assertTrue(data["documents"])
         dates = [d["retrieved"] for d in data["documents"]]
         self.assertEqual(dates, sorted(dates, reverse=True))
+        contract = json.loads((ROOT / "web" / "ui_contract.json").read_text())["features"]["whats_new"]
+        self.assertIn("D-5", contract["waits_for"])
+        self.assertFalse(json.loads((self.out / "data" / "index.json").read_text())["features"]["whats_new"])
         for where in ("static", "live"):
             with self.subTest(where=where):
                 self.go("?view=changes&sc=CJS&fy=2026", where)
-                items = self.page.eval_on_selector_all("[data-testid=whats-new-item]", "li => li.map(x => [x.dataset.doc, x.dataset.retrieved])")
-                want = [[d["document_id"], d["retrieved"]] for d in data["documents"]
-                        if "CJS" in d["subcommittees"] or not d["subcommittees"]]
-                self.assertEqual(items, want)
-                self.assertIn("no alerts or emails", self.page.inner_text("[data-testid=whats-new]"))
-                if data["undated"]:
-                    self.assertIn(data["undated"][0], self.page.inner_text("[data-testid=whats-new-undated]"))
+                self.assertTrue(self.page.is_hidden("[data-testid=whats-new]"))
+                self.assertEqual(self.page.locator("[data-testid=whats-new-item]").count(), 0)
+        # the code is kept: with the flag on, the list renders from the file
+        def flag_on(route):
+            body = json.loads(route.fetch().text())
+            body["features"]["whats_new"] = True
+            route.fulfill(json=body)
+        self.page.route("**/data/index.json", flag_on)
+        self.go("?view=changes&sc=CJS&fy=2026")
+        items = self.page.eval_on_selector_all("[data-testid=whats-new-item]", "li => li.map(x => [x.dataset.doc, x.dataset.retrieved])")
+        self.assertEqual(items, [[d["document_id"], d["retrieved"]] for d in data["documents"]
+                                 if "CJS" in d["subcommittees"] or not d["subcommittees"]])
+        self.assertIn("no alerts or emails", self.page.inner_text("[data-testid=whats-new]"))
+
+    def test_account_tab_is_named_account(self):
+        # the tab opens the account page (UI-5: the One account view is the account page), so it reads "Account"
+        self.open("static", "?sc=LHHS&fy=2026")
+        self.assertEqual(self.page.inner_text("#tab-account"), "Account")
+        self.assertEqual(self.page.eval_on_selector_all(".tabs button:not([hidden])", "b => b.map(x => x.textContent)"),
+                         ["Explore", "Find changes", "Account"])
+        self.page.click("#tab-account")
+        self.assertEqual(self.page.title(), "Account · Approps Intelligence")
+        self.assertTrue(self.page.is_visible("#account-view"))
 
     def test_find_changes_is_a_tab_and_fits_a_phone(self):
         self.open("static", "?sc=LHHS&fy=2026")
