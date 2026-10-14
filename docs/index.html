@@ -260,6 +260,29 @@
   .grid tr.subgroup td { background: #fafaf7; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--x-muted);
                          font-weight: 600; text-align: left; border-bottom-color: #f0f1f4; }
   .grid tr.note td { color: var(--x-ink2); font-size: 13px; text-align: left; white-space: normal; font-weight: 400; border-bottom-color: #f0f1f4; }
+  /* adjustment lines (brief UI-8) under an expanded account or agency: the muted line style, one step in; amounts in
+     the neutral text colour (green and orange stay for the direction of a change) */
+  .grid tr.adj td { font-size: 13px; font-weight: 400; color: var(--x-ink2); }
+  .grid tr.child.adj td.acct { padding-left: 68px; }
+  .grid tr.child.adj td.acct.lvl2 { padding-left: 84px; }
+  .grid tr.child.loose.adj td.acct { padding-left: 56px; }
+  .grid tr.child.agencyadj td.acct { padding-left: 52px; }
+  .adjlabel { color: var(--x-muted); font-weight: 400; }
+  .inclnote { margin-left: 6px; font-size: 12px; color: var(--x-muted); font-weight: 400; }
+  a.adjfig, button.adjfig { color: var(--x-ink2); text-decoration: underline dotted #b9c3d3; text-underline-offset: 4px; white-space: nowrap;
+                            font-variant-numeric: tabular-nums; }
+  button.adjfig { appearance: none; background: none; border: 0; padding: 0; margin: 0; font: inherit; cursor: pointer; }
+  a.adjfig:hover, button.adjfig:hover { color: var(--x-accent-text); text-decoration-color: var(--x-accent); }
+  .chev.achev { width: 20px; height: 20px; margin-left: -22px; font-size: 11px; }
+  /* a total's published sum (D-6 computed): a small Σ after its figure */
+  .sigma { margin-left: 3px; font-size: 11px; font-weight: 400; color: var(--x-muted); cursor: help; }
+  .tag.beta { background: #e8eef8; color: #16325f; margin-left: 2px; vertical-align: 1px; }
+  .betanote { color: var(--x-muted); }
+  .opt .optd.betanote { font-style: italic; }
+  .arsrc { list-style: none; margin: -2px 0 6px; padding: 0 0 0 10px; font-size: 12px; color: var(--x-muted); }
+  .arsrc .muted { color: var(--x-muted); }
+  .prow.line.adj .pname { font-size: 13px; }
+  .prow.line.adj .pfig { font-size: 13px; }
   /* hover crosshair (SPEC 5.5): rules written by the page for the hovered row / column */
   #compare-grid tbody tr[data-hov] > td { background-color: var(--x-hov-row); }
   .namecell { display: flex; align-items: center; gap: 4px; min-width: 0; }
@@ -798,10 +821,16 @@ const el = (tag, props = {}, ...kids) => {
 };
 const money = (v) => (v < 0 ? "−$" : "$") + Math.abs(v).toLocaleString("en-US");
 const seriesLabel = (s) => s.amount_type + (s.component ? " · " + s.component : "");
-// a contained / view line (never added to anything): its printed label and why it isn't added
+// a contained / view line (never added to anything): its printed label and why it isn't added. A contained line
+// reads as included (brief UI-8 item 3): "of which: <label>", "included above"
 const notAdded = (s) => s.adds_to_headline === false;
+const contained = (s) => notAdded(s) && s.component_kind === "contained";
 const seriesText = (s) => !notAdded(s) ? seriesLabel(s)
-  : `${s.component_label || s.component} — ${s.component_kind === "contained" ? "inside the figure above" : "the figure above, scoped another way"}; not added`;
+  : contained(s) ? `of which: ${s.component_label || s.component} (included above)`
+  : `${s.component_label || s.component} — the figure above, scoped another way; not added`;
+// the same as page nodes: "included above" in the muted note style
+const seriesNodes = (s) => !contained(s) ? [seriesText(s)]
+  : [`of which: ${s.component_label || s.component}`, el("span", { class: "inclnote", "data-testid": "included-above", text: "included above" })];
 
 async function getJSON(url) {
   const r = await fetch(url);
@@ -1331,7 +1360,7 @@ function apRelated(rels) {
     const tb = el("tbody");
     for (const o of others) {
       // the line's label as its own record gives it (a view or contained line says it is not added)
-      const tr = el("tr", { "data-testid": "ap-other-line", dataset: { series: seriesLabel(o.s) } }, el("td", { text: seriesText(o.cells.find(Boolean)) }));
+      const tr = el("tr", { "data-testid": "ap-other-line", dataset: { series: seriesLabel(o.s) } }, el("td", {}, ...seriesNodes(o.cells.find(Boolean))));
       o.cells.forEach((l, i) => {
         const td = el("td", { dataset: { stage: STAGES4[i] } });
         const ob = l && l.observations[0];
@@ -1527,7 +1556,7 @@ function stateChip(state, l) {
 function renderLine(l, showSeries) {
   const line = el("div", { class: "line", dataset: { series: seriesLabel(l), state: l.state } });
   if (notAdded(l)) line.classList.add("not-added");
-  if (showSeries) line.append(el("div", { class: "series", text: seriesText(l) }));
+  if (showSeries) line.append(el("div", { class: "series" }, ...seriesNodes(l)));
   if (l.state !== "value") line.append(stateChip(l.state, l));
   if (l.absence) line.append(cite(l.absence));
   for (const o of l.observations) {
@@ -1637,13 +1666,13 @@ const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true,
 const NAME_OF = new Map();      // account id -> name, for the rows being rendered
 const STATUS_OF = new Map();    // account id -> status
 const ROW_OF = new Map();       // account id -> grid row
-let open = new Set();           // expanded rows: agency totals by account id, general-provision groups as "gp:<title>"
+let open = new Set();           // expanded rows: agency totals and (with adjustments in view) accounts by account id, general-provision groups as "gp:<title>"
 
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
-                        "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new"]);
+                        "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new", "basis_adjustments"]);
 let FEAT = {}, featLoaded = false, DEFAULT_SC = null;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -1652,6 +1681,7 @@ async function loadFeatures() {
   const f = STATIC_BASE ? await source.loadIndex() : await getJSON("/api/features");
   FEAT = f.features || {};
   DEFAULT_SC = f.default_subcommittee || null;   // the data's choice (index.json / /api/features), not the page's
+  await loadDocURLs();
   featLoaded = true;
   $("#tab-changes").hidden = !has("find_changes");
 }
@@ -1739,6 +1769,11 @@ const BASES = [
 const TIMINGS = [["available", "When available", "An advance counts in the year it becomes available (CBO; the default)."],
                  ["enacted", "When enacted", "An advance counts in the bill that appropriates it."]];
 const VALUED = new Set(["checked", "computed"]);
+// beta (brief UI-8 item 6): the discretionary bases, computed from the bill text; few figures have a printed total
+// that confirms them. The other bases carry no tag
+const BETA = new Set(["discretionary", "discretionary_designated"]);
+const BETA_LINE = "computed from the bill text; not yet confirmed by a printed total for most figures";
+const betaTag = (b) => el("span", { class: "tag beta", "data-testid": "beta-tag", title: BETA_LINE, dataset: { basis: b }, text: "beta" });
 const basisOf = () => (has("accounting_views") ? G.amt : "printed");
 const basisLabel = (b = basisOf()) => BASES.find(([k]) => k === b)[1];
 // Exclude earmarks (UI-0b views_excluding_earmarks, every basis including printed): the page reads the published view,
@@ -1877,8 +1912,8 @@ function figureCell(row, y, st, c, name) {
 }
 
 // the published view of a printed figure (SPEC 5.6, brief UI-3 item 4): its amount when checked or computed;
-// "excl." when the basis leaves the account out; "n/a" (an account) or "not checked" (a total) when not computable,
-// the reason on hover. Never a number the data doesn't hold. Each is a button to the figure's source, where the
+// "excl." when the basis leaves the account out; "n/a" (an account) or "not computable" (a total) when not computable,
+// the reason on hover; a computed total (the sum of its accounts, no printed total to check) gets a small "Σ" after it. Never a number the data doesn't hold. Each is a button to the figure's source, where the
 // panel shows the printed headline, the components and the arithmetic.
 const VIEW_WORDS = { checked: "checked against a printed total", computed: "computed from the printed figure and its tagged components",
                      excluded: "excluded", not_computable: "not computable" };
@@ -1886,9 +1921,12 @@ function viewText(e) {
   if (!e) return { text: "n/a", why: "no published view for this cell" };
   if (VALUED.has(e.status)) return { text: null, why: e.reason || "" };
   if (e.status === "excluded") return { text: "excl.", why: e.reason || "" };
-  return { text: e.accounts_behind != null ? "not checked" : "n/a", why: e.reason || "" };
+  return { text: e.accounts_behind != null ? "not computable" : "n/a", why: e.reason || "" };
 }
-const viewHead = (e) => `${basisPhrase()}: ${e ? VIEW_WORDS[e.status] || e.status : "not computable"}`;
+// a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it
+const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null;
+const sigma = (e) => el("span", { class: "sigma", "data-testid": "sum-mark", title: e.reason || "", "aria-label": e.reason || "sum of its accounts", text: "Σ" });
+const viewHead = (e) => `${basisPhrase()}: ${summed(e) ? "the published sum of its accounts" : e ? VIEW_WORDS[e.status] || e.status : "not computable"}`;
 function viewCell(row, y, st, o, ctx, td) {
   const e = viewOf(row, y, st), v = viewText(e);
   td.dataset.view = e ? e.status : "none";
@@ -1898,7 +1936,11 @@ function viewCell(row, y, st, o, ctx, td) {
     const dash = e.amount === 0 && o.amount === 0;
     const text = dash ? "—" : GridMath.number(e.amount, G.units);
     const props = { "data-testid": "amount", title, "data-view": e.status, ...(dash ? { class: "tok dash" } : {}) };
-    return linksToSource() ? figButton(o, text, ctx, props) : el("span", { ...props, "data-source": srcLabel(o), text });
+    const fig = linksToSource() ? figButton(o, text, ctx, props) : el("span", { ...props, "data-source": srcLabel(o), text });
+    if (!summed(e)) return fig;
+    const f = document.createDocumentFragment();
+    f.append(fig, sigma(e));
+    return f;
   }
   const props = { class: "tok" + (v.text === "excl." ? "" : " miss"), "data-testid": "view-state", "data-view": e ? e.status : "none", title };
   return linksToSource() ? figButton(o, v.text, ctx, props) : el("span", { ...props, "aria-label": title, text: v.text });
@@ -1916,6 +1958,164 @@ function otherLines(row, y, st, lines, h) {
                            title: `${what}:\n${list.join("\n")}`, "aria-label": `${what}: ${list.join("; ")}` });
   b.addEventListener("click", () => openAccount(id, { fy: y, stage: st }));
   return b;
+}
+
+// ---- basis adjustments (D-6 `adjustments`, feature basis_adjustments; brief UI-8): what turns As printed into the
+// figure in view, one line per published adjustment under an expanded account or agency. Read from the data; the page
+// adds nothing up. Only where the basis, timing, Exclude earmarks or the Nondefense column make a figure differ from
+// As printed: on As printed with no toggles there are none
+const adjOn = () => has("basis_adjustments") && (usesViews() || (G.ndcol && has("nondefense")));
+// the cell's As printed figure (views.printed), the figure every view's adjustments start from
+function asPrinted(row, y, st) {
+  const x = row && headOf(row, y, st), p = x && !x.cell.outside_life && x.cell.views && x.cell.views.printed;
+  return p && p.length && p[0].amount != null ? p[0].amount : printedFig(row, y, st);
+}
+// a column's published entry, when it lists adjustments and differs from As printed: a stage column's view on the
+// basis in view, the Nondefense column's nondefense view
+function adjEntry(row, c) {
+  const at = c.fig || c.nondef;
+  if (!at || !adjOn() || (c.fig && !usesViews())) return null;
+  const y = at[0], st = STAGES4[at[1]];
+  if (printedFig(row, y, st) == null) return null;
+  const e = c.fig ? viewOf(row, y, st) : viewOf(row, y, st, basisOf(), "views_nondefense");
+  return e && VALUED.has(e.status) && (e.adjustments || []).length && e.amount !== asPrinted(row, y, st) ? e : null;
+}
+// the row's adjustment lines over the columns in view: one per published adjustment (its type, sign and label),
+// each holding the adjustment of every column that lists it. Where one entry lists several alike (a Prevention and
+// Public Health Fund allocation table's items), each is its own line, named by the item its source location quotes
+const itemOf = (a) => ((a.source_location || "").match(/'([^']+)'/) || [])[1] || "";
+function adjLines(row, cols) {
+  const lines = new Map();
+  for (const c of cols) {
+    const e = adjEntry(row, c);
+    if (!e) continue;
+    const count = new Map(), seen = new Map();
+    for (const a of e.adjustments) count.set(`${a.sign}|${a.type}|${a.label}`, (count.get(`${a.sign}|${a.type}|${a.label}`) || 0) + 1);
+    for (const a of e.adjustments) {
+      const base = `${a.sign}|${a.type}|${a.label}`, many = count.get(base) > 1, item = many ? itemOf(a) : "";
+      const n = seen.get(base + item) || 0;
+      seen.set(base + item, n + 1);
+      const k = `${base}|${item}|${n}`, label = item ? `${a.label} · ${item}` : a.label;
+      if (!lines.has(k)) lines.set(k, { key: k, sign: a.sign, type: a.type, label, at: new Map() });
+      lines.get(k).at.set(c.col, { a, y: (c.fig || c.nondef)[0], st: STAGES4[(c.fig || c.nondef)[1]], set: c.fig ? viewKey() : "views_nondefense" });
+    }
+  }
+  return [...lines.values()];
+}
+// the documents' addresses: the export's document list (loaded with the features) and the grid's own figures
+const DOC_URL = new Map(), DOC_SEEN = new WeakSet();
+async function loadDocURLs() {
+  if (!has("basis_adjustments")) return;
+  try {
+    const w = await getJSON(STATIC_BASE ? STATIC_BASE + "whats_new.json" : "/api/whats-new");
+    for (const d of w.documents || []) if (/^https?:/.test(d.url_or_identifier || "")) DOC_URL.set(d.document_id, d.url_or_identifier);
+  } catch (err) { /* the grid's own figures still name most documents; an amount with no address opens the panel */ }
+}
+function docHref(doc, page) {
+  const g = current && current.grid;
+  if (g && !DOC_SEEN.has(g)) {
+    DOC_SEEN.add(g);
+    for (const r of g.rows.concat(g.titles.map((t) => t.total), [g.bill_total]).filter(Boolean))
+      for (const c of Object.values(r.cells)) for (const l of c.lines || []) for (const o of l.observations)
+        if (!DOC_URL.has(o.source_document_id) && /^https?:/.test(o.url_or_identifier || "")) DOC_URL.set(o.source_document_id, o.url_or_identifier);
+  }
+  const base = doc && DOC_URL.get(doc), first = String(page || "").split("-")[0];
+  return base ? base + (first ? "#page=" + first : "") : null;
+}
+const nameOf = (id) => plainName(NAME_OF.get(id) || (current && gridRow(current.grid, id) || { account: { canonical_name: id } }).account.canonical_name);
+// an adjustment's sources as the data gives them: its own document and page (an account's component, a printed
+// total), each account's components (a total's group), each held line, or (an account the basis leaves out) that
+// account's printed figure
+function adjSources(a, y, st) {
+  const one = (doc, page, what, amount, where) => ({ doc, page: page || "", what: what || "", amount, where: where || "", href: docHref(doc, page) });
+  if (a.lines) return a.lines.map((l) => one(l.source_document_id, l.source_page, `${nameOf(l.account)}, ${l.label}`, l.amount, l.why));
+  if (a.accounts) return a.accounts.flatMap((x) => {
+    if (x.components) return x.components.map((k) => one(k.source_document_id, k.source_page, nameOf(x.canonical_account_id), k.amount));
+    const o = cellObs(ROW_OF.get(x.canonical_account_id), y, st);
+    return o ? [{ doc: o.source_document_id, page: o.source_page || "", what: nameOf(x.canonical_account_id), amount: x.amount, where: "", href: sourceHref(o) }]
+             : [one(null, null, nameOf(x.canonical_account_id), x.amount)];
+  });
+  return [one(a.source_document_id, a.source_page, "", a.amount, a.source_location)];
+}
+const signed = (a, short) => `${a.sign === "+" ? "+" : "−"} ${short ? GridMath.short(a.amount) : GridMath.number(a.amount, G.units)}`;
+const srcWords = (x) => `${x.what ? x.what + ": " : ""}${x.doc ? docName(x.doc) : "no document on file"}${x.page ? ", p. " + x.page : x.where ? ", " + x.where : ""}`;
+// an adjustment's amount: a link to its source page, or (several sources, or none with an address) a button to the
+// figure's source panel, whose build-up lists each source
+function adjAmount(row, at, short) {
+  const { a, y, st, set } = at, text = signed(a, short), src = adjSources(a, y, st);
+  const hrefs = [...new Set(src.map((x) => x.href).filter(Boolean))];
+  const props = { class: "adjfig", "data-testid": "adj-amount", "data-sign": a.sign, "data-amount": String(a.amount), "data-fy": String(y), "data-stage": st, "data-set": set,
+                  title: `${a.label}: ${text} (${short ? "dollars" : unitsLong()}) · ${[...new Set(src.map(srcWords))].join("; ")}`,
+                  "aria-label": `${a.label}, ${plainName(row.account.canonical_name)}, ${stageText(current.grid, y, STAGES4.indexOf(st))}: ${text}` };
+  if (hrefs.length === 1 && src.every((x) => x.href)) return el("a", { ...props, href: hrefs[0], target: "_blank", rel: "noopener", text });
+  const b = el("button", { type: "button", ...props, text });
+  b.addEventListener("click", () => select({ kind: "fig", id: row.account.canonical_account_id, y, st }));
+  return b;
+}
+const lineName = (...kids) => el("td", {}, el("div", { class: "namecell" }, el("span", { class: "namebox" }, el("span", { class: "adjlabel" }, ...kids))));
+// the adjustment lines of an expanded row, each figure in its own column (in the muted line style; the neutral text
+// colour: green and orange stay for the direction of a change)
+function adjRows(row, lines, cols, cls, lvl) {
+  const id = row.account.canonical_account_id;
+  return lines.map((line) => {
+    const name = lineName(line.label);
+    name.className = "acct " + lvl;
+    name.querySelector(".adjlabel").dataset.testid = "adj-label";
+    return el("tr", { class: cls + " adj", dataset: { testid: "adj-line", adjOf: id, type: line.type, sign: line.sign } }, name,
+      ...cols.map((c) => {
+        const td = el("td", { class: "num " + (c.cls || ""), dataset: { col: String(c.col) } }), at = line.at.get(c.col);
+        if (at) td.append(adjAmount(row, at));
+        return td;
+      }));
+  });
+}
+// an expanded account's other lines on file (after its adjustments): listed with their sources, never added; a
+// contained line reads "of which: <label>", included above
+function otherLineRows(row, cols, cls, lvl) {
+  const id = row.account.canonical_account_id, lines = new Map();
+  for (const c of cols) {
+    if (!c.fig) continue;
+    const x = headOf(row, c.fig[0], STAGES4[c.fig[1]]);
+    if (!x || x.cell.outside_life) continue;
+    for (const l of x.lines) if (l !== x.h && l.state === "value" && l.observations.length) {
+      const k = seriesLabel(l);
+      if (!lines.has(k)) lines.set(k, { l, at: new Map() });
+      lines.get(k).at.set(c.col, l.observations[0]);
+    }
+  }
+  return [...lines.values()].map(({ l, at }) => {
+    const name = lineName(...seriesNodes(l));
+    name.className = "acct " + lvl;
+    return el("tr", { class: cls + " adj other", dataset: { testid: "other-line", lineOf: id, series: seriesLabel(l) } }, name,
+      ...cols.map((c) => {
+        const td = el("td", { class: "num " + (c.cls || ""), dataset: { col: String(c.col) } }), o = at.get(c.col);
+        if (!o) return td;
+        const href = sourceHref(o), t = GridMath.number(o.amount, G.units);
+        td.append(href ? el("a", { class: "adjfig", href, target: "_blank", rel: "noopener", title: clickFor(o), "data-testid": "other-amount", text: t })
+                       : el("span", { title: clickFor(o), "data-testid": "other-amount", text: t }));
+        return td;
+      }));
+  });
+}
+// the build-up under a basis (brief UI-8 item 4): As printed, each published adjustment with its source, then "="
+// the figure; all from the data (D-6: As printed + the adjustments = the amount)
+function buildUp(row, y, st, e, phrase) {
+  const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
+  const kids = [line("As printed", GridMath.number(asPrinted(row, y, st), G.units), "", "arith-term")];
+  for (const a of e.adjustments || []) {
+    const t = line(a.label, signed(a).replace(" ", ""), "", "arith-term");
+    t.dataset.sign = a.sign;
+    kids.push(t);
+    const src = adjSources(a, y, st);
+    kids.push(el("ul", { class: "arsrc", "data-testid": "arith-src" }, ...src.map((x) => el("li", {},
+      ...(x.what ? [`${x.what}${src.length > 1 && x.amount != null ? " " + GridMath.number(x.amount, G.units) : ""} · `] : []),
+      x.doc ? docName(x.doc) : "no document on file",
+      ...(x.page || x.href ? [" · ", x.href ? el("a", { href: x.href, target: "_blank", rel: "noopener", "data-testid": "arith-src-link", text: x.page ? `p. ${x.page}` : "open" })
+                                            : `p. ${x.page}`] : []),
+      ...(x.where && !x.page ? [el("span", { class: "muted", text: ` · ${x.where}` })] : [])))));
+  }
+  kids.push(line(`= ${phrase}`, GridMath.number(e.amount, G.units), "eq", "arith-result"));
+  return el("div", { class: "arith", "data-testid": "src-arith" }, ...kids);
 }
 
 // the later figure against the earlier one: $ change over % of the earlier figure; only two values
@@ -2167,9 +2367,10 @@ function nameCell(o) {
   if (o.move) box.append(el("span", { class: "move", "data-testid": "move-note", text: o.move }));
   if (o.note) box.append(el("span", { class: "rownote", "data-testid": o.noteTestid || "row-note", text: o.note }));
   let lead = null;
-  if (o.chev) {
-    lead = el("button", { type: "button", class: "chev", "data-testid": "chevron", "aria-expanded": String(o.open),
-                          "aria-label": `${o.open ? "Collapse" : "Expand"} ${o.abbr || o.name}`, dataset: { for: o.key }, text: o.open ? "▾" : "▸" });
+  if (o.chev || o.achev) {
+    // an account's (brief UI-8): smaller, in the row's indent, so the names keep their place
+    lead = el("button", { type: "button", class: "chev" + (o.achev ? " achev" : ""), "data-testid": o.achev ? "adj-chevron" : "chevron", "aria-expanded": String(o.open),
+                          "aria-label": `${o.open ? "Collapse" : "Expand"} ${o.abbr || o.name}${o.achev ? ": its adjustments" : ""}`, dataset: { for: o.key }, text: o.open ? "▾" : "▸" });
     lead.addEventListener("click", () => toggle(o.key));
   } else if (o.spacer) lead = el("span", { class: "spacer" });
   return el("td", { class: "acct " + (o.lvl || "") }, el("div", { class: "namecell" }, lead, box));
@@ -2205,9 +2406,15 @@ function accountRow(r, cols, cls, lvl, inMandatory) {
   if (a.parent_account_id) tags.push({ cls: "inside", text: "inside the line above · not added",
                                        title: `inside ${NAME_OF.get(a.parent_account_id)}'s figure; never added again` });
   tags.push(...classTags(r, current ? focusYear(current.grid) : G.fy, inMandatory));
-  return el("tr", { class: cls, dataset: { account: id, testid: "compare-row", ...(r.member_of ? { memberOf: r.member_of } : {}) } },
-    nameCell({ id, name, title: accountTitle(r), lvl, tags, move: moveLine(r), abbr: cls.includes("top") ? abbrOf(id) : "" }),
+  // with adjustments in view (brief UI-8) the account expands: its adjustment lines, then its other lines on file
+  const adj = adjOn() ? adjLines(r, cols) : [], isOpen = adj.length > 0 && open.has(id);
+  const tr = el("tr", { class: cls + (isOpen ? " open" : ""), dataset: { account: id, testid: "compare-row", ...(r.member_of ? { memberOf: r.member_of } : {}) } },
+    nameCell({ id, name, title: accountTitle(r), lvl, tags, move: moveLine(r), abbr: cls.includes("top") ? abbrOf(id) : "",
+               key: id, achev: adj.length > 0, open: isOpen }),
     ...cellsFor(r, cols, name));
+  if (!isOpen) return [tr];
+  const sub = cls.includes("loose") ? "child loose" : "child";
+  return [tr, ...adjRows(r, adj, cols, sub, lvl), ...otherLineRows(r, cols, sub, lvl)];
 }
 function relNote(rel, ncols, abbr) {
   const from = ROW_OF.get(rel.from_account_id);
@@ -2266,15 +2473,15 @@ function buildRows(grid, cols) {
     const kept = members.filter((m) => !proposedOnly(m)), prop = members.filter(proposedOnly);
     // "Appropriated mandatory" (budget_class): the lines whose class for the year is mandatory, after the others
     const mand = (m) => (lineClass(m, y) || {}).cls === "mandatory";
-    for (const m of kept.filter((m) => !mand(m))) out.push(accountRow(m, cols, "child", lvlOf(m)));
+    for (const m of kept.filter((m) => !mand(m))) out.push(...accountRow(m, cols, "child", lvlOf(m)));
     if (kept.some(mand)) {
       out.push(labelRow("subgroup", "Appropriated mandatory", ncols, "subgroup-mandatory"));
-      for (const m of kept.filter(mand)) out.push(accountRow(m, cols, "child", lvlOf(m), true));
+      for (const m of kept.filter(mand)) out.push(...accountRow(m, cols, "child", lvlOf(m), true));
     }
     if (prop.length) {
       out.push(labelRow("subgroup", G.grid === "history" ? "Proposed, not enacted" : `Proposed in the FY${G.grid === "years" ? G.b : G.fy} request`,
                         ncols, "subgroup-label"));
-      for (const m of prop) out.push(accountRow(m, cols, "child", lvlOf(m)));
+      for (const m of prop) out.push(...accountRow(m, cols, "child", lvlOf(m)));
     }
   };
   const lvl = (m) => (m.account.parent_account_id ? "lvl2" : "");
@@ -2298,11 +2505,13 @@ function buildRows(grid, cols) {
                    note: isOpen ? (n ? `Agency total · sum of the ${n} line${n === 1 ? "" : "s"} below` : "Agency total") : "",
                    noteTestid: "total" }),
         ...cellsFor(r, cols, name)));
+      // its adjustments, grouped as the data groups them, above its lines (brief UI-8)
+      if (isOpen && adjOn()) out.push(...adjRows(r, adjLines(r, cols), cols, "child agencyadj", ""));
       if (isOpen) pushMembers(lines, lvl);
     }
     if (P.other.length) {
       out.push(labelRow("section", `Accounts outside an agency total · ${P.other.length}`, ncols, "section-label"));
-      for (const r of P.other) out.push(accountRow(r, cols, "child loose top", ""));
+      for (const r of P.other) out.push(...accountRow(r, cols, "child loose top", ""));
     }
     if (P.gp.length) {
       out.push(labelRow("section", "General provisions", ncols, "section-label"));
@@ -2313,7 +2522,7 @@ function buildRows(grid, cols) {
                    note: isOpen ? `No printed total · each line counts in the ${group.title || "bill"} total` : "" }),
         el("td", { colspan: String(ncols) }));
       out.push(tr);
-      if (isOpen) for (const r of P.gp) out.push(accountRow(r, cols, "child", lvl(r)));
+      if (isOpen) for (const r of P.gp) out.push(...accountRow(r, cols, "child", lvl(r)));
     }
     if (P.proposed.length) {
       out.push(labelRow("section", proposedLabel, ncols, "section-label"));
@@ -2362,12 +2571,12 @@ const longDate = (iso) => { const [yy, mm, dd] = (iso || "").split("-").map(Numb
 const plDisplay = (id) => (id || "").replace(/^P\.L\.\s*/, "P.L. ");
 const STATE_WORDS = { value: "on file", not_collected: "not yet collected", not_enacted: "not yet enacted", missing: "document on file, figure not yet entered",
                       not_reported: "not reported", not_funded: "not funded", no_printed_total: "no printed total", no_figure: "no figure" };
-// a printed figure with no figure on the basis in view: what the overview says instead (a total's view shows only
-// where the data marks it checked; otherwise "not checked (n accounts)")
+// a printed figure with no figure on the basis in view: what the overview says instead (a total's view shows where
+// the data marks it checked or computed; otherwise "not computable", the data's reason on hover)
+const gapWord = (gap) => gap.replace(/^./, (c) => c.toUpperCase());
 function viewGap(row, y, st) {
   if (!usesViews() || printedFig(row, y, st) == null || figure(row, y, st) != null) return null;
   const e = viewOf(row, y, st);
-  if (e && e.accounts_behind != null) return `not checked (${e.accounts_behind} accounts)`;
   return e && e.status === "excluded" ? "excluded" : "not computable";
 }
 function renderOverview(grid) {
@@ -2385,8 +2594,11 @@ function renderOverview(grid) {
     kids.push(el("p", { class: "ovsmall", "data-testid": "ov-no-total", text: `No printed totals yet for FY${y}.` }));
   } else if (row) {
     const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
-    const basisWord = usesViews() ? `${basisPhrase(true)}, checked` : "as printed";
-    const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid },
+    // a total under a basis: checked against a printed total, or the published sum of its accounts (Σ, its reason on
+    // hover), or not computable (the data's reason on hover)
+    const ve = usesViews() ? viewOf(row, y, STAGES4[lead]) : null;
+    const basisWord = usesViews() ? `${basisPhrase(true)}, ${summed(ve) ? "Σ sum of its accounts" : "checked"}` : "as printed";
+    const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid, ...(tid === "ov-headline" && ve && ve.reason ? { title: ve.reason } : {}) },
       el("div", { class: "l", text: l }), el("div", { class: "v " + (cls || ""), text: val }), el("div", { class: "s", text: sub }));
     const chTile = (l, a, b, tid) => {
       const c = GridMath.change(a, b);
@@ -2395,16 +2607,17 @@ function renderOverview(grid) {
                : tile(l, "—", "needs both figures", "flat", tid);
     };
     kids.push(el("div", { class: "ovtiles" },
-      tile(enacted ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`, v == null ? (gap ? "Not checked" : "—") : GridMath.short(v),
+      tile(enacted ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`, v == null ? (gap ? gapWord(gap) : "—") : GridMath.short(v),
            v == null ? gap ? `${gap} · ${basisLabel()}` : STATE_WORDS[stateOf(row, y, STAGES4[lead])] || "no figure"
              : `${GridMath.number(v, G.units)} ${unitWord} · ${basisWord}`, gap ? "state" : "", "ov-headline"),
       chTile(prior, figure(row, y - 1, "Enacted"), v, "ov-vs-prior"),
       lead !== 0 ? chTile(`vs FY${y} request`, figure(row, y, STAGES4[0]), v, "ov-vs-request") : null));
     kids.push(el("div", { class: "ovk sec", text: !usesViews() ? `FY${y} by stage (printed totals)`
-                                                               : `FY${y} by stage (${basisPhrase(true)}, checked totals)` }));
+                                                               : `FY${y} by stage (${basisPhrase(true)}, published totals)` }));
     for (const i of [0, 1, 2, 3]) {
       const f = figure(row, y, STAGES4[i]), st = stateOf(row, y, STAGES4[i]), g = viewGap(row, y, STAGES4[i]);
-      kids.push(el("div", { class: "ovline", "data-testid": "ov-stage" }, el("span", { class: "k", text: STAGE_LONG[i] }),
+      const e = usesViews() ? viewOf(row, y, STAGES4[i]) : null;
+      kids.push(el("div", { class: "ovline", "data-testid": "ov-stage", ...(e && e.reason ? { title: e.reason } : {}) }, el("span", { class: "k", text: STAGE_LONG[i] }),
         el("span", { class: "val" + (f == null ? " state" : ""), text: f == null ? (g || STATE_WORDS[st] || "—") : GridMath.number(f, G.units) })));
     }
   } else {
@@ -2527,6 +2740,7 @@ function viewBlock(grid, row, y, st, o) {
   const head = [el("div", { class: "bigfig", "data-testid": "src-view-value", "data-view": e ? e.status : "none",
                             text: v.text == null ? GridMath.number(e.amount, G.units) : v.text }),
     el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${viewHead(e)}` })];
+  if (summed(e)) head.splice(1, 0, el("div", { class: "ovsmall", "data-testid": "src-sum-mark" }, sigma(e), " sum of its accounts (reason below)"));
   if (v.why) head.push(el("div", { class: "ovsmall", "data-testid": "src-view-reason", style: "margin-top:4px", text: v.why.replace(/^./, (c) => c.toUpperCase()) }));
   const tail = [el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Components of the printed figure" })];
   if (!comps.length) tail.push(el("div", { class: "ovsmall", "data-testid": "src-no-components", text: "None tagged on this figure." }));
@@ -2534,7 +2748,9 @@ function viewBlock(grid, row, y, st, o) {
     tail.push(el("div", { class: "comp", "data-testid": "src-component", dataset: { component: k.component_id, used: String(used.has(k.component_id)) } },
       el("span", { text: componentWord(k) }), el("span", { class: "cv", text: GridMath.number(k.amount, G.units) }),
       el("span", { class: "cs" }, `${k.in_headline ? "in the printed figure" : "beside the printed figure"} · `, ...compSource(k, o), ` · ${k.component_id}`)));
-  if (e && VALUED.has(e.status)) {
+  if (e && VALUED.has(e.status) && has("basis_adjustments"))
+    tail.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "From As printed" }), buildUp(row, y, st, e, basisPhrase()));
+  else if (e && VALUED.has(e.status)) {
     const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
     const terms = comps.filter((k) => used.has(k.component_id));
     tail.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Arithmetic" }),
@@ -2728,6 +2944,10 @@ function accountView(grid, id0, phone) {
     [...bills].forEach(([href, text], k) => line.append(...(k ? [" · "] : []), el("a", { href, target: "_blank", rel: "noopener", "data-testid": "acct-bill", text })));
     kids.push(line);
   }
+  // under a basis (brief UI-8): the headline stage's figure built up from As printed, adjustment by adjustment
+  const be = adjEntry(row, { fig: [y, lead] });
+  if (be) kids.push(el("hr", { class: "srcrule" }), el("div", { class: "ovk", "data-testid": "acct-buildup", text: `${when}: ${basisPhrase(true)}` }),
+                    buildUp(row, y, STAGES4[lead], be, basisPhrase()));
   // enacted history: one bar per year, the full-year CR years lighter, a gap (never a zero bar) for a non-value
   const years = grid.fiscal_years.filter((yy) => yy <= y);
   if (years.length) {
@@ -2865,9 +3085,11 @@ function renderCompare(grid) {
   $("#grid-title").textContent = headingOf(grid);
   // units and basis; a year with no enacted figure says where it stands
   const lead = G.grid === "stages" ? leadStage(grid, G.fy) : 3;
-  $("#grid-subline").textContent = `${G.units === "m" ? "$ millions" : "$ thousands"} · ${basisLabel().toLowerCase()}`
-    + (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "")
-    + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : "");
+  const beta = BETA.has(basisOf());
+  $("#grid-subline").replaceChildren(`${G.units === "m" ? "$ millions" : "$ thousands"} · ${basisLabel().toLowerCase()}${beta ? " " : ""}`, beta ? betaTag(basisOf()) : "",
+    (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "")
+    + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : ""),
+    beta ? el("span", { class: "betanote", "data-testid": "beta-line", text: ` · ${BETA_LINE}` }) : "");
   const groups = layout(grid), cols = flatCols(groups);
   current = { grid, cols };
   renderPhoneTop(grid);
@@ -2951,7 +3173,7 @@ function renderLegend() {
     el("span", { text: "blank = outside the account’s life" }),
     ...(has("budget_class") ? [el("span", { "data-testid": "class-legend", text: "dashed tag = provisional budget class" })] : []),
     ...(!usesViews() ? [] : [el("span", { "data-testid": "basis-legend",
-      text: `${basisPhrase()}: excl. = left out by this basis · n/a = not computable · not checked = no printed total confirms it (hover for why)` })]));
+      text: `${basisPhrase()}: excl. = left out by this basis · n/a, not computable = no figure on this basis · Σ = a total’s sum of its accounts, no printed total to check (hover for why)` })]));
 }
 
 // The page has one vertical scrollbar, its own (owner, 2026-10-13, UI-2c). The grid shows every row and is not a
@@ -3376,8 +3598,10 @@ function renderFilterPanel(grid) {
          G.show.ended ? "ended accounts shown" : "current accounts", G.review ? "pending review or flagged only" : "every figure",
          ...(noEar() ? ["earmarks excluded"] : [])];
     const option = (group, k, label, def, on, set) => {
+      const beta = group === "basis" && BETA.has(k);
       const b = el("button", { type: "button", class: "opt" + (on ? " on" : ""), dataset: { [group]: k, key: group + "-" + k }, "aria-pressed": String(on) },
-        el("span", { class: "optt", text: label }), el("span", { class: "optd", text: def }));
+        el("span", { class: "optt" }, label, beta ? " " : null, beta ? betaTag(k) : null), el("span", { class: "optd", text: def }),
+        beta ? el("span", { class: "optd betanote", "data-testid": "beta-note", text: BETA_LINE.replace(/^./, (c) => c.toUpperCase()) + "." }) : null);
       b.addEventListener("click", () => { set(k); redraw(); });
       return b;
     };
@@ -3483,7 +3707,7 @@ const EXP_ROWS = [["shown", "Only what’s shown"], ["all", "Include collapsed a
 const EXP_STATE = { missing: "Missing", not_collected: "Not yet collected",
                     not_enacted: "Not yet enacted", not_reported: "Not reported", no_printed_total: "No printed total",
                     no_figure: "No figure for this year" };
-const EXP_VIEW = { "excl.": "Excluded", "n/a": "Not computable", "not checked": "Not checked" };
+const EXP_VIEW = { "excl.": "Excluded", "n/a": "Not computable", "not computable": "Not computable" };
 const MODE_NAME = { stages: "Stages", years: "Two years", history: "Enacted history" };
 // a number as the cell prints it ("−1,234.5", "+12", "+3.2%") back to a number: the screen's rounding, kept
 const shownNumber = (t) => Number(t.replace(/[,%+]/g, "").replace("−", "-"));
@@ -3866,7 +4090,8 @@ function renderSummary(grid, y, lead) {
     return;
   }
   const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
-  const basisWord = usesViews() ? `${basisPhrase(true)}, checked` : "as printed";
+  const ve = usesViews() ? viewOf(row, y, STAGES4[lead]) : null;
+  const basisWord = usesViews() ? `${basisPhrase(true)}, ${summed(ve) ? "Σ sum of its accounts" : "checked"}` : "as printed";
   const chg = (a, what, tid) => {
     const c = GridMath.change(a, v);
     return c ? el("span", { class: GridMath.direction(c.delta) || "flat", "data-testid": tid,
@@ -3875,7 +4100,7 @@ function renderSummary(grid, y, lead) {
   box.replaceChildren(
     el("div", { class: "l", text: (lead === 3 ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`) + " · "
                                   + (v == null && gap ? `${gap} · ${basisLabel()}` : basisWord) }),
-    el("div", { class: "v", "data-testid": "p-headline", text: v == null ? (gap ? "Not checked" : "—") : GridMath.short(v) }),
+    el("div", { class: "v", "data-testid": "p-headline", text: v == null ? (gap ? gapWord(gap) : "—") : GridMath.short(v) }),
     el("div", { class: "chgs" }, chg(figure(row, y - 1, "Enacted"), `vs FY${y - 1} enacted`, "p-vs-prior"),
        lead !== 0 ? chg(figure(row, y, STAGES4[0]), "vs request", "p-vs-request") : null));
 }
@@ -3889,8 +4114,8 @@ function phoneValue(row, y, st) {
   if (usesViews() && printedFig(row, y, st) != null) {
     const e = viewOf(row, y, st), v = viewText(e), title = viewHead(e) + (v.why ? " — " + v.why : "");
     if (v.text == null)
-      return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title,
-                          text: e.amount === 0 && printedFig(row, y, st) === 0 ? "—" : GridMath.short(e.amount) });
+      return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title },
+                e.amount === 0 && printedFig(row, y, st) === 0 ? "—" : GridMath.short(e.amount), summed(e) ? sigma(e) : null);
     return el("span", { class: "pval", "data-testid": "p-value", "data-state": h.state, "data-view": e ? e.status : "none" },
       el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title, text: v.text }));
   }
@@ -3974,6 +4199,11 @@ function renderPhoneList(grid) {
         out.push(prow(r, "agency top", { name: plainName(r.account.canonical_name), key: id, chev: A.all.length > 0, open: A.isOpen,
           tags: inclMandatory(A.all.filter((m) => F.inView(m)), y),
           note: A.isOpen ? (A.n ? `Agency total · sum of the ${A.n} line${A.n === 1 ? "" : "s"} below` : "Agency total") : "" }));
+        if (A.isOpen && adjOn())
+          for (const line of adjLines(r, [{ fig: [y, i], col: 0 }]))
+            out.push(el("div", { class: "prow line adj", dataset: { testid: "p-adj-line", adjOf: id, type: line.type, sign: line.sign } },
+              el("span", { class: "pmain" }, el("span", { class: "pname" }, el("span", { class: "adjlabel", "data-testid": "adj-label", text: line.label })),
+                el("span", { class: "pfig" }, adjAmount(r, line.at.get(0), true)))));
         if (A.isOpen) pushLines(id, A.lines, abbrOf(id) || plainName(r.account.canonical_name));
       }
       for (const r of P.other) out.push(prow(r, "top acct", { name: plainName(r.account.canonical_name), tags: tagsOf(r) }));

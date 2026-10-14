@@ -1,5 +1,38 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-8: Adjustment lines and clearer basis states (2026-10-14, this PR)
+
+Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). The page reads
+D-6's published `adjustments` (feature `basis_adjustments`, now in BUILT) and computes nothing.
+
+- Adjustment lines: with a basis other than As printed, a timing, Exclude earmarks or the Nondefense column in view,
+  an account whose figure differs from As printed gets a small chevron (`adj-chevron`, in its indent; key in `open`,
+  so in the URL). Expanded: one line per published adjustment (`adj-line`), then its other lines on file
+  (`other-line`). An expanded agency lists its grouped adjustments above its member lines. Lines show only for an entry
+  whose amount differs from As printed (the 195 offsetting lists stay in the panel only). Signed amounts in the units
+  in view, neutral text colour. Several alike in one entry (PPHF allocation items) are one line each, named by the item
+  the source_location quotes ('Diabetes'). Phone: an expanded agency lists its adjustments for the stage shown; an
+  account's are in its sheet (the headline stage's build-up).
+- Amount links: one source with an address -> link to its page; several sources, or none with an address -> button to
+  the figure's source panel. Document addresses: `whats_new.json` documents (live: /api/whats-new) plus the grid's
+  observations, loaded with the features when basis_adjustments is on.
+- Totals: Σ after a computed total (status computed with accounts_behind), its reason on hover and in the panel; a not
+  computable total reads "not computable" (was "not checked (n accounts)") in the grid, overview, phone and export.
+- Contained lines: "of which: <label>" with "included above" (muted) in the grid, panel notes, account page and CSV.
+- Source panel under a basis: "From As printed" build-up (As printed, each adjustment with its sources, "=" the figure)
+  replaces the component arithmetic when basis_adjustments is on.
+- Beta: Discretionary and Discretionary incl. designated carry "beta" and the line in the Amount basis menu and the
+  units-and-basis label.
+- Tests: tests/test_compare.py AdjustmentLines (9 tests; the As printed screenshot diff compares the page with the flag
+  forced off). Existing tests updated for "not computable", "of which", the build-up terms. Screenshots:
+  screenshots/ui-8/.
+
+Open:
+- Find changes' Amount basis select (a native select) has no beta tag.
+- The Nondefense column's adjustment buttons open the figure's panel, which shows the basis view's build-up, not the
+  nondefense one.
+- Pre-existing on main: on the phone, a single-account agency total (AHRQ, ACL) sits flush left in the list.
+
 ## D-6: Amount basis data fixes (2026-10-14, this PR)
 
 Published views only (site_accounting.py, ACCOUNTING_RULES.md, ui_contract); no headline or printed figure changed,

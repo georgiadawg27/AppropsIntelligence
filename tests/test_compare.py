@@ -115,10 +115,12 @@ def shown_rows(grid, pairs, view="stages"):
 
 
 def series_text(l):
-    """The page's seriesText: a line's label; a contained or view line says it is not added."""
+    """The page's seriesText: a line's label; a contained line reads as included (UI-8: "of which: <label>
+    (included above)"); a view line says it is not added."""
     if l.get("adds_to_headline") is False:
-        how = "inside the figure above" if l["component_kind"] == "contained" else "the figure above, scoped another way"
-        return f"{l['component_label'] or l['component']} \u2014 {how}; not added"
+        if l["component_kind"] == "contained":
+            return f"of which: {l['component_label'] or l['component']} (included above)"
+        return f"{l['component_label'] or l['component']} \u2014 the figure above, scoped another way; not added"
     return l["amount_type"] + (" \u00b7 " + l["component"] if l["component"] else "")
 
 
@@ -2864,7 +2866,7 @@ def view_expected(row, fy, stage, basis, timing):
         return ("—" if e["amount"] == 0 and p == 0 else thousands(e["amount"])), e["amount"]
     if e["status"] == "excluded":
         return "excl.", None
-    return ("not checked" if e.get("accounts_behind") is not None else "n/a"), None
+    return ("not computable" if e.get("accounts_behind") is not None else "n/a"), None
 
 
 def view_entry_of(row, fy, stage, basis, timing, key):
@@ -2960,13 +2962,14 @@ class AmountBasis(GridBrowser):
         terms, comps = panel(f"?sc=LHHS&fy=2026&amt=all_appropriations&fig={self.MEDICAID}|2026|Enacted")
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "769,212,611")
         self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$508,148,791,000")  # the printed headline
-        self.assertEqual(terms, ["Printed figure 508,148,791", "plus advance, available this year +261,063,820"])
+        # UI-8: the build-up from As printed, each published adjustment (its label, amount and source), "=" the figure
+        self.assertEqual(terms, ["As printed 508,148,791", "advance appropriation available this year +261,063,820"])
         self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], "769,212,611")
         self.assertEqual(comps, [["CMP-LHHS-0009", "false"], ["CMP-LHHS-0010", "true"]])
         self.assertIn("p. 289", self.page.inner_text("[data-testid=src-component]"))
         self.assertIn("Open source document at page 289", self.page.inner_text("#side-panel"))
         terms, _ = panel(f"?sc=LHHS&fy=2026&amt=discretionary&fig={self.CURES}|2026|Enacted")
-        self.assertEqual(terms, ["Printed figure 226,000", "less designated (other) −226,000"])
+        self.assertEqual(terms, ["As printed 226,000", "designated amount (other) −226,000"])
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "0")
         # excluded: the reason, the printed headline and the components; no arithmetic
         terms, _ = panel(f"?sc=LHHS&fy=2026&amt=discretionary&fig={self.MEDICAID}|2026|Enacted")
@@ -2992,12 +2995,12 @@ class AmountBasis(GridBrowser):
                 if e["status"] in ("checked", "computed"):
                     self.assertIn(thousands(e["amount"]), head)
                 else:
-                    self.assertIn(f"not checked ({e['accounts_behind']} accounts)", head)
+                    self.assertIn("Not computable", head)
                 stages = self.page.eval_on_selector_all("[data-testid=ov-stage] .val", "es => es.map(e => e.innerText)")
                 for i, st in enumerate(("President's Budget", "House Reported", "Senate Reported", "Enacted")):
                     x = view_entry(total, 2026, st, basis, "available")
                     self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed")
-                                     else f"not checked ({x['accounts_behind']} accounts)")
+                                     else "not computable")
         self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
         self.assertIn("114,797,239", self.page.inner_text("[data-testid=ov-headline]"))
 
@@ -3142,7 +3145,7 @@ class ExcludeEarmarks(GridBrowser):
             return "n/a"
         if e["status"] in ("checked", "computed"):
             return "—" if e["amount"] == 0 and printed(row, fy, stage) == 0 else thousands(e["amount"])
-        return "excl." if e["status"] == "excluded" else ("not checked" if e.get("accounts_behind") is not None else "n/a")
+        return "excl." if e["status"] == "excluded" else ("not computable" if e.get("accounts_behind") is not None else "n/a")
 
     def nd_row(self, aid):
         return next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == aid)
@@ -3179,7 +3182,7 @@ class ExcludeEarmarks(GridBrowser):
     def test_known_earmark_figures(self):
         # SAMHSA HSPS FY2026 Enacted: printed 171,566 less its tagged earmark CMP-LHHS-0209 (54,311, P.L. 119-75) =
         # 117,255, the published view; the panel lists the earmark and the published result. FY2026 Senate the same
-        # (below); the President's Budget: n/a, "earmarks not tagged for this stage"; the total: not checked
+        # (below); the President's Budget: n/a, "earmarks not tagged for this stage"; the total: not computable
         hsps = self.lrow(self.HSPS)
         pub = view_entry_of(hsps, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual((pub["status"], pub["amount"], pub["component_ids"]), ("computed", 117255000, ["CMP-LHHS-0209"]))
@@ -3218,7 +3221,7 @@ class ExcludeEarmarks(GridBrowser):
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),
-                         thousands(t["amount"]) if t["status"] in ("checked", "computed") else "not checked")
+                         thousands(t["amount"]) if t["status"] in ("checked", "computed") else "not computable")
         self.assertIn(t["reason"], self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
         # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
@@ -3338,6 +3341,251 @@ class ExcludeEarmarks(GridBrowser):
                         .startswith("Program level · advances when available · earmarks excluded"))
         self.page.click("[data-testid=clear-all]")
         self.assertNotIn("earmarks=", self.page.url)
+
+
+ADJ_JS = """(aid) => [...document.querySelectorAll(`#compare-grid tr[data-testid=adj-line][data-adj-of="${aid}"]`)].flatMap((tr) =>
+    [...tr.querySelectorAll('[data-testid=adj-amount]')].map((a) => [Number(a.dataset.fy), a.dataset.stage, a.dataset.set, tr.dataset.type,
+                                                                      a.dataset.sign, Number(a.dataset.amount)]))"""
+
+
+class AdjustmentLines(GridBrowser):
+    """Brief UI-8: the published adjustments from As printed under an expanded account or agency (basis_adjustments),
+    a total's published sum (Σ) or "not computable", contained lines read as included, the build-up in the source
+    panel, and the beta label on the discretionary bases. The page computes nothing: every line is the data's."""
+
+    CDC, CHRONIC, NSF, RRA = "ACC-HHS-CDC-TOTAL", "ACC-HHS-CDC-CHRONIC-DISEASE", "ACC-NSF-TOTAL", "ACC-NSF-RRA"
+    FY2025 = [(2024, "Enacted")] + [(2025, st) for st in ("President's Budget", "House Reported", "Senate Reported", "Enacted")]
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        conn = S.connect(cls.db, readonly=True)
+        cls.cjs = plain(S.subcommittee_grid(conn, "CJS"))
+        conn.close()
+        cls.docs = {d["document_id"]: d["url_or_identifier"]
+                    for d in json.loads((cls.out / "data" / "whats_new.json").read_text())["documents"]}
+
+    def go(self, query, where="static", page=None):
+        page = page or self.page
+        page.goto(self.urls[where] + query)
+        page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+        self.settle(page)
+
+    @staticmethod
+    def as_printed(row, fy, stage):
+        return row["cells"][f"{fy}|{stage}"]["views"]["printed"][0]["amount"]
+
+    def expected(self, row, cols, basis, key="views", nd=None):
+        """The published adjustments the page lists for a row: each column's entry (the basis' view; the nondefense
+        view in the Nondefense column) where it has an amount that differs from As printed."""
+        out = []
+        for fy, st, k in [(fy, st, key) for fy, st in cols] + ([(*nd, "views_nondefense")] if nd else []):
+            if printed(row, fy, st) is None:
+                continue
+            e = view_entry_of(row, fy, st, basis, "available", k)
+            if e and e["status"] in ("checked", "computed") and e["adjustments"] and e["amount"] != self.as_printed(row, fy, st):
+                out += [[fy, st, k, a["type"], a["sign"], a["amount"]] for a in e["adjustments"]]
+        return sorted(out)
+
+    def test_adjustment_lines_equal_the_published_list(self):
+        # CDC FY2025 on Program level, the agency and every line expanded: each row's lines are its published
+        # adjustments, column by column; a row whose figures equal As printed has no chevron and no lines
+        cdc = self.lrow(self.CDC)
+        members = [m for m in cdc["rollup_members"] if any(r["account"]["canonical_account_id"] == m for r in self.lhhs["rows"])]
+        self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={','.join([self.CDC] + members)}")
+        seen = 0
+        for aid in [self.CDC] + members:
+            with self.subTest(account=aid):
+                want = self.expected(self.lrow(aid), self.FY2025, "program_level")
+                self.assertEqual(sorted(self.page.evaluate(ADJ_JS, aid)), want)
+                if aid != self.CDC:
+                    self.assertEqual(self.page.locator(f"tr[data-account={aid}] [data-testid=adj-chevron]").count(), 1 if want else 0)
+                seen += bool(want)
+        self.assertGreater(seen, 2)
+        # the agency's grouped lines come above its member lines, an account's right under its row
+        order = self.page.eval_on_selector_all("#compare-grid tbody tr", "trs => trs.map(t => t.dataset.adjOf || t.dataset.account || '')")
+        first_member = min(order.index(m) for m in members if m in order)
+        self.assertTrue(all(i < first_member for i, a in enumerate(order) if a == self.CDC and i > order.index(self.CDC)))
+        k = order.index(self.CHRONIC)
+        self.assertEqual(order[k + 1], self.CHRONIC)
+        # a collapsed row shows no lines
+        self.go("?sc=LHHS&fy=2025&amt=program_level")
+        self.assertEqual(self.page.locator("[data-testid=adj-line]").count(), 0)
+        self.page.locator(f"tr[data-account={self.CDC}] [data-testid=chevron]").click()
+        self.assertGreater(self.page.locator(f"[data-testid=adj-line][data-adj-of={self.CDC}]").count(), 0)
+        self.assertEqual(self.page.locator(f"[data-testid=adj-line][data-adj-of={self.CHRONIC}]").count(), 0)
+        self.page.locator(f"tr[data-account={self.CHRONIC}] [data-testid=adj-chevron]").click()
+        self.assertGreater(self.page.locator(f"[data-testid=adj-line][data-adj-of={self.CHRONIC}]").count(), 0)
+        # in the neutral text colour, never the change column's green or orange
+        colour = self.page.eval_on_selector("[data-testid=adj-amount]", "a => getComputedStyle(a).color")
+        self.assertNotIn(colour, self.page.eval_on_selector_all(".up, .down", "es => es.map(e => getComputedStyle(e).color)"))
+
+    def test_exclude_earmarks_and_nondefense(self):
+        # HRSA FY2025 with Exclude earmarks: the earmark accounts' lines are views_excluding_earmarks' adjustments
+        hrsa = self.lrow("ACC-HHS-HRSA-TOTAL")
+        ids = ["ACC-HHS-HRSA-TOTAL"] + hrsa["rollup_members"]
+        self.go(f"?sc=LHHS&fy=2025&earmarks=excl&open={','.join(ids)}")
+        for aid in ids:
+            row = next((r for r in self.lhhs["rows"] if r["account"]["canonical_account_id"] == aid), None)
+            if row:
+                self.assertEqual(sorted(self.page.evaluate(ADJ_JS, aid)), self.expected(row, self.FY2025, "printed", "views_excluding_earmarks"), aid)
+        self.assertTrue(any(self.page.evaluate(ADJ_JS, a) for a in ids))
+        # NSF R&RA FY2026 with the Nondefense column (As printed): its defense portion, in that column only
+        rra = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == self.RRA)
+        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
+        got = sorted(self.page.evaluate(ADJ_JS, self.RRA))
+        self.assertEqual(got, self.expected(rra, [], "printed", nd=(2026, "Enacted")))
+        self.assertEqual({g[3] for g in got}, {"defense_portion"})
+        self.assertEqual(self.page.locator(f"[data-testid=adj-line][data-adj-of={self.RRA}] [data-testid=adj-amount]").first.inner_text(),
+                         "− " + thousands(got[0][5]))
+
+    def test_amounts_link_to_their_sources(self):
+        # an account's adjustment: a link to its document at its page; a group with several sources: a button to the
+        # figure's source panel, whose build-up lists each source
+        self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC},{self.CHRONIC}")
+        links = self.page.eval_on_selector_all(f"[data-testid=adj-line][data-adj-of={self.CHRONIC}] a[data-testid=adj-amount]",
+                                               "as => as.map(a => [a.dataset.fy, a.dataset.stage, a.getAttribute('href')])")
+        self.assertTrue(links)
+        row = self.lrow(self.CHRONIC)
+        for fy, st, href in links:
+            e = view_entry(row, int(fy), st, "program_level", "available")
+            want = {self.docs[a["source_document_id"]] + (f"#page={a['source_page'].split('-')[0]}" if a["source_page"] else "")
+                    for a in e["adjustments"]}
+            self.assertIn(href, want)
+        # the request's transfer in: S.Rept. 118-207, p. 434
+        self.assertIn([2025, "President's Budget"], [[int(f), s] for f, s, h in links if h.endswith("#page=434")])
+        buttons = self.page.locator(f"[data-testid=adj-line][data-adj-of={self.CDC}] button[data-testid=adj-amount]")
+        self.assertGreater(buttons.count(), 0)
+        buttons.first.click()
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertGreater(self.page.locator("[data-testid=arith-src] a").count(), 1)
+
+    def test_sum_mark_and_not_computable_totals(self):
+        # Σ only on a computed total (the sum of its accounts), its reason on hover; a total the data marks not
+        # computable reads "not computable" with the data's reason; "not checked" is gone
+        totals = [r for r in self.lhhs["rows"] if r["rollup"] == "agency"] + [t["total"] for t in self.lhhs["titles"] if t["total"]]
+        for basis in ("program_level", "discretionary"):
+            self.go(f"?sc=LHHS&fy=2025&amt={basis}")
+            n = {"computed": 0, "not_computable": 0}
+            for row in totals:
+                aid = row["account"]["canonical_account_id"]
+                if not self.page.locator(f"tr[data-account={aid}]").count():
+                    continue
+                for fy, st in self.FY2025:
+                    e = view_entry(row, fy, st, basis, "available") if printed(row, fy, st) is not None else None
+                    if not e:
+                        continue
+                    td = self.cell(aid, fy, st)
+                    mark = td.locator("[data-testid=sum-mark]")
+                    sums = e["status"] == "computed" and e.get("accounts_behind") is not None
+                    self.assertEqual(mark.count(), 1 if sums else 0, (aid, fy, st, basis))
+                    if sums:
+                        self.assertEqual(mark.get_attribute("title"), e["reason"])
+                        n["computed"] += 1
+                    if e["status"] == "not_computable" and e.get("accounts_behind") is not None:
+                        self.assertEqual(td.evaluate(CELL_TEXT_JS), "not computable")
+                        self.assertIn(e["reason"], td.locator("button.fig").get_attribute("title"))
+                        n["not_computable"] += 1
+            self.assertTrue(n["computed"], basis)
+            self.assertNotIn("not checked", self.page.inner_text("body").lower())
+        # the panel: Σ and the reason
+        row = next(r for r in totals for fy, st in self.FY2025
+                   if printed(r, fy, st) is not None and (view_entry(r, fy, st, "program_level", "available") or {}).get("status") == "computed")
+        fy, st = next((fy, st) for fy, st in self.FY2025 if printed(row, fy, st) is not None
+                      and view_entry(row, fy, st, "program_level", "available")["status"] == "computed")
+        self.go(f"?sc=LHHS&fy=2025&amt=program_level&fig={row['account']['canonical_account_id']}|{fy}|{st}")
+        self.assertEqual(self.page.locator("[data-testid=src-sum-mark]").count(), 1)
+        self.assertIn(view_entry(row, fy, st, "program_level", "available")["reason"].capitalize()[:20],
+                      self.page.inner_text("[data-testid=src-view-reason]"))
+
+    def test_contained_line_reads_as_included(self):
+        # NSF R&RA's Defense function, inside its paragraph's total: "of which: <label>", "included above", the
+        # printed amounts; never a reading that adds it
+        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
+        line = self.page.locator(f"[data-testid=other-line][data-line-of={self.RRA}]")
+        self.assertEqual(line.count(), 1)
+        self.assertTrue(line.locator(".adjlabel").inner_text().startswith("of which: Defense function"))
+        self.assertEqual(line.locator("[data-testid=included-above]").inner_text(), "included above")
+        rra = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == self.RRA)
+        want = []
+        for fy, st in [(2025, "Enacted")] + [(2026, s) for s in ("President's Budget", "House Reported", "Senate Reported", "Enacted")]:
+            c = rra["cells"].get(f"{fy}|{st}")
+            for l in (c or {}).get("lines", []):
+                if l.get("component_kind") == "contained" and l["state"] == "value":
+                    want.append(thousands(l["observations"][0]["amount"]))
+        self.assertEqual(line.locator("[data-testid=other-amount]").all_inner_texts(), want)
+        # the adjustment lines come first, then the other lines
+        order = self.page.eval_on_selector_all(f"tr[data-adj-of={self.RRA}], tr[data-line-of={self.RRA}]", "ts => ts.map(t => t.dataset.testid)")
+        self.assertEqual(order, sorted(order))
+        # the source panel's notes say the same
+        self.go(f"?sc=CJS&fy=2026&fig={self.RRA}|2026|Enacted")
+        self.assertIn("of which: Defense function", self.page.inner_text("[data-testid=src-notes]"))
+        self.assertIn("(included above)", self.page.inner_text("[data-testid=src-notes]"))
+
+    def test_source_panel_build_up(self):
+        # under a basis: As printed, each published adjustment with its source, "=" the figure
+        for aid, fy, st in ((self.CDC, 2025, "President's Budget"), (self.CHRONIC, 2025, "House Reported")):
+            with self.subTest(account=aid):
+                self.go(f"?sc=LHHS&fy=2025&amt=program_level&fig={aid}|{fy}|{st}")
+                e = view_entry(self.lrow(aid), fy, st, "program_level", "available")
+                terms = self.page.eval_on_selector_all("[data-testid=arith-term]", "es => es.map(e => e.innerText.replace(/\\s+/g, ' '))")
+                self.assertEqual(terms, [f"As printed {thousands(self.as_printed(self.lrow(aid), fy, st))}"] +
+                                 [f"{a['label']} {'+' if a['sign'] == '+' else chr(0x2212)}{thousands(a['amount'])}" for a in e["adjustments"]])
+                self.assertEqual(self.page.locator("[data-testid=arith-src]").count(), len(e["adjustments"]))
+                self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], thousands(e["amount"]))
+
+    def test_beta_label(self):
+        # the discretionary bases carry "beta" in the Amount basis menu and the units-and-basis label, with the line
+        self.go("?sc=LHHS&fy=2026")
+        self.page.click("#filter-btn")
+        if self.page.get_attribute("#f-adv", "aria-expanded") != "true":
+            self.page.click("#f-adv")
+        tagged = self.page.eval_on_selector_all("#f-basis [data-testid=beta-tag]", "ts => ts.map(t => t.closest('button').dataset.basis)")
+        self.assertEqual(tagged, ["discretionary", "discretionary_designated"])
+        self.assertEqual(self.page.locator("#f-basis [data-testid=beta-note]").count(), 2)
+        self.assertIn("computed from the bill text; not yet confirmed by a printed total for most figures",
+                      self.page.inner_text("#f-basis button[data-basis=discretionary]").lower())
+        for basis, beta in (("discretionary", True), ("discretionary_designated", True), ("program_level", False),
+                            ("all_appropriations", False), ("printed", False)):
+            self.go(f"?sc=LHHS&fy=2026&amt={basis}")
+            sub = self.page.locator("#grid-subline")
+            self.assertEqual(sub.locator("[data-testid=beta-tag]").count(), int(beta), basis)
+            self.assertEqual("not yet confirmed by a printed total for most figures" in sub.inner_text(), beta, basis)
+
+    def test_as_printed_with_no_toggles_looks_as_before(self):
+        # As printed, no toggles: no adjustment lines, chevrons, Σ or beta; the page is pixel for pixel what it is
+        # with the feature off (the flag forced off in index.json)
+        q = f"?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL,{self.CDC},{self.CHRONIC},ACC-HHS-HRSA-TOTAL"
+        self.go(q)
+        for tid in ("adj-line", "adj-chevron", "other-line", "sum-mark", "beta-tag"):
+            self.assertEqual(self.page.locator(f"[data-testid={tid}]:visible").count(), 0, tid)
+        on = self.page.screenshot(full_page=True)
+        off_page = self.browser.new_page(viewport={"width": 1440, "height": 900})
+        def flag_off(route):
+            body = json.loads(route.fetch().text())
+            body["features"]["basis_adjustments"] = False
+            route.fulfill(json=body)
+        off_page.route("**/data/index.json", flag_off)
+        try:
+            self.go(q, page=off_page)
+            self.assertEqual(off_page.screenshot(full_page=True), on)
+        finally:
+            off_page.close()
+
+    def test_phone_agency_lines(self):
+        # 390 px: an expanded agency lists its grouped adjustments for the stage shown, above its lines
+        page = self.browser.new_page(viewport={"width": 390, "height": 844})
+        try:
+            page.goto(self.urls["static"] + f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC}")
+            page.wait_for_selector("#p-list .prow")
+            got = page.eval_on_selector_all(f"[data-testid=p-adj-line][data-adj-of={self.CDC}] [data-testid=adj-amount]",
+                                            "as => as.map(a => [Number(a.dataset.fy), a.dataset.stage, a.dataset.set, a.closest('[data-type]').dataset.type, a.dataset.sign, Number(a.dataset.amount)])")
+            self.assertEqual(sorted(got), self.expected(self.lrow(self.CDC), [(2025, "Enacted")], "program_level"))
+            self.assertTrue(got)
+            order = page.eval_on_selector_all("#p-list .prow", "rs => rs.map(r => r.dataset.testid === 'p-adj-line' ? 'adj' : r.dataset.memberOf ? 'line' : '')")
+            self.assertLess(max(i for i, o in enumerate(order) if o == "adj"), order.index("line"))
+        finally:
+            page.close()
 
 
 class AccountPage(GridBrowser):
@@ -3706,7 +3954,7 @@ SCREEN_JS = """() => {
 }"""
 EXPORT_STATE = {"missing": "Missing", "not_collected": "Not yet collected", "not_enacted": "Not yet enacted",
                 "not_reported": "Not reported", "no_printed_total": "No printed total", "no_figure": "No figure for this year"}
-EXPORT_VIEW = {"excl.": "Excluded", "n/a": "Not computable", "not checked": "Not checked"}
+EXPORT_VIEW = {"excl.": "Excluded", "n/a": "Not computable", "not computable": "Not computable"}
 
 
 def screen_number(text):

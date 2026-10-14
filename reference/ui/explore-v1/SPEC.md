@@ -240,7 +240,7 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Defense portion column | `defense_portion` components (UI-0) | ready (UI-0 #57, built in UI-3 #61) |
 | Exclude earmarks (`exclude_earmarks`) | a published view that leaves earmarks out | ready (UI-0b #62, UI-3b) |
 | Nondefense (`nondefense`) | a published nondefense figure per cell | ready (UI-0b #62, UI-3b) |
-| Basis adjustments (`basis_adjustments`) | each view entry's `adjustments`: the components (a total: grouped by type, with its accounts) that turn As printed into the view | data ready (D-6); not built in the page |
+| Basis adjustments (`basis_adjustments`) | each view entry's `adjustments`: the components (a total: grouped by type, with its accounts) that turn As printed into the view | ready (D-6); built (UI-8): adjustment lines under an expanded account or agency, the build-up in the source panel, Σ on a computed total |
 | Watch | browser storage only; no alerts or email | ready (UI-6; built: ☆ Watch on Find changes results, the account panel, the phone sheet and the account page; the list on Find changes, with its link export / import) |
 | Find changes (`find_changes`, `find_moves`) | cell states, printed figures and their sources; `rows[].relationships` for Moves | ready (UI-6) |
 | What's new (`whats_new`) | a first-added date per source document and an added date per figure (D-5); the retrieval date is not one (it changes on every re-fetch or reparse) | later (built in UI-6, flag off until D-5; owner, 2026-10-14) |
