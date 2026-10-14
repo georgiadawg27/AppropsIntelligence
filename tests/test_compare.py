@@ -3563,6 +3563,34 @@ class AccountPage(GridBrowser):
                 rels = self.page.inner_text("[data-testid=ap-relationships]")
                 self.assertTrue(rels.strip())
 
+    def test_class_tag_names_its_source(self):
+        # owner, 2026-10-14: an enacted-basis record reads "<Class> · FY<n>", "(provisional)" where the record marks it;
+        # a request-stage record is the request's own class: "<Class> · FY<n> request", never provisional
+        nci = self.lrow(self.NCI)["attributes"]
+        cases = [(self.NCI, 2026, nci["2026"]), (self.NCI, 2024, nci["2024"])]
+        for aid, fy in (("ACC-HHS-NIH-BODY-SYSTEMS", 2026), ("ACC-HHS-NIH-SUBSTANCE-USE", 2027)):
+            cases.append((aid, fy, self.lrow(aid)["attributes"][str(fy)]))
+        self.assertTrue(nci["2026"]["provisional"])
+        self.assertFalse(nci["2024"]["provisional"])
+        for where in self.urls:
+            for aid, fy, a in cases:
+                with self.subTest(where=where, account=aid, fy=fy):
+                    self.go(f"?account={aid}&fy={fy}", where)
+                    tag = self.page.locator("[data-testid=ap-class-tag]")
+                    dashed = tag.evaluate("e => getComputedStyle(e).outlineStyle")
+                    if a.get("budget_class"):                  # the enacted-basis record
+                        prov = bool(a["provisional"])
+                        self.assertEqual(tag.inner_text(), f"{a['budget_class'].capitalize()} · FY{fy}" + (" (provisional)" if prov else ""))
+                        self.assertEqual((tag.get_attribute("data-basis"), tag.get_attribute("data-provisional")), ("enacted", str(prov).lower()))
+                        self.assertEqual(dashed, "dashed" if prov else "none")
+                    else:                                      # only the request's own record
+                        r = a["request"]
+                        self.assertEqual(r["stage_basis"], "request")
+                        self.assertEqual(tag.inner_text(), f"{r['budget_class'].capitalize()} · FY{fy} request")
+                        self.assertNotIn("provisional", tag.inner_text())
+                        self.assertEqual((tag.get_attribute("data-basis"), tag.get_attribute("data-provisional")), ("request", "false"))
+                        self.assertEqual(dashed, "none")
+
     def test_unidentified_start(self):
         row = self.lrow(self.UNIDENTIFIED)
         self.assertEqual(row["lifecycle"].get("start_basis"), "unidentified")

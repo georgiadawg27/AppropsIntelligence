@@ -992,16 +992,19 @@ function renderAccountPage(rels, main, tags, tools) {
   body.append(work, apRelated(rels));
 }
 // the class tag (owner, 2026-10-14): the record's class for the selected fiscal year, else the latest year on file,
-// naming its year, "(provisional)" where the record marks it so: "Mixed · FY2026 (provisional)"
+// naming its year: an enacted-basis record "Mixed · FY2026 (provisional)" where it is marked so; a request-stage
+// record "Mixed · FY2027 request"
 function apClassTag() {
   const box = $("#ap-class");
   if (!box || !AP) return;
   const cy = classYear(AP.row, AP.fySel), k = cy != null ? classOf(AP.row, cy) : null;
   box.replaceChildren();
   if (!k) return;
-  box.append(el("span", { class: "tag cls" + (k.provisional ? " prov" : ""), "data-testid": "ap-class-tag", "data-provisional": String(k.provisional),
-    "data-fy": String(cy), title: classTitle(k, cy) + (AP.fySel != null && cy !== AP.fySel ? ` · none on file for FY${AP.fySel}` : ""),
-    text: `${k.cls.charAt(0).toUpperCase()}${k.cls.slice(1)} · FY${cy}${k.provisional ? " (provisional)" : ""}` }));
+  // a request-stage record is the request's own class, never provisional: "Mixed · FY2027 request" (owner, 2026-10-14)
+  const req = k.basis === "request", prov = !req && k.provisional;
+  box.append(el("span", { class: "tag cls" + (prov ? " prov" : ""), "data-testid": "ap-class-tag", "data-provisional": String(prov),
+    "data-basis": k.basis, "data-fy": String(cy), title: classTitle(k, cy) + (AP.fySel != null && cy !== AP.fySel ? ` · none on file for FY${AP.fySel}` : ""),
+    text: `${k.cls.charAt(0).toUpperCase()}${k.cls.slice(1)} · FY${cy}${req ? " request" : prov ? " (provisional)" : ""}` }));
 }
 // the budget class: the year's record (y null: none selected), else the latest year that holds one
 function classYear(row, y) {

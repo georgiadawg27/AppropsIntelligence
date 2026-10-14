@@ -19,8 +19,9 @@
   stage table's card, the chart's card and the source panel closes the panel. web/documents.js names the Budget
   Appendix chapters ("FY2026 Budget Appendix, HHS"). "Every line on file" is a <details>, collapsed; test_web and
   test_static open it first (open_lines()).
-- Open (owner): the provisional mark follows the record's own flag. Every enacted-basis FY2026/FY2027 record is
-  provisional; the 18 request-basis records (Budget Appendix; e.g. the proposed NIH institutes, FY2027 HRSA lines) are not.
+- Owner, 2026-10-14: data unchanged; a request-stage class is the request's own, never provisional. Where the class
+  shown comes from a request-stage record the tag reads "Mixed · FY2027 request" (no "(provisional)"); enacted-basis
+  records unchanged. Test: AccountPage.test_class_tag_names_its_source.
 - Was open: the brief's "keep the window-height scroll box ... always-visible bottom scrollbar" predates UI-2c (SPEC now
   says one page scrollbar); built to SPEC. The Appendix citation names SRC-BUDGET-APP-FY<n>-<AGENCY> by ID
   (web/documents.js has no label for it).
