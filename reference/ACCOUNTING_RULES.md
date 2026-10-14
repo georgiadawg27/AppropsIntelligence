@@ -152,6 +152,22 @@ counted as printed and named in the check.
 3. **Draft committee stages** are tagged like reported stages.
 4. **Earmarks are included in every view** by default. An earmark counts inside the account whose paragraph
    appropriates it.
+5. **NSF Research and Related Activities: the paragraph's total, defense inside** (D-3, owner 2026-10-13/14). In
+   every bill and law cell the headline is the amount the R&RA paragraph appropriates (the report's nondefense line
+   plus its 'Defense function' line; an amount the paragraph designates an emergency stays beside), citing the bill
+   or law page, with the table's nondefense figure as the note. The table's defense line is re-recorded under
+   `defense_inside` (kind `contained`, never added to the account's figure), naming the new headline, and is tagged
+   a `defense_portion` inside it. The President's Budget keeps the table's nondefense headline with its `defense`
+   line (a part) beside. Store exemption, for this case only (`approps_store.headline_errors` /
+   `superseded_errors`; tests `test_store.ReRecordedLineExemption`):
+   - a contained line may name a headline from another document only when that headline superseded the line's own
+     document's headline in the same cell (bill or law text over the report table);
+   - a replacement may change component only when it re-records the same printed line: same document, page and
+     amount.
+   Any other contained line from another document, or component change, still fails to load.
+   Re-ingesting a table that prints a superseded figure (`approps_store.add_observations`: same fact, same
+   amount as a superseded record) confirms that record; it is never a conflict with the replacement and never
+   stored again (so the table's defense line can't come back as a part).
 
 ## Tagging rules
 

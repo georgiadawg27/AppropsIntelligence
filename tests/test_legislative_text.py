@@ -170,6 +170,19 @@ class Parser(unittest.TestCase):
                          "BILLS-118hr5894rh")
 
 
+    def test_a_designation_is_read_to_its_end(self):
+        # D-3: the FY2025 request's Refugee amount; the designation starts inside the 100-character window and ends
+        # past it, so the phrase runs to its end. Text past the window that is no designation is still cut.
+        text = ("Provided further, That of the amounts made available under this heading, $2,914,179,000, along with "
+                "any amounts made available pursuant to the preceding proviso, are designated by the Congress as being "
+                "for an emergency requirement pursuant to section 251(b)(2)(A)(i) of the BBEDCA.")
+        a = L.amounts_in(text)[0]
+        self.assertTrue(a["phrase"].endswith("are designated by the Congress as being for an emergency requirement"))
+        b = L.amounts_in("For expenses, $5,000,000, " + "x" * 120 + " designated by the Congress as being for an "
+                         "emergency requirement")[0]
+        self.assertNotIn("emergency", b["phrase"])
+
+
 class Comparison(unittest.TestCase):
     def obs(self, amount):
         return {"amount": amount}

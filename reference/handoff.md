@@ -1,5 +1,42 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-3: owner rulings 1-3 of decisions-D2.md (2026-10-14, this PR)
+
+Three commits, reviewable apart (part 2, part 3, part 1 in that order).
+
+- Part 2, President's Budget PPHF rows: `build_pphf_table.py` REQUEST_ROWS reads the request column's Fund lines of the
+  comparative table each President's Budget figure cites (FY2017, FY2018, FY2020-FY2025; 45 rows; FY2019, FY2026,
+  FY2027 print none). H.Rept. 114-699 and 116-450 table pages are images: read from page images (8 + 4 lines,
+  transcribed in printed_line). Each cell's rows equal the column's printed Fund total. 44 components (FY2023 CDC-Wide
+  has no request headline: CA-LHHS-0037, a confirmed absence resting on the table's silence -- for review). 9 of the 10
+  cells pass; CDC FY2025 differs by $100,000,000, Injury Prevention's 'Evaluation Funding (PHS Act Sec 241)' request
+  line: cause request_evaluation_tap_past_window (the Appendix proviso names section 241 past the 100-character window).
+- Part 3, phrase window: a designation ('designated by the Congress as (being) for an emergency requirement') that
+  starts inside the 100-character window is read to its end (legislative_text.DESIGNATION, at most 300 characters).
+  A flat 200-character window was rejected (27 unrequested components). Parser version changed: 53 text files
+  reparsed locally from sha256-verified govinfo downloads; the two FY2021 Senate drafts by the manual fetch workflow
+  (reparse mode, run on the branch: only parser_version and retrieved changed). One component appears (ACF Refugee
+  FY2025 request, emergency $2,914,179,000 inside); five other bill phrases lengthen with no component effect.
+- Part 1, NSF R&RA: `reference/review/accounting/d3_records.py`. 30 bill/law headlines superseded by the paragraph's
+  total (each checked against decisions-D2.md and the committed text; OBS-0997 ... OBS-1055, odd numbers); the 30 table
+  'Defense function' lines superseded by the same printed lines under the new contained component `defense_inside`
+  (OBS-0998 ... OBS-1056, even), headline_observation_id the new headline, so the store never adds them (owner,
+  2026-10-14). approps_store: a contained line may name a headline from another document only when that headline
+  superseded the line's own document's headline in the cell; a replacement may change component only when it
+  re-records the same printed line (document, page, amount). defense_portion components: 30 new IDs inside, 30 old
+  retired; 5 other components re-homed (new IDs). President's Budget R&RA rows unchanged (not in the ruling).
+- measure_reconcile: base 977/0 -> 1012/0; views 252/30/77 -> 262/20/77; earmark rule 4/0. Text check: match
+  2,534, mismatch 0, ambiguous 4 (unchanged).
+
+Open:
+- CDC FY2025 request: the section 241 evaluation line ($100,000,000) is untagged; a phrase rule reaching past the
+  window for 'from amounts made available under section 241' would close it (not in this brief).
+- CA-LHHS-0037 (CDC-Wide FY2023 request) rests on the table's silence; the request column prints a $160,000,000
+  Fund line under the account.
+- NSF R&RA request headlines (FY2017-FY2026) still take the table's nondefense line, defense beside (decisions-D2.md:
+  only if the rule is extended to the request language; FY2019 and FY2024 not determined).
+- Still open from D-2: AHRQ FY2024, OS FY2023, NIH FY2019, ACF FY2017 President's Budget differences; NEI FY2027.
+
 ## UI-5: Account page (2026-10-14)
 
 - web/index.html (docs/ by export_static.py): the One account view is the account page. Header (path, name, proposed

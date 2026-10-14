@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13)",
- "data_sha256": "d0f5351fb0b7848ba8c71a574c10d36c4cbd2ba47d8e6977a4ce6ee5889907f6",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13; D-3: the President's Budget PPHF rows (request column), 2026-10-14; D-3: the designation read to its end (parser), 2026-10-14; D-3: NSF R&RA headlines from the bill and law paragraphs, defense inside, 2026-10-14)",
+ "data_sha256": "daf8318f09005c1c4116ad67846d43c529db53dad921798e8466928b4a91dcab",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 85,
    "columns": 1,
-   "sha256": "1a033fa87576aa9c0df504f9eb8c13733437d805f17c025cfb5f9ef72db50a47"
+   "sha256": "009aebb30b6ad98de20b0e0c9d9f86873e5c990ff84462d9c5757bfaede4a2e4"
   },
   "Account": {
    "rows": 131,
@@ -24,9 +24,9 @@
    "sha256": "e0492879e0336ea2b55c191d2adb56bf937646db3f4a53032910a33e2f38a7d4"
   },
   "Appropriations Observation": {
-   "rows": 4999,
+   "rows": 5059,
    "columns": 22,
-   "sha256": "6f4186b0b1ea0e8561eb6eefd0e58131c1fd9dd419b6bfd5483a789053c8de29"
+   "sha256": "ace81f3ab8ca7915c4ba8c9ce41c68afe42daa4b7dfa84c22ff18b552bc18293"
   },
   "Account Relationship": {
    "rows": 15,
@@ -36,7 +36,7 @@
   "Source Document": {
    "rows": 152,
    "columns": 12,
-   "sha256": "d3ce95dea939bfca1f004578de702246a4cc9ec60d67e32c97f18e3627cb20d1"
+   "sha256": "d7867d5619b0999ebd6229e67c5df11fe69ad78de5fe6b0c77c4409a33c1fe08"
   },
   "Bill Report Reference": {
    "rows": 84,
@@ -44,19 +44,19 @@
    "sha256": "1947917600e4ed957dc6a1015f2a4897dcd61b7f308e738ebab126357e3366b7"
   },
   "Validation Record": {
-   "rows": 21519,
+   "rows": 21583,
    "columns": 9,
-   "sha256": "8d2443ed739851c2876d1088d8e8e133ab060923a3b8a600e94e813ff96f22ad"
+   "sha256": "33f169211ce16f11744f69e8379b3cdd8f151125992f2030c3cd46440851a41e"
   },
   "Component": {
-   "rows": 30,
+   "rows": 31,
    "columns": 4,
-   "sha256": "b7511e0ec768d15ff57d0561c2be8c3aad2b35d13805d2730c10b7ee34aabc23"
+   "sha256": "c994d545c0061f4dec11a27437ed2faddc815cb68e2279039badfe05b37d7d1f"
   },
   "Observation Component": {
-   "rows": 1402,
+   "rows": 1447,
    "columns": 16,
-   "sha256": "fa6c979442e92fddc3a7bbbbed29a7a5ee68f8fcc9938a9af86bfd3ba5773e99"
+   "sha256": "bdf3bdba21c25d4b3de72b3ccb701473e6d922e7b18e29b3e7551a5d176b815a"
   },
   "Account Attribute": {
    "rows": 4293,

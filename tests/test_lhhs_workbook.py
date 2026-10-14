@@ -199,12 +199,25 @@ class ContainedAndViewLinesAreNeverAdded(unittest.TestCase):
         self.assertEqual((head["observation_id"], head["amount"]), ("OBS-LHHS-0436", 1_266_744_593_000))
 
     def test_a_part_still_adds(self):
-        # NSF Research and Related Activities: its defense line is a part of the account's figure
+        # NSF Research and Related Activities: beside a nondefense headline (the President's Budget), its defense
+        # line is a part of the account's figure
         row = self.conn.execute("SELECT canonical_account_id, fiscal_year, stage FROM appropriations_observation "
-                                "WHERE component = 'defense' LIMIT 1").fetchone()
-        lines = self.cell(*row)
+                                "WHERE component = 'defense' AND verification_status <> 'superseded' LIMIT 1").fetchone()
+        lines = [o for o in self.cell(*row) if o["verification_status"] != "superseded"]
         self.assertEqual(S.cell_total(self.conn, *row), sum(o["amount"] for o in lines))
         self.assertEqual(len(lines), 2)
+
+    def test_a_defense_line_inside_the_paragraphs_total_is_never_added(self):
+        # D-3 (owner 2026-10-14): where the headline is the bill or law paragraph's total, the table's defense line
+        # is re-recorded as defense_inside (contained) and the account's figure is the headline alone
+        rows = self.conn.execute("SELECT canonical_account_id, fiscal_year, stage, headline_observation_id FROM "
+                                 "appropriations_observation WHERE component = 'defense_inside'").fetchall()
+        self.assertEqual(len(rows), 30)
+        for a, fy, st, hid in rows:
+            head = self.conn.execute("SELECT amount FROM appropriations_observation WHERE observation_id = ?",
+                                     (hid,)).fetchone()[0]
+            self.assertEqual(S.cell_total(self.conn, a, fy, st), head, (fy, st))
+        self.assertEqual(S.cell_total(self.conn, "ACC-NSF-RRA", 2026, "Enacted"), 7_176_500_000)
 
 
 

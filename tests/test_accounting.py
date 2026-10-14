@@ -413,6 +413,12 @@ class TaggingRules(unittest.TestCase):
                                                (2026, 1398375000, 1398375000, 1398375000),
                                                (2027, 1398375000, None, None))
                 for st, v in (("House Reported", h), ("Senate Reported", s), ("Enacted", e)) if v}
+        # the President's Budget (D-3): the request column's Fund lines, each cell the column's printed CDC Fund
+        # total (FY2019, FY2026 and FY2027 print none); FY2023 less the CDC-wide block grant's 160,000,000, whose
+        # account has no FY2023 request headline (CA-LHHS-0037), so the row is reported, not recorded
+        want.update({(fy, "President's Budget"): v for fy, v in (
+            (2017, 944470000), (2018, 840600000), (2020, 893950000), (2021, 893950000), (2022, 903300000),
+            (2023, 743300000), (2024, 1186200000), (2025, 1186200000))})
         self.assertEqual(dict(cdc), want)
 
     def test_onc_headline_is_zero_with_its_241_transfer(self):
