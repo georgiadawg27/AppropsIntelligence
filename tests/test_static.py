@@ -395,6 +395,11 @@ class StaticVersusLive(StaticTest):
         self.page.close()
         self.assertEqual(self.errors, [])
 
+    def open_lines(self):
+        """Open "Every line on file" (the record grid; collapsed by default, owner 2026-10-14) when an account is shown."""
+        if self.page.is_visible("[data-testid=result]") and self.page.get_attribute("[data-testid=ap-lines]", "open") is None:
+            self.page.click("[data-testid=ap-lines-toggle]")
+
     def shown(self, url, q, pick=None):
         self.page.goto(url + "?view=account")             # Explore is the default view; One account is beside it
         self.page.fill("#q", q)
@@ -403,6 +408,7 @@ class StaticVersusLive(StaticTest):
         if pick:
             self.page.click(f"[data-testid=candidate][data-id={pick}]")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
         return self.page.evaluate("""() => ({
             candidates: document.querySelector('#candidates').hidden ? null : document.querySelector('#candidates').innerText,
             result: document.querySelector('#result').hidden ? null : document.querySelector('#result').innerText,

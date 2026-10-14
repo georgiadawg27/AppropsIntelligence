@@ -1,5 +1,31 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-5: Account page (2026-10-14)
+
+- web/index.html (docs/ by export_static.py): the One account view is the account page. Header (path, name, proposed
+  tag, budget_class tag as the record gives it, Appendix account code from `attributes.<FY>.account_id_code` with its
+  citation, former names, years on file, "Start not identified" where `lifecycle.start_basis` is unidentified), Copy
+  citation, Export history (CSV); enacted history chart FY2017 onward (values only, CR bar lighter, hover = figure and
+  source, a bar opens its source); "Every stage, every year" (newest first, SPEC section 4 tokens, Enacted vs request)
+  beside a source panel that is renderSource() itself; Related (parent total, lines of a total, relationships, other
+  lines on file for the year); then the record grid kept as "Every line on file" (test_web's tests read it).
+- URL: ?account=<id>&fy=<FY>&stage=<stage>. The side panel's and the phone sheet's "Open account page" pass the FY.
+- New feature flag `account_page` (web/ui_contract.json, contract_version 5). Watch stays hidden (UI-6: not in BUILT).
+- Tests: tests/test_compare.py `AccountPage` (9). CompareBrowser.test_account_name_opens_the_single_account_view now
+  expects `&fy=2026` in the landing URL (brief item 5).
+- Screenshots: screenshots/ui-5/. No design reference exists for the account page; side by sides use 03/02/07.
+- Owner decisions 2026-10-14: SPEC's single page scrollbar stays. The class tag names its year, "Mixed · FY2026
+  (provisional)", from the selected FY (fy= or the selected figure), else the latest year on file. A click outside the
+  stage table's card, the chart's card and the source panel closes the panel. web/documents.js names the Budget
+  Appendix chapters ("FY2026 Budget Appendix, HHS"). "Every line on file" is a <details>, collapsed; test_web and
+  test_static open it first (open_lines()).
+- Owner, 2026-10-14: data unchanged; a request-stage class is the request's own, never provisional. Where the class
+  shown comes from a request-stage record the tag reads "Mixed · FY2027 request" (no "(provisional)"); enacted-basis
+  records unchanged. Test: AccountPage.test_class_tag_names_its_source.
+- Was open: the brief's "keep the window-height scroll box ... always-visible bottom scrollbar" predates UI-2c (SPEC now
+  says one page scrollbar); built to SPEC. The Appendix citation names SRC-BUDGET-APP-FY<n>-<AGENCY> by ID
+  (web/documents.js has no label for it).
+
 ## UI-3b: Exclude earmarks and the nondefense column (2026-10-13)
 
 - Page only (web/index.html, docs/index.html as the export writes it). BUILT gains `exclude_earmarks` and `nondefense`.
