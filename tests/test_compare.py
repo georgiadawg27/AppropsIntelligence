@@ -1330,8 +1330,8 @@ class CompareBrowser(GridBrowser):
         self.assertIn("370,772", cell.inner_text())             # the bill's figure
 
     def test_account_name_opens_the_single_account_view(self):
-        # UI-2: the name opens the account in the side panel (SPEC 5.2); its "Open account page" opens the One account
-        # view until UI-5
+        # UI-2: the name opens the account in the side panel (SPEC 5.2); its "Open account page" opens the account page
+        # with the account and the fiscal year in the URL (UI-5)
         self.open("live", "?view=compare&sc=CJS&fy=2026&open=ACC-NASA-TOTAL")
         self.page.click("tr[data-account=ACC-NASA-SPACEOPS] [data-testid=row-name]")
         self.assertEqual(self.page.inner_text("[data-testid=acct-name]"), "Space Operations")
@@ -1339,7 +1339,7 @@ class CompareBrowser(GridBrowser):
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
         self.assertTrue(self.page.is_hidden("[data-testid=compare-view]"))
         self.assertEqual(self.page.inner_text("[data-testid=account-name]"), "Space Operations")
-        self.assertTrue(self.page.url.endswith("?account=ACC-NASA-SPACEOPS"))
+        self.assertTrue(self.page.url.endswith("?account=ACC-NASA-SPACEOPS&fy=2026"), self.page.url)
 
     def test_outside_tooltip(self):
         self.open("static", "?view=compare&sc=CJS&grid=stages&fy=2017")
@@ -2006,7 +2006,7 @@ class ExploreV1(GridBrowser):
                 self.assertEqual(self.page.locator("[data-testid=acct-bar][data-fy='2025'] .bar.cr").count(), 1)
                 self.assertEqual(self.page.locator("[data-testid=acct-bar] .bar.cr").count(), 1)
                 self.assertIn("Enacted, FY2017–FY2026", self.page.inner_text("#side-panel").replace("ENACTED", "Enacted"))
-                # Open account page: the One account view until UI-5; Watch hidden until UI-6
+                # Open account page: the account page (UI-5); Watch hidden until UI-6
                 self.assertEqual(text("acct-open"), "Open account page")
                 self.assertNotIn("Watch", self.page.inner_text("#side-panel"))
                 self.page.click("[data-testid=acct-open]")
@@ -3316,6 +3316,353 @@ class ExcludeEarmarks(GridBrowser):
                         .startswith("Program level · advances when available · earmarks excluded"))
         self.page.click("[data-testid=clear-all]")
         self.assertNotIn("earmarks=", self.page.url)
+
+
+class AccountPage(GridBrowser):
+    """Brief UI-5: the account page (the One account view) in the SPEC.md visual language: the header, the enacted
+    history, every stage of every year beside the source panel (SPEC 5.1), related accounts; the side panel's and the
+    phone sheet's "Open account page" land on it with the account and fiscal year in the URL. Tests: NCI, Medicaid
+    (advances), an account with a rename, a proposed-only account, an account whose start basis is "unidentified"."""
+
+    NCI, MEDICAID, NIDA = "ACC-HHS-NIH-NCI", "ACC-HHS-CMS-MEDICAID", "ACC-HHS-NIH-NIDA"
+    PROPOSED, UNIDENTIFIED = "ACC-HHS-NIH-BODY-SYSTEMS", "ACC-HHS-GP-MEDICARE-LIMITATION"
+    STAGES = ["President's Budget", "House Reported", "Senate Reported", "Enacted"]
+
+    def go(self, query, where="static", page=None):
+        page = page or self.page
+        page.goto(self.urls[where] + query)
+        page.wait_for_selector("[data-testid=result]:not([hidden])")
+        page.wait_for_selector("[data-testid=ap-table]")
+        self.settle(page)
+
+    def ap_cell(self, fy, stage):
+        return self.page.locator(f"[data-testid=ap-table] td[data-fy='{fy}'][data-stage=\"{stage}\"]")
+
+    def enacted_years(self):
+        return [y for y in self.lhhs["fiscal_years"] if y >= 2017 and str(y) in self.lhhs["enactments"]]
+
+    def test_nci_header_chart_and_every_stage(self):
+        row = self.lrow(self.NCI)
+        attrs = row["attributes"]["2026"]
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go(f"?account={self.NCI}&fy=2026", where)
+                self.assertEqual(self.page.text_content("[data-testid=account-name]"), "National Cancer Institute")
+                self.assertEqual(self.page.text_content("[data-testid=ap-path]"),
+                                 "Labor-HHS-Education · Title II · National Institutes of Health")
+                # the class tag as the record gives it (budget_class), dashed when provisional; the Appendix account code
+                # the record's class for the fiscal year in the URL, naming its year (owner, 2026-10-14)
+                tag = self.page.locator("[data-testid=ap-class-tag]")
+                self.assertEqual((tag.inner_text(), tag.get_attribute("data-provisional")),
+                                 (f"{attrs['budget_class'].capitalize()} · FY2026" + (" (provisional)" if attrs["provisional"] else ""),
+                                  str(bool(attrs["provisional"])).lower()))
+                # the Appendix account code with its document's short name and page, never the document's ID
+                code = self.page.inner_text("[data-testid=ap-appendix]")
+                self.assertIn(attrs["account_id_code"], code)
+                self.assertIn(f"FY2026 Budget Appendix, HHS, p. {attrs['citations']['account_id_code']['source_page']}", code)
+                self.assertNotIn("SRC-", code)
+                # "Every line on file" starts collapsed: one line, opening on click
+                self.assertIsNone(self.page.get_attribute("[data-testid=ap-lines]", "open"))
+                self.assertFalse(self.page.is_visible("#grid"))
+                self.page.click("[data-testid=ap-lines-toggle]")
+                self.assertTrue(self.page.is_visible("#grid"))
+                self.assertEqual(self.page.text_content("[data-testid=figures-on-file]"), "Figures on file: FY2017–FY2027")
+                # Watch is UI-6: hidden
+                self.assertNotIn("Watch", self.page.inner_text("[data-testid=ap-actions]"))
+                # the chart: FY2017 onward, one bar per enacted year, values only; the FY2025 CR bar lighter
+                bars = self.page.locator("[data-testid=ap-bar]")
+                years = self.enacted_years()
+                self.assertEqual([int(b.get_attribute("data-fy")) for b in bars.all()], years)
+                for y in years:
+                    want = expected_headline(row, y, "Enacted")
+                    b = self.page.locator(f"[data-testid=ap-bar][data-fy='{y}']")
+                    v = b.get_attribute("data-value")
+                    self.assertEqual(v != "", want["state"] == "value", y)
+                    if v:
+                        self.assertEqual(thousands(int(v)), want["amount"], y)
+                    self.assertEqual(b.locator(".apbar").count(), 1 if v and int(v) > 0 else 0, y)
+                self.assertEqual(self.page.locator("[data-testid=ap-bar] .apbar.cr").count(), 1)
+                self.assertEqual(self.page.locator("[data-testid=ap-bar][data-fy='2025'] .apbar.cr").count(), 1)
+                # hover: the figure and its source
+                self.page.hover("[data-testid=ap-bar][data-fy='2026']")
+                tip = self.page.inner_text("[data-testid=ap-tip]")
+                o = row["cells"]["2026|Enacted"]["lines"][0]["observations"][0]
+                self.assertIn(thousands(o["amount"]), tip)
+                self.assertIn(f"p. {o['source_page']}", tip)
+                # the sentence: the change since the first year on file, both ends values
+                a, b2 = printed(row, years[0], "Enacted"), printed(row, years[-1], "Enacted")
+                d = b2 - a
+                self.assertEqual(self.page.inner_text("[data-testid=ap-sentence-change]"),
+                                 f"+{thousands(d)} (+{d / a * 100:.1f}%)")
+                self.assertIn(f"since FY{years[0]}, the first year on file", self.page.inner_text("[data-testid=ap-sentence]"))
+                # every stage, every year: newest first; each cell its headline state or figure; enacted vs request
+                rows = self.page.locator("[data-testid=ap-row]")
+                self.assertEqual([int(r.get_attribute("data-fy")) for r in rows.all()], sorted(self.lhhs["fiscal_years"], reverse=True))
+                for y in self.lhhs["fiscal_years"]:
+                    for st in self.STAGES:
+                        want = expected_headline(row, y, st)
+                        td = self.ap_cell(y, st)
+                        self.assertEqual(td.get_attribute("data-state"), want["state"], (y, st))
+                        amt = td.locator("[data-testid=ap-amount]")
+                        self.assertEqual(amt.inner_text() if amt.count() else None, want["amount"], (y, st))
+                        if want["state"] == "value":
+                            self.assertEqual(amt.get_attribute("aria-label"), f"Source for National Cancer Institute, {stage_words(y, st, self.lhhs)}")
+                    ch = self.page.locator(f"[data-testid=ap-row][data-fy='{y}'] [data-testid=ap-change]")
+                    p0, p3 = printed(row, y, self.STAGES[0]), printed(row, y, "Enacted")
+                    self.assertEqual(ch.get_attribute("data-delta"), None if p0 is None or p3 is None else str(p3 - p0), y)
+                self.assertEqual(self.ap_cell(2027, "Senate Reported").inner_text().strip(), "n/c")
+                self.assertEqual(self.ap_cell(2027, "Enacted").inner_text().strip(), "n/e")
+                # the fiscal year in the URL is marked (the selection row fill)
+                self.assertEqual(self.page.get_attribute("[data-testid=ap-row][data-fy='2026']", "data-sel"), "row")
+
+    def test_figure_opens_source_and_esc_returns_focus(self):
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go(f"?account={self.NCI}&fy=2026", where)
+                self.assertEqual(self.page.get_attribute("[data-testid=ap-panel]", "data-mode"), "hint")
+                btn = self.ap_cell(2026, "Enacted").locator("button.fig")
+                btn.click()
+                panel = self.page.locator("[data-testid=ap-panel]")
+                self.assertEqual(panel.get_attribute("data-mode"), "source")
+                # the panel is SPEC 5.1's (UI-2b layout): full dollars, page, Printed as, the bill, the record, the button
+                self.assertEqual(panel.locator("[data-testid=src-value]").inner_text(), "$7,352,159,000")
+                self.assertEqual(panel.locator("[data-testid=src-page]").inner_text(), "Page 285")
+                self.assertTrue(panel.locator("[data-testid=src-printed]").inner_text())
+                self.assertIn("P.L. 119-75", panel.locator("[data-testid=src-bill]").inner_text())
+                self.assertEqual(panel.locator("[data-testid=src-record]").inner_text(), "Record OBS-LHHS-0329")
+                self.assertTrue(panel.locator("[data-testid=src-open]").get_attribute("href").endswith("#page=285"))
+                self.assertEqual(panel.locator("[data-testid=src-account-btn]").count(), 0)      # this is the account page
+                self.assertEqual(self.ap_cell(2026, "Enacted").get_attribute("data-sel"), "fig")
+                self.assertEqual(self.page.get_attribute("[data-testid=ap-bar][data-fy='2026']", "data-sel"), "fig")
+                self.assertTrue(self.page.url.endswith(f"?account={self.NCI}&fy=2026&stage=Enacted"), self.page.url)
+                # selection beats hover: the yellow fill stays while hovered; the crosshair tints the row, column, header
+                self.ap_cell(2024, "House Reported").hover()
+                bg = lambda loc: loc.evaluate("e => getComputedStyle(e).backgroundColor")
+                self.assertEqual(bg(self.ap_cell(2024, "Senate Reported")), "rgb(236, 241, 249)")      # row
+                self.assertEqual(bg(self.ap_cell(2022, "House Reported")), "rgb(241, 245, 251)")       # column
+                self.assertEqual(bg(self.ap_cell(2024, "House Reported")), "rgb(214, 226, 245)")       # crossing
+                self.assertEqual(bg(self.page.locator("[data-testid=ap-table] th[data-col='1']")), "rgb(223, 232, 246)")
+                self.ap_cell(2026, "Enacted").hover()
+                self.assertEqual(bg(self.ap_cell(2026, "Enacted")), "rgb(255, 241, 194)")
+                self.page.mouse.move(5, 5)
+                self.assertEqual(self.page.locator("[data-testid=ap-table] [data-hov], [data-testid=ap-table] [data-hovcol]").count(), 0)
+                # a bar opens its figure too; the class tag follows the selected figure's fiscal year
+                self.page.click("[data-testid=ap-bar][data-fy='2024']")
+                self.assertEqual(self.ap_cell(2024, "Enacted").get_attribute("data-sel"), "fig")
+                k24 = self.lrow(self.NCI)["attributes"]["2024"]
+                self.assertEqual(self.page.inner_text("[data-testid=ap-class-tag]"),
+                                 f"{k24['budget_class'].capitalize()} · FY2024" + (" (provisional)" if k24["provisional"] else ""))
+                # a click outside the table, the chart and the panel closes the panel (SPEC 5.3, as in Explore);
+                # a click inside the table does not
+                self.page.click("[data-testid=ap-stages] h2")
+                self.assertEqual(panel.get_attribute("data-mode"), "source")
+                self.page.mouse.click(1430, 300)
+                self.assertEqual(panel.get_attribute("data-mode"), "hint")
+                self.assertEqual(self.page.locator("[data-testid=ap-table] td[data-sel=fig]").count(), 0)
+                self.assertTrue(self.page.url.endswith(f"?account={self.NCI}&fy=2024"), self.page.url)
+                # Esc clears the selection and returns focus to the figure; the URL keeps the year
+                btn.click()
+                self.page.keyboard.press("Escape")
+                self.assertEqual(panel.get_attribute("data-mode"), "hint")
+                self.assertEqual(self.page.evaluate("document.activeElement.getAttribute('aria-label')"),
+                                 "Source for National Cancer Institute, FY2026 enacted")
+                self.assertTrue(self.page.url.endswith(f"?account={self.NCI}&fy=2026"), self.page.url)
+                # the URL round-trips the selected figure
+                self.go(f"?account={self.NCI}&fy=2023&stage=House%20Reported", where)
+                self.assertEqual(self.ap_cell(2023, "House Reported").get_attribute("data-sel"), "fig")
+                self.assertEqual(panel.locator("[data-testid=src-stage]").inner_text(), "FY2023 House")
+
+    def test_copy_citation_and_export_csv(self):
+        row = self.lrow(self.NCI)
+        self.go(f"?account={self.NCI}")
+        self.page.click("[data-testid=ap-copy-citation]")
+        cite = self.page.get_attribute("[data-testid=ap-copy-citation]", "data-copied")
+        self.assertTrue(cite.startswith("National Cancer Institute (ACC-HHS-NIH-NCI). Labor-HHS-Education · Title II · National Institutes of Health."), cite)
+        self.assertIn("?account=ACC-HHS-NIH-NCI", cite)
+        with self.page.expect_download() as dl:
+            self.page.click("[data-testid=ap-export]")
+        d = dl.value
+        self.assertEqual(d.suggested_filename, "ACC-HHS-NIH-NCI-history.csv")
+        with open(d.path(), encoding="utf-8") as f:
+            got = list(csv.DictReader(f))
+        # one row per line, year and stage; a figure only where printed, never a filled-in zero
+        want = sum(1 if c.get("outside_life") else sum(max(1, len(l["observations"])) for l in c["lines"]) for c in row["cells"].values())
+        self.assertEqual(len(got), want)
+        for r in got:
+            want_amt = printed(row, int(r["fiscal_year"]), r["stage"])
+            if r["line"] == "budget authority":
+                self.assertEqual(r["amount_dollars"], "" if want_amt is None else str(want_amt), r)
+            if r["state"] not in ("value", "not_funded"):
+                self.assertEqual(r["amount_dollars"], "", r)
+        nci26 = next(r for r in got if r["fiscal_year"] == "2026" and r["stage"] == "Enacted")
+        self.assertEqual((nci26["amount_dollars"], nci26["source_page"], nci26["observation_id"]), ("7352159000", "285", "OBS-LHHS-0329"))
+
+    def test_medicaid_advances(self):
+        row = self.lrow(self.MEDICAID)
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go(f"?account={self.MEDICAID}&fy=2026", where)
+                # the table shows the headline line; the advance lines are listed under Related, each to its source, never added
+                self.assertEqual(self.ap_cell(2026, "Enacted").locator("[data-testid=ap-amount]").inner_text(),
+                                 expected_headline(row, 2026, "Enacted")["amount"])
+                lines = self.page.locator("[data-testid=ap-other-line]")
+                series = [l.get_attribute("data-series") for l in lines.all()]
+                self.assertIn("advance", series)
+                self.assertIn("prior_year_advance", series)
+                adv = next(l for l in row["cells"]["2026|Enacted"]["lines"] if l["amount_type"] == "advance")["observations"][0]
+                link = self.page.locator("[data-testid=ap-other-line][data-series=advance] td[data-stage=Enacted] a")
+                self.assertEqual(link.inner_text(), thousands(adv["amount"]))
+                self.assertTrue(link.get_attribute("href").startswith("http"))
+                self.assertIn("never added", self.page.inner_text("[data-testid=ap-other-lines]"))
+                # the source panel lists the other lines too, without the "Open account page" button (this is that page)
+                self.ap_cell(2026, "Enacted").locator("button.fig").click()
+                notes = self.page.inner_text("[data-testid=ap-panel] [data-testid=src-notes]")
+                self.assertIn("advance", notes)
+                self.assertEqual(self.page.locator("[data-testid=ap-panel] [data-testid=src-note-more]").count(), 0)
+                # Medicaid's class, as its record gives it for FY2026
+                k = row["attributes"]["2026"]
+                self.assertEqual(self.page.inner_text("[data-testid=ap-class-tag]"),
+                                 f"{k['budget_class'].capitalize()} · FY2026" + (" (provisional)" if k["provisional"] else ""))
+
+    def test_renamed_account_former_names(self):
+        row = self.lrow(self.NIDA)
+        self.go(f"?account={self.NIDA}")
+        self.assertTrue(row["historical_names"])
+        former = self.page.inner_text("[data-testid=ap-former-names]")
+        for n in row["historical_names"]:
+            self.assertIn(f"“{n}”", former)
+        self.assertEqual(self.page.text_content("[data-testid=account-name]"), "National Institute on Drug Abuse")
+        # no fiscal year selected: the class of the latest year on file
+        latest = max(int(y) for y, a in row["attributes"].items() if a.get("budget_class") or (a.get("request") or {}).get("budget_class"))
+        self.assertEqual(self.page.get_attribute("[data-testid=ap-class-tag]", "data-fy"), str(latest))
+        # its parent total links to that account's page, the year kept
+        parent = self.page.locator("[data-testid=ap-parent]")
+        self.assertEqual(parent.get_attribute("data-account"), "ACC-HHS-NIH-TOTAL")
+        parent.click()
+        self.page.wait_for_function("document.querySelector('[data-testid=account-name]').textContent.includes('National Institutes of Health')")
+        self.assertIn("?account=ACC-HHS-NIH-TOTAL&fy=", self.page.url)
+
+    def test_proposed_only_account(self):
+        row = self.lrow(self.PROPOSED)
+        self.assertEqual(row["lifecycle"]["type"], "proposed_only")
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go(f"?account={self.PROPOSED}", where)
+                self.assertEqual(self.page.inner_text("[data-testid=ap-tag-proposed]"), "proposed")
+                # never enacted: no bars, no change stated; outside its life the cells are blank and not clickable
+                self.assertEqual(self.page.locator("[data-testid=ap-bar] .apbar").count(), 0)
+                self.assertEqual(self.page.locator("button[data-testid=ap-bar]").count(), 0)
+                self.assertNotIn("since FY", self.page.inner_text("[data-testid=ap-sentence]"))
+                for td in self.page.locator("[data-testid=ap-cell][data-outside=true]").all():
+                    self.assertEqual(td.inner_text().strip(), "")
+                    self.assertEqual(td.locator("button").count(), 0)
+                for y in self.lhhs["fiscal_years"]:
+                    want = expected_headline(row, y, "President's Budget")
+                    if want["state"] == "value":
+                        self.assertEqual(self.ap_cell(y, "President's Budget").locator("[data-testid=ap-amount]").inner_text(), want["amount"])
+                rels = self.page.inner_text("[data-testid=ap-relationships]")
+                self.assertTrue(rels.strip())
+
+    def test_class_tag_names_its_source(self):
+        # owner, 2026-10-14: an enacted-basis record reads "<Class> · FY<n>", "(provisional)" where the record marks it;
+        # a request-stage record is the request's own class: "<Class> · FY<n> request", never provisional
+        nci = self.lrow(self.NCI)["attributes"]
+        cases = [(self.NCI, 2026, nci["2026"]), (self.NCI, 2024, nci["2024"])]
+        for aid, fy in (("ACC-HHS-NIH-BODY-SYSTEMS", 2026), ("ACC-HHS-NIH-SUBSTANCE-USE", 2027)):
+            cases.append((aid, fy, self.lrow(aid)["attributes"][str(fy)]))
+        self.assertTrue(nci["2026"]["provisional"])
+        self.assertFalse(nci["2024"]["provisional"])
+        for where in self.urls:
+            for aid, fy, a in cases:
+                with self.subTest(where=where, account=aid, fy=fy):
+                    self.go(f"?account={aid}&fy={fy}", where)
+                    tag = self.page.locator("[data-testid=ap-class-tag]")
+                    dashed = tag.evaluate("e => getComputedStyle(e).outlineStyle")
+                    if a.get("budget_class"):                  # the enacted-basis record
+                        prov = bool(a["provisional"])
+                        self.assertEqual(tag.inner_text(), f"{a['budget_class'].capitalize()} · FY{fy}" + (" (provisional)" if prov else ""))
+                        self.assertEqual((tag.get_attribute("data-basis"), tag.get_attribute("data-provisional")), ("enacted", str(prov).lower()))
+                        self.assertEqual(dashed, "dashed" if prov else "none")
+                    else:                                      # only the request's own record
+                        r = a["request"]
+                        self.assertEqual(r["stage_basis"], "request")
+                        self.assertEqual(tag.inner_text(), f"{r['budget_class'].capitalize()} · FY{fy} request")
+                        self.assertNotIn("provisional", tag.inner_text())
+                        self.assertEqual((tag.get_attribute("data-basis"), tag.get_attribute("data-provisional")), ("request", "false"))
+                        self.assertEqual(dashed, "none")
+
+    def test_unidentified_start(self):
+        row = self.lrow(self.UNIDENTIFIED)
+        self.assertEqual(row["lifecycle"].get("start_basis"), "unidentified")
+        for where in self.urls:
+            with self.subTest(where=where):
+                self.go(f"?account={self.UNIDENTIFIED}", where)
+                self.assertIn("Start not identified", self.page.inner_text("[data-testid=ap-start]"))
+                # no change since a first year is stated: the record's start is not known
+                sentence = self.page.inner_text("[data-testid=ap-sentence]")
+                self.assertIn("not identified", sentence)
+                self.assertEqual(self.page.locator("[data-testid=ap-sentence-change]").count(), 0)
+                # the years before its one figure show their state, never a blank or a zero
+                for y in self.enacted_years():
+                    want = expected_headline(row, y, "Enacted")
+                    td = self.ap_cell(y, "Enacted")
+                    if want["state"] != "value":
+                        self.assertEqual(td.get_attribute("data-state"), want["state"], y)
+                        self.assertNotIn("0", td.inner_text())
+                        self.assertNotEqual(td.inner_text().strip(), "", y)
+                self.assertIn("general-provision", self.page.inner_text("[data-testid=ap-parents]"))
+
+    def test_open_account_page_lands_with_account_and_year(self):
+        # the side panel's button
+        self.page.goto(self.urls["static"] + f"?sc=LHHS&fy=2026&acct={self.NCI}")
+        self.page.wait_for_selector("[data-testid=acct-open]")
+        self.page.click("[data-testid=acct-open]")
+        self.page.wait_for_selector("[data-testid=ap-table]")
+        self.assertTrue(self.page.url.endswith(f"?account={self.NCI}&fy=2026"), self.page.url)
+        self.assertEqual(self.page.get_attribute("[data-testid=ap-row][data-fy='2026']", "data-sel"), "row")
+        # the phone sheet's button
+        phone = self.browser.new_page(viewport={"width": 390, "height": 844})
+        try:
+            phone.goto(self.urls["static"] + f"?sc=LHHS&fy=2025&acct={self.NCI}")
+            phone.wait_for_selector("#p-sheet [data-testid=acct-open]")
+            phone.click("#p-sheet [data-testid=acct-open]")
+            phone.wait_for_selector("[data-testid=ap-table]")
+            self.assertTrue(phone.url.endswith(f"?account={self.NCI}&fy=2025"), phone.url)
+            # the page fits the phone: no sideways page scroll
+            self.assertLessEqual(phone.evaluate("document.documentElement.scrollWidth"), 390)
+        finally:
+            phone.close()
+
+    def test_keyboard_and_focus(self):
+        self.go(f"?account={self.NCI}&fy=2026")
+        # every control on the page is a real button, link or input, reachable by Tab, with a visible focus ring
+        seen = set()
+        for _ in range(120):
+            self.page.keyboard.press("Tab")
+            t = self.page.evaluate("""() => { const e = document.activeElement;
+                return e ? [e.dataset.testid || '', e.getAttribute('aria-label') || '', getComputedStyle(e).outlineStyle] : null; }""")
+            if t[0] or t[1]:
+                seen.update(x for x in t[:2] if x)
+                if t[0] in ("ap-copy-citation", "ap-export", "ap-amount", "ap-bar"):
+                    self.assertNotEqual(t[2], "none", t)
+        for want in ("ap-copy-citation", "ap-export", "ap-bar", "Source for National Cancer Institute, FY2026 enacted"):
+            self.assertIn(want, seen)
+        # Enter on a focused figure opens its source; Esc returns focus to it
+        self.ap_cell(2025, "Senate Reported").locator("button.fig").focus()
+        self.page.keyboard.press("Enter")
+        self.assertEqual(self.page.get_attribute("[data-testid=ap-panel]", "data-mode"), "source")
+        self.page.keyboard.press("Escape")
+        self.assertEqual(self.page.evaluate("document.activeElement.getAttribute('aria-label')"),
+                         "Source for National Cancer Institute, FY2025 Senate")
+
+
+def stage_words(y, st, grid):
+    """The page's stageText: "FY2026 enacted", "FY2025 enacted (full-year CR)", "FY2026 President’s request"."""
+    if st == "Enacted":
+        e = grid["enactments"].get(str(y))
+        return f"FY{y} enacted" + (" (full-year CR)" if e and e["funding_type"] == "full_year_cr" else "")
+    draft = " (draft)" if f"{y}|{st}" in (grid.get("drafts") or {}) else ""
+    return f"FY{y} " + {"President's Budget": "President’s request", "House Reported": "House", "Senate Reported": "Senate"}[st] + draft
 
 
 class GridMathUnits(unittest.TestCase):
