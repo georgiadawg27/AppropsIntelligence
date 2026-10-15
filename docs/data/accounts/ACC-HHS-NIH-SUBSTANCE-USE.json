@@ -18,15 +18,30 @@
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-SUBSTANCE-USE",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0165",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr9260rh). The bill or law text for BR-LHHS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR9260RH.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "H.R. 9260 has no 'National Institute of Substance Use and Addiction Research' heading: it funds NIDA (p.70) and NIAAA (p.70) under their own headings (whole text searched for /Substance Use and Addiction/) (D-9).",
+        "fiscal_year": 2027,
+        "publication_date": "2026-06-11",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119HR9260RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -128,7 +143,24 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-SUBSTANCE-USE",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0165",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr9260rh). The bill or law text for BR-LHHS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR9260RH.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "H.R. 9260 has no 'National Institute of Substance Use and Addiction Research' heading: it funds NIDA (p.70) and NIAAA (p.70) under their own headings (whole text searched for /Substance Use and Addiction/) (D-9).",
+    "fiscal_year": 2027,
+    "publication_date": "2026-06-11",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119HR9260RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf"
+   }
+  ],
   "account": {
    "agency": "National Institutes of Health",
    "bureau": "National Institute of Substance Use and Addiction Research",
@@ -323,12 +355,7 @@
    ]
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2027,
-    "House Reported"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 2097238000,
@@ -384,10 +411,6 @@
    }
   ],
   "open_cells": [
-   [
-    2027,
-    "House Reported"
-   ],
    [
     2027,
     "Senate Reported"

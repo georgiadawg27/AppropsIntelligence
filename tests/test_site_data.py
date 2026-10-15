@@ -901,15 +901,13 @@ class AccountingLayer(unittest.TestCase):
                          {"available": 1_085_847_068_000, "enacted": 1_133_847_008_000})
         e = rows["ACC-HHS-HRSA-TOTAL"]["cells"]["2025|President's Budget"]["views_excluding_earmarks"]["all_appropriations"][0]
         self.assertEqual((e["status"], e["amount"]), ("computed", 8_530_564_000))
-        # D-8: CDC FY2025 House (the spec's case), program level when enacted: As printed + the PPHF transfers reach
-        # the report's 'Total, Centers for Disease Control, program level' (H.Rept. 118-585 p.316); when available
-        # it stays not computable -- CDC-Wide has no figure, so whether the lines hold an advance is not known
-        cdc = {e["timing"]: e for e in rows["ACC-HHS-CDC-TOTAL"]["cells"]["2025|House Reported"]["views"]["program_level"]}
-        self.assertEqual((cdc["enacted"]["status"], cdc["enacted"]["amount"]), ("matches", 7_446_058_000))
-        self.assertEqual((cdc["enacted"]["anchor"]["document"], cdc["enacted"]["anchor"]["page"]),
-                         ("SRC-CRPT-118HRPT585", "316"))
-        self.assertEqual({x["type"] for x in cdc["enacted"]["adjustments"]}, {"transfer_in"})
-        self.assertEqual((cdc["available"]["status"], cdc["available"]["cause"]), ("not_computable", "missing_figure"))
+        # D-8: CDC FY2025 House (the spec's case), program level: As printed + the PPHF transfers reach the report's
+        # 'Total, Centers for Disease Control, program level' (H.Rept. 118-585 p.316). D-9 part 1 entered CDC-Wide's
+        # figure from H.R. 9029 p.64, so the 'available' timing is known too and both timings are one entry
+        cdc = rows["ACC-HHS-CDC-TOTAL"]["cells"]["2025|House Reported"]["views"]["program_level"]
+        self.assertEqual([(e["status"], e["amount"]) for e in cdc], [("matches", 7_446_058_000)])
+        self.assertEqual((cdc[0]["anchor"]["document"], cdc[0]["anchor"]["page"]), ("SRC-CRPT-118HRPT585", "316"))
+        self.assertEqual({x["type"] for x in cdc[0]["adjustments"]}, {"transfer_in"})
 
     def test_exclusion_status_counts_per_basis(self):
         import site_accounting as SA

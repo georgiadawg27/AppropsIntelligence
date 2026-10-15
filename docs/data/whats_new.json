@@ -32,7 +32,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP-2-25.pdf"
   },
   {
-   "attributes": 388,
+   "attributes": 400,
    "document_id": "SRC-BUDGET-APP-FY2027-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -122,7 +122,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP-2-25.pdf"
   },
   {
-   "attributes": 328,
+   "attributes": 336,
    "document_id": "SRC-BUDGET-APP-FY2026-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -182,7 +182,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2025-APP/pdf/BUDGET-2025-APP-1-25.pdf"
   },
   {
-   "attributes": 290,
+   "attributes": 300,
    "document_id": "SRC-BUDGET-APP-FY2025-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -242,10 +242,10 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP-1-25.pdf"
   },
   {
-   "attributes": 284,
+   "attributes": 293,
    "document_id": "SRC-BUDGET-APP-FY2024-HHS",
    "document_type": "budget_appendix",
-   "figures": 0,
+   "figures": 1,
    "fiscal_year": 2024,
    "publication_date": "2023-03-13",
    "retrieved": "2026-10-12",
@@ -302,7 +302,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP-1-25.pdf"
   },
   {
-   "attributes": 271,
+   "attributes": 283,
    "document_id": "SRC-BUDGET-APP-FY2023-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -362,7 +362,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2022-APP/pdf/BUDGET-2022-APP-1-25.pdf"
   },
   {
-   "attributes": 271,
+   "attributes": 280,
    "document_id": "SRC-BUDGET-APP-FY2022-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -422,7 +422,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP-1-26.pdf"
   },
   {
-   "attributes": 274,
+   "attributes": 283,
    "document_id": "SRC-BUDGET-APP-FY2021-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -482,7 +482,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP-1-26.pdf"
   },
   {
-   "attributes": 269,
+   "attributes": 278,
    "document_id": "SRC-BUDGET-APP-FY2020-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -867,7 +867,7 @@
    "attributes": 0,
    "document_id": "SRC-BILLS-118S2624RS",
    "document_type": "bill",
-   "figures": 1,
+   "figures": 2,
    "fiscal_year": 2024,
    "publication_date": "2023-07-27",
    "retrieved": "2026-10-11",
@@ -897,13 +897,15 @@
    "attributes": 0,
    "document_id": "SRC-BILLS-118HR9029RH",
    "document_type": "bill",
-   "figures": 0,
+   "figures": 1,
    "fiscal_year": 2025,
    "publication_date": "2024-07-12",
    "retrieved": "2026-10-11",
    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
    "stage": "House Reported",
-   "subcommittees": [],
+   "subcommittees": [
+    "LHHS"
+   ],
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118hr9029rh/pdf/BILLS-118hr9029rh.pdf"
   },
   {
@@ -955,7 +957,7 @@
    "attributes": 0,
    "document_id": "SRC-BILLS-117S4659IS",
    "document_type": "bill",
-   "figures": 4,
+   "figures": 5,
    "fiscal_year": 2023,
    "publication_date": "2022-07-28",
    "retrieved": "2026-10-11",
@@ -1180,7 +1182,7 @@
    "attributes": 0,
    "document_id": "SRC-PLAW-117PUBL328",
    "document_type": "public_law",
-   "figures": 2,
+   "figures": 4,
    "fiscal_year": 2023,
    "publication_date": "2022-12-29",
    "retrieved": "2026-10-09",
@@ -1375,7 +1377,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2020-APP/pdf/BUDGET-2020-APP.pdf"
   },
   {
-   "attributes": 281,
+   "attributes": 290,
    "document_id": "SRC-BUDGET-APP-FY2019-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -1390,7 +1392,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2019-APP/pdf/BUDGET-2019-APP.pdf"
   },
   {
-   "attributes": 233,
+   "attributes": 239,
    "document_id": "SRC-BUDGET-APP-FY2018-HHS",
    "document_type": "budget_appendix",
    "figures": 0,
@@ -1405,7 +1407,7 @@
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf"
   },
   {
-   "attributes": 229,
+   "attributes": 236,
    "document_id": "SRC-BUDGET-APP-FY2017-HHS",
    "document_type": "budget_appendix",
    "figures": 0,

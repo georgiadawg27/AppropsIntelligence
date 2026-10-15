@@ -97,15 +97,30 @@
      ],
      "Senate Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0155",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2025, and for other purposes. -- reported in Senate (BILLS-118s4942rs). The bill or law text for BR-LHHS-FY2025-SENATE; parsed into data/legislative_text/SRC-BILLS-118S4942RS.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "S. 4942 has no 'National Institute on Body Systems Research' heading: it funds NIH under the existing institutes' headings (NIH, pp. 70-76: NHLBI and NIDDK p.71, NIAMS p.73) (whole text searched for /Body Systems/) (D-9).",
+        "fiscal_year": 2025,
+        "publication_date": "2024-08-01",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-118S4942RS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118s4942rs/pdf/BILLS-118s4942rs.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ]
     },
@@ -128,15 +143,30 @@
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0157",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in House (BILLS-119hr5304rh). The bill or law text for BR-LHHS-FY2026-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR5304RH.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "H.R. 5304 has no 'National Institute on Body Systems' heading: it funds NIH under the existing institutes' headings (NIH, pp. 65-71) (whole text searched for /Body Systems/) (D-9).",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-11",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119HR5304RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
@@ -207,15 +237,30 @@
      ],
      "Senate Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0161",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in Senate (BILLS-119s2587rs). The bill or law text for BR-LHHS-FY2026-SENATE; parsed into data/legislative_text/SRC-BILLS-119S2587RS.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "S. 2587 has no 'National Institute on Body Systems' heading: it funds NIH under the existing institutes' headings (NIH, pp. 74-81) (whole text searched for /Body Systems/) (D-9).",
+        "fiscal_year": 2026,
+        "publication_date": "2025-07-31",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119S2587RS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ]
     },
@@ -295,7 +340,56 @@
   ]
  },
  "history": {
-  "absences": [],
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0155",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2025, and for other purposes. -- reported in Senate (BILLS-118s4942rs). The bill or law text for BR-LHHS-FY2025-SENATE; parsed into data/legislative_text/SRC-BILLS-118S4942RS.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "S. 4942 has no 'National Institute on Body Systems Research' heading: it funds NIH under the existing institutes' headings (NIH, pp. 70-76: NHLBI and NIDDK p.71, NIAMS p.73) (whole text searched for /Body Systems/) (D-9).",
+    "fiscal_year": 2025,
+    "publication_date": "2024-08-01",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-118S4942RS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118s4942rs/pdf/BILLS-118s4942rs.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0157",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in House (BILLS-119hr5304rh). The bill or law text for BR-LHHS-FY2026-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR5304RH.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "H.R. 5304 has no 'National Institute on Body Systems' heading: it funds NIH under the existing institutes' headings (NIH, pp. 65-71) (whole text searched for /Body Systems/) (D-9).",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-11",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119HR5304RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-NIH-BODY-SYSTEMS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0161",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in Senate (BILLS-119s2587rs). The bill or law text for BR-LHHS-FY2026-SENATE; parsed into data/legislative_text/SRC-BILLS-119S2587RS.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "S. 2587 has no 'National Institute on Body Systems' heading: it funds NIH under the existing institutes' headings (NIH, pp. 74-81) (whole text searched for /Body Systems/) (D-9).",
+    "fiscal_year": 2026,
+    "publication_date": "2025-07-31",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119S2587RS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf"
+   }
+  ],
   "account": {
    "agency": "National Institutes of Health",
    "bureau": "National Institute on Body Systems Research",
@@ -497,19 +591,7 @@
    ],
    [
     2025,
-    "Senate Reported"
-   ],
-   [
-    2025,
     "Enacted"
-   ],
-   [
-    2026,
-    "House Reported"
-   ],
-   [
-    2026,
-    "Senate Reported"
    ],
    [
     2026,
@@ -637,19 +719,7 @@
    ],
    [
     2025,
-    "Senate Reported"
-   ],
-   [
-    2025,
     "Enacted"
-   ],
-   [
-    2026,
-    "House Reported"
-   ],
-   [
-    2026,
-    "Senate Reported"
    ],
    [
     2026,

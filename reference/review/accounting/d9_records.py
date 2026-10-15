@@ -34,6 +34,7 @@ STAGED = ROOT / "data" / "staged.json"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 sys.path.insert(0, str(ROOT))
 import ids as IDS  # noqa: E402
+import validate_approps as V  # noqa: E402
 
 DATE = "2026-10-15"
 STAGE_CHAMBER = {"House Reported": "House", "Senate Reported": "Senate"}
@@ -239,7 +240,9 @@ def part1(data, retired):
             "amount": amount, "amount_type": "budget authority", "offsetting_collections": "FALSE",
             "transfer_link_account_id": "", "source_document_id": doc, "source_page": page,
             "source_table_or_section": where, "extraction_method": "text-extracted", "confidence": 0.95,
-            "verification_status": "unverified", "component": "", "headline_observation_id": ""})
+            # a figure the bill-text rule decides is 'resolved-by-rule' (validate_approps.observation_status)
+            "verification_status": V.RESOLVED_BY_RULE if V.TEXT_RULE_MARK in where else "unverified",
+            "component": "", "headline_observation_id": ""})
     for aid, fy, st, doc, evidence in ABSENCES:
         assert aid in acc and doc in docs, (aid, doc)
         if (aid, fy, st) in held:
