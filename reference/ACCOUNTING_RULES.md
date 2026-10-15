@@ -191,6 +191,20 @@ from the CR's anomaly), and FY2017 from the FY2017 Appendix's bracketed enacted 
 It is inside the headline only when the headline less what is inside it is the current-year amount plus the
 advance; otherwise beside.
 
+**Provision lines** (component backfill follow-ups; `reference/review/accounting/provision_lines.csv`, written by
+`provision_lines.py` from the bill or law's full text, `auto_text`): money whose words sit outside the amount's
+phrase window, or in a general provision that names the account by its purpose. Nonrecurring Expenses Fund money
+("derived by transfer from the Fund established by Public Law 110-161, division G, title II, section 223", and the
+general provisions "Of the unobligated balances available in the Nonrecurring Expenses Fund ..., $X ... shall be
+available for <purpose>") is a `transfer_in` beside the headline of the account whose purpose the text names
+(buildings and facilities at NIH or the CDC; the FY2021 Senate bill's sec. 237 list by program: Health Centers to
+Primary Health Care, Ryan White, CDC HIV prevention, and the Hospital Preparedness Program, section 319F-2(a),
+section 319L and pandemic influenza to PHSSEF). Section 241 evaluation funds worded "is available to this
+appropriation ... from amounts provided pursuant to section 241" (FY2022 Senate), and AHRQ's section 241 proviso
+(AHRQ is held only as its total), are `transfer_in` beside the headline. The FY2020 law's sec. 239 deposit of
+CDC-Wide Activities funds in the Infectious Diseases Rapid Response Reserve Fund is a `transfer_out` inside the
+headline. A Nonrecurring Expenses Fund rescission is not a component of any account we hold.
+
 **ONC** (FY2024 House and Senate, FY2025 Senate and Enacted, FY2026 House and Senate): the headline is $0 budget
 authority as the bill text prints it (no new budget authority), and the paragraph's whole amount is its section 241
 `transfer_in`, beside the headline. FY2025 Enacted cites P.L. 119-4 sec. 1101, continuing P.L. 118-47 div. D.
@@ -214,6 +228,7 @@ amount in the headline's paragraph is read by its own clause:
 | "section 1001(b)(4) of the 21st Century Cures Act" (NIH Innovation Account) | `designated` / `other` |
 | "from the 10-year Pediatric Research Initiative Fund" | `transfer_in` (from PRIF) |
 | "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
+| "transferred to and merged with (amounts in) the Infectious Diseases Rapid Response Reserve Fund" | `transfer_out` |
 | "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
@@ -254,10 +269,11 @@ whose named headline the bill text superseded is computed from the replacement. 
    | `mandatory_advance_untagged` | (discretionary) a mandatory account's headline is printed as available in this bill and its advances are not tagged, so the advance the total counts is not taken off (none since the component backfill) |
    | `member_no_headline` | an account of the agency has no headline in the cell, so its components are missing |
    | `headline_superseded` | the view counts the report's headline, which the bill text superseded with a figure that differs by the report's rounding |
-   | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags |
+   | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags (none since the follow-ups: `provision_lines.csv`) |
+   | `nef_outside_printed_program_level` | the report's 'Total, NIH Program Level' leaves out the Nonrecurring Expenses Fund transfer to NIH Buildings and Facilities and prints it on a separate '(with transfer)' total |
    | `pandemic_flu_balances` | the FY2017 program level counts 'Pandemic Flu balances (Public Law 111-32)', which no phrase rule tags |
-   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241' |
-   | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ) |
+   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241' (none since the follow-ups) |
+   | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ; none since the follow-ups) |
    | `prif_outside_printed_program_level` | the report's program level leaves out the PRIF transfer the bill makes in addition (NIH FY2023) |
    | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total |
    | `emergency_lines_not_held` | the total counts emergency appropriations from the law's other divisions, which we don't hold as lines |

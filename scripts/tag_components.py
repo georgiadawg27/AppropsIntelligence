@@ -62,6 +62,7 @@ TABLE_LINES = ROOT / "reference" / "review" / "accounting" / "table_lines.csv"
 PPHF_TABLE = ROOT / "reference" / "review" / "accounting" / "pphf_table.csv"
 MANDATORY_LINES = ROOT / "reference" / "review" / "accounting" / "mandatory_lines.csv"
 ADVANCE_LINES = ROOT / "reference" / "review" / "accounting" / "advance_lines.csv"
+PROVISION_LINES = ROOT / "reference" / "review" / "accounting" / "provision_lines.csv"
 # the accounts that appropriate an advance for the next year's first quarter (owner, component backfill)
 ADVANCE_ACCOUNTS = ("ACC-HHS-ACF-CHILD-SUPPORT", "ACC-HHS-ACF-FOSTER-CARE", "ACC-HHS-CMS-MEDICAID")
 PPHF = "the Prevention and Public Health Fund (section 4002 of the PPACA)"
@@ -144,6 +145,8 @@ CAP_ADJUSTMENT = re.compile(r"is additional new budget authority specified for p
 CURES = re.compile(r"section 1001\(b\)\(4\) of the 21st Century Cures Act", re.I)
 PRIF = re.compile(r"from the 10-year Pediatric Research Initiative Fund", re.I)
 TO_OIG = re.compile(r"transferred to and merged with the appropriation for the\W{0,3}Office of Inspector General", re.I)
+TO_IDRRRF = re.compile(r"transferred to and merged with (?:amounts in )?the Infectious Diseases Rapid Response Reserve Fund",
+                       re.I)
 # phrases that look like components but are not (owner's list, 2026-10-11): never tagged, never reported
 NOT_COMPONENT = [
     ("set-aside", re.compile(r"shall be for Indian tribes|amounts required to be reserved|set[- ]aside", re.I), "both"),
@@ -224,6 +227,8 @@ def classify(a):
         return "transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", PRIF.search(seg_a).group(0)
     if TO_OIG.search(seg_a):
         return "transfer_out", "", "", "transferred to and merged with the appropriation for the Office of Inspector General"
+    if TO_IDRRRF.search(seg_a):
+        return "transfer_out", "", "", "transferred to and merged with the Infectious Diseases Rapid Response Reserve Fund"
     t = TRANSFER.search(both)
     if t and THIS_HEADING.search(seg_a):
         return None                     # part of this heading's own amounts, not a transfer
@@ -453,6 +458,25 @@ def mandatory_lines(data, heads):
                         "designation": "", "transfer_from": "", "amount": int(r["amount"]), "in_headline": "TRUE",
                         "source_document_id": r["source_document_id"], "source_location": r["source_location"],
                         "quoted_text": r["quoted_text"], "tag_method": r["tag_method"], "tag_rule": r["tag_rule"],
+                        "source_observation_id": "", "carried_from_component_id": "", "notes": r["notes"]})
+    return out
+
+
+def provision_lines(data, heads):
+    """Components whose words sit outside the amount's phrase window, or in a general provision that names the account
+    by its purpose (provision_lines.csv, read from the full bill or law text): Nonrecurring Expenses Fund transfers,
+    section 241 evaluation funds the phrase rules can't read (FY2022 Senate; AHRQ, held only as its total), and the
+    FY2020 deposit in the Infectious Diseases Rapid Response Reserve Fund."""
+    out = []
+    if not PROVISION_LINES.exists():
+        return out
+    with open(PROVISION_LINES) as f:
+        for r in csv.DictReader(f):
+            out.append({"observation_id": r["observation_id"], "component_type": r["component_type"],
+                        "designation": r["designation"], "transfer_from": r["transfer_from"],
+                        "amount": int(r["amount"]), "in_headline": r["in_headline"],
+                        "source_document_id": r["source_document_id"], "source_location": r["source_location"],
+                        "quoted_text": r["quoted_text"], "tag_method": "auto_text", "tag_rule": r["tag_rule"],
                         "source_observation_id": "", "carried_from_component_id": "", "notes": r["notes"]})
     return out
 
@@ -822,6 +846,7 @@ def build(data):
     first += table_lines(data, heads)
     first += pphf_table(data, heads, report)
     first += mandatory_lines(data, heads)
+    first += provision_lines(data, heads)
     held = collections.defaultdict(list)
     for c in first:
         held[c["observation_id"]].append(c)

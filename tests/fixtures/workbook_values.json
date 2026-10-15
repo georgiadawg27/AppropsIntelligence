@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12)",
- "data_sha256": "dfae1088756ac038cc1c5c2d1f44cc5d29f853383c0abc0169afb27e547bff2d",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; the component backfill follow-ups: provision lines (Nonrecurring Expenses Fund, section 241, AHRQ), the Rapid Response Reserve Fund transfer rule, 2026-10-15)",
+ "data_sha256": "03014960a22b15ff00b9624d8d9921110bb448256f37a6624478ca03959e4a8d",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 85,
    "columns": 1,
-   "sha256": "5c710b5cd80efcf60c0a90682bd3979e4b4519217fd34bac636c086c3563398b"
+   "sha256": "19140f61f86f42211a16843b25a4c6bf28debf94a8b3227eeebf63e92df1bc30"
   },
   "Account": {
    "rows": 131,
@@ -44,9 +44,9 @@
    "sha256": "1947917600e4ed957dc6a1015f2a4897dcd61b7f308e738ebab126357e3366b7"
   },
   "Validation Record": {
-   "rows": 21290,
+   "rows": 21303,
    "columns": 9,
-   "sha256": "2a560b9373116ce380a02cec5955a4119ed0b15e7a69d333734bf4e2950a671e"
+   "sha256": "0c213d7b2ed10a034b6cf11f3c34f41eb45603ab0acd4f2c79b95671b0251a0e"
   },
   "Component": {
    "rows": 30,
@@ -54,9 +54,9 @@
    "sha256": "b7511e0ec768d15ff57d0561c2be8c3aad2b35d13805d2730c10b7ee34aabc23"
   },
   "Observation Component": {
-   "rows": 1186,
+   "rows": 1207,
    "columns": 16,
-   "sha256": "b77da7a8785a296a0c8dda9a78254ff8bd319efb651c793adb9f2f8742d48487"
+   "sha256": "2a45aaf50032e039cee55b642327e979ce60bbaede156330bc68c5b6313924d5"
   },
   "Account Attribute": {
    "rows": 4293,

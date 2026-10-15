@@ -63,19 +63,27 @@ KNOWN_CAUSES = {
 # Causes known from reading the documents for one cell (component backfill, FY2017-FY2023): (account, fiscal year,
 # stage, view) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
 KNOWN_CELL_CAUSES = {
-    **{(a, fy, st, "program_level"): "nef_transfer_untagged" for a, fy, st in (
-        ("ACC-HHS-CDC-TOTAL", 2018, "Enacted"), ("ACC-HHS-CDC-TOTAL", 2020, "Enacted"),
-        ("ACC-HHS-CDC-TOTAL", 2021, "Senate Reported"), ("ACC-HHS-OS-TOTAL", 2021, "Senate Reported"))},
     **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
        for st in ("Senate Reported", "Enacted")},
-    ("ACC-HHS-CDC-TOTAL", 2022, "Senate Reported", "program_level"): "evaluation_tap_phrase_untagged",
-    **{("ACC-HHS-AHRQ-TOTAL", fy, st, "program_level"): "agency_total_only" for fy, st in (
-        (2021, "House Reported"), (2022, "House Reported"), (2022, "Senate Reported"))},
     **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
        for st in ("House Reported", "Senate Reported")},
     **{("ACC-HHS-OS-ONC", fy, st, "program_level"): "onc_evaluation_tap_line" for fy, st in (
         (2017, "House Reported"), (2019, "Enacted"))},
     ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",
+    # component backfill follow-ups: the NIH table prints 'Total, NIH Program Level' without the Nonrecurring Expenses
+    # Fund transfer, then 'Transfers from Nonrecurring Expenses Fund' and 'Total, NIH Program Level (with transfer)'
+    # (H.Rept. 117-96 p.477, FY2021 Enacted; the FY2021 Senate report p.252, FY2020 Enacted and FY2021 Senate; the
+    # FY2020 Enacted page of H.Rept. 116-450 is image-only)
+    **{("ACC-HHS-NIH-TOTAL", fy, st, "program_level"): "nef_outside_printed_program_level" for fy, st in (
+        (2020, "Enacted"), (2021, "Enacted"), (2021, "Senate Reported"))},
+}
+# What an agency total outside the tagged cells lacks, by stage (component backfill follow-ups)
+OUTSIDE = {
+    "President's Budget": "an agency total outside the tagged cells (President's Budget: the request's transfers in and "
+                          "trust-fund limitations are not tagged; the request's own Budget Appendix language and "
+                          "justifications are not read for them)",
+    "": "an agency total outside the tagged cells (a House, Senate or Enacted cell not auto-tagged yet: FY2027 House "
+        "also needs its report's Prevention and Public Health Fund allocation table read first)",
 }
 CAUSE_TEXT = {
     "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
@@ -88,15 +96,12 @@ CAUSE_TEXT = {
                            "from the request's own Appendix) differs from how the report's total treats it",
     "headline_superseded": "the printed view counts the report's own headline, which the bill or law text "
                            "superseded with a figure that differs by the rounding of the report's thousands",
-    "nef_transfer_untagged": "Nonrecurring Expenses Fund money made available to the agency (a general provision, or "
-                             "a proviso that names the Fund apart from the amount) is printed as a 'Transfers from "
-                             "Nonrecurring Expenses Fund' line in the program level, and no phrase rule tags it",
     "pandemic_flu_balances": "the FY2017 program level counts the 'Pandemic Flu balances (Public Law 111-32)' line, "
                              "balances of another law that no phrase rule tags",
-    "evaluation_tap_phrase_untagged": "the paragraph's evaluation tap reads 'is available to this appropriation ... "
-                                      "from amounts provided pursuant to section 241', which no phrase rule reads",
-    "agency_total_only": "the agency is held only as its total (no account lines), and a total's paragraph is not "
-                         "read for components, so the evaluation tap its program level counts is not tagged",
+    "nef_outside_printed_program_level": "the bill or law makes Nonrecurring Expenses Fund money available to NIH "
+                                         "Buildings and Facilities in addition, and the report's 'Total, NIH Program "
+                                         "Level' leaves it out (it prints the transfer on its own line and a 'Total, "
+                                         "NIH Program Level (with transfer)' that equals the computed view)",
     "prif_outside_printed_program_level": "the bill makes the 10-year Pediatric Research Initiative Fund transfer in "
                                           "addition to the Office of the Director's amount, and the report's program "
                                           "level does not count it",
@@ -258,7 +263,7 @@ def run(data):
         used = []
         if a.get("total_scope") == "agency":
             if cell not in TC.AUTO_CELLS:
-                outcomes.append(dict(base_out, result="not checked", detail="an agency total outside the tagged cells"))
+                outcomes.append(dict(base_out, result="not checked", detail=OUTSIDE.get(v["stage"], OUTSIDE[""])))
                 continue
             delta = 0
             for m in members(data, a):
