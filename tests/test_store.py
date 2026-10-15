@@ -89,14 +89,15 @@ class Load(StoreTest):
         # account list (100), the FY2023 rows, the CURES account, relationships and historical names
         # FY2024 House Labor-HHS draft (SRC-EXPL-LHHS-FY2024-HOUSE): + 1 document, 1 reference, 101 observations, 2 absences, 473 records; then H.R. 5894's bill text: + 1 document, 1 observation (NEF rescission), 3 records; then law_text: + 374 records (328 pass, 46 info); then the FY2022 backfill (+ 2 documents, 4 references, 378 observations) and FY2023 Medicaid's derived headline and views (+ 12 observations, - 4 absences retired)
         self.assertEqual(self.report["rows"], staged_rows())
-        # each total's scope is Account.total_scope: 13 agency totals, the Labor-HHS title total, no bill total
+        # each total's scope is Account.total_scope: 13 agency totals, the title totals (Labor-HHS Title II; D-7: + 5
+        # CJS, + 5 Labor-HHS) and each subcommittee's bill total (D-7)
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
-                                                "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 1})
+                                                "GROUP BY 1").fetchall()), {"-": 120, "agency": 13, "title": 11, "bill": 2})
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (870, 197))
+                          cjs("confirmed_absence", "canonical_account_id")), (1458, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded)
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -211,10 +212,11 @@ class Load(StoreTest):
         # Other Appropriations citations fell outside Title III-only ranges
         # until v20 recorded the full tables
         self.assertEqual([w for w in self.report["warnings"] if "outside" in w and "effective dates" not in w], [])
-        for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
-                         ("SRC-CRPT-115HRPT704", "120-135"), ("SRC-CRPT-118SRPT198", "220-231"),
-                         ("SRC-CRPT-116HRPT455", "178-197"), ("SRC-CRPT-116SRPT127", "186-195"),
-                         ("SRC-CRPT-116HRPT101", "139-152")):
+        # D-8: each also lists its 302(b) comparison page (reference/review/accounting/d8_records.py)
+        for doc, rng in (("SRC-CRPT-118SRPT62", "212-225; 193"), ("SRC-CRPT-117HRPT395", "210-230; 207"),
+                         ("SRC-CRPT-115HRPT704", "120-135; 118"), ("SRC-CRPT-118SRPT198", "220-231; 199"),
+                         ("SRC-CRPT-116HRPT455", "178-197; 176"), ("SRC-CRPT-116SRPT127", "186-195; 185"),
+                         ("SRC-CRPT-116HRPT101", "139-152; 136")):
             self.assertEqual(self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?",
                                                (doc,)).fetchone()[0], rng, doc)
 
@@ -407,6 +409,80 @@ class StoreCopyTest(StoreTest):
             "AND verification_status = 'flagged' ORDER BY 1", (account,))]
 
 
+class ReRecordedLineExemption(StoreCopyTest):
+    """D-3 (owner 2026-10-14): the two load rules approps_store loosens for NSF R&RA's 'Defense function' line,
+    re-recorded as defense_inside inside a bill or law headline, apply to that case only. Each test breaks one
+    condition on a copy of the loaded store and runs the checks S.load raises a LoadError on."""
+
+    def errors(self):
+        return S.headline_errors(self.conn, S.component_kinds(self.conn)) + S.superseded_errors(self.conn)
+
+    def set(self, oid, **kw):
+        self.conn.execute(f"UPDATE appropriations_observation SET {', '.join(k + ' = ?' for k in kw)} "
+                          "WHERE observation_id = ?", (*kw.values(), oid))
+
+    def line(self):
+        # FY2026 Enacted: the table's line (SRC-EXPL-FY2026-PB p.129) inside the law's headline (SRC-PLAW-119PUBL74)
+        return self.conn.execute("SELECT * FROM appropriations_observation WHERE component = 'defense_inside' "
+                                 "AND fiscal_year = 2026 AND stage = 'Enacted'").fetchone()
+
+    def test_the_re_recorded_lines_load(self):
+        self.assertEqual(self.errors(), [])
+        line = self.line()
+        head = self.conn.execute("SELECT * FROM appropriations_observation WHERE observation_id = ?",
+                                 (line["headline_observation_id"],)).fetchone()
+        self.assertNotEqual(line["source_document_id"], head["source_document_id"])
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = "
+                                           "'defense_inside'").fetchone()[0], 38)   # D-3 30, D-3b 8 (request)
+
+    def test_a_contained_line_from_another_document_still_fails(self):
+        # the headline replaced the table's headline, not one from this document
+        line = self.line()
+        self.set(line["observation_id"], source_document_id="SRC-CRPT-119HRPT272")
+        self.assertIn(f"observation {line['observation_id']}: its headline {line['headline_observation_id']} "
+                      "differs in ['source_document_id']", self.errors())
+
+    def test_a_contained_line_whose_headline_replaced_nothing_still_fails(self):
+        # a contained line of another kind, pointed at a bill-text headline that superseded nothing in its document
+        cds = self.conn.execute("SELECT * FROM appropriations_observation WHERE component = "
+                                "'congressionally_directed_spending' LIMIT 1").fetchone()
+        head = self.conn.execute(
+            "SELECT * FROM appropriations_observation WHERE canonical_account_id = ? AND fiscal_year = ? AND stage = ? "
+            "AND component IS NULL AND verification_status <> 'superseded'",
+            (cds["canonical_account_id"], cds["fiscal_year"], cds["stage"])).fetchone()
+        self.set(cds["observation_id"], source_document_id="SRC-PLAW-119PUBL74")
+        self.assertIn(f"observation {cds['observation_id']}: its headline {head['observation_id']} differs in "
+                      "['source_document_id']", self.errors())
+
+    def test_a_part_line_naming_a_headline_still_fails(self):
+        line = self.line()
+        self.set(line["observation_id"], component="defense")
+        self.assertTrue(any(e.startswith(f"observation {line['observation_id']}: headline_observation_id set on a "
+                                         "'part' line") for e in self.errors()), self.errors())
+
+    def test_a_component_change_that_is_not_the_same_printed_line_still_fails(self):
+        line = self.line()
+        old = self.conn.execute("SELECT observation_id FROM appropriations_observation WHERE "
+                                "superseded_by_observation_id = ?", (line["observation_id"],)).fetchone()[0]
+        for change in ({"amount": line["amount"] + 1000}, {"source_page": "130"},
+                       {"source_document_id": "SRC-CRPT-119HRPT272"}):
+            with self.subTest(change=change):
+                self.conn.execute("SAVEPOINT s")
+                self.set(line["observation_id"], **change)
+                self.assertIn(f"observation {old}: superseded by {line['observation_id']}, which differs in "
+                              "['component']", self.errors())
+                self.conn.execute("ROLLBACK TO s")
+
+    def test_any_other_component_change_still_fails(self):
+        # a replacement elsewhere (a figure the bill text corrected) given another component
+        old, new = self.conn.execute(
+            "SELECT o.observation_id, n.observation_id FROM appropriations_observation o JOIN appropriations_observation n "
+            "ON n.observation_id = o.superseded_by_observation_id WHERE o.component IS NULL AND n.component IS NULL "
+            "AND o.amount <> n.amount LIMIT 1").fetchone()
+        self.set(new, component="program_level")
+        self.assertIn(f"observation {old}: superseded by {new}, which differs in ['component']", self.errors())
+
+
 class ResolutionCascade(StoreCopyTest):
     """The store has no open identity question since v24, so each test sets one
     up the way v10 had it: the three former Exploration Research and
@@ -505,8 +581,17 @@ class FactKey(StoreCopyTest):
         used = lambda sub: {r[0] for r in self.conn.execute(
             "SELECT DISTINCT o.component FROM appropriations_observation o JOIN account a USING (canonical_account_id) "
             "WHERE a.subcommittee = ?", (sub,))}
-        # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's
-        self.assertEqual(used("CJS"), {None} | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's,
+        # but for NSF R&RA's defense line inside the paragraph's total (defense_inside, D-3) and the summary lines its
+        # tables print under the bill and title totals (D-7: no mandatory or discretionary line in a CJS table), and
+        # each report's 302(b) comparison on the bill total (D-8)
+        cjs_summary = {"appropriations", "emergency_appropriations", "rescissions", "rescissions_emergency",
+                       "advance_appropriations_emergency", "excluding_other_appropriations",
+                       "allocation_302b_discretionary", "allocation_302b_mandatory", "bill_302b_discretionary",
+                       "bill_302b_mandatory"}
+        self.assertLessEqual(cjs_summary, set(accounts.SUMMARY_COMPONENTS))
+        self.assertEqual(used("CJS"), {None, "defense_inside"} | cjs_summary
+                         | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
         self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"} | set(accounts.PROPOSAL_COMPONENTS))
         # v33: the CURES Act money is its own account, no longer a component of NIH's total
         self.assertNotIn("CURES", used("LHHS"))
@@ -625,14 +710,16 @@ class GridStates(StoreTest):
         # there, and the Medicare limitation general provision has none yet
         self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "value")
         rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
-        # inside an account's life a gap stays missing (CDC Program Support, FY2025 House)
+        # CDC Program Support FY2025 House, the earlier missing example, holds H.R. 9029's figure since D-9 part 1
         self.assertEqual(S.headline_state(rows["ACC-HHS-CDC-PROGRAM-SUPPORT"]["cells"]["2025|House Reported"]["lines"]),
-                         "missing")
-        # the Medicare limitation general provision's first evidence is FY2026, but its start is not identified
-        # (Account.start_basis 'unidentified', 2026-10-11): its cells before FY2026 read missing again, not blank
+                         "value")
+        # inside an account's life a gap stays missing: some FY2025-FY2027 cell of a held account still has no figure
+        # (D-9: 'document on file, figure not yet entered')
+        self.assertTrue(any(S.headline_state(c["lines"]) == "missing" and not c.get("outside_life")
+                            for r in rows.values() for k, c in r["cells"].items()))
+        # the Medicare limitation general provision starts FY2026 Enacted (D-9 part 2): FY2025 is outside its life
         row = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]
-        self.assertEqual(S.headline_state(row["cells"]["2025|Enacted"]["lines"]), "missing")
-        self.assertNotIn("outside_life", row["cells"]["2025|Enacted"])
+        self.assertTrue(row["cells"]["2025|Enacted"].get("outside_life"))
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
         # no Labor-HHS document on file covers FY2027 Senate Reported (no Senate FY2027 bill is on file; the
@@ -731,11 +818,17 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual({(r["fiscal_year"], r["stage"], r["component"]) for r in defense},
                          {(2026, "Enacted", "defense"), (2027, "House Reported", "defense")})
         out = S.add_observations(self.conn, self.rows)
-        self.assertIn("OBS-0728", out["confirmed"])                     # FY2026 Enacted R&RA defense, 118,800,000
+        # FY2026 Enacted R&RA defense, 118,800,000: the table's line, superseded by its defense_inside copy inside
+        # the law's headline (D-3), is confirmed -- never stored again as a part -- and so is the table's
+        # nondefense line, OBS-0688, which the law's paragraph total replaced
+        self.assertIn("OBS-0728", out["confirmed"])
+        self.assertIn("OBS-0688", out["confirmed"])
+        self.assertEqual(out["conflicting"], [])
         self.assertEqual(out["held"], [])
+        self.assertEqual(S.cell_total(self.conn, "ACC-NSF-RRA", 2026, "Enacted"), 7_176_500_000)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense", "supplemental_act"})
+            {None, "defense", "defense_inside", "supplemental_act"})
 
     def test_unknown_component_name_is_held(self):
         rows = [dict(r, component="Defense base") if r["canonical_account_id"] == "ACC-NSF-RRA" and r["component"]
@@ -744,7 +837,7 @@ class PipelineToStore(StoreCopyTest):
         self.assertEqual(len(out["held"]), 2)
         self.assertEqual({r[0] for r in self.conn.execute(
             "SELECT DISTINCT component FROM appropriations_observation WHERE canonical_account_id = 'ACC-NSF-RRA'")},
-            {None, "defense", "supplemental_act"})
+            {None, "defense", "defense_inside", "supplemental_act"})
 
     def test_repeated_fact_in_one_batch_is_refused(self):
         with self.assertRaises(ValueError):
@@ -773,7 +866,7 @@ class Coverage(StoreCopyTest):
 
     def test_first_and_last_observed_years_and_unchecked_cells(self):
         rows = {r["canonical_account_id"]: r for r in self.rows()}
-        self.assertEqual(len(rows), 130)
+        self.assertEqual(len(rows), 146)                 # D-7: + 10 title totals, + 2 bill totals; D-9: + 4 accounts
         self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
         # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
         self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
@@ -833,22 +926,18 @@ class Lifecycle(StoreTest):
 
     def test_an_unidentified_start_leaves_no_blank_cell_before_the_first_evidence(self):
         # Account.start_basis 'unidentified': the first year with evidence is not the start -- no cell before it
-        # is outside the life; the gaps read missing
+        # is outside the life; the gaps read missing. D-9 part 2 cleared the only such override (the Medicare
+        # limitation line: P.L. 119-75 div. B sec. 241, a new provision in FY2026), so its years before FY2026 are
+        # outside its life now, not missing
         rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
         overridden = [a for (a,) in self.conn.execute("SELECT canonical_account_id FROM account "
                                                       "WHERE start_basis = 'unidentified'")]
-        self.assertEqual(overridden, ["ACC-HHS-GP-MEDICARE-LIMITATION"])
-        for aid in overridden:
-            L = rows[aid]["lifecycle"]
-            self.assertEqual((L["type"], L["start_basis"], L["first_label"]), ("ongoing", "unidentified", "start not identified"))
-            self.assertEqual(L["start_basis_reason"], "FY2026 provision not yet identified; earlier years unknown.")
-            first = min(L["enacted"]["first"], L["proposed"]["first"])
-            before = {k: c for k, c in rows[aid]["cells"].items() if int(k.split("|")[0]) < first}
-            self.assertTrue(before)
-            self.assertFalse([k for k, c in before.items() if c.get("outside_life")], aid)
-        missing = [k for k, c in rows["ACC-HHS-GP-MEDICARE-LIMITATION"]["cells"].items()
-                   if S.headline_state(c["lines"]) == "missing"]
-        self.assertEqual(len(missing), 38)
+        self.assertEqual(overridden, [])
+        cells = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]["cells"]
+        before = {k: c for k, c in cells.items() if int(k.split("|")[0]) < 2026}
+        self.assertTrue(before)
+        self.assertTrue(all(c.get("outside_life") for c in before.values()))
+        self.assertFalse([k for k, c in before.items() if S.headline_state(c["lines"]) == "missing"])
 
     def test_the_load_refuses_a_start_basis_without_a_reason(self):
         import openpyxl
@@ -856,7 +945,10 @@ class Lifecycle(StoreTest):
             wb = openpyxl.load_workbook(S.reference_workbook(), data_only=True)
             ws = wb["Account"]
             head = [c.value for c in ws[1]]
-            row = next(r for r in ws.iter_rows(min_row=2) if r[head.index("start_basis")].value == "unidentified")
+            # D-9 cleared the only override, so the test sets one without its reason
+            row = next(r for r in ws.iter_rows(min_row=2)
+                       if r[head.index("canonical_account_id")].value == "ACC-HHS-GP-MEDICARE-LIMITATION")
+            row[head.index("start_basis")].value = "unidentified"
             row[head.index("start_basis_reason")].value = None
             wb.save(Path(d) / "no_reason.xlsx")
             with self.assertRaisesRegex(S.LoadError, "has no start_basis_reason"):
@@ -1033,9 +1125,9 @@ class V22Merged(StoreTest):
                 (r["canonical_account_id"], int(r["fiscal_year"]), r["stage"], r["amount_type"], r["component"])).fetchall()
             self.assertEqual([tuple(g) for g in got], [(int(r["amount_dollars"]), r["source_document_id"], r["source_page"])],
                              r["canonical_account_id"])
-        # the page it needed: H.Rept. 119-272's full table
+        # the page it needed: H.Rept. 119-272's full table (D-8: and its 302(b) comparison page)
         self.assertEqual(self.conn.execute("SELECT source_page FROM source_document WHERE document_id = 'SRC-CRPT-119HRPT272'"
-                                           ).fetchone()[0], "244-262")
+                                           ).fetchone()[0], "244-262; 242")
 
 
 class LoadRefuses(unittest.TestCase):
@@ -1088,7 +1180,7 @@ class LoadRefuses(unittest.TestCase):
         db = Path(self.tmp.name) / "dates.db"
         with contextlib.redirect_stdout(io.StringIO()):
             report = S.load(self.mutate(add), db)
-        self.assertEqual(report["rows"]["account"], 130)
+        self.assertEqual(report["rows"]["account"], 146)   # D-9: + 4 accounts
         conn = S.connect(db, readonly=True)
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()
@@ -1146,13 +1238,13 @@ class LoadRefuses(unittest.TestCase):
         # the full comparative-table ranges (as v20 records them) clear every
         # page warning; a page outside its document's table still warns
         def edit(wb):
-            for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
-                             ("SRC-CRPT-115HRPT704", "120-135")):
+            for doc, rng in (("SRC-CRPT-118SRPT62", "212-225; 193"), ("SRC-CRPT-117HRPT395", "210-230; 207"),
+                             ("SRC-CRPT-115HRPT704", "120-135; 118")):
                 self.cell(wb, "Source Document", doc, "source_page").value = rng
             self.cell(wb, "Appropriations Observation", "OBS-0987", "source_page").value = "300"      # outside
         report = S.load(self.mutate(edit), self.dir / "x.db")
         self.assertEqual(report["warnings"],
-                         ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's table pages '178-197'"])
+                         ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's table pages '178-197; 176'"])
 
     def test_display_list_drift(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),

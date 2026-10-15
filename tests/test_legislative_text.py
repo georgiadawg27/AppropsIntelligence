@@ -170,6 +170,19 @@ class Parser(unittest.TestCase):
                          "BILLS-118hr5894rh")
 
 
+    def test_a_designation_is_read_to_its_end(self):
+        # D-3: the FY2025 request's Refugee amount; the designation starts inside the 100-character window and ends
+        # past it, so the phrase runs to its end. Text past the window that is no designation is still cut.
+        text = ("Provided further, That of the amounts made available under this heading, $2,914,179,000, along with "
+                "any amounts made available pursuant to the preceding proviso, are designated by the Congress as being "
+                "for an emergency requirement pursuant to section 251(b)(2)(A)(i) of the BBEDCA.")
+        a = L.amounts_in(text)[0]
+        self.assertTrue(a["phrase"].endswith("are designated by the Congress as being for an emergency requirement"))
+        b = L.amounts_in("For expenses, $5,000,000, " + "x" * 120 + " designated by the Congress as being for an "
+                         "emergency requirement")[0]
+        self.assertNotIn("emergency", b["phrase"])
+
+
 class Comparison(unittest.TestCase):
     def obs(self, amount):
         return {"amount": amount}
@@ -193,7 +206,9 @@ class Comparison(unittest.TestCase):
                  amt(100, "of which", "shall be from funds available under section 241 of the PHS Act"),
                  amt(300, "For making payments for the first quarter of fiscal year 2025,", "."))
         self.assertFalse(C.is_main_candidate(p["amounts"][2]))
-        self.assertEqual(C.compare(self.obs(900), p, [])[0], "match")     # less the 241 tap
+        # the section 241 tap is Labor-HHS's rule (reference/rules/LHHS.py LHHS-241-DERIVATION): a Labor-HHS cell
+        lhhs = C.R.Ctx("LHHS", "ACC-HHS-CDC-TOTAL", 2025, "Enacted")
+        self.assertEqual(C.compare(self.obs(900), p, [], ctx=lhhs)[0], "match")     # less the 241 tap
         self.assertEqual(C.compare(self.obs(1300), p, [])[0], "match")    # plus the advance
 
     def test_recorded_part_component(self):

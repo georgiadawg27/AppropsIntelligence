@@ -26,10 +26,21 @@ API
   GET /api/subcommittee/<name>
       every account of the subcommittee side by side -> approps_store.subcommittee_grid()
       (the page picks fiscal years and stages from it)
+  GET /api/features
+      {"features": {name: bool}, "contract_version": n}: the page's feature flags (features.flags),
+      computed from the payloads this server answers with -- the same flags the static export writes
+      into docs/data/index.json from the same answers
+  GET /api/whats-new
+      -> approps_store.whats_new(): every source document with the date it was retrieved into the record,
+         newest first (the page's "What's new"; the export writes the same answer to data/whats_new.json)
+  GET /api/documents
+      -> approps_store.documents(): every source document's id, short name (web/documents.js) and address, for
+         the page's source links (the export writes the same answer to data/documents.json)
 """
 
 import argparse
 import json
+import re
 import sys
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -37,10 +48,19 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlparse
 
 import approps_store as S
-from subcommittees import display_name
+import features as F
+from subcommittees import default_subcommittee, display_name
 
 ROOT = Path(__file__).resolve().parent
 PAGE = ROOT / "web" / "index.html"
+# the page's own files beside index.html (export_static.py copies the same ones): name -> content type
+ASSETS = {"match.js": "text/javascript; charset=utf-8", "abbreviations.js": "text/javascript; charset=utf-8",
+          "documents.js": "text/javascript; charset=utf-8",
+          # the Excel writer Export loads on demand (write-excel-file 4.1.1, MIT, vendored unmodified) and its licence
+          "write-excel-file.min.js": "text/javascript; charset=utf-8", "write-excel-file.LICENSE.txt": "text/plain; charset=utf-8"}
+FONTS = PAGE.parent / "fonts"                               # IBM Plex Sans, self-hosted (SIL OFL)
+BRAND = PAGE.parent / "brand"                               # the logo set: lockups, marks, icons, favicons
+BRAND_TYPES = {".svg": "image/svg+xml", ".png": "image/png"}
 
 
 def search(db, q, agency=None):
@@ -84,6 +104,64 @@ def subcommittee(db, name):
         conn.close()
 
 
+def document_names():
+    """web/documents.js's short names ({source_document_id: name}): the page's display-only map, read as written."""
+    text = (PAGE.parent / "documents.js").read_text()
+    return {k: json.loads(f'"{v}"') for k, v in re.findall(r'^\s*"([^"]+)":\s*"((?:[^"\\]|\\.)*)",?\s*$', text, re.M)}
+
+
+def documents(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.documents(conn, document_names())
+    finally:
+        conn.close()
+
+
+def whats_new(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.whats_new(conn)
+    finally:
+        conn.close()
+
+
+def payloads(db):
+    """Every answer the page can read, keyed by the path the static export writes it to under docs/data/:
+    index.json (the matching pool), subcommittees.json, subcommittees/<name>.json, accounts/<id>.json --
+    each as a client receives it (through JSON)."""
+    conn = S.connect(db, readonly=True)
+    try:
+        pool = S.accounts_for_matching(conn)
+    finally:
+        conn.close()
+    out = {"index.json": {"accounts": F.index_accounts(pool)}}
+    listing = subcommittees(db)
+    out["subcommittees.json"] = listing
+    out["whats_new.json"] = whats_new(db)
+    out["documents.json"] = documents(db)
+    for name in listing["subcommittees"]:
+        out[f"subcommittees/{name}.json"] = subcommittee(db, name)
+    for a in pool:
+        p = account(db, a["canonical_account_id"])
+        out[f"accounts/{a['canonical_account_id']}.json"] = {"history": p["history"], "grid": p["grid"]}
+    return {k: F.as_served(v) for k, v in out.items()}
+
+
+_FEATURES = {}
+
+
+def features(db):
+    """The feature flags for this store (cached per database file and its modification time: the store is read-only)."""
+    path = Path(db)
+    key = (str(path.resolve()), path.stat().st_mtime_ns)
+    if key not in _FEATURES:
+        data = payloads(db)
+        _FEATURES[key] = dict(F.flags(list(data), data.__getitem__),
+                              default_subcommittee=default_subcommittee(subcommittees(db)["subcommittees"]))
+    return _FEATURES[key]
+
+
 def make_handler(db):
     class Handler(BaseHTTPRequestHandler):
         def send(self, status, body, ctype):
@@ -103,9 +181,23 @@ def make_handler(db):
             try:
                 if url.path in ("/", "/index.html"):
                     return self.send(HTTPStatus.OK, PAGE.read_bytes(), "text/html; charset=utf-8")
-                if url.path == "/match.js":                   # loaded by the page; used only by the static export
-                    return self.send(HTTPStatus.OK, (PAGE.parent / "match.js").read_bytes(),
-                                     "text/javascript; charset=utf-8")
+                if url.path.lstrip("/") in ASSETS:            # loaded by the page (match.js: used only by the static export)
+                    name = url.path.lstrip("/")
+                    return self.send(HTTPStatus.OK, (PAGE.parent / name).read_bytes(), ASSETS[name])
+                if url.path.startswith("/fonts/"):
+                    name = url.path[len("/fonts/"):]
+                    font = FONTS / name
+                    if "/" not in name and name.endswith(".woff2") and font.is_file():
+                        return self.send(HTTPStatus.OK, font.read_bytes(), "font/woff2")
+                    return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
+                if url.path.startswith("/brand/"):
+                    name = url.path[len("/brand/"):]
+                    asset = BRAND / name
+                    if "/" not in name and asset.suffix in BRAND_TYPES and asset.is_file():
+                        return self.send(HTTPStatus.OK, asset.read_bytes(), BRAND_TYPES[asset.suffix])
+                    return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
+                if url.path == "/api/features":
+                    return self.json(HTTPStatus.OK, features(db))
                 if url.path == "/api/search":
                     qs = parse_qs(url.query)
                     q = (qs.get("q") or [""])[0].strip()
@@ -117,6 +209,10 @@ def make_handler(db):
                         return self.json(HTTPStatus.OK, account(db, unquote(url.path[len("/api/account/"):])))
                     except LookupError as e:
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
+                if url.path == "/api/whats-new":
+                    return self.json(HTTPStatus.OK, whats_new(db))
+                if url.path == "/api/documents":
+                    return self.json(HTTPStatus.OK, documents(db))
                 if url.path == "/api/subcommittees":
                     return self.json(HTTPStatus.OK, subcommittees(db))
                 if url.path.startswith("/api/subcommittee/"):

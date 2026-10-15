@@ -1,0 +1,1170 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 3986900000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-141",
+         "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "canonical_account_id": "ACC-LHHS-TITLE-VIII-TOTAL",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2019,
+         "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4216",
+         "offsetting_collections": 0,
+         "publication_date": "2018-07-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT862",
+         "source_page": "411",
+         "source_table_or_section": "Title VIII -- printed as 'Total, title VIII' [prior-year enacted column]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+         "validation": [],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2018
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2019
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2022
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Title VIII",
+   "bureau": "(Title Total)",
+   "canonical_account_id": "ACC-LHHS-TITLE-VIII-TOTAL",
+   "canonical_name": "Title VIII (title total)",
+   "display_order": 105,
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Derived rollup -- the printed 'Total, Title VIII' row of each report's comparative table, with the lines printed under it (D-7, reference/review/accounting/d7_records.py).",
+   "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
+   "status": "active",
+   "subcommittee": "LHHS",
+   "title": "Title VIII",
+   "treasury_account_symbol": null
+  },
+  "coverage": {
+   "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ],
+    [
+     2027,
+     "President's Budget"
+    ]
+   ],
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2018,
+    "President's Budget"
+   ],
+   [
+    2018,
+    "House Reported"
+   ],
+   [
+    2018,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "President's Budget"
+   ],
+   [
+    2019,
+    "House Reported"
+   ],
+   [
+    2019,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "Enacted"
+   ],
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2020,
+    "Enacted"
+   ],
+   [
+    2021,
+    "President's Budget"
+   ],
+   [
+    2021,
+    "House Reported"
+   ],
+   [
+    2021,
+    "Senate Reported"
+   ],
+   [
+    2021,
+    "Enacted"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 3986900000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-141",
+    "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+    "canonical_account_id": "ACC-LHHS-TITLE-VIII-TOTAL",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2019,
+    "document_notes": "H.Rept. 115-862 (H.R. 6470). sha256 6c4c0ba3d0856b7a... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement (pp. 340-414; Title II pp. 356-386) is scanned with GPO's invisible text layer: read from that layer, 19 Title II pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4216",
+    "offsetting_collections": 0,
+    "publication_date": "2018-07-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT862",
+    "source_page": "411",
+    "source_table_or_section": "Title VIII -- printed as 'Total, title VIII' [prior-year enacted column]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt862/pdf/CRPT-115hrpt862.pdf",
+    "validation": [],
+    "verification_status": "unverified"
+   }
+  ],
+  "open_cells": [
+   [
+    2018,
+    "President's Budget"
+   ],
+   [
+    2018,
+    "House Reported"
+   ],
+   [
+    2018,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "President's Budget"
+   ],
+   [
+    2019,
+    "House Reported"
+   ],
+   [
+    2019,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "Enacted"
+   ],
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2020,
+    "Senate Reported"
+   ],
+   [
+    2020,
+    "Enacted"
+   ],
+   [
+    2021,
+    "President's Budget"
+   ],
+   [
+    2021,
+    "House Reported"
+   ],
+   [
+    2021,
+    "Senate Reported"
+   ],
+   [
+    2021,
+    "Enacted"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "relationships": [],
+  "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
+   "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
+  "total_scope": "title"
+ }
+}

@@ -9,7 +9,9 @@
 #               checks the site's copy (lookup results stored) against LibreOffice's results,
 #               uploads it as an artifact, then runs the store, ingest, extraction and build tests
 #               (every module but the three below)
-#   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node)
+#   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node), and
+#               tests/test_any_subcommittee.py again, whose page check (a third subcommittee on the page) needs
+#               Chromium and skips in the data job
 # The toolchain is pinned: ubuntu-24.04, Python 3.11.17, requirements.lock (exact package versions) and
 # an exact LibreOffice build. A pull request doesn't commit docs/Approps_Pilot_Schema_Loaded.xlsx (the
 # `changes` job fails if it does): only export-static.yml on main writes it.
@@ -256,8 +258,8 @@ jobs:
           # all 14,574 queries on pushes to main (tests/test_static.py MatcherParity)
           PARITY_SAMPLE: ${{ github.event_name == 'pull_request' && '1500' || '' }}
         run: >
-          python -m pytest tests/test_web.py tests/test_compare.py tests/test_static.py -v -rs -p no:cacheprovider
-          -n auto --dist loadscope --durations=10
+          python -m pytest tests/test_web.py tests/test_compare.py tests/test_static.py tests/test_any_subcommittee.py
+          -v -rs -p no:cacheprovider -n auto --dist loadscope --durations=10
 
   # the check to require: always reports, and passes only when both jobs passed
   # (data counts as passed when a page-only change skipped its steps)

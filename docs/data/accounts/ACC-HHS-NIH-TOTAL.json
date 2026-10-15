@@ -496,6 +496,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-17150"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-3894"
           }
          ],
          "verification_status": "auto-validated"
@@ -1913,6 +1919,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-13779"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-3123"
           }
          ],
          "verification_status": "auto-validated"
@@ -2649,6 +2661,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-11704"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-2834"
           }
          ],
          "verification_status": "auto-validated"
@@ -3243,6 +3261,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-09966"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-2439"
           }
          ],
          "verification_status": "auto-validated"
@@ -4014,6 +4038,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-09105"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-2011"
           }
          ],
          "verification_status": "auto-validated"
@@ -4585,7 +4615,8 @@
            "validation_id": "VAL-LHHS-02112"
           },
           {
-           "human_review_status": "pending",
+           "human_review_status": "resolved",
+           "resolution": "explained, no change (owner ruling 6 A, D-1): in FY2023 House and Senate the bills make the $12,600,000 Pediatric Research Initiative Fund transfer in addition to the Office of the Director's amount (H.R. 8295, S. 4659), and the report's NIH program level (H.Rept. 117-403 p.816; FY2023 Senate explanatory statement p.407) does not count it; the view definition is unchanged",
            "result": "flag",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRC-PRIF-OUTSIDE-PRINTED-PROGRAM-LEVEL"
@@ -5473,6 +5504,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-01418"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0344"
           }
          ],
          "verification_status": "auto-validated"
@@ -8230,6 +8267,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-17150"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-3894"
      }
     ],
     "verification_status": "auto-validated"
@@ -9428,6 +9471,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-13779"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-3123"
      }
     ],
     "verification_status": "auto-validated"
@@ -10032,6 +10081,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-11704"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-2834"
      }
     ],
     "verification_status": "auto-validated"
@@ -10511,6 +10566,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-09966"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-2439"
      }
     ],
     "verification_status": "auto-validated"
@@ -11156,6 +11217,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-09105"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-2011"
      }
     ],
     "verification_status": "auto-validated"
@@ -11877,7 +11944,8 @@
       "validation_id": "VAL-LHHS-02112"
      },
      {
-      "human_review_status": "pending",
+      "human_review_status": "resolved",
+      "resolution": "explained, no change (owner ruling 6 A, D-1): in FY2023 House and Senate the bills make the $12,600,000 Pediatric Research Initiative Fund transfer in addition to the Office of the Director's amount (H.R. 8295, S. 4659), and the report's NIH program level (H.Rept. 117-403 p.816; FY2023 Senate explanatory statement p.407) does not count it; the view definition is unchanged",
       "result": "flag",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRC-PRIF-OUTSIDE-PRINTED-PROGRAM-LEVEL"
@@ -12342,6 +12410,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-01418"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0344"
      }
     ],
     "verification_status": "auto-validated"

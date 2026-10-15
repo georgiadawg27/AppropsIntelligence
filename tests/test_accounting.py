@@ -230,8 +230,14 @@ class AttributeSchema(unittest.TestCase):
                          [])
 
     def test_totals_carry_no_attributes_of_their_own(self):
-        totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")}
+        # except an agency held only as its total, whose total is its one line (owner decision B, D-9)
+        lone = {a["canonical_account_id"] for a in STAGED["accounts"]
+                if a.get("total_scope") == "agency" and not MR.members(STAGED, a)}
+        self.assertEqual(lone, {"ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL", "ACC-HHS-AHA-TOTAL"})
+        totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")} - lone
         self.assertFalse([r for r in STAGED["account_attributes"] if r["canonical_account_id"] in totals])
+        self.assertEqual({r["canonical_account_id"] for r in STAGED["account_attributes"]} & lone,
+                         {"ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL"})
 
     def test_subfunction_is_the_codes_last_three_digits(self):
         code = attr(attribute="account_id_code", value="075-0849-0-1-550")
@@ -298,9 +304,27 @@ def amt(amount, before, after=""):
     return {"amount": amount, "block": 1, "proviso": False, "phrase": f"{before} [${amount:,}] {after}"}
 
 
+# a Labor-HHS cell: the phrase rules below are the core's and Labor-HHS's rule file's (reference/rules/LHHS.py)
+def lx(para=None):
+    return TC.ctx_for("LHHS", "ACC-HHS-CDC-INJURY-PREVENTION", 2026, "House Reported", para)
+
+
+def lclassify(a):
+    return TC.classify(a, lx())
+
+
+def lnot_a_component(a):
+    return TC.not_a_component(a, lx())
+
+
+def lhhs_rules():
+    import rules_registry as R
+    return R.active().modules["LHHS"]
+
+
 class TaggingRules(unittest.TestCase):
     def kind(self, a):
-        r = TC.classify(a)
+        r = TC.classify(a, lx())
         return r and r[:2]
 
     def test_phrase_rules(self):
@@ -315,20 +339,20 @@ class TaggingRules(unittest.TestCase):
                          ("trust_fund_limitation", ""))
         self.assertEqual(self.kind(amt(5, "Provided, That", "shall be for the projects specified in the table")),
                          ("earmark", ""))
-        self.assertIsNone(TC.classify(amt(5, "Provided, That", "shall be for grants")))
+        self.assertIsNone(lclassify(amt(5, "Provided, That", "shall be for grants")))
 
     def test_the_owners_rules_of_2026_10_11(self):
         self.assertEqual(self.kind(amt(915, "program management,", ", to remain available through September 30, "
                                    "2025, to be transferred from the Federal Hospital Insura")), ("trust_fund_limitation", ""))
         self.assertEqual(self.kind(amt(604, "Act of 1985, and", "is additional new budget authority specified for "
                                    "purposes of section 251(b)(2)(C) of such Act")), ("designated", "cap_adjustment"))
-        self.assertIsNone(TC.classify(amt(311, "Provided further, That of the amount provided under this heading,",
+        self.assertIsNone(lclassify(amt(311, "Provided further, That of the amount provided under this heading,",
                                           "is provided to meet the terms of section 251(b)(2)(C)(ii) of the Act")))
-        self.assertEqual(TC.not_a_component(amt(311, "Provided further, That", "is provided to meet the terms of "
+        self.assertEqual(lnot_a_component(amt(311, "Provided further, That", "is provided to meet the terms of "
                                                 "section 251(b)(2)(C)(ii) of the Act")), "cap-adjustment base")
         self.assertEqual(self.kind(amt(407, "described in section 1001(b)(4) of the 21st Century Cures Act, in "
                                    "addition to amounts available,", ", to remain available")), ("designated", "other"))
-        self.assertEqual(TC.classify(amt(12, "In addition,", "is appropriated from the 10-year Pediatric Research "
+        self.assertEqual(lclassify(amt(12, "In addition,", "is appropriated from the 10-year Pediatric Research "
                                      "Initiative Fund described in"))[:3],
                          ("transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)"))
         self.assertEqual(self.kind(amt(5, "Provided further, That", "shall be transferred to and merged with the "
@@ -336,15 +360,16 @@ class TaggingRules(unittest.TestCase):
         self.assertEqual(self.kind(amt(244, "Provided, That in addition to amounts provided under this heading,",
                                    "shall be available for surveillance from amounts made available under section "
                                    "4002 of the PPACA")), ("transfer_in", ""))
-        self.assertIsNone(TC.classify(amt(35, "the Secretary shall provide not less than", "from amounts made "
+        self.assertIsNone(lclassify(amt(35, "the Secretary shall provide not less than", "from amounts made "
                                            "available under this heading")))
-        self.assertEqual(TC.not_a_component(amt(285, "is provided, not less than", "is provided for HEAL")),
+        self.assertEqual(lnot_a_component(amt(285, "is provided, not less than", "is provided for HEAL")),
                          "sub-allocation")
-        self.assertEqual(TC.not_a_component(amt(363, "health,", ", which shall be for the purposes and in the amounts "
+        self.assertEqual(lnot_a_component(amt(363, "health,", ", which shall be for the purposes and in the amounts "
                                                 "specified in the table under this heading")), "program table")
 
     def test_the_cr_drops_only_what_an_anomaly_changes(self):
-        sections, changes, stated = TC.CR_ANOMALIES["ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
+        sections, changes, stated = TC.cr_anomalies("LHHS", "ACC-HHS-SAMHSA-PROGRAM-SUPPORT", 2025)[
+            "ACC-HHS-SAMHSA-PROGRAM-SUPPORT"]
         self.assertEqual(stated, [])
         self.assertTrue(AC._selected(comp(t="earmark"), changes))
         self.assertFalse(AC._selected(comp(t="transfer_in", transfer_from="241"), changes))
@@ -389,7 +414,7 @@ class TaggingRules(unittest.TestCase):
                          {"not carried: FY2025 already holds the type"})
 
     def test_pphf_allocation_rows(self):
-        rows = [c for c in STAGED["observation_components"] if c["transfer_from"] == TC.PPHF]
+        rows = [c for c in STAGED["observation_components"] if c["transfer_from"] == lhhs_rules().PPHF]
         self.assertTrue(rows)
         self.assertTrue(all(c["component_type"] == "transfer_in" and c["in_headline"] == "FALSE" for c in rows))
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
@@ -398,20 +423,61 @@ class TaggingRules(unittest.TestCase):
             o = obs[c["observation_id"]]
             if o["canonical_account_id"].startswith("ACC-HHS-CDC-"):
                 cdc[(o["fiscal_year"], o["stage"])] += c["amount"]
-        # the Fund's CDC share after sequestration, each cell (the reports' totals); FY2023 House and Senate leave
-        # out the $160,000,000 block grant, printed on the CDC-wide line, which holds no headline those stages
+        # the Fund's CDC share after sequestration, each cell (the reports' totals); FY2023 House and Senate count
+        # the $160,000,000 block grant on the CDC-wide line since D-2 recorded its headlines from the bill text
+        # (decision 4 A); FY2027 House from H.Rept. 119-696's allocation table (D-2)
         want = {(fy, st): v for fy, h, s, e in ((2017, 908300000, 891300000, 891300000),
                                                (2018, 840600000, 800900000, 800900000),
                                                (2019, 848000000, 808300000, 804500000),
                                                (2020, 854250000, None, 854250000),
                                                (2021, 856150000, 856150000, 856150000),
                                                (2022, 903300000, 903300000, 903300000),
-                                               (2023, 743300000, 743300000, 903300000),
+                                               (2023, 903300000, 903300000, 903300000),
                                                (2024, 1186200000, 1186200000, 1186200000),
                                                (2025, 1186200000, 1186200000, 1186200000),
-                                               (2026, 1398375000, 1398375000, 1398375000))
+                                               (2026, 1398375000, 1398375000, 1398375000),
+                                               (2027, 1398375000, None, None))
                 for st, v in (("House Reported", h), ("Senate Reported", s), ("Enacted", e)) if v}
+        # the President's Budget (D-3): the request column's Fund lines, each cell the column's printed CDC Fund
+        # total (FY2019, FY2026 and FY2027 print none); FY2023 less the CDC-wide block grant's 160,000,000, whose
+        # account has no FY2023 request headline (missing: CA-LHHS-0037 retired, D-3b), so the row is reported, not
+        # recorded
+        want.update({(fy, "President's Budget"): v for fy, v in (
+            (2017, 944470000), (2018, 840600000), (2020, 893950000), (2021, 893950000), (2022, 903300000),
+            (2023, 743300000), (2024, 1186200000), (2025, 1186200000))})
         self.assertEqual(dict(cdc), want)
+
+    def test_cdc_wide_fy2023_request_is_missing_not_absent(self):
+        # D-3b: CA-LHHS-0037 rested on the table's silence; the FY2023 Appendix language under the heading
+        # appropriates all of CDC, so the cell is missing (no headline, no absence) and the Fund row is not recorded
+        retired = json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text())
+        self.assertIn("CA-LHHS-0037", retired["confirmed_absences"])
+        cell = ("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget")
+        self.assertFalse([c for c in STAGED["confirmed_absences"]
+                          if (c["canonical_account_id"], c["fiscal_year"], c["stage"]) == cell])
+        self.assertFalse([o for o in STAGED["observations"]
+                          if (o["canonical_account_id"], o["fiscal_year"], o["stage"]) == cell])
+
+    def test_cdc_injury_fy2025_request_section_241_past_the_window(self):
+        # D-3b: 'in addition to amounts provided under this heading, $100,000,000 shall be available for ... from
+        # amounts made available under section 241 of the PHS Act' (Budget Appendix p.405): section 241, never PPHF
+        rows = [c for c in STAGED["observation_components"] if c["observation_id"] == "OBS-LHHS-0892"
+                and c["amount"] == 100000000]
+        self.assertEqual([(c["component_type"], c["transfer_from"], c["in_headline"], c["tag_method"]) for c in rows],
+                         [("transfer_in", "section 241 of the PHS Act (evaluation funds)", "FALSE", "appendix_text")])
+        para = {"text": ["For injury prevention and control, $843,379,000: Provided, That in addition to amounts "
+                         "provided under this heading, $100,000,000 shall be available for implementation of the "
+                         "Community Violence Intervention initiative from amounts made available under section 241 of "
+                         "the PHS Act."]}
+        x = {"amount": 100000000, "phrase": "control, $843,379,000: Provided, That in addition to amounts provided "
+                                            "under this heading, [$100,000,000] shall be available for implementation "
+                                            "of the Community Violence Intervention initiative from amount"}
+        self.assertEqual(lhhs_rules().past_window_241(x, lx(para))[:3],
+                         ("transfer_in", "", "section 241 of the PHS Act (evaluation funds)"))
+        other = dict(para, text=[para["text"][0].replace("section 241 of the PHS Act", "section 4002 of the PPACA")])
+        self.assertIsNone(lhhs_rules().past_window_241(x, lx(other)))
+        v = next(v for v in STAGED["validations"] if v["validation_id"] == "VAL-MRV-LHHS-0135")
+        self.assertEqual(v["result"], "pass")
 
     def test_onc_headline_is_zero_with_its_241_transfer(self):
         obs = {o["observation_id"]: o for o in STAGED["observations"]}
@@ -444,10 +510,9 @@ class TaggingRules(unittest.TestCase):
                      "section 241 of the PHS Act: (1)", "to carry out subpart II"),
              amt(2, "to carry out subpart II $79; and (2)", "to evaluate programs: Provided further, That"),
              amt(9, "to evaluate programs: Provided further, That", "shall be for grants")]
-        open_list, got = False, []
+        ctx, got = lx(), []
         for a in p:
-            item, open_list = TC.list_241(a, open_list)
-            got.append(item)
+            got.append(lhhs_rules().list_241(a, ctx) is not None)
         self.assertEqual(got, [True, True, False])
 
 
@@ -479,9 +544,14 @@ class MeasureReconcile(unittest.TestCase):
     def test_every_printed_discretionary_total_is_checked(self):
         _, outcomes = MR.run(STAGED)
         disc = [o for o in outcomes if o.get("view") == "discretionary"]
-        self.assertEqual(len(disc), 26)
-        self.assertEqual([o for o in disc if o["result"] == "not checked"], [])
-        self.assertEqual(sum(o["result"] == "pass" for o in disc), 25)
+        # D-7: the discretionary lines of Labor-HHS Title I and the bill total (accounts not held) are not checked,
+        # and say so; every other one is
+        held = [o for o in disc if not o["account"].startswith(("ACC-LHHS-TITLE-", "ACC-LHHS-BILL-"))]
+        self.assertEqual(len(held), 26)
+        self.assertEqual([o for o in held if o["result"] == "not checked"], [])
+        self.assertEqual(sum(o["result"] == "pass" for o in held), 25)
+        self.assertEqual({o["detail"].split(" (")[0] for o in disc if o not in held}, {"not checked: accounts not held"})
+        self.assertEqual(len(disc) - len(held), 46)
 
     def test_committed_records_are_up_to_date(self):
         records, _ = MR.run(STAGED)
@@ -490,6 +560,59 @@ class MeasureReconcile(unittest.TestCase):
     def test_never_a_confirming_rule(self):
         import validate_approps as V
         self.assertNotIn("measure_reconcile", V.CONFIRMING_RULES)
+
+
+class D2(unittest.TestCase):
+    """D-2: the President's Budget request language, the earmark rule check, CJS FY2024-FY2025."""
+
+    def test_earmark_rule_check_passes_and_fails_when_a_component_is_missing(self):
+        _, outcomes = MR.run(STAGED)
+        got = {o["observation_id"]: o["result"] for o in outcomes if o["kind"] == "earmark"}
+        self.assertEqual(got, {"OBS-LHHS-4109": "pass", "OBS-LHHS-4110": "pass", "OBS-LHHS-4111": "pass",
+                               "OBS-LHHS-4112": "pass"})
+        data = copy.deepcopy(STAGED)
+        data["observation_components"] = [c for c in data["observation_components"]
+                                          if not (c["observation_id"] == "OBS-LHHS-4112" and c["component_type"] == "earmark")]
+        records, outcomes = MR.run(data)
+        r = next(r for r in records if r["validation_id"] == "VAL-MRE-LHHS-4112")
+        self.assertEqual((r["result"], r["human_review_status"]), ("fail", "pending"))
+        self.assertIn("differs by $54,611,000", r["observed_result"])
+        # it never adjusts the figure
+        self.assertEqual(next(o for o in data["observations"] if o["observation_id"] == "OBS-LHHS-4112")["amount"],
+                         175866000)
+
+    def test_request_language_coverage_is_account_by_account(self):
+        rl = TC.request_language()
+        read = next(k for k, r in rl.items() if r["status"] == "read")
+        missing = next(k for k, r in rl.items() if r["status"] == "not found")
+        acc = {a["canonical_account_id"]: a["subcommittee"] for a in STAGED["accounts"]}
+        self.assertTrue(TC.covered(read[0], acc[read[0]], read[1], "President's Budget"))
+        self.assertFalse(TC.covered(missing[0], acc[missing[0]], missing[1], "President's Budget"))
+        self.assertIn("request language not found", TC.not_covered_reason(missing[0], missing[1], "President's Budget"))
+        # every appendix_text component cites a Budget Appendix chapter or (the 7d ruling) the report's own line
+        for c in STAGED["observation_components"]:
+            if c["tag_method"] == "appendix_text":
+                self.assertTrue(c["source_document_id"].startswith("SRC-BUDGET-APP-"), c["component_id"])
+
+    def test_a_default_never_leaves_a_negative_base(self):
+        _, outcomes = MR.run(STAGED)
+        self.assertFalse([o for o in outcomes if o["kind"] == "base" and o["result"] == "fail"])
+        c = next(c for c in STAGED["observation_components"] if c["observation_id"] == "OBS-LHHS-0209"
+                 and c["component_type"] == "trust_fund_limitation")
+        self.assertEqual(c["in_headline"], "FALSE")
+        self.assertIn("cannot be inside the headline", c["notes"])
+
+    def test_cjs_fy2024_fy2025_are_auto_tagged_and_fy2025_follows_the_cr(self):
+        for fy in (2024, 2025):
+            for st in TC.TEXT_STAGES:
+                self.assertIn(("CJS", fy, st), TC.auto_cells())
+        self.assertIn(("CJS", 2025, "Enacted"), TC.cr_cells())
+        obs = {o["observation_id"]: o for o in STAGED["observations"]}
+        cjs25 = [c for c in STAGED["observation_components"] if obs[c["observation_id"]]["canonical_account_id"]
+                 .startswith(("ACC-NASA", "ACC-NSF", "ACC-DOJ", "ACC-NOAA", "ACC-OSTP", "ACC-NSC"))
+                 and obs[c["observation_id"]]["fiscal_year"] == 2025 and obs[c["observation_id"]]["stage"] == "Enacted"]
+        # sec. 1111: FY2024 earmark language has no legal effect for FY2025
+        self.assertFalse([c for c in cjs25 if c["component_type"] == "earmark"])
 
 
 class LikeWithLike(unittest.TestCase):

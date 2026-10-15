@@ -1,0 +1,263 @@
+{
+ "contract_version": 9,
+ "spec": "reference/ui/explore-v1/SPEC.md section 9",
+ "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
+ "features": {
+  "grid": {
+   "spec_row": "Grid, states, compare modes, expand/collapse, sections",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:titles[].title",
+    "subcommittees/*.json:titles[].rows",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.outside_life",
+    "subcommittees/*.json:rows[].rollup",
+    "subcommittees/*.json:rows[].rollup_members",
+    "subcommittees/*.json:rows[].member_of",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:enactments.*.bill_id"
+   ]
+  },
+  "figure_source": {
+   "spec_row": "Click figure -> source panel",
+   "brief": "UI-2",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_table_or_section",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].url_or_identifier",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_url",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].verification_status",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].observation_id"
+   ]
+  },
+  "account_panel": {
+   "spec_row": "Account panel, history bars",
+   "brief": "UI-2",
+   "fields": [
+    "accounts/*.json:history.account.canonical_name",
+    "accounts/*.json:history.observations[].fiscal_year",
+    "accounts/*.json:history.observations[].stage",
+    "accounts/*.json:history.observations[].amount",
+    "accounts/*.json:grid.rows[].fiscal_year",
+    "accounts/*.json:grid.rows[].cells.*[].state",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].amount",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].source_document_id",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].source_page",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].bill_id",
+    "accounts/*.json:grid.rows[].cells.*[].observations[].bill_url"
+   ]
+  },
+  "overview_panel": {
+   "spec_row": "Overview panel, largest movers",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees/*.json:titles[].total.cells.*.lines[].state",
+    "subcommittees/*.json:titles[].total.cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].rollup",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:enactments.*.bill_id",
+    "subcommittees/*.json:enactments.*.enactment_date",
+    "subcommittees/*.json:enactments.*.funding_type",
+    "subcommittees/*.json:enactments.*.vehicle_bill_id"
+   ]
+  },
+  "search_filter": {
+   "spec_row": "Search, agency filter, status filter",
+   "brief": "UI-1",
+   "fields": [
+    "index.json:accounts[].canonical_account_id",
+    "index.json:accounts[].canonical_name",
+    "index.json:accounts[].agency",
+    "index.json:accounts[].historical_names",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:rows[].cells.*.lines[].state"
+   ]
+  },
+  "interaction_state": {
+   "spec_row": "Hover, click-away, Esc, Share/URL state",
+   "brief": "UI-1",
+   "fields": [
+    "subcommittees.json:subcommittees",
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id"
+   ]
+  },
+  "abbreviations": {
+   "spec_row": "Abbreviations (display-only label map in web/, keyed by canonical_account_id)",
+   "brief": "UI-1",
+   "fields": [
+    "index.json:accounts[].canonical_account_id"
+   ]
+  },
+  "export_csv": {
+   "spec_row": "Export CSV",
+   "brief": "UI-4",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].observation_id"
+   ]
+  },
+  "phone": {
+   "spec_row": "Phone list and sheet",
+   "brief": "UI-P",
+   "fields": [
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].bill_url"
+   ]
+  },
+  "accounting_views": {
+   "spec_row": "Amount basis, timing, Exclude earmarks",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views.*"
+   ]
+  },
+  "budget_class": {
+   "spec_row": "Account type filter, \"incl. mandatory\" tags, \"Appropriated mandatory\" sub-group",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].attributes.*.budget_class"
+   ]
+  },
+  "defense_split": {
+   "spec_row": "Defense / nondefense column",
+   "brief": "UI-0 / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.defense_portion"
+   ]
+  },
+  "exclude_earmarks": {
+   "spec_row": "Filter \u203a Advanced: Exclude earmarks",
+   "brief": "UI-0b / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views_excluding_earmarks.*[].amount"
+   ]
+  },
+  "nondefense": {
+   "spec_row": "Defense / nondefense column: the nondefense figure",
+   "brief": "UI-0b / UI-3",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views_nondefense.*[].amount"
+   ]
+  },
+  "account_page": {
+   "spec_row": "Account page (the One account view): header, enacted history, every stage every year, related",
+   "brief": "UI-5",
+   "fields": [
+    "accounts/*.json:history.account.canonical_name",
+    "accounts/*.json:history.account.subcommittee",
+    "accounts/*.json:history.historical_names[].former_name",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.outside_life",
+    "subcommittees/*.json:rows[].member_of",
+    "subcommittees/*.json:rows[].lifecycle.type",
+    "subcommittees/*.json:enactments.*.funding_type"
+   ]
+  },
+  "find_changes": {
+   "spec_row": "Find changes: preset questions, condition builder, results (differences between two printed figures only)",
+   "brief": "UI-6",
+   "fields": [
+    "subcommittees/*.json:fiscal_years",
+    "subcommittees/*.json:stages",
+    "subcommittees/*.json:rows[].account.canonical_account_id",
+    "subcommittees/*.json:rows[].account.canonical_name",
+    "subcommittees/*.json:rows[].account.agency",
+    "subcommittees/*.json:rows[].cells.*.lines[].state",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].amount",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_document_id",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_page",
+    "subcommittees/*.json:rows[].cells.*.outside_life"
+   ]
+  },
+  "find_moves": {
+   "spec_row": "Find changes: Moves and reorganizations (from relationships)",
+   "brief": "UI-6",
+   "fields": [
+    "subcommittees/*.json:rows[].relationships[].relationship_id",
+    "subcommittees/*.json:rows[].relationships[].relationship_type",
+    "subcommittees/*.json:rows[].relationships[].from_account_id",
+    "subcommittees/*.json:rows[].relationships[].to_account_id",
+    "subcommittees/*.json:rows[].relationships[].effective_fiscal_year"
+   ]
+  },
+  "whats_new": {
+   "spec_row": "What's new: source documents by the date each was added to the record (built at export time; no alerts or email)",
+   "brief": "UI-6",
+   "fields": [
+    "whats_new.json:documents[].document_id",
+    "whats_new.json:documents[].first_added",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date"
+   ],
+   "waits_for": "Off until D-5 publishes a first-added date per source document and an added date per figure (field names as D-5 sets them; update these paths then). retrieval_timestamp is not used: it changes on every re-fetch or reparse (owner, 2026-10-14). The page code and data/whats_new.json stay; the page reads documents[].retrieved today and moves to the first-added date with D-5."
+  },
+  "watchlist": {
+   "spec_row": "Watch (browser storage only; no alerts or email)",
+   "brief": "UI-6",
+   "fields": [
+    "index.json:accounts[].canonical_account_id",
+    "index.json:accounts[].canonical_name"
+   ]
+  },
+  "basis_adjustments": {
+   "spec_row": "Amount basis: the adjustments from As printed to the view",
+   "brief": "D-6",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views.*[].adjustments",
+    "documents.json:documents[].url_or_identifier"
+   ]
+  },
+  "anchored_totals": {
+   "spec_row": "Totals built down from the printed anchor: build-up, not itemised remainder, cause on n/a",
+   "brief": "D-8",
+   "fields": [
+    "subcommittees/*.json:titles[].total.cells.*.views.*[].anchor",
+    "subcommittees/*.json:rows[].cells.*.views.*[].cause",
+    "subcommittees/*.json:titles[].total.cells.*.views.*[].remainder"
+   ]
+  },
+  "nondefense_excluding_earmarks": {
+   "spec_row": "Filter: Non-defense and Exclude earmarks together",
+   "brief": "D-8",
+   "fields": [
+    "subcommittees/*.json:rows[].cells.*.views_nondefense_excluding_earmarks.*[].amount"
+   ]
+  }
+ },
+ "shapes": {
+  "rows[].cells.<FY|stage>.views.<basis>": "a list: [{amount, timing: available|enacted (null for printed), status: checked|computed|matches|excluded|not_computable, reason, cause?, printed_observation_id?, validation_id?, component_ids?, accounts_behind?, anchor?, remainder?, adjustments?}]. One entry for timing 'available' and, only where it differs, one for 'enacted': with no 'enacted' entry the 'available' one holds for both timings. basis: printed, discretionary, discretionary_designated, all_appropriations, program_level (accounting.BASES). Only on cells whose headline holds a value; amount is null unless status is checked, computed or matches. An account's status: checked (a printed total measure_reconcile matched), computed, excluded, not_computable. A total's (D-8, ACCOUNTING_RULES 'Totals', reference/specs/anchored-totals.md): built down from its printed anchor -- matches (anchor = As printed + the itemised adjustments), computed (against an anchor: the anchor, with the rest one 'not itemised' remainder; with no anchor: As printed + adjustments where every part is known), excluded, not_computable; every total entry carries accounts_behind. cause, on every not_computable entry (account or total): missing_figure | not_held | no_anchor | no_class | components_unknown. anchor (a total's entry built against a printed line): {observation_id, label (the report's own words), document, page, kind: table_line|text}. remainder (an anchored entry that doesn't itemise every step): {amount (signed), accounts: [{account (null: money in no account held), amount, cause}], why}.",
+  "rows[].cells.<FY|stage>.components[]": "{component_id, type, amount, in_headline, within_component_id, designation, transfer_from, source_document_id, source_page, source_table_or_section}",
+  "rows[].cells.<FY|stage>.earmark": "{amount, component_ids[]}; only where earmark components are tagged (absent is not zero)",
+  "rows[].cells.<FY|stage>.defense_portion": "{amount, component_ids[]}; only where defense_portion components are tagged (absent is not zero)",
+  "rows[].attributes.<FY>": "{budget_class, provisional, budget_subfunction, fund_type, account_id_code, stage_basis, source_document_id, source_page, citations: {<attribute>: {account_attribute_id, source_document_id, source_page}}, request?: {the same, stage_basis 'request', where the President's Budget has its own value}}; an attribute with no record is absent",
+  "split": "index.json split_subcommittees lists the subcommittees also published per fiscal year: subcommittees/<SC>/index.json (everything but rows, titles, bill_total; files: {FY: file}) and subcommittees/<SC>/<FY>.json (rows, titles, bill_total with that year's cells and attributes only). subcommittees/<SC>.json stays the whole grid.",
+  "rows[].cells.<FY|stage>.views_excluding_earmarks.<basis>": "the shape of views.<basis>, every basis including printed: that view less the earmark components inside the headline (accounting.excluded_amount; ACCOUNTING_RULES 'excluding earmarks'). Only on cells that have views. An account outside the auto-tagged cells (tag_components.coverage()) is not_computable (cause components_unknown), reason 'earmarks not tagged for this stage', except a President's Budget cell: a request carries no earmarks, so every entry equals its views entry (D-6 structural rule; an excluded or not computable view stays so). An account's entry is computed (never checked). A total's entry (D-8) is its views entry less what the exclusion takes out of each line, with the views entry's anchor and remainder: matches where its views entry matches and nothing is taken out; not_computable (with a cause) where a part's exclusion is not known (a part the views entry could not itemise counts only where a structural rule clears it). Every total entry carries accounts_behind.",
+  "rows[].cells.<FY|stage>.views_nondefense.<basis>": "as views_excluding_earmarks, for defense_portion components (ACCOUNTING_RULES 'nondefense'); untagged reason 'defense not tagged for this stage', except an account whose subfunction (FY N's own Appendix volume) is not 05x (and not 999), with no defense line printed and no defense_portion tagged: every entry equals its views entry, reason 'not a defense function (subfunction NNN)' (D-6 structural rule). A defense_portion printed beside the headline (NSF) is not in it, so takes nothing out.",
+  "rows[].cells.<FY|stage>.views.<basis>[].adjustments": "D-6, D-8: on every entry with an amount (views and every exclusion field), what turns the As printed figure into it; As printed + the adjustments (sign +/-) = amount, exactly. An account's: [{component_id, type, label, sign, amount, source_document_id, source_page, source_location}], one per component the view takes out (-) or adds (+). A total's, its build-up from As printed: [{type, label, sign, amount, accounts: [{canonical_account_id, amount, components}]}] grouped by component type and sign; type left_out_by_basis: the accounts the basis leaves out (their As printed figure); type held_line_not_counted: lines the table prints inside the total, held beside an account's headline, that the basis doesn't count separately ({lines: [{account, observation_id, label, amount, source_document_id, source_page, why}]}); type not_itemised, last: the remainder against the anchor ({printed_observation_id, source_document_id, source_page, source_location}; the parts are in remainder). The D-6 type printed_total is retired. Empty when the entry equals As printed (unless two adjustments offset).",
+  "rows[].cells.<FY|stage>.views_nondefense_excluding_earmarks.<basis>": "D-8 (owner decision D): as views_excluding_earmarks, taking out both earmark and defense_portion components (accounting.VIEWS 'nondefense_excluding_earmarks'), so the Non-defense filter and Exclude earmarks can be on together. An account where a structural rule clears one exclusion takes the other's entries (a request: its views_nondefense); where both, its views."
+ }
+}

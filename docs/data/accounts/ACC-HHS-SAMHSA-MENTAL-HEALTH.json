@@ -105,6 +105,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -283,6 +294,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-17160"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-3905"
           }
          ],
          "verification_status": "auto-validated"
@@ -496,6 +513,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -674,6 +702,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-15445"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-3514"
           }
          ],
          "verification_status": "auto-validated"
@@ -875,6 +909,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1053,6 +1098,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-13790"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-3136"
           }
          ],
          "verification_status": "auto-validated"
@@ -1268,6 +1319,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1440,6 +1502,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-11748"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2846"
           }
          ],
          "verification_status": "unverified"
@@ -1569,6 +1637,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -1747,6 +1826,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-10963"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2450"
           }
          ],
          "verification_status": "auto-validated"
@@ -1959,6 +2044,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -2139,6 +2235,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-09114"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2021"
           }
          ],
          "verification_status": "auto-validated"
@@ -2346,6 +2448,51 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": false,
+       "observations": [
+        {
+         "amount": 62000000,
+         "amount_type": "supplemental",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-MENTAL-HEALTH",
+         "chamber": "N/A",
+         "component": "supplemental_act",
+         "component_kind": "part",
+         "component_label": "OTHER APPROPRIATIONS",
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-4126",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-118SRPT84",
+         "source_page": "380",
+         "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'CR Funding—Public Law 117–180 Suicide Lifeline' [2023 appropriation]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "validation": [],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
@@ -2522,6 +2669,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-06419"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-1666"
           }
          ],
          "verification_status": "auto-validated"
@@ -2734,6 +2887,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -2907,6 +3071,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06436"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-1669"
           }
          ],
          "verification_status": "unverified"
@@ -3101,6 +3271,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -3277,6 +3458,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-06459"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-1673"
           }
          ],
          "verification_status": "auto-validated"
@@ -3482,6 +3669,17 @@
         }
        ],
        "state": "value"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": true,
+       "observations": [],
+       "state": "missing"
       }
      ],
      "House Reported": [
@@ -3761,6 +3959,17 @@
        "missing": false,
        "observations": [],
        "state": "not_enacted"
+      },
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "supplemental",
+       "component": "supplemental_act",
+       "component_kind": "part",
+       "component_label": "OTHER APPROPRIATIONS",
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
       }
      ],
      "House Reported": [
@@ -3840,6 +4049,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-06491"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-1679"
           },
           {
            "human_review_status": null,
@@ -3956,6 +4171,12 @@
     "component": null,
     "component_kind": null,
     "component_label": null
+   },
+   {
+    "amount_type": "supplemental",
+    "component": "supplemental_act",
+    "component_kind": "part",
+    "component_label": "OTHER APPROPRIATIONS"
    }
   ],
   "stages": [
@@ -4231,6 +4452,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-17160"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-3905"
      }
     ],
     "verification_status": "auto-validated"
@@ -4561,6 +4788,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-15445"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-3514"
      }
     ],
     "verification_status": "auto-validated"
@@ -4885,6 +5118,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-13790"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-3136"
      }
     ],
     "verification_status": "auto-validated"
@@ -5203,6 +5442,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-11748"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2846"
      }
     ],
     "verification_status": "unverified"
@@ -5451,6 +5696,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-10963"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2450"
      }
     ],
     "verification_status": "auto-validated"
@@ -5783,6 +6034,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-09114"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2021"
      }
     ],
     "verification_status": "auto-validated"
@@ -6112,6 +6369,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-06419"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-1666"
      }
     ],
     "verification_status": "auto-validated"
@@ -6368,6 +6631,39 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 62000000,
+    "amount_type": "supplemental",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-MENTAL-HEALTH",
+    "chamber": "N/A",
+    "component": "supplemental_act",
+    "component_kind": "part",
+    "component_label": "OTHER APPROPRIATIONS",
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-4126",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-118SRPT84",
+    "source_page": "380",
+    "source_table_or_section": "Title II, Substance Abuse and Mental Health Services Administration -- printed as 'CR Funding—Public Law 117–180 Suicide Lifeline' [2023 appropriation]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "validation": [],
+    "verification_status": "unverified"
+   },
+   {
     "amount": 4496356000,
     "amount_type": "budget authority",
     "bill_id": "PREX 2.8:2024/APP",
@@ -6429,6 +6725,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06436"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-1669"
      }
     ],
     "verification_status": "unverified"
@@ -6758,6 +7060,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-06459"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-1673"
      }
     ],
     "verification_status": "auto-validated"
@@ -7433,6 +7741,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-06491"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-1679"
      },
      {
       "human_review_status": null,

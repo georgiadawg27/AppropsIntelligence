@@ -1,5 +1,8 @@
 import json
 import os
+import re
+import sys
+from pathlib import Path
 
 # openpyxl writes its XML with lxml when lxml happens to be installed and with the standard library's
 # ElementTree otherwise, and the two give different bytes for the same workbook (attribute and namespace
@@ -11,6 +14,10 @@ import openpyxl  # noqa: E402  (after the switch above)
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter
+
+# run from a folder holding data/staged.json (approps_store.build_workbook runs it in a scratch copy); writes build/
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import subcommittees as _SC  # noqa: E402
 
 with open("data/staged.json") as f:
     data = json.load(f)
@@ -38,7 +45,9 @@ CHAMBER = ["House", "Senate", "N/A"]
 BOOL = ["TRUE", "FALSE"]
 COMP_KIND = ["part", "contained", "view"]
 STAGE_BR = ["Enacted", "Senate Reported", "House Reported", "President's Budget"]
-SUBCOMMITTEES = ["CJS", "LHHS"]
+# the subcommittees are the data's (every account's subcommittee), each one the code knows (subcommittees.py, or a
+# rule file in reference/rules/): a new one needs data and a rules file, not a list here
+SUBCOMMITTEES = sorted(set(_SC.codes(data)) & _SC.known())
 TOTAL_SCOPE = ["agency", "title", "bill"]
 FUNDING_TYPE = ["standalone", "minibus", "omnibus", "full_year_cr"]
 
@@ -474,10 +483,33 @@ add_dropdown(ws, "I", _AC.STAGE_BASES, 2, n)
 legend = wb.create_sheet("Read Me", 0)
 legend.sheet_view.showGridLines = False
 legend.column_dimensions["A"].width = 105
+
+
+def _title_order(t):
+    """'Title II' < 'Title III' < 'Title V': by the roman numeral, else by the text."""
+    m = re.fullmatch(r"Title ([IVXL]+)", t)
+    if not m:
+        return (1, 0, t)
+    vals = [{"I": 1, "V": 5, "X": 10, "L": 50}[ch] for ch in m.group(1)]
+    return (0, sum(-v if i + 1 < len(vals) and v < vals[i + 1] else v for i, v in enumerate(vals)), t)
+
+
+def _subcommittee_line(code):
+    """One line per subcommittee, from the data: its display name, titles, accounts and fiscal years."""
+    accs = [a for a in data["accounts"] if a["subcommittee"] == code]
+    ids_ = {a["canonical_account_id"] for a in accs}
+    fys = sorted({int(o["fiscal_year"]) for o in data["observations"] if o["canonical_account_id"] in ids_})
+    titles = sorted({a["title"] for a in accs if a.get("title")}, key=_title_order)
+    years = f"FY{fys[0]}\u2013FY{fys[-1]}" if fys else "no figures yet"
+    return (f"\u2022 {_SC.display_name(code)} ({code}): {', '.join(titles) or 'no title'}; {len(accs)} accounts "
+            f"(totals included); {years}")
+
+
 rows = [
-    ("Appropriations Pilot \u2014 CJS Title III (Science) + Labor-HHS Title II (HHS), Loaded Against the Schema", TITLE_FONT),
+    ("Appropriations Pilot, Loaded Against the Schema", TITLE_FONT),
     ("Built from your filled-in CJS_Title_III_Science_Pilot_Schema_Loaded workbook. Five tabs, matching the Data "
      "Dictionary in the scoping doc.", SUBTITLE_FONT),
+    *[(_subcommittee_line(code), NOTE_FONT) for code in _SC.codes(data)],
     ("", BODY_FONT),
     ("Accounting views, phase 2: account attributes (2026-10-12)", BOLD_NOTE),
     (f"\u2022 Account Attribute tab filled from the Budget Appendix Program and Financing schedules, FY2017\u2013FY2027 "

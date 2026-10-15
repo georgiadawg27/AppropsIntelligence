@@ -59,6 +59,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import legislative_text as L  # noqa: E402
+import rules_registry as R  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RESULTS = ("match", "mismatch", "ambiguous", "no paragraph", "component match")
@@ -78,31 +79,27 @@ def norm(s):
     return " ".join(w for w in s.split() if w not in ("the",))
 
 
-# the agency an account's heading sits under, as words of the enclosing headings and title
-AGENCY_WORDS = {
-    "National Aeronautics and Space Administration": "aeronautics space administration",
-    "National Science Foundation": "national science foundation",
-    "Department of Justice": "justice",
-    "Executive Office of the President": "science",          # Title III -- Science
-}
-BUREAU_WORDS = {"U.S. Patent and Trademark Office": "patent trademark",
-                "National Oceanic and Atmospheric Administration": "oceanic atmospheric"}
+# the agency an account's heading sits under, as words of the enclosing headings and title: the agency's own name
+# unless the subcommittee's rule file says how its bills print it (hook 'layout': agency_words, bureau_words) or
+# what other names they use for it (agency_aliases)
+def layout(acc):
+    return R.active().data("layout", acc["subcommittee"])
 
 
 def agency_words(acc):
-    return BUREAU_WORDS.get(acc["bureau"]) or AGENCY_WORDS.get(acc["agency"]) or norm(acc["agency"])
+    lay = layout(acc)
+    return (lay.get("bureau_words", {}).get(acc["bureau"]) or lay.get("agency_words", {}).get(acc["agency"])
+            or norm(acc["agency"]))
 
 
-# an agency's other names in the bill text (SAMHSA is 'Substance Use and Mental Health Services Administration' in
-# the FY2023 bills)
-AGENCY_ALIASES = {"Substance Abuse and Mental Health Services Administration":
-                  ["substance use and mental health services administration"]}
+def agency_aliases(acc):
+    return layout(acc).get("agency_aliases", {}).get(acc["agency"], [])
 
 
 def in_context(acc, para):
     ctx = set(norm(" ".join(para["heading_path"][:-1] + [para["title"]])).split())
     return any(all(w in ctx for w in words.split())
-               for words in [agency_words(acc)] + AGENCY_ALIASES.get(acc["agency"], []))
+               for words in [agency_words(acc)] + agency_aliases(acc))
 
 
 def other_agency(para, words):
@@ -188,11 +185,9 @@ BEFORE_NOT_MAIN = re.compile(
     r"previously appropriated[^$]{0,40}|direct obligations[^$]{0,40})\s*$", re.I)
 AFTER_NOT_MAIN = re.compile(r"^\s*,?\s*(for official (?:reception|representation)|per vehicle|per year|for each|"
                             r"is (?:hereby )?rescinded|are (?:hereby )?rescinded|shall be (?:derived|from)|"
-                            r"to be derived from amounts? (?:available|made available) under section 241|"
-                            r"shall become available on october 1|from (?:the )?(?:funds|amounts) (?:made )?available "
-                            r"under section 241)", re.I)
-TAP_241 = re.compile(r"^\s*,?\s*(?:shall|is to) be (?:from|derived from) (?:funds|amounts) (?:made )?available under "
-                     r"section 241", re.I)
+                            r"shall become available on october 1)", re.I)
+# what one subcommittee's paragraphs print that the core doesn't read (rules_registry hooks not_main, derivation,
+# no_main; Labor-HHS: the section 241 evaluation tap)
 EMERGENCY = re.compile(r"^\s*,?\s*(?:is|are) designated by the Congress as (?:being )?for an emergency requirement", re.I)
 TRUST_FUND_LIMIT = re.compile(r"^\s*,?\s*(?:to be )?transferred from the [^$]{0,80}trust fund", re.I)
 
@@ -202,9 +197,19 @@ def split_phrase(a):
     return (m.group(1), m.group(2)) if m else (a["phrase"], "")
 
 
-def is_main_candidate(a):
+def cell_ctx(acc, fy, stage):
+    """The rule context of an account's cell (rules_registry.Ctx)."""
+    return R.Ctx(acc["subcommittee"], acc["canonical_account_id"], int(fy), stage)
+
+
+def is_main_candidate(a, ctx=None):
+    """Could the amount be the paragraph's main appropriated amount? Not an of-which, limit, transfer or advance
+    (the core's words), nor what an in-scope rule says is not one (hook 'not_main'; ctx None: the core alone)."""
     before, after = split_phrase(a)
-    return not BEFORE_NOT_MAIN.search(before[-120:]) and not AFTER_NOT_MAIN.search(after) and not is_advance(a)
+    if BEFORE_NOT_MAIN.search(before[-120:]) or AFTER_NOT_MAIN.search(after) or is_advance(a):
+        return False
+    return not (ctx and R.active().first("not_main", f"{ctx.account} FY{ctx.fiscal_year} {ctx.stage} ${a['amount']:,}",
+                                         ctx, a))
 
 
 def is_advance(a):
@@ -216,19 +221,19 @@ def is_advance(a):
                              r"october 1", after, re.I))
 
 
-def appropriating(para):
+def appropriating(para, ctx=None):
     """The amounts the paragraph's appropriating clauses state (before any proviso), not of-which, limits,
     transfers or advances, in order."""
-    return [a for a in para["amounts"] if not a.get("proviso") and is_main_candidate(a)]
+    return [a for a in para["amounts"] if not a.get("proviso") and is_main_candidate(a, ctx)]
 
 
-def main_amount(para):
+def main_amount(para, ctx=None):
     """-> (the paragraph's main appropriated amount or None, how). A paragraph whose only appropriation is a
     trust-fund limitation ('not to exceed $X, to be transferred from the ... Trust Fund') has that as its main."""
-    ap = appropriating(para)
+    ap = appropriating(para, ctx)
     if ap:
         return ap[0], "the paragraph's main appropriated amount"
-    loose = [a for a in para["amounts"] if is_main_candidate(a)]
+    loose = [a for a in para["amounts"] if is_main_candidate(a, ctx)]
     if loose:
         return loose[0], "the paragraph's main appropriated amount (stated in a proviso)"
     tf = next((a for a in para["amounts"] if TRUST_FUND_LIMIT.search(split_phrase(a)[1])), None)
@@ -283,21 +288,24 @@ def provision_amounts(acc, names, paras):
     return out
 
 
-def derivations(para, main, recorded_extra, cell, provisions=()):
+def derivations(para, main, recorded_extra, cell, provisions=(), ctx=None):
     """The text's figure, each way the headline may be derived from what the paragraph states -> [(amount, how)].
     Each is read from the text itself (or from a derivation recorded with the figure), never fitted to it:
       base   the main amount, or the sum of the paragraph's appropriating amounts
       plus   an amount a proviso itself says 'is appropriated'; the next year's advance (appropriated in this bill)
-      less   an 'of which $X shall be from funds available under section 241' (PHS evaluation funds, not new
-             budget authority); an amount the paragraph designates an emergency requirement
+      less   an amount an in-scope rule takes off (hook 'derivation'; Labor-HHS: an 'of which $X shall be from
+             funds available under section 241', PHS evaluation funds, not new budget authority); an amount the
+             paragraph designates an emergency requirement
     and the derivations recorded with the figure: the account's own part lines (defense, CHIMP ...) and amounts
     from other laws printed within it."""
     m = main["amount"]
-    ap = [a["amount"] for a in appropriating(para)]
+    ap = [a["amount"] for a in appropriating(para, ctx)]
     phr = [(a, *split_phrase(a)) for a in para["amounts"]]
     adv = [a["amount"] for a, _, _ in phr if is_advance(a)]
     extra = [a["amount"] for a, _, after in phr if a.get("proviso") and APPROPRIATED_HERE.search(after)]
-    tap = [a["amount"] for a, before, after in phr if TAP_241.search(after) and re.search(r"of which\s*$", before, re.I)]
+    hit = R.active().first("derivation", f"{ctx.account} FY{ctx.fiscal_year} {ctx.stage} {para.get('paragraph_id', '')}",
+                           ctx, para) if ctx else None
+    tap, tap_how, tap_short = hit[1] if hit else ((), "", "")
     emer = [a["amount"] for a, _, after in phr if EMERGENCY.search(after)]
     bases = [(m, f"the main amount ${m:,}")]
     if len(ap) > 1:
@@ -317,11 +325,11 @@ def derivations(para, main, recorded_extra, cell, provisions=()):
             plus.append((tuple(x for t in combo for x in t[0]), "".join(t[1] for t in combo)))
     less = [((), "")]
     if tap:
-        less.append(((*tap,), f" - {money(tap)} from section 241 (PHS evaluation funds, not new budget authority)"))
+        less.append(((*tap,), tap_how))
     if emer:
         less.append(((*emer,), f" - {money(emer)} designated an emergency requirement"))
     if tap and emer:
-        less.append(((*tap, *emer), f" - {money(tap)} from section 241 - {money(emer)} designated an emergency requirement"))
+        less.append(((*tap, *emer), f"{tap_short} - {money(emer)} designated an emergency requirement"))
     out = []
     for (b, bw), (p, pw), (l, lw) in itertools.product(bases, plus, less):
         if bw.startswith("the main") and not pw and not lw:
@@ -374,23 +382,24 @@ def component_match(main, every, comps):
     return None
 
 
-def compare(o, para, recorded_extra, cell=(), provisions=(), comps=()):
+def compare(o, para, recorded_extra, cell=(), provisions=(), comps=(), ctx=None):
     """-> (result, text figure, how) for one observation against its paragraph. cell: the account's other
     recorded lines at the same year and stage, as (observation_id, component, kind, amount). comps: the
-    observation's own component records (observation_components)."""
+    observation's own component records (observation_components). ctx: the cell (rules_registry.Ctx), for the
+    subcommittee's rules; None: the core alone."""
     ours = o["amount"]
     every = [a["amount"] for a in para["amounts"]]
     if not every:
         return "no paragraph", None, "the paragraph states no dollar amount (such sums as may be necessary)"
-    main, how = main_amount(para)
+    main, how = main_amount(para, ctx)
     if main is None:
         cm = component_match(main, every, comps)
         if cm:
             return "component match", cm[0], cm[1]
-        tap = [a["amount"] for a in para["amounts"] if TAP_241.search(split_phrase(a)[1])]
-        if tap and ours == 0 and len(tap) == len(every):
-            return "match", 0, (f"no new budget authority: the paragraph's {money(tap)} is all from section 241 "
-                                "(PHS evaluation funds)")
+        hit = R.active().first("no_main", f"{ctx.account} FY{ctx.fiscal_year} {ctx.stage} {para.get('paragraph_id', '')}",
+                               ctx, para, ours) if ctx else None
+        if hit:
+            return hit[1]
         if ours in every:
             return "ambiguous", None, ("no main appropriated amount -- every amount in the paragraph is an of-which, "
                                        f"limit, transfer or advance; ${ours:,} is one of them")
@@ -398,7 +407,7 @@ def compare(o, para, recorded_extra, cell=(), provisions=(), comps=()):
                                    "limit, transfer or advance")
     if ours == main["amount"]:
         return "match", ours, how
-    for amt, why in derivations(para, main, recorded_extra, cell, provisions):
+    for amt, why in derivations(para, main, recorded_extra, cell, provisions, ctx):
         if amt == ours:
             return "match", ours, why
     lw = like_with_like(o, main["amount"], every, comps)
@@ -422,7 +431,7 @@ def compare(o, para, recorded_extra, cell=(), provisions=(), comps=()):
                         f"${ours:,} = the main amount ${main['amount']:,} {terms} printed in the same paragraph; "
                         "several plausible amounts")
     # a mismatch: say how far the nearest reading of the text is from ours
-    near = min([(main["amount"], how)] + derivations(para, main, recorded_extra, cell, provisions),
+    near = min([(main["amount"], how)] + derivations(para, main, recorded_extra, cell, provisions, ctx),
                key=lambda d: abs(ours - d[0]))
     if near[0] != main["amount"]:
         return "mismatch", main["amount"], (f"{how}; nearest reading {near[1]} = ${near[0]:,}, "
@@ -556,13 +565,14 @@ def check(data, texts, exempt):
                 and x["amount_type"] == "budget authority" and x["verification_status"] != "superseded"]
         prov = provision_amounts(a, names, paras)
         extra = other_law_amounts(vals[o["observation_id"]])
-        outcomes = [(compare(o, p, extra, cell, prov, comps[o['observation_id']]), p) for p in hits]
+        ctx = cell_ctx(a, fy, stage)
+        outcomes = [(compare(o, p, extra, cell, prov, comps[o['observation_id']], ctx), p) for p in hits]
         if len(hits) > 1 and not any(x[0] == "match" for x, _ in outcomes):
             # every appropriation paragraph under the same heading, together (a second paragraph 'For an
             # additional amount for prize competitions, $10,000,000')
             together = dict(hits[0], amounts=[dict(x, block=x["block"] + 1000 * i) for i, p in enumerate(hits)
                                              for x in p["amounts"]], paragraph_id="+".join(p["paragraph_id"] for p in hits))
-            x = compare(o, together, extra, cell, prov, comps[o['observation_id']])
+            x = compare(o, together, extra, cell, prov, comps[o['observation_id']], ctx)
             if x[0] == "match":
                 outcomes = [((x[0], x[1], x[2] + f" (the {len(hits)} paragraphs under the heading together)"), hits[0])]
         if len({(r, amt) for (r, amt, _), _ in outcomes}) > 1:

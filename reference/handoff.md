@@ -1,54 +1,575 @@
-# Handoff: accounting views, component backfill follow-ups, 2026-10-15
+# Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
+
+## D-9: Data fills for the anchored totals (2026-10-15, this PR)
+
+- 2026-10-15 rulings applied: CDC request changes approved; Title III FY2026 Senate superseded (OBS-1436 -> OBS-1584);
+  NSF FY2025 request emergency counted (Senate table prints it inside the same totals); ARPA-H/NIRSQ counted in the
+  total the table prints them under (part 7); four new accounts (part 8). Customer Experience FY2024 and the Child Support
+  advance (first option, part 9) done. Open: budget class for the new accounts.
+- Parts 1-4 as in `reference/progress/D-9.md`; part 5 adds 22 evidence rows (`total_lines_inside.csv`). Review, counts and
+  owner questions: `reference/review/accounting/review-D9.md`.
+- n/a entries: accounts 604 -> 602, totals 2,116 -> 1,890. Six CJS Title III totals now reach their printed figure.
+- Three request program-level figures change (CDC Scientific Services FY2024, Environmental Health FY2023 and FY2024):
+  each now equals the table's printed program-level subtotal; owner approval asked.
+- Open, for the owner: lines in accounts not held (OS Cures opioid $500M FY2017-18, ARPA-H in the OS total, AHRQ as NIRSQ
+  in the FY2018-21 requests, OS Customer Experience, ASPR pandemic lines, SAMHSA FY2026-27 requests); the Child Support
+  advance (count the law-text component, or add the table line); NSF FY2025 request emergency on the House table's
+  arithmetic; CJS Title III FY2026 Senate total holds the FY2025 column ($33,908,257,000 vs $33,909,609,000, p.219).
+- Not done: evidence rows for the Title II and bill totals FY2017-FY2021 (their gaps show now that their cells are
+  complete); HRSA FY2017 Enacted (P.L. 114-254's line is another document's); ACF FY2017 request's $10,000,000.
+
+## D-8: Anchored totals (2026-10-15, this PR)
+
+Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewritten. Review items:
+`reference/review/accounting/review-D8.md`. No account view, headline or printed figure changed.
+
+- Totals (`site_accounting.Layer.total_layer`, `anchored`, `total_exclusion`): built down from the printed anchor
+  (PRINTED_BASIS, the total's own document): P + known adjustments; with an anchor the total is A, status `matches`
+  (R = 0) or `computed` with `remainder` and a last `not_itemised` adjustment; with no anchor P + adjustments where
+  every part is known, else `not_computable` with `cause` (missing_figure, not_held, no_anchor, no_class,
+  components_unknown; accounts carry causes too). A line without its own timing holds for both timings only where
+  every part is known and no advance prints, else only 'enacted' (the tables' convention). D-6's kept_check and
+  `printed_total` are gone. Exclusions: the total's views entry less each line's exclusion delta.
+- Combined exclusion `views_nondefense_excluding_earmarks` (accounting.VIEWS, decision D).
+- 302(b): `allocation_302b_rows.csv` (page images, checked against the text layer `allocation_302b.py` ->
+  `allocation_302b_text.csv`), `d8_records.py --write`: 200 observations on the two bill totals (each report's table pages gain its 302(b) page), components
+  `allocation_302b_*` / `bill_302b_*` (view kind, amount_type budget authority / outlay, millions x 1e6). Anchor
+  nothing. Outcomes: `allocation_302b_lines.csv`.
+- ui_contract v9: features `anchored_totals`, `nondefense_excluding_earmarks` (not in the page's BUILT: UI-10).
+  The page only learned "matches" as a valued status (VALUED, VIEW_WORDS).
+- Counts (both timings, four bases, vs main): checked -> matches 275, not computable -> matches/computed 77,
+  6 cells' amounts changed to their printed line (review-D8 section 1), 41 entries lost a figure (section 2:
+  mostly the 'available' timing where a part is unknown; decision E).
+- Site data grew: LHHS.json 27.6 -> 38.3 MB, CJS.json 5.8 -> 9.5 MB (the combined set, anchors, causes).
+
+Open:
+- Owner ruled 2026-10-15: H.Rept. 118-585's 185,797 (printed under 302(b) Outlays) recorded as budget authority
+  (OBS-LHHS-5081); the 'available' timing where a part is unknown stays strict (review-D8 section 2).
+- D-9: fills (CDC-Wide FY2025 House, Medicare limitation life, AHRQ/ACL/AHA class, request components, unheld
+  table lines) close most not computable cells; the 302(b) lines of the four Labor-HHS House reports with no bill
+  total (FY2017-FY2020).
+- Merged with UI-9 (main): the page's Σ skips a computed total with an anchor (it has a printed line);
+  UI-9's printed_total line wording no longer applies (D-8 retired that adjustment: not_itemised).
+  Money in no account held carries its amount in the reason again ('...: -$1,000,000,000 is in no account held'),
+  which UI-9's whyText reads.
+- allocation_302b.py's header detection misses four House layouts (114-699, 115-244, 115-862, 119-652); those rows
+  were checked against their pdftotext lines.
+## UI-9: Non-defense filter, fewer marks, plain n/a (2026-10-15, this PR)
+
+Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). Spec:
+`reference/specs/anchored-totals.md` (UI-9 row); owner decisions A and D.
+
+- Non-defense (decision D): Filter › Advanced "Non-defense" (`f-nodef`, URL `defense=excl`, chip, badge, subline and
+  export header " · non-defense"). Every figure, total, difference, adjustment line and export reads the published
+  `views_nondefense` (feature `nondefense`); the page takes nothing out itself. One exclusion at a time until D-8
+  publishes a combined set: turning on one turns the other off, with a note (`excl-note`); a URL with both keeps
+  Exclude earmarks.
+- The View tab's Defense portion and Nondefense columns are gone (owner: "remove the defense/non-defense in the view
+  tab"). `defense_split` left BUILT; a defense portion still lists in the source panel's components. Old links:
+  `cols=defense,nondefense` is ignored; `fig=...|nondefense` opens the stage's figure.
+- Σ (decision A): only on a total that is our own sum (computed, accounts_behind), differs from As printed, so no
+  printed line backs it. No mark on a checked figure or a sum equal to As printed. Overview reads the same.
+- n/a: a not computable cell reads "n/a" for accounts and totals alike; hover is one plain line ("n/a on <basis>:
+  <why>"), worded from the data's reason by `whyText` (missing figure, request language, budget class, money in no
+  account held, ...). The source panel shows that line, then "Details:" with the full reason (documents, pages). The
+  raw reason is on the cell as `data-reason`. UI-10 swaps the reading for D-8's cause codes.
+- The `printed_total` adjustment line reads "Printed in the report as one program-level total (not itemised: CDC-Wide
+  Activities and Program Support has no figure entered yet)"; lines whose reason differs are separate lines.
+
+Open:
+- web/ui_contract.json still calls `nondefense` and `defense_split` "column" features (spec_row text); D-8 owns the
+  contract (v9) and can reword them.
+- The overview tiles still say "Not computable" (not a grid cell); UI-10 can align them with cause words.
+
+## D-7: Printed summary lines (2026-10-14, this PR)
+
+The summary lines each held Labor-HHS and CJS report prints under its grand total and title totals, recorded as
+observations (no account figure or existing observation changed). Review items: `reference/review/accounting/review-D7.md`.
+
+- Reading: `summary_rows.py` reads the text layer of the 43 report PDFs in document_store/ (gitignored; fetched from
+  govinfo, H.Rept. 118-585 from congress.gov) into `summary_rows.csv`; the 15 scanned tables were read from page
+  images into `summary_rows_images.csv` (`--merge-images`). A row is used only where the table's own comparison
+  columns agree (one-column tables, 119SRPT44, 119SRPT55 and EXPL-LHHS-FY2026-ENACTED, are used as printed; 119HRPT272 and
+  119HRPT652 print two money columns and one comparison).
+- Recording: `d7_records.py --write` (idempotent): 12 new total accounts (owner chose title rows for titles not held, 2026-10-14; CJS Titles I-V + bill; Labor-HHS Titles I,
+  III, IV, VI, VIII + bill; Title II's existing total reused). Bill totals have no title and no display_order. 1,261
+  observations (CJS 385, Labor-HHS 876), 43 equal ones already held; 18 components (accounts.SUMMARY_COMPONENTS:
+  'contained' lines inside the total, 'view' lines the total in another scope). Each document's table pages gain the
+  pages cited (33 documents). Per-line outcome and every line not recorded, with why: `summary_lines.csv`.
+- Checking: measure_reconcile section 4 (VAL-MRS-*): mandatory (total less its discretionary view), emergency
+  (designated-emergency components), advance (all advance lines against advance_enacted components), rescissions
+  (rescission lines). Discretionary lines go through section 2 as before. TITLES_HELD (in measure_reconcile, not the
+  rule file: config not edited) = Labor-HHS Title II only; any other title or bill line is "not checked: accounts
+  not held". 34 pass, 3 differ (emergency_line_untagged 2, advance_line_untagged 1), 223 not checked.
+- D-6 carry-over: the four CMS cells read inside (total_lines_inside.csv); CMS gap cells published 35 -> 39 of 41.
+  total_gaps.csv now also lists 8 CJS Title III cells (title totals exist now).
+
+Open:
+- 11 Labor-HHS cells have no bill total: those House reports print only the RECAP's 'Grand Total, current year'.
+- CJS Title III may be fully held (30 of 38 cells add up); owner to confirm before adding it to TITLES_HELD.
+- The 3 differences are untagged components (tag_components), for review.
+- The not-checked reason names the held count, not "N accounts not held" (the tables' account rows aren't read).
+
+## Amount basis plan: anchored totals spec (2026-10-14, this PR)
+
+Docs only. `reference/specs/anchored-totals.md` (owner-approved): totals build down from the printed anchor
+(table lines, D-7's summary lines, the 302(b) comparison), with known adjustments, a named "not itemised"
+remainder, and cause codes; accounts stay strict. Owner decisions A-E and G are recorded there. Brief order: UI-9,
+D-8 (after D-7), UI-10, D-9. Investigation findings (counts by basis and cause, CDC House FY2025 cause, Σ on 750
+unchanged totals) are in the spec.
+
+Open:
+- The 302(b) comparison tables in the House and Senate reports: not yet inventoried by report (D-8).
+- Whole-bill holding (Labor, Education, the rest of CJS) for closing the chain to accounts: later phase.
+
+## Search listing: title, description, logo (2026-10-14, this PR)
+
+- The Explore (landing) view now leaves the tab title as the bare
+  "Approps Intelligence"; it used to set "Explore · Approps Intelligence",
+  which is what Google indexed after running the page's script. Account and
+  Find changes titles are unchanged.
+- web/index.html <head> gains a meta description, Open Graph tags and
+  schema.org JSON-LD (WebSite name for the site-name line, Organization logo
+  = brand/icon-512.png). No canonical or og:url: account pages live at
+  ?account= URLs and a fixed canonical would fold them into the home page.
+- New icons: brand/favicon-48.png (from favicon.svg) and brand/favicon-192.png
+  (from icon.svg), rendered in Chromium the same way as favicon-32 (re-render
+  of favicon-32 matched byte for byte in pixels). Google wants favicons at a
+  multiple of 48px. test_static now expects 5 icon links.
+- Open: the visible h1/subtitle ("Appropriations history ...") is untouched;
+  UI-9 owns the page body. Search engines pick up head changes on recrawl.
+
+## UI-8: Adjustment lines and clearer basis states (2026-10-14, this PR)
+
+Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). The page reads
+D-6's published `adjustments` (feature `basis_adjustments`, now in BUILT) and computes nothing.
+
+- Adjustment lines: with a basis other than As printed, a timing, Exclude earmarks or the Nondefense column in view,
+  an account whose figure differs from As printed gets a small chevron (`adj-chevron`, in its indent; key in `open`,
+  so in the URL). Expanded: one line per published adjustment (`adj-line`), then its other lines on file
+  (`other-line`). An expanded agency lists its grouped adjustments above its member lines. Lines show only for an entry
+  whose amount differs from As printed (the 195 offsetting lists stay in the panel only). Signed amounts in the units
+  in view, neutral text colour. Several alike in one entry (PPHF allocation items) are one line each, named by the item
+  the source_location quotes ('Diabetes'). Phone: an expanded agency lists its adjustments for the stage shown; an
+  account's are in its sheet (the headline stage's build-up).
+- Amount links: one source with an address -> link to its page; several sources, or none with an address -> button to
+  the figure's source panel. Document addresses (owner, round 2): the export publishes `docs/data/documents.json`
+  (approps_store.documents(): id, short name from web/documents.js, address; live: /api/documents), loaded with the
+  features when basis_adjustments is on; ui_contract v8 adds it to basis_adjustments. Not whats_new.json.
+- Nondefense (owner, round 2): a Nondefense-column adjustment, and the Nondefense cell itself, open that figure's
+  nondefense build-up (As printed, less the defense portion with its source, = the nondefense figure); the URL keeps
+  it (`fig=<id>|<FY>|<stage>|nondefense`).
+- Find changes (owner, round 2): the discretionary bases read "(beta)" in the Amount basis select; the chosen one
+  shows the beta tag and line, and the export's "Amount basis" note carries it.
+- Offsetting adjustments stay out of the grid, in the panel only (owner, round 2: accepted).
+- Totals: Σ after a computed total (status computed with accounts_behind), its reason on hover and in the panel; a not
+  computable total reads "not computable" (was "not checked (n accounts)") in the grid, overview, phone and export.
+- Contained lines: "of which: <label>" with "included above" (muted) in the grid, panel notes, account page and CSV.
+- Source panel under a basis: "From As printed" build-up (As printed, each adjustment with its sources, "=" the figure)
+  replaces the component arithmetic when basis_adjustments is on.
+- Beta: Discretionary and Discretionary incl. designated carry "beta" and the line in the Amount basis menu and the
+  units-and-basis label.
+- Tests: tests/test_compare.py AdjustmentLines (9 tests; the As printed screenshot diff compares the page with the flag
+  forced off). Existing tests updated for "not computable", "of which", the build-up terms. Screenshots:
+  screenshots/ui-8/.
+
+Open:
+- Pre-existing on main: on the phone, a single-account agency total (AHRQ, ACL) sits flush left in the list (owner:
+  a later polish brief).
+
+## D-6: Amount basis data fixes (2026-10-14, this PR)
+
+Published views only (site_accounting.py, ACCOUNTING_RULES.md, ui_contract); no headline or printed figure changed,
+data/staged.json unchanged (measure_reconcile --ci clean; workbook digest unchanged). Review items:
+`reference/review/accounting/review-D6.md`.
+
+- Part 1, totals: every basis, timing, Exclude earmarks and Nondefense of an agency/title/bill total is the sum of its
+  lines' published views (`Layer.total_layer`): an agency's accounts (measure_reconcile.members); a title's accounts
+  plus each agency held only as its total (AHRQ, ACL, AHA: read as accounts, their own headline and components).
+  checked where a printed total measure_reconcile matched equals the sum; computed "sum of N accounts[, M left out by
+  this basis]; no printed total to check" / "differs from the printed total by $X (VAL-MRC-<cause>)"; not computable
+  naming a line that is, a line with no figure, or (owner, 2026-10-14) where the lines as printed don't add up to the
+  printed total: 96 cells in `total_gaps.csv` (`total_gaps.py`), one review item per agency. A matched printed total
+  keeps its checked view in those cells (no checked entry lost). Every total entry carries accounts_behind.
+- Part 2, structural rules (ACCOUNTING_RULES 'Structural rules'): a request carries no earmarks (148 account cells
+  fixed: LHHS 145, CJS 3; plus 24 lone-total cells); no defense outside function 050 (106 account cells fixed: LHHS
+  105, CJS 1). Still not computable for nondefense: subfunction 999 (35), from a later volume (ASPR Operations FY2024-25
+  PB, National Space Council FY2017-18 PB), none on file (3).
+- Part 3, adjustments on every entry with an amount; As printed + adjustments = amount on all 59,648 entries
+  (`test_adjustments_turn_as_printed_into_every_entry`). 195 entries equal As printed keep a non-empty list: offsetting
+  adjustments (an advance in and an advance out).
+- Part 4: ui_contract v7, `basis_adjustments` (true in the export). The page does not read it yet.
+- Round 2 (owner, 2026-10-14): held lines count in the total's sum (`held_lines`, `line_counts`). Round 3 (owner):
+  only lines the table prints inside that total (position or the table's printed arithmetic), never chosen by the
+  sum: evidence `total_lines_inside.csv` (from `total_lines.py`, needs the PDFs in document_store/, and page images for
+  scanned tables). 48 of the 96 gap cells published, 48 not computable (`total_gaps.csv`); round 2's arithmetic
+  selection had published 54 (reported as 56 by mistake). CMS FY2021 House/Senate ($1,000 over) not rounded. Accepted: the
+  non-empty offsetting adjustment lists; AHRQ, ACL and AHA as one line each. The "not checked" page label goes to UI-8
+  (page left alone).
+
+Open:
+- The page still says "not checked (n accounts)" for a not computable total (it keys on accounts_behind): UI-8.
+- review-D6.md: the 40 gap cells no held line explains (the table's line we don't hold).
+- Title II: General Provisions rescission lines have no published view (not BA headlines), so the title sum is not
+  computable where they print.
+
+## G-1: any-subcommittee pipeline (2026-10-14, this PR)
+
+Refactor only: data/staged.json and docs/data unchanged (export compared byte for byte with the committed
+docs/data); the workbook fixture changes only on the Read Me sheet (title made generic, one line per subcommittee).
+Runbook: `reference/ADDING_A_SUBCOMMITTEE.md`.
+
+- Coverage from data (`tag_components.coverage()`): every cell whose bill or law text is committed, plus the
+  full_year_cr Enacted cells, plus the President's Budget accounts read from the Appendix extract. Equals the old
+  PILOT | BACKFILL | FY2027_HOUSE | CJS_2024_2025 set except Labor-HHS FY2020 Senate (no bill ever; no figure).
+  CR cells from funding_type: {(LHHS, 2025), (CJS, 2025)}, as CR_CELLS was.
+- IDs: `ids.py`, one allocator (`<TYPE>-<CODE>-####`, CJS `<TYPE>-####`), used by tag_components and
+  appendix_attributes; accounting.py and store_schema.sql accept any code.
+- Rules: `rules_registry.py` (hooks, scope, conflicts) and `reference/rules/LHHS.py`, `CJS.py` (31 rules; the list
+  with old -> new is in the G-1 PR description). Every amount of every committed paragraph and request paragraph
+  (22,289) classifies the same before and after.
+- Subcommittee list from data: build_workbook (validation list, Read Me lines), export/page (already from the
+  store), `subcommittees.codes()`/`known()`/`display_name()` (rule-file display hook for codes not in
+  DISPLAY_NAMES). approps_store: an account's grid spans its own subcommittee's fiscal years (was: the latest FY
+  of any account; same result for CJS and Labor-HHS today, both FY2027).
+- `scripts/intake.py --subcommittee CODE --fy N --stage S [--write]`; `paths.py` (APPROPS_DATA_ROOT,
+  APPROPS_RULES_DIRS) lets the pipeline run on another data root.
+- `tests/test_any_subcommittee.py`: the synthetic SYNLB fixture end to end, plus SYNLB added beside the real data
+  (CJS and Labor-HHS export files byte-identical; the page shows SYNLB's grid). Also run in the browser job.
+
+Open:
+- No real case in the committed data for three moved rules: LHHS-PPHF-SOURCE (no text prints 'from amounts made
+  available under section 4002'), LHHS-241-SUBALLOCATION beside a core transfer phrase (the real ones are
+  'available under section 241' alone, handled inside LHHS-241-AVAILABLE), CJS-CR-LEVEL-ONLY (NOAA ORF and NASA
+  SSMS hold no FY2024 Enacted component to carry). Tested on their wording.
+- The page has no cell state for "not carried by custom" (the synthetic quirk): the intake explains it, the page
+  shows the cell as it shows any cell with no figure. Needs a state in approps_store.cell_state and the page.
+- Round 2 (owner, 2026-10-14): moved to LHHS.py too -- LHHS-LOOKS-LIKE (the unread-phrase detector's 'section
+  241' / 'Prevention and Public Health Fund'), LHHS-241-NOT-MAIN, LHHS-241-DERIVATION, LHHS-241-NO-MAIN (the text
+  check's section 241 main-amount rules), LHHS-ONC-CELL-NOTE (ONC's $0 headline note). New hooks: looks_like,
+  not_main, derivation, no_main, cell_note. The page's default subcommittee is the data's: index.json and
+  /api/features `default_subcommittee` (subcommittees.DEFAULT_SUBCOMMITTEE = LHHS); docs/data/index.json gains
+  that one key, docs/index.html regenerated; nothing else in docs/ changed. Merged main (#75, UI-6): one
+  conflict, this file (both sections kept).
+- "Not carried by custom" as a page state: left for the Legislative Branch brief (owner).
+
+## UI-6: Find changes and watchlist (2026-10-14)
+
+- web/index.html: a third tab, Find changes (`?view=changes`, `#changes-view`; shown when `find_changes` is built and on).
+  Four preset cards fill the condition builder (and keep the subcommittee, year, agency and basis): Deepest proposed cuts
+  (FY<n-1> enacted -> FY<n> request, change % at most -20), House vs Senate gaps (change $ either way at least $100M),
+  Proposed eliminations (`elim=1`: a printed 0 in column B where column A > 0), Moves and reorganizations (the grid's
+  `rows[].relationships`, each once, effective in the FY; "Show all years"; sources from the from-account's record).
+  Conditions: subcommittee, FY, column A / B (prior enacted, request, House, Senate, enacted), change % and change $
+  (at most / at least / either way), agency, Amount basis (views.<basis>, timing "available"), sort.
+- Results: Account (link to ?account=<id>&fy=<FY>), Agency, A, B, Change, %, Watch; each figure links to its source page
+  (url#page=N). Accounts = every row but an agency total with lines below it (AHRQ, ACL, AHA totals count: no lines).
+  Only pairs where both sides are figures (a printed zero is one; a confirmed absence, missing, n/c, outside life are
+  not). "n accounts left out: no figure in one stage. See them" lists each side's state (`left=1`); an account outside
+  its life in both stages is not counted. Drafts are included (Explore's default).
+- Save this search copies the URL (every condition is in it). Export CSV / Excel reuse UI-4's saveBlob, csvCell and the
+  vendored Excel writer ($ thousands, rounded as shown; a printed 0 exports 0). Open in Explore: same sc, FY, agency,
+  basis; Two years mode for prior enacted vs enacted; the threshold only where Explore's first change column is the
+  same comparison (it is "either way" there, % or $); otherwise the page says Explore has no such filter.
+- Watchlist: localStorage key `approps-intelligence.watchlist` ([{id, name, sc}]), every access in try/catch; blocked
+  storage keeps it for the page and says so. ☆ Watch on results, Moves, the Explore account panel / phone sheet and the
+  account page. The list (on Find changes) has the browser-only note, Remove, and "Copy watchlist link"
+  (`?view=changes&watch=<ids>`); opening that link offers "Add n to my watchlist" (never automatic; IDs not on file are
+  named and left out).
+- What's new (flag off since the owner's decision below): `approps_store.whats_new()` (source_document.retrieval_timestamp, date part; figures not superseded;
+  account attributes citing it; subcommittees) -> `docs/data/whats_new.json` (export_static) and `GET /api/whats-new`
+  (approps_web, also in payloads()). The page lists the subcommittee's documents by date (3 newest dates, the rest under
+  "Earlier"). Missing: SRC-BUDGET-APP-FY2019 has no retrieval date (listed as undated). The date is when a document was
+  retrieved into the record, not when a figure changed: there is no per-figure added date in the data.
+- web/ui_contract.json contract_version 6: `find_changes`, `find_moves`, `whats_new` added; `watchlist` (already true
+  from the data) now in BUILT. SPEC.md section 9 rows updated.
+- Tests: tests/test_find_changes.py (each preset; blank-vs-zero elimination, LHHS FY2023 CDC-Wide confirmed absence and
+  Medicare Operations missing; save/reload; Open in Explore; export; watchlist survives a reload; link export/import;
+  storage blocked; What's new static and live; tab and 390px). Screenshots: screenshots/ui-6/ (no design reference).
+
+Owner decisions (2026-10-14, same PR):
+1. What's new: the flag is off. The retrieval date changes on every re-fetch or reparse, so it is not an added date.
+   The code, `data/whats_new.json` and `/api/whats-new` stay; web/ui_contract.json `whats_new` now lists
+   `whats_new.json:documents[].first_added` and `subcommittees/*.json:rows[].cells.*.lines[].observations[].added_date`
+   (placeholders: set the paths to D-5's field names) with a `waits_for` note. When D-5 lands: whats_new() and the page
+   read the first-added date instead of `retrieved`. Test: test_whats_new_is_hidden_until_first_added_dates (hidden in
+   both modes; with the flag forced on, the list still renders).
+2. The "One account" tab opens the UI-5 account page (the One account view is the account page; no separate old view),
+   so it reads "Account" (title "Account · Approps Intelligence"). Test: test_account_tab_is_named_account.
+3. Accepted as built: single-account agency totals counted, totals with lines not; confirmed absences left out of
+   Proposed eliminations; printed zeros counted; the watchlist and its import offer.
+Merged main after D-3b (#74): CA-LHHS-0037 retired, so CDC-Wide's FY2023 request is now missing (not a confirmed
+absence); the blank-vs-zero test uses Medicare Operations FY2022 (confirmed absence) and FY2023 (missing) instead.
+
+Open:
+- No alerts or digests (static site), by the brief.
+- What's new waits for D-5's first-added dates.
+- The Explore grid has no "Watch" column; Watch is in the panel and sheet (SPEC 5.2).
+
+## D-3b: follow-ups from #72 (2026-10-14, this PR)
+
+Details and review items: `reference/review/accounting/review-D3b.md`. One commit per part.
+
+- Part 1: `absence_audit.py` -> `absence_audit.csv`: 219 of 309 confirmed absences cite a report or explanatory
+  statement, not bill/law text or Appendix language (CJS 197, Labor-HHS 22; 33 name a bill or law in the evidence).
+  More than 10: listed, not fixed. CA-LHHS-0037 retired (`d3b_records.py`): the FY2023 Appendix language under
+  'CDC-WIDE ACTIVITIES AND PROGRAM SUPPORT' (pp.437-438) appropriates $9,620,961,000 for all of CDC (= the report's
+  CDC request total less EEOICP), not the account's scope; the cell is missing and the $160,000,000 Fund row stays
+  reported, not recorded.
+- Part 2: `tag_components.PAST_WINDOW_241` reads 'shall be available for ... from amounts made available under
+  section 241 of the PHS Act' past the window (only that wording). CMP-LHHS-1372, transfer_in from section 241,
+  $100,000,000 beside OBS-LHHS-0892 (CDC Injury Prevention FY2025 request). CDC FY2025 request program level equals
+  the printed $9,738,690,000; cause request_evaluation_tap_past_window removed.
+- Part 3: NSF R&RA request headlines from the Appendix paragraph (8 cells: OBS-1057 ... OBS-1071 odd; defense_inside
+  OBS-1058 ... OBS-1072 even). FY2019 and FY2024 left as is (Appendix total is not the table's nondefense + defense).
+  `request_language.json` regenerated (only the 8 headline IDs change). `validate_approps.rule_status_text` reads
+  "Appendix language controls" for an SRC-BUDGET-APP figure.
+- measure_reconcile: base 1012/0 -> 1013/0; views 262/20/77 -> 263/19/77; earmark rule 4/0. Text check: match 2,534,
+  mismatch 0, ambiguous 4 (unchanged).
+
+Open:
+- The 218 remaining absences of `absence_audit.csv`: unchanged; D-3c re-cites them (owner, 2026-10-14).
+- CDC-Wide FY2023 request: missing; its $160,000,000 PPHF row is not recorded. FY2024's Appendix also prints one
+  CDC-wide appropriation ($10,217,311,000) under that heading; the cell keeps the report table's headline.
+- NSF R&RA FY2019 and FY2024 requests: one review item each in review-D3b.md (owner, 2026-10-14; no figure change).
+  FY2019: the Appendix and Budget volume print the original request; both committee reports the $7,472,000,000 NSF
+  figure after the February 2018 addendum (not readable here: whitehouse.gov blocked). FY2024: R&RA -$12,000,000 and
+  STEM Education +$52,000,000 against the Appendix; the May 9, 2023 budget amendments raise STEM Education, offset
+  partly within NSF (amendment pages not readable here). Both for `budget_amendment` in a later brief.
+- Accepted by the owner (2026-10-14): CA-LHHS-0037 retired, the section 241 transfer_in, the 8 NSF supersedes, the
+  "Appendix language controls" label.
+
+## UI-4: Export (2026-10-14)
+
+- web/index.html: the Export button (title row) opens `#export-menu` (Rows, Include, Format, Download, footer). Built
+  behind the existing `export_csv` flag (added to BUILT). One builder for both formats: `exportTable()` reads the
+  `<tr>`s buildRows lays out (the tbody itself for "Only what's shown"; a detached build with every agency and
+  general-provision group open for "Include collapsed accounts" and "Only rows I've selected") and each cell's own
+  text, so rows, columns, units and rounding are the screen's. `exportHeader()` writes the header block.
+- "Only rows I've selected": a tick box per account row (`row-pick`) while that choice is on; the set (`PICKED`) is
+  not in the URL, like the rest of the export choices.
+- Excel: web/write-excel-file.min.js (write-excel-file 4.1.1 from npm, MIT, bundles fflate 0.8.2, unmodified,
+  sha256 in web/write-excel-file.LICENSE.txt). Served by approps_web (ASSETS) and copied by export_static like
+  documents.js; loaded only when someone exports to Excel. cdn.sheetjs.com is blocked by the proxy, and npm's xlsx
+  0.18.5 carries known advisories, so SheetJS was not used. The workbook build is untouched.
+- Account page "Export history (CSV)" now uses the shared `saveBlob` (same file, same name).
+- Tests: tests/test_compare.py `Export` (5): rows and columns equal the screen for three LHHS filter combinations plus
+  CJS history on the live server; the header block; a not_reported cell exports "Not reported"; $M rounding
+  (NCI FY2026 enacted 7,352.2 on screen, 7352.2 in the file); Rows choices and the .xlsx (read with openpyxl).
+  ExploreV1 first-screen test now expects Export enabled; keyboard test adds the Export dialog. Screenshots:
+  screenshots/ui-4/.
+
+Owner answers (2026-10-14, same PR):
+1. A printed zero exports as the number 0 (a figure; "no zeros" meant a blank or a state never becomes 0). The screen
+   keeps "—". Test: `Export.test_printed_zero_exports_as_zero` (AHRQ FY2026 House, $K, $M and .xlsx).
+2. No commit hash: the data's commit date, version and sha256 are the provenance. export_static unchanged.
+3. A change cell with no value exports "Not computable" (amount and % columns); "Outside the account's life" stays.
+   Test: `Export.test_change_with_no_value_exports_not_computable`; `assert_matches_screen` checks both.
+Still as built: Include options default to all ticked; an untagged defense / nondefense cell exports blank.
+Merged main after D-3 (#72): one conflict, reference/handoff.md (both sections kept).
+
+## D-3: owner rulings 1-3 of decisions-D2.md (2026-10-14, this PR)
+
+Three commits, reviewable apart (part 2, part 3, part 1 in that order).
+
+- Part 2, President's Budget PPHF rows: `build_pphf_table.py` REQUEST_ROWS reads the request column's Fund lines of the
+  comparative table each President's Budget figure cites (FY2017, FY2018, FY2020-FY2025; 45 rows; FY2019, FY2026,
+  FY2027 print none). H.Rept. 114-699 and 116-450 table pages are images: read from page images (8 + 4 lines,
+  transcribed in printed_line). Each cell's rows equal the column's printed Fund total. 44 components (FY2023 CDC-Wide
+  has no request headline: CA-LHHS-0037, a confirmed absence resting on the table's silence -- for review). 9 of the 10
+  cells pass; CDC FY2025 differs by $100,000,000, Injury Prevention's 'Evaluation Funding (PHS Act Sec 241)' request
+  line: cause request_evaluation_tap_past_window (the Appendix proviso names section 241 past the 100-character window).
+- Part 3, phrase window: a designation ('designated by the Congress as (being) for an emergency requirement') that
+  starts inside the 100-character window is read to its end (legislative_text.DESIGNATION, at most 300 characters).
+  A flat 200-character window was rejected (27 unrequested components). Parser version changed: 53 text files
+  reparsed locally from sha256-verified govinfo downloads; the two FY2021 Senate drafts by the manual fetch workflow
+  (reparse mode, run on the branch: only parser_version and retrieved changed). One component appears (ACF Refugee
+  FY2025 request, emergency $2,914,179,000 inside); five other bill phrases lengthen with no component effect.
+- Part 1, NSF R&RA: `reference/review/accounting/d3_records.py`. 30 bill/law headlines superseded by the paragraph's
+  total (each checked against decisions-D2.md and the committed text; OBS-0997 ... OBS-1055, odd numbers); the 30 table
+  'Defense function' lines superseded by the same printed lines under the new contained component `defense_inside`
+  (OBS-0998 ... OBS-1056, even), headline_observation_id the new headline, so the store never adds them (owner,
+  2026-10-14). approps_store: a contained line may name a headline from another document only when that headline
+  superseded the line's own document's headline in the cell; a replacement may change component only when it
+  re-records the same printed line (document, page, amount). defense_portion components: 30 new IDs inside, 30 old
+  retired; 5 other components re-homed (new IDs). President's Budget R&RA rows unchanged (not in the ruling).
+- measure_reconcile: base 977/0 -> 1012/0; views 252/30/77 -> 262/20/77; earmark rule 4/0. Text check: match
+  2,534, mismatch 0, ambiguous 4 (unchanged).
+
+Open:
+- CDC FY2025 request: the section 241 evaluation line ($100,000,000) is untagged; a phrase rule reaching past the
+  window for 'from amounts made available under section 241' would close it (not in this brief).
+- CA-LHHS-0037 (CDC-Wide FY2023 request) rests on the table's silence; the request column prints a $160,000,000
+  Fund line under the account.
+- NSF R&RA request headlines (FY2017-FY2026) still take the table's nondefense line, defense beside (decisions-D2.md:
+  only if the rule is extended to the request language; FY2019 and FY2024 not determined).
+- Still open from D-2: AHRQ FY2024, OS FY2023, NIH FY2019, ACF FY2017 President's Budget differences; NEI FY2027.
+
+## UI-5: Account page (2026-10-14)
+
+- web/index.html (docs/ by export_static.py): the One account view is the account page. Header (path, name, proposed
+  tag, budget_class tag as the record gives it, Appendix account code from `attributes.<FY>.account_id_code` with its
+  citation, former names, years on file, "Start not identified" where `lifecycle.start_basis` is unidentified), Copy
+  citation, Export history (CSV); enacted history chart FY2017 onward (values only, CR bar lighter, hover = figure and
+  source, a bar opens its source); "Every stage, every year" (newest first, SPEC section 4 tokens, Enacted vs request)
+  beside a source panel that is renderSource() itself; Related (parent total, lines of a total, relationships, other
+  lines on file for the year); then the record grid kept as "Every line on file" (test_web's tests read it).
+- URL: ?account=<id>&fy=<FY>&stage=<stage>. The side panel's and the phone sheet's "Open account page" pass the FY.
+- New feature flag `account_page` (web/ui_contract.json, contract_version 5). Watch stays hidden (UI-6: not in BUILT).
+- Tests: tests/test_compare.py `AccountPage` (9). CompareBrowser.test_account_name_opens_the_single_account_view now
+  expects `&fy=2026` in the landing URL (brief item 5).
+- Screenshots: screenshots/ui-5/. No design reference exists for the account page; side by sides use 03/02/07.
+- Owner decisions 2026-10-14: SPEC's single page scrollbar stays. The class tag names its year, "Mixed · FY2026
+  (provisional)", from the selected FY (fy= or the selected figure), else the latest year on file. A click outside the
+  stage table's card, the chart's card and the source panel closes the panel. web/documents.js names the Budget
+  Appendix chapters ("FY2026 Budget Appendix, HHS"). "Every line on file" is a <details>, collapsed; test_web and
+  test_static open it first (open_lines()).
+- Owner, 2026-10-14: data unchanged; a request-stage class is the request's own, never provisional. Where the class
+  shown comes from a request-stage record the tag reads "Mixed · FY2027 request" (no "(provisional)"); enacted-basis
+  records unchanged. Test: AccountPage.test_class_tag_names_its_source.
+- Was open: the brief's "keep the window-height scroll box ... always-visible bottom scrollbar" predates UI-2c (SPEC now
+  says one page scrollbar); built to SPEC. The Appendix citation names SRC-BUDGET-APP-FY<n>-<AGENCY> by ID
+  (web/documents.js has no label for it).
+
+## UI-3b: Exclude earmarks and the nondefense column (2026-10-13)
+
+- Page only (web/index.html, docs/index.html as the export writes it). BUILT gains `exclude_earmarks` and `nondefense`.
+- Filter › Advanced "Exclude earmarks (CDS / CPF)": every printed figure reads `views_excluding_earmarks.<basis>` (printed
+  included) with UI-3's tokens; chip "Earmarks excluded"; URL `earmarks=excl`; label/overview/panel add "· excl.
+  earmarks". The source panel lists the earmark components the view used (amount, document, page or statute location)
+  and the published result, under the view figure.
+- View › Columns "Nondefense" (URL `cols=nondefense`), after Defense portion: the lead stage's `views_nondefense` for the
+  basis in view; empty with the reason on hover where not computable. Exclude earmarks doesn't change it.
+- Tests: tests/test_compare.py `ExcludeEarmarks` (5); test 12 and the filter-panel test now expect both controls.
+- SAMHSA HSPS FY2026 Senate: its earmark (CMP-LHHS-1326, 54,611, S.Rept. 119-55 p.436) was a tagging miss fixed in D-2
+  (#67); after merging main, the test asserts the excluding-earmarks figure 121,255 and that the panel lists the earmark.
+- Open: the panel names SRC-PLAW-119PUBL75 by its ID (web/documents.js has no label for it), as the UI-3 component list does.
+## D-2: request-stage components and the document-dependent D-1 items (2026-10-13, this PR)
+
+Start here. Rules: `reference/ACCOUNTING_RULES.md`; owner decisions: `reference/review/accounting/decisions-D2.md`
+(new) and `decisions-D1.md` (rulings table updated).
+
+- Access: govinfo.gov (Budget Appendix chapters, bills, reports, P.L. 119-4) and congress.gov (H.Rept. 119-696) were
+  reachable; appropriations.senate.gov and appropriations.house.gov were not (the FY2021-FY2023 Senate drafts and the
+  FY2024 House draft), so `build_pphf_table.py` keeps those cells' committed rows unchanged and says so.
+- Step 1, President's Budget FY2017-FY2027: `reference/review/accounting/request_language.py` reads the 66 Appendix
+  chapters' text layer into `request_language.json` (committed; 1,040 held account-years: 884 read, 156 not found,
+  each with its reason). The tagger reads them (`request_text`, `appendix_text`): 123 read with components, 761 read
+  with no match, 156 not found. Coverage is per account (`tag_components.covered` / `not_covered_reason`), used by
+  site_accounting and measure_reconcile; President's Budget agency totals are checked where every account behind
+  them was read. Page images: 4 (Appendix amounts checked: three printed with misplaced commas, and NEI FY2027's
+  '$833,000', a probable misprint (owner), all listed as misprints and not read), plus 6 for other items (H.Rept. 116-62 p.349; H.Rept. 119-696
+  PDF pp.371-373, 375, 377; H.Rept. 119-271 p.348). All from cached PDFs; no paid service.
+- Ruling 7d: CMP-LHHS-1005 inside; CMP-LHHS-1007 retired for CMP-LHHS-1262 (the report's 'New Advance' $2,800,000,000,
+  table_line, inside; the Appendix's $3,000,000,000 kept in its note); 1933 unchanged. In `advance_lines.py`.
+- Item 3: OBS-LHHS-4123 to -4125, S.Rept. 118-84 pp.384-385 (the lines; the totals are on pp.386-387): 2,500,000 +
+  1,000,000 + 1,775,000 = 5,275,000 thousand; the cell passes. The two CR lines are `supplemental_act` (P.L. 117-180)
+  labelled '(emergency)' -> designated/emergency; 'Formula Grants (emergency)' is inside 'Total, LIHEAP'
+  (`inside_lines.csv`).
+- Item 4: FY2027 House PPHF rows (H.Rept. 119-696 PDF pp.265-266, sec. 221); +2 pass.
+- Item 5 (7b): p.380 prints 'CR Funding—Public Law 117–180 Suicide Lifeline' 62,000 inside the headline: OBS-LHHS-4126,
+  other_law inside (CMP-LHHS-1277); CMP-LHHS-0547 now beside by arithmetic. No view changes.
+- Items 5b/5c: OBS-LHHS-4127 to -4131 (CDC-Wide House/Senate, Birth Defects and EEOICP Senate, ONC Senate $0), each
+  citing the bill's PDF page; CDC's FY2023 agency sums: House gap 958,570,000 -> 0, Senate 1,103,488,000 -> 0, no double
+  count; CA-LHHS-0038/-0039 (table silence) retired. VAL-MRC-MEMBER-NO-HEADLINE and -ONC-NO-HEADLINE are no longer
+  produced (their cells pass). ACL's total is read from its paragraph (TOTAL_ONLY), 45 components, all by arithmetic.
+- Item 5a: CMP-LHHS-1326 (earmark $54,611,000, table_line, S.Rept. 119-55 p.436) on OBS-LHHS-4112; measure_reconcile's
+  permanent earmark-rule check (VAL-MRE-*): 4 cells, 4 pass; 5 views_excluding_earmarks entries change (that cell).
+- Item 6: CJS FY2024-FY2025 House/Senate/Enacted in AUTO_CELLS (3 earmarks); FY2025 Enacted under the CR
+  (`CR_CELLS`, `CR_LEVEL_ONLY`: sec. 1301(3) NOAA ORF and 1301(6) NASA SSMS set levels only).
+- Item 7: decision section only (decisions-D2.md); nothing applied.
+- New rule: a default never leaves a negative base (CMP-LHHS-1175, CMS PM FY2026 request, beside); confirmed by the
+  owner, as is the retirement of CA-LHHS-0038/-0039.
+- measure_reconcile: base 813/0 -> 977/0; views 220/21/118 -> 252/30/77; earmark rule 4/0. Text check: match 2,529 ->
+  2,534, ambiguous 4 -> 4, mismatch 0 -> 0. Components 1,204 -> 1,401 (198 new, 1 retired).
+
+Open (D-3, owner 2026-10-13: decisions 1-3 of decisions-D2.md):
+- NSF R&RA headline (decision 1); President's Budget PPHF rows, 10 cells (2); 5 unexplained President's Budget cells (3).
+- NEI FY2027 request '$833,000': probable misprint, not read; for review.
+- The phrase window ends before 'are designated ...' on the FY2025 request's Refugee emergency amount
+  ($2,914,179,000); widening it is a parser change (every text file reparsed).
+- The FY2023 Senate explanatory statement and the other committee drafts need a session that can reach the committee
+  sites.
+- `request_language.py` and `build_pphf_table.py` need the cached PDFs (document_store/, gitignored); CI does not run
+  them.
+
+## UI-0b: excluding-earmarks and nondefense views (2026-10-13)
+
+- Every cell with `views` now also gets `views_excluding_earmarks.<basis>` and `views_nondefense.<basis>`, the same
+  shape as `views`, the printed basis included (`site_accounting.Layer.account_exclusion` / `total_exclusion`;
+  the arithmetic is `accounting.excluded_amount`: the basis amount less that type's components inside the headline
+  that the basis hasn't already taken out).
+- Coverage = `tag_components.AUTO_CELLS`. Outside it every entry is `not_computable`, "earmarks not tagged for this
+  stage" / "defense not tagged for this stage": the President's Budget, FY2027, and also CJS FY2024-FY2025 (not
+  in AUTO_CELLS). This leaves out NSF R&RA's President's Budget defense lines FY2017-FY2026 and the one FY2027 House
+  earmark (a table line), although they are tagged. Owner, #62: a table-line tag does not make its cell covered
+  (keep not_computable); CJS FY2024-FY2025 will be tagged in D-2; NSF's headline decision comes with D-2.
+- Accounts: always `computed`, never `checked`. NSF's defense_portion is printed beside its headline, so its
+  nondefense view takes nothing out.
+- Totals: `checked` only where `views.<basis>` is checked (a printed total measure_reconcile matched), the cell is
+  auto-tagged, and neither the total nor any of its accounts has a component of that type. Otherwise not checked,
+  with `accounts_behind`. The printed basis on a total is always not checked. Owner, #62: reused only when every
+  account behind the total is inside coverage (checked per account; 0 count change today, since every account
+  behind a total shares its subcommittee, year and stage). SPEC §9's two UI-0b rows: data ready, controls in UI-3b.
+- ui_contract v3: `exclude_earmarks` and `nondefense` (both true). Counts in tests/fixtures/grid_counts.json
+  (`views_*_status_counts`). The page doesn't read these fields yet (UI-3).
 
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
-## Component backfill follow-ups (this PR)
+## D-1 accounting follow-up (2026-10-13, this PR)
 
-- New source `reference/review/accounting/provision_lines.py` -> `provision_lines.csv` (read from each bill or law's
-  full text, govinfo HTML or the Senate PDF, cached in `document_store/provision_text/`; the tagger reads the CSV
-  offline, tag_method `auto_text`, so the text check never uses them). 20 rows: Nonrecurring Expenses Fund transfers
-  (FY2018 E CDC B&F $240M; FY2020 E sec. 237 NIH B&F $225M and sec. 238 CDC B&F $225M; FY2021 E sec. 237 NIH B&F
-  $225M; FY2021 S sec. 237 items (1)-(8): Primary Health Care $87M, Ryan White $50M, CDC HIV $60M, NIH B&F $229M,
-  PHSSEF $24M + 3 x $50M; FY2023 S sec. 235 CDC B&F $37.5M), section 241 taps (FY2022 S CDC Scientific Services
-  $132M, Environmental Health $7M; AHRQ total FY2022 S $27M, FY2022 H $129.208M, FY2021 H $199.909M, FY2020 H
-  $18.408M), and the FY2020 E sec. 239 $85M deposit from CDC-Wide into the Infectious Diseases Rapid Response Reserve
-  Fund (transfer_out, inside).
-- New phrase rule: "transferred to and merged with (amounts in) the Infectious Diseases Rapid Response Reserve Fund"
-  -> transfer_out (FY2020 House CDC-Wide $50M). FY2021 House's $400M is in the bill's Title VI, not the headline's
-  paragraph, so it is not tagged.
-- Components 1,185 -> 1,206 (21 new, 0 retired, 0 changed). Base 797 -> 812 pass, 0 fail.
-- Views 213 pass / 25 fail / 121 not checked -> 218 / 20 / 121. Resolved causes: nef_transfer_untagged (4),
-  agency_total_only (3), evaluation_tap_phrase_untagged (1). New cause nef_outside_printed_program_level (3, NIH
-  FY2020 E, FY2021 E, FY2021 S): the NIH table prints 'Total, NIH Program Level' without the NEF transfer and a
-  separate '(with transfer)' total equal to the computed view (H.Rept. 117-96 p.477; FY2021 Senate report p.252,
-  whose 2020 column covers FY2020 E). CDC FY2023 S (member_no_headline) now differs by $122.5M, not $160M: the
-  $160M block grant less the $37.5M Lake Lynn NEF transfer, which the Senate report's CDC program level leaves out
-  (p.405 prints Buildings and Facilities 35,000 and no NEF line).
-- The 70 unchecked agency totals now say what is missing: 66 President's Budget (the request's transfers in and
-  trust-fund limitations are not tagged; the request's Appendix language and CJs are not read for them) and 4
-  FY2027 House (not auto-tagged; a trial run showed OS passes, ACL is account_not_held, but CDC (+$1.398B) and
-  SAMHSA (+$12M) need the FY2027 House report's PPHF allocation table first, so the cell was left out).
-- Untagged phrases: OS-GDM FY2023 S sec. 243 $350M is the headline's own appropriation (565,394,000 + 350,000,000
-  = the printed 915,394,000), not a component. The $6.8M teen-pregnancy evaluation amounts are sub-allocations of
-  the section 241 transfer. Pandemic flu balances (FY2017): no FY2017 Labor-HHS bill or law text mentions P.L.
-  111-32 balances, so nothing to tag from text; stays in review.
-- No headline figure changed. Page images 0.
+- FY2027 House is auto-tagged (`FY2027_HOUSE` in `AUTO_CELLS`): 15 auto_text components, all Labor-HHS. CJS FY2027
+  House: nothing beyond its retagged lines. The FY2027 House bill text prints no PPHF provision with an amount and
+  `build_pphf_table.py` has no FY2027 rows (needs H.Rept. 119-696), so CDC and SAMHSA FY2027 House program levels
+  fail as `pphf_general_provision_table` (2); CDC's $1,398,375,000 equals the FY2026 House CDC allocation.
+- Rules: 'is (shall be) available to this appropriation ... from amounts prov[ided]' -> transfer_in (CDC FY2022 S
+  $132M, $7M; AHRQ FY2022 S $27M); not a component: OS-GDM's section 241 evaluation sub-allocation, a general
+  provision's additional amount that is the headline's own appropriation (counted in the in_headline arithmetic), and
+  CDC's Quarantine availability clause; AHRQ's total is read from its own paragraph (`TOTAL_ONLY`; ACL and AHA are
+  also held only as totals and are not read); measure_reconcile checks ONC's 'Evaluation Tap Funding' line against
+  the cell's section 241 transfers.
+- Owner rulings (2026-10-13), recorded in `reference/review/accounting/decisions-D1.md`: 1 A and 6 A resolved on
+  their VAL-MRC items (reviewer "owner (2026-10-13)"); 2 A, 7a A, 7c A and Quarantine applied; 4 A and 5 A approved
+  but moved to D-2 (bill pages); 3, 7b, 7d and the FY2027 PPHF item moved to D-2.
+- Components 1,185 (main) -> 1,204: 21 new, CMP-LHHS-0238 and -0239 retired (Quarantine; CMP-LHHS-1113, created in
+  this branch for FY2027, retired too). Existing changed, notes only (in_headline unchanged): CMP-LHHS-0542 (ruling
+  7a), CMP-LHHS-1061 and -1098 (FY2027 House advance_available, now by arithmetic). No figure changed.
+- measure_reconcile: base 797 -> 813 pass, 0 fail. Views 213 / 25 / 121 -> 220 / 21 / 118. Text check ambiguous
+  4 -> 4, mismatch 0.
+- Site views, "no component tagged (outside the auto-tagged cells)": CJS 1,092 -> 1,067, LHHS 3,400 -> 3,111 (FY2027
+  House 314 -> 0). President's Budget unchanged.
 
-## Open items (this PR)
+Moved to D-2 (needs network: www.govinfo.gov and the report PDFs):
+1. Step 2, the President's Budget request language (FY2017-FY2027): fetch the 66 Appendix chapters
+   (`appendix_attributes.fetch`), extract each held account's proposed language with chapter and page into a
+   committed file, run the phrase rules (`appendix_text`), record "language read" per account so views can compute,
+   keep the existing request advance_enacted records. Nothing was extracted in D-1.
+2. Rulings 4 A and 5 A (approved): CDC-Wide FY2023 House $958,570,000 (H.R. 8295 P0050) and Senate $817,070,000
+   (S. 4659 P0050), ONC FY2023 Senate $0 (S. 4659 P0099, phase 1b ONC rule). Each needs the bill's printed page; the
+   committed text is govinfo XML with no pages. CDC's agency sum: House 8,637,484 of 9,596,054 thousand held, gap
+   958,570 -> 0 with the new headline; Senate gap 1,103,488 -> 286,418 (Birth Defects and EEOICP Senate headlines
+   not held). No double count. The Senate explanatory statement's 'Subtotal' 977,070 thousand (VAL-LHHS-02215) is
+   the bill's $817,070,000 plus the $160,000,000 PPHF block grant.
+3. Items 3 (ACF emergency lines, S.Rept. 118-84 pp.386-387), 7b (SAMHSA MH FY2023 E, S.Rept. 118-84 p.380), 7d (the
+   three request advances, after step 2) and the FY2027 House PPHF table (H.Rept. 119-696).
+4. `nef_transfer_untagged` (4) and `pandemic_flu_balances` (4): the report-table lines ('Transfers from Nonrecurring
+   Expenses Fund', 'Pandemic Flu balances (Public Law 111-32)') are not recorded and the held text lacks the NEF
+   general provisions (P.L. 116-94, the FY2021 Senate draft) or ends before naming the source (P.L. 115-141 CDC B&F
+   $240,000,000).
 
-1. VAL-MRC causes pending owner review: emergency_lines_not_held 1, headline_superseded 4, member_no_headline 2,
-   nef_outside_printed_program_level 3, onc_evaluation_tap_line 2, onc_no_headline 1, pandemic_flu_balances 4,
-   prif_outside_printed_program_level 2 (request_stage_class 1 resolved).
-2. Account choices made from the text's purpose wording (flag any you disagree with): FY2021 S sec. 237 items to
-   Primary Health Care, Ryan White, CDC HIV, NIH B&F and PHSSEF (HPP, 319F-2(a), 319L, pandemic flu); NEF building
-   money to CDC or NIH Buildings and Facilities.
-3. Next for the unchecked totals: an Appendix-language reader for request-stage section 241 and PPHF transfers (66
-   PB cells); the FY2027 House PPHF table, then add the cell to AUTO_CELLS.
+Open (no network needed):
+- ACL and the Administration for a Healthy America are held only as totals; reading their paragraphs like AHRQ's
+  would add components (ACL's trust fund limitations, earmarks) and may turn ACL's `account_not_held` cells into
+  checked ones. Owner to decide.
+- Untagged candidates from #54, decided: CDC Scientific Services FY2022 S $132M tagged; OS-GDM $6.8M not a component;
+  OS-GDM FY2023 S $350M the headline's own appropriation; CDC B&F FY2018 E $240M and FY2020 E NEF $225M not tagged
+  (source not named in, or amount not in, the held text).
+- NOAA ORF (CJS) "$659,190,000 is provided by transfer, and $28,000,000 is derived from recoveries" is untagged in
+  every year; no rule reads "is provided by transfer".
+- Text check follow-up (ruling 7c B, not applied): the main-amount reader takes CMS PM FY2017 House's "$710,533,000
+  shall be for Federal Administration" proviso as the paragraph's amount.
 
-# Earlier handoff: component backfill FY2017-FY2023, 2026-10-12
-Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
-
-## Component backfill FY2017-FY2023 (#54)
+## Component backfill FY2017-FY2023 (this PR)
 
 - The tagger now auto-tags every Labor-HHS and CJS cell FY2017-FY2023, every stage (`AUTO_CELLS` = the pilot
   cells plus `BACKFILL` in `scripts/tag_components.py`). 1,185 components (was 583): 602 new, 0 retired, 0 existing
@@ -190,3 +711,256 @@ Made in this phase (flag any you disagree with):
    scopes with no computed view, 25 account_not_held, 1 with no component tagged.
 6. Carried over: four ambiguous text-check figures; 55 untagged pilot phrases; auto-tagging beyond the pilot; the
    FY2024 explanatory statement is not held.
+
+## UI-R: design reference and data-gated features (2026-10-12)
+
+- `reference/ui/explore-v1/` committed as given (SPEC.md is the build target for every Explore UI brief).
+- `web/ui_contract.json` (contract_version 1): one entry per SPEC section 9 row, each with the
+  `<file glob>:<dotted path>` fields it reads. `export_static.features()` writes `features` + `contract_version`
+  into `docs/data/index.json`; a flag is true only if every listed field holds a non-null, non-empty value.
+- Today: figure_source, grid, account_panel, overview_panel, search_filter, interaction_state, abbreviations,
+  export_csv, phone, watchlist true; accounting_views, budget_class, defense_split false.
+- Briefs (owner): grid, search_filter, overview_panel, interaction_state, abbreviations UI-1; figure_source,
+  account_panel UI-2; phone UI-P; accounting_views, budget_class, defense_split UI-0 / UI-3; export_csv UI-4;
+  watchlist UI-6.
+- UI-0 paths (owner, 2026-10-12): contract_version 1 keeps the proposed paths (`rows[].cells.*.views.*`,
+  `rows[].budget_class.*`, `rows[].cells.*.components.defense_portion`) for now. UI-0 will move budget_class to
+  `rows[].attributes.*.budget_class` and defense to `rows[].cells.*.defense_portion` in web/ui_contract.json and
+  bump contract_version.
+  The live /api has no index/features equivalent yet; the page reads no flags yet (no page changes in UI-R).
+
+## UI-0: accounting layer in the site data (2026-10-12)
+
+- `site_accounting.py` adds the layer to `approps_store.subcommittee_grid()` (so /api, the static export and the
+  store answer the same), from the store's own records (`approps_store.accounting_data`, data/staged.json's shape)
+  with accounting.py and `measure_reconcile.run()`. Per printed-figure cell (value or printed zero): `views.<basis>`
+  (list: an `available` entry, plus `enacted` only where it differs; printed has timing null), `components[]`,
+  `earmark` / `defense_portion` (only where tagged). Per row: `attributes.<FY>` (enacted basis, `request` beside it,
+  each attribute's citation). Totals: only views a passing measure_reconcile printed total gives; else
+  not_computable "not checked" with `accounts_behind`.
+- Basis definitions (`accounting.BASES`, `basis_amount`) follow `reference/ACCOUNTING_RULES.md` (owner, 2026-10-12),
+  cited in the code: all_appropriations = advances by timing; discretionary_designated = ACCOUNTING_RULES'
+  Discretionary (mandatory excluded, mixed less its mandatory_portion; a mixed account with none tagged counts its
+  headline, status computed, reason "mixed, no mandatory portion tagged: counted as discretionary (ACCOUNTING_RULES)");
+  discretionary = that less every in-headline `designated` component; program_level = headline + transfer_in +
+  trust_fund_limitation, advances by timing. Timing applies to every basis but printed. fees_offsets and
+  transfer_out are components only, counted by no basis.
+- Printed totals: 'discretionary' confirms only discretionary_designated where designated amounts exist; an
+  'excluding emergencies' total confirms discretionary only where every designated amount is emergency and nothing in
+  scope is mandatory (owner). Today none qualifies. Unused, all ACF Total: OBS-LHHS-0031 (FY2024 Enacted),
+  -0037 (FY2024 Senate), -1743 (FY2024 House), -0040 (FY2025 House), -0046 (FY2025 Senate): measure_reconcile pass,
+  but ACF holds mandatory accounts (Child Support, ...); OBS-LHHS-0028 (FY2023 Enacted): measure_reconcile fail
+  (emergency_lines_not_held); OBS-LHHS-0034, -0043 (FY2024, FY2025 President's Budget): not checked.
+- Whole LHHS.json stays next to the per-year files; removing it is a separate PR with the owner's OK. /api flags:
+  UI-1.
+- Outside the auto-tagged cells (President's Budget, FY2027), a view is not_computable unless the headline carries a
+  component the view uses (measure_reconcile's own rule).
+- LHHS.json is 13.8 MB (> `export_static.SPLIT_BYTES`, 12 MB), so it is also written as
+  `docs/data/subcommittees/LHHS/<FY>.json` + `index.json`; index.json `split_subcommittees` lists it, and the page's
+  static loader reads the per-year files. The whole file is still written; drop it once nothing reads it.
+- `web/ui_contract.json` contract_version 2 (paths moved as the owner set; a `shapes` block documents them);
+  accounting_views, budget_class, defense_split now true. `scripts/grid_counts.py` adds `view_status_counts`.
+- Open: page controls (UI-3); the ACF program-level totals (6 cells) pass but mix advance timings, so they confirm
+  neither timing; accounts with no budget_class on file (48 entries) have no discretionary view.
+
+## UI-1: Explore workspace (2026-10-12)
+
+- Explore is the default view (`/`); One account stays reachable (header tab, `?view=account`, `?q=`, `?account=`) until UI-5.
+- Feature flags in both serving modes: `features.py` holds `field_values`, `held`, `flags`; `export_static.py` writes
+  them into `docs/data/index.json` from the files it exported, and `approps_web.py` serves `GET /api/features` from the
+  payloads it serves (`payloads(db)`, cached per database file). `tests/test_static.py` checks the two agree. The page
+  shows a feature only when it is built (`BUILT` in web/index.html: grid, search_filter, overview_panel,
+  interaction_state, abbreviations) and its flag is true.
+- Page assets: `web/abbreviations.js` (display-only map keyed by canonical_account_id), `web/fonts/` (IBM Plex Sans and
+  Sans Condensed woff2 from @fontsource 5.2.5, SIL OFL in `web/fonts/OFL.txt`). Both modes serve them; the export copies them.
+- Default fiscal year: the current one from today's date (October 1 starts it), never hard-coded; FY2027 now.
+- A year with no Enacted figure: the lead stage is the latest stage the printed title total holds (no title total:
+  the latest any row holds); it gets the wash, the change reads "<Stage> vs FY<n-1> enacted", the units label adds
+  "FY<n> not yet enacted · latest: <Stage>", and the overview shows a Status block instead of "Enacted in".
+- URL state: `sc, grid, fy | a, b, stages, basis, units, density, cols, rev, agency, status, search, show, open`
+  (`view=compare` still read). Every change is a history entry (search typing replaces); Back/Forward re-render.
+- Kept from the old grid, now in the View menu: Units, Expand/Collapse all, Reviewer mode, the two-years stage
+  checkboxes and basis, the "Accounts shown" lifecycle checkboxes. Kept below the legend: state counts, stage notes,
+  provenance.
+
+Owner follow-ups (2026-10-12, same PR):
+
+- SPEC.md replaced with the owner's second version (FY2027 section, test 15, the zero rule).
+- A printed zero is a figure: `figure()` returns it (0) and it counts in dollar changes and movers; a % from a zero
+  base shows "new" ("—" when both are zero, `GridMath.pctText`). A confirmed absence (no observation) never counts.
+- Lead stage: none when the title total holds nothing that year (change column empty, overview "No printed totals
+  yet"). CJS prints no title total at all, so it takes the latest stage any row holds. View › Columns adds
+  "Request vs FY<n-1> enacted" in a year without an Enacted stage.
+- Filter › Advanced shows its ungated items: change threshold (`minpct`, `mink`: the first change column), Include
+  committee drafts (on by default; off drops draft columns and leaves drafts out of every difference, `drafts=0`),
+  the three lifecycle checkboxes (moved from View), Only figures pending review or flagged (`review=1`). Amount
+  basis, timing, Exclude earmarks and Account type are not built (UI-3) and stay hidden although UI-0 (#57) turned
+  their flags on.
+- Footer: the default view shows the one-line legend and the provenance line; the cell counts and the corner-mark
+  key show in Reviewer mode.
+- The CJS section label and the temporary nav (Explore, One account) are approved.
+
+Open items:
+
+1. Include committee drafts defaults to on (today's behaviour); the design shows the box unticked. Owner to confirm.
+2. UI-3 builds the basis, timing, earmark and Account type controls; their flags are already on since UI-0.
+
+## UI-2: Click-to-source and the account panel (2026-10-12)
+
+- SPEC.md: the two owner decisions from #58 added word for word (§4 CJS lead-stage bullet; §5.6 drafts on by default).
+- Figures: every cell holding an observation (a value, or a printed zero) is a `<button class="fig">` with aria-label
+  "Source for <account>, <stage>" (stage as `stageText`: "FY2026 enacted", "FY2025 enacted (full-year CR)", "FY2026 House").
+  It keeps `data-testid` amount / token-not-funded and `data-source`; the page link moved from `href` to `data-href`.
+  Confirmed absences and outside-life cells stay plain spans. Gated by `figure_source` (now in `BUILT`).
+- Panel modes (`renderPanel`): figure source > account > overview. `SEL` holds the selection; URL params
+  `fig=<id>|<fy>|<stage>` and `acct=<id>`. A selection not on file in the grid is dropped (`validSel`); changing
+  subcommittee clears it. Selection is marked with `data-sel=fig|row` and drawn with `!important` over hover and wash.
+- `web/documents.js` (served by both modes via `approps_web.ASSETS`): display-only short names keyed by
+  source_document_id, 72 entries. Built by hand from the ID patterns plus 12 explanatory-statement and draft entries
+  named from their URL and publication_date. A document with no entry shows its ID.
+- Account names open the account mode when `account_panel` is on and the row has its own page (not a printed
+  total); "Open account page" opens the One account view (until UI-5). Watch stays hidden (`watchlist` not built, UI-6).
+- Esc: closes an open menu first, then clears the selection, and focus goes back to the figure or name. A click outside
+  the grid, panel and menus clears; a press that closes a menu only closes it; controls never clear.
+
+Owner follow-ups on #59 (2026-10-12):
+- Draft documents are named as drafts ("Senate chair's draft explanatory statement, FY20xx (released <date>)",
+  "House subcommittee draft explanatory materials, FY2024 (released <date>)", "S. 3062, as introduced (Senate
+  chair's draft)"); every dated name says "released".
+- Names that open the account panel always carry the link style (navy #16325f, #9fb4d6 underline, 3px offset),
+  line names included (SPEC §4's #3a4150 for line names no longer applies to them).
+- SPEC.md §8: human-verified → "Verified by a person" (green, as auto-validated); §5.2: history bars start at zero.
+
+Open items:
+1. "Explanatory statement, Cong. Rec. Jan. 22, 2026" keeps the design's wording (an issue date, not "released").
+2. The account panel's stage lines show document · page · bill. The design adds a column hint ("FY2025 column",
+   "request column") that the data has no field for, so it is left out.
+
+## UI-3: Amount basis and class features (2026-10-12)
+
+- SPEC.md: §4 line-name rule replaced with the owner's #59 wording; §5.6 basis definitions now cite
+  `reference/ACCOUNTING_RULES.md` (was `accounting-views-spec.md`, not in the repo). Nothing else in SPEC changed.
+- `BUILT` gains accounting_views, budget_class, defense_split; each control renders only when its flag is true.
+- Filter › Advanced: Amount basis (five options, `amt=`; definitions paraphrase ACCOUNTING_RULES' Arithmetic table and
+  Discretionary rule as accounting.BASES applies them), "Advance appropriations count" (`timing=enacted`). Account type
+  (`type=`) sits between Agency and Status. Each non-default choice is a chip and counts in the badge; Reset/Clear all
+  restore them. The summary reads "<basis> · advances when <timing> · earmarks included".
+- `figure()` is basis-aware (the published view when status checked/computed, else no figure); `printedFig()` keeps the
+  printed figure for the lead stage, enacted-history years and the account panel. Cells under a basis: the view amount;
+  "excl." (excluded); "n/a" (account not computable) or "not checked" (total not computable); reason on hover; each a
+  button to the figure's source. Overview totals: the view only where checked, else "not checked (n accounts)".
+- Source panel under a basis: view value + status + reason, the printed headline (UI-2 fields), every component (type,
+  amount, in/beside the figure, document, page, ID) and the arithmetic: the printed figure, the components the view
+  used (`component_ids`, less if in the headline, plus if beside), "= " the published amount. The page adds nothing up.
+- budget_class: the enacted-basis record, else the request basis (proposed accounts). Mixed → "incl. mandatory" tag;
+  mandatory lines go under "Appropriated mandatory" in their agency (tag "provisional" where provisional); an agency gets
+  "incl. mandatory" when a line in view is mandatory or mixed. Provisional = dashed outline (legend says so).
+- View › Columns: "Defense / nondefense (defense portion)" (`cols=defense`): the lead stage's `defense_portion` amount
+  where tagged, empty otherwise (untagged is not zero). Only CJS NSF RRA is tagged today.
+- Tests: tests/test_compare.py AmountBasis (basis x timing cells and changes on Medicaid, CURES, SAMHSA HSPS, CMS Program
+  Management, the title total, FY2025 CR; source panel arithmetic; overview totals; Account type and tags; defense
+  column; URL round-trip of every option). Test 12 forces the three flags false and checks the controls appear when on.
+
+Owner answers on #61 (2026-10-12):
+1. Exclude earmarks and nondefense: nothing built; new flags `exclude_earmarks` and `nondefense` in web/ui_contract.json
+   (contract_version 3), false until UI-0b publishes `rows[].cells.*.views_excluding_earmarks.<basis>` and
+   `rows[].cells.*.nondefense` (proposed paths, in the contract's shapes; UI-0b may rename them in the contract).
+   Neither is in `BUILT`; test 12 forces both false and checks no control either way. View › Columns reads
+   "Defense portion".
+2. "incl. mandatory": a line whose class is mandatory, or mixed with a mandatory_portion tagged at the lead stage; an
+   agency holding one. FY2026: HRSA, CDC, CMS, ACF, OS (the mockup's CMS/ACF-only predates the class data). Hover names
+   each line and its mandatory amount (portions listed, never added). Recorded in SPEC §4; test in AmountBasis.
+3. Program level follows ACCOUNTING_RULES (owner decision on #57).
+4. Other departures adopted and recorded in SPEC §4 (basis tokens, class tags, defense column), §5.6 (definitions,
+   Exclude earmarks flag, label timing, overview/source panel under a basis), §8 (provisional dashed outline).
+
+Open: SPEC §9's table still says "hidden until UI-0" for the accounting rows and has no rows for the two new flags
+(the owner's answer named §4/§5.6/§8 only).
+
+## UI-P: Phone layout (2026-10-12)
+
+- Below 640px (`matchMedia("(max-width: 639px)")`) with `features.phone` on (`phone` now in `BUILT`) the body gets
+  `phone-on` and CSS hides the grid, the panel and the desktop control row; `#phone` shows the list. The desktop grid is
+  still rendered underneath (so a resize is instant); the phone list and sheet are rendered only while the phone layout
+  is active, so no test id appears twice on a desktop.
+- Same state: G, SEL, `open`, filters and the URL. New URL params: `pstage=<request|house|senate>` (not `stage=`: old links carry `stage=Enacted`) (the phone's stage
+  when it differs from the lead stage) and `table=1` ("Open the full table": the grid on a phone; Back returns).
+- The phone always reads the Stages layout of `fy` (`asStages`), whatever `grid=` a desktop link carries.
+- `partsOf(group, F)` now holds the row grouping both the grid and the phone list use; `accountView(grid, id, phone)`
+  builds the account panel and the sheet.
+- Agency rows with lines expand on tap (the design's caret); every other line opens the sheet. A selected figure
+  (`fig=`) opens its account's sheet; a printed total's figure opens nothing.
+- Tests: `tests/test_compare.py` `PhoneV1` (13, 14, desktop link -> sheet, FY2027/CJS, full table);
+  `test_no_page_scroll_at_390px` now checks the phone list and `table=1`.
+
+Open items:
+1. Watch stays hidden (UI-6).
+
+Owner decisions on #60 (2026-10-12), recorded in SPEC.md section 6 as adopted: the picker keeps "Labor-HHS-Education"
+on one line with an ellipsis (never wraps); lines strictly largest first; link style on every line name; an agency
+with lines expands on tap; "vs FY<n-1> enacted" in the summary card; "new" from a zero base.
+
+Merged main after UI-3 (#61): `BUILT` keeps both lists; `buildRows` uses `partsOf` with UI-3's "incl. mandatory"
+(`inclMandatory`) and class tags (`classTags`, factored out of `accountRow`). The phone list shows the same tags
+(an agency "incl. mandatory"; a line "mandatory" / "incl. mandatory"; no "Appropriated mandatory" sub-group since
+lines sort by size) and follows the Amount basis (`amt=`, `timing=`) as the grid does: view amounts, "excl.",
+"n/a" / "not checked"; the summary card and the stage note name the basis.
+
+## UI-2b: Grid and panel polish (owner review, 2026-10-13)
+
+- Note marks: the corner triangles (`cell-note`, `more`) are drawn only in Reviewer mode (`rev=1`); the mark legend
+  was already Reviewer-only. By default a figure's notes (cell note; other lines, listed never added) show in its
+  source panel under "Notes" (`src-notes`, `src-note`, `src-note-link`, `src-note-more`); a cell with no figure keeps
+  its note in the cell's hover text. Existing note/marker tests now open with `rev=1`.
+- Grid box: `sizeBox()` (called from `pinHeader`, so on render, resize and font load) sets `--box-top` to the box's
+  page offset; `.tablebox` / `.sidepanel` height = `calc(100vh - var(--box-top))`, min 420px.
+- Source panel: hint removed (figure mode only; `backRow(grid, false)`); `src-value` in full dollars, `src-short`
+  "printed as N in $ thousands"; "Source document" block (`src-docblock`: plain name, page, Printed as, `src-open`
+  "Open source document at page N"); `src-bill` "Bill / law: …" separate below.
+- Account view / phone sheet: header (path, name, short headline, `acct-exact` "FY2026 enacted, as printed", change);
+  `acct-table` Stage | Amount ($K) | Source (one link to url#page=N per stage); `acct-bills` "Bill text:" = bill_url of
+  the selected year's stages, Budget Appendix excluded, deduplicated, labelled by bill_id.
+- SPEC.md §3, §4, §5.1, §5.2, §6, §8 record the decisions. Screenshots: screenshots/ui-2b/.
+
+Owner answers (2026-10-13, same PR), recorded in SPEC §5.1/§5.2:
+1. The hint is gone from every panel mode (`backRow` has no hint; `panel-hint` no longer rendered).
+2. "Bill text:" adds the prior year's law first, "FY2025: P.L. 119-4 (full-year CR)"; the Budget Appendix stays out.
+3. A request figure's secondary link reads "Budget document: FY2026 Budget Appendix".
+
+Merged main after UI-3b (#65) and D-2 (#67): one conflict (renderSource's `VB` line; kept UI-3b's `usesViews()`).
+UI-3b's "Earmarks taken out (CDS / CPF)" list now sits inside the "Source document" block, after "Printed as" and
+before the button (`viewBlock` returns `ears` beside `head`/`tail`). Earmarks and components name their document as
+plain text with the page as the link (`compSource`; through the figure's URL when the component is in the figure's
+own document; `docLink` removed). UI-3b tests updated for the full-dollar `src-value`. SPEC §5.6 records the placement.
+
+docs/CNAME (custom domain, added on main by the owner, 64413f7): `web/CNAME` holds the same bytes (no trailing
+newline) and `export_static.export()` writes it into docs/ beside `.nojekyll`, so `test_committed_docs_are_current`
+sees it as export output. The domain and Pages settings are unchanged; to change the domain, edit web/CNAME and
+re-export.
+
+## UI-2c: Page scrolling and laptop widths (owner decisions, 2026-10-13)
+Recorded in SPEC §1 rule 5, §3 (UI-2c block; the UI-2b window-height box is struck through), §4 ("Never clip a
+figure") and §10 item 16. Built in web/index.html:
+- `#grid-wrap` is `overflow-x: clip` (no scroll container in either axis), so `thead th` stick to the window top.
+  Sideways movement is `--sx`: the table shifts left by it (`position: relative; left`), the `.acct` cells shift back
+  (`transform`, sticky `left` set to auto). `#grid-hbar` (sticky bottom, inside the box) drives `--sx`; a sideways wheel
+  over the grid and keyboard focus (focusin) also move it. `syncBar` hides the bar when the table fits.
+- `fitColumns` (called from `pinHeader`, which `renderBody`, resize and fonts.ready call): measures each figure
+  column at 1px (cell scrollWidth = content width) including header row 2, then shares the box width as the template's
+  fr units with minimum = max(98/112 floor, widest figure). Account column 250px, giving way to `ACCT_MIN` 200px.
+- Side panel 300px (`flex: 0 0 300px`; full width under the grid below 980px), type 17/24/20px scoped to `.sidepanel`
+  (phone sheet keeps SPEC §7 sizes). `#panel-toggle` / `G.panelOff` / URL `panel=hidden`; `select()` re-shows it.
+- Footers moved inside `<details id="definitions">` ("Definitions and data sources"); testids unchanged. Tests open it
+  with `GridBrowser.definitions()`.
+- Tests: new class `PageScroll` in tests/test_compare.py; `test_grid_box_fills_the_window` removed (behaviour retired),
+  test_layout / header seam / first-screen / footer / reviewer tests updated.
+Touch (owner, 2026-10-13): a wide grid has `touch-action: pan-y pinch-zoom` (`.tablebox.wide`, set in `syncBar`);
+touch pointer events on it move the grid through `setSX`, the bar's own path, so grid and bar keep one position.
+Vertical swipes stay the browser's (it cancels the pointer). No click guard: a moved touch is not a tap in Chrome.
+Fonts: `fitColumns` measures in the loaded fonts, so `pinHeader` also runs on every `document.fonts` "loadingdone"
+(a weight first used after the first render loads after `fonts.ready` resolved; CI saw stale widths). Browser tests
+wait for fonts and a frame (`GridBrowser.settle`, called by `open` and the `go` helpers) before reading layout;
+`test_columns_refit_when_a_font_loads_late` covers it.
+Test: `test_touch_swipe_moves_the_grid_with_the_bar` (raw CDP touch events; synthesizeScrollGesture doesn't scroll
+the page headless). Owner approved the departures: panel full width under ~980px, 200px account minimum, 17/20px
+panel type, definitions closed by default and not opened by Reviewer mode.

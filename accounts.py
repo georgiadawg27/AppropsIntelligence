@@ -185,8 +185,12 @@ COMPONENT_STAGE = {"supplemental_act": "Enacted", "budget_amendment": "President
 #   kids_first / congressionally_directed_spending -- a line printed inside the
 #            account's figure (the Gabriella Miller Kids First line under the NIH
 #            Office of the Director; HRSA's community project funding) (owner, 2026-10-08)
+#   defense_inside -- NSF Research and Related Activities' 'Defense function' line where the
+#            headline is the bill or law paragraph's amount, which already counts it (D-3, owner
+#            2026-10-14); the plain 'defense' line (a part) is the one beside a nondefense headline
 INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending", "request_proposal",
-                       "request_proposal_opioids", "request_proposal_rac_appeals", "request_proposal_childrens_research")
+                       "request_proposal_opioids", "request_proposal_rac_appeals", "request_proposal_childrens_research",
+                       "defense_inside")
 # A chamber's one-off line under an account's heading (Labor-HHS: Diaper Grants, House FY2022): a part of the
 # account's cell, never a new account (owner, 2026-10-08)
 PROPOSAL_COMPONENTS = ("chamber_proposal", "request_proposal_ssbg", "chamber_proposal_opioid_response",
@@ -198,7 +202,81 @@ PARALLEL_SCOPE_COMPONENTS = (
     "current_year", "appropriated_in_this_bill", "available_in_this_bill",
     "excluding_emergencies", "including_phs_eval_tap", "discretionary",
 )
-BREAKDOWN_COMPONENTS = frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
+# The summary lines a comparative table prints under the bill's grand total and each title total (D-7,
+# reference/review/accounting/d7_records.py): component -> (label as printed, kind, description, where printed).
+# 'contained' lines are inside the total (they add up to it); 'view' lines are the total again in another scope.
+SUMMARY_COMPONENTS = {
+    "appropriations": ("Appropriations", "contained",
+                       "the regular appropriations, printed under the bill or title total: inside it",
+                       "H.Rept. 115-231 p.124, under the grand total"),
+    "emergency_appropriations": ("Emergency appropriations", "contained",
+                                 "the amounts designated emergency, printed under the bill or title total: inside it",
+                                 "H.Rept. 115-231 p.124, under the grand total"),
+    "rescissions": ("Rescissions", "contained", "the rescissions, printed under the bill or title total: inside it",
+                    "H.Rept. 115-231 p.124, under the grand total"),
+    "rescissions_emergency": ("Rescissions of emergency funding", "contained",
+                              "rescissions of emergency funding, printed under the bill total: inside it",
+                              "H.Rept. 115-704 p.135, under the grand total"),
+    "advance_appropriations": ("Advance appropriations", "contained",
+                               "the first advance appropriations line (the next fiscal year), printed under the bill "
+                               "or title total: inside it", "H.Rept. 115-244 p.205 'FY 2019', under Total, Title I"),
+    "advance_appropriations_later": ("FY 2020 Advance", "contained",
+                                     "a further advance appropriations line (a later fiscal year), printed under the "
+                                     "bill or title total after the first: inside it", "H.Rept. 115-244 p.256"),
+    "advance_appropriations_emergency": ("Emergency advance appropriations", "contained",
+                                         "advance appropriations designated emergency, printed under the bill or title "
+                                         "total: inside it", "H.Rept. 117-395 p.230, under the grand total"),
+    "advance_appropriations_emergency_later": ("(Advance appropriations, FY 24-26)(emergency)", "contained",
+                                               "a further emergency advance appropriations line: inside the total",
+                                               "H.Rept. 117-403 p.862"),
+    "trust_funds": ("Trust Funds", "contained", "the trust-fund amounts, printed under the bill or title total: inside it",
+                    "H.Rept. 115-244 p.205, under Total, Title I"),
+    "federal_funds": ("Federal Funds", "contained",
+                      "the federal-fund amounts, printed under the bill or title total: inside it",
+                      "H.Rept. 115-244 p.205, under Total, Title I"),
+    "mandatory": ("Mandatory, total in bill", "view",
+                  "parallel total printed with scope 'mandatory' (the bill's or title's mandatory budget authority)",
+                  "H.Rept. 116-450 p.452, the RECAP"),
+    "mandatory_available_this_fiscal_year": ("Total, mandatory, current year", "view",
+                                             "parallel total printed with scope 'mandatory, current year'",
+                                             "H.Rept. 116-450 p.452, the RECAP"),
+    "discretionary_available_this_fiscal_year": ("Subtotal, discretionary, current year", "view",
+                                                 "parallel total printed with scope 'discretionary, current year'",
+                                                 "H.Rept. 116-450 p.452, the RECAP"),
+    "discretionary_after_scorekeeping": ("Total, discretionary", "view",
+                                         "parallel total printed with scope 'discretionary' after the RECAP's "
+                                         "scorekeeping adjustments", "H.Rept. 116-450 p.454, the RECAP"),
+    "excluding_other_appropriations": ("Grand total excluding Other Appropriations", "view",
+                                       "parallel total printed with scope 'excluding Other Appropriations'",
+                                       "H.Rept. 117-395 p.230"),
+    "before_rescissions_and_other": ("Grand total", "view",
+                                     "parallel total printed with scope 'the titles only': the first of two grand "
+                                     "totals, ahead of the table's rescission, CHIMP and Other Appropriations sections",
+                                     "S.Rept. 118-207 p.467 (the second, the bill total, is on p.470)"),
+    "mandatory_before_rescissions_and_other": ("(Mandatory)", "view",
+                                               "parallel total printed with scope 'mandatory, the titles only' (under "
+                                               "the first of two grand totals)", "S.Rept. 118-207 p.467"),
+    "discretionary_before_rescissions_and_other": ("(Discretionary)", "view",
+                                                   "parallel total printed with scope 'discretionary, the titles only' "
+                                                   "(under the first of two grand totals)", "S.Rept. 118-207 p.467"),
+    # D-8: each committee report's comparison of the bill with its subcommittee's 302(b) allocation (the section
+    # 308(a) table, in millions; budget authority and outlays each as amount_type), on the bill total
+    # (reference/review/accounting/d8_records.py). The scored figures anchor no basis (ACCOUNTING_RULES 'Totals' 7)
+    "allocation_302b_discretionary": ("302(b) allocation, discretionary", "view",
+                                      "the subcommittee's 302(b) allocation, discretionary, as the report's section "
+                                      "308(a) comparison prints it", "S.Rept. 118-207 p.331"),
+    "allocation_302b_mandatory": ("302(b) allocation, mandatory", "view",
+                                  "the subcommittee's 302(b) allocation, mandatory, as the report's section 308(a) "
+                                  "comparison prints it", "S.Rept. 118-207 p.331"),
+    "bill_302b_discretionary": ("this bill, discretionary (302(b) comparison)", "view",
+                                "the bill's discretionary amount as the report's section 308(a) comparison with the "
+                                "302(b) allocation prints it (scored)", "S.Rept. 118-207 p.331"),
+    "bill_302b_mandatory": ("this bill, mandatory (302(b) comparison)", "view",
+                            "the bill's mandatory amount as the report's section 308(a) comparison with the 302(b) "
+                            "allocation prints it (scored)", "S.Rept. 118-207 p.331"),
+}
+BREAKDOWN_COMPONENTS = (frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
+                        | frozenset(SUMMARY_COMPONENTS))
 VOCABULARY = frozenset(COMPONENTS) | frozenset(STRUCTURAL_COMPONENTS) | BREAKDOWN_COMPONENTS
 # The same, as the store's Component table rows (component, kind, description):
 # what the loader seeds when a workbook has no Component tab yet.
@@ -213,6 +291,8 @@ COMPONENT_KINDS = (
                                    "Director's figure"),
        ("congressionally_directed_spending", "contained", "community project funding / congressionally directed "
                                                           "spending printed as its own line inside the account's figure"),
+       ("defense_inside", "contained", "the NSF Research and Related Activities 'Defense function' line, inside the "
+                                       "headline: the bill or law paragraph's amount counts it (never add it again)"),
        ("chamber_proposal", "part", "a one-off line a chamber proposed under the account's heading (a note)"),
        ("request_proposal", "contained", "a line the President's request proposed, printed inside the account's "
                                          "total (not enacted)"),
@@ -228,7 +308,8 @@ COMPONENT_KINDS = (
                                                     "note)"),
        ("request_proposal_ssbg_research", "part", "a one-off line the President's request proposed under the "
                                                   "account's heading (a note)")]
-    + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS])
+    + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS]
+    + [(c, k, d) for c, (_, k, d, _) in SUMMARY_COMPONENTS.items()])
 # Each component's label (Component.label): the name as a source document
 # prints it, taken from the document's text, never made up from the
 # description -- (label, basis, where it is printed). basis "printed name":
@@ -256,6 +337,9 @@ COMPONENT_LABELS = {
                    "H.Rept. 117-96 p.477, under NIH's Office of the Director"),
     "congressionally_directed_spending": ("Community Project Funding / Congressionally Directed Spending", "printed name",
                                           "H.Rept. 118-585, HRSA-Wide Activities and Program Support"),
+    "defense_inside": ("Defense function (inside the paragraph's total)", "heading or line text",
+                       "the NSF Research and Related Activities sub-line 'Defense function' (S.Rept. 118-62 p.220), "
+                       "inside the bill or law paragraph's amount (D-3, owner 2026-10-14)"),
     "chamber_proposal": ("Diaper Grants", "heading or line text", "H.Rept. 117-96 p.485, under Social Services Block Grant"),
     "request_proposal": ("National Institute for Research on Safety and Quality (NIRSQ)", "printed name",
                          "H.Rept. 116-450 p.407, the FY2021 request column under NIH"),
@@ -300,6 +384,7 @@ COMPONENT_LABELS = {
     "discretionary": ("discretionary", "printed name",
                       "'Total, Title II, Department of Health and Human Services discretionary'"),
 }
+COMPONENT_LABELS.update({c: (lab, "printed name", where) for c, (lab, _, _, where) in SUMMARY_COMPONENTS.items()})
 FY_TAG_RE = re.compile(r"^\s*FY\s*\d{2,4}\s+", re.I)
 
 

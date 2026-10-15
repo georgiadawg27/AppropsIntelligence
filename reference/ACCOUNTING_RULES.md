@@ -64,7 +64,12 @@ read from the text layer (no page images) into `appendix_schedules.json`.
   accounts; each correction is noted on the account. A general-fund account with `trust_fund_limitation`
   components (CMS Program Management, Medicare Hearings and Appeals: funded by transfers from the trust funds) is
   consistent, not a disagreement.
-- Totals and part lines carry no attributes; an account with no schedule found is left empty with a note
+- Totals and part lines carry no attributes, except an agency held only as its total (no account lines: AHRQ, ACL,
+  AHA). Its total is its one line, so it takes its Appendix account's attributes as an account would: codes and
+  fund type from FY N's volume, `budget_class` from the FY N+2 actuals, FY2026-FY2027 provisional (owner decision
+  B, D-9, 2026-10-15; until D-9 totals carried none). AHRQ maps to 075-1700 and ACL to 075-0142; AHA, which the
+  FY2026 and FY2027 requests spread over several new accounts, maps to none and stays without attributes (noted).
+  An account with no schedule found is left empty with a note
   (`account_attribute_notes`, `reference/review/accounting/appendix_coverage.csv`). Nothing is guessed. The
   defense split stays on the `defense_portion` lines; no subfunction implies one.
 
@@ -93,7 +98,12 @@ negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
 stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text`,
 `carried_forward`, `cr_anomaly`, `appendix_text` (the request's proposed language in the Budget Appendix) or
-`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). `within_component_id` names the component this one is part of (HCFAC's cap
+`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). A request with no Budget Appendix language of
+its own for the account takes the lines the House or Senate comparative table prints under the account in the
+request column as `table_line` components, cited to the report page (decision C, D-9): the Prevention and Public
+Health Fund line (`pphf_table.csv`) and the evaluation funds line (`table_lines.csv`, a `transfer_in` from section
+241 beside the headline). A line printed '---' is nothing; an account whose table prints nothing beside it stays
+components unknown. `within_component_id` names the component this one is part of (HCFAC's cap
 adjustment inside the amount transferred from the trust funds): the base subtracts only the outer one. Views add
 top-level components only; a nested component is used only when a view splits its parent (picks it without the
 parent, as a view leaving out the cap adjustment but keeping the trust-fund amount would), so no view ever counts a
@@ -125,10 +135,97 @@ bill appropriates it, advances when enacted, comes off); a mixed account counts 
 `mandatory_portion` components (`accounting.discretionary_adjustment`). An account with no class on file is
 counted as printed and named in the check.
 
+### Structural rules (owner, D-6, 2026-10-14)
+
+Two facts about where a component can exist, applied to every account cell of the published views
+(`site_accounting.Layer.structural`), whether or not the cell's text was read for components. Neither fills in a
+basis view that is itself not computable or excluded: the exclusion view copies the cell's view entry for entry.
+
+1. **No earmarks in a request.** Earmarks (Congressionally Directed Spending, Community Project Funding) are added
+   by Congress, so every President's Budget cell's `views_excluding_earmarks.<basis>` equals its `views.<basis>`.
+   Reason: "a request carries no earmarks".
+2. **No defense outside function 050.** An account whose `budget_subfunction` for the year, read from FY N's own
+   Budget Appendix volume (the attribute's source is `SRC-BUDGET-APP-FY<N>...`), is not 05x, with no defense line
+   printed in the cell (`defense`, `defense_inside`) and no `defense_portion` tagged, has `views_nondefense.<basis>`
+   equal to `views.<basis>`. Reason: "not a defense function (subfunction NNN)". Subfunction 999 (the account spans
+   more than one function), a subfunction read from a later volume, or none on file doesn't qualify: those cells
+   keep the tagging rule (untagged is not none tagged).
+
+### Totals: built down from a printed anchor (owner, D-8, 2026-10-14; replaces D-6's sum-first rule)
+
+Spec: `reference/specs/anchored-totals.md`. Accounts stay as strict as before (no guessed figure; untagged is not
+none tagged). Only totals change (`site_accounting.Layer.total_layer`).
+
+1. **Anchor.** For each total, basis, timing and stage, the printed line that basis must reach, from the total's
+   own document: the committee table's line for that total in the stage's column (agency program level and
+   discretionary lines, D-7's title and bill lines; the President's Budget takes the request column of the House
+   and Senate tables), or bill or law text where it states one. Which printed scope anchors which basis is
+   `site_accounting.PRINTED_BASIS` (program level -> Program level; discretionary -> Discretionary incl. designated,
+   and Discretionary where no designated amount is inside; excluding emergencies -> Discretionary where every
+   designated amount is emergency and nothing is mandatory; appropriated in this bill / available this fiscal year
+   -> All appropriations, enacted / available). A line that doesn't state its timing keeps its table's advance
+   convention, read from the headlines it counts (an advance line the table prints inside the total counts as
+   inside); it holds for both timings only where the lines print no advance and every part is known, otherwise
+   only for the committee tables' own convention, advances counted in the bill that appropriates them (enacted).
+   As printed's anchor is the printed total itself. Scopes that are no basis (current year, excluding ARPA-H, with
+   CURES, after scorekeeping, excluding Other Appropriations, the titles only) anchor nothing.
+2. **Build-up.** From the total as printed (P), not the sum of accounts, so money the total prints that is in no
+   account held stays in: plus the known adjustments of each line whose view is known (grouped by type as before),
+   less the accounts the basis leaves out, less the held lines printed inside the total that the basis doesn't count
+   separately (D-6 rounds 2-3 evidence, `total_lines_inside.csv`; counted as before).
+3. **Reconcile.** With an anchor A: R = A - P - known adjustments, and the total is A. R = 0: status `matches`, every
+   step itemised. R != 0: status `computed`, and R is one named 'not itemised' line (adjustment type
+   `not_itemised`, published as `remainder`: amount, the parts not known -- each account with its cause, or money in
+   no account held -- and why, with measure_reconcile's `VAL-MRC` cause where it flagged the line), cited to the
+   anchor. It is never spread over accounts.
+   With no anchor: every part known -> P + adjustments, `computed`; otherwise `not_computable` with a `cause`.
+   Every part left out by the basis -> `excluded`.
+4. **Owner decision E: strict.** No account is counted as printed by assumption, and money in no account held is
+   not assumed to hold nothing a basis needs. Such cells close with data (D-9), not by assumption.
+5. **Causes** on every not computable entry (accounts too): `missing_figure` (a line behind the total has no
+   figure), `not_held` (money in no account held, no anchor), `no_anchor` (no account behind the total held in the
+   cell, no anchor), `no_class` (no budget_class on file), `components_unknown` (the components the view needs are
+   not tagged or not read). A total takes the first in that order among its parts.
+6. **Exclusions** (excluding earmarks, nondefense, and both together -- `views_nondefense_excluding_earmarks`, owner
+   decision D): the total's views entry less what the exclusion takes out of each line (the line's own exclusion
+   entry less its views entry, and a held line inside the total the exclusion leaves out). Every part must be known
+   for the exclusion: a part the views entry could not itemise only where a structural rule clears it (a request
+   carries no earmarks; an account outside function 050). `matches` carries over where nothing is taken out.
+7. **302(b).** Each committee report's comparison of the bill with its 302(b) allocation (section 308(a) table) is
+   recorded on the bill total (`d8_records.py`) in the report's own words, and anchors no basis: its scored figures
+   are not the table's totals (scorekeeping, cap adjustments, emergency and advance treatment). Reconciling a whole
+   bill from it down to accounts needs every account of the bill held: a later phase.
+
+Held lines (owner, D-6 rounds 2-3): a line we hold beside an account's headline (a supplemental, Medicaid's advance
+for next year, NSF's request 'Defense function' line, a program line printed under the account, a rescission)
+counts in the total only because the table prints it inside that total -- its position under the total, or
+the table's own printed arithmetic (a subtotal or the total's printed breakdown that includes it) -- never because
+it makes a sum match. The evidence, one row per (total, line) with the page and the printed rows, is
+`reference/review/accounting/total_lines_inside.csv` (judged from `total_lines.py`'s report and, for scanned pages,
+the page image); a line from another document than the total's is outside by definition.
+On a basis each line counts as its basis would count it: out with its account when the basis leaves the account
+out; a line matching a component the basis decides by itself (an advance by timing, a transfer in) is in the
+account's view where the basis counts it and never added twice; a designated line (a supplemental) is out of
+Discretionary; a defense line out of Nondefense, an earmark out of excluding earmarks; any other line counts as
+printed. The cells whose accounts as printed don't add up to the printed total are listed in
+`reference/review/accounting/total_gaps.csv` ('published' yes where the inside lines close the gap exactly).
+
+### Adjustments (D-6, D-8)
+
+Every published view entry with an amount lists `adjustments`: what turns the As printed figure into it. An
+account's: one item per component the view takes out (sign -) or adds (sign +), with its id, type, label, amount
+and source document and page. A total's (its build-up): grouped by component type and sign, with the accounts behind
+each, plus the accounts the basis leaves out (`left_out_by_basis`, their As printed figure, sign -), the held lines
+the basis doesn't count separately (`held_line_not_counted`, sign -), and last, against an anchor, the remainder
+(`not_itemised`). As printed + the adjustments = the amount, exactly (tests/test_site_data.py checks every entry).
+An entry equal to As printed has an empty list. The D-6 `printed_total` type is retired.
+
 ## Defaults (the owner's decisions)
 
 1. **Advances count when available (CBO)** by default.
-2. **FY2025 full-year CR** (P.L. 119-4): components continue from FY2024. Where an anomaly names the account,
+2. **FY2025 full-year CR** (P.L. 119-4): components continue from FY2024 (Labor-HHS; CJS from D-2, whose anomalies
+   naming a held account, div. A sec. 1301(3) NOAA Operations, Research and Facilities and 1301(6) NASA Safety, Security
+   and Mission Services, set the level only and change no component). Where an anomaly names the account,
    only what its text changes is affected; every other component of the account continues (owner, 2026-10-11).
    Where the anomaly states the new amount, a new FY2025 component is recorded from its text (`cr_anomaly`, citing
    the section); a changed component is dropped with nothing in its place only when the anomaly ends the item:
@@ -150,6 +247,24 @@ counted as printed and named in the check.
 3. **Draft committee stages** are tagged like reported stages.
 4. **Earmarks are included in every view** by default. An earmark counts inside the account whose paragraph
    appropriates it.
+5. **NSF Research and Related Activities: the paragraph's total, defense inside** (D-3, owner 2026-10-13/14). In
+   every bill and law cell the headline is the amount the R&RA paragraph appropriates (the report's nondefense line
+   plus its 'Defense function' line; an amount the paragraph designates an emergency stays beside), citing the bill
+   or law page, with the table's nondefense figure as the note. The table's defense line is re-recorded under
+   `defense_inside` (kind `contained`, never added to the account's figure), naming the new headline, and is tagged
+   a `defense_portion` inside it. The President's Budget takes the same rule from the Budget Appendix's proposed
+   language (D-3b, owner-approved 2026-10-14; FY2017-FY2018, FY2020-FY2023, FY2025-FY2026). FY2019 and FY2024 keep the
+   table's nondefense headline with its `defense` line (a part) beside: their Appendix paragraph total is not the
+   table's nondefense + defense (for review). Store exemption, for this case only (`approps_store.headline_errors` /
+   `superseded_errors`; tests `test_store.ReRecordedLineExemption`):
+   - a contained line may name a headline from another document only when that headline superseded the line's own
+     document's headline in the same cell (bill or law text over the report table);
+   - a replacement may change component only when it re-records the same printed line: same document, page and
+     amount.
+   Any other contained line from another document, or component change, still fails to load.
+   Re-ingesting a table that prints a superseded figure (`approps_store.add_observations`: same fact, same
+   amount as a superseded record) confirms that record; it is never a conflict with the replacement and never
+   stored again (so the table's defense line can't come back as a part).
 
 ## Tagging rules
 
@@ -160,7 +275,9 @@ supplemental and emergency lines, defense lines (NSF), the Medicaid advance line
 
 **Table lines**: the Vaccine Injury Compensation Trust Fund's "HRSA Administrative expenses" line, read from the
 headline's own table (`reference/review/accounting/table_lines.csv`), is its `trust_fund_limitation`; its
-"Post-FY 1988 Claims" line (phase 2) is its `mandatory_portion`.
+"Post-FY 1988 Claims" line (phase 2) is its `mandatory_portion`. A "Congressionally Directed Spending" line beside the
+account line of an earmark-rule headline is its `earmark`, inside (D-2: SAMHSA HSPS FY2026 Senate, S.Rept. 119-55
+p.436).
 
 **Mandatory portions** (phase 2, every year; `reference/review/accounting/mandatory_lines.csv`, written by
 `mandatory_lines.py`): Promoting Safe and Stable Families' section 436 amount, read from the bill or law text
@@ -191,20 +308,6 @@ from the CR's anomaly), and FY2017 from the FY2017 Appendix's bracketed enacted 
 It is inside the headline only when the headline less what is inside it is the current-year amount plus the
 advance; otherwise beside.
 
-**Provision lines** (component backfill follow-ups; `reference/review/accounting/provision_lines.csv`, written by
-`provision_lines.py` from the bill or law's full text, `auto_text`): money whose words sit outside the amount's
-phrase window, or in a general provision that names the account by its purpose. Nonrecurring Expenses Fund money
-("derived by transfer from the Fund established by Public Law 110-161, division G, title II, section 223", and the
-general provisions "Of the unobligated balances available in the Nonrecurring Expenses Fund ..., $X ... shall be
-available for <purpose>") is a `transfer_in` beside the headline of the account whose purpose the text names
-(buildings and facilities at NIH or the CDC; the FY2021 Senate bill's sec. 237 list by program: Health Centers to
-Primary Health Care, Ryan White, CDC HIV prevention, and the Hospital Preparedness Program, section 319F-2(a),
-section 319L and pandemic influenza to PHSSEF). Section 241 evaluation funds worded "is available to this
-appropriation ... from amounts provided pursuant to section 241" (FY2022 Senate), and AHRQ's section 241 proviso
-(AHRQ is held only as its total), are `transfer_in` beside the headline. The FY2020 law's sec. 239 deposit of
-CDC-Wide Activities funds in the Infectious Diseases Rapid Response Reserve Fund is a `transfer_out` inside the
-headline. A Nonrecurring Expenses Fund rescission is not a component of any account we hold.
-
 **ONC** (FY2024 House and Senate, FY2025 Senate and Enacted, FY2026 House and Senate): the headline is $0 budget
 authority as the bill text prints it (no new budget authority), and the paragraph's whole amount is its section 241
 `transfer_in`, beside the headline. FY2025 Enacted cites P.L. 119-4 sec. 1101, continuing P.L. 118-47 div. D.
@@ -213,7 +316,11 @@ line in parentheses (a non-add) and no budget-authority line; FY2025 Enacted use
 House report's table.
 
 **Auto-tagged** from the committed bill and law text. Pilot: Labor-HHS FY2024-FY2026 and CJS FY2026; the component
-backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted). Each
+backfill adds Labor-HHS and CJS FY2017-FY2023 (House, Senate, Enacted); the D-1 follow-up adds FY2027 House
+(H.R. 9260 Labor-HHS, H.R. 8845 CJS; FY2027 Senate and Enacted hold no figures); D-2 adds CJS FY2024 and FY2025
+(House, Senate, Enacted; FY2025 Enacted is the full-year CR, below). An agency held only as its total (AHRQ, owner
+D-1; ACL, owner D-2) is read from the agency's one appropriation paragraph, as an account would be (the Administration
+for a Healthy America is also held only as a total and is not read). Each
 amount in the headline's paragraph is read by its own clause:
 
 | phrase | component |
@@ -228,16 +335,49 @@ amount in the headline's paragraph is read by its own clause:
 | "section 1001(b)(4) of the 21st Century Cures Act" (NIH Innovation Account) | `designated` / `other` |
 | "from the 10-year Pediatric Research Initiative Fund" | `transfer_in` (from PRIF) |
 | "transferred to and merged with the appropriation for the Office of Inspector General" | `transfer_out` |
-| "transferred to and merged with (amounts in) the Infectious Diseases Rapid Response Reserve Fund" | `transfer_out` |
 | "shall be available ... from amounts made available under" (PPHF or section 241) | `transfer_in` |
+| "in addition to amounts provided herein, $X is (shall be) available to this appropriation ... from amounts provided" (an evaluation tap; D-1) | `transfer_in` (section 241 where the held phrase prints '241'; else "not named in the phrase") |
+| "$X shall be available for ... from amounts made available under section 241 of the PHS Act", the source printed past the phrase window (D-3b: only this wording is read on into the paragraph's text; CDC Injury Prevention, FY2025 request) | `transfer_in` (section 241; never PPHF) |
 | "an additional amount" in a general provision under the account's heading | a component of that account |
 | Community Project Funding, Congressionally Directed Spending, "projects specified in the table", HRSA "projects financing the construction and renovation" | `earmark` |
+
+**President's Budget** (D-2): each held account's proposed appropriations language in FY N's Budget Appendix
+(HHS chapter for Labor-HHS; Commerce, Justice, NASA, NSF and EOP for CJS), FY2017-FY2027, is read from the text layer
+by `reference/review/accounting/request_language.py` into `request_language.json` (chapter, printed pages, the text as
+printed and the proposed text with its [bracketed] deletions and the cited act dropped). An account's heading is
+matched by its names under its agency, as the bill check matches a paragraph; failing that, by its Appendix account
+(`appendix_map.csv`) where one heading's language precedes that account's schedule (and the map's activity pattern
+names the heading where the account shares it), and never where two held accounts reach the same heading that way.
+The same phrase rules then read each amount (`appendix_text`); the advances of Child Support, Foster Care and Medicaid
+stay with the advance records. General provisions are not read for the request. Coverage is account by account
+(`tag_components.covered`): an account whose language was read is read for components like an auto-tagged cell, even
+where no phrase matches ("read, no match"), so its views compute; one whose language was not found (no heading of
+its own, or the request deletes it: all its language in brackets) stays not computable, with the reason. A
+President's Budget agency total is checked by measure_reconcile where every account behind it was read. An amount
+the Appendix prints with misplaced commas ('$46,00,0000'), or one the owner treats as a probable misprint (NEI
+FY2027's '$833,000', D-2), is listed as a misprint and not read, so no component or view uses it.
+
+**Lines printed inside a headline** (D-2): a supplemental '(emergency)' line or another act's line that the
+headline's own table prints inside the account's total (ACF FY2023 'Formula Grants (emergency)' inside 'Total,
+LIHEAP'; SAMHSA Mental Health FY2023's 'CR Funding—Public Law 117–180 Suicide Lifeline' inside 'Subtotal, Mental
+Health') is named in `inside_lines.csv` with the printed arithmetic, and its component is inside the headline. A
+`supplemental_act` line the table labels '(emergency)' is `designated`/`emergency`; other `supplemental_act` lines stay
+`other_law`. An agency total's view that leaves out emergency designations also leaves out a retagged emergency line
+the total's own table prints after an account's total (beside the account, inside the agency total).
 
 **Not a component** (never tagged, never reported as a phrase no rule tagged): set-asides ("shall be for Indian
 tribes", "amounts required to be reserved"); sub-allocations ("not less than $X for", "of such amount: (1)",
 "from amounts made available under this heading"); program tables ("for the purposes and in the amounts specified
 in the table"); the 251(b)(2)(C)(ii) base ("is provided to meet the terms of section 251(b)(2)(C)(ii)"); and the
-headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline.
+headline's own appropriating amounts, such as a second "In addition" paragraph already counted in the headline, or a
+general provision's additional amount under the account's heading where the paragraph's amount plus it is the
+headline (OS-GDM FY2023 Senate: $565,394,000 and sec. 243's $350,000,000 = $915,394,000; D-1), which the in_headline
+arithmetic counts with the paragraph's amount (owner, D-1); an availability clause on the heading's own money ("of the
+amounts made available under this heading, up to $1,000,000 from amounts made available for Quarantine
+appropriations shall remain available until expended", CDC Emerging and Zoonotic; owner, D-1). A section 241
+sub-allocation ("of the amounts provided under this heading from amounts available under section 241 of the PHS Act,
+$X shall be available to carry out evaluations") is part of the heading's section 241 amount, already tagged with it
+(D-1).
 
 When the paragraph's main amount is itself a component (HCFAC: all of it transferred from the trust funds), each
 of-which component on the same side of the headline is within it.
@@ -245,7 +385,9 @@ of-which component on the same side of the headline is within it.
 A component's amount is always printed in the text or table, never fitted. Only `in_headline` is decided by
 arithmetic for an auto-tagged component: the paragraph's main amount, less the of-which parts left out, plus the
 separate parts counted, must give the headline. Where no single assignment does, the default holds (an
-of-which inside, an "in addition" amount beside) and the record's note says so. An amount larger than the
+of-which inside, an "in addition" amount beside) and the record's note says so; but a default never puts inside
+more than the headline holds (the base is never negative): largest first, such a component is beside, with a note
+(D-2: CMS Program Management FY2026 request, whose Appendix limitation exceeds the report's request figure). An amount larger than the
 paragraph's main amount cannot be part of it, so it is read as beside (unless it is the headline itself).
 
 ## measure_reconcile
@@ -263,25 +405,34 @@ whose named headline the bill text superseded is computed from the replacement. 
 
    | cause | meaning |
    |---|---|
-   | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA); none since phase 1b |
-   | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (none since phase 1b) |
+   | `pphf_general_provision_table` | Prevention and Public Health Fund transfers made through the general provisions' table (CDC, SAMHSA); since D-2 only President's Budget totals, whose request allocates the Fund outside the Appendix language |
+   | `onc_no_headline` | ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (none since D-2) |
    | `cr_anomaly_dropped` | a component a P.L. 119-4 anomaly changed is missing from FY2025 and explains the difference exactly |
    | `mandatory_advance_untagged` | (discretionary) a mandatory account's headline is printed as available in this bill and its advances are not tagged, so the advance the total counts is not taken off (none since the component backfill) |
-   | `member_no_headline` | an account of the agency has no headline in the cell, so its components are missing |
+   | `member_no_headline` | an account of the agency has no headline in the cell, so its components are missing (none since D-2) |
    | `headline_superseded` | the view counts the report's headline, which the bill text superseded with a figure that differs by the report's rounding |
-   | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags (none since the follow-ups: `provision_lines.csv`) |
-   | `nef_outside_printed_program_level` | the report's 'Total, NIH Program Level' leaves out the Nonrecurring Expenses Fund transfer to NIH Buildings and Facilities and prints it on a separate '(with transfer)' total |
+   | `nef_transfer_untagged` | Nonrecurring Expenses Fund money (a general provision, or a proviso naming the Fund apart from the amount) that no phrase rule tags |
    | `pandemic_flu_balances` | the FY2017 program level counts 'Pandemic Flu balances (Public Law 111-32)', which no phrase rule tags |
-   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241' (none since the follow-ups) |
-   | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ; none since the follow-ups) |
+   | `evaluation_tap_phrase_untagged` | an evaluation tap worded 'is available to this appropriation ... from amounts provided pursuant to section 241'; none since D-1 (the phrase rule above tags it) |
+   | `agency_total_only` | the agency is held only as its total, whose paragraph is not read for components (AHRQ) |
    | `prif_outside_printed_program_level` | the report's program level leaves out the PRIF transfer the bill makes in addition (NIH FY2023) |
-   | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total |
-   | `emergency_lines_not_held` | the total counts emergency appropriations from the law's other divisions, which we don't hold as lines |
+   | `onc_evaluation_tap_line` | the printed line is ONC's 'Evaluation Tap Funding' ($0), not a program-level total; none since D-1 (the line is checked as below) |
+   | `emergency_lines_not_held` | the total counts emergency appropriations from the law's other divisions, which we don't hold as lines (none since D-2) |
    | `request_stage_class` | (discretionary) a President's Budget total where an account's request-stage class differs from how the report's total treats it |
    | `unexplained` | anything else |
 
    `account_not_held` (the money is in an account we don't hold: ACL program level) is not a failure; the view
    counts as not checked.
+
+   ONC's 'Evaluation Tap Funding' line (recorded as `program_level`; the retag rule reads it as ONC's section 241
+   `transfer_in`) is not a program-level total: it is checked against the sum of the cell's section 241
+   `transfer_in` components (D-1). A $0 line where ONC's paragraph appropriates budget authority with no section 241
+   amount (FY2017 House, FY2019 Enacted) passes.
+
+3. **Earmark rule** (D-2, permanent): where a headline set by the earmark rule (the account line plus its
+   congressionally directed spending / community project funding, owner 2026-10-11) differs from the table's account
+   line it replaced, the earmark components inside it must equal the difference (`VAL-MRE-<obs>`). A difference fails,
+   pending review; nothing is adjusted.
 
 The check never adjusts a figure and never confirms one: it is not a confirming rule, and a flag counts neither
 way in the verification status.

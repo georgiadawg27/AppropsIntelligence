@@ -37,6 +37,7 @@ import sys
 from pathlib import Path
 
 import accounts as A
+import paths
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA = ROOT / "store_schema.sql"
@@ -68,9 +69,9 @@ class LoadError(Exception):
 # build is followed by calculate_lookups(), which stores each formula's result next
 # to it, as a spreadsheet does when it recalculates and saves; CI checks those
 # results against LibreOffice's (scripts/recalc_check.py --compare-cached).
-STAGED = ROOT / "data" / "staged.json"
+STAGED = paths.staged()                           # data/staged.json (APPROPS_DATA_ROOT: another data root's)
 BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
-BUILT_WORKBOOK = ROOT / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
+BUILT_WORKBOOK = paths.data_root() / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
 
 # A workbook file in a folder (load a specific workbook with `load PATH`):
 # Approps_Pilot_Schema_Loaded_vNN.xlsx, the highest vNN wins.
@@ -650,11 +651,16 @@ def headline_errors(conn, kinds):
     document, and itself a headline (no component). A part names none.
     A load error, not a warning: a line pointed at a headline from another
     document (or at no headline) would be summed or shown against the wrong
-    figure."""
+    figure. One exception: the headline replaced (superseded_by) the line's
+    own document's headline in the cell -- bill or law text over the report
+    table, the table's line inside the paragraph's total (NSF R&RA's
+    'Defense function' line, defense_inside; D-3)."""
     out = []
     obs = {r["observation_id"]: r for r in conn.execute(
         "SELECT observation_id, canonical_account_id, fiscal_year, stage, source_document_id, component, "
-        "headline_observation_id FROM appropriations_observation")}
+        "headline_observation_id, superseded_by_observation_id FROM appropriations_observation")}
+    replaced = {(r["superseded_by_observation_id"], r["source_document_id"]) for r in obs.values()
+                if r["superseded_by_observation_id"] and r["component"] is None}
     for o in obs.values():
         kind, h = kinds.get(o["component"]), o["headline_observation_id"]
         if kind in ("contained", "view") and h is None:
@@ -668,6 +674,8 @@ def headline_errors(conn, kinds):
             if t is None:
                 continue                                  # the foreign-key check reports it
             diff = [k for k in ("canonical_account_id", "fiscal_year", "stage", "source_document_id") if t[k] != o[k]]
+            if diff == ["source_document_id"] and kind == "contained" and (h, o["source_document_id"]) in replaced:
+                diff = []
             if diff or t["component"] is not None:
                 out.append(f"observation {o['observation_id']}: its headline {h} differs in "
                            f"{diff + (['component'] if t['component'] is not None else [])}")
@@ -678,7 +686,10 @@ def superseded_errors(conn):
     """A superseded observation names the observation that replaced it: the
     same fact (account, fiscal year, stage, amount type, component), itself
     current. (That it is set exactly when verification_status is
-    'superseded' is a CHECK in the schema.)"""
+    'superseded' is a CHECK in the schema.) The component may differ only when
+    the replacement re-records the same printed line -- same document, page
+    and amount -- under another component (NSF R&RA's 'Defense function'
+    line, defense -> defense_inside; D-3)."""
     out = []
     key = ("canonical_account_id", "fiscal_year", "stage", "amount_type", "component")
     for o in conn.execute("SELECT * FROM appropriations_observation WHERE superseded_by_observation_id IS NOT NULL"):
@@ -687,6 +698,8 @@ def superseded_errors(conn):
         if t is None:
             continue                                      # the foreign-key check reports it
         diff = [k for k in key if t[k] != o[k]]
+        if diff == ["component"] and all(t[k] == o[k] for k in ("source_document_id", "source_page", "amount")):
+            diff = []
         if diff:
             out.append(f"observation {o['observation_id']}: superseded by {t['observation_id']}, which differs in {diff}")
         elif t["verification_status"] == "superseded":
@@ -826,7 +839,19 @@ def add_observations(conn, rows):
         raise ValueError(f"incoming rows repeat a fact: {dup[:5]}")
     existing = [dict(r) for r in conn.execute("SELECT * FROM appropriations_observation "
                                               "WHERE verification_status <> 'superseded'")]
+    # an incoming row that repeats a figure the store holds as superseded (the same fact and amount: a report
+    # table's line that bill or law text replaced, or re-recorded under another component -- NSF R&RA's nondefense
+    # and 'Defense function' lines, D-3) confirms that record: never a conflict with its replacement, never a
+    # second copy of the line
+    current = {(fact_key(o), o["amount"]) for o in existing}
+    replaced = {}
+    for r in conn.execute("SELECT * FROM appropriations_observation WHERE verification_status = 'superseded'"):
+        replaced.setdefault((fact_key(dict(r)), r["amount"]), dict(r))
+    seen = [(n, replaced[(fact_key(n), n["amount"])]) for n in rows
+            if (fact_key(n), n["amount"]) not in current and (fact_key(n), n["amount"]) in replaced]
+    rows = [n for n in rows if not any(n is x for x, _ in seen)]
     pairs, diffs, new_only, _ = compare(rows, existing, key=fact_key)
+    pairs = seen + pairs
     differing = {id(n) for n, _ in diffs}
     vocabulary = {}
     for o in existing:
@@ -1323,15 +1348,14 @@ def history(conn, account_id):
                      and x["verification_status"] != "superseded"), rec)
         if note not in (head.get("cell_note") or ""):
             head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
-    # a 0 headline whose cell has a program-level line from the PHS evaluation set-aside (ONC FY2022): the note says
-    # the program is funded, just not by new budget authority
+    # a note a subcommittee's rule puts on a cell's headline (hook 'cell_note'; Labor-HHS: ONC's $0 headline funded
+    # through the PHS evaluation set-aside)
+    import rules_registry
     for rec in obs:
-        if rec["component"] != "program_level" or rec["verification_status"] == "superseded" or not rec["amount"] \
-                or not re.search(r"Evaluation Tap|section 241 of the PHS Act", rec.get("source_table_or_section") or ""):
-            continue
-        head = next((x for x in obs if x["observation_id"] == rec.get("headline_observation_id")), None)
-        if head and head["amount"] == 0:
-            note = f"Funded through the PHS evaluation set-aside (${rec['amount']:,}), not new budget authority."
+        ctx = rules_registry.Ctx(acct["subcommittee"], account_id, rec["fiscal_year"], rec["stage"])
+        hit = rules_registry.active().first("cell_note", f"{rec['observation_id']} (cell note)", ctx, rec, obs)
+        if hit:
+            head, note = hit[1]
             if note not in (head.get("cell_note") or ""):
                 head["cell_note"] = " ".join(x for x in (head.get("cell_note"), note) if x)
     # a confirmed split (split_before) shows its note ('Funded within PHSSEF before FY2023.') in the corner of the
@@ -1362,10 +1386,13 @@ def history(conn, account_id):
         if a["document_notes"] is None:
             del a["document_notes"]
     # gaps in the four-stage series, from the account's first fiscal year to
-    # the latest one the store holds for any account -- a cell with neither an
+    # the latest one the store holds for any account of its subcommittee (another
+    # subcommittee's years don't widen this one's grid) -- a cell with neither an
     # observation nor a confirmed absence is missing, never zero
     first = min((o["fiscal_year"] for o in obs + absences), default=None)
-    last = conn.execute("SELECT max(fiscal_year) FROM appropriations_observation").fetchone()[0]
+    last = conn.execute("SELECT max(o.fiscal_year) FROM appropriations_observation o JOIN account a "
+                        "ON a.canonical_account_id = o.canonical_account_id WHERE a.subcommittee = ?",
+                        (acct["subcommittee"],)).fetchone()[0]
     have = {(o["fiscal_year"], o["stage"]) for o in obs + absences}
     cov = coverage(conn, acct["subcommittee"])
     # the cells the grid spans (first record to the last fiscal year on file) with
@@ -1522,6 +1549,12 @@ def history_grid(h):
     # a superseded observation stays in history() (queryable, citing what replaced it); a cell shows
     # only the current one
     obs = [o for o in h["observations"] if o["verification_status"] != "superseded"]
+    # a line re-recorded under another component (NSF R&RA's 'Defense function' line, defense -> defense_inside;
+    # D-3): its old series is not listed in that cell -- nothing is missing there
+    every = {o["observation_id"]: o for o in h["observations"]}
+    rerecorded = {(o["fiscal_year"], o["stage"], o["amount_type"], o["component"]) for o in h["observations"]
+                  if o["verification_status"] == "superseded" and o.get("superseded_by_observation_id") in every
+                  and every[o["superseded_by_observation_id"]]["component"] != o["component"]}
     absent = h.get("absences", [])
     kind = {o["component"]: (o.get("component_kind"), o.get("component_label")) for o in obs if o["component"]}
     series = sorted({(o["amount_type"], o["component"]) for o in obs + absent},
@@ -1542,8 +1575,8 @@ def history_grid(h):
             for t, c in series:
                 found, absence = by.get((y, st, t, c), []), gone.get((y, st, t, c))
                 k, label = kind.get(c, (None, None))
-                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS) \
-                        and not found and not absence:
+                if (A.COMPONENT_STAGE.get(c, st) != st or k in NOT_ADDED or c in A.PROPOSAL_COMPONENTS
+                        or (y, st, t, c) in rerecorded) and not found and not absence:
                     continue
                 state = cell_state(found, absence, y, st, h["coverage"])
                 if absence and t == "budget authority" and c is None and (scoped or any(k[:2] == (y, st) for k in by)):
@@ -1961,11 +1994,77 @@ def subcommittee_grid(conn, subcommittee):
             st = headline_state(c["lines"])
             if st:
                 state_counts[st] += 1
-    return {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
+    grid = {"subcommittee": subcommittee, "fiscal_years": years, "stages": stages, "titles": out_titles,
             "bill_total": bill_total, "rows": out_rows, "state_counts": state_counts, "outside_life_cells": outside,
             **({"stage_notes": notes} if (notes := stage_notes(conn, subcommittee)) else {}),
             **({"enactments": e} if (e := enactments(conn, subcommittee)) else {}),
             **({"drafts": dr} if (dr := draft_stages(conn, subcommittee)) else {})}
+    # the accounting layer (UI-0): each figure's views, components, earmark and defense portion, each row's
+    # attributes -- from the store's own records, by the code measure_reconcile uses (site_accounting.py)
+    import site_accounting
+    return site_accounting.Layer(accounting_data(conn)).annotate(grid)
+
+
+def whats_new(conn):
+    """The page's "What's new" list (brief UI-6): every source document with the date it was added to the record
+    (source_document.retrieval_timestamp, its date part), newest first, with the subcommittees its records belong to,
+    how many figures it gives (observations, superseded ones left out) and how many account attributes cite it. A document with no retrieval date is
+    counted in "undated", never given a date."""
+    docs = []
+    undated = []
+    for d in conn.execute(
+            "SELECT d.document_id, d.source_agency, d.document_type, d.fiscal_year, d.stage, d.publication_date, "
+            "d.retrieval_timestamp, d.url_or_identifier, "
+            "(SELECT COUNT(*) FROM appropriations_observation o WHERE o.source_document_id = d.document_id "
+            " AND o.verification_status != 'superseded') AS figures, "
+            "(SELECT COUNT(*) FROM account_attribute t WHERE t.source_document_id = d.document_id) AS attributes, "
+            "(SELECT GROUP_CONCAT(DISTINCT a.subcommittee) FROM account a WHERE a.canonical_account_id IN "
+            " (SELECT o.canonical_account_id FROM appropriations_observation o WHERE o.source_document_id = d.document_id "
+            "  UNION SELECT t.canonical_account_id FROM account_attribute t WHERE t.source_document_id = d.document_id)) "
+            " AS subcommittees "
+            "FROM source_document d"):
+        row = {"document_id": d["document_id"], "source_agency": d["source_agency"],
+               "document_type": d["document_type"], "fiscal_year": d["fiscal_year"], "stage": d["stage"],
+               "publication_date": d["publication_date"], "url_or_identifier": d["url_or_identifier"],
+               "figures": d["figures"], "attributes": d["attributes"],
+               "subcommittees": sorted((d["subcommittees"] or "").split(",")) if d["subcommittees"] else [],
+               "retrieved": (d["retrieval_timestamp"] or "")[:10] or None}
+        (docs if row["retrieved"] else undated).append(row)
+    docs.sort(key=lambda r: (r["retrieved"], r["document_id"]), reverse=True)
+    return {"documents": docs, "undated": sorted(r["document_id"] for r in undated),
+            "basis": "source_document.retrieval_timestamp: the date each document was retrieved into the record"}
+
+
+def documents(conn, names=None):
+    """The source documents the page cites, for its links (brief UI-8): each one's id, short name (names: the page's
+    display-only map, web/documents.js; None where it has none) and address, in id order. Read, nothing derived."""
+    names = names or {}
+    return {"documents": [{"document_id": d["document_id"], "short_name": names.get(d["document_id"]),
+                           "url_or_identifier": d["url_or_identifier"]}
+                          for d in conn.execute("SELECT document_id, url_or_identifier FROM source_document ORDER BY document_id")]}
+
+
+def accounting_data(conn):
+    """The store's accounting records in data/staged.json's shape (accounts, observations, the Component
+    vocabulary, observation_components, account_attributes), for accounting.py and measure_reconcile, which read
+    that shape. Nothing is recomputed: blank text is '' and in_headline 'TRUE'/'FALSE', as the staged data holds
+    them."""
+    def rows(sql):
+        return [dict(r) for r in conn.execute(sql)]
+
+    def text(d, *keys):
+        for k in keys:
+            d[k] = d[k] if d[k] is not None else ""
+        return d
+    comps = [text(dict(c, in_headline="TRUE" if c["in_headline"] else "FALSE"), "designation", "transfer_from",
+                  "source_observation_id", "carried_from_component_id", "notes", "within_component_id")
+             for c in rows("SELECT * FROM observation_component ORDER BY component_id")]
+    return {"accounts": rows("SELECT * FROM account ORDER BY canonical_account_id"),
+            "observations": rows("SELECT * FROM appropriations_observation ORDER BY observation_id"),
+            "components": rows("SELECT component_id, kind FROM component"),
+            "observation_components": comps,
+            "account_attributes": [text(a, "source_location", "provisional")
+                                   for a in rows("SELECT * FROM account_attribute ORDER BY account_attribute_id")]}
 
 
 def fmt_amount(v):

@@ -25,10 +25,12 @@ import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+import paths
+
 ROOT = Path(__file__).resolve().parent
-TEXT_DIR = ROOT / "data" / "legislative_text"
+TEXT_DIR = paths.text_dir()              # data/legislative_text (APPROPS_DATA_ROOT: another data root's)
 EXEMPTIONS = TEXT_DIR / "exemptions.json"
-STAGED = ROOT / "data" / "staged.json"
+STAGED = paths.staged()
 
 BILL_STAGES = ("House Reported", "Senate Reported", "Enacted", "House Passed", "Senate Passed")
 TEXT_DOC_TYPES = ("bill", "public_law")
@@ -152,6 +154,12 @@ def dump(obj):
 
 AMOUNT = re.compile(r"\$\s?(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d{2}))?(?!\s*(?:million|billion))")
 PHRASE_BEFORE, PHRASE_AFTER = 160, 100
+# A designation that starts inside the window is read to its end, however far past the window it runs (D-3: the
+# FY2025 request's Refugee and Entrant Assistance '$2,914,179,000, along with any amounts made available pursuant to
+# the preceding proviso, are designated by the Congress as being for an emergency requirement' was cut at 'are
+# designated by the Con'); at most DESIGNATION_REACH characters past the amount.
+DESIGNATION = re.compile(r"designated\s+by\s+the\s+Congress\s+as\s+(?:being\s+)?for\s+an?\s+emergency\s+requirement", re.I)
+DESIGNATION_REACH = 300
 
 
 def squash(s):
@@ -166,6 +174,9 @@ def amounts_in(text, block=1):
     for m in AMOUNT.finditer(text):
         before = text[max(0, m.start() - PHRASE_BEFORE):m.start()]
         after = text[m.end():m.end() + PHRASE_AFTER]
+        d = DESIGNATION.search(text, m.end(), m.end() + DESIGNATION_REACH)
+        if d and d.start() < m.end() + PHRASE_AFTER < d.end():
+            after = text[m.end():d.end()]
         out.append({"amount": int(m.group(1).replace(",", "")), "block": block,
                     "proviso": bool(provided and m.start() > provided.start()),
                     "phrase": squash(before) + " [" + m.group(0) + "] " + squash(after)})

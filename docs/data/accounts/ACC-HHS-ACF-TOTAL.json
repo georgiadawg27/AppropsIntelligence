@@ -506,6 +506,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-15998"
+          },
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-3827"
           }
          ],
          "verification_status": "auto-validated"
@@ -3849,6 +3855,12 @@
            "result": "flag",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-09037"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-1941"
           }
          ],
          "verification_status": "auto-validated"
@@ -4254,14 +4266,8 @@
            "validation_id": "VAL-LHHS-00103"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MRC-EMERGENCY-LINES-NOT-HELD"
-          },
-          {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0028"
           }
@@ -4594,6 +4600,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-02304"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0497"
           }
          ],
          "verification_status": "auto-validated"
@@ -5486,6 +5498,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-00130"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0034"
           }
          ],
          "verification_status": "auto-validated"
@@ -6330,6 +6348,12 @@
            "result": "pass",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-00174"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRV-LHHS-0043"
           }
          ],
          "verification_status": "auto-validated"
@@ -7864,6 +7888,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-15998"
+     },
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-3827"
      }
     ],
     "verification_status": "auto-validated"
@@ -10658,6 +10688,12 @@
       "result": "flag",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-09037"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-1941"
      }
     ],
     "verification_status": "auto-validated"
@@ -11243,6 +11279,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-02304"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0497"
      }
     ],
     "verification_status": "auto-validated"
@@ -11714,14 +11756,8 @@
       "validation_id": "VAL-LHHS-00103"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
-      "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MRC-EMERGENCY-LINES-NOT-HELD"
-     },
-     {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0028"
      }
@@ -11907,6 +11943,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-00130"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0034"
      }
     ],
     "verification_status": "auto-validated"
@@ -12734,6 +12776,12 @@
       "result": "pass",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-00174"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRV-LHHS-0043"
      }
     ],
     "verification_status": "auto-validated"

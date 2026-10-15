@@ -121,6 +121,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-00363"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-0086"
           }
          ],
          "verification_status": "auto-validated"
@@ -329,6 +335,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-00370"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-0088"
           }
          ],
          "verification_status": "auto-validated"
@@ -758,6 +770,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-00363"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-0086"
      }
     ],
     "verification_status": "auto-validated"
@@ -868,6 +886,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-LHHS-00370"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-0088"
      }
     ],
     "verification_status": "auto-validated"
@@ -1077,7 +1101,7 @@
      2027
     ],
     "other_name": "Birth Defects, Developmental Disabilities, Disabilities and Health",
-    "other_observations": 40,
+    "other_observations": 41,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0013",
     "relationship_type": "proposed_move",
@@ -1135,7 +1159,7 @@
      2027
     ],
     "other_name": "Energy Employees Occupational Illness Compensation Program",
-    "other_observations": 40,
+    "other_observations": 41,
     "other_status": "active",
     "relationship_id": "REL-LHHS-0015",
     "relationship_type": "proposed_move",

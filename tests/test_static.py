@@ -14,6 +14,7 @@ import http.server
 import json
 import multiprocessing
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -131,7 +132,7 @@ class StaticTest(unittest.TestCase):
 class Export(StaticTest):
     def test_every_account_file_is_the_live_api_payload(self):
         ids = [a["canonical_account_id"] for a in self.index["accounts"]]
-        self.assertEqual(len(ids), 130)                  # v33: 30 CJS + 100 Labor-HHS
+        self.assertEqual(len(ids), 146)                  # v33: 30 CJS + 100 Labor-HHS; D-7: + 12 title and bill totals; D-9: + 4
         self.assertEqual(sorted(p.stem for p in (self.out / "data" / "accounts").glob("*.json")), sorted(ids))
         for aid in ids:
             live = json.loads(json.dumps(W.account(str(self.db), aid), default=str))
@@ -166,6 +167,17 @@ class Export(StaticTest):
         self.assertEqual(static, live.replace("<head>", "<head>\n" + E.DATA_META, 1))
         self.assertEqual((self.out / "match.js").read_text(), (ROOT / "web" / "match.js").read_text())
 
+    def test_brand_files_are_exported_and_the_icons_resolve(self):
+        # web/brand/ is copied byte for byte, and every icon the page's <head> links to is in the export
+        src = {p.name: p.read_bytes() for p in (ROOT / "web" / "brand").iterdir() if p.suffix in (".svg", ".png")}
+        got = {p.name: p.read_bytes() for p in (self.out / "brand").iterdir()}
+        self.assertEqual(got, src)
+        page = (self.out / "index.html").read_text()
+        hrefs = re.findall(r'<link rel="(?:icon|apple-touch-icon)" href="([^"]+)"', page)
+        self.assertEqual(len(hrefs), 5)
+        for href in hrefs:
+            self.assertTrue((self.out / href).is_file(), href)
+
     def test_commit_date_does_not_depend_on_the_git_version(self):
         # git 2.55 (the Actions runner) renders %cI as ...Z, older git as
         # ...+00:00; the export must not flip between them
@@ -192,6 +204,116 @@ class Export(StaticTest):
         self.assertEqual(want["data_sha256"], hashlib.sha256(S.STAGED.read_bytes()).hexdigest(),
                          "tests/fixtures/workbook_values.json is from other data: regenerate it")
         self.assertEqual(WD.compare(WD.digest(self.out / E.DOWNLOAD), want["sheets"]), [])
+
+
+def contract_fields_present(data_dir, contract):
+    """{field: held anywhere in data_dir?} for every field web/ui_contract.json names, read back from the
+    written files (index.json included) by a walker of its own, not export_static's."""
+    def walk(obj, steps):
+        if not steps:
+            yield obj
+            return
+        step, rest = steps[0], steps[1:]
+        key = step[:-2] if step.endswith("[]") else step
+        if not isinstance(obj, dict):
+            return
+        values = list(obj.values()) if key == "*" else ([obj[key]] if key in obj else [])
+        for v in values:
+            if step.endswith("[]"):
+                for item in (v if isinstance(v, list) else []):
+                    yield from walk(item, rest)
+            else:
+                yield from walk(v, rest)
+
+    out = {}
+    for feature in contract["features"].values():
+        for field in feature["fields"]:
+            pattern, path = field.split(":", 1)
+            docs = [json.loads(p.read_text()) for p in sorted(data_dir.glob(pattern))]
+            out[field] = any(v not in (None, "", [], {}) for d in docs for v in walk(d, path.split(".")))
+    return out
+
+
+class Features(StaticTest):
+    """docs/data/index.json "features": computed from web/ui_contract.json and the exported data
+    (reference/ui/explore-v1/SPEC.md section 9)."""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.contract = json.loads((ROOT / "web" / "ui_contract.json").read_text())
+        cls.present = contract_fields_present(cls.out / "data", cls.contract)
+
+    def test_features_are_what_the_contract_and_the_data_give(self):
+        want = {name: all(self.present[x] for x in f["fields"]) for name, f in self.contract["features"].items()}
+        self.assertEqual(self.index["features"], want)
+        self.assertEqual(self.index["contract_version"], self.contract["contract_version"])
+        committed = json.loads((ROOT / "docs" / "data" / "index.json").read_text())
+        self.assertEqual((committed["features"], committed["contract_version"]),
+                         (want, self.contract["contract_version"]))
+
+    def test_live_api_features_agree_with_the_export(self):
+        # approps_web.py's /api/features reads the payloads it serves; the export, the files it wrote from the
+        # same answers: the two modes give the page the same flags
+        live = W.features(str(self.db))
+        self.assertEqual(live, {"features": self.index["features"], "contract_version": self.index["contract_version"],
+                                "default_subcommittee": self.index["default_subcommittee"]})
+        # each payload the server reads is the file the export wrote
+        served = W.payloads(str(self.db))
+        written = sorted(p.relative_to(self.out / "data").as_posix() for p in (self.out / "data").rglob("*.json"))
+        # the export also writes a large subcommittee one file per fiscal year (subcommittees/<name>/...): the same
+        # cells again, which no contract pattern reads; every other file is a payload the server answers with
+        split = {p for p in written if p.count("/") == 2 and p.startswith("subcommittees/")}
+        self.assertEqual(sorted(served), sorted(set(written) - split))
+        for path in ("subcommittees.json", "subcommittees/LHHS.json", "accounts/ACC-HHS-NIH-NCI.json"):
+            self.assertEqual(served[path], json.loads((self.out / "data" / path).read_text()), path)
+        self.assertEqual(served["index.json"]["accounts"], self.index["accounts"])
+        # and over HTTP
+        httpd = W.serve(self.db, port=0, verbose=False)
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
+        try:
+            import urllib.request
+            with urllib.request.urlopen(f"http://127.0.0.1:{httpd.server_address[1]}/api/features") as r:
+                self.assertEqual(json.loads(r.read()), live)
+        finally:
+            httpd.shutdown()
+            httpd.server_close()
+
+    def test_every_feature_names_fields_that_exist_or_is_off(self):
+        self.assertTrue(self.contract["features"])
+        for name, f in self.contract["features"].items():
+            self.assertTrue(f["fields"], f"{name} names no fields")
+            for field in f["fields"]:
+                self.assertRegex(field, r"^[\w*./-]+\.json:[^:\s]+$", name)
+            missing = [x for x in f["fields"] if not self.present[x]]
+            if missing:
+                self.assertFalse(self.index["features"][name], f"{name} is on but missing {missing}")
+
+    def test_expected_flags_today(self):
+        # SPEC section 9: the figure's source is published, and since UI-0 the accounting data (contract_version 2)
+        got = self.index["features"]
+        self.assertTrue(got["figure_source"])
+        for name in ("accounting_views", "budget_class", "defense_split"):
+            self.assertTrue(got[name], name)
+        # UI-0b (contract_version 4): the excluding-earmarks and nondefense views
+        for name in ("exclude_earmarks", "nondefense"):
+            self.assertTrue(got[name], name)
+        self.assertGreaterEqual(self.index["contract_version"], 4)
+
+    def test_a_missing_field_turns_its_feature_off(self):
+        with tempfile.TemporaryDirectory() as d:
+            data = Path(d)
+            (data / "subcommittees").mkdir()
+            (data / "subcommittees" / "X.json").write_text(json.dumps(
+                {"rows": [{"attributes": {"2026": {"budget_class": None}},
+                           "cells": {"2026|Enacted": {"views": {}}, "2026|Senate Reported": {"views": {"x": None}}}}]}))
+            got = E.features(data, {"accounts": [{"canonical_account_id": "ACC-X", "canonical_name": "X"}]})
+        self.assertFalse(got["features"]["budget_class"])          # null is not a value
+        self.assertFalse(got["features"]["accounting_views"])      # nor is a view with no amount
+        self.assertFalse(got["features"]["exclude_earmarks"])
+        self.assertFalse(got["features"]["nondefense"])
+        self.assertFalse(got["features"]["figure_source"])
+        self.assertTrue(got["features"]["watchlist"])
 
 
 @unittest.skipUnless(NODE, "node not installed")
@@ -274,14 +396,20 @@ class StaticVersusLive(StaticTest):
         self.page.close()
         self.assertEqual(self.errors, [])
 
+    def open_lines(self):
+        """Open "Every line on file" (the record grid; collapsed by default, owner 2026-10-14) when an account is shown."""
+        if self.page.is_visible("[data-testid=result]") and self.page.get_attribute("[data-testid=ap-lines]", "open") is None:
+            self.page.click("[data-testid=ap-lines-toggle]")
+
     def shown(self, url, q, pick=None):
-        self.page.goto(url)
+        self.page.goto(url + "?view=account")             # Explore is the default view; One account is beside it
         self.page.fill("#q", q)
         self.page.click("button[type=submit]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden]), [data-testid=candidates]:not([hidden])")
         if pick:
             self.page.click(f"[data-testid=candidate][data-id={pick}]")
             self.page.wait_for_selector("[data-testid=result]:not([hidden])")
+        self.open_lines()
         return self.page.evaluate("""() => ({
             candidates: document.querySelector('#candidates').hidden ? null : document.querySelector('#candidates').innerText,
             result: document.querySelector('#result').hidden ? null : document.querySelector('#result').innerText,
@@ -322,7 +450,7 @@ class StaticVersusLive(StaticTest):
             self.same(q)
 
     def test_static_page_says_how_fresh_it_is(self):
-        self.page.goto(self.static_url)
+        self.page.goto(self.static_url + "?view=account")
         self.page.wait_for_selector("[data-testid=freshness]:not([hidden])")
         text = self.page.text_content("[data-testid=freshness]")
         self.assertIn("data/staged.json (v38)", text)
@@ -335,7 +463,7 @@ class StaticVersusLive(StaticTest):
         self.assertTrue(resolved.endswith("/Approps_Pilot_Schema_Loaded.xlsx"))
         body = self.page.request.get(resolved).body()
         self.assertEqual(body, (self.out / "Approps_Pilot_Schema_Loaded.xlsx").read_bytes())
-        self.page.goto(self.live_url)
+        self.page.goto(self.live_url + "?view=account")
         self.assertTrue(self.page.locator("[data-testid=freshness]").is_hidden())
         self.assertEqual(self.page.locator("[data-testid=download-workbook]").count(), 0)
 

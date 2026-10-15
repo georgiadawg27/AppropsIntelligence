@@ -15,10 +15,9 @@ computed from them (accounting views, phase 1; accounting.py, reference/ACCOUNTI
    view is its printed headline plus what the view changes on each of its accounts (approps_store.agency_members:
    the agency's accounts of its title, no parent, not totals). A difference is a 'flag', pending review, on the
    printed view line -- the tagging may be incomplete; the figure is not in question. VAL-MRV-<observation>.
-   A view is checked where its components were tagged: the auto-tagged cells (tag_components.AUTO_CELLS: the pilot,
-   Labor-HHS FY2024-FY2026 and CJS FY2026, and the component backfill, both subcommittees FY2017-FY2023; House,
-   Senate, Enacted), or, outside them, an account's own view where its headline carries a component the
-   view uses. Every other printed view is counted as not checked yet, with the reason.
+   A view is checked where its components were tagged: the auto-tagged cells (tag_components.coverage(): every
+   cell whose bill or law text is committed, and the full-year CR cells), or, outside them, an account's own view
+   where its headline carries a component the view uses. Every other printed view is counted as not checked yet, with the reason.
 3. A printed 'discretionary' agency or title total (phase 2): the total less what each of its accounts holds
    that is not discretionary by the account's budget_class (account_attributes, from the Budget Appendix): a
    mandatory account's amount as the bill appropriates it, a mixed account's mandatory_portion components
@@ -32,6 +31,7 @@ import argparse
 import collections
 import json
 import os
+import re
 import sys
 from pathlib import Path
 
@@ -39,54 +39,40 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import accounting as AC  # noqa: E402
-import legislative_text as L  # noqa: E402
+import paths  # noqa: E402
+import rules_registry as R  # noqa: E402
 import tag_components as TC  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RULE = "measure_reconcile"
-PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-")
+PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-", "VAL-MRS-")
+# D-7: the printed summary lines of a title or bill total (accounts.SUMMARY_COMPONENTS) a computed figure stands
+# for: line -> what is summed from the accounts behind the total (summary_view)
+SUMMARY_CHECKED = ("mandatory", "emergency_appropriations", "advance_appropriations", "rescissions")
+# D-7: the titles whose every account is held, so a printed title (or bill) summary line can be checked against its
+# accounts. Labor-HHS Title II reconciles as its agency totals + General Provisions lines in every printed column
+# (reference/review/lhhs/title_ii_totals.py); Labor-HHS Titles I, III, IV and every CJS title are held only in part.
+TITLES_HELD = {"LHHS": ("Title II",)}
+# D-7: why a printed summary line differs, read from the title's own table for the cell (total, fiscal year, stage,
+# line) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
+SUMMARY_CAUSES = {
+    # 'Unaccompanied Children, BA (emergency)' 2,500,000 under Refugee and Entrant Assistance (Senate FY2023, p.412)
+    ("ACC-HHS-TITLE-II-TOTAL", 2023, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
+    # 'Pandemic Preparedness and Biodefense (emergency)' 75,000 under ASPR (S.Rept. 118-84 p.390)
+    ("ACC-HHS-TITLE-II-TOTAL", 2024, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
+    # 'New advance, 1st quarter, FY 2026' 1,700,000 under Child Support Enforcement (S.Rept. 118-207 p.443)
+    ("ACC-HHS-TITLE-II-TOTAL", 2025, "Senate Reported", "advance_appropriations"): "advance_line_untagged",
+}
+# the earmark rule (owner 2026-10-11): a headline that counts the account's congressionally directed spending /
+# community project funding inside, replacing the table's account line
+EARMARK_RULE = re.compile(r"Congressionally Directed Spending|Community Project Funding", re.I)
 
 # Why a printed view differs from the computed one (owner, 2026-10-11): one review item per cause, not one per
 # cell. account_not_held is no failure: the money sits in an account we don't hold, so the view is not checked.
-# Causes found from the data: member_no_headline (onc_no_headline for ONC), cr_anomaly_dropped. Causes known
-# from reading the documents (KNOWN_CAUSES). Anything else is unexplained.
-KNOWN_CAUSES = {
-    ("ACC-HHS-CDC-TOTAL", "program_level"): ("pphf_general_provision_table",
-        "Prevention and Public Health Fund transfers made through the general provisions' allocation table, which "
-        "no phrase rule reads (phase 1b)"),
-    ("ACC-HHS-SAMHSA-TOTAL", "program_level"): ("pphf_general_provision_table",
-        "Prevention and Public Health Fund transfers made through the general provisions' allocation table, which "
-        "no phrase rule reads (phase 1b)"),
-    ("ACC-HHS-ACL-TOTAL", "program_level"): ("account_not_held",
-        "the program-level money is in an ACL account we don't hold"),
-}
-# Causes known from reading the documents for one cell (component backfill, FY2017-FY2023): (account, fiscal year,
-# stage, view) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
-KNOWN_CELL_CAUSES = {
-    **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
-       for st in ("Senate Reported", "Enacted")},
-    **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
-       for st in ("House Reported", "Senate Reported")},
-    **{("ACC-HHS-OS-ONC", fy, st, "program_level"): "onc_evaluation_tap_line" for fy, st in (
-        (2017, "House Reported"), (2019, "Enacted"))},
-    ("ACC-HHS-ACF-TOTAL", 2023, "Enacted", "excluding_emergencies"): "emergency_lines_not_held",
-    # component backfill follow-ups: the NIH table prints 'Total, NIH Program Level' without the Nonrecurring Expenses
-    # Fund transfer, then 'Transfers from Nonrecurring Expenses Fund' and 'Total, NIH Program Level (with transfer)'
-    # (H.Rept. 117-96 p.477, FY2021 Enacted; the FY2021 Senate report p.252, FY2020 Enacted and FY2021 Senate; the
-    # FY2020 Enacted page of H.Rept. 116-450 is image-only)
-    **{("ACC-HHS-NIH-TOTAL", fy, st, "program_level"): "nef_outside_printed_program_level" for fy, st in (
-        (2020, "Enacted"), (2021, "Enacted"), (2021, "Senate Reported"))},
-}
-# What an agency total outside the tagged cells lacks, by stage (component backfill follow-ups)
-OUTSIDE = {
-    "President's Budget": "an agency total outside the tagged cells (President's Budget: the request's transfers in and "
-                          "trust-fund limitations are not tagged; the request's own Budget Appendix language and "
-                          "justifications are not read for them)",
-    "": "an agency total outside the tagged cells (a House, Senate or Enacted cell not auto-tagged yet: FY2027 House "
-        "also needs its report's Prevention and Public Health Fund allocation table read first)",
-}
+# Causes found from the data: member_no_headline, cr_anomaly_dropped. Causes known from reading one subcommittee's
+# documents live in its rule file (hook 'checks': known_causes, cell_causes, member_cause, cause_text). Anything
+# else is unexplained.
 CAUSE_TEXT = {
-    "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on (phase 1b)",
     "member_no_headline": "an account of the agency has no headline in the cell, so its components are missing",
     "cr_anomaly_dropped": "a component a P.L. 119-4 anomaly changed was not carried into FY2025",
     "mandatory_advance_untagged": "a mandatory account's headline is printed as available in this bill, and its "
@@ -96,21 +82,21 @@ CAUSE_TEXT = {
                            "from the request's own Appendix) differs from how the report's total treats it",
     "headline_superseded": "the printed view counts the report's own headline, which the bill or law text "
                            "superseded with a figure that differs by the rounding of the report's thousands",
-    "pandemic_flu_balances": "the FY2017 program level counts the 'Pandemic Flu balances (Public Law 111-32)' line, "
-                             "balances of another law that no phrase rule tags",
-    "nef_outside_printed_program_level": "the bill or law makes Nonrecurring Expenses Fund money available to NIH "
-                                         "Buildings and Facilities in addition, and the report's 'Total, NIH Program "
-                                         "Level' leaves it out (it prints the transfer on its own line and a 'Total, "
-                                         "NIH Program Level (with transfer)' that equals the computed view)",
-    "prif_outside_printed_program_level": "the bill makes the 10-year Pediatric Research Initiative Fund transfer in "
-                                          "addition to the Office of the Director's amount, and the report's program "
-                                          "level does not count it",
-    "onc_evaluation_tap_line": "the printed line is ONC's 'Evaluation Tap Funding' line ($0 here), not a program-level "
-                               "total, so it cannot equal the view where ONC has its own appropriation",
-    "emergency_lines_not_held": "the total counts emergency appropriations from the law's other divisions (P.L. "
-                                "117-328), which are not lines we hold, so no designated component takes them off",
+    "agency_total_only": "the agency is held only as its total (no account lines), and a total's paragraph is not "
+                         "read for components, so the evaluation tap its program level counts is not tagged",
+    "emergency_line_untagged": "the title's table prints an '(emergency)' line under an account we hold, and no "
+                               "component of that account is tagged designated emergency, so the title's printed "
+                               "'Emergency appropriations' line counts money the computed one misses",
+    "advance_line_untagged": "the title's table prints a 'New advance' line under an account we hold, and no "
+                             "advance_enacted component of that account is tagged, so the title's printed 'Advance "
+                             "appropriations' line counts money the computed one misses",
     "unexplained": "not explained yet",
 }
+
+
+def checks(sc):
+    """The subcommittee's measure_reconcile data (rule files, hook 'checks')."""
+    return R.active().data("checks", sc)
 
 
 def named_headline(obs, v):
@@ -138,6 +124,66 @@ def title_members(data, rollup):
     return [a["canonical_account_id"] for a in data["accounts"]
             if a["subcommittee"] == rollup["subcommittee"] and (a.get("title") or "") == (rollup.get("title") or "")
             and not a.get("total_scope") and not a.get("parent_account_id")]
+
+
+def not_held(data, a):
+    """D-7: why a title or bill total's printed lines can't be checked against its accounts -- None when every
+    account of it is held (a title TITLES_HELD lists; a bill whose every printed
+    title is held). A total whose accounts aren't all held is 'not checked', never a failure."""
+    scope = a.get("total_scope")
+    if scope not in ("title", "bill"):
+        return None
+    held = set(TITLES_HELD.get(a["subcommittee"], ()))
+    if scope == "title":
+        if (a.get("title") or "") in held:
+            return None
+        n = len(title_members(data, a)) + sum(1 for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+                                               and x.get("total_scope") == "agency" and x.get("title") == a.get("title")
+                                               and not members(data, x))
+        return (f"not checked: accounts not held ({n} of this title's accounts are held; the rest are not)" if n
+                else "not checked: accounts not held (no account of this title is held)")
+    titles = sorted({x.get("title") or "" for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+                     and x.get("total_scope") == "title"} - held)
+    return ("not checked: accounts not held (titles not held: " + ", ".join(titles) + ")") if titles else None
+
+
+def summary_view(data, a, v, h, heads, comps, attrs):
+    """D-7: the figure a printed summary line of a title total stands for, from the accounts behind it in the cell
+    (each one's headline from the total's own document): mandatory = the total less its discretionary view;
+    emergency appropriations = the components designated emergency; advance appropriations = the advance_enacted
+    components (both FY lines together); rescissions = the rescission lines (amount_type 'rescission').
+    -> (computed, how) or the reason it is not checked."""
+    line = v["component"]
+    fy, stage = int(v["fiscal_year"]), v["stage"]
+    if line == "mandatory":
+        got = discretionary_view(data, a, v, h, heads, comps, attrs)
+        if isinstance(got, str):
+            return got
+        return h["amount"] - got[0], f"the {a['total_scope']} total {AC.money(h['amount'])} less its discretionary " \
+                                      f"view {AC.money(got[0])} ({got[1]})"
+    ms = title_members(data, a) if a.get("total_scope") == "title" else [
+        x["canonical_account_id"] for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+        and not x.get("total_scope") and not x.get("parent_account_id")]
+    total, used = 0, []
+    for m in ms:
+        if line == "rescissions":
+            for o in data["observations"]:
+                if (o["canonical_account_id"] == m and int(o["fiscal_year"]) == fy and o["stage"] == stage
+                        and o["amount_type"] == "rescission" and o["verification_status"] != "superseded"
+                        and o["source_document_id"] == h["source_document_id"]):
+                    total += o["amount"]
+                    used.append(f"{o['observation_id']} {AC.money(o['amount'])}")
+            continue
+        hs = heads[(m, fy, stage)]
+        mh = TC.pick_headline(hs, h["source_document_id"]) if hs else None
+        for c in (comps[mh["observation_id"]] if mh else []):
+            if (line == "emergency_appropriations" and (c["component_type"], c.get("designation")) == ("designated", "emergency")) \
+                    or (line.startswith("advance_appropriations") and c["component_type"] == "advance_enacted"):
+                total += c["amount"]
+                used.append(f"{c['component_id']} {AC.money(c['amount'])}")
+    what = {"emergency_appropriations": "the components designated emergency",
+            "advance_appropriations": "the advance_enacted components", "rescissions": "the rescission lines"}[line]
+    return total, f"{what} of the {a['total_scope']}'s accounts ({'; '.join(used) or 'none'})"
 
 
 def discretionary_view(data, a, v, h, heads, comps, attrs):
@@ -216,6 +262,32 @@ def run(data):
         outcomes.append({"kind": "base", "observation_id": oid, "result": "pass" if ok else "fail",
                          "account": h["canonical_account_id"], "fy": h["fiscal_year"], "stage": h["stage"],
                          "detail": observed})
+    # 1b. the earmark rule (D-2 item 5a, permanent): where a headline set by the earmark rule differs from the
+    # table's account line it replaced, its earmark components inside must equal the difference. Fails, never adjusts.
+    for o in data["observations"]:
+        h = obs.get(o.get("superseded_by_observation_id") or "")
+        if (o["verification_status"] != "superseded" or h is None or h["verification_status"] == "superseded"
+                or not EARMARK_RULE.search(h.get("source_table_or_section") or "")):
+            continue
+        diff = h["amount"] - o["amount"]
+        if diff == 0:
+            continue                    # the account line already is the headline (its CDS printed inside it)
+        inside = [c for c in comps.get(h["observation_id"], []) if c["component_type"] == "earmark"
+                  and c["in_headline"] == "TRUE"]
+        got = sum(c["amount"] for c in inside)
+        ok = got == diff
+        expected = (f"earmark rule: the headline {AC.money(h['amount'])} ({h['observation_id']}) less the table's "
+                    f"account line {AC.money(o['amount'])} ({o['observation_id']}) = {AC.money(diff)} = the earmark "
+                    f"components inside the headline")
+        observed = (f"earmark components inside: {describe(inside)} = {AC.money(got)}"
+                    + ("" if ok else f" -- differs by {AC.money(diff - got)}; for review, no figure changed"))
+        records.append({"validation_id": "VAL-MRE-" + suffix(h["observation_id"]), "observation_id": h["observation_id"],
+                        "rule_applied": RULE, "expected_result": expected, "observed_result": observed,
+                        "result": "pass" if ok else "fail", "human_review_status": "" if ok else "pending",
+                        "reviewer": "", "resolution": ""})
+        outcomes.append({"kind": "earmark", "observation_id": h["observation_id"], "result": "pass" if ok else "fail",
+                         "account": h["canonical_account_id"], "fy": h["fiscal_year"], "stage": h["stage"],
+                         "detail": observed})
     # 2. printed views
     for v in data["observations"]:
         comp = v.get("component") or ""
@@ -225,6 +297,10 @@ def run(data):
         cell = (a["subcommittee"], int(v["fiscal_year"]), v["stage"])
         base_out = {"kind": "view", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
                     "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
+        bar = not_held(data, a)
+        if bar:
+            outcomes.append(dict(base_out, result="not checked", detail=bar))
+            continue
         if comp == "discretionary":
             h = named_headline(obs, v)
             got = discretionary_view(data, a, v, h, heads, comps, attrs) if h else "names no headline"
@@ -260,11 +336,53 @@ def run(data):
         if h is None:
             outcomes.append(dict(base_out, result="not checked", detail="names no headline"))
             continue
+        hit = R.active().first("checks", f"{v['observation_id']} [{comp}]",
+                               TC.ctx_for(a["subcommittee"], a["canonical_account_id"], v["fiscal_year"], v["stage"]),
+                               a, v, h, comps)
+        if hit:
+            # a printed line a rule file checks its own way (Labor-HHS: ONC's 'Evaluation Tap Funding' line against
+            # the cell's section 241 transfers, D-1)
+            computed, taps, expected = hit[1]
+            if not TC.covered(a["canonical_account_id"], *cell) and not taps:
+                outcomes.append(dict(base_out, result="not checked",
+                                     detail="no component the view uses is tagged for this cell"))
+                continue
+            ok = computed == v["amount"]
+            expected += f" ({describe(taps)}) = {AC.money(computed)}"
+            observed = (f"{AC.money(v['amount'])} printed ('{TC.printed(v)}', {v['source_document_id']} "
+                        f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
+                        f" -- differs by {AC.money(v['amount'] - computed)} (printed - computed); for review, no "
+                        "figure changed; cause: unexplained (reviewed once for every cell, VAL-MRC-UNEXPLAINED)"))
+            records.append({"validation_id": "VAL-MRV-" + suffix(v["observation_id"]),
+                            "observation_id": v["observation_id"], "rule_applied": RULE, "expected_result": expected,
+                            "observed_result": observed, "result": "pass" if ok else "info",
+                            "human_review_status": "", "reviewer": "", "resolution": ""})
+            outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=None if ok else "unexplained",
+                                 detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
+                                        f"difference {AC.money(v['amount'] - computed)}"))
+            continue
         used = []
         if a.get("total_scope") == "agency":
-            if cell not in TC.AUTO_CELLS:
-                outcomes.append(dict(base_out, result="not checked", detail=OUTSIDE.get(v["stage"], OUTSIDE[""])))
+            if cell not in TC.auto_cells() and v["stage"] != TC.REQUEST_STAGE:
+                outcomes.append(dict(base_out, result="not checked", detail="an agency total outside the tagged cells"))
                 continue
+            if v["stage"] == TC.REQUEST_STAGE:
+                # the President's Budget (D-2): checked where every account behind the total had its request
+                # language read
+                ms = [m for m in members(data, a) if heads[(m, int(v["fiscal_year"]), v["stage"])]]
+                unread = [m for m in ms if not TC.covered(m, *cell)]
+                if not ms and not TC.covered(a["canonical_account_id"], *cell):
+                    # an agency held only as its total whose own language was not read (the Administration for a
+                    # Healthy America): its components are not known
+                    outcomes.append(dict(base_out, result="not checked",
+                                         detail="a President's Budget agency total held only as its total, whose "
+                                                "request language was not read"))
+                    continue
+                if unread:
+                    outcomes.append(dict(base_out, result="not checked",
+                                         detail="a President's Budget agency total with an account whose request "
+                                                "language was not found"))
+                    continue
             delta = 0
             for m in members(data, a):
                 hs = heads[(m, int(v["fiscal_year"]), v["stage"])]
@@ -277,6 +395,19 @@ def run(data):
             d, cs = AC.view_adjustment(comps[h["observation_id"]], view)
             delta += d
             used += cs
+            # a supplemental '(emergency)' line the total's own table prints after an account's total is beside
+            # that account's headline but inside the agency total (D-2: ACF FY2023 Enacted's CR-funding lines,
+            # S.Rept. 118-84 pp.384-385): a view leaving out emergency designations leaves it out of the total too
+            for m in members(data, a):
+                hs = heads[(m, int(v["fiscal_year"]), v["stage"])]
+                mh = TC.pick_headline(hs, h["source_document_id"]) if hs else None
+                for c in (comps[mh["observation_id"]] if mh else []):
+                    if (c["in_headline"] != "TRUE" and c["tag_method"] == "retagged"
+                            and c["source_document_id"] == h["source_document_id"]
+                            and AC._selected(c, AC.VIEWS[view]["remove"])
+                            and (c["component_type"], c.get("designation")) == ("designated", "emergency")):
+                        delta -= c["amount"]
+                        used.append(c)
             computed = h["amount"] + delta
             how = f"the agency total {AC.money(h['amount'])} ({h['observation_id']}) + its accounts' components"
         elif a.get("total_scope"):
@@ -286,7 +417,7 @@ def run(data):
             sel = AC.VIEWS[view]
             relevant = [c for c in comps[h["observation_id"]]
                         if AC._selected(c, sel["remove"]) or AC._selected(c, sel["add"])]
-            if cell not in TC.AUTO_CELLS and not relevant:
+            if not TC.covered(a["canonical_account_id"], *cell) and not relevant:
                 outcomes.append(dict(base_out, result="not checked",
                                      detail="no component the view uses is tagged for this cell"))
                 continue
@@ -314,6 +445,46 @@ def run(data):
         outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
                              detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
                                     f"difference {AC.money(v['amount'] - computed)}"))
+    # 4. printed summary lines (D-7): a title or bill total's mandatory, emergency, advance and rescission lines
+    # against the figure its accounts give (summary_view); a total whose accounts aren't all held is not checked
+    for v in data["observations"]:
+        comp = v.get("component") or ""
+        if comp not in SUMMARY_CHECKED or v["verification_status"] == "superseded":
+            continue
+        a = acc[v["canonical_account_id"]]
+        base_out = {"kind": "summary", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
+                    "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
+        bar = not_held(data, a)
+        h = named_headline(obs, v)
+        got = bar or ("names no headline" if h is None else summary_view(data, a, v, h, heads, comps, attrs))
+        if isinstance(got, str):
+            outcomes.append(dict(base_out, result="not checked", detail=got))
+            continue
+        computed, how = got
+        printed = v["amount"]
+        if comp == "advance_appropriations":
+            # every advance line printed under the total (each fiscal year's, emergency or not) against the advances
+            lines_ = [o for o in data["observations"] if o.get("headline_observation_id") == h["observation_id"]
+                      and (o.get("component") or "").startswith("advance_appropriations")
+                      and o["verification_status"] != "superseded"]
+            printed = sum(o["amount"] for o in lines_)
+            if len(lines_) > 1:
+                how += " against the " + " + ".join(f"{o['component']} {AC.money(o['amount'])}" for o in lines_) \
+                       + " printed"
+        ok = computed == printed
+        cause = None if ok else SUMMARY_CAUSES.get((a["canonical_account_id"], int(v["fiscal_year"]), v["stage"], comp),
+                                                    "unexplained")
+        expected = f"{comp.replace('_', ' ')}: {how} = {AC.money(computed)}"
+        observed = (f"{AC.money(printed)} printed ('{TC.printed(v)}', {v['source_document_id']} "
+                    f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
+                    f" -- differs by {AC.money(printed - computed)} (printed - computed); for review, no figure "
+                    f"changed; cause: {cause} (reviewed once for every cell, VAL-MRC-{cause.upper().replace('_', '-')})"))
+        records.append({"validation_id": "VAL-MRS-" + suffix(v["observation_id"]), "observation_id": v["observation_id"],
+                        "rule_applied": RULE, "expected_result": expected, "observed_result": observed,
+                        "result": "pass" if ok else "info", "human_review_status": "", "reviewer": "", "resolution": ""})
+        outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
+                             detail=f"computed {AC.money(computed)}, printed {AC.money(printed)}, "
+                                    f"difference {AC.money(printed - computed)}"))
     # one review item per cause, on the first cell it covers
     by_cause = collections.defaultdict(list)
     for o in outcomes:
@@ -334,14 +505,14 @@ def run(data):
 
 
 def cause_text(cause):
-    for k, (c, t) in KNOWN_CAUSES.items():
-        if c == cause:
-            return t
+    for r in R.active().by_hook.get("checks", []):
+        if cause in (r.data or {}).get("cause_text", {}):
+            return r.data["cause_text"][cause]
     return CAUSE_TEXT[cause]
 
 
 def why(data, a, v, view, diff, heads, comps):
-    """The cause of a printed view's difference (KNOWN_CAUSES, CAUSE_TEXT)."""
+    """The cause of a printed view's difference (CAUSE_TEXT; the rule files' hook 'checks')."""
     fy, stage = int(v["fiscal_year"]), v["stage"]
     sel = AC.VIEWS[view]
     if a.get("total_scope") == "agency":
@@ -351,15 +522,16 @@ def why(data, a, v, view, diff, heads, comps):
             uses = any(AC._selected(c, sel["add"]) or AC._selected(c, sel["remove"])
                        for (acc, _, _), hs in heads.items() if acc == m for h in hs for c in comps[h["observation_id"]])
             if uses:
-                return "onc_no_headline" if m == "ACC-HHS-OS-ONC" else "member_no_headline"
-        if (a["subcommittee"], fy, stage) == TC.CR_YEAR:
+                return checks(a["subcommittee"]).get("member_cause", {}).get(m, "member_no_headline")
+        if (a["subcommittee"], fy, stage) in TC.cr_cells():
             dropped = 0
             for m in members(data, a):
-                if m not in TC.CR_ANOMALIES:
+                anomaly = TC.cr_anomalies(a["subcommittee"], m, fy).get(m)
+                if anomaly is None:
                     continue
                 for h in heads[(m, fy - 1, "Enacted")]:
                     for c in comps[h["observation_id"]]:
-                        if AC._selected(c, TC.CR_ANOMALIES[m][1]):
+                        if AC._selected(c, anomaly[1]):
                             if c["in_headline"] != "TRUE" and AC._selected(c, sel["add"]):
                                 dropped += c["amount"]
                             if c["in_headline"] == "TRUE" and AC._selected(c, sel["remove"]):
@@ -370,11 +542,11 @@ def why(data, a, v, view, diff, heads, comps):
     h = named_headline(obs_of(data), v)
     if named is not None and h is not named and diff == named["amount"] - h["amount"]:
         return "headline_superseded"
-    cell = KNOWN_CELL_CAUSES.get((a["canonical_account_id"], fy, stage, view))
+    rules = checks(a["subcommittee"])
+    cell = rules.get("cell_causes", {}).get((a["canonical_account_id"], fy, stage, view))
     if cell:
         return cell
-    known = KNOWN_CAUSES.get((a["canonical_account_id"], view))
-    return known[0] if known else "unexplained"
+    return rules.get("known_causes", {}).get((a["canonical_account_id"], view)) or "unexplained"
 
 
 _OBS = {}
@@ -428,7 +600,11 @@ def summary(outcomes):
     lines += ["| check | pass | fail | not checked |", "|---|---|---|---|",
               f"| headline = base + included components (base >= 0) | {c[('base', 'pass')]} | {c[('base', 'fail')]} | - |",
               f"| printed view = computed view | {c[('view', 'pass')]} | {c[('view', 'fail')]} | "
-              f"{c[('view', 'not checked')]} |", ""]
+              f"{c[('view', 'not checked')]} |",
+              f"| earmark rule: headline - account line = earmark components | {c[('earmark', 'pass')]} | "
+              f"{c[('earmark', 'fail')]} | - |",
+              f"| printed summary line = computed (D-7) | {c[('summary', 'pass')]} | {c[('summary', 'fail')]} | "
+              f"{c[('summary', 'not checked')]} |", ""]
     nc = collections.Counter(o["detail"] for o in outcomes if o["result"] == "not checked")
     if nc:
         lines += ["Not checked yet: " + "; ".join(f"{k} ({n})" for k, n in nc.most_common()), ""]
@@ -437,9 +613,9 @@ def summary(outcomes):
         lines += ["**Failures (pending review: one item per cause)**", ""]
         groups = collections.defaultdict(list)
         for o in fails:
-            groups[o.get("cause") or "base"].append(o)
+            groups[o.get("cause") or ("earmark_rule" if o["kind"] == "earmark" else "base")].append(o)
         for cause, os_ in sorted(groups.items()):
-            lines.append(f"- **{cause}** ({len(os_)}): " + ("" if cause == "base" else cause_text(cause)))
+            lines.append(f"- **{cause}** ({len(os_)}): " + ("" if cause in ("base", "earmark_rule") else cause_text(cause)))
             lines += [f"  - {o['observation_id']} {o['account']} FY{o['fy']} {o['stage']}"
                       + (f" [{o['view']}]" if o.get("view") else " [base]") + f": {o['detail']}" for o in os_]
         lines.append("")
@@ -451,7 +627,7 @@ def main(argv=None):
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--ci", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(L.STAGED.read_text())
+    data = json.loads(paths.staged().read_text())
     records, outcomes = run(data)
     new_vals = merged(data, records)
     want = statuses(data, new_vals)
@@ -469,7 +645,7 @@ def main(argv=None):
         data["validations"] = new_vals
         for o in data["observations"]:
             o["verification_status"] = want[o["observation_id"]]
-        L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
         print("data/staged.json updated")
     if a.ci and stale:
         print("data/staged.json is not up to date with measure_reconcile -- run python scripts/measure_reconcile.py "

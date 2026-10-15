@@ -1,6 +1,42 @@
 {
  "accounts": [
   {
+   "agency": "Bill total",
+   "canonical_account_id": "ACC-CJS-BILL-TOTAL",
+   "canonical_name": "Bill total (grand total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Commerce",
+   "canonical_account_id": "ACC-CJS-TITLE-I-TOTAL",
+   "canonical_name": "Title I, Department of Commerce (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Justice",
+   "canonical_account_id": "ACC-CJS-TITLE-II-TOTAL",
+   "canonical_name": "Title II, Department of Justice (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Science",
+   "canonical_account_id": "ACC-CJS-TITLE-III-TOTAL",
+   "canonical_name": "Title III, Science (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Related Agencies",
+   "canonical_account_id": "ACC-CJS-TITLE-IV-TOTAL",
+   "canonical_name": "Title IV, Related Agencies (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "General Provisions",
+   "canonical_account_id": "ACC-CJS-TITLE-V-TOTAL",
+   "canonical_name": "Title V, General Provisions (title total)",
+   "historical_names": []
+  },
+  {
    "agency": "Department of Justice",
    "canonical_account_id": "ACC-DOJ-AFF",
    "canonical_name": "Assets Forfeiture Fund",
@@ -124,6 +160,12 @@
    "agency": "Agency for Healthcare Research and Quality",
    "canonical_account_id": "ACC-HHS-AHRQ-TOTAL",
    "canonical_name": "Agency for Healthcare Research and Quality (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Strategic Preparedness and Response",
+   "canonical_account_id": "ACC-HHS-ASPR-MANUFACTURING",
+   "canonical_name": "Manufacturing and Production",
    "historical_names": []
   },
   {
@@ -578,6 +620,12 @@
   },
   {
    "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "canonical_name": "Customer Experience",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
    "canonical_account_id": "ACC-HHS-OS-GDM",
    "canonical_name": "General Departmental Management",
    "historical_names": []
@@ -614,8 +662,20 @@
   },
   {
    "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+   "canonical_name": "Account for the State Response to the Opioid Abuse Crisis, CURES Act",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
    "canonical_account_id": "ACC-HHS-OS-TOTAL",
    "canonical_name": "Office of the Secretary (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+   "canonical_name": "Behavioral Health Innovation Block Grant",
    "historical_names": []
   },
   {
@@ -652,6 +712,42 @@
    "agency": "Department of Health and Human Services",
    "canonical_account_id": "ACC-HHS-TITLE-II-TOTAL",
    "canonical_name": "Title II, Department of Health and Human Services (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Bill total",
+   "canonical_account_id": "ACC-LHHS-BILL-TOTAL",
+   "canonical_name": "Bill total (grand total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Labor",
+   "canonical_account_id": "ACC-LHHS-TITLE-I-TOTAL",
+   "canonical_name": "Title I, Department of Labor (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Department of Education",
+   "canonical_account_id": "ACC-LHHS-TITLE-III-TOTAL",
+   "canonical_name": "Title III, Department of Education (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Related Agencies",
+   "canonical_account_id": "ACC-LHHS-TITLE-IV-TOTAL",
+   "canonical_name": "Title IV, Related Agencies (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Emergency Funding",
+   "canonical_account_id": "ACC-LHHS-TITLE-VI-TOTAL",
+   "canonical_name": "Title VI, Emergency Funding (title total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Title VIII",
+   "canonical_account_id": "ACC-LHHS-TITLE-VIII-TOTAL",
+   "canonical_name": "Title VIII (title total)",
    "historical_names": []
   },
   {
@@ -799,6 +895,32 @@
    "historical_names": []
   }
  ],
+ "contract_version": 9,
+ "default_subcommittee": "LHHS",
+ "features": {
+  "abbreviations": true,
+  "account_page": true,
+  "account_panel": true,
+  "accounting_views": true,
+  "anchored_totals": true,
+  "basis_adjustments": true,
+  "budget_class": true,
+  "defense_split": true,
+  "exclude_earmarks": true,
+  "export_csv": true,
+  "figure_source": true,
+  "find_changes": true,
+  "find_moves": true,
+  "grid": true,
+  "interaction_state": true,
+  "nondefense": true,
+  "nondefense_excluding_earmarks": true,
+  "overview_panel": true,
+  "phone": true,
+  "search_filter": true,
+  "watchlist": true,
+  "whats_new": false
+ },
  "matching": {
   "accept_max_distance": 2,
   "accept_max_fraction": 0.15,
@@ -806,24 +928,27 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-15T13:16:25+00:00",
-  "data_sha256": "03014960a22b15ff00b9624d8d9921110bb448256f37a6624478ca03959e4a8d",
+  "data_committed": "2026-10-15T19:21:42+00:00",
+  "data_sha256": "7886564dad7c5e90db28222afb4fd5277ae72995735392a9eea76a967b2117f3",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
-   "account": 130,
-   "account_attribute": 4292,
+   "account": 146,
+   "account_attribute": 4392,
    "account_relationship": 14,
-   "appropriations_observation": 4989,
+   "appropriations_observation": 6553,
    "bill_report_reference": 83,
-   "component": 29,
-   "confirmed_absence": 311,
+   "component": 52,
+   "confirmed_absence": 342,
    "historical_name": 14,
-   "observation_component": 1206,
+   "observation_component": 1461,
    "source_document": 151,
-   "validation_record": 21302
+   "validation_record": 21641
   },
   "version": "v38",
   "warnings": [],
   "workbook": "Approps_Pilot_Schema_Loaded.xlsx"
- }
+ },
+ "split_subcommittees": [
+  "LHHS"
+ ]
 }

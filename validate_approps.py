@@ -175,7 +175,10 @@ def rule_status_text(o, doc_types=None):
     prints 370,722,000)', read from the figure's own note (the table figure, in thousands, and its document)."""
     text = o.get("source_table_or_section") or ""
     note = text.split(" -- Note: ", 1)[1] if " -- Note: " in text else ""
-    kind = "law text" if (o.get("source_document_id") or "").startswith("SRC-PLAW-") else "bill text"
+    src = o.get("source_document_id") or ""
+    # the request's Budget Appendix language (D-3b: NSF R&RA President's Budget headlines)
+    kind = ("law text" if src.startswith("SRC-PLAW-") else "Appendix language" if src.startswith("SRC-BUDGET-APP-")
+            else "bill text")
     m = re.search(r"(?:prints|gives)\b[^.]*?(-?[\d,]+) thousand", note)
     if not m:
         return f"Resolved by rule: {kind} controls"

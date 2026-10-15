@@ -38,8 +38,10 @@ For each account and fiscal year we hold a figure for (FY2017-FY2027):
 
 An account that is one program activity of a larger Appendix account (a HRSA program, a CDC program, an NIH
 institute) takes that account's attributes, and its activity line must be printed in the schedule; otherwise the
-fields stay empty with a note. Agency and title totals get no attributes of their own. Nothing is guessed: an
-account with no schedule we can find is noted, not filled.
+fields stay empty with a note. Agency and title totals get no attributes of their own, except an agency held only
+as its total (no account lines: AHRQ, ACL, AHA), whose total is its one line and takes its Appendix account's
+attributes as an account would (owner decision B, D-9). Nothing is guessed: an account with no schedule we can find
+is noted, not filled.
 """
 
 import argparse
@@ -54,6 +56,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import accounting as AC  # noqa: E402
+import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
 
 CACHE = ROOT / "document_store" / "appendix"
@@ -100,7 +103,7 @@ CHAPTERS = [
 PUBLISHED = {2017: "2016-02-09", 2018: "2017-05-23", 2019: "2018-02-12", 2020: "2019-03-18", 2021: "2020-02-10",
              2022: "2021-05-28", 2023: "2022-03-28", 2024: "2023-03-13", 2025: "2024-03-11", 2026: "2025-05-30",
              2027: "2026-04-03"}
-SUBCOMMITTEE_CHAPTERS = {"LHHS": ("HHS",), "CJS": ("COM", "DOJ", "NASA", "NSF", "EOP")}
+# a subcommittee's chapters: its rule file (reference/rules/<CODE>.py, hook 'appendix')
 ENACTED_STAGES = ("Enacted", "House Reported", "Senate Reported")
 REQUEST = "President's Budget"
 CODE = re.compile(r"Identification code (\d{3})[–-](\d{4})[–-](\d)[–-](\d)[–-](\d{3})")
@@ -467,13 +470,24 @@ def enacted_volume(fy):
     return fy + 2 if fy + 2 <= AC.LAST_FY else fy + 1 if fy + 1 <= AC.LAST_FY else fy
 
 
+def lone_agencies(data):
+    """The agencies held only as their total (no account lines; site_accounting's 'lone'): their total is their one
+    line, so it takes the attributes an account would (owner decision B, D-9)."""
+    import measure_reconcile as M  # noqa: E402 (scripts/, beside this file)
+    return {a["canonical_account_id"] for a in data["accounts"]
+            if a.get("total_scope") == "agency" and not M.members(data, a)}
+
+
 def held(data):
-    """-> {(account, fy): {stages}} for every account (not totals) we hold a figure for."""
+    """-> {(account, fy): {stages}} for every account we hold a figure for (not totals, except an agency held only
+    as its total)."""
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
+    lone = lone_agencies(data)
     out = collections.defaultdict(set)
     for o in data["observations"]:
         a = acc[o["canonical_account_id"]]
-        if a.get("total_scope") or o.get("component") or o["verification_status"] == "superseded":
+        if (a.get("total_scope") and a["canonical_account_id"] not in lone) or o.get("component") \
+                or o["verification_status"] == "superseded":
             continue
         fy = int(o["fiscal_year"])
         if AC.FIRST_FY <= fy <= AC.LAST_FY:
@@ -611,22 +625,16 @@ def assign_ids(data, recs):
     record no longer produced is retired (account_attributes_retired), never reused."""
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     old = {key(r): r["account_attribute_id"] for r in data.get("account_attributes", [])}
-    used = set(old.values()) | set(data.get("account_attributes_retired", []))
-    nxt = {"CJS": 1 + max([number(i) for i in used if not i.startswith("AAT-LHHS-")] or [0]),
-           "LHHS": 1 + max([number(i) for i in used if i.startswith("AAT-LHHS-")] or [0])}
+    alloc = IDS.Allocator(list(old.values()) + list(data.get("account_attributes_retired", [])))
     out = []
     for r in recs:
         k = key(r)
-        if k in old:
-            rid = old[k]
-        else:
-            sc = acc[r["canonical_account_id"]]["subcommittee"]
-            rid = f"AAT-LHHS-{nxt['LHHS']:04d}" if sc == "LHHS" else f"AAT-{nxt['CJS']:04d}"
-            nxt["LHHS" if sc == "LHHS" else "CJS"] += 1
+        rid = old[k] if k in old else alloc.next("AAT", acc[r["canonical_account_id"]]["subcommittee"])
         out.append({c: (rid if c == "account_attribute_id" else r[c]) for c in AC.ATTRIBUTE_COLUMNS})
     keep = {r["account_attribute_id"] for r in out}
     retired = sorted(set(data.get("account_attributes_retired", [])) | (set(old.values()) - keep))
-    out.sort(key=lambda r: (r["account_attribute_id"].startswith("AAT-LHHS-") is False, number(r["account_attribute_id"])))
+    order = IDS.order([r["account_attribute_id"] for r in data.get("account_attributes", [])])
+    out.sort(key=lambda r: order(r["account_attribute_id"]))
     return out, retired
 
 
@@ -656,7 +664,7 @@ def summary(recs, cover):
     c = collections.Counter((r["subcommittee"], r["stage_basis"], status(r)) for r in cover)
     cols = ("filled", "mixed", "partly filled", "same as enacted", "differs from enacted", "empty")
     lines += ["| subcommittee | basis | " + " | ".join(cols) + " |", "|---" * (len(cols) + 2) + "|"]
-    for sc in ("LHHS", "CJS"):
+    for sc in dict.fromkeys(r["subcommittee"] for r in cover):
         for b in ("enacted", "request"):
             lines.append(f"| {sc} | {b} | " + " | ".join(str(c[(sc, b, s)]) for s in cols) + " |")
     lines += ["", f"{len(recs)} attribute records"]

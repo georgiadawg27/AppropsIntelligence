@@ -48,7 +48,7 @@ COMPONENT_COLUMNS = ["component_id", "observation_id", "component_type", "design
                      "within_component_id"]
 COMPONENT_REQUIRED = ["component_id", "observation_id", "component_type", "amount", "in_headline",
                       "source_document_id", "source_location", "quoted_text", "tag_method", "tag_rule"]
-COMPONENT_ID = re.compile(r"CMP-(?:LHHS-)?\d{4}")
+COMPONENT_ID = re.compile(r"CMP-(?:[A-Z][A-Z0-9]{1,9}-)?\d{4,}")      # ids.py: CMP-<CODE>-####, CJS CMP-####
 
 # Account attributes: one value per account, fiscal year, attribute and stage basis, each with its evidence (phase 2
 # fills them from the Budget Appendix; scripts/appendix_attributes.py). stage_basis 'enacted' serves the Enacted,
@@ -63,7 +63,7 @@ ATTRIBUTE_FUND_TYPE = ["general", "trust", "special", "revolving"]
 STAGE_BASES = ["enacted", "request"]
 ATTRIBUTE_COLUMNS = ["account_attribute_id", "canonical_account_id", "fiscal_year", "attribute", "value",
                      "source_document_id", "source_location", "evidence", "stage_basis", "provisional"]
-ATTRIBUTE_ID = re.compile(r"AAT-(?:LHHS-)?\d{4}")
+ATTRIBUTE_ID = re.compile(r"AAT-(?:[A-Z][A-Z0-9]{1,9}-)?\d{4,}")     # ids.py: AAT-<CODE>-####, CJS AAT-####
 SUBFUNCTION = re.compile(r"\d{3}")
 # the Budget Appendix's account identification code: agency (3) - account (4) - transmittal (1) - fund (1) -
 # subfunction (3), e.g. 075-0849-0-1-550
@@ -115,7 +115,7 @@ def component_errors(components, observations, documents):
             if _blank(c.get(k)) and not (k == "amount" and c.get(k) == 0):
                 errs.append(f"{cid}: {k} is blank")
         if not COMPONENT_ID.fullmatch(cid):
-            errs.append(f"{cid}: component_id is not CMP-NNNN (CJS) or CMP-LHHS-NNNN (Labor-HHS)")
+            errs.append(f"{cid}: component_id is not CMP-<CODE>-NNNN (CJS: CMP-NNNN; ids.py)")
         if cid in seen:
             errs.append(f"duplicate component_id {cid}")
         seen.add(cid)
@@ -207,7 +207,7 @@ def attribute_errors(rows, accounts, documents):
             if _blank(r.get(k)) and k not in ("source_location", "stage_basis", "provisional"):
                 errs.append(f"{rid}: {k} is blank (every value carries its evidence)")
         if not ATTRIBUTE_ID.fullmatch(rid):
-            errs.append(f"{rid}: account_attribute_id is not AAT-NNNN or AAT-LHHS-NNNN")
+            errs.append(f"{rid}: account_attribute_id is not AAT-<CODE>-NNNN (CJS: AAT-NNNN; ids.py)")
         if rid in seen:
             errs.append(f"duplicate account_attribute_id {rid}")
         seen.add(rid)
@@ -281,10 +281,16 @@ VIEWS = {
     "program_level_when_available": {"label": "program level, advances counted when available",
                                      "remove": ("advance_enacted",),
                                      "add": ("advance_available", "transfer_in", "trust_fund_limitation")},
+    "program_level_when_enacted": {"label": "program level, advances counted when enacted",
+                                   "remove": ("advance_available",),
+                                   "add": ("advance_enacted", "transfer_in", "trust_fund_limitation")},
     "excluding_emergencies": {"label": "excluding emergency designations",
                               "remove": (("designated", "emergency"),), "add": ()},
     "excluding_earmarks": {"label": "excluding earmarks", "remove": ("earmark",), "add": ()},
     "nondefense": {"label": "nondefense (defense split out)", "remove": ("defense_portion",), "add": ()},
+    # D-8 (owner decision D): the Non-defense filter and Exclude earmarks together
+    "nondefense_excluding_earmarks": {"label": "nondefense, excluding earmarks",
+                                      "remove": ("earmark", "defense_portion"), "add": ()},
 }
 # The printed parallel totals (Component vocabulary, kind 'view') a computed view is checked against. A printed
 # view not listed here (e.g. 'discretionary', which needs every account's budget_class -- phase 2) is not checked.
@@ -353,6 +359,82 @@ def discretionary_adjustment(headline_amount, components, budget_class):
         cs = counted([c for c in components if c["component_type"] == "mandatory_portion" and c["in_headline"] == "TRUE"])
         return -sum(c["amount"] for c in cs), cs
     return None
+
+
+# The site's Amount basis views (UI-0), as reference/ACCOUNTING_RULES.md defines them (owner, 2026-10-12): its
+# Arithmetic table's views for the advance timing, and its Discretionary rule (phase 2) for the account's budget_class
+# for the year and stage. Timing applies to every basis but printed, the headline itself. fees_offsets and
+# transfer_out are shown as components and counted by no basis (no view in the table selects them).
+#   all_appropriations       the headline, advances counted by timing (ACCOUNTING_RULES: advances when available /
+#                            when enacted)
+#   discretionary_designated ACCOUNTING_RULES' Discretionary: a discretionary account counts its headline, a mixed
+#                            account its headline less its mandatory_portion components (with none tagged, its
+#                            headline: counted as discretionary), a mandatory account nothing (excluded)
+#   discretionary            discretionary_designated less the designated components inside the headline (emergency,
+#                            disaster, cap adjustment, other)
+#   program_level            ACCOUNTING_RULES' program level: headline + transfer_in + trust_fund_limitation,
+#                            advances counted by timing
+BASES = ["printed", "discretionary", "discretionary_designated", "all_appropriations", "program_level"]
+TIMINGS = ["available", "enacted"]
+BASIS_VIEW = {"all_appropriations": "advances_when_{}", "discretionary_designated": "advances_when_{}",
+              "discretionary": "advances_when_{}", "program_level": "program_level_when_{}"}
+# the components a basis uses beyond its timing view's: what tells whether a cell's tagging can change it
+BASIS_USES = {"all_appropriations": (), "discretionary_designated": ("mandatory_portion",),
+              "discretionary": ("mandatory_portion", "designated"), "program_level": ()}
+
+
+def basis_uses(basis):
+    """Every component type the basis's amount can depend on (both timings)."""
+    sel = set(BASIS_USES[basis])
+    for t in TIMINGS:
+        v = VIEWS[BASIS_VIEW[basis].format(t)]
+        sel |= {s if isinstance(s, str) else s[0] for s in v["remove"] + v["add"]}
+    return sel
+
+
+def basis_amount(headline_amount, components, basis, timing, budget_class):
+    """One account headline's amount on an Amount basis and advance timing (BASES): -> ("value", amount, [the
+    components it used], a note or None), ("excluded", reason) or ("not_computable", reason). Never a new figure: the
+    headline less and plus its tagged components, as view_adjustment and discretionary_adjustment read them."""
+    if basis == "printed":
+        return "value", headline_amount, [], None
+    delta, used = view_adjustment(components, BASIS_VIEW[basis].format(timing))
+    if basis in ("discretionary", "discretionary_designated"):
+        if budget_class is None:
+            return "not_computable", "no budget_class on file for the year and stage"
+        if budget_class == "mandatory":
+            return "excluded", "a mandatory account (budget_class)"
+        types = (("mandatory_portion",) if budget_class == "mixed" else ()) + (
+            ("designated",) if basis == "discretionary" else ())
+        note = None
+        if budget_class == "mixed" and not any(c["component_type"] == "mandatory_portion" for c in components):
+            note = "mixed, no mandatory portion tagged: counted as discretionary (ACCOUNTING_RULES)"
+        out = counted([c for c in components if c["in_headline"] == "TRUE" and _selected(c, types)
+                       and c not in used])
+        delta -= sum(c["amount"] for c in out)
+        used = used + out
+        return "value", headline_amount + delta, used, note
+    return "value", headline_amount + delta, used, None
+
+
+# UI-0b: the excluding-earmarks and nondefense views of every basis (ACCOUNTING_RULES' Arithmetic table: excluding
+# earmarks takes out the earmark components, nondefense the defense_portion components; neither adds anything)
+EXCLUSIONS = {"excluding_earmarks": "earmark", "nondefense": "defense_portion"}
+
+
+def excluded_amount(headline_amount, components, basis, timing, budget_class, exclusion):
+    """One account headline's amount on a basis (basis_amount) with an EXCLUSIONS view on top: the basis amount less
+    the components of the exclusion's type inside the headline that the basis has not already taken out. -> the
+    shape basis_amount returns; the components list holds the basis's and the excluded ones."""
+    got = basis_amount(headline_amount, components, basis, timing, budget_class)
+    if got[0] != "value":
+        return got
+    _, amount, used, note = got
+    taken = {c["component_id"] for c in used}
+    out = [c for c in counted([c for c in components if c["in_headline"] == "TRUE"
+                               and _selected(c, VIEWS[exclusion]["remove"])])
+           if c["component_id"] not in taken and (c.get("within_component_id") or "") not in taken]
+    return "value", amount - sum(c["amount"] for c in out), used + out, note
 
 
 def attribute_index(data):

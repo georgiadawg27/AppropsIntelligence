@@ -297,8 +297,8 @@ END;
 -- so a view (advances when available, program level, excluding emergencies ...) is a sum. Signed: a
 -- rescission, transfer_out or fees_offsets is negative, every other type positive. IDs are never reused.
 CREATE TABLE observation_component (
-    component_id              TEXT PRIMARY KEY CHECK (component_id GLOB 'CMP-[0-9][0-9][0-9][0-9]'
-                                                      OR component_id GLOB 'CMP-LHHS-[0-9][0-9][0-9][0-9]'),
+    component_id              TEXT PRIMARY KEY CHECK (component_id GLOB 'CMP-[0-9][0-9][0-9][0-9]*'
+                                                      OR component_id GLOB 'CMP-[A-Z]*-[0-9][0-9][0-9][0-9]*'),
     observation_id            TEXT NOT NULL REFERENCES appropriations_observation (observation_id),
     component_type            TEXT NOT NULL CHECK (component_type IN ('advance_enacted', 'advance_available',
                                   'designated', 'transfer_in', 'transfer_out', 'trust_fund_limitation', 'fees_offsets',
@@ -332,8 +332,8 @@ CREATE INDEX component_by_observation ON observation_component (observation_id);
 -- One value per account, fiscal year, attribute and stage basis, each with its evidence (filled in phase 2
 -- from the Budget Appendix).
 CREATE TABLE account_attribute (
-    account_attribute_id TEXT PRIMARY KEY CHECK (account_attribute_id GLOB 'AAT-[0-9][0-9][0-9][0-9]'
-                                                 OR account_attribute_id GLOB 'AAT-LHHS-[0-9][0-9][0-9][0-9]'),
+    account_attribute_id TEXT PRIMARY KEY CHECK (account_attribute_id GLOB 'AAT-[0-9][0-9][0-9][0-9]*'
+                                                 OR account_attribute_id GLOB 'AAT-[A-Z]*-[0-9][0-9][0-9][0-9]*'),
     canonical_account_id TEXT NOT NULL REFERENCES account (canonical_account_id),
     fiscal_year          INTEGER NOT NULL CHECK (fiscal_year BETWEEN 2017 AND 2027),
     attribute            TEXT NOT NULL CHECK (attribute IN ('budget_class', 'budget_subfunction', 'fund_type',

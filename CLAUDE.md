@@ -15,8 +15,8 @@ Security and settings
 
 Pull requests
 - One draft PR per thread. Never merge; the owner merges.
-- Judge a PR by its GitHub checks, not local runs. Run the full suite once
-  before marking a PR ready; otherwise prefer targeted tests.
+- Judge a PR by its GitHub checks, which run the full suite. Locally, run only
+  the tests that touch your change; never run the full suite.
 - Never commit `docs/Approps_Pilot_Schema_Loaded.xlsx`. The export job on main
   is its only writer; PRs update `tests/fixtures/workbook_values.json` instead.
 - Never skip, disable or loosen a check to get green. Route failures to review.
@@ -51,3 +51,6 @@ Data
 - At the end of each phase, write decisions and open items to
   `reference/handoff.md` (not docs/, which is the published site and must match the export exactly) so the next session can start fresh instead of continuing
   a long thread.
+- Wait for CI with one check-in timed for when it should finish, not repeated
+  polling. Report the checks once, when all have finished on the final commit.
+- Don't report on runs or checks for commits you've since replaced.

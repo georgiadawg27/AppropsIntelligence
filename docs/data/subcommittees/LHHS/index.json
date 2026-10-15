@@ -1,0 +1,146 @@
+{
+ "drafts": {
+  "2021|Senate Reported": {
+   "bill_id": "Senate chair's draft, FY2021",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-LHHS-FY2021-SENATE)",
+   "document_id": "SRC-EXPL-LHHS-FY2021-SENATE"
+  },
+  "2022|Senate Reported": {
+   "bill_id": "S.3062",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-LHHS-FY2022-SENATE)",
+   "document_id": "SRC-EXPL-LHHS-FY2022-SENATE"
+  },
+  "2023|Senate Reported": {
+   "bill_id": "S.4659",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-LHHS-FY2023-SENATE)",
+   "document_id": "SRC-EXPL-LHHS-FY2023-SENATE"
+  },
+  "2024|House Reported": {
+   "bill_id": "H.R.5894",
+   "document": "House Committee on Appropriations explanatory statement (SRC-EXPL-LHHS-FY2024-HOUSE)",
+   "document_id": "SRC-EXPL-LHHS-FY2024-HOUSE"
+  }
+ },
+ "enactments": {
+  "2017": {
+   "bill_id": "P.L.115-31",
+   "division": "H",
+   "enactment_date": "2017-05-05",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 244"
+  },
+  "2018": {
+   "bill_id": "P.L.115-141",
+   "division": "H",
+   "enactment_date": "2018-03-23",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 1625"
+  },
+  "2019": {
+   "bill_id": "P.L.115-245",
+   "division": "B",
+   "enactment_date": "2018-09-28",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 6157"
+  },
+  "2020": {
+   "bill_id": "P.L.116-94",
+   "division": "A",
+   "enactment_date": "2019-12-20",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 1865"
+  },
+  "2021": {
+   "bill_id": "P.L.116-260",
+   "division": "H",
+   "enactment_date": "2020-12-27",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 133"
+  },
+  "2022": {
+   "bill_id": "P.L.117-103",
+   "division": "H",
+   "enactment_date": "2022-03-15",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 2471"
+  },
+  "2023": {
+   "bill_id": "P.L.117-328",
+   "division": "H",
+   "enactment_date": "2022-12-29",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 2617"
+  },
+  "2024": {
+   "bill_id": "P.L.118-47",
+   "division": "D",
+   "enactment_date": "2024-03-23",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 2882"
+  },
+  "2025": {
+   "bill_id": "P.L.119-4",
+   "division": "A",
+   "enactment_date": "2025-03-15",
+   "funding_type": "full_year_cr",
+   "vehicle_bill_id": "H.R. 1968"
+  },
+  "2026": {
+   "bill_id": "P.L.119-75",
+   "division": "B",
+   "enactment_date": "2026-02-03",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 7148"
+  }
+ },
+ "files": {
+  "2017": "2017.json",
+  "2018": "2018.json",
+  "2019": "2019.json",
+  "2020": "2020.json",
+  "2021": "2021.json",
+  "2022": "2022.json",
+  "2023": "2023.json",
+  "2024": "2024.json",
+  "2025": "2025.json",
+  "2026": "2026.json",
+  "2027": "2027.json"
+ },
+ "fiscal_years": [
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026,
+  2027
+ ],
+ "outside_life_cells": 604,
+ "stage_notes": {
+  "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
+  "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
+  "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
+  "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+ },
+ "stages": [
+  "President's Budget",
+  "House Reported",
+  "Senate Reported",
+  "Enacted"
+ ],
+ "state_counts": {
+  "missing": 31,
+  "no_figure": 12,
+  "no_printed_total": 3,
+  "not_collected": 101,
+  "not_enacted": 98,
+  "not_funded": 227,
+  "not_reported": 93,
+  "value": 3671
+ },
+ "subcommittee": "LHHS"
+}
