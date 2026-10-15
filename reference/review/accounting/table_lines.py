@@ -141,6 +141,11 @@ def main(argv=None):
         rows.append({"observation_id": o["observation_id"], "source_document_id": o["source_document_id"],
                      "page": page, "line": "Post-FY 1988 Claims", "amount": c_amt * 1000,
                      "printed_line": c_line, "printed_total": c_total, "read_from": c_how})
+    # the rows read by hand for other lines (the CDS line, the request's evaluation lines: D-2, D-9) are kept
+    if OUT.exists():
+        with open(OUT) as f:
+            rows += [r for r in csv.DictReader(f)
+                     if r["line"] not in ("HRSA Administrative expenses", "Post-FY 1988 Claims")]
     with open(OUT, "w", newline="") as f:
         w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         w.writeheader()

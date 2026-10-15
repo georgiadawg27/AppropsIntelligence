@@ -12,19 +12,19 @@
    "value": 983
   },
   "LHHS": {
-   "missing": 98,
+   "missing": 31,
    "no_figure": 12,
    "no_printed_total": 3,
-   "not_collected": 100,
+   "not_collected": 101,
    "not_enacted": 98,
-   "not_funded": 191,
-   "not_reported": 94,
-   "value": 3656
+   "not_funded": 227,
+   "not_reported": 93,
+   "value": 3671
   }
  },
  "outside_life_cells": {
   "CJS": 0,
-  "LHHS": 412
+  "LHHS": 604
  },
  "flagged_cells": {
   "CJS": 0,
@@ -36,238 +36,238 @@
     "-:checked": 997
    },
    "discretionary": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "discretionary_designated": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "all_appropriations": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    },
    "program_level": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    }
   },
   "LHHS": {
    "printed": {
-    "-:checked": 3732
+    "-:checked": 3749
    },
    "discretionary": {
-    "available:computed": 2955,
+    "available:computed": 3057,
     "available:excluded": 258,
-    "available:matches": 9,
-    "available:not_computable": 510,
+    "available:matches": 10,
+    "available:not_computable": 424,
     "enacted:computed": 8
    },
    "discretionary_designated": {
-    "available:computed": 2953,
+    "available:computed": 3053,
     "available:excluded": 258,
-    "available:matches": 11,
-    "available:not_computable": 510,
-    "enacted:computed": 66,
+    "available:matches": 14,
+    "available:not_computable": 424,
+    "enacted:computed": 63,
     "enacted:matches": 1
    },
    "all_appropriations": {
-    "available:computed": 3319,
-    "available:not_computable": 413,
+    "available:computed": 3359,
+    "available:not_computable": 390,
     "enacted:checked": 25,
-    "enacted:computed": 131,
+    "enacted:computed": 136,
     "enacted:not_computable": 9
    },
    "program_level": {
     "available:checked": 60,
-    "available:computed": 3160,
-    "available:matches": 100,
-    "available:not_computable": 412,
-    "enacted:computed": 160,
-    "enacted:matches": 42
+    "available:computed": 3195,
+    "available:matches": 113,
+    "available:not_computable": 381,
+    "enacted:computed": 161,
+    "enacted:matches": 38
    }
   }
  },
  "views_excluding_earmarks_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 844,
-    "-:not_computable": 153
+    "-:computed": 849,
+    "-:not_computable": 148
    },
    "discretionary": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "discretionary_designated": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "all_appropriations": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    },
    "program_level": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    }
   },
   "LHHS": {
    "printed": {
-    "-:computed": 3549,
-    "-:not_computable": 183
+    "-:computed": 3591,
+    "-:not_computable": 158
    },
    "discretionary": {
-    "available:computed": 2957,
+    "available:computed": 3059,
     "available:excluded": 258,
-    "available:matches": 7,
-    "available:not_computable": 510,
+    "available:matches": 8,
+    "available:not_computable": 424,
     "enacted:computed": 8
    },
    "discretionary_designated": {
-    "available:computed": 2956,
+    "available:computed": 3058,
     "available:excluded": 258,
-    "available:matches": 8,
-    "available:not_computable": 510,
-    "enacted:computed": 25,
+    "available:matches": 9,
+    "available:not_computable": 424,
+    "enacted:computed": 24,
     "enacted:matches": 1
    },
    "all_appropriations": {
-    "available:computed": 3313,
-    "available:not_computable": 419,
-    "enacted:computed": 156,
+    "available:computed": 3353,
+    "available:not_computable": 396,
+    "enacted:computed": 161,
     "enacted:not_computable": 3
    },
    "program_level": {
     "available:checked": 29,
-    "available:computed": 3198,
-    "available:matches": 93,
-    "available:not_computable": 412,
-    "enacted:computed": 155,
-    "enacted:matches": 24
+    "available:computed": 3233,
+    "available:matches": 106,
+    "available:not_computable": 381,
+    "enacted:computed": 157,
+    "enacted:matches": 27
    }
   }
  },
  "views_nondefense_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 788,
-    "-:not_computable": 209
+    "-:computed": 797,
+    "-:not_computable": 200
    },
    "discretionary": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "discretionary_designated": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "all_appropriations": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    },
    "program_level": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    }
   },
   "LHHS": {
    "printed": {
-    "-:computed": 3425,
-    "-:not_computable": 307
+    "-:computed": 3475,
+    "-:not_computable": 274
    },
    "discretionary": {
-    "available:computed": 2955,
+    "available:computed": 3057,
     "available:excluded": 257,
-    "available:matches": 9,
-    "available:not_computable": 511,
+    "available:matches": 10,
+    "available:not_computable": 425,
     "enacted:computed": 8
    },
    "discretionary_designated": {
-    "available:computed": 2953,
+    "available:computed": 3053,
     "available:excluded": 257,
-    "available:matches": 11,
-    "available:not_computable": 511,
+    "available:matches": 14,
+    "available:not_computable": 425,
     "enacted:computed": 8,
     "enacted:matches": 1
    },
    "all_appropriations": {
-    "available:computed": 3310,
-    "available:not_computable": 422,
-    "enacted:computed": 156
+    "available:computed": 3350,
+    "available:not_computable": 399,
+    "enacted:computed": 161
    },
    "program_level": {
     "available:checked": 29,
-    "available:computed": 3182,
-    "available:matches": 100,
-    "available:not_computable": 421,
-    "enacted:computed": 145,
-    "enacted:matches": 16
+    "available:computed": 3213,
+    "available:matches": 113,
+    "available:not_computable": 394,
+    "enacted:computed": 147,
+    "enacted:matches": 23
    }
   }
  },
  "views_nondefense_excluding_earmarks_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 788,
-    "-:not_computable": 209
+    "-:computed": 797,
+    "-:not_computable": 200
    },
    "discretionary": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "discretionary_designated": {
-    "available:computed": 775,
+    "available:computed": 783,
     "available:excluded": 1,
-    "available:not_computable": 221
+    "available:not_computable": 213
    },
    "all_appropriations": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    },
    "program_level": {
-    "available:computed": 785,
-    "available:not_computable": 212
+    "available:computed": 794,
+    "available:not_computable": 203
    }
   },
   "LHHS": {
    "printed": {
-    "-:computed": 3425,
-    "-:not_computable": 307
+    "-:computed": 3475,
+    "-:not_computable": 274
    },
    "discretionary": {
-    "available:computed": 2957,
+    "available:computed": 3059,
     "available:excluded": 257,
-    "available:matches": 7,
-    "available:not_computable": 511,
+    "available:matches": 8,
+    "available:not_computable": 425,
     "enacted:computed": 8
    },
    "discretionary_designated": {
-    "available:computed": 2956,
+    "available:computed": 3058,
     "available:excluded": 257,
-    "available:matches": 8,
-    "available:not_computable": 511,
+    "available:matches": 9,
+    "available:not_computable": 425,
     "enacted:computed": 8,
     "enacted:matches": 1
    },
    "all_appropriations": {
-    "available:computed": 3310,
-    "available:not_computable": 422,
-    "enacted:computed": 156
+    "available:computed": 3350,
+    "available:not_computable": 399,
+    "enacted:computed": 161
    },
    "program_level": {
     "available:checked": 29,
-    "available:computed": 3189,
-    "available:matches": 93,
-    "available:not_computable": 421,
-    "enacted:computed": 145,
-    "enacted:matches": 16
+    "available:computed": 3220,
+    "available:matches": 106,
+    "available:not_computable": 394,
+    "enacted:computed": 148,
+    "enacted:matches": 20
    }
   }
  }

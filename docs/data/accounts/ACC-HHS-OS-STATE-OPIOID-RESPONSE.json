@@ -1,0 +1,1575 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 500000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-31",
+         "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+         "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+         "cell_note": "H.Rept. 115-244 p.234 prints 500,000 in the FY 2017 Enacted column [law text] (D-9)",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2017,
+         "document_notes": "Further Continuing and Security Assistance Appropriations Act, 2017 (H.R. 2028). Division A, sec. 101(3) adds sec. 200 to the Continuing Appropriations Act, 2017: $15,000,000 for HRSA Maternal and Child Health, Healthy Start Initiative (130 Stat. 1022, PDF p.18). sha256 047b18027489232a... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2017,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5088",
+         "offsetting_collections": 0,
+         "publication_date": "2016-12-10",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-114PUBL254",
+         "source_page": "17",
+         "source_table_or_section": "P.L. 114-254 div. A sec. 101(3), adding sec. 195 to the Continuing Appropriations Act, 2017 (130 Stat. 1021): 'an additional amount for fiscal year 2017 of $500,000,000, to remain available until expended, is provided for 'Department of Health and Human Services--Office of the Secretary--Account For the State Response to the Opioid Abuse Crisis''; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 prints 500,000 in the FY 2017 Enacted column [law text] (D-9)",
+         "stage": "Enacted",
+         "status_text": "Resolved by rule: law text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-114publ254/pdf/PLAW-114publ254.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-5088"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2017
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 500000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.115-141",
+         "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+         "cell_note": "H.Rept. 115-862 p.383 prints 500,000 in the FY 2018 Enacted column [law text] (D-9)",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5092",
+         "offsetting_collections": 0,
+         "publication_date": "2018-03-23",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-115PUBL141",
+         "source_page": "388",
+         "source_table_or_section": "Division H, Title II, Office of the Secretary -- printed in P.L. 115-141 (132 Stat. 734) under 'ACCOUNT FOR THE STATE RESPONSE TO THE OPIOID ABUSE CRISIS, CURES ACT': '... in section 1003(c) of the 21st Century Cures Act, $500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-862 p.383 prints 500,000 in the FY 2018 Enacted column [law text] (D-9)",
+         "stage": "Enacted",
+         "status_text": "Resolved by rule: law text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-5092"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 500000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.3358",
+         "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+         "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+         "cell_note": "H.Rept. 115-244 p.234 prints 500,000 in the Bill column [bill text] (D-9)",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.R. 3358 as reported (BILLS-115hr3358rh): the FY2018 House Labor-HHS bill (H.Rept. 115-244); Title II is PDF pp. 42-100, Title V (General Provisions) pp. 137-166; p.154 holds sec. 530 (the NEF rescission). sha256 fce39924ccbc58dc... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "House Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5090",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "H.Rept.115-244",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-115HR3358RH",
+         "source_page": "81",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed in H.R. 3358 under 'STATE RESPONSE TO THE OPIOID ABUSE CRISIS ACCOUNT, CURES ACT': 'For necessary expenses to carry out the purposes described under section 1003(c) of the 21st Century Cures Act, $500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 prints 500,000 in the Bill column [bill text] (D-9)",
+         "stage": "House Reported",
+         "status_text": "Resolved by rule: bill text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-5090"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 500000000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2018/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+         "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5089",
+         "offsetting_collections": 0,
+         "publication_date": "2017-07-24",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-115HRPT244",
+         "source_page": "234",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Account for the State Response to the Opioid Abuse Crisis, CURES Act 2/' [FY 2018 Request column] 500,000; S.Rept. 115-150 p.241 prints the same budget estimate (the FY2018 Budget Appendix is not on file) (D-9)",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+         "validation": [],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 500000000,
+         "amount_type": "budget authority",
+         "bill_id": "S.1771",
+         "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+         "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+         "cell_note": "S.Rept. 115-150 p.241 prints 500,000 in the Committee recommendation column [bill text] (D-9)",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2018,
+         "document_notes": "S. 1771 as reported and placed on the calendar (BILLS-115s1771pcs): the FY2018 Senate Labor-HHS bill (S.Rept. 115-150); Title II is PDF pp. 45-104. sha256 7ead586e34a8b89c... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Senate Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2018,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5091",
+         "offsetting_collections": 0,
+         "publication_date": "2017-09-07",
+         "report_id": "S.Rept.115-150",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+         "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-115S1771PCS",
+         "source_page": "85",
+         "source_table_or_section": "Title II, Office of the Secretary -- printed in S. 1771 under 'ACCOUNT FOR THE STATE RESPONSE TO THE OPIOID ABUSE CRISIS, CURES ACT': '... described in section 1003(c) of the 21st Century Cures Act, $500,000,000 to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: S.Rept. 115-150 p.241 prints 500,000 in the Committee recommendation column [bill text] (D-9)",
+         "stage": "Senate Reported",
+         "status_text": "Resolved by rule: bill text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-5091"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2018
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2019
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_reported"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2022
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Office of the Secretary",
+   "bureau": "Account for the State Response to the Opioid Abuse Crisis, CURES Act",
+   "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+   "canonical_name": "Account for the State Response to the Opioid Abuse Crisis, CURES Act",
+   "display_order": 106,
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "21st Century Cures Act sec. 1003 grants to states, $500,000,000 a year: FY2017 (P.L. 114-254 div. A, sec. 195 of the Continuing Appropriations Act, 2017, 130 Stat. 1021) and FY2018 (P.L. 115-141 div. H, 132 Stat. 734). The tables print it inside 'Total, Office of the Secretary' (H.Rept. 115-244 p.234, S.Rept. 115-150 p.241, H.Rept. 115-862 p.383). No FY2019 bill or law on file has the heading (P.L. 115-245, H.R. 6470, S. 3158 searched for /Opioid Abuse Crisis|1003\\(c\\)/). Budget class not recorded (no Appendix schedule on file). Added in D-9 (owner, 2026-10-15).",
+   "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
+   "status": "inactive",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "coverage": {
+   "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ],
+    [
+     2027,
+     "President's Budget"
+    ]
+   ],
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2017,
+    "President's Budget"
+   ],
+   [
+    2017,
+    "House Reported"
+   ],
+   [
+    2017,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "President's Budget"
+   ],
+   [
+    2019,
+    "House Reported"
+   ],
+   [
+    2019,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "Enacted"
+   ],
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2020,
+    "Enacted"
+   ],
+   [
+    2021,
+    "President's Budget"
+   ],
+   [
+    2021,
+    "House Reported"
+   ],
+   [
+    2021,
+    "Senate Reported"
+   ],
+   [
+    2021,
+    "Enacted"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 500000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-31",
+    "bill_report_reference_id": "BR-LHHS-FY2017-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ31/pdf/PLAW-115publ31.pdf",
+    "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+    "cell_note": "H.Rept. 115-244 p.234 prints 500,000 in the FY 2017 Enacted column [law text] (D-9)",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2017,
+    "document_notes": "Further Continuing and Security Assistance Appropriations Act, 2017 (H.R. 2028). Division A, sec. 101(3) adds sec. 200 to the Continuing Appropriations Act, 2017: $15,000,000 for HRSA Maternal and Child Health, Healthy Start Initiative (130 Stat. 1022, PDF p.18). sha256 047b18027489232a... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2017,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5088",
+    "offsetting_collections": 0,
+    "publication_date": "2016-12-10",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-114PUBL254",
+    "source_page": "17",
+    "source_table_or_section": "P.L. 114-254 div. A sec. 101(3), adding sec. 195 to the Continuing Appropriations Act, 2017 (130 Stat. 1021): 'an additional amount for fiscal year 2017 of $500,000,000, to remain available until expended, is provided for 'Department of Health and Human Services--Office of the Secretary--Account For the State Response to the Opioid Abuse Crisis''; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 prints 500,000 in the FY 2017 Enacted column [law text] (D-9)",
+    "stage": "Enacted",
+    "status_text": "Resolved by rule: law text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-114publ254/pdf/PLAW-114publ254.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-5088"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
+    "amount": 500000000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2018/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2018-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2018-APP/pdf/BUDGET-2018-APP.pdf",
+    "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.Rept. 115-244 (H.R. 3358). sha256 9ff4257f9470edfc... (the govinfo content PDF at the link). Page citations are PDF page numbers; the comparative statement's Title II (pp. 206-235) is scanned with GPO's invisible text layer: read from that layer, 20 pages re-read by vision where it failed the table's arithmetic.",
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5089",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-115HRPT244",
+    "source_page": "234",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Account for the State Response to the Opioid Abuse Crisis, CURES Act 2/' [FY 2018 Request column] 500,000; S.Rept. 115-150 p.241 prints the same budget estimate (the FY2018 Budget Appendix is not on file) (D-9)",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "validation": [],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 500000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.3358",
+    "bill_report_reference_id": "BR-LHHS-FY2018-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+    "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+    "cell_note": "H.Rept. 115-244 p.234 prints 500,000 in the Bill column [bill text] (D-9)",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "H.R. 3358 as reported (BILLS-115hr3358rh): the FY2018 House Labor-HHS bill (H.Rept. 115-244); Title II is PDF pp. 42-100, Title V (General Provisions) pp. 137-166; p.154 holds sec. 530 (the NEF rescission). sha256 fce39924ccbc58dc... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5090",
+    "offsetting_collections": 0,
+    "publication_date": "2017-07-24",
+    "report_id": "H.Rept.115-244",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115hrpt244/pdf/CRPT-115hrpt244.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-115HR3358RH",
+    "source_page": "81",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed in H.R. 3358 under 'STATE RESPONSE TO THE OPIOID ABUSE CRISIS ACCOUNT, CURES ACT': 'For necessary expenses to carry out the purposes described under section 1003(c) of the 21st Century Cures Act, $500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 prints 500,000 in the Bill column [bill text] (D-9)",
+    "stage": "House Reported",
+    "status_text": "Resolved by rule: bill text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115hr3358rh/pdf/BILLS-115hr3358rh.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-5090"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
+    "amount": 500000000,
+    "amount_type": "budget authority",
+    "bill_id": "S.1771",
+    "bill_report_reference_id": "BR-LHHS-FY2018-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+    "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+    "cell_note": "S.Rept. 115-150 p.241 prints 500,000 in the Committee recommendation column [bill text] (D-9)",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "S. 1771 as reported and placed on the calendar (BILLS-115s1771pcs): the FY2018 Senate Labor-HHS bill (S.Rept. 115-150); Title II is PDF pp. 45-104. sha256 7ead586e34a8b89c... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Senate Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5091",
+    "offsetting_collections": 0,
+    "publication_date": "2017-09-07",
+    "report_id": "S.Rept.115-150",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-115srpt150/pdf/CRPT-115srpt150.pdf",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-115S1771PCS",
+    "source_page": "85",
+    "source_table_or_section": "Title II, Office of the Secretary -- printed in S. 1771 under 'ACCOUNT FOR THE STATE RESPONSE TO THE OPIOID ABUSE CRISIS, CURES ACT': '... described in section 1003(c) of the 21st Century Cures Act, $500,000,000 to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: S.Rept. 115-150 p.241 prints 500,000 in the Committee recommendation column [bill text] (D-9)",
+    "stage": "Senate Reported",
+    "status_text": "Resolved by rule: bill text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-115s1771pcs/pdf/BILLS-115s1771pcs.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-5091"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
+    "amount": 500000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.115-141",
+    "bill_report_reference_id": "BR-LHHS-FY2018-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+    "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+    "cell_note": "H.Rept. 115-862 p.383 prints 500,000 in the FY 2018 Enacted column [law text] (D-9)",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2018,
+    "document_notes": "Consolidated Appropriations Act, 2018; Division H (Labor-HHS) is PDF pp. 350-422, its Title II pp. 368-394. sha256 5be3db32c24a32e0... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2018,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5092",
+    "offsetting_collections": 0,
+    "publication_date": "2018-03-23",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-115PUBL141",
+    "source_page": "388",
+    "source_table_or_section": "Division H, Title II, Office of the Secretary -- printed in P.L. 115-141 (132 Stat. 734) under 'ACCOUNT FOR THE STATE RESPONSE TO THE OPIOID ABUSE CRISIS, CURES ACT': '... in section 1003(c) of the 21st Century Cures Act, $500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-862 p.383 prints 500,000 in the FY 2018 Enacted column [law text] (D-9)",
+    "stage": "Enacted",
+    "status_text": "Resolved by rule: law text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-115publ141/pdf/PLAW-115publ141.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-5092"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   }
+  ],
+  "open_cells": [
+   [
+    2017,
+    "President's Budget"
+   ],
+   [
+    2017,
+    "House Reported"
+   ],
+   [
+    2017,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "President's Budget"
+   ],
+   [
+    2019,
+    "House Reported"
+   ],
+   [
+    2019,
+    "Senate Reported"
+   ],
+   [
+    2019,
+    "Enacted"
+   ],
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2020,
+    "Senate Reported"
+   ],
+   [
+    2020,
+    "Enacted"
+   ],
+   [
+    2021,
+    "President's Budget"
+   ],
+   [
+    2021,
+    "House Reported"
+   ],
+   [
+    2021,
+    "Senate Reported"
+   ],
+   [
+    2021,
+    "Enacted"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "relationships": [],
+  "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
+   "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
+  "total_scope": null
+ }
+}

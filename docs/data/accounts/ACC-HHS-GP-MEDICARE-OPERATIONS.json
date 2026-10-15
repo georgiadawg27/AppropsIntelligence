@@ -995,35 +995,107 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 455000000,
+         "amount_type": "budget authority",
+         "bill_id": "P.L.117-328",
+         "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2023,
+         "document_notes": "Consolidated Appropriations Act, 2023; Division H (Labor-HHS) is PDF pp. 376-454; the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading is pp. 419-420. sha256 6e063f9299ced827... (the file at the link). Page citations are PDF page numbers.",
+         "document_stage": "Enacted",
+         "document_type": "public_law",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2023,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5086",
+         "offsetting_collections": 0,
+         "publication_date": "2022-12-29",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+         "source_document_id": "SRC-PLAW-117PUBL328",
+         "source_page": "426",
+         "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations): 'the Secretary of Health and Human Services may transfer up to $455,000,000 to such account [CMS, Program Management] from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund to support program management activity related to the Medicare Program' [law text] (D-9)",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "law_text",
+           "validation_id": "VAL-TXT-LHHS-5086"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ],
      "House Reported": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0152",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- reported in House (BILLS-117hr8295rh). The bill or law text for BR-LHHS-FY2023-HOUSE; parsed into data/legislative_text/SRC-BILLS-117HR8295RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+        "document_type": "bill",
+        "evidence": "H.R. 8295 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to/ and /Federal Hospital/: its six mentions, pp. 82, 84, 97, 102, 115 and 186, are other headings and sections) (D-9).",
+        "fiscal_year": 2023,
+        "publication_date": "2022-07-05",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-117HR8295RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0153",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Budget of the U.S. Government, FY2023, Appendix: the Department of Health and Human Services chapter (govinfo part file 1-10). Account attributes (accounting views, phase 2) cite its printed page numbers; the chapter prints actuals for FY2021 and estimates for FY2022 and FY2023.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2023 Budget Appendix's proposed HHS language has no section letting the Secretary transfer Medicare trust fund amounts to CMS Program Management (HHS chapter pp. 423-496 searched for /may transfer up to/ and /program management activity related to the Medicare/; its sec. 227 (p.494) is a notification provision) (D-9).",
+        "fiscal_year": 2023,
+        "publication_date": "2022-03-28",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2023-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP-1-10.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "Senate Reported": [
@@ -1224,15 +1296,30 @@
      ],
      "President's Budget": [
       {
-       "absence": null,
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0154",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Budget of the U.S. Government, FY2024, Appendix: the Department of Health and Human Services chapter (govinfo part file 1-10). Account attributes (accounting views, phase 2) cite its printed page numbers; the chapter prints actuals for FY2022 and estimates for FY2023 and FY2024.",
+        "document_type": "budget_appendix",
+        "evidence": "The FY2024 Budget Appendix brackets the FY2023 law's sec. 227 ($455,000,000 transfer) for deletion (p.483) and proposes no such section (D-9).",
+        "fiscal_year": 2024,
+        "publication_date": "2023-03-13",
+        "source_agency": "Office of Management and Budget",
+        "source_document_id": "SRC-BUDGET-APP-FY2024-HHS",
+        "stage": "President's Budget",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP-1-10.pdf"
+       },
        "adds_to_headline": true,
        "amount_type": "budget authority",
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
+       "missing": false,
        "observations": [],
-       "state": "missing"
+       "state": "not_funded"
       }
      ],
      "Senate Reported": [
@@ -1243,9 +1330,51 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 455000000,
+         "amount_type": "budget authority",
+         "bill_id": "S.2624",
+         "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2024,
+         "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2024, and for other purposes. -- reported in Senate (BILLS-118s2624rs). The bill or law text for BR-LHHS-FY2024-SENATE; parsed into data/legislative_text/SRC-BILLS-118S2624RS.json (scripts/fetch_legislative_text.py).",
+         "document_stage": "Senate Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2024,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5087",
+         "offsetting_collections": 0,
+         "publication_date": "2023-07-27",
+         "report_id": "S.Rept.118-84",
+         "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+         "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-118S2624RS",
+         "source_page": "127",
+         "source_table_or_section": "Title II, General Provisions, sec. 227 (Medicare Operations) -- printed in S. 2624: 'the Secretary of Health and Human Services may transfer up to $455,000,000 to such account [CMS, Program Management] from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund' [bill text] (D-9)",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-5087"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
       }
      ]
     },
@@ -2228,6 +2357,38 @@
     "amount_type": "budget authority",
     "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
     "component": null,
+    "confirmed_absence_id": "CA-LHHS-0152",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2023, and for other purposes. -- reported in House (BILLS-117hr8295rh). The bill or law text for BR-LHHS-FY2023-HOUSE; parsed into data/legislative_text/SRC-BILLS-117HR8295RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers (the same as the bill's printed page numbers).",
+    "document_type": "bill",
+    "evidence": "H.R. 8295 has no section letting the Secretary transfer Medicare trust fund amounts to 'Centers for Medicare & Medicaid Services, Program Management' (whole text searched for /may transfer up to/ and /Federal Hospital/: its six mentions, pp. 82, 84, 97, 102, 115 and 186, are other headings and sections) (D-9).",
+    "fiscal_year": 2023,
+    "publication_date": "2022-07-05",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-117HR8295RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-117hr8295rh/pdf/BILLS-117hr8295rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0153",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Budget of the U.S. Government, FY2023, Appendix: the Department of Health and Human Services chapter (govinfo part file 1-10). Account attributes (accounting views, phase 2) cite its printed page numbers; the chapter prints actuals for FY2021 and estimates for FY2022 and FY2023.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2023 Budget Appendix's proposed HHS language has no section letting the Secretary transfer Medicare trust fund amounts to CMS Program Management (HHS chapter pp. 423-496 searched for /may transfer up to/ and /program management activity related to the Medicare/; its sec. 227 (p.494) is a notification provision) (D-9).",
+    "fiscal_year": 2023,
+    "publication_date": "2022-03-28",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2023-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2023-APP/pdf/BUDGET-2023-APP-1-10.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
     "confirmed_absence_id": "CA-LHHS-0034",
     "confirmed_date": "2026-10-06",
     "document_notes": "committee draft explanatory statement, released 2022-07-28 with the chair's draft bill; S. 4659 introduced and referred, never reported (CRS R47233). File sha256 883015501e56e3437477e750dcaba220bf13468eba2a3a8f736f628be7152e18 (as the manifest records; document_store/MANUAL-LHHS-FY2023-SenateReported-explanatory_statement-88301550.pdf).",
@@ -2239,6 +2400,22 @@
     "source_document_id": "SRC-EXPL-LHHS-FY2023-SENATE",
     "stage": "Senate Reported",
     "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/LHHSFY23REPT.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0154",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Budget of the U.S. Government, FY2024, Appendix: the Department of Health and Human Services chapter (govinfo part file 1-10). Account attributes (accounting views, phase 2) cite its printed page numbers; the chapter prints actuals for FY2022 and estimates for FY2023 and FY2024.",
+    "document_type": "budget_appendix",
+    "evidence": "The FY2024 Budget Appendix brackets the FY2023 law's sec. 227 ($455,000,000 transfer) for deletion (p.483) and proposes no such section (D-9).",
+    "fiscal_year": 2024,
+    "publication_date": "2023-03-13",
+    "source_agency": "Office of Management and Budget",
+    "source_document_id": "SRC-BUDGET-APP-FY2024-HHS",
+    "stage": "President's Budget",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BUDGET-2024-APP/pdf/BUDGET-2024-APP-1-10.pdf"
    }
   ],
   "account": {
@@ -2435,28 +2612,7 @@
    ]
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Enacted"
-   ],
-   [
-    2024,
-    "President's Budget"
-   ],
-   [
-    2024,
-    "Senate Reported"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "amount": 305000000,
@@ -2882,6 +3038,47 @@
     "verification_status": "unverified"
    },
    {
+    "amount": 455000000,
+    "amount_type": "budget authority",
+    "bill_id": "P.L.117-328",
+    "bill_report_reference_id": "BR-LHHS-FY2023-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2023,
+    "document_notes": "Consolidated Appropriations Act, 2023; Division H (Labor-HHS) is PDF pp. 376-454; the Office of the Secretary's 'Public Health and Social Services Emergency Fund' heading is pp. 419-420. sha256 6e063f9299ced827... (the file at the link). Page citations are PDF page numbers.",
+    "document_stage": "Enacted",
+    "document_type": "public_law",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2023,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5086",
+    "offsetting_collections": 0,
+    "publication_date": "2022-12-29",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "U.S. Congress (public law; govinfo PLAW collection)",
+    "source_document_id": "SRC-PLAW-117PUBL328",
+    "source_page": "426",
+    "source_table_or_section": "Division H, Title II, General Provisions, sec. 227 (Medicare Operations): 'the Secretary of Health and Human Services may transfer up to $455,000,000 to such account [CMS, Program Management] from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund to support program management activity related to the Medicare Program' [law text] (D-9)",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/PLAW-117publ328/pdf/PLAW-117publ328.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "law_text",
+      "validation_id": "VAL-TXT-LHHS-5086"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
     "amount": 0,
     "amount_type": "budget authority",
     "bill_id": "H.R.5894",
@@ -2948,6 +3145,47 @@
       "result": "info",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-1776"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 455000000,
+    "amount_type": "budget authority",
+    "bill_id": "S.2624",
+    "bill_report_reference_id": "BR-LHHS-FY2024-SENATE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2024,
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2024, and for other purposes. -- reported in Senate (BILLS-118s2624rs). The bill or law text for BR-LHHS-FY2024-SENATE; parsed into data/legislative_text/SRC-BILLS-118S2624RS.json (scripts/fetch_legislative_text.py).",
+    "document_stage": "Senate Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2024,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5087",
+    "offsetting_collections": 0,
+    "publication_date": "2023-07-27",
+    "report_id": "S.Rept.118-84",
+    "report_jes_url": "https://www.congress.gov/118/crpt/srpt84/CRPT-118srpt84.pdf",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-118S2624RS",
+    "source_page": "127",
+    "source_table_or_section": "Title II, General Provisions, sec. 227 (Medicare Operations) -- printed in S. 2624: 'the Secretary of Health and Human Services may transfer up to $455,000,000 to such account [CMS, Program Management] from the Federal Hospital Insurance Trust Fund and the Federal Supplementary Medical Insurance Trust Fund' [bill text] (D-9)",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118s2624rs/pdf/BILLS-118s2624rs.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-5087"
      }
     ],
     "verification_status": "unverified"
@@ -3570,26 +3808,6 @@
   "open_cells": [
    [
     2020,
-    "Senate Reported"
-   ],
-   [
-    2023,
-    "President's Budget"
-   ],
-   [
-    2023,
-    "House Reported"
-   ],
-   [
-    2023,
-    "Enacted"
-   ],
-   [
-    2024,
-    "President's Budget"
-   ],
-   [
-    2024,
     "Senate Reported"
    ],
    [

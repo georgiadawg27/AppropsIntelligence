@@ -27,9 +27,10 @@ Six sources, in this order (a later one never records money an earlier one alrea
                    advance_available; congressionally directed spending -> earmark (inside the headline); and the
                    rule files' line rules (hook 'line'). The line keeps its ID; the component names it
                    (source_observation_id).
-  table_line       a line the headline's own table prints inside it, read for this (table_lines.csv): the CDS line
-                   beside the account line -> earmark; other lines by the rule files (hook 'table_line'); and the
-                   rule files' own sources (hook 'components')
+  table_line       a line the headline's own table prints inside it or beside it, read for this (table_lines.csv):
+                   the CDS line beside the account line -> earmark; other lines by the rule files (hook 'table_line',
+                   which says whether the line is inside the headline); and the rule files' own sources (hook
+                   'components')
   mandatory lines  the mandatory part of a mixed account (mandatory_lines.csv, phase 2) -> mandatory_portion
   auto_text        the covered cells: each amount in the headline's own bill or law paragraph, read by the phrase
                    rules below and the rule files' (appendix_text: the President's Budget request language)
@@ -517,8 +518,11 @@ def table_lines(data, heads, report):
                                                     f"'{r['line']}' {r['amount']}")
                 continue
             x = hit[1]
+            # a rule says where the line sits (default: inside the total the table prints it in) and what a transfer
+            # line is transferred from
             out.append({"observation_id": o["observation_id"], "component_type": x["component_type"],
-                        "designation": "", "transfer_from": "", "amount": int(r["amount"]), "in_headline": "TRUE",
+                        "designation": "", "transfer_from": x.get("transfer_from", ""), "amount": int(r["amount"]),
+                        "in_headline": x.get("in_headline", "TRUE"),
                         "source_document_id": r["source_document_id"], "source_location": f"p.{r['page']}",
                         "quoted_text": r["printed_line"] + " | " + r["printed_total"],
                         "tag_method": "table_line", "tag_rule": x["tag_rule"],
