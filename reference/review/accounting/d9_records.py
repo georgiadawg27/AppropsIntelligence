@@ -8,6 +8,17 @@ figure not yet entered". Each is filled from that stage's bill or law text, or t
 language for the request, with its printed page (the PDF page of the bill or law; the Appendix's printed page),
 or recorded as a confirmed absence that cites the text searched. Never from a table's silence.
 
+Part 2, the Medicare 'Limitation for Title XVIII of the Social Security Act' line (ACC-HHS-GP-MEDICARE-LIMITATION):
+its life is set from the evidence. The line is P.L. 119-75 div. B sec. 241 (PDF p.120: CMS shall not apply the
+distance requirements of SSA sec. 1820(c)(2)(B)(i)(I) to certain critical access hospitals), scored at 2,000 in the
+FY2026 explanatory statement's table (p.296), whose text calls it 'a new provision related to title XVIII of the
+Social Security Act' (p.245). No other bill, law or request on file carries it (each searched for
+/1820(c)(2)(B)|distance requirement/: H.R. 9029, S. 4942, H.R. 5304, S. 2587, H.R. 9260, P.L. 117-328,
+P.L. 118-47, the FY2026 and FY2027 Budget Appendix HHS chapters; the account's note already records FY2021-FY2022).
+So the 'unidentified' start override is cleared: the lifecycle derives a new line from FY2026 Enacted, and the
+years before fall outside its life instead of reading as missing figures. FY2027 stays as its documents print it
+(H.Rept. 119-696 p.396 '---', recorded as 0; no confirmed absence from a table's dash).
+
     python reference/review/accounting/d9_records.py           # what would change
     python reference/review/accounting/d9_records.py --write   # write it (idempotent)
 """
@@ -172,6 +183,30 @@ ABSENCES = [
 ]
 
 
+LIMITATION = "ACC-HHS-GP-MEDICARE-LIMITATION"
+LIMITATION_NOTE = (
+    "A general-provision line: P.L. 119-75 Division B sec. 241 (PDF p.120, 140 Stat. 293): CMS shall not apply the "
+    "distance requirements of SSA sec. 1820(c)(2)(B)(i)(I) to certain critical access hospitals -- a title XVIII "
+    "provision the FY2026 explanatory statement calls 'a new provision related to title XVIII of the Social Security "
+    "Act' (p.245) and its table scores at 2,000 (p.296). First printed FY2026 Enacted; its life starts there (D-9, "
+    "2026-10-15): no other bill, law or request on file carries it (searched for '1820(c)(2)(B)' and 'distance "
+    "requirement': the FY2021-FY2022 bills, Appendix language and laws; P.L. 117-328, P.L. 118-47, H.R. 9029, "
+    "S. 4942, H.R. 5304, S. 2587, H.R. 9260 and the FY2026-FY2027 Budget Appendix HHS chapters). H.Rept. 119-696 "
+    "p.396 prints '---' in the FY2027 columns (recorded as printed). Vision read H.Rept. 119-696's label as "
+    "'mitation ...' (the page image prints 'Limitation ...'). Its confirmed absences, which rested on tables' "
+    "silence, were retired 2026-10-08 (owner).")
+
+
+def part2(data):
+    """The limitation line's life: clear the 'unidentified' start override, note the evidence. -> changed?"""
+    a = next(x for x in data["accounts"] if x["canonical_account_id"] == LIMITATION)
+    new = dict(a, start_basis="", start_basis_reason="", notes=LIMITATION_NOTE)
+    if new == a:
+        return False
+    a.update(new)
+    return True
+
+
 def live_cells(data):
     """(account, fy, stage) of every headline budget-authority cell that already holds an observation or an
     absence."""
@@ -236,7 +271,9 @@ def main():
     by = collections.Counter(o["canonical_account_id"] for o in obs) + collections.Counter(
         c["canonical_account_id"] for c in cas)
     print("  by account:", dict(sorted(by.items())))
-    if args.write and (obs or cas):
+    life = part2(data)
+    print(f"part 2: {LIMITATION} start override {'cleared, note updated' if life else 'already cleared'}")
+    if args.write and (obs or cas or life):
         data["observations"] += obs
         data["confirmed_absences"] += cas
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
