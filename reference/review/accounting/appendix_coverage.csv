@@ -251,6 +251,8 @@ ACC-HHS-AHRQ-TOTAL,LHHS,2026,enacted,filled,075-1700-0-1-552,discretionary,gener
 ACC-HHS-AHRQ-TOTAL,LHHS,2026,request,same as enacted,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2026-HHS p.355,075-1700-0-1-552: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)
 ACC-HHS-AHRQ-TOTAL,LHHS,2027,enacted,filled,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2027-HHS p.458,"075-1700-0-1-552: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
 ACC-HHS-AHRQ-TOTAL,LHHS,2027,request,same as enacted,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2027-HHS p.458,075-1700-0-1-552: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-ASPR-MANUFACTURING,LHHS,2024,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-ASPR-MANUFACTURING,LHHS,2024,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-ASPR-OPER,LHHS,2024,enacted,filled,075-1001-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2026-HHS p.382,"account_id_code, fund_type and budget_subfunction read from the FY2026 Appendix: no Program and Financing schedule for 075-1001 (Administration for Strategic Preparedness and Response, Operations, Preparedness, and Emergency Response) in the FY2024 Appendix"
 ACC-HHS-ASPR-OPER,LHHS,2024,request,differs from enacted (account_id_code),075-0140-0-1-551,,,,SRC-BUDGET-APP-FY2024-HHS p.471,
 ACC-HHS-ASPR-OPER,LHHS,2025,enacted,filled,075-1001-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2027-HHS p.484,"account_id_code, fund_type and budget_subfunction read from the FY2027 Appendix: no Program and Financing schedule for 075-1001 (Administration for Strategic Preparedness and Response, Operations, Preparedness, and Emergency Response) in the FY2025 Appendix"
@@ -1566,6 +1568,7 @@ ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2026,enacted,filled,075-0379-0-1-551,manda
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2026,request,same as enacted,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2026-HHS p.394,
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2027,enacted,filled,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2027-HHS p.495,"075-0379-0-1-551: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2027,request,same as enacted,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2027-HHS p.495,
+ACC-HHS-OS-CUSTOMER-EXPERIENCE,LHHS,2025,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-OS-GDM,LHHS,2017,enacted,mixed,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.501,
 ACC-HHS-OS-GDM,LHHS,2017,request,same as enacted,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.501,
 ACC-HHS-OS-GDM,LHHS,2018,enacted,mixed,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2018-HHS p.468,
@@ -1693,6 +1696,11 @@ ACC-HHS-OS-PHSSEF,LHHS,2024,enacted,partly filled,075-0140-0-1-551,,general,551,
 ACC-HHS-OS-PHSSEF,LHHS,2024,request,differs from enacted (budget_class),,discretionary,,,,
 ACC-HHS-OS-PHSSEF,LHHS,2025,enacted,partly filled,075-0140-0-1-551,,general,551,SRC-BUDGET-APP-FY2025-HHS p.452,075-0140-0-1-551: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)
 ACC-HHS-OS-PHSSEF,LHHS,2025,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2017,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2018,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2018,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-SAMHSA-BH-INNOVATION-BG,LHHS,2026,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-SAMHSA-BH-INNOVATION-BG,LHHS,2027,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2017,enacted,mixed,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.464,
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2017,request,same as enacted,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.464,
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2018,enacted,mixed,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2018-HHS p.437,

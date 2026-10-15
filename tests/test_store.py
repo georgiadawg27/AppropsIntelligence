@@ -92,7 +92,7 @@ class Load(StoreTest):
         # each total's scope is Account.total_scope: 13 agency totals, the title totals (Labor-HHS Title II; D-7: + 5
         # CJS, + 5 Labor-HHS) and each subcommittee's bill total (D-7)
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
-                                                "GROUP BY 1").fetchall()), {"-": 116, "agency": 13, "title": 11, "bill": 2})
+                                                "GROUP BY 1").fetchall()), {"-": 120, "agency": 13, "title": 11, "bill": 2})
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
@@ -866,7 +866,7 @@ class Coverage(StoreCopyTest):
 
     def test_first_and_last_observed_years_and_unchecked_cells(self):
         rows = {r["canonical_account_id"]: r for r in self.rows()}
-        self.assertEqual(len(rows), 142)                 # D-7: + 10 title totals, + 2 bill totals
+        self.assertEqual(len(rows), 146)                 # D-7: + 10 title totals, + 2 bill totals; D-9: + 4 accounts
         self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
         # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
         self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
@@ -1180,7 +1180,7 @@ class LoadRefuses(unittest.TestCase):
         db = Path(self.tmp.name) / "dates.db"
         with contextlib.redirect_stdout(io.StringIO()):
             report = S.load(self.mutate(add), db)
-        self.assertEqual(report["rows"]["account"], 142)
+        self.assertEqual(report["rows"]["account"], 146)   # D-9: + 4 accounts
         conn = S.connect(db, readonly=True)
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()

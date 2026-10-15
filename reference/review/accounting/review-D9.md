@@ -199,6 +199,30 @@ Code: `site_accounting.members_in` (an agency total's accounts in one cell of on
 under another total, plus one it prints under this one) and a total's own contained lines with evidence counted as held.
 Title and bill totals are unchanged (both agencies are Title II). The row still displays under NIH. No figure changed.
 
+## Part 8: new accounts for lines no account held (owner, 2026-10-15: in this PR)
+
+New published figures (none existed before; no existing figure changes):
+
+| Account (new) | FY | Stage | Figure | Source, page | Table figure kept as a note |
+|---|---|---|---|---|---|
+| OS, State Response to the Opioid Abuse Crisis (CURES) | 2017 | Enacted | $500,000,000 | P.L. 114-254 div. A, sec. 195 (130 Stat. 1021), PDF p.17 | H.Rept. 115-244 p.234 |
+| same | 2018 | President's Budget | $500,000,000 | H.Rept. 115-244 p.234, request column (no Appendix on file) | |
+| same | 2018 | House Reported | $500,000,000 | H.R. 3358, PDF p.81 | H.Rept. 115-244 p.234 |
+| same | 2018 | Senate Reported | $500,000,000 | S. 1771, PDF p.85 | S.Rept. 115-150 p.241 |
+| same | 2018 | Enacted | $500,000,000 | P.L. 115-141 div. H (132 Stat. 734), PDF p.388 | H.Rept. 115-862 p.383 |
+| OS, Customer Experience (proposed) | 2025 | President's Budget | $14,000,000 | S.Rept. 118-207 p.451, budget estimate | |
+| ASPR, Manufacturing and Production (proposed) | 2024 | President's Budget | $400,000,000 | S.Rept. 118-84 p.390 ('Pandemic Preparedness and Biodefense') | |
+| same | 2024 | Senate Reported | $75,000,000 (emergency) | S. 2624, PDF p.107 | S.Rept. 118-84 p.390 |
+| SAMHSA, Behavioral Health Innovation Block Grant (proposed) | 2026 | President's Budget | $4,025,411,000 | H.Rept. 119-271 p.348 (page image) | |
+| same | 2027 | President's Budget | $4,520,411,000 | H.Rept. 119-696 p.379 (page image) | |
+
+Confirmed absences from bill text (whole text searched): Customer Experience FY2025 House (H.R. 9029) and Senate
+(S. 4942); Manufacturing and Production FY2024 House (H.R. 5894); the Block Grant FY2026 House (H.R. 5304) and Senate (S. 2587), FY2027 House (H.R. 9260). The opioid account ends after FY2018 Enacted (no
+FY2019 heading in P.L. 115-245, H.R. 6470 or S. 3158), so later cells fall outside its life. Budget class is not
+recorded for any of the four (no Appendix account mapped), so their discretionary views stay n/a (no_class).
+Held for the owner: Customer Experience FY2024 request $20,000,000 (S.Rept. 118-84 p.391), exactly OS's FY2024 gap.
+Total gaps 115 -> 102.
+
 ## What stays n/a and what would close it
 
 - not_held (244 total entries): the lines in owner questions 1-2; the Title II and bill totals FY2017-FY2021 need evidence rows

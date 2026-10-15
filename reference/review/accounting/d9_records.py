@@ -213,6 +213,126 @@ def part2(data):
     return True
 
 
+# Part 8 (owner, 2026-10-15: a line counts in the total the table prints it under; new accounts in this PR): lines the
+# tables print inside an agency total that no account held
+OPIOID = "ACC-HHS-OS-STATE-OPIOID-RESPONSE"
+CX = "ACC-HHS-OS-CUSTOMER-EXPERIENCE"
+ASPR_MP = "ACC-HHS-ASPR-MANUFACTURING"
+BHIBG = "ACC-HHS-SAMHSA-BH-INNOVATION-BG"
+NEW_ACCOUNTS = [
+    (OPIOID, "Account for the State Response to the Opioid Abuse Crisis, CURES Act", "Office of the Secretary",
+     "inactive",
+     "21st Century Cures Act sec. 1003 grants to states, $500,000,000 a year: FY2017 (P.L. 114-254 div. A, sec. 195 of "
+     "the Continuing Appropriations Act, 2017, 130 Stat. 1021) and FY2018 (P.L. 115-141 div. H, 132 Stat. 734). The "
+     "tables print it inside 'Total, Office of the Secretary' (H.Rept. 115-244 p.234, S.Rept. 115-150 p.241, H.Rept. "
+     "115-862 p.383). No FY2019 bill or law on file has the heading (P.L. 115-245, H.R. 6470, S. 3158 searched for "
+     "/Opioid Abuse Crisis|1003\\(c\\)/). Budget class not recorded (no Appendix schedule on file). Added in D-9 (owner, "
+     "2026-10-15)."),
+    (CX, "Customer Experience", "Office of the Secretary", "proposed",
+     "Request only: the Senate tables print it in the budget-estimate column inside 'Total, Office of the Secretary' "
+     "(S.Rept. 118-207 p.451, FY2025 14,000; S.Rept. 118-84 p.391, FY2024 20,000), with no committee or enacted figure. "
+     "Budget class not recorded. Added in D-9 (owner, 2026-10-15)."),
+    (ASPR_MP, "Manufacturing and Production", "Administration for Strategic Preparedness and Response", "proposed",
+     "FY2024 only: the request's 'Pandemic Preparedness and Biodefense' (S.Rept. 118-84 p.390, budget estimate 400,000) "
+     "and S. 2624's 'MANUFACTURING AND PRODUCTION' heading ($75,000,000, designated an emergency requirement; PDF "
+     "p.107), printed inside 'Total, ASPR'. Not in H.R. 5894 or P.L. 118-47. Budget class not recorded. Added in D-9 "
+     "(owner, 2026-10-15)."),
+    (BHIBG, "Behavioral Health Innovation Block Grant", "Substance Abuse and Mental Health Services Administration",
+     "proposed",
+     "FY2026 and FY2027 requests only: the House tables print it in the request column inside 'Total, SAMHSA' "
+     "(H.Rept. 119-271 p.348, 4,025,411; H.Rept. 119-696 p.379, 4,520,411; each with an evaluation-tap line beside, "
+     "program level 4,125,650 and 4,620,650). No House or Senate bill on file has it. Budget class not recorded. Added "
+     "in D-9 (owner, 2026-10-15)."),
+]
+FIGURES += [
+    (OPIOID, 2017, "Enacted", 500000000, "SRC-PLAW-114PUBL254", "17",
+     "P.L. 114-254 div. A sec. 101(3), adding sec. 195 to the Continuing Appropriations Act, 2017 (130 Stat. 1021): "
+     "'an additional amount for fiscal year 2017 of $500,000,000, to remain available until expended, is provided for "
+     "\'Department of Health and Human Services--Office of the Secretary--Account For the State Response to the "
+     "Opioid Abuse Crisis\''; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 prints 500,000 in the FY 2017 Enacted column "
+     "[law text] (D-9)"),
+    (OPIOID, 2018, "President's Budget", 500000000, "SRC-CRPT-115HRPT244", "234",
+     "Title II, Office of the Secretary -- printed as 'Account for the State Response to the Opioid Abuse Crisis, "
+     "CURES Act 2/' [FY 2018 Request column] 500,000; S.Rept. 115-150 p.241 prints the same budget estimate (the "
+     "FY2018 Budget Appendix is not on file) (D-9)"),
+    (OPIOID, 2018, "House Reported", 500000000, "SRC-BILLS-115HR3358RH", "81",
+     "Title II, Office of the Secretary -- printed in H.R. 3358 under 'STATE RESPONSE TO THE OPIOID ABUSE CRISIS "
+     "ACCOUNT, CURES ACT': 'For necessary expenses to carry out the purposes described under section 1003(c) of the "
+     "21st Century Cures Act, $500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-244 p.234 "
+     "prints 500,000 in the Bill column [bill text] (D-9)"),
+    (OPIOID, 2018, "Senate Reported", 500000000, "SRC-BILLS-115S1771PCS", "85",
+     "Title II, Office of the Secretary -- printed in S. 1771 under 'ACCOUNT FOR THE STATE RESPONSE TO THE OPIOID "
+     "ABUSE CRISIS, CURES ACT': '... described in section 1003(c) of the 21st Century Cures Act, $500,000,000 to "
+     "remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: S.Rept. 115-150 p.241 prints 500,000 in the Committee "
+     "recommendation column [bill text] (D-9)"),
+    (OPIOID, 2018, "Enacted", 500000000, "SRC-PLAW-115PUBL141", "388",
+     "Division H, Title II, Office of the Secretary -- printed in P.L. 115-141 (132 Stat. 734) under 'ACCOUNT FOR THE "
+     "STATE RESPONSE TO THE OPIOID ABUSE CRISIS, CURES ACT': '... in section 1003(c) of the 21st Century Cures Act, "
+     "$500,000,000, to remain available until expended'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 115-862 p.383 prints 500,000 in the "
+     "FY 2018 Enacted column [law text] (D-9)"),
+    (CX, 2025, "President's Budget", 14000000, "SRC-CRPT-118SRPT207", "451",
+     "Title II, Office of the Secretary -- printed as 'Customer Experience' [Budget estimate column] 14,000 (2024 "
+     "appropriation and Committee recommendation columns blank) (D-9)"),
+    (ASPR_MP, 2024, "President's Budget", 400000000, "SRC-CRPT-118SRPT84", "390",
+     "Title II, ASPR -- printed as 'Pandemic Preparedness and Biodefense' under 'Manufacturing and Production' "
+     "[Budget estimate column] 400,000 ('Subtotal, Manufacturing and Production' 400,000); the narrative (p.194) "
+     "prints 'Budget estimate, 2024 ... $400,000,000' (D-9)"),
+    (ASPR_MP, 2024, "Senate Reported", 75000000, "SRC-BILLS-118S2624RS", "107",
+     "Title II, ASPR -- printed in S. 2624 under 'MANUFACTURING AND PRODUCTION': '... in the event of a public health "
+     "emergency declaration or significant potential for a public health emergency, $75,000,000, to remain available "
+     "until September 30, 2025: Provided, That such amount is designated by the Congress as being for an emergency "
+     "requirement'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: S.Rept. 118-84 p.390 prints 'Pandemic Preparedness and Biodefense (emergency)' 75,000 "
+     "in the Committee recommendation column [bill text] (D-9)"),
+    (BHIBG, 2026, "President's Budget", 4025411000, "SRC-CRPT-119HRPT271", "348",
+     "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2026 Request column] 4,025,411 "
+     "(evaluation tap funding (100,239) and program level 4,125,650 beside), inside 'Total, SAMHSA' 5,562,611 (page "
+     "image) (D-9)"),
+    (BHIBG, 2027, "President's Budget", 4520411000, "SRC-CRPT-119HRPT696", "379",
+     "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2027 Request column] 4,520,411 "
+     "(evaluation tap funding (100,239) and program level 4,620,650 beside), inside 'Total, SAMHSA' 6,552,543 (page "
+     "image) (D-9)"),
+]
+ABSENCES += [
+    (CX, 2025, "House Reported", "SRC-BILLS-118HR9029RH",
+     "H.R. 9029 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: "
+     "no mention) (D-9)."),
+    (CX, 2025, "Senate Reported", "SRC-BILLS-118S4942RS",
+     "S. 4942 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: no "
+     "mention) (D-9)."),
+    (ASPR_MP, 2024, "House Reported", "SRC-BILLS-118HR5894IH",
+     "H.R. 5894 has no 'Manufacturing and Production' heading or appropriation under ASPR (whole text searched for "
+     "/Manufacturing and Production|Pandemic Preparedness and Biodefense/: no mention) (D-9)."),
+    (BHIBG, 2026, "House Reported", "SRC-BILLS-119HR5304RH",
+     "H.R. 5304 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for "
+     "/Innovation Block Grant/: no mention) (D-9)."),
+    (BHIBG, 2026, "Senate Reported", "SRC-BILLS-119S2587RS",
+     "S. 2587 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for "
+     "/Innovation Block Grant/: no mention) (D-9)."),
+    (BHIBG, 2027, "House Reported", "SRC-BILLS-119HR9260RH",
+     "H.R. 9260 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for "
+     "/Innovation Block Grant/: no mention) (D-9)."),
+]
+
+
+def new_accounts(data):
+    """Add NEW_ACCOUNTS that are not there yet (Title II, after the last display order): -> the IDs added."""
+    have = {a["canonical_account_id"] for a in data["accounts"]}
+    order = list(data["accounts"][0])
+    top = max(a["display_order"] for a in data["accounts"] if isinstance(a["display_order"], int))
+    out = []
+    for aid, name, agency, status, notes in NEW_ACCOUNTS:
+        if aid in have:
+            continue
+        top += 1
+        rec = {k: "" for k in order}
+        rec.update({"canonical_account_id": aid, "canonical_name": name, "agency": agency, "bureau": name,
+                    "status": status, "fund_type": "general", "subcommittee": "LHHS", "notes": notes,
+                    "title": "Title II", "display_order": top, "total_scope": "", "parent_account_id": ""})
+        data["accounts"].append(rec)
+        out.append(aid)
+    return out
+
+
 def live_cells(data):
     """(account, fy, stage) of every headline budget-authority cell that already holds an observation or an
     absence."""
@@ -264,8 +384,10 @@ def part1(data, retired):
 # 'TITLE II' (PDF p.53) to the page before 'TITLE III' (p.129)
 DOC_PAGES = {"SRC-BILLS-118HR9029RH": "53-128"}
 # pages a part 1 figure cites outside its document's recorded table pages, added to them: the Medicare Operations
-# general provisions (P.L. 117-328 p.426; S. 2624 p.127)
-DOC_EXTRA_PAGES = {"SRC-PLAW-117PUBL328": "426", "SRC-BILLS-118S2624RS": "127"}
+# general provisions (P.L. 117-328 p.426; S. 2624 p.127); part 8: sec. 195 (P.L. 114-254 p.17), S. 2624's ASPR
+# 'MANUFACTURING AND PRODUCTION' heading (p.107)
+DOC_EXTRA_PAGES = {"SRC-PLAW-117PUBL328": ["426"], "SRC-BILLS-118S2624RS": ["127", "107"],
+                   "SRC-PLAW-114PUBL254": ["17"]}
 
 
 def doc_pages(data):
@@ -275,10 +397,10 @@ def doc_pages(data):
         if d["document_id"] in DOC_PAGES and not d["source_page"]:
             d["source_page"] = DOC_PAGES[d["document_id"]]
             out.append(d["document_id"])
-        extra = DOC_EXTRA_PAGES.get(d["document_id"])
-        if extra and extra not in [x.strip() for x in d["source_page"].split(";")]:
-            d["source_page"] = f"{d['source_page']}; {extra}"
-            out.append(d["document_id"])
+        for extra in DOC_EXTRA_PAGES.get(d["document_id"], []):
+            if extra not in [x.strip() for x in d["source_page"].split(";")]:
+                d["source_page"] = f"{d['source_page']}; {extra}"
+                out.append(d["document_id"])
     return out
 
 
@@ -319,6 +441,8 @@ def main():
     args = ap.parse_args()
     data = json.loads(STAGED.read_text())
     retired = json.loads(RETIRED.read_text())
+    added_accounts = new_accounts(data)
+    print(f"part 8: accounts added {added_accounts or 'none (already there)'}")
     obs, cas, skipped = part1(data, retired)
     print(f"part 1: observations added {len(obs)}, confirmed absences added {len(cas)}, skipped {len(skipped)}")
     for o in obs:
@@ -340,7 +464,7 @@ def main():
     for old, new in sup:
         print(f"part 6: {old['observation_id']} ${old['amount']:,} -> {new['observation_id']} ${new['amount']:,} "
               f"({new['source_document_id']} p.{new['source_page']})")
-    if args.write and (obs or cas or life or pages or sup):
+    if args.write and (added_accounts or obs or cas or life or pages or sup):
         data["observations"] += obs + [n for _, n in sup]
         data["confirmed_absences"] += cas
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
