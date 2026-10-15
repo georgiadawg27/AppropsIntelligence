@@ -2573,6 +2573,7 @@ class PageScroll(GridBrowser):
         # and selecting an account
         toggle.click()
         self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=row-name]").click()
+        self.page.wait_for_selector("#side-panel[data-mode=account]")      # its enacted bars: every year fetched first (R2)
         self.assertTrue(self.page.is_visible("#side-panel"))
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "account")
         self.assertEqual(toggle.inner_text(), "Hide panel")
@@ -2753,6 +2754,8 @@ class PhoneV1(GridBrowser):
                 # tapping a line opens the sheet: the exact $K, five stages each with document · page · bill
                 self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain").click()
                 sheet = self.page.locator("#p-sheet")
+                # the sheet's enacted bars read every year: a split subcommittee fetches the rest first (R2)
+                self.page.wait_for_selector("#p-sheet [data-testid=p-sheet-close]")
                 self.assertTrue(sheet.is_visible())
                 self.assertEqual(sheet.get_attribute("role"), "dialog")
                 self.assertEqual(sheet.locator("[data-testid=acct-name]").inner_text(), "National Cancer Institute")
@@ -2868,6 +2871,7 @@ class PhoneV1(GridBrowser):
         line = self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain")
         line.focus()
         self.page.keyboard.press("Enter")
+        self.page.wait_for_selector("#p-sheet [data-testid=p-sheet-close]")      # every year fetched first (R2)
         self.assertTrue(self.page.is_visible("#p-sheet"))
         self.assertEqual(self.page.evaluate("document.activeElement.dataset.testid"), "p-sheet-close")
         for _ in range(25):

@@ -24,7 +24,9 @@ Each step can be checked before the next, and nothing public changes until step 
    `docs/data/` to the bucket; `docs/data/` is still committed and the page still reads it.
 4. From this folder: `npx wrangler login`, then `npx wrangler deploy`. Note the address it prints
    (`https://approps-data.<subdomain>.workers.dev`) and open `<address>/data/index.json` to compare it with
-   `https://<the site>/data/index.json`.
+   `https://<the site>/data/index.json`. Since the domain is already on Cloudflare, the Worker can answer on it
+   instead: Worker settings, Domains & Routes, add a custom domain such as `data.<the domain>` (Cloudflare adds
+   its DNS record), and use `https://data.<the domain>` as the address below.
 5. Set the repository variable `DATA_BASE_URL` to `<address>/data/` (with the trailing slash) and run the export
    again. The page now reads the data from the Worker; before committing, the job checks the Worker answers with
    the `index.json` it just uploaded. From then on `docs/data/` is no longer committed.

@@ -239,6 +239,10 @@ def contract_fields_present(data_dir, contract):
         for field in feature["fields"]:
             pattern, path = field.split(":", 1)
             docs = [json.loads(p.read_text()) for p in sorted(data_dir.glob(pattern))]
+            if pattern == "subcommittees/*.json":
+                # a split subcommittee is published by year, not whole: its grid put back together
+                docs += [E.read_grid(data_dir, f.name) for f in sorted((data_dir / "subcommittees").glob("*/"))
+                         if (f / "index.json").exists()]
             out[field] = any(v not in (None, "", [], {}) for d in docs for v in walk(d, path.split(".")))
     return out
 

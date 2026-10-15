@@ -1753,11 +1753,15 @@ async function loadSubcommittee(name, years) {
   return grid;
 }
 // the years the grid reads as set (G): the year shown and the one before it (Stages, the overview, the phone list),
-// the two compared (Years); every year for Enacted history or a selection (the account's enacted bars)
-const gridYears = (grid) => (G.grid === "history" || SEL ? grid.fiscal_years : [G.fy - 1, G.fy, G.a, G.b]);
+// the two compared (Years), a selected figure's; every year for Enacted history or an account's view (the account
+// panel, and the phone's sheet for any selection), whose enacted bars read them all
+const allYears = () => G.grid === "history" || (SEL && (SEL.kind === "acct" || isPhone()));
+const gridYears = (grid) => (allYears() ? grid.fiscal_years
+  : [G.fy - 1, G.fy, G.a, G.b].concat(SEL && SEL.kind === "fig" ? [SEL.y] : []));
+const yearsIn = (grid) => gridYears(grid).every((y) => !grid.fiscal_years.includes(y) || yearLoaded(grid, y));
 const NO_YEARS = () => [];
 // still the grid and years asked for once its years are in (a later change draws instead, with its own years)
-const ready = (grid) => scCache.get(G.sc) === grid && gridYears(grid).every((y) => !grid.fiscal_years.includes(y) || yearLoaded(grid, y));
+const ready = (grid) => scCache.get(G.sc) === grid && yearsIn(grid);
 
 // ---- reading a row's cells (never computing a state)
 function headOf(row, y, st) {
@@ -3083,8 +3087,8 @@ function select(s) {
   SEL = s;
   markSelection();
   const grid = current.grid;
-  if (s && !grid.fiscal_years.every((y) => yearLoaded(grid, y))) {
-    // the panel's enacted bars read every year: fetched first, then the panel drawn if nothing changed meanwhile
+  if (!yearsIn(grid)) {
+    // an account's enacted bars read every year: fetched first, then the panel drawn if nothing changed meanwhile
     loadSubcommittee(G.sc, gridYears).then(() => { if (current && current.grid === grid && SEL === s) renderPanel(grid); });
   } else renderPanel(grid);
   // selecting a figure or an account while the panel is hidden shows it again
