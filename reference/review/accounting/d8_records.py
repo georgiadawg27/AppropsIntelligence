@@ -8,8 +8,9 @@ records (D-7). Budget authority is amount_type 'budget authority', outlays 'outl
 
 Reads allocation_302b_rows.csv (the page images, checked against the text layer: allocation_302b.py). Not recorded,
 each with why in allocation_302b_lines.csv: the Security / Defense splits (the spec records discretionary and
-mandatory), a report whose bill total D-7 doesn't hold (no headline to be a view of), and a cell HELD below (printed
-under a header its own report contradicts: for the owner).
+mandatory), a report whose bill total D-7 doesn't hold (no headline to be a view of). A cell printed under a header
+its own report contradicts is recorded where the owner RULED below. Each document's table pages gain the 302(b)
+page cited (as d7_records.py does: '120-121; 115; 292'), so each citation is inside its document's table pages.
 
     python reference/review/accounting/d8_records.py            # what would change
     python reference/review/accounting/d8_records.py --write    # write it (idempotent)
@@ -38,11 +39,12 @@ CELLS = {"allocation_ba": ("allocation_302b", "budget authority", "allocation, b
          "bill_ba": ("bill_302b", "budget authority", "this bill, budget authority"),
          "bill_outlays": ("bill_302b", "outlay", "this bill, outlays")}
 STAGE_CHAMBER = {"House Reported": "House", "Senate Reported": "Senate"}
-# cells not recorded until the owner rules (a printed position its own report's text contradicts)
-HELD = {("SRC-CRPT-118HRPT585", "Discretionary", "allocation_outlays"):
-        "printed under '302(b) Allocation, Outlays' with the budget-authority cell blank; the report's own text calls "
-        "$185,797,000,000 the 302(b) allocation of current year discretionary funding (H.Rept. 118-585): which "
-        "column it belongs to is for the owner"}
+# a cell printed under a header its own report's text contradicts: recorded in the column the owner ruled, its
+# printed position kept in the citation (printed cell -> (cell recorded as, why))
+RULED = {("SRC-CRPT-118HRPT585", "Discretionary", "allocation_outlays"):
+         ("allocation_ba", "printed under '302(b) Allocation, Outlays' with the budget-authority cell blank; the "
+          "report's own text calls $185,797,000,000 the 302(b) allocation of current year discretionary funding: "
+          "recorded as budget authority (owner, D-8, 2026-10-15)")}
 
 
 def kind_of(label):
@@ -86,9 +88,11 @@ def main():
             if val == "":
                 continue                    # blank is not zero: the table prints a leader or NA here
             amount = int(val) * 1_000_000
-            if (doc["document_id"], r["row_label"], col) in HELD:
-                report.append(base + [words, amount, "held for the owner: " + HELD[(doc["document_id"], r["row_label"], col)]])
-                continue
+            ruled = RULED.get((doc["document_id"], r["row_label"], col))
+            if ruled:
+                col, why = ruled
+                prefix, atype, words = CELLS[col]
+                words += f"; {why}"
             if head is None or head["source_document_id"] != doc["document_id"]:
                 report.append(base + [words, amount, "not recorded: D-7 holds no bill total from this report for "
                                                      "the cell (no headline to be a view of)"])
@@ -97,9 +101,9 @@ def main():
             key = (aid, fy, st, atype, comp)
             old = live.get(key)
             if old is not None:
-                if old["amount"] == amount:
-                    kept.append(old)
-                    report.append(base + [words, amount, f"already held, equal {old['observation_id']}"])
+                if old["amount"] == amount and old["source_document_id"] == doc["document_id"]:
+                    kept.append(old)            # recorded by an earlier run of this script (idempotent)
+                    report.append(base + [words, amount, f"recorded {old['observation_id']} {comp} ({atype})"])
                 else:
                     report.append(base + [words, amount, f"not recorded: {old['observation_id']} holds "
                                                          f"{old['amount']:,}"])
@@ -122,7 +126,17 @@ def main():
                  for c in sorted({o["component"] for o in added})
                  if c not in {x["component_id"] for x in data["components"]}]
     print(f"components added: {', '.join(c['component_id'] for c in comps_new) or 'none'}")
-    print(f"observations added: {len(added)}; already held, equal: {len(kept)}")
+    import approps_store as S
+    pages = {}
+    for o in data["observations"] + added:
+        if (o.get("component") or "").startswith(("allocation_302b_", "bill_302b_")):
+            d = docs[o["source_document_id"]]
+            cur = pages.get(d["document_id"], d["source_page"] or "")
+            if not S.within(o["source_page"], cur):
+                pages[d["document_id"]] = "; ".join(x for x in (cur, o["source_page"]) if x)
+    for d_id, ps in sorted(pages.items()):
+        print(f"  table pages {d_id}: {docs[d_id]['source_page']!r} -> {ps!r}")
+    print(f"observations added: {len(added)}; already recorded: {len(kept)}")
     for k, n in sorted(collections.Counter((o["canonical_account_id"], o["stage"]) for o in added).items()):
         print(f"  {k[0]} {k[1]}: {n}")
     why = collections.Counter(x[-1].split(":")[0] if not x[-1].startswith("recorded") else "recorded" for x in report)
@@ -133,7 +147,9 @@ def main():
         w.writerow(["subcommittee", "fiscal_year", "stage", "source_document_id", "pdf_page", "printed_page",
                     "row", "cell", "amount", "outcome"])
         w.writerows(report)
-    if args.write and added:
+    if args.write and (added or pages):
+        for d_id, ps in pages.items():
+            docs[d_id]["source_page"] = ps
         data["components"] += comps_new
         data["observations"] += added
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))

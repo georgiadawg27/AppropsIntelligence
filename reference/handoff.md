@@ -14,7 +14,7 @@ Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewri
   `printed_total` are gone. Exclusions: the total's views entry less each line's exclusion delta.
 - Combined exclusion `views_nondefense_excluding_earmarks` (accounting.VIEWS, decision D).
 - 302(b): `allocation_302b_rows.csv` (page images, checked against the text layer `allocation_302b.py` ->
-  `allocation_302b_text.csv`), `d8_records.py --write`: 199 observations on the two bill totals, components
+  `allocation_302b_text.csv`), `d8_records.py --write`: 200 observations on the two bill totals (each report's table pages gain its 302(b) page), components
   `allocation_302b_*` / `bill_302b_*` (view kind, amount_type budget authority / outlay, millions x 1e6). Anchor
   nothing. Outcomes: `allocation_302b_lines.csv`.
 - ui_contract v9: features `anchored_totals`, `nondefense_excluding_earmarks` (not in the page's BUILT: UI-10).
@@ -25,8 +25,8 @@ Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewri
 - Site data grew: LHHS.json 27.6 -> 38.3 MB, CJS.json 5.8 -> 9.5 MB (the combined set, anchors, causes).
 
 Open:
-- Owner: H.Rept. 118-585's 185,797 printed under 302(b) Outlays (held, review-D8 section 3).
-- Owner: the 'available' timing where a part is unknown (review-D8 section 2) stays strict unless the owner rules.
+- Owner ruled 2026-10-15: H.Rept. 118-585's 185,797 (printed under 302(b) Outlays) recorded as budget authority
+  (OBS-LHHS-5081); the 'available' timing where a part is unknown stays strict (review-D8 section 2).
 - D-9: fills (CDC-Wide FY2025 House, Medicare limitation life, AHRQ/ACL/AHA class, request components, unheld
   table lines) close most not computable cells; the 302(b) lines of the four Labor-HHS House reports with no bill
   total (FY2017-FY2020).

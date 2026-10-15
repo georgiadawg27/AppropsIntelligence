@@ -17,7 +17,7 @@ Before D-8 these were the sum of the accounts, which differed from the report's 
 
 ## 2. Total views that had a figure and now don't (41 entries)
 
-Each was a printed total kept as checked (D-6 `kept_check`) where the lines couldn't be summed: measure_reconcile matched the printed line from the total and its accounts' components, which assumes the money in no account held (or the line with no figure) carries no advance, designation or class. Decision E forbids that. Most are the 'available' timing: the printed line is on the tables' own convention (advances when enacted), and with a part unknown it can't be moved to 'available'. The 'enacted' entry keeps the printed figure (matches or computed). They come back as D-9 holds the unheld lines and fills the figures and classes.
+Each was a printed total kept as checked (D-6 `kept_check`) where the lines couldn't be summed: measure_reconcile matched the printed line from the total and its accounts' components, which assumes the money in no account held (or the line with no figure) carries no advance, designation or class. Decision E forbids that. Most are the 'available' timing: the printed line is on the tables' own convention (advances when enacted), and with a part unknown it can't be moved to 'available'. The 'enacted' entry keeps the printed figure (matches or computed). They stay blank: the owner kept the strict rule (2026-10-15). They come back as D-9 holds the unheld lines and fills the figures and classes.
 
 | total | FY | stage | basis | timing | old | old status | cause now |
 |---|---|---|---|---|---|---|---|
@@ -65,9 +65,9 @@ Each was a printed total kept as checked (D-6 `kept_check`) where the lines coul
 
 ## 3. 302(b) comparison lines
 
-Read twice (page images: allocation_302b_rows.csv; text layer: allocation_302b.py, allocation_302b_text.csv; they agree on every row both read). 199 observations recorded on ACC-CJS-BILL-TOTAL and ACC-LHHS-BILL-TOTAL (d8_records.py; per-cell outcome in allocation_302b_lines.csv). For the owner:
+Read twice (page images: allocation_302b_rows.csv; text layer: allocation_302b.py, allocation_302b_text.csv; they agree on every row both read). 200 observations recorded on ACC-CJS-BILL-TOTAL and ACC-LHHS-BILL-TOTAL (d8_records.py; per-cell outcome in allocation_302b_lines.csv). Each report's table pages gain its 302(b) page. Notes:
 
-- **Held, not recorded:** H.Rept. 118-585 (FY2025 House Labor-HHS) p.288 prints 185,797 under '302(b) Allocation, Outlays' with the budget-authority cell blank. The report's own text calls $185,797,000,000 the 302(b) allocation of current year discretionary funding. Which column should it be recorded under (or neither)?
+- **Recorded as budget authority (owner, 2026-10-15):** H.Rept. 118-585 (FY2025 House Labor-HHS) p.288 prints 185,797 under '302(b) Allocation, Outlays' with the budget-authority cell blank. The report's own text calls $185,797,000,000 the 302(b) allocation of current year discretionary funding, so it is recorded as allocation_302b_discretionary, budget authority (OBS-LHHS-5081), with its printed position in source_table_or_section.
 - **Not recorded, no bill total to attach to:** H.Rept. 114-699, 115-244, 115-862, 116-62 (Labor-HHS House FY2017-FY2020): D-7 holds no bill total from those reports (they print only the RECAP's current-year grand total).
 - **No table:** H.Rept. 116-450 (FY2021 House Labor-HHS) prints no 302(b) comparison.
 - **No allocation printed:** S.Rept. 119-44 and 119-55 (FY2026) print 'Committee allocation' as leaders (footnote: no 302(a) allocation); only the bill's figures are recorded. S.Rept. 115-139 and 115-150 (FY2018) head the column 'Committee guidance' (no 302(a) allocation for FY2018); recorded as the allocation with the printed header in source_table_or_section.

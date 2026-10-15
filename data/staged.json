@@ -134132,6 +134132,27 @@
    "verification_status": "unverified",
    "component": "bill_302b_discretionary",
    "headline_observation_id": "OBS-LHHS-4948"
+  },
+  {
+   "observation_id": "OBS-LHHS-5081",
+   "canonical_account_id": "ACC-LHHS-BILL-TOTAL",
+   "fiscal_year": 2025,
+   "stage": "House Reported",
+   "chamber": "House",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 185797000000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-CRPT-118HRPT585",
+   "source_page": "292",
+   "source_table_or_section": "Section 308(a) comparison with the 302(b) allocation -- printed as 'Discretionary' [allocation, budget authority; printed under '302(b) Allocation, Outlays' with the budget-authority cell blank; the report's own text calls $185,797,000,000 the 302(b) allocation of current year discretionary funding: recorded as budget authority (owner, D-8, 2026-10-15)] (printed page 288, in millions)",
+   "extraction_method": "AI-extracted",
+   "confidence": 0.95,
+   "verification_status": "unverified",
+   "component": "allocation_302b_discretionary",
+   "headline_observation_id": "OBS-LHHS-4783"
   }
  ],
  "source_docs": [
@@ -134145,7 +134166,7 @@
    "publication_date": "2026-05-15 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "157-173",
+   "source_page": "157-173; 174",
    "also_covers": "FY2026 Enacted",
    "notes": ""
   },
@@ -134159,7 +134180,7 @@
    "publication_date": "2025-07-17 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "217-219; 213; 214; 220; 223",
+   "source_page": "217-219; 213; 214; 220; 223; 189",
    "also_covers": "",
    "notes": ""
   },
@@ -134173,7 +134194,7 @@
    "publication_date": "2025-09-12 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "244-262",
+   "source_page": "244-262; 242",
    "also_covers": "FY2025 Enacted",
    "notes": ""
   },
@@ -134201,7 +134222,7 @@
    "publication_date": "2024-07-25 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "220-231",
+   "source_page": "220-231; 199",
    "also_covers": "FY2025 President's Budget",
    "notes": ""
   },
@@ -134215,7 +134236,7 @@
    "publication_date": "2024-07-11 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "247-248; 239; 246; 249; 250; 251",
+   "source_page": "247-248; 239; 246; 249; 250; 251; 233",
    "also_covers": "FY2025 President's Budget; FY2024 Enacted",
    "notes": ""
   },
@@ -134229,7 +134250,7 @@
    "publication_date": "2023-07-13 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "212-225",
+   "source_page": "212-225; 193",
    "also_covers": "FY2024 President's Budget; FY2023 Enacted",
    "notes": ""
   },
@@ -134271,7 +134292,7 @@
    "publication_date": "2022-06-30 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "210-230",
+   "source_page": "210-230; 207",
    "also_covers": "FY2023 President's Budget; FY2022 Enacted",
    "notes": ""
   },
@@ -134299,7 +134320,7 @@
    "publication_date": "2021-07-19 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "213-214; 207; 212; 215; 217; 218",
+   "source_page": "213-214; 207; 212; 215; 217; 218; 201",
    "also_covers": "FY2022 President's Budget; FY2021 Enacted",
    "notes": ""
   },
@@ -134327,7 +134348,7 @@
    "publication_date": "2020-07-16 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "178-197",
+   "source_page": "178-197; 176",
    "also_covers": "FY2021 President's Budget; FY2020 Enacted",
    "notes": ""
   },
@@ -134341,7 +134362,7 @@
    "publication_date": "2019-09-26 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "186-195",
+   "source_page": "186-195; 185",
    "also_covers": "",
    "notes": ""
   },
@@ -134355,7 +134376,7 @@
    "publication_date": "2019-06-03 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "139-152",
+   "source_page": "139-152; 136",
    "also_covers": "FY2020 President's Budget; FY2019 Enacted",
    "notes": ""
   },
@@ -134369,7 +134390,7 @@
    "publication_date": "2018-06-14 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "157-158; 154; 159; 161",
+   "source_page": "157-158; 154; 159; 161; 151",
    "also_covers": "",
    "notes": ""
   },
@@ -134383,7 +134404,7 @@
    "publication_date": "2018-05-24 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "120-135",
+   "source_page": "120-135; 118",
    "also_covers": "FY2019 President's Budget; FY2018 Enacted",
    "notes": ""
   },
@@ -134397,7 +134418,7 @@
    "publication_date": "2017-07-27 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "140-141; 137; 142; 143",
+   "source_page": "140-141; 137; 142; 143; 134",
    "also_covers": "",
    "notes": ""
   },
@@ -134411,7 +134432,7 @@
    "publication_date": "2017-07-17 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "120-121; 115; 123; 124",
+   "source_page": "120-121; 115; 123; 124; 110",
    "also_covers": "FY2018 President's Budget; FY2017 Enacted",
    "notes": ""
   },
@@ -134425,7 +134446,7 @@
    "publication_date": "2016-04-21",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "139-140; 136; 141",
+   "source_page": "139-140; 136; 141; 133",
    "also_covers": "",
    "notes": ""
   },
@@ -134439,7 +134460,7 @@
    "publication_date": "2016-06-07 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-24 14:18:00",
-   "source_page": "114-115; 109; 117; 118",
+   "source_page": "114-115; 109; 117; 118; 104",
    "also_covers": "FY2017 President's Budget",
    "notes": ""
   },
@@ -134481,7 +134502,7 @@
    "publication_date": "2023-07-27 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "366-392; 406; 402; 410",
+   "source_page": "366-392; 406; 402; 410; 280",
    "also_covers": "FY2024 President's Budget; FY2023 Enacted",
    "notes": ""
   },
@@ -134495,7 +134516,7 @@
    "publication_date": "2024-08-01 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "430-452; 467; 462; 470",
+   "source_page": "430-452; 467; 462; 470; 331",
    "also_covers": "FY2025 President's Budget; FY2024 Enacted",
    "notes": ""
   },
@@ -134509,7 +134530,7 @@
    "publication_date": "2025-08-01 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "426-442; 450; 447; 448; 451",
+   "source_page": "426-442; 450; 447; 448; 451; 345",
    "also_covers": "",
    "notes": ""
   },
@@ -134523,7 +134544,7 @@
    "publication_date": "2024-07-12 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "308-340; 307; 355; 362; 365",
+   "source_page": "308-340; 307; 355; 362; 365; 292",
    "also_covers": "FY2025 President's Budget; FY2024 Enacted",
    "notes": ""
   },
@@ -134537,7 +134558,7 @@
    "publication_date": "2025-09-11 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "334-366; 333; 381; 388; 395",
+   "source_page": "334-366; 333; 381; 388; 395; 396",
    "also_covers": "FY2026 President's Budget; FY2025 Enacted",
    "notes": ""
   },
@@ -134551,7 +134572,7 @@
    "publication_date": "2026-06-11 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-09-27 00:00:00",
-   "source_page": "365-397; 364; 412; 418; 419; 420",
+   "source_page": "365-397; 364; 412; 418; 419; 420; 421",
    "also_covers": "FY2027 President's Budget; FY2026 Enacted",
    "notes": ""
   },
@@ -134593,7 +134614,7 @@
    "publication_date": "2022-07-05 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-10-06 00:00:00",
-   "source_page": "802-838; 864; 801; 852; 858; 862; 863",
+   "source_page": "802-838; 864; 801; 852; 858; 862; 863; 779",
    "also_covers": "FY2023 President's Budget; FY2022 Enacted",
    "notes": ""
   },
@@ -134663,7 +134684,7 @@
    "publication_date": "2021-07-19 00:00:00",
    "stage": "House Reported",
    "retrieval_timestamp": "2026-10-08 00:00:00",
-   "source_page": "466-496; 465; 512; 519; 520; 521; 522",
+   "source_page": "466-496; 465; 512; 519; 520; 521; 522; 448",
    "also_covers": "FY2022 President's Budget; FY2021 Enacted",
    "notes": "H.Rept. 117-96 (H.R. 4502). sha256 0c9efae48e754378... (the govinfo content PDF at the link). Page citations are PDF page numbers; the Title II comparative statement (pp. 466-496) is image-only: read from a tesseract text layer (400 dpi), 30 pages re-read by vision where the OCR failed the table's arithmetic."
   },
@@ -134901,7 +134922,7 @@
    "publication_date": "2018-06-28 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-10-09 00:00:00",
-   "source_page": "242-259; 268; 271; 273",
+   "source_page": "242-259; 268; 271; 273; 233",
    "also_covers": "FY2019 President's Budget; FY2018 Enacted",
    "notes": "S.Rept. 115-289 (S. 3158). sha256 9da7803651e40f6f... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept)."
   },
@@ -134985,7 +135006,7 @@
    "publication_date": "2017-09-07 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-10-09 00:00:00",
-   "source_page": "225-242; 250; 254",
+   "source_page": "225-242; 250; 254; 216",
    "also_covers": "FY2018 President's Budget; FY2017 Enacted",
    "notes": "S.Rept. 115-150 (S. 1771). sha256 23063244eb14ee9a... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 4 Title II pages sent to vision by the arithmetic gate (the failures were the table's hierarchy, not the reading: the text reading was kept)."
   },
@@ -135083,7 +135104,7 @@
    "publication_date": "2016-06-09 00:00:00",
    "stage": "Senate Reported",
    "retrieval_timestamp": "2026-10-09 00:00:00",
-   "source_page": "233-249; 258; 261",
+   "source_page": "233-249; 258; 261; 224",
    "also_covers": "FY2017 President's Budget",
    "notes": "S.Rept. 114-274 (S. 3040). sha256 1a83beb545b5ef7b... (the govinfo content PDF at the link). Text layer; page citations are PDF page numbers. 5 Title II pages sent to vision by the arithmetic gate: 3 re-read by vision, 2 kept on the text reading (vision returned no column headers)."
   },

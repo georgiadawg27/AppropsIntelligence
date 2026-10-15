@@ -201,7 +201,7 @@ class GridData(CompareTest):
                         if y in by_year and st in by_year[y]:
                             # the accounting layer (UI-0, UI-0b; site_accounting.py) adds its own keys beside the lines
                             layer = {"views", "components", "earmark", "defense_portion", "views_excluding_earmarks",
-                                     "views_nondefense"}
+                                     "views_nondefense", "views_nondefense_excluding_earmarks"}   # D-8: the combined one
                             self.assertEqual({k: v for k, v in cell.items() if k not in layer},
                                              {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
