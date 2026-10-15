@@ -1,0 +1,10 @@
+# The public data Worker (platform plan, Phase 1). Deployed by the owner with `npx wrangler deploy` from this folder
+# once the Cloudflare account and the R2 bucket exist; nothing in CI deploys it.
+name = "approps-data"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[[r2_buckets]]
+binding = "DATA"
+bucket_name = "approps-data"     # the bucket the export workflow uploads to (repository variable R2_BUCKET, default approps-data)

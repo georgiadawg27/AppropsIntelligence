@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 sys.path.insert(0, str(ROOT))
 import site_accounting as SA  # noqa: E402
+from export_static import read_grid  # noqa: E402
 
 
 def headline_observations(g):
@@ -37,7 +38,7 @@ def counts():
            "view_status_counts": {}, "views_excluding_earmarks_status_counts": {},
            "views_nondefense_status_counts": {}, "views_nondefense_excluding_earmarks_status_counts": {}}
     for code in json.loads((DOCS / "data" / "subcommittees.json").read_text())["subcommittees"]:
-        g = json.loads((DOCS / "data" / "subcommittees" / f"{code}.json").read_text())
+        g = read_grid(DOCS / "data", code)
         out["state_counts"][code] = g["state_counts"]
         out["outside_life_cells"][code] = g.get("outside_life_cells", 0)       # blank: outside an account's life
         out["flagged_cells"][code] = sum(1 for _, _, o in headline_observations(g) if o["verification_status"] == "flagged")

@@ -865,6 +865,31 @@ const source = STATIC_BASE ? staticSource(STATIC_BASE) : {
   subcommittee: (name) => getJSON("/api/subcommittee/" + encodeURIComponent(name)),
 };
 
+// a split subcommittee's grid (staticSource): where its year files are and which are in it so far
+const SPLIT = new WeakMap();
+const yearLoaded = (grid, fy) => !SPLIT.has(grid) || SPLIT.get(grid).loaded.has(fy);
+// one year's file into the grid: the first gives the rows, each later one adds its cells to the same rows
+function absorbYear(grid, part) {
+  const fresh = (r) => Object.assign({}, r, { cells: Object.assign({}, r.cells) },
+                                     r.attributes ? { attributes: Object.assign({}, r.attributes) } : {});
+  const add = (row, p) => {
+    if (row.account.canonical_account_id !== p.account.canonical_account_id)
+      throw new Error(`FY${part.fiscal_year} of ${part.subcommittee} lists its rows in another order`);
+    Object.assign(row.cells, p.cells);
+    if (p.attributes) row.attributes = Object.assign(row.attributes || {}, p.attributes);
+  };
+  if (!grid.rows) {
+    grid.rows = part.rows.map(fresh);
+    grid.titles = part.titles.map((t) => Object.assign({}, t, { total: t.total ? fresh(t.total) : null }));
+    grid.bill_total = part.bill_total ? fresh(part.bill_total) : null;
+    return;
+  }
+  if (part.rows.length !== grid.rows.length) throw new Error(`FY${part.fiscal_year} of ${part.subcommittee} has another row count`);
+  grid.rows.forEach((r, i) => add(r, part.rows[i]));
+  grid.titles.forEach((t, i) => { if (t.total) add(t.total, part.titles[i].total); });
+  if (grid.bill_total) add(grid.bill_total, part.bill_total);
+}
+
 function staticSource(base) {
   let index = null;
   const loadIndex = async () => {
@@ -892,30 +917,34 @@ function staticSource(base) {
       return { status: "picked", history: f.history, grid: f.grid };
     },
     subcommittees: () => getJSON(base + "subcommittees.json"),
-    async subcommittee(name) {
-      // a large subcommittee is also published one file per fiscal year (index.json "split_subcommittees":
-      // subcommittees/<name>/index.json + <FY>.json); the same grid is put back together here, nothing recomputed.
-      // The whole file (subcommittees/<name>.json) is still written, so either path gives the same answer.
+    // a large subcommittee is published one file per fiscal year instead of whole (index.json "split_subcommittees":
+    // subcommittees/<name>/index.json + <FY>.json). years: the fiscal years to fetch now ([]: just enough for the
+    // rows, the year a first visit opens on; omitted: every year); loadYears adds more to the same grid later. Each
+    // year's cells go into the same rows (the files list them in the same order); nothing is recomputed.
+    async subcommittee(name, years) {
       const idx = await loadIndex();
       const one = base + "subcommittees/" + encodeURIComponent(name);
       if (!(idx.split_subcommittees || []).includes(name)) return getJSON(one + ".json");
       const head = await getJSON(one + "/index.json");
-      const parts = await Promise.all(head.fiscal_years.map((fy) => getJSON(one + "/" + head.files[String(fy)])));
-      const join = (pieces) => {
-        const row = Object.assign({}, pieces[0], { cells: {} });
-        pieces.forEach((p) => {
-          Object.assign(row.cells, p.cells);
-          if (p.attributes) row.attributes = Object.assign(row.attributes || {}, p.attributes);
-        });
-        return row;
-      };
       const grid = Object.assign({}, head);
       delete grid.files;
-      grid.rows = parts[0].rows.map((_, i) => join(parts.map((p) => p.rows[i])));
-      grid.titles = parts[0].titles.map((t, i) => Object.assign({}, t,
-        { total: t.total ? join(parts.map((p) => p.titles[i].total)) : null }));
-      grid.bill_total = parts[0].bill_total ? join(parts.map((p) => p.bill_total)) : null;
+      SPLIT.set(grid, { url: (fy) => one + "/" + head.files[String(fy)], loaded: new Set(), fetching: new Map() });
+      await this.loadYears(grid, years || head.fiscal_years, years && !years.length ? [defaultYear(head)] : []);
       return grid;
+    },
+    // the years of a split grid not fetched yet (an unsplit grid has them all already)
+    async loadYears(grid, years, fallback = []) {
+      const S = SPLIT.get(grid);
+      if (!S) return;
+      const want = [...new Set(years.length || S.loaded.size ? years : fallback)]
+        .filter((fy) => grid.fiscal_years.includes(fy) && !S.loaded.has(fy));
+      for (const fy of want) if (!S.fetching.has(fy)) S.fetching.set(fy, getJSON(S.url(fy)));
+      const parts = await Promise.all(want.map((fy) => S.fetching.get(fy)));
+      parts.forEach((p, k) => {
+        if (S.loaded.has(want[k])) return;
+        absorbYear(grid, p);
+        S.loaded.add(want[k]);
+      });
     },
   };
 }
@@ -1715,10 +1744,19 @@ function compareStatus(msg, isError) {
   $("#compare-message").className = isError ? "error" : "";
 }
 
-async function loadSubcommittee(name) {
-  if (!scCache.has(name)) scCache.set(name, await source.subcommittee(name));
-  return scCache.get(name);
+// years(grid): the fiscal years about to be read (a split subcommittee fetches only those); omitted, every year
+async function loadSubcommittee(name, years) {
+  if (!scCache.has(name)) scCache.set(name, await source.subcommittee(name, years ? [] : undefined));
+  const grid = scCache.get(name);
+  if (source.loadYears) await source.loadYears(grid, years ? years(grid) : grid.fiscal_years);
+  return grid;
 }
+// the years the grid reads as set (G): the year shown and the one before it (Stages, the overview, the phone list),
+// the two compared (Years); every year for Enacted history or a selection (the account's enacted bars)
+const gridYears = (grid) => (G.grid === "history" || SEL ? grid.fiscal_years : [G.fy - 1, G.fy, G.a, G.b]);
+const NO_YEARS = () => [];
+// still the grid and years asked for once its years are in (a later change draws instead, with its own years)
+const ready = (grid) => scCache.get(G.sc) === grid && gridYears(grid).every((y) => !grid.fiscal_years.includes(y) || yearLoaded(grid, y));
 
 // ---- reading a row's cells (never computing a state)
 function headOf(row, y, st) {
@@ -3005,7 +3043,8 @@ function validSel(grid, s) {
   if (!s) return null;
   const row = gridRow(grid, s.id);
   if (!row) return null;
-  if (s.kind === "fig") return has("figure_source") && cellObs(row, s.y, s.st) ? s : null;
+  // a year not fetched yet is checked once it is (gridYears fetches every year while something is selected)
+  if (s.kind === "fig") return has("figure_source") && (!yearLoaded(grid, s.y) || cellObs(row, s.y, s.st)) ? s : null;
   return has("account_panel") && ownPage(grid, s.id) ? s : null;
 }
 function renderPanel(grid) {
@@ -3042,7 +3081,11 @@ function select(s) {
   if (!current) return;
   SEL = s;
   markSelection();
-  renderPanel(current.grid);
+  const grid = current.grid;
+  if (s && !grid.fiscal_years.every((y) => yearLoaded(grid, y))) {
+    // the panel's enacted bars read every year: fetched first, then the panel drawn if nothing changed meanwhile
+    loadSubcommittee(G.sc, gridYears).then(() => { if (current && current.grid === grid && SEL === s) renderPanel(grid); });
+  } else renderPanel(grid);
   // selecting a figure or an account while the panel is hidden shows it again
   if (s && G.panelOff) { G.panelOff = false; applyPanel(); pinHeader(); }
   commit();
@@ -4327,8 +4370,10 @@ $("#p-full").addEventListener("click", (e) => {
 });
 
 async function redraw(replace) {
-  const grid = await loadSubcommittee(G.sc);
+  const grid = await loadSubcommittee(G.sc, NO_YEARS);
   settle(grid);
+  await loadSubcommittee(G.sc, gridYears);
+  if (!ready(grid)) return;
   renderControls(grid);
   commit(replace);
   renderCompare(grid);
@@ -4355,10 +4400,12 @@ async function showCompare(want, replace = true) {
     if (!has("grid")) { compareStatus("The grid's data isn't in this build yet.", true); return; }
     G.sc = want && want.sc && scNames.includes(want.sc) ? want.sc : G.sc || defaultSc();
     $("#sc").value = G.sc;
-    const grid = await loadSubcommittee(G.sc);
+    const grid = await loadSubcommittee(G.sc, NO_YEARS);
     for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
     settle(grid, want || {});
+    await loadSubcommittee(G.sc, gridYears);
     compareStatus("");
+    if (!ready(grid)) return;
     renderControls(grid);
     commit(replace);
     renderCompare(grid);

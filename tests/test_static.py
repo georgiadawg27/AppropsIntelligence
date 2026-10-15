@@ -167,6 +167,15 @@ class Export(StaticTest):
         self.assertEqual(static, live.replace("<head>", "<head>\n" + E.DATA_META, 1))
         self.assertEqual((self.out / "match.js").read_text(), (ROOT / "web" / "match.js").read_text())
 
+    def test_page_can_read_the_data_from_another_address(self):
+        # the R2 copy's Worker (platform plan, Phase 1): an https:// address ending in "/", nothing else
+        self.assertEqual(E.data_meta(), E.DATA_META)
+        self.assertEqual(E.data_meta("https://approps-data.example.workers.dev/data/"),
+                         '<meta name="approps-data" content="https://approps-data.example.workers.dev/data/">')
+        for bad in ("http://x.example/data/", "https://x.example/data", "javascript:alert(1)//", 'https://x.example/"a/'):
+            with self.assertRaises(SystemExit, msg=bad):
+                E.data_meta(bad)
+
     def test_brand_files_are_exported_and_the_icons_resolve(self):
         # web/brand/ is copied byte for byte, and every icon the page's <head> links to is in the export
         src = {p.name: p.read_bytes() for p in (ROOT / "web" / "brand").iterdir() if p.suffix in (".svg", ".png")}
@@ -261,11 +270,21 @@ class Features(StaticTest):
         # each payload the server reads is the file the export wrote
         served = W.payloads(str(self.db))
         written = sorted(p.relative_to(self.out / "data").as_posix() for p in (self.out / "data").rglob("*.json"))
-        # the export also writes a large subcommittee one file per fiscal year (subcommittees/<name>/...): the same
-        # cells again, which no contract pattern reads; every other file is a payload the server answers with
+        # the export writes a large subcommittee one file per fiscal year (subcommittees/<name>/...) instead of whole:
+        # put back together, each is the payload the server answers with; every other file is one such payload
         split = {p for p in written if p.count("/") == 2 and p.startswith("subcommittees/")}
-        self.assertEqual(sorted(served), sorted(set(written) - split))
-        for path in ("subcommittees.json", "subcommittees/LHHS.json", "accounts/ACC-HHS-NIH-NCI.json"):
+        joined = {f"subcommittees/{n}.json" for n in self.index["split_subcommittees"]}
+        self.assertTrue(joined)
+        self.assertFalse(joined & set(written))
+        self.assertEqual(sorted(served), sorted((set(written) - split) | joined))
+        for path in ("subcommittees.json", "accounts/ACC-HHS-NIH-NCI.json"):
+            self.assertEqual(served[path], json.loads((self.out / "data" / path).read_text()), path)
+        for path in sorted(joined):
+            self.assertEqual(served[path], E.read_grid(self.out / "data", path[len("subcommittees/"):-5]), path)
+        unsplit = [n for n in json.loads((self.out / "data" / "subcommittees.json").read_text())["subcommittees"]
+                   if n not in self.index["split_subcommittees"]]
+        for n in unsplit:
+            path = f"subcommittees/{n}.json"
             self.assertEqual(served[path], json.loads((self.out / "data" / path).read_text()), path)
         self.assertEqual(served["index.json"]["accounts"], self.index["accounts"])
         # and over HTTP

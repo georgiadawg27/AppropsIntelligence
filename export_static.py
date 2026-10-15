@@ -4,7 +4,7 @@ export_static.py
 Static export of the read-only UI for GitHub Pages: docs/ becomes a site
 that answers the same questions as approps_web.py without a server.
 
-    python export_static.py [--workbook X.xlsx] [--out docs] [--publish-workbook]
+    python export_static.py [--workbook X.xlsx] [--out docs] [--publish-workbook] [--data-base URL]
 
   - Builds the workbook from the canonical data, data/staged.json
     (approps_store.reference_workbook(): scripts/build_workbook.py, which
@@ -26,15 +26,20 @@ that answers the same questions as approps_web.py without a server.
     accounting layer included (site_accounting.py, UI-0: each figure's
     views, components, earmark and defense_portion; each row's
     attributes). A file past
-    SPLIT_BYTES is also written per fiscal year:
-    docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid).
+    SPLIT_BYTES is written per fiscal year instead:
+    docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid),
+    so the page fetches only the years on screen; the whole file is not
+    kept (it would be the same cells twice).
   - Writes docs/data/whats_new.json: approps_web.whats_new() (the live
     /api/whats-new answer), every source document with the date it was
     retrieved into the record, newest first, for the page's "What's new".
   - Writes docs/data/documents.json: approps_web.documents() (the live
     /api/documents answer), every source document's id, short name and
     address, for the page's source links (brief UI-8).
-  - Copies web/index.html (marked to read data/ instead of /api),
+  - Copies web/index.html (marked to read data/ instead of /api; with
+    --data-base URL, or APPROPS_DATA_BASE in the environment, it reads
+    that address instead: the copy of data/ the export workflow uploads
+    to Cloudflare R2, served by platform/data-worker/),
     web/match.js (the browser port of the matching rule), web/abbreviations.js
     (the display-only abbreviation map), web/documents.js (the display-only
     document short names), web/write-excel-file.min.js and its licence (the
@@ -57,6 +62,7 @@ data, not real time.
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -73,11 +79,20 @@ import subcommittees as SC
 import features as F
 
 ROOT = Path(__file__).resolve().parent
+DATA_BASE = "data/"                                # where the page reads data/ from (data_meta)
 DATA_META = '<meta name="approps-data" content="data/">'
 ZIP_LEVEL = 9                                     # the Download workbook's deflate level, fixed
 DOWNLOAD = "Approps_Pilot_Schema_Loaded.xlsx"       # docs/<this>: the page's "Download workbook" link
 CONTRACT = F.CONTRACT                              # the data fields each page feature reads
-SPLIT_BYTES = 12 * 1024 * 1024                      # a subcommittee file past this is also split per fiscal year
+SPLIT_BYTES = 12 * 1024 * 1024                      # a subcommittee file past this is split per fiscal year instead
+
+
+def data_meta(base=DATA_BASE):
+    """The page's <meta name="approps-data">: data/ next to the page, or an https:// address ending in "/" (the
+    Worker in front of the R2 copy; .github/workflows/export-static.yml passes it once the owner sets it)."""
+    if base != DATA_BASE and not re.fullmatch(r"https://[A-Za-z0-9.-]+(:\d+)?(/[A-Za-z0-9._~/-]*)?/", base):
+        raise SystemExit(f"--data-base must be an https:// address ending in '/', got {base!r}")
+    return f'<meta name="approps-data" content="{base}">'
 
 
 def reference_workbook():
@@ -177,8 +192,38 @@ def split_grid(g, folder):
             stale.unlink()
 
 
-def export(workbook, out, download=True):
-    """download=False leaves out/DOWNLOAD as it is (see main: only CI's export job on main writes docs/'s copy)."""
+def read_grid(data, name):
+    """A subcommittee's grid as published under data (docs/data): its whole file, or, for a split one, its year files
+    put back together the way the page does (the rows in the same order in every year; nothing recomputed)."""
+    data = Path(data)
+    whole = data / "subcommittees" / f"{name}.json"
+    if whole.exists():
+        return json.loads(whole.read_text())
+    folder = data / "subcommittees" / name
+    grid = json.loads((folder / "index.json").read_text())
+    files = grid.pop("files")
+    parts = [json.loads((folder / files[str(fy)]).read_text()) for fy in grid["fiscal_years"]]
+
+    def join(pieces):
+        row = dict(pieces[0], cells={})
+        for p in pieces:
+            if p["account"]["canonical_account_id"] != row["account"]["canonical_account_id"]:
+                raise ValueError(f"{name}: the year files list their rows in different orders")
+            row["cells"].update(p["cells"])
+            if "attributes" in p:
+                row["attributes"] = {**row.get("attributes", {}), **p["attributes"]}
+        return row
+    grid["rows"] = [join([p["rows"][i] for p in parts]) for i in range(len(parts[0]["rows"]))]
+    grid["titles"] = [dict(t, total=join([p["titles"][i]["total"] for p in parts]) if t.get("total") else None)
+                      for i, t in enumerate(parts[0]["titles"])]
+    grid["bill_total"] = join([p["bill_total"] for p in parts]) if parts[0].get("bill_total") else None
+    return grid
+
+
+def export(workbook, out, download=True, data_base=DATA_BASE):
+    """download=False leaves out/DOWNLOAD as it is (see main: only CI's export job on main writes docs/'s copy).
+    data_base: the page's data address (data_meta)."""
+    meta = data_meta(data_base)
     out = Path(out)
     workbook = Path(workbook)
     with tempfile.TemporaryDirectory() as tmp:
@@ -230,12 +275,15 @@ def export(workbook, out, download=True):
         "default_subcommittee": SC.default_subcommittee(names),
         "accounts": F.index_accounts(pool),
     }
+    # the flags read every subcommittee's whole file, so a split one's goes only after they are worked out
     index.update(features(out / "data", index))
     dump(index, out / "data" / "index.json")
+    for name in split:
+        (out / "data" / "subcommittees" / f"{name}.json").unlink()
     page = (ROOT / "web" / "index.html").read_text()
     if "<head>" not in page:
         raise SystemExit("web/index.html has no <head> to mark as static")
-    page = page.replace("<head>", "<head>\n" + DATA_META, 1)
+    page = page.replace("<head>", "<head>\n" + meta, 1)
     # CNAME: the site's custom domain, set by the owner (web/CNAME, copied byte for byte like .nojekyll is written)
     files = [("index.html", page), (".nojekyll", ""), ("CNAME", (ROOT / "web" / "CNAME").read_text())] \
         + [(n, (ROOT / "web" / n).read_text()) for n in W.ASSETS]
@@ -282,12 +330,16 @@ def main(argv=None):
     p.add_argument("--out", default=str(ROOT / "docs"))
     p.add_argument("--publish-workbook", action="store_true",
                    help="also write docs/" + DOWNLOAD + " (only CI's export job on main passes this)")
+    p.add_argument("--data-base", default=os.environ.get("APPROPS_DATA_BASE") or DATA_BASE,
+                   help="the address the page reads data/ from (default data/, next to the page; "
+                        "APPROPS_DATA_BASE in the environment sets it too)")
     args = p.parse_args(argv)
     # one builder: docs/'s Download workbook is written only by .github/workflows/export-static.yml on main;
     # anywhere else the export leaves it as committed (another --out always gets its own copy)
     to_docs = Path(args.out).resolve() == (ROOT / "docs").resolve()
     download = args.publish_workbook or not to_docs
-    r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out, download=download)
+    r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out, download=download,
+               data_base=args.data_base)
     print(f"exported {r['accounts']} accounts from {r['workbook']} to {r['out']}"
           + ("" if download else f" ({DOWNLOAD} left as committed: CI's export job on main writes it)"))
     return 0

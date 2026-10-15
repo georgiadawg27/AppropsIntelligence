@@ -16,6 +16,7 @@ import functools
 import importlib.util
 import http.server
 import json
+import re
 import shutil
 import sqlite3
 import sys
@@ -637,22 +638,39 @@ class CompareBrowser(GridBrowser):
                 self.assertEqual(self.shown(), self.expected(self.grid, [(fy - 1, "Enacted")] + [(fy, st) for st in FOUR]))
 
     def test_split_subcommittee_loads_the_same_grid(self):
-        # a subcommittee file past export_static.SPLIT_BYTES is also published per fiscal year (UI-0); the static
-        # page reads those files and puts back exactly the whole file (which stays published), and the live /api
-        # answer is the same grid
+        # a subcommittee file past export_static.SPLIT_BYTES is published per fiscal year instead of whole (UI-0, R1);
+        # the static page reads those files and puts back exactly the live /api answer
         index = json.loads((self.out / "data" / "index.json").read_text())
         self.assertIn("LHHS", index["split_subcommittees"])
-        whole = json.loads((self.out / "data" / "subcommittees" / "LHHS.json").read_text())
+        self.assertFalse((self.out / "data" / "subcommittees" / "LHHS.json").exists())
+        whole = E.read_grid(self.out / "data", "LHHS")
         self.assertEqual(whole, self.lhhs)
         self.open("static", "?view=compare&sc=LHHS")
         got = self.page.evaluate("source.subcommittee('LHHS')")
         self.assertEqual(got, whole)
+
+    def test_split_subcommittee_fetches_only_the_years_on_screen(self):
+        # R2: the grid fetches the year shown and the one before it (Stages), the two compared (Years), and every
+        # year only for Enacted history or a selection (the account's enacted bars)
+        years = lambda urls: sorted({int(u.rsplit("/", 1)[1][:-5]) for u in urls
+                                     if re.search(r"/subcommittees/LHHS/\d{4}\.json$", u)})
         fetched = []
         self.page.on("request", lambda r: fetched.append(r.url))
-        self.page.reload()
-        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-        self.assertTrue(any(u.endswith("/subcommittees/LHHS/2026.json") for u in fetched), fetched)
+        self.open("static", "?view=compare&sc=LHHS&fy=2024")
         self.assertFalse(any(u.endswith("/subcommittees/LHHS.json") for u in fetched))
+        shown = years(fetched)
+        self.assertTrue({2023, 2024} <= set(shown), shown)
+        self.assertLess(len(shown), len(self.lhhs["fiscal_years"]), shown)
+        # what the grid shows is the whole grid's cells for those years
+        self.menu("click", "#expand-all")
+        self.assertEqual(self.shown(), self.expected(self.lhhs, [(2023, "Enacted")] + [(2024, st) for st in FOUR]))
+        fetched.clear()
+        self.open("static", "?view=compare&sc=LHHS&grid=years&a=2019&b=2021")
+        self.assertTrue({2019, 2021} <= set(years(fetched)), years(fetched))
+        self.assertNotIn(2017, years(fetched))
+        fetched.clear()
+        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.assertEqual(years(fetched), self.lhhs["fiscal_years"])
 
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
