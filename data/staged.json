@@ -448799,6 +448799,54 @@
    "provisional": ""
   },
   {
+   "account_attribute_id": "AAT-LHHS-3686",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+   "fiscal_year": 2023,
+   "attribute": "account_id_code",
+   "value": "075-0511-0-1-550",
+   "source_document_id": "SRC-BUDGET-APP-FY2023-HHS",
+   "source_location": "p.453",
+   "evidence": "FY2023 Budget Appendix, Centers for Medicare and Medicaid Services, Program Management, Program and Financing schedule, Identification code 075-0511-0-1-550",
+   "stage_basis": "enacted",
+   "provisional": ""
+  },
+  {
+   "account_attribute_id": "AAT-LHHS-3687",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+   "fiscal_year": 2023,
+   "attribute": "budget_subfunction",
+   "value": "550",
+   "source_document_id": "SRC-BUDGET-APP-FY2023-HHS",
+   "source_location": "p.453",
+   "evidence": "FY2023 Budget Appendix, Centers for Medicare and Medicaid Services, Program Management, Program and Financing schedule, Identification code 075-0511-0-1-550: the code's last three digits, 550",
+   "stage_basis": "enacted",
+   "provisional": ""
+  },
+  {
+   "account_attribute_id": "AAT-LHHS-3688",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+   "fiscal_year": 2023,
+   "attribute": "fund_type",
+   "value": "general",
+   "source_document_id": "SRC-BUDGET-APP-FY2023-HHS",
+   "source_location": "p.453",
+   "evidence": "FY2023 Budget Appendix, Centers for Medicare and Medicaid Services, Program Management, Program and Financing schedule, Identification code 075-0511-0-1-550: fund digit 1",
+   "stage_basis": "enacted",
+   "provisional": ""
+  },
+  {
+   "account_attribute_id": "AAT-LHHS-3689",
+   "canonical_account_id": "ACC-HHS-GP-MEDICARE-OPERATIONS",
+   "fiscal_year": 2023,
+   "attribute": "budget_class",
+   "value": "mixed",
+   "source_document_id": "SRC-BUDGET-APP-FY2025-HHS",
+   "source_location": "p.421",
+   "evidence": "FY2025 Budget Appendix, Centers for Medicare and Medicaid Services, Program Management, Program and Financing schedule, Identification code 075-0511-0-1-550; 2023 actual column: line 4000 discretionary budget authority, gross 4,229; line 4090 mandatory budget authority, gross 2,700 ($ millions)",
+   "stage_basis": "enacted",
+   "provisional": ""
+  },
+  {
    "account_attribute_id": "AAT-0001",
    "canonical_account_id": "ACC-DOJ-AFF",
    "fiscal_year": 2027,
