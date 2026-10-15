@@ -141,7 +141,7 @@
    ]
   },
   "defense_split": {
-   "spec_row": "Defense / nondefense column",
+   "spec_row": "Defense portion: listed among a figure's components in the source panel (the View tab's column was removed in UI-9; the Non-defense filter reads views_nondefense)",
    "brief": "UI-0 / UI-3",
    "fields": [
     "subcommittees/*.json:rows[].cells.*.defense_portion"
@@ -155,7 +155,7 @@
    ]
   },
   "nondefense": {
-   "spec_row": "Defense / nondefense column: the nondefense figure",
+   "spec_row": "Filter \u203a Advanced: Non-defense (every figure and total less its tagged defense portion, as published)",
    "brief": "UI-0b / UI-3",
    "fields": [
     "subcommittees/*.json:rows[].cells.*.views_nondefense.*[].amount"
