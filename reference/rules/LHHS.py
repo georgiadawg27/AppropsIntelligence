@@ -171,6 +171,17 @@ def prif(x, ctx):
     return ("transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)", m.group(0)) if m else None
 
 
+# 'shall be transferred to and merged with (amounts in) the Infectious Diseases Rapid Response Reserve Fund' (CDC-Wide
+# Activities and Program Support, FY2020 House): money leaving the heading for a fund we don't hold
+TO_IDRRRF = re.compile(r"transferred to and merged with (?:amounts in )?the Infectious Diseases Rapid Response Reserve "
+                       r"Fund", re.I)
+
+
+def to_idrrrf(x, ctx):
+    m = TO_IDRRRF.search(parts(x, ctx)[1])
+    return ("transfer_out", "", "", m.group(0)) if m else None
+
+
 def quarantine(x, ctx):
     return NotComponent(None) if QUARANTINE.search(parts(x, ctx)[1]) else None
 
@@ -286,6 +297,25 @@ def request_evaluation_line(row, ctx):
                         f"table: the request has no Appendix language of its own for the account (decision C; "
                         f"{row['read_from']})",
             "notes": "beside the headline: section 241 evaluation funds are transferred in, not new budget authority"}
+
+
+def provision_lines(data, heads, report, ctx):
+    """Components whose words sit outside the amount's phrase window, or in a general provision that names the account
+    by its purpose (provision_lines.csv, read from the full bill or law text by provision_lines.py): Nonrecurring
+    Expenses Fund transfers, and the FY2020 Enacted deposit in the Infectious Diseases Rapid Response Reserve Fund.
+    tag_method auto_text: the text check never uses them."""
+    out = []
+    path = paths.accounting_dir() / "provision_lines.csv"
+    if path.exists():
+        with open(path) as f:
+            for r in csv.DictReader(f):
+                out.append({"observation_id": r["observation_id"], "component_type": r["component_type"],
+                            "designation": r["designation"], "transfer_from": r["transfer_from"],
+                            "amount": int(r["amount"]), "in_headline": r["in_headline"],
+                            "source_document_id": r["source_document_id"], "source_location": r["source_location"],
+                            "quoted_text": r["quoted_text"], "tag_method": "auto_text", "tag_rule": r["tag_rule"],
+                            "source_observation_id": "", "carried_from_component_id": "", "notes": r["notes"]})
+    return out
 
 
 def pphf_table(data, heads, report, ctx):
@@ -424,9 +454,14 @@ CHECKS = {
     # Causes known from reading the documents for one cell (component backfill, FY2017-FY2023): (account, fiscal
     # year, stage, view) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
     "cell_causes": {
-        **{(a, fy, st, "program_level"): "nef_transfer_untagged" for a, fy, st in (
-            ("ACC-HHS-CDC-TOTAL", 2018, "Enacted"), ("ACC-HHS-CDC-TOTAL", 2020, "Enacted"),
-            ("ACC-HHS-CDC-TOTAL", 2021, "Senate Reported"), ("ACC-HHS-OS-TOTAL", 2021, "Senate Reported"))},
+        # the NIH table prints 'Total, NIH Program Level' without the Nonrecurring Expenses Fund transfer, then
+        # 'Transfers from Nonrecurring Expenses Fund' and 'Total, NIH Program Level (with transfer)' (H.Rept. 117-96
+        # p.477, FY2021 Enacted; the FY2021 Senate report p.252, FY2020 Enacted and FY2021 Senate)
+        **{("ACC-HHS-NIH-TOTAL", fy, st, "program_level"): "nef_outside_printed_program_level" for fy, st in (
+            (2020, "Enacted"), (2021, "Enacted"), (2021, "Senate Reported"))},
+        # the FY2023 Senate report's CDC table prints Buildings and Facilities at 35,000 and no Nonrecurring Expenses
+        # Fund line (p.405), so its program level leaves out S. 4659 sec. 235's $37,500,000 for Lake Lynn
+        ("ACC-HHS-CDC-TOTAL", 2023, "Senate Reported", "program_level"): "nef_outside_printed_program_level",
         **{(a, 2017, st, "program_level"): "pandemic_flu_balances" for a in ("ACC-HHS-CDC-TOTAL", "ACC-HHS-OS-TOTAL")
            for st in ("Senate Reported", "Enacted")},
         **{("ACC-HHS-NIH-TOTAL", 2023, st, "program_level"): "prif_outside_printed_program_level"
@@ -443,10 +478,11 @@ CHECKS = {
         "account_not_held": "the program-level money is in an ACL account we don't hold",
         "onc_no_headline": "ONC has no headline in the cell, so its section 241 transfer has nothing to sit on "
                            "(phase 1b)",
-        "nef_transfer_untagged": "Nonrecurring Expenses Fund money made available to the agency (a general provision, "
-                                 "or a proviso that names the Fund apart from the amount) is printed as a 'Transfers "
-                                 "from Nonrecurring Expenses Fund' line in the program level, and no phrase rule "
-                                 "tags it",
+        "nef_outside_printed_program_level": "the bill or law makes Nonrecurring Expenses Fund money available for "
+                                             "buildings and facilities in addition, and the report's program level "
+                                             "leaves it out (NIH prints it on its own line and a 'Total, NIH Program "
+                                             "Level (with transfer)' equal to the computed view; the FY2023 Senate "
+                                             "CDC table prints no Fund line)",
         "pandemic_flu_balances": "the FY2017 program level counts the 'Pandemic Flu balances (Public Law 111-32)' "
                                  "line, balances of another law that no phrase rule tags",
         "evaluation_tap_phrase_untagged": "the paragraph's evaluation tap reads 'is available to this appropriation "
@@ -529,6 +565,13 @@ RULES = [
          fn=request_evaluation_line, moved_from="none: new in D-9 part 4 (written as a rule, not moved from the core)",
          doc="a request's evaluation funds line in the report's comparative table (request column) -> transfer_in from "
              "section 241, beside the headline (D-9, decision C)"),
+    Rule("LHHS-IDRRRF", "phrase", ALL, fn=to_idrrrf,
+         moved_from="none: new in the component backfill follow-ups (written as a rule, not moved from the core)",
+         doc="'transferred to and merged with the Infectious Diseases Rapid Response Reserve Fund' -> transfer_out"),
+    Rule("LHHS-PROVISION-LINES", "components", ALL, fn=provision_lines,
+         moved_from="none: new in the component backfill follow-ups (written as a rule, not moved from the core)",
+         doc="Nonrecurring Expenses Fund transfers and the FY2020 Rapid Response Reserve Fund deposit read from the full "
+             "bill or law text (provision_lines.csv)"),
     Rule("LHHS-PPHF-TABLE", "components", ALL, fn=pphf_table, moved_from=f"{TC_FILE} pphf_table(), PPHF_TABLE",
          doc="the PPHF allocation (pphf_table.csv): a transfer_in beside each receiving account's headline"),
     Rule("LHHS-TOTAL-ONLY", "extract", Scope(CODE, accounts=TOTAL_ONLY, fiscal_years=ANY, stages=ANY),

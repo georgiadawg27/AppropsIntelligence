@@ -1051,6 +1051,12 @@
            "result": "pass",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-11539"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2784"
           }
          ],
          "verification_status": "auto-validated"
@@ -1278,6 +1284,12 @@
            "result": "flag",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-10903"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2386"
           }
          ],
          "verification_status": "auto-validated"
@@ -4050,6 +4062,12 @@
       "result": "pass",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-11539"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2784"
      }
     ],
     "verification_status": "auto-validated"
@@ -4217,6 +4235,12 @@
       "result": "flag",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-10903"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2386"
      }
     ],
     "verification_status": "auto-validated"
