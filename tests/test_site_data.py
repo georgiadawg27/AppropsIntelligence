@@ -411,17 +411,27 @@ class AccountingLayer(unittest.TestCase):
         self.assertGreater(n, 500)
 
     # ------------------------------------------------------------ D-6: totals from their accounts
-    def lines_behind(self, sc, row):
+    def lines_behind(self, sc, row, key=None, doc=None):
         """A total's lines, worked out here from data/staged.json (owner, D-6): an agency total's accounts; a title
         or bill total's accounts plus each agency held only as its total. None for an agency held only as its
-        total (it is its own line)."""
+        total (it is its own line). With a cell and its table (D-9): an account that table prints under another
+        agency's total moves to it (total_members_printed.csv)."""
+        import csv
         import measure_reconcile as M
         acc = {a["canonical_account_id"]: a for a in self.data["accounts"]}
         a = acc[row["account"]["canonical_account_id"]]
         lone = [x["canonical_account_id"] for x in self.data["accounts"] if x.get("total_scope") == "agency"
                 and x["subcommittee"] == sc and not M.members(self.data, x)]
         if a["total_scope"] == "agency":
-            return M.members(self.data, a) or None
+            ms = M.members(self.data, a)
+            if key and ms:
+                with (ROOT / "reference" / "review" / "accounting" / "total_members_printed.csv").open() as f:
+                    moved = [r for r in csv.DictReader(f) if f"{r['fiscal_year']}|{r['stage']}" == key
+                             and r["document"] == doc]
+                aid = a["canonical_account_id"]
+                ms = [m for m in ms if not any(r["account"] == m and r["held_under"] == aid for r in moved)] + [
+                    r["account"] for r in moved if r["printed_under"] == aid and r["account"] not in ms]
+            return ms or None
         if a["total_scope"] == "title":
             return M.title_members(self.data, a) + [m for m in lone if (acc[m].get("title") or "") == (a.get("title") or "")]
         return [x["canonical_account_id"] for x in self.data["accounts"] if x["subcommittee"] == sc
@@ -438,7 +448,8 @@ class AccountingLayer(unittest.TestCase):
         for sc, row, key, cell in self.cells():
             if not row["rollup"] or "views" not in cell:
                 continue
-            lines = self.lines_behind(sc, row)
+            lines = self.lines_behind(sc, row, key, self.headline(cell)["source_document_id"]
+                                      if "views" in cell else None)
             if lines is None:
                 self.assertNotIn("accounts_behind", cell["views"]["all_appropriations"][0])
                 continue
@@ -594,6 +605,54 @@ class AccountingLayer(unittest.TestCase):
         for r in out_rows:
             self.assertNotIn((r["total_observation_id"], r["line_observation_id"]), layer.inside)
 
+
+    def test_a_line_counts_in_the_total_the_table_prints_it_under(self):
+        # owner, 2026-10-15 (D-9): ARPA-H, held under NIH, is printed under the Office of the Secretary in H.Rept.
+        # 117-403 (p.836): in those two cells it is behind the OS total and not NIH's, and nowhere else; each row's
+        # table is the total's own; NIH's proposed NIRSQ, held on the NIH total, counts only with its evidence row
+        import csv
+        import site_accounting as SA
+        with SA.MEMBERS_FILE.open() as f:
+            moved = list(csv.DictReader(f))
+        self.assertTrue(moved)
+        totals = {(o["canonical_account_id"], o["fiscal_year"], o["stage"], o["source_document_id"])
+                  for o in self.data["observations"] if not o["component"] and o["verification_status"] != "superseded"}
+        for r in moved:
+            self.assertIn((r["printed_under"], int(r["fiscal_year"]), r["stage"], r["document"]), totals, r)
+            self.assertTrue(r["where"] and r["evidence"], r)
+        arpa = "ACC-HHS-NIH-ARPA-H"
+        for fy, stage in ((2022, "Enacted"), (2023, "House Reported")):
+            layer, a, h, cell = self.total_cell("ACC-HHS-OS-TOTAL", fy, stage)
+            self.assertIn(arpa, [m for m, _ in layer.behind(a, f"{fy}|{stage}", h["source_document_id"])[0]])
+            self.assertNotIn(arpa, [m for m, _ in layer.behind(a, f"{fy}|{stage}")[0]])      # no table: as held
+            layer, a, h, cell = self.total_cell("ACC-HHS-NIH-TOTAL", fy, stage)
+            self.assertNotIn(arpa, [m for m, _ in layer.behind(a, f"{fy}|{stage}", h["source_document_id"])[0]])
+        layer, a, h, cell = self.total_cell("ACC-HHS-NIH-TOTAL", 2023, "Senate Reported")
+        self.assertIn(arpa, [m for m, _ in layer.behind(a, "2023|Senate Reported", h["source_document_id"])[0]])
+        layer, a, h, cell = self.total_cell("ACC-HHS-OS-TOTAL", 2022, "Enacted")
+        self.assertEqual(layer.total_layer(a, 2022, "Enacted", h, cell)["views"]["printed"][0]["status"], "checked")
+        self.assertFalse([g for g in layer.gaps if g["total"] == "ACC-HHS-OS-TOTAL"])
+        # NIRSQ FY2018: closed by its evidence row; without it, the same money is in no account held
+        layer, a, h, cell = self.total_cell("ACC-HHS-NIH-TOTAL", 2018, "President's Budget")
+        pair = (h["observation_id"], "OBS-LHHS-3504")
+        self.assertIn(pair, layer.inside)
+        self.assertNotIn(SA.NOT_HELD, [u["cause"] for u in layer.line_parts(
+            dict(self.parts(layer, a, h, cell)), "views", "program_level", "enacted")[3]])
+        layer.inside = layer.inside - {pair}
+        self.assertIn(SA.NOT_HELD, [u["cause"] for u in layer.line_parts(
+            dict(self.parts(layer, a, h, cell)), "views", "program_level", "enacted")[3]])
+
+    def parts(self, layer, a, h, cell):
+        # the parts total_layer builds, read back through the gaps it records (one total cell)
+        layer.gaps = []
+        captured = {}
+        orig = layer.line_parts
+        layer.line_parts = lambda parts, *x: captured.setdefault("p", parts) and orig(parts, *x)
+        try:
+            layer.total_layer(a, int(h["fiscal_year"]), h["stage"], h, cell)
+        finally:
+            layer.line_parts = orig
+        return captured["p"]
 
     def test_every_component_is_in_staged(self):
         n = 0

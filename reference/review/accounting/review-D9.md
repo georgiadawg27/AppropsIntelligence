@@ -162,8 +162,11 @@ Part 6 supersedes one recorded total (old record kept, marked superseded):
    institute (NIRSQ) in the FY2018-FY2021 requests (NIH gaps $272,000,000, $255,960,000, $256,660,000, and $606,445,000
    in FY2019); OS 'Customer Experience' $14,000,000 (FY2025 request, S.Rept. 118-207 p.451); ASPR 'Pandemic Preparedness
    and Biodefense' $400,000,000 request and $75,000,000 Senate emergency (FY2024, S.Rept. 118-84 p.390); SAMHSA FY2026 and
-   FY2027 requests ($4,025,411,000 and $4,520,411,000: the request's restructure into AHA). Holding these needs new accounts or
-   a rule that a line counts in the total the table prints it under. Not done without a ruling.
+   FY2027 requests ($4,025,411,000 and $4,520,411,000: the request's restructure into AHA). Ruled 2026-10-15: a line counts
+   in the total the table prints it under. Done here (part 7, no new figures): ARPA-H counts in the OS total in H.Rept.
+   117-403's two cells (`total_members_printed.csv`) and leaves NIH's; NIRSQ counts in the NIH FY2018-FY2021 request totals
+   (evidence rows). The opioid response, Customer Experience, ASPR Manufacturing and SAMHSA lines need new accounts: owner
+   asked whether in this PR or the next.
 2. ACF's Child Support advance (FY2021 Enacted $1,400,000,000; FY2022 and FY2023 every stage $1,300,000,000; FY2024
    request and Senate $1,400,000,000; the 'New advance, 1st quarter' rows, e.g. H.Rept. 117-403 p.823). We already hold each
    as an advance_enacted component from the bill or law text, beside the headline, but the build-down counts only held
@@ -178,6 +181,23 @@ Part 6 supersedes one recorded total (old record kept, marked superseded):
 4. CJS Title III FY2026 Senate: the total observation holds $33,908,257,000, the FY2025 column of S.Rept. 119-44 p.219;
    the Committee recommendation column prints $33,909,609,000 (and the accounts held add to it). Approved 2026-10-15:
    superseded by OBS-1584 (part 6).
+
+## Part 7: lines counted in the total the table prints them under (owner, 2026-10-15)
+
+| Total | FY | Stage | Line | Gap before | Short after | Evidence |
+|---|---|---|---|---|---|---|
+| OS | 2022 | Enacted | ARPA-H $1,000,000,000 (OBS-LHHS-2176), moved from NIH | $1,000,000,000 | 0 | H.Rept. 117-403 p.836 |
+| OS | 2023 | House Reported | ARPA-H $2,750,000,000 (OBS-LHHS-1115), moved from NIH | $2,750,000,000 | 0 | H.Rept. 117-403 p.836 |
+| NIH | 2022 | Enacted | ARPA-H leaves the NIH sum | -$1,000,000,000 | 0 | H.Rept. 117-403 p.816 |
+| NIH | 2023 | House Reported | ARPA-H leaves the NIH sum | -$2,737,400,000 | $12,600,000 (as the request and Senate cells) | H.Rept. 117-403 p.816 |
+| NIH | 2018 | President's Budget | NIRSQ $272,000,000 (OBS-LHHS-3504) | $272,000,000 | 0 | H.Rept. 115-244 p.216 |
+| NIH | 2019 | President's Budget | NIRSQ $255,960,000 (OBS-LHHS-3124) | $606,445,000 | $350,485,000 (not found yet) | H.Rept. 115-862 p.366 |
+| NIH | 2020 | President's Budget | NIRSQ $255,960,000 (OBS-LHHS-2835) | $255,960,000 | 0 | H.Rept. 116-62 p.338 |
+| NIH | 2021 | President's Budget | NIRSQ $256,660,000 (OBS-LHHS-2440) | $256,660,000 | 0 | H.Rept. 116-450 pp.407-408 |
+
+Code: `site_accounting.members_in` (an agency total's accounts in one cell of one table, less an account the table prints
+under another total, plus one it prints under this one) and a total's own contained lines with evidence counted as held.
+Title and bill totals are unchanged (both agencies are Title II). The row still displays under NIH. No figure changed.
 
 ## What stays n/a and what would close it
 

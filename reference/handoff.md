@@ -2,6 +2,9 @@
 
 ## D-9: Data fills for the anchored totals (2026-10-15, this PR)
 
+- 2026-10-15 rulings applied: CDC request changes approved; Title III FY2026 Senate superseded (OBS-1436 -> OBS-1584);
+  NSF FY2025 request emergency counted (Senate table prints it inside the same totals); ARPA-H/NIRSQ counted in the
+  total the table prints them under (part 7). Open: the new accounts (where?) and the Child Support advance option.
 - Parts 1-4 as in `reference/progress/D-9.md`; part 5 adds 22 evidence rows (`total_lines_inside.csv`). Review, counts and
   owner questions: `reference/review/accounting/review-D9.md`.
 - n/a entries: accounts 604 -> 602, totals 2,116 -> 1,890. Six CJS Title III totals now reach their printed figure.
