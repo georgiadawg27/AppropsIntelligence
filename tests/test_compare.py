@@ -1868,6 +1868,7 @@ class ExploreV1(GridBrowser):
                 self.assertNotIn("Bill / law", panel.inner_text())
                 # "See every stage for this account" opens the account
                 self.page.click("[data-testid=src-account-btn]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 self.assertEqual(panel.get_attribute("data-mode"), "account")
 
     # ---- UI-2b: grid and panel polish (owner review, 2026-10-13) ---------------------------------------------
@@ -2027,6 +2028,7 @@ class ExploreV1(GridBrowser):
                          "Source for National Heart, Lung, and Blood Institute, FY2026 House")
         # and for an open account
         self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+        self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
         self.assertEqual(panel.get_attribute("data-mode"), "account")
         self.page.keyboard.press("Escape")
         self.assertEqual(panel.get_attribute("data-mode"), "overview")
@@ -2046,6 +2048,7 @@ class ExploreV1(GridBrowser):
         self.assertEqual(bg(target), "rgb(255, 241, 194)")
         # the selected account row: light yellow, over the hover and the enacted wash
         self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+        self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
         row = self.page.locator("tr[data-account=ACC-HHS-NIH-NCI]")
         self.cell("ACC-HHS-NIH-NCI", 2026, "Enacted").hover()
         self.assertEqual({bg(td) for td in row.locator("td").all()}, {"rgb(255, 246, 220)"})
@@ -2056,6 +2059,7 @@ class ExploreV1(GridBrowser):
             with self.subTest(where=where):
                 self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL,ACC-HHS-CMS-TOTAL", where)
                 self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 self.assertIn("acct=ACC-HHS-NIH-NCI", self.page.url)
                 self.assertEqual(self.page.get_attribute("tr[data-account=ACC-HHS-NIH-NCI]", "data-sel"), "row")
                 text = lambda t: self.page.inner_text(f"[data-testid={t}]")
@@ -2094,6 +2098,7 @@ class ExploreV1(GridBrowser):
                 stages.nth(2).locator("[data-testid=acct-stage-fig]").click()
                 self.assertEqual(self.page.inner_text("[data-testid=src-stage]"), "FY2026 House")
                 self.page.click("[data-testid=src-account-btn]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 # enacted history: one bar per year; the CR year lighter; the bars are the enacted figures held
                 bars = self.page.locator("[data-testid=acct-bar]")
                 self.assertEqual([b.get_attribute("data-fy") for b in bars.all()], [str(y) for y in YEARS])
