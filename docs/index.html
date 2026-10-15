@@ -2107,11 +2107,14 @@ function adjLabel(a, e) {
 const itemOf = (a) => ((a.source_location || "").match(/'([^']+)'/) || [])[1] || "";
 function adjLines(row, cols) {
   const lines = new Map();
+  // a not itemised line over several columns: one line, each figure naming its own accounts on hover (the panel and
+  // a single column name them in the line)
+  const many = cols.filter((c) => adjEntry(row, c)).length > 1;
   for (const c of cols) {
     const e = adjEntry(row, c);
     if (!e) continue;
     const count = new Map(), seen = new Map();
-    const name = (a) => adjLabel(a, e);
+    const name = (a) => (a.type === "not_itemised" && many ? "Not itemised (hover a figure for the accounts)" : adjLabel(a, e));
     for (const a of e.adjustments) count.set(`${a.sign}|${a.type}|${name(a)}`, (count.get(`${a.sign}|${a.type}|${name(a)}`) || 0) + 1);
     for (const a of e.adjustments) {
       const base = `${a.sign}|${a.type}|${name(a)}`, many = count.get(base) > 1, item = many ? itemOf(a) : "";
@@ -2119,7 +2122,7 @@ function adjLines(row, cols) {
       seen.set(base + item, n + 1);
       const k = `${base}|${item}|${n}`, label = item ? `${name(a)} · ${item}` : name(a);
       if (!lines.has(k)) lines.set(k, { key: k, sign: a.sign, type: a.type, label, at: new Map() });
-      lines.get(k).at.set(c.col, { a, label: name(a), y: c.fig[0], st: STAGES4[c.fig[1]], set: viewKey() });
+      lines.get(k).at.set(c.col, { a, label: adjLabel(a, e), y: c.fig[0], st: STAGES4[c.fig[1]], set: viewKey() });
     }
   }
   return [...lines.values()];
@@ -2692,18 +2695,6 @@ function buildRows(grid, cols) {
       }
     }
   }
-  // the bill's grand total as printed (brief UI-10 item 7: its source panel lists the 302(b) lines), after the titles;
-  // with an agency filter there is none, as for the title totals' "all accounts"
-  const B = grid.bill_total;
-  if (B && !filtered && grid.titles.some((t) => t.total)) {
-    const bid = B.account.canonical_account_id, build = buildOn() ? buildRows4(B, cols, "child agencyadj", "") : [];
-    const bOpen = build.length > 0 && open.has(bid);
-    out.push(el("tr", { class: "title bill" + (bOpen ? " open" : ""), dataset: { account: bid, testid: "compare-row" } },
-      nameCell({ name: "Grand total, the bill (printed)", tags: [], key: bid, chev: build.length > 0, open: bOpen }),
-      ...cellsFor(B, cols, "Grand total")));
-    out[out.length - 1].querySelector(".plain").dataset.testid = "bill-total";
-    if (bOpen) out.push(...build);
-  }
   return out;
 }
 
@@ -3025,6 +3016,19 @@ function refs302b(grid, row, y, st) {
     })),
     el("div", { class: "ovsmall", text: `${unitsLong()}. A reference, as the report prints it: never added to or compared with a figure.` }))];
 }
+// the grid holds no bill total row (As printed stays as it was, UI-10); a title total's panel opens the bill's grand
+// total at the same stage, whose panel lists the 302(b) references
+function billLink(grid, row, y, st) {
+  const B = grid.bill_total;
+  if (!B || !grid.titles.some((t) => t.total === row) || !cellObs(B, y, st)) return [];
+  const o = cellObs(B, y, st);
+  const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-bill-total",
+                           text: `Grand total of the bill: ${GridMath.number(o.amount, G.units)} (printed)` });
+  b.addEventListener("click", () => select({ kind: "fig", id: B.account.canonical_account_id, y, st }));
+  const has302b = (headOf(B, y, st) || { lines: [] }).lines.some((l) => is302b(l) && l.state === "value");
+  return [el("div", { class: "srcnotes", "data-testid": "src-bill-link" }, el("div", { class: "ovk", text: "Bill" }), b,
+    ...(has302b ? [el("div", { class: "ovsmall", text: "Its panel lists the report's 302(b) comparison lines." })] : []))];
+}
 // sel: the figure (the grid's SEL by default); back: the account page's own back link (it has no overview, and no
 // "See every stage" button: it is that page)
 function renderSource(grid, box, sel = SEL, back = null) {
@@ -3064,7 +3068,7 @@ function renderSource(grid, box, sel = SEL, back = null) {
   const notes = figureNotes(grid, row, y, st, !!back);
   if (notes.length)
     kids.push(el("div", { class: "srcnotes", "data-testid": "src-notes" }, el("div", { class: "ovk", text: "Notes" }), el("ul", {}, ...notes)));
-  kids.push(...refs302b(grid, row, y, st));
+  kids.push(...refs302b(grid, row, y, st), ...billLink(grid, row, y, st));
   kids.push(el("div", { class: "srcrec", "data-testid": "src-record", text: `Record ${o.observation_id}` }));
   if (VB) kids.push(...VB.tail, el("hr", { class: "srcrule" }));
   if (!back && ownPage(grid, id)) {
@@ -4303,7 +4307,7 @@ function renderSummary(grid, y, lead) {
   };
   box.replaceChildren(
     el("div", { class: "l", text: (lead === 3 ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`) + " · "
-                                  + (v == null && gap ? `${gap} · ${basisLabel()}` : basisWord) }),
+                                  + (v == null && gap ? `${gap === "n/a" ? gapWhy(row, y, STAGES4[lead]) : gap} · ${basisLabel()}` : basisWord) }),
     el("div", { class: "v", "data-testid": "p-headline", text: v == null ? (gap ? gapWord(gap) : "—") : GridMath.short(v) }),
     el("div", { class: "chgs" }, chg(figure(row, y - 1, "Enacted"), `vs FY${y - 1} enacted`, "p-vs-prior"),
        lead !== 0 ? chg(figure(row, y, STAGES4[0]), "vs request", "p-vs-request") : null));
@@ -4320,8 +4324,10 @@ function phoneValue(row, y, st) {
     if (v.text == null)
       return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title },
                 e.amount === 0 && printedFig(row, y, st) === 0 ? "—" : GridMath.short(e.amount), summed(e) ? sigma(e) : null);
+    // n/a on a phone (no hover): the cause's words under it (UI-10)
     return el("span", { class: "pval", "data-testid": "p-value", "data-state": h.state, "data-view": e ? e.status : "none" },
-      el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title, text: v.text }));
+      el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title: v.plain != null ? v.plain : title, ...(v.cause != null ? { "data-cause": v.cause } : {}), text: v.text }),
+      ...(v.plain != null ? [el("span", { class: "bmatch", "data-testid": "p-na-why", text: causeWords(v.cause) })] : []));
   }
   if (h.state === "value") return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", text: GridMath.short(h.observations[0].amount) });
   const [text, meaning] = TOKENS[h.state] || [h.state, h.state];
@@ -4403,11 +4409,19 @@ function renderPhoneList(grid) {
         out.push(prow(r, "agency top", { name: plainName(r.account.canonical_name), key: id, chev: A.all.length > 0, open: A.isOpen,
           tags: inclMandatory(A.all.filter((m) => F.inView(m)), y),
           note: A.isOpen ? (A.n ? `Agency total · sum of the ${A.n} line${A.n === 1 ? "" : "s"} below` : "Agency total") : "" }));
+        // the total's build-up for the stage shown (brief UI-10): as printed, its groups, "=" the printed line it reaches
+        const be = A.isOpen && buildOn() ? adjEntry(r, { fig: [y, i], col: 0 }) : null, build = isTotalEntry(be);
+        const pline = (tid, label, fig, extra) => el("div", { class: "prow line adj build", dataset: { testid: tid, buildOf: id } },
+          el("span", { class: "pmain" }, el("span", { class: "pname" }, el("span", { class: "adjlabel", "data-testid": "build-label", text: label }), ...(extra || [])),
+            el("span", { class: "pfig", text: fig })));
+        if (build) out.push(pline("p-build-printed", `${printedLabel(r, y, STAGES4[i])} (as printed)`, GridMath.short(asPrinted(r, y, STAGES4[i]))));
         if (A.isOpen && adjOn())
           for (const line of adjLines(r, [{ fig: [y, i], col: 0 }]))
             out.push(el("div", { class: "prow line adj", dataset: { testid: "p-adj-line", adjOf: id, type: line.type, sign: line.sign } },
               el("span", { class: "pmain" }, el("span", { class: "pname" }, el("span", { class: "adjlabel", "data-testid": "adj-label", text: line.label })),
                 el("span", { class: "pfig" }, adjAmount(r, line.at.get(0), true)))));
+        if (build) out.push(pline("p-build-result", `= ${anchorWords(be)}`, GridMath.short(be.amount),
+                                  be.status === "matches" ? [el("span", { class: "bmatch", "data-testid": "build-matches", text: "matches" })] : []));
         if (A.isOpen) pushLines(id, A.lines, abbrOf(id) || plainName(r.account.canonical_name));
       }
       for (const r of P.other) out.push(prow(r, "top acct", { name: plainName(r.account.canonical_name), tags: tagsOf(r) }));
