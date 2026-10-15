@@ -1783,7 +1783,8 @@ const BASES = [
 ];
 const TIMINGS = [["available", "When available", "An advance counts in the year it becomes available (CBO; the default)."],
                  ["enacted", "When enacted", "An advance counts in the bill that appropriates it."]];
-const VALUED = new Set(["checked", "computed"]);
+// D-8: a total built down from its printed line that reaches it with every step itemised is "matches"
+const VALUED = new Set(["checked", "computed", "matches"]);
 // beta (brief UI-8 item 6): the discretionary bases, computed from the bill text; few figures have a printed total
 // that confirms them. The other bases carry no tag
 const BETA = new Set(["discretionary", "discretionary_designated"]);
@@ -1930,7 +1931,7 @@ function figureCell(row, y, st, c, name) {
 // "excl." when the basis leaves the account out; "n/a" (an account) or "not computable" (a total) when not computable,
 // the reason on hover; a computed total (the sum of its accounts, no printed total to check) gets a small "Σ" after it. Never a number the data doesn't hold. Each is a button to the figure's source, where the
 // panel shows the printed headline, the components and the arithmetic.
-const VIEW_WORDS = { checked: "checked against a printed total", computed: "computed from the printed figure and its tagged components",
+const VIEW_WORDS = { checked: "checked against a printed total", matches: "matches the report's printed line", computed: "computed from the printed figure and its tagged components",
                      excluded: "excluded", not_computable: "not computable" };
 function viewText(e) {
   if (!e) return { text: "n/a", why: "no published view for this cell" };

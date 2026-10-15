@@ -2959,7 +2959,7 @@ def view_expected(row, fy, stage, basis, timing):
     e = view_entry(row, fy, stage, basis, timing)
     if e is None:
         return "n/a", None
-    if e["status"] in ("checked", "computed"):
+    if e["status"] in ("checked", "computed", "matches"):
         return ("—" if e["amount"] == 0 and p == 0 else thousands(e["amount"])), e["amount"]
     if e["status"] == "excluded":
         return "excl.", None
@@ -3091,20 +3091,24 @@ class AmountBasis(GridBrowser):
                 e = view_entry(total, 2026, "Enacted", basis, "available")
                 head = self.page.inner_text("[data-testid=ov-headline]")
                 # D-6: a total's view is the sum of its accounts (computed) or a printed total (checked)
-                if e["status"] in ("checked", "computed"):
+                if e["status"] in ("checked", "computed", "matches"):
                     self.assertIn(thousands(e["amount"]), head)
                 else:
                     self.assertIn("Not computable", head)
                 stages = self.page.eval_on_selector_all("[data-testid=ov-stage] .val", "es => es.map(e => e.innerText)")
                 for i, st in enumerate(("President's Budget", "House Reported", "Senate Reported", "Enacted")):
                     x = view_entry(total, 2026, st, basis, "available")
-                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed")
+                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed", "matches")
                                      else "not computable")
         self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
         self.assertIn("Not computable", self.page.inner_text("[data-testid=ov-headline]"))
-        # Title II's checked discretionary-with-designated figure is no longer the overview's: it is on its own total row
-        x = view_entry(title2, 2026, "Enacted", "discretionary_designated", "available")
-        self.assertEqual((x["status"], thousands(x["amount"])), ("checked", "114,797,239"))
+        # Title II's discretionary-with-designated figure is no longer the overview's: it is on its own total row. D-8:
+        # the report's printed line holds for advances when enacted (the table's convention); when available a part
+        # of the title is not known, so it is not computable there
+        x = view_entry(title2, 2026, "Enacted", "discretionary_designated", "enacted")
+        self.assertEqual((x["anchor"]["label"], thousands(x["amount"])),
+                         ("Total, Title II, Department of Health and Human Services discretionary", "114,797,239"))
+        self.go("?sc=LHHS&fy=2026&amt=discretionary_designated&timing=enacted")
         self.assertIn("114,797,239", self.text("ACC-HHS-TITLE-II-TOTAL", 2026, "Enacted"))
 
     def test_account_type_and_class_tags(self):
@@ -3246,7 +3250,7 @@ class ExcludeEarmarks(GridBrowser):
         e = view_entry_of(row, fy, stage, basis, timing, "views_excluding_earmarks")
         if e is None:
             return "n/a"
-        if e["status"] in ("checked", "computed"):
+        if e["status"] in ("checked", "computed", "matches"):
             return "—" if e["amount"] == 0 and printed(row, fy, stage) == 0 else thousands(e["amount"])
         return "excl." if e["status"] == "excluded" else ("not computable" if e.get("accounts_behind") is not None else "n/a")
 
@@ -3324,7 +3328,7 @@ class ExcludeEarmarks(GridBrowser):
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),
-                         thousands(t["amount"]) if t["status"] in ("checked", "computed") else "not computable")
+                         thousands(t["amount"]) if t["status"] in ("checked", "computed", "matches") else "not computable")
         self.assertIn(t["reason"], self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
         # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
@@ -3363,7 +3367,7 @@ class ExcludeEarmarks(GridBrowser):
                         or next(t["total"] for t in self.cjs["titles"] if t["total"]["account"]["canonical_account_id"] == aid)
                     e = view_entry_of(row, 2026, "Enacted", basis, "available", "views_nondefense") \
                         if printed(row, 2026, "Enacted") is not None else None
-                    if e and e["status"] in ("checked", "computed"):
+                    if e and e["status"] in ("checked", "computed", "matches"):
                         self.assertEqual(text, thousands(e["amount"]), aid)
                     else:
                         self.assertEqual(text, "", aid)          # not computable: empty, never 0
@@ -3486,7 +3490,7 @@ class AdjustmentLines(GridBrowser):
             if printed(row, fy, st) is None:
                 continue
             e = view_entry_of(row, fy, st, basis, "available", k)
-            if e and e["status"] in ("checked", "computed") and e["adjustments"] and e["amount"] != self.as_printed(row, fy, st):
+            if e and e["status"] in ("checked", "computed", "matches") and e["adjustments"] and e["amount"] != self.as_printed(row, fy, st):
                 out += [[fy, st, k, a["type"], a["sign"], a["amount"]] for a in e["adjustments"]]
         return sorted(out)
 
