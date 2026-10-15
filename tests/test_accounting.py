@@ -230,8 +230,14 @@ class AttributeSchema(unittest.TestCase):
                          [])
 
     def test_totals_carry_no_attributes_of_their_own(self):
-        totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")}
+        # except an agency held only as its total, whose total is its one line (owner decision B, D-9)
+        lone = {a["canonical_account_id"] for a in STAGED["accounts"]
+                if a.get("total_scope") == "agency" and not MR.members(STAGED, a)}
+        self.assertEqual(lone, {"ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL", "ACC-HHS-AHA-TOTAL"})
+        totals = {a["canonical_account_id"] for a in STAGED["accounts"] if a.get("total_scope")} - lone
         self.assertFalse([r for r in STAGED["account_attributes"] if r["canonical_account_id"] in totals])
+        self.assertEqual({r["canonical_account_id"] for r in STAGED["account_attributes"]} & lone,
+                         {"ACC-HHS-AHRQ-TOTAL", "ACC-HHS-ACL-TOTAL"})
 
     def test_subfunction_is_the_codes_last_three_digits(self):
         code = attr(attribute="account_id_code", value="075-0849-0-1-550")

@@ -64,7 +64,12 @@ read from the text layer (no page images) into `appendix_schedules.json`.
   accounts; each correction is noted on the account. A general-fund account with `trust_fund_limitation`
   components (CMS Program Management, Medicare Hearings and Appeals: funded by transfers from the trust funds) is
   consistent, not a disagreement.
-- Totals and part lines carry no attributes; an account with no schedule found is left empty with a note
+- Totals and part lines carry no attributes, except an agency held only as its total (no account lines: AHRQ, ACL,
+  AHA). Its total is its one line, so it takes its Appendix account's attributes as an account would: codes and
+  fund type from FY N's volume, `budget_class` from the FY N+2 actuals, FY2026-FY2027 provisional (owner decision
+  B, D-9, 2026-10-15; until D-9 totals carried none). AHRQ maps to 075-1700 and ACL to 075-0142; AHA, which the
+  FY2026 and FY2027 requests spread over several new accounts, maps to none and stays without attributes (noted).
+  An account with no schedule found is left empty with a note
   (`account_attribute_notes`, `reference/review/accounting/appendix_coverage.csv`). Nothing is guessed. The
   defense split stays on the `defense_portion` lines; no subfunction implies one.
 
