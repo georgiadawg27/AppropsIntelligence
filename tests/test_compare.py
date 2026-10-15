@@ -48,6 +48,9 @@ def with_sourced_totals(src, dst):
     shape a workbook would give them -- total_scope title / bill."""
     shutil.copy(src, dst)
     c = sqlite3.connect(dst)
+    # D-7's own Title III and bill total rows give way to these
+    for t in ("appropriations_observation", "account"):
+        c.execute(f"DELETE FROM {t} WHERE canonical_account_id IN ('ACC-CJS-TITLE-III-TOTAL', 'ACC-CJS-BILL-TOTAL')")
     for aid, name, scope in (("ACC-T3-TOTAL", "Total, Title III, Science", "title"),
                              ("ACC-CJS-TOTAL", "Grand total", "bill")):
         c.execute("INSERT INTO account (canonical_account_id, canonical_name, agency, status, fund_type, "
@@ -60,6 +63,20 @@ def with_sourced_totals(src, dst):
     c.execute(f"INSERT INTO appropriations_observation ({', '.join(cols)}) SELECT {sel} FROM appropriations_observation "
               "WHERE canonical_account_id = 'ACC-NASA-TOTAL' AND fiscal_year = 2024 AND stage = 'Enacted' "
               "AND amount_type = 'budget authority'")
+    c.commit()
+    c.close()
+    return dst
+
+
+def without_printed_totals(src, dst):
+    """D-7: a copy of the store with CJS's title and bill total rows removed (accounts and their observations), the
+    shape of a subcommittee whose reports print no total we hold (LHHS keeps its, so the overview panel stays on)."""
+    shutil.copy(src, dst)
+    c = sqlite3.connect(dst)
+    ids = ("(SELECT canonical_account_id FROM account WHERE subcommittee = 'CJS' "
+           "AND total_scope IN ('title', 'bill'))")
+    for t in ("appropriations_observation", "account"):
+        c.execute(f"DELETE FROM {t} WHERE canonical_account_id IN {ids}")
     c.commit()
     c.close()
     return dst
@@ -155,7 +172,8 @@ class CompareTest(unittest.TestCase):
 class GridData(CompareTest):
     def test_rows_are_every_account_of_the_subcommittee(self):
         conn = S.connect(self.db, readonly=True)
-        want = sorted(r[0] for r in conn.execute("SELECT canonical_account_id FROM account WHERE subcommittee = 'CJS'"))
+        want = sorted(r[0] for r in conn.execute("SELECT canonical_account_id FROM account WHERE subcommittee = 'CJS' "
+                                                 "AND ifnull(total_scope, '') NOT IN ('title', 'bill')"))   # D-7: totals
         conn.close()
         got = [r["account"]["canonical_account_id"] for r in self.grid["rows"]]
         self.assertEqual(sorted(got), want)
@@ -232,9 +250,13 @@ class GridData(CompareTest):
 
     def test_rows_follow_the_bill(self):
         # by title, then display_order; a rollup heads the accounts it totals
-        self.assertEqual([(t["title"], t["total"]) for t in self.grid["titles"]],
-                         [("Title I", None), ("Title II", None), ("Title III", None), ("Title V", None), (None, None)])
-        self.assertIsNone(self.grid["bill_total"])
+        # D-7: each printed title has its total row (Title IV: the total only, no account held) and the bill its own
+        self.assertEqual([(t["title"], t["total"] and t["total"]["account"]["canonical_account_id"])
+                          for t in self.grid["titles"]],
+                         [("Title I", "ACC-CJS-TITLE-I-TOTAL"), ("Title II", "ACC-CJS-TITLE-II-TOTAL"),
+                          ("Title III", "ACC-CJS-TITLE-III-TOTAL"), ("Title IV", "ACC-CJS-TITLE-IV-TOTAL"),
+                          ("Title V", "ACC-CJS-TITLE-V-TOTAL"), (None, None)])
+        self.assertEqual(self.grid["bill_total"]["account"]["canonical_account_id"], "ACC-CJS-BILL-TOTAL")
         by = {t["title"]: t["rows"] for t in self.grid["titles"]}
         self.assertEqual(by["Title I"], ["ACC-NOAA-ORF", "ACC-USPTO-SE", "ACC-NOAA-PDF"])
         self.assertEqual(by["Title II"], ["ACC-DOJ-AFF", "ACC-DOJ-ANTITRUST-SE", "ACC-DOJ-USTSF", "ACC-DOJ-VAWA"])
@@ -271,8 +293,9 @@ class GridData(CompareTest):
         self.assertEqual((ostp["rollup"], ostp["rollup_members"]), ("agency", ["ACC-NSC"]))
 
     def test_title_and_bill_totals_come_only_from_sourced_rows(self):
-        # v26 has none: no total at all, never a sum of the rows
-        self.assertEqual([t["total"] for t in self.grid["titles"]], [None] * 5)
+        # D-7: each title's total and the bill total are the printed rows' own accounts, never a sum of the rows
+        self.assertEqual([t["total"] and t["total"]["account"]["canonical_account_id"] for t in self.grid["titles"]],
+                         [f"ACC-CJS-TITLE-{r}-TOTAL" for r in ("I", "II", "III", "IV", "V")] + [None])
         # a sourced total -- a rollup noted as a title / bill total -- is the total, not a row
         other = with_sourced_totals(self.db, Path(self.tmp.name) / "totals.db")
         g = plain(W.subcommittee(str(other), "CJS"))
@@ -680,9 +703,13 @@ class CompareBrowser(GridBrowser):
         # SPEC section 4: the total band, then the three sections; agencies collapsed by default
         self.open("static", "?view=compare&sc=LHHS&fy=2026")
         rows = self.body()
+        # D-7: every printed title has its total row now, so the band opens with Title I; Title II's is still there
         self.assertEqual((rows[0]["cls"], rows[0]["account"], rows[0]["name"]),
-                         ("title", "ACC-HHS-TITLE-II-TOTAL", "Total, Title II (printed)"))
-        self.assertEqual(self.page.locator("tr.title td[data-testid=compare-cell]").count(), 5)
+                         ("title", "ACC-LHHS-TITLE-I-TOTAL", "Total, Title I (printed)"))
+        self.assertIn(("title", "ACC-HHS-TITLE-II-TOTAL", "Total, Title II (printed)"),
+                      [(r["cls"], r["account"], r["name"]) for r in rows])
+        t2 = self.page.locator("tr.title[data-account=ACC-HHS-TITLE-II-TOTAL] td[data-testid=compare-cell]")
+        self.assertEqual(t2.count(), 5)
         self.assertNotIn("99 accounts", self.page.inner_text("#compare-grid"))
         labels = [r["name"] for r in rows if r["testid"] == "section-label"]
         self.assertEqual(labels, ["Agencies · 10", "General provisions", "Proposed in the FY2026 request, not enacted"])
@@ -720,18 +747,22 @@ class CompareBrowser(GridBrowser):
         self.open("static", "?view=compare&sc=CJS&fy=2026")
         rows = self.body()
         self.assertEqual([r["name"] for r in rows if r["cls"] == "title"],
-                         ["Title I · no printed total on file", "Title II · no printed total on file",
-                          "Title III · no printed total on file", "Title V · no printed total on file", "Not yet placed in a title"])
+                         # D-7: a printed total row for every printed title (I-V), where there were none on file
+                         [f"Total, {t['title']} (printed)" for t in self.grid["titles"] if t["total"]] + ["Not yet placed in a title"])
         self.assertEqual([(r["name"], r["abbr"]) for r in rows if r["cls"].startswith("agency")],
                          [("National Aeronautics and Space Administration", "NASA"), ("National Science Foundation", "NSF")])
         self.menu("click", "#expand-all")
         self.assertEqual(sorted(r["account"] for r in self.body() if r["testid"] == "compare-row"),
-                         sorted(r["account"]["canonical_account_id"] for r in self.grid["rows"]))
+                         # D-7: plus the title-total rows
+                         sorted([r["account"]["canonical_account_id"] for r in self.grid["rows"]]
+                                + [t["total"]["account"]["canonical_account_id"] for t in self.grid["titles"] if t["total"]]))
         self.assertEqual(self.page.inner_text("#grid-title"), "Commerce, Justice, Science")
-        self.assertEqual(self.page.inner_text("#eyebrow"), "COMMERCE, JUSTICE, SCIENCE · TITLES I, II, III, V · FY2026")   # condensed caps
+        self.assertEqual(self.page.inner_text("#eyebrow"), "COMMERCE, JUSTICE, SCIENCE · TITLES I, II, III, IV, V · FY2026")   # condensed caps; D-7: Title IV (Related Agencies) has a printed total now
         self.assertEqual(self.page.locator("[data-testid=tile]").count(), 0)
-        # no printed total: the overview says so and never adds the accounts
-        self.assertIn("never adds accounts", self.page.inner_text("[data-testid=ov-no-total]"))
+        # D-7: a printed total now exists, so the overview leads with the first title's (Title I) rather than saying there is
+        # none (that case is held in test_no_tiles_the_overview_shows_the_printed_title_total, on a store without CJS's totals)
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title I enacted, FY2026")
+        self.assertEqual(self.page.locator("[data-testid=ov-no-total]").count(), 0)
 
     def test_chevrons_only_on_rows_that_fold(self):
         self.open("static", "?view=compare&sc=LHHS&fy=2026")
@@ -867,14 +898,32 @@ class CompareBrowser(GridBrowser):
 
     def test_no_tiles_the_overview_shows_the_printed_title_total(self):
         # SPEC section 3: no tiles above the grid; the headline figures live in the overview panel
-        total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
+        # D-7: the overview leads with the first title that has a printed total, now Title I (Department of Labor)
+        total = next(t for t in self.lhhs["titles"] if t["total"])["total"]
+        self.assertEqual(total["account"]["canonical_account_id"], "ACC-LHHS-TITLE-I-TOTAL")
         for view in ("stages", "years", "history"):
             self.open("static", f"?view=compare&sc=LHHS&grid={view}&fy=2026&a=2024&b=2026")
             self.assertEqual(self.page.locator("[data-testid=tile], #tiles").count(), 0, view)
             self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"),
                              f"{expected_headline(total, 2026, 'Enacted')['amount']} $K · as printed", view)
+        # D-7: CJS now has a printed total for every title, so its overview leads with Title I (Department of Commerce)
+        cjs_t1 = next(t for t in self.grid["titles"] if t["total"])["total"]
+        self.assertEqual(cjs_t1["account"]["canonical_account_id"], "ACC-CJS-TITLE-I-TOTAL")
         self.open("static", "?view=compare&sc=CJS&fy=2026")
-        self.assertIn("No printed title or bill total", self.page.inner_text("[data-testid=side-panel]"))   # never a sum
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title I enacted, FY2026")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"),
+                         f"{expected_headline(cjs_t1, 2026, 'Enacted')['amount']} $K · as printed")
+        # the no-total case (never a sum) is still held, on a store without the D-7 total rows
+        db = without_printed_totals(self.db, Path(self.tmp.name) / "no_totals_browser.db")
+        srv = W.serve(db, port=0, verbose=False)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&fy=2026")
+            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            self.assertIn("No printed title or bill total", self.page.inner_text("[data-testid=ov-no-total]"))
+        finally:
+            srv.shutdown()
+            srv.server_close()
 
     def test_a_sourced_total_heads_the_grid_and_the_overview(self):
         db = with_sourced_totals(self.db, Path(self.tmp.name) / "totals_browser.db")
@@ -883,10 +932,16 @@ class CompareBrowser(GridBrowser):
         try:
             self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?view=compare&sc=CJS&grid=stages&fy=2024")
             self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-            self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title III enacted, FY2024")
-            self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"), "33,944,930 $K · as printed")
+            # D-7: the overview leads with the first title that has a printed total, now D-7's Title I (which the helper
+            # leaves); the sourced Title III total still heads its own row in the grid
+            t1 = next(t for t in self.grid["titles"] if t["total"])["total"]
+            self.assertEqual(t1["account"]["canonical_account_id"], "ACC-CJS-TITLE-I-TOTAL")
+            self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title I enacted, FY2024")
+            self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"),
+                             f"{expected_headline(t1, 2024, 'Enacted')['amount']} $K · as printed")
             row = self.page.locator("tr.title[data-account=ACC-T3-TOTAL]")
             self.assertEqual(row.locator("[data-testid=total]").inner_text(), "Total, Title III (printed)")
+            self.assertEqual(self.cell("ACC-T3-TOTAL", 2024, "Enacted").locator("[data-testid=amount]").inner_text(), "33,944,930")
         finally:
             srv.shutdown()
             srv.server_close()
@@ -1036,7 +1091,7 @@ class CompareBrowser(GridBrowser):
                 self.assertGreater(pending + resolved, 0)
             else:
                 self.assertEqual(d.get_attribute("class"), "dot flag" if status == "flagged" else "dot unv")
-        rows = self.lhhs["rows"] + [self.lhhs["titles"][0]["total"]]
+        rows = self.lhhs["rows"] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         flagged = sum(1 for r in rows for y, st in [(2025, "Enacted")] + [(2026, s) for s in FOUR]
                       for c in [r["cells"].get(f"{y}|{st}")] if c and c["lines"]
                       for h in [next((l for l in c["lines"] if l["amount_type"] == "budget authority" and not l["component"]), c["lines"][0])]
@@ -1067,7 +1122,15 @@ class CompareBrowser(GridBrowser):
         # CJS: no flagged or unconfirmed cell in view (the four House figures the bill text disagreed with were
         # re-sourced to H.Rept. 119-652 and now match it); NSF R&RA FY2026 Enacted is the law's paragraph total,
         # resolved by rule (D-3), with nothing pending
-        self.assertEqual(dots.count(), 2)
+        # D-7: the title-total rows' observations are unverified, so each shows a dot in the cells in view (FY2026 Enacted
+        # and FY2027 House Reported, the columns with a figure); they carry no open record
+        in_view = ("2026|Enacted", "2027|House Reported")
+        t_dots = self.page.locator("tr.title [data-testid=status-dot]")
+        want = sum(1 for t in self.grid["titles"] if t["total"] for k in in_view
+                   if any(o["verification_status"] == "unverified" for l in t["total"]["cells"][k]["lines"] for o in l["observations"]))
+        self.assertEqual((want, t_dots.count()), (10, 10))
+        self.assertEqual({(x.get_attribute("data-status"), x.get_attribute("data-pending")) for x in t_dots.all()}, {("unverified", "0")})
+        self.assertEqual(dots.count() - t_dots.count(), 2)
         rule = self.page.locator("tr[data-account=ACC-NSF-RRA] [data-testid=status-dot]")
         self.assertEqual((rule.count(), rule.first.get_attribute("data-status"), rule.first.get_attribute("data-pending")),
                          (1, "resolved-by-rule", "0"))
@@ -1156,8 +1219,9 @@ class CompareBrowser(GridBrowser):
             '#side-panel', '#grid-legend', '#grid-counts', '#grid-provenance'].map(s => document.querySelector(s))
             .map((e, i, a) => i === 0 || (a[i - 1].compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING) > 0)""")
         self.assertEqual(set(order), {True})
-        self.assertEqual(self.page.inner_text("#grid-title"), "Department of Health and Human Services")
-        self.assertEqual(self.page.inner_text("#eyebrow"), "LABOR-HHS-EDUCATION · TITLE II · ENACTED HISTORY")
+        # D-7: the grid is multi-title now (Labor-HHS has a printed total for every title), so it is headed by the bill
+        self.assertEqual(self.page.inner_text("#grid-title"), "Labor-HHS-Education")
+        self.assertEqual(self.page.inner_text("#eyebrow"), "LABOR-HHS-EDUCATION · TITLES I, II, III, IV, VI, VIII · ENACTED HISTORY")
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed")
         self.definitions()
         self.assertIn("sha256", self.page.inner_text("#grid-provenance"))
@@ -1465,7 +1529,13 @@ class ExploreV1(GridBrowser):
         self.settle()
 
     def total(self):
-        return self.lhhs["titles"][0]["total"]
+        # D-7: the overview leads with the first title that has a printed total (printedTotal()): Title I, Department of Labor
+        total = next(t for t in self.lhhs["titles"] if t["total"])["total"]
+        assert total["account"]["canonical_account_id"] == "ACC-LHHS-TITLE-I-TOTAL"
+        return total
+
+    def title2_total(self):
+        return next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
 
     def thousands_of(self, row, fy, stage):
         return expected_headline(row, fy, stage)["amount"]
@@ -1500,13 +1570,13 @@ class ExploreV1(GridBrowser):
                 # no tiles above the grid; the overview in the side panel
                 self.assertEqual(self.page.locator("[data-testid=tile], #tiles").count(), 0)
                 self.assertTrue(self.page.is_visible("[data-testid=side-panel]"))
-                self.assertTrue(self.page.inner_text("[data-testid=overview-title]").startswith(
-                    "Title II, Department of Health and Human Services · FY"))
+                # D-7: a multi-title grid (Labor-HHS now has a printed total for six titles): the overview is headed by the bill
+                self.assertTrue(self.page.inner_text("[data-testid=overview-title]").startswith("Labor-HHS-Education · FY"))
                 # grid and panel side by side, tops aligned (UI-2c: each as tall as its content)
                 g, p = (self.page.locator(s).bounding_box() for s in ("#grid-wrap", "#side-panel"))
                 self.assertLess(g["x"] + g["width"], p["x"])
                 self.assertEqual(g["y"], p["y"])
-                self.assertEqual(self.page.inner_text("#grid-title"), "Department of Health and Human Services")
+                self.assertEqual(self.page.inner_text("#grid-title"), "Labor-HHS-Education")
                 self.assertEqual(self.page.locator("#export").get_attribute("aria-disabled"), "false")   # UI-4
 
     def test_the_panel_wraps_below_a_narrow_grid(self):
@@ -1591,14 +1661,16 @@ class ExploreV1(GridBrowser):
         self.go("?sc=LHHS&fy=2026")
         figs = lambda: self.page.eval_on_selector_all("tr.title td[data-testid=compare-cell], tr.title td[data-testid=change-cell]", "ts => ts.map(t => t.innerText)")
         before = figs()
-        self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
+        # D-7: every title has a total row now; this test is about Title II's label, so it names that row
+        T2 = "tr.title[data-account=ACC-HHS-TITLE-II-TOTAL] [data-testid=total]"
+        self.assertEqual(self.page.inner_text(T2), "Total, Title II (printed)")
         self.assertTrue(self.page.is_hidden("[data-testid=filter-badge]"))
         self.page.click("#filter-btn")
         self.page.select_option("#f-agency", "National Institutes of Health")
         self.assertEqual([c.inner_text().replace("×", "").strip() for c in self.page.locator("[data-testid=chip]").all()],
                          ["Agency: National Institutes of Health"])
         self.assertEqual(self.page.inner_text("[data-testid=filter-badge]"), "1")
-        self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed, all accounts)")
+        self.assertEqual(self.page.inner_text(T2), "Total, Title II (printed, all accounts)")
         self.assertEqual(figs(), before)                                   # filtering never re-sums
         self.assertEqual(self.page.inner_text("#grid-title"), "National Institutes of Health")
         self.assertEqual(self.page.eval_on_selector_all("tr[data-testid=compare-row]:not(.title)", "ts => ts.map(t => t.dataset.account)"),
@@ -1615,7 +1687,7 @@ class ExploreV1(GridBrowser):
         self.page.keyboard.press("Escape")
         self.page.click("[data-testid=clear-all]")
         self.assertTrue(self.page.is_hidden("[data-testid=chips]"))
-        self.assertEqual(self.page.inner_text("tr.title [data-testid=total]"), "Total, Title II (printed)")
+        self.assertEqual(self.page.inner_text(T2), "Total, Title II (printed)")
         # Advanced shows its ungated items, and (UI-3, flags on) Account type and the basis items; (UI-3b,
         # exclude_earmarks on) Exclude earmarks
         self.page.click("#filter-btn")
@@ -1758,7 +1830,7 @@ class ExploreV1(GridBrowser):
                 self.assertEqual(btn.inner_text(), "Open source document at page 285")
                 self.assertEqual(btn.get_attribute("href"), obs["url_or_identifier"] + "#page=285")
                 self.assertEqual(text("src-account-btn"), "See every stage for this account")
-                self.assertEqual(text("panel-back"), "‹ Title II overview")
+                self.assertEqual(text("panel-back"), "‹ Title I overview")   # D-7: the overview it returns to leads with Title I
                 self.assertEqual(self.page.locator("[data-testid=panel-hint]").count(), 0)     # the hint is gone (UI-2b)
                 # the cell is marked selected: yellow fill, 2px #d9a400 inset outline
                 self.assertEqual(cell.get_attribute("data-sel"), "fig")
@@ -1900,7 +1972,7 @@ class ExploreV1(GridBrowser):
         self.page.click("#grid-title")
         self.assertEqual((panel.get_attribute("data-mode"), cell.get_attribute("data-sel")), ("overview", None))
         self.assertNotIn("fig=", self.page.url)
-        self.assertTrue(self.page.inner_text("[data-testid=overview-title]").startswith("Title II, Department of Health and Human Services"))
+        self.assertTrue(self.page.inner_text("[data-testid=overview-title]").startswith("Labor-HHS-Education"))   # D-7: multi-title grid
         cell.locator("button.fig").click()
         self.page.mouse.click(1430, 170)                                       # right of the title row: page background
         self.assertEqual(panel.get_attribute("data-mode"), "overview")
@@ -2179,8 +2251,15 @@ class ExploreV1(GridBrowser):
         t = self.total()
         self.assertEqual(expected_headline(t, 2027, "Enacted")["state"], "not_enacted")
         self.assertEqual(expected_headline(t, 2027, "Senate Reported")["state"], "not_collected")
-        self.assertEqual(expected_headline(t, 2027, "House Reported")["amount"], "1,606,033,805")
-        self.assertEqual(expected_headline(t, 2026, "Enacted")["amount"], "1,553,262,357")
+        # D-7: the lead total is now Title I (Department of Labor); its figures come from the data
+        raw = lambda y, st: next(l for l in t["cells"][f"{y}|{st}"]["lines"] if l["amount_type"] == "budget authority"
+                                 and not l["component"])["observations"][0]["amount"]
+        house27, enacted26 = raw(2027, "House Reported"), raw(2026, "Enacted")
+        self.assertEqual(expected_headline(t, 2027, "House Reported")["amount"], thousands(house27))
+        self.assertEqual(expected_headline(t, 2026, "Enacted")["amount"], thousands(enacted26))
+        delta = house27 - enacted26
+        change = [("+" if delta > 0 else "\u2212") + f"{abs(round(delta / 1000)):,}",
+                  ("+" if delta > 0 else "\u2212") + f"{abs(delta / enacted26 * 100):.1f}%"]
         self.go("?sc=LHHS")                                                # no fy in the URL: the current fiscal year
         self.assertEqual(self.page.input_value("#fy-pick"), "2027")
         heads = self.page.eval_on_selector_all("#compare-grid thead tr", "trs => trs.map(t => [...t.children].map(c => c.innerText))")
@@ -2192,12 +2271,12 @@ class ExploreV1(GridBrowser):
         for st, tok in (("Senate Reported", "n/c"), ("Enacted", "n/e")):
             for aid in ("ACC-HHS-TITLE-II-TOTAL", "ACC-HHS-NIH-TOTAL"):
                 self.assertEqual(self.cell(aid, 2027, st).inner_text(), tok, (aid, st))
-        self.assertEqual(self.page.locator("tr.title [data-testid=change-cell]").first.inner_text().split("\n"), ["+52,771,448", "+3.4%"])
+        self.assertEqual(self.page.locator("tr.title [data-testid=change-cell]").first.inner_text().split("\n"), change)
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed · FY2027 not yet enacted · latest: House")
         # the overview: the House total first, then its change vs FY2026 enacted; Status instead of Enacted in
-        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title II, House, FY2027")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"), "1,606,033,805 $K · as printed")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .s"), "+52,771,448 $K · +3.4%")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title I, House, FY2027")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .s"), f"{thousands(house27)} $K · as printed")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .s"), f"{change[0]} $K · {change[1]}")
         self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .l"), "vs FY2026 enacted")
         status = [s.inner_text().split("\n") for s in self.page.locator("[data-testid=ov-status]").all()]
         self.assertEqual(status, [["President’s request", "On file"], ["House", "On file"], ["Senate", "Not yet collected"],
@@ -2218,7 +2297,7 @@ class ExploreV1(GridBrowser):
         self.assertEqual(self.page.locator("#compare-grid thead th.lead").inner_text(), "Enacted")
         self.assertEqual(self.page.eval_on_selector_all("#compare-grid thead tr + tr th.delta", "ts => ts.map(t => t.innerText)"), ["FY2025 enacted"])
         self.assertEqual(self.page.inner_text("#grid-subline"), "$ thousands · as printed")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title II enacted, FY2026")
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .l"), "Title I enacted, FY2026")
         law = self.page.locator("[data-testid=ov-law] a")
         self.assertEqual(law.inner_text(), "P.L. 119-75, Division B")
         self.assertEqual(law.get_attribute("href"), "https://www.govinfo.gov/content/pkg/PLAW-119publ75/pdf/PLAW-119publ75.pdf")
@@ -2290,10 +2369,13 @@ class ExploreV1(GridBrowser):
         f = lambda y, st: next(l for l in t["cells"][f"{y}|{st}"]["lines"] if l["amount_type"] == "budget authority"
                                and not l["component"])["observations"][0]["amount"]
         self.go("?sc=LHHS&fy=2026")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .v"), "$1.55T")
+        # D-7: the lead total is Title I (Department of Labor), $15.38B in FY2026
+        self.assertEqual(self.page.inner_text("[data-testid=ov-headline] .v"), f"${f(2026, 'Enacted') / 1e9:.2f}B")
         self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .l"), "vs FY2025 enacted (full-year CR)")
         d = f(2026, "Enacted") - f(2025, "Enacted")
-        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .v"), f"+${d / 1e9:.2f}B")
+        # (the page's short form: billions to two places from $1B, else millions to one -- here +$721.4M)
+        short = f"+${d / 1e9:.2f}B" if abs(d) >= 1e9 else f"+${d / 1e6:.1f}M"
+        self.assertEqual(self.page.inner_text("[data-testid=ov-vs-prior] .v"), short)
         stages = [s.inner_text().split("\n")[1] for s in self.page.locator("[data-testid=ov-stage]").all()]
         self.assertEqual(stages, [thousands(f(2026, st)) for st in FOUR])
         # largest movers: the agencies with both values, three up then three down
@@ -2593,7 +2675,8 @@ class PhoneV1(GridBrowser):
 
     # 13
     def test_phone_layout(self):
-        total = self.lhhs["titles"][0]["total"]
+        # D-7: the card leads with the first title that has a printed total: Title I (Department of Labor)
+        total = next(t for t in self.lhhs["titles"] if t["total"])["total"]
         nih = self.lrow(self.NIH)
         for where in self.urls:
             with self.subTest(where=where):
@@ -2698,21 +2781,35 @@ class PhoneV1(GridBrowser):
 
     def test_phone_year_without_enacted_and_no_total(self):
         # FY2027 (the default year): the lead stage leads the switch and the card; CJS prints no title total
-        total = self.lhhs["titles"][0]["total"]
+        # D-7: the card leads with the first title that has a printed total: Title I (Department of Labor)
+        total = next(t for t in self.lhhs["titles"] if t["total"])["total"]
         self.go("?sc=LHHS&fy=2027")
         self.assertEqual(self.page.locator("#p-stages button[aria-pressed=true]").inner_text(), "House")
         v, p = printed(total, 2027, "House Reported"), printed(total, 2026, "Enacted")
         self.assertEqual(self.page.inner_text("[data-testid=p-headline]"), short(v))
-        self.assertEqual(self.page.inner_text("[data-testid=p-vs-prior]"), f"+{short(v - p)} ({pct_text(p, v)}) vs FY2026 enacted")
+        self.assertEqual(self.page.inner_text("[data-testid=p-vs-prior]"), f"{'+' if v > p else ''}{short(v - p)} ({pct_text(p, v)}) vs FY2026 enacted")   # D-7: Title I falls (a minus, no plus)
         self.assertNotIn("pstage=", self.page.url)
         # a stage with nothing yet shows its state token, never a blank or a zero
         self.page.locator("#p-stages button", has_text="Senate").click()
         vals = self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] [data-testid=p-value]")
         self.assertEqual(vals.inner_text(), "n/c")
         self.assertEqual(self.page.locator(f"#p-list .prow[data-account='{self.NIH}'] [data-testid=p-change]").inner_text(), "")
+        # D-7: CJS now prints a total for every title, so the no-total card is held on a store without CJS's
         self.go("?sc=CJS&fy=2026")
-        self.assertEqual(self.page.inner_text("[data-testid=p-no-total]"),
-                         "No printed title or bill total on file. The page never adds accounts into one.")
+        self.assertEqual(self.page.locator("[data-testid=p-no-total]").count(), 0)
+        self.assertEqual(self.page.inner_text("[data-testid=p-headline]"),
+                         short(printed(next(t for t in self.grid["titles"] if t["total"])["total"], 2026, "Enacted")))
+        db = without_printed_totals(self.db, Path(self.tmp.name) / "no_totals_phone.db")
+        srv = W.serve(db, port=0, verbose=False)
+        threading.Thread(target=srv.serve_forever, daemon=True).start()
+        try:
+            self.page.goto(f"http://127.0.0.1:{srv.server_address[1]}/?sc=CJS&fy=2026")
+            self.page.wait_for_selector("#p-list .prow")
+            self.assertEqual(self.page.inner_text("[data-testid=p-no-total]"),
+                             "No printed title or bill total on file. The page never adds accounts into one.")
+        finally:
+            srv.shutdown()
+            srv.server_close()
 
     # 14
     def test_phone_keyboard_and_focus(self):
@@ -2904,7 +3001,7 @@ class AmountBasis(GridBrowser):
         # Innovation Account, CURES), an earmark account (SAMHSA HSPS), a mixed-class account (CMS Program
         # Management), the title total; FY2025 is a full-year CR year. Each cell shows its published view, "excl."
         # or its state; the change is the difference of the two shown figures, or empty
-        rows = [self.lrow(a) for a in (self.MEDICAID, self.CURES, self.HSPS, self.PM)] + [self.lhhs["titles"][0]["total"]]
+        rows = [self.lrow(a) for a in (self.MEDICAID, self.CURES, self.HSPS, self.PM)] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         for basis in BASES:
             for timing in TIMINGS:
                 for where in (("static", "live") if timing == "available" else ("static",)):
@@ -2985,7 +3082,9 @@ class AmountBasis(GridBrowser):
         self.assertEqual(self.page.locator("[data-testid=src-view-value], [data-testid=src-component]").count(), 0)
 
     def test_overview_view_totals(self):
-        total = self.lhhs["titles"][0]["total"]
+        # D-7: the overview leads with Title I (Department of Labor), whose views are all printed-only / not computable
+        total = next(t for t in self.lhhs["titles"] if t["total"])["total"]
+        title2 = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         for basis in BASES[1:]:
             with self.subTest(basis=basis):
                 self.go(f"?sc=LHHS&fy=2026&amt={basis}")
@@ -3002,7 +3101,11 @@ class AmountBasis(GridBrowser):
                     self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed")
                                      else "not computable")
         self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
-        self.assertIn("114,797,239", self.page.inner_text("[data-testid=ov-headline]"))
+        self.assertIn("Not computable", self.page.inner_text("[data-testid=ov-headline]"))
+        # Title II's checked discretionary-with-designated figure is no longer the overview's: it is on its own total row
+        x = view_entry(title2, 2026, "Enacted", "discretionary_designated", "available")
+        self.assertEqual((x["status"], thousands(x["amount"])), ("checked", "114,797,239"))
+        self.assertIn("114,797,239", self.text("ACC-HHS-TITLE-II-TOTAL", 2026, "Enacted"))
 
     def test_account_type_and_class_tags(self):
         self.go("?sc=LHHS&fy=2026&open=ACC-HHS-CMS-TOTAL")
@@ -3047,7 +3150,7 @@ class AmountBasis(GridBrowser):
                 self.assertEqual(self.page.inner_text("#filter-badge"), "1")
                 self.assertIn(f"Account type: {kind.capitalize()}", self.page.inner_text("#chips"))
                 # the printed total stays as printed
-                total = self.lhhs["titles"][0]["total"]
+                total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
                 self.assertEqual(self.text(total["account"]["canonical_account_id"], 2026, "Enacted"), thousands(printed(total, 2026, "Enacted")))
 
     def test_defense_column(self):
@@ -3153,7 +3256,7 @@ class ExcludeEarmarks(GridBrowser):
     def test_exclude_earmarks_cells(self):
         # the box on: every cell of SAMHSA's lines and the title total shows views_excluding_earmarks for the basis and
         # timing in view (the printed basis included), with UI-3's tokens; the label, chip, badge and URL say so
-        rows = [self.lrow(m) for m in self.members_in_view(self.OPEN)] + [self.lhhs["titles"][0]["total"]]
+        rows = [self.lrow(m) for m in self.members_in_view(self.OPEN)] + [next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]]
         self.go(f"?sc=LHHS&fy=2026&open={self.OPEN}")
         self.assertNotIn("excl. earmarks", self.page.inner_text("#grid-subline"))
         self.advanced("check", "#f-noear")
@@ -3217,7 +3320,7 @@ class ExcludeEarmarks(GridBrowser):
         self.assertEqual(pb.evaluate(CELL_TEXT_JS), thousands(x["amount"]))
         self.assertIn("a request carries no earmarks", pb.locator("button.fig").get_attribute("title"))
         # the title total: what its published entry says (D-6: the sum of its accounts, or not computable, why)
-        trow = self.lhhs["titles"][0]["total"]
+        trow = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),
@@ -4187,7 +4290,10 @@ class Export(GridBrowser):
         col = next(i for i, h in enumerate(table[0]) if h.startswith("FY2020 Senate") and h.endswith("($K)"))
         hrsa = next(r for r in table[1:] if r[3] == "ACC-HHS-HRSA-TOTAL")
         self.assertEqual(hrsa[col], "Not reported")
-        self.assertTrue(all(r[col] == "Not reported" for r in table[1:]), "the committee reported no FY2020 bill")
+        # D-7: Labor-HHS Titles VI and VIII are printed in other years only, so FY2020 is outside their life
+        self.assertTrue(all(r[col] == "Not reported" for r in table[1:]
+                            if r[3] not in ("ACC-LHHS-TITLE-VI-TOTAL", "ACC-LHHS-TITLE-VIII-TOTAL")),
+                        "the committee reported no FY2020 bill")
 
     def test_millions_round_as_the_screen(self):
         self.go(f"?sc=LHHS&fy=2026&units=m&open=ACC-HHS-NIH-TOTAL")

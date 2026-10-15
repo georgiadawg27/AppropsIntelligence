@@ -45,7 +45,24 @@ import tag_components as TC  # noqa: E402
 import validate_approps as V  # noqa: E402
 
 RULE = "measure_reconcile"
-PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-")
+PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-", "VAL-MRS-")
+# D-7: the printed summary lines of a title or bill total (accounts.SUMMARY_COMPONENTS) a computed figure stands
+# for: line -> what is summed from the accounts behind the total (summary_view)
+SUMMARY_CHECKED = ("mandatory", "emergency_appropriations", "advance_appropriations", "rescissions")
+# D-7: the titles whose every account is held, so a printed title (or bill) summary line can be checked against its
+# accounts. Labor-HHS Title II reconciles as its agency totals + General Provisions lines in every printed column
+# (reference/review/lhhs/title_ii_totals.py); Labor-HHS Titles I, III, IV and every CJS title are held only in part.
+TITLES_HELD = {"LHHS": ("Title II",)}
+# D-7: why a printed summary line differs, read from the title's own table for the cell (total, fiscal year, stage,
+# line) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
+SUMMARY_CAUSES = {
+    # 'Unaccompanied Children, BA (emergency)' 2,500,000 under Refugee and Entrant Assistance (Senate FY2023, p.412)
+    ("ACC-HHS-TITLE-II-TOTAL", 2023, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
+    # 'Pandemic Preparedness and Biodefense (emergency)' 75,000 under ASPR (S.Rept. 118-84 p.390)
+    ("ACC-HHS-TITLE-II-TOTAL", 2024, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
+    # 'New advance, 1st quarter, FY 2026' 1,700,000 under Child Support Enforcement (S.Rept. 118-207 p.443)
+    ("ACC-HHS-TITLE-II-TOTAL", 2025, "Senate Reported", "advance_appropriations"): "advance_line_untagged",
+}
 # the earmark rule (owner 2026-10-11): a headline that counts the account's congressionally directed spending /
 # community project funding inside, replacing the table's account line
 EARMARK_RULE = re.compile(r"Congressionally Directed Spending|Community Project Funding", re.I)
@@ -67,6 +84,12 @@ CAUSE_TEXT = {
                            "superseded with a figure that differs by the rounding of the report's thousands",
     "agency_total_only": "the agency is held only as its total (no account lines), and a total's paragraph is not "
                          "read for components, so the evaluation tap its program level counts is not tagged",
+    "emergency_line_untagged": "the title's table prints an '(emergency)' line under an account we hold, and no "
+                               "component of that account is tagged designated emergency, so the title's printed "
+                               "'Emergency appropriations' line counts money the computed one misses",
+    "advance_line_untagged": "the title's table prints a 'New advance' line under an account we hold, and no "
+                             "advance_enacted component of that account is tagged, so the title's printed 'Advance "
+                             "appropriations' line counts money the computed one misses",
     "unexplained": "not explained yet",
 }
 
@@ -101,6 +124,66 @@ def title_members(data, rollup):
     return [a["canonical_account_id"] for a in data["accounts"]
             if a["subcommittee"] == rollup["subcommittee"] and (a.get("title") or "") == (rollup.get("title") or "")
             and not a.get("total_scope") and not a.get("parent_account_id")]
+
+
+def not_held(data, a):
+    """D-7: why a title or bill total's printed lines can't be checked against its accounts -- None when every
+    account of it is held (a title TITLES_HELD lists; a bill whose every printed
+    title is held). A total whose accounts aren't all held is 'not checked', never a failure."""
+    scope = a.get("total_scope")
+    if scope not in ("title", "bill"):
+        return None
+    held = set(TITLES_HELD.get(a["subcommittee"], ()))
+    if scope == "title":
+        if (a.get("title") or "") in held:
+            return None
+        n = len(title_members(data, a)) + sum(1 for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+                                               and x.get("total_scope") == "agency" and x.get("title") == a.get("title")
+                                               and not members(data, x))
+        return (f"not checked: accounts not held ({n} of this title's accounts are held; the rest are not)" if n
+                else "not checked: accounts not held (no account of this title is held)")
+    titles = sorted({x.get("title") or "" for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+                     and x.get("total_scope") == "title"} - held)
+    return ("not checked: accounts not held (titles not held: " + ", ".join(titles) + ")") if titles else None
+
+
+def summary_view(data, a, v, h, heads, comps, attrs):
+    """D-7: the figure a printed summary line of a title total stands for, from the accounts behind it in the cell
+    (each one's headline from the total's own document): mandatory = the total less its discretionary view;
+    emergency appropriations = the components designated emergency; advance appropriations = the advance_enacted
+    components (both FY lines together); rescissions = the rescission lines (amount_type 'rescission').
+    -> (computed, how) or the reason it is not checked."""
+    line = v["component"]
+    fy, stage = int(v["fiscal_year"]), v["stage"]
+    if line == "mandatory":
+        got = discretionary_view(data, a, v, h, heads, comps, attrs)
+        if isinstance(got, str):
+            return got
+        return h["amount"] - got[0], f"the {a['total_scope']} total {AC.money(h['amount'])} less its discretionary " \
+                                      f"view {AC.money(got[0])} ({got[1]})"
+    ms = title_members(data, a) if a.get("total_scope") == "title" else [
+        x["canonical_account_id"] for x in data["accounts"] if x["subcommittee"] == a["subcommittee"]
+        and not x.get("total_scope") and not x.get("parent_account_id")]
+    total, used = 0, []
+    for m in ms:
+        if line == "rescissions":
+            for o in data["observations"]:
+                if (o["canonical_account_id"] == m and int(o["fiscal_year"]) == fy and o["stage"] == stage
+                        and o["amount_type"] == "rescission" and o["verification_status"] != "superseded"
+                        and o["source_document_id"] == h["source_document_id"]):
+                    total += o["amount"]
+                    used.append(f"{o['observation_id']} {AC.money(o['amount'])}")
+            continue
+        hs = heads[(m, fy, stage)]
+        mh = TC.pick_headline(hs, h["source_document_id"]) if hs else None
+        for c in (comps[mh["observation_id"]] if mh else []):
+            if (line == "emergency_appropriations" and (c["component_type"], c.get("designation")) == ("designated", "emergency")) \
+                    or (line.startswith("advance_appropriations") and c["component_type"] == "advance_enacted"):
+                total += c["amount"]
+                used.append(f"{c['component_id']} {AC.money(c['amount'])}")
+    what = {"emergency_appropriations": "the components designated emergency",
+            "advance_appropriations": "the advance_enacted components", "rescissions": "the rescission lines"}[line]
+    return total, f"{what} of the {a['total_scope']}'s accounts ({'; '.join(used) or 'none'})"
 
 
 def discretionary_view(data, a, v, h, heads, comps, attrs):
@@ -214,6 +297,10 @@ def run(data):
         cell = (a["subcommittee"], int(v["fiscal_year"]), v["stage"])
         base_out = {"kind": "view", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
                     "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
+        bar = not_held(data, a)
+        if bar:
+            outcomes.append(dict(base_out, result="not checked", detail=bar))
+            continue
         if comp == "discretionary":
             h = named_headline(obs, v)
             got = discretionary_view(data, a, v, h, heads, comps, attrs) if h else "names no headline"
@@ -358,6 +445,46 @@ def run(data):
         outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
                              detail=f"computed {AC.money(computed)}, printed {AC.money(v['amount'])}, "
                                     f"difference {AC.money(v['amount'] - computed)}"))
+    # 4. printed summary lines (D-7): a title or bill total's mandatory, emergency, advance and rescission lines
+    # against the figure its accounts give (summary_view); a total whose accounts aren't all held is not checked
+    for v in data["observations"]:
+        comp = v.get("component") or ""
+        if comp not in SUMMARY_CHECKED or v["verification_status"] == "superseded":
+            continue
+        a = acc[v["canonical_account_id"]]
+        base_out = {"kind": "summary", "observation_id": v["observation_id"], "account": a["canonical_account_id"],
+                    "fy": v["fiscal_year"], "stage": v["stage"], "view": comp}
+        bar = not_held(data, a)
+        h = named_headline(obs, v)
+        got = bar or ("names no headline" if h is None else summary_view(data, a, v, h, heads, comps, attrs))
+        if isinstance(got, str):
+            outcomes.append(dict(base_out, result="not checked", detail=got))
+            continue
+        computed, how = got
+        printed = v["amount"]
+        if comp == "advance_appropriations":
+            # every advance line printed under the total (each fiscal year's, emergency or not) against the advances
+            lines_ = [o for o in data["observations"] if o.get("headline_observation_id") == h["observation_id"]
+                      and (o.get("component") or "").startswith("advance_appropriations")
+                      and o["verification_status"] != "superseded"]
+            printed = sum(o["amount"] for o in lines_)
+            if len(lines_) > 1:
+                how += " against the " + " + ".join(f"{o['component']} {AC.money(o['amount'])}" for o in lines_) \
+                       + " printed"
+        ok = computed == printed
+        cause = None if ok else SUMMARY_CAUSES.get((a["canonical_account_id"], int(v["fiscal_year"]), v["stage"], comp),
+                                                    "unexplained")
+        expected = f"{comp.replace('_', ' ')}: {how} = {AC.money(computed)}"
+        observed = (f"{AC.money(printed)} printed ('{TC.printed(v)}', {v['source_document_id']} "
+                    f"p.{v.get('source_page') or '?'})" + (" -- equal" if ok else
+                    f" -- differs by {AC.money(printed - computed)} (printed - computed); for review, no figure "
+                    f"changed; cause: {cause} (reviewed once for every cell, VAL-MRC-{cause.upper().replace('_', '-')})"))
+        records.append({"validation_id": "VAL-MRS-" + suffix(v["observation_id"]), "observation_id": v["observation_id"],
+                        "rule_applied": RULE, "expected_result": expected, "observed_result": observed,
+                        "result": "pass" if ok else "info", "human_review_status": "", "reviewer": "", "resolution": ""})
+        outcomes.append(dict(base_out, result="pass" if ok else "fail", cause=cause,
+                             detail=f"computed {AC.money(computed)}, printed {AC.money(printed)}, "
+                                    f"difference {AC.money(printed - computed)}"))
     # one review item per cause, on the first cell it covers
     by_cause = collections.defaultdict(list)
     for o in outcomes:
@@ -475,7 +602,9 @@ def summary(outcomes):
               f"| printed view = computed view | {c[('view', 'pass')]} | {c[('view', 'fail')]} | "
               f"{c[('view', 'not checked')]} |",
               f"| earmark rule: headline - account line = earmark components | {c[('earmark', 'pass')]} | "
-              f"{c[('earmark', 'fail')]} | - |", ""]
+              f"{c[('earmark', 'fail')]} | - |",
+              f"| printed summary line = computed (D-7) | {c[('summary', 'pass')]} | {c[('summary', 'fail')]} | "
+              f"{c[('summary', 'not checked')]} |", ""]
     nc = collections.Counter(o["detail"] for o in outcomes if o["result"] == "not checked")
     if nc:
         lines += ["Not checked yet: " + "; ".join(f"{k} ({n})" for k, n in nc.most_common()), ""]

@@ -538,9 +538,14 @@ class MeasureReconcile(unittest.TestCase):
     def test_every_printed_discretionary_total_is_checked(self):
         _, outcomes = MR.run(STAGED)
         disc = [o for o in outcomes if o.get("view") == "discretionary"]
-        self.assertEqual(len(disc), 26)
-        self.assertEqual([o for o in disc if o["result"] == "not checked"], [])
-        self.assertEqual(sum(o["result"] == "pass" for o in disc), 25)
+        # D-7: the discretionary lines of Labor-HHS Title I and the bill total (accounts not held) are not checked,
+        # and say so; every other one is
+        held = [o for o in disc if not o["account"].startswith(("ACC-LHHS-TITLE-", "ACC-LHHS-BILL-"))]
+        self.assertEqual(len(held), 26)
+        self.assertEqual([o for o in held if o["result"] == "not checked"], [])
+        self.assertEqual(sum(o["result"] == "pass" for o in held), 25)
+        self.assertEqual({o["detail"].split(" (")[0] for o in disc if o not in held}, {"not checked: accounts not held"})
+        self.assertEqual(len(disc) - len(held), 46)
 
     def test_committed_records_are_up_to_date(self):
         records, _ = MR.run(STAGED)
