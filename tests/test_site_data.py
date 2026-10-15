@@ -557,9 +557,9 @@ class AccountingLayer(unittest.TestCase):
         self.assertTrue(all(r["line_document"] == r["document"] for r in evidence if r["inside"] == "yes"))
         self.assertTrue(all(r["where"] and r["evidence"] for r in evidence if r["inside"] == "yes"))
         cases = [
-            # printed outside: another document's line (S.Rept. 118-198's supplemental beside H.Rept. 118-582's total;
-            # P.L. 114-254's MCH line beside H.Rept. 115-244's), each closing the gap exactly
-            ("ACC-NSF-TOTAL", 2025, "President's Budget", None),
+            # printed outside: another document's line (P.L. 114-254's MCH line beside H.Rept. 115-244's total), closing
+            # the gap exactly. (NSF FY2025's request emergency counts since D-9: S.Rept. 118-198's request column prints
+            # it inside the same request totals, owner 2026-10-15)
             ("ACC-HHS-HRSA-TOTAL", 2017, "Enacted", None),
             # printed inside, but with its evidence taken away: not counted either
             ("ACC-NASA-TOTAL", 2024, "Enacted", "drop"),

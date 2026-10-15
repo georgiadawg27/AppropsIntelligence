@@ -173,7 +173,8 @@ Part 6 supersedes one recorded total (old record kept, marked superseded):
    the table lines (Medicaid pattern).
 3. NSF R&RA's FY2025 request emergency $420,000,000: H.Rept. 118-582 prints no row for it, but its arithmetic does
    ('Subtotal' 8,045,320 = 7,519,320 + 106,000 + 420,000; Title III 'Emergency appropriations' (716,000) = 296,000 + 420,000).
-   Our line cites S.Rept. 118-198 p.227, another document, so it stays outside. Count it on the House table's arithmetic?
+   Our line cites S.Rept. 118-198 p.227, another document. Approved 2026-10-15: counted, because S.Rept. 118-198's
+   request column prints it (p.227) inside the same NSF and Title III request totals (p.228); the evidence rows cite it.
 4. CJS Title III FY2026 Senate: the total observation holds $33,908,257,000, the FY2025 column of S.Rept. 119-44 p.219;
    the Committee recommendation column prints $33,909,609,000 (and the accounts held add to it). Approved 2026-10-15:
    superseded by OBS-1584 (part 6).
