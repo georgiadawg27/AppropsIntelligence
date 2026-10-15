@@ -97,7 +97,7 @@ class Load(StoreTest):
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (1457, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines
+                          cjs("confirmed_absence", "canonical_account_id")), (1458, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded)
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)

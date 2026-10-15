@@ -1360,11 +1360,13 @@ class CompareBrowser(GridBrowser):
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
         # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.'; and since D-2, the report-table
-        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A)
+        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A;
+        # and since D-9, a Senate figure read from the explanatory statement's narrative)
         self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
                                           "S.Rept. 118-84 restates FY2023", "Created FY2022",
                                           "H.Rept. 117-403 p.813 prints no budget-authority line",
-                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'"))
+                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'",
+                                          "the FY2023 Senate explanatory statement's narrative"))
                             for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
@@ -3669,15 +3671,14 @@ class AdjustmentLines(GridBrowser):
         self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$7,176,500,000")
 
     def test_printed_total_line_reads_as_the_report(self):
-        # CDC FY2025 House on Program level (CDC-Wide has no figure). UI-9 worded D-6's printed_total line; D-8 retired
-        # it: the enacted timing matches the report's own program-level line, and the available timing, with a part
-        # unknown, is n/a saying what is missing (owner decision E, strict). No line reads as a total less itself
+        # CDC FY2025 House on Program level. UI-9 worded D-6's printed_total line; D-8 retired it: the enacted timing
+        # matches the report's own program-level line. D-9 filled CDC-Wide Activities' figure, so the cell is the
+        # report's 7,446,058 thousand (H.Rept. 118-585 p.316), not n/a. No line reads as a total less itself
         self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC}")
         self.assertEqual(self.page.locator("[data-testid=adj-line][data-type=printed_total]").count(), 0)
-        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "n/a")
+        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "7,446,058")
         b = self.cell(self.CDC, 2025, "House Reported").locator("button.fig")
-        self.assertTrue(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
-        self.assertIn("CDC-Wide Activities and Program Support (no figure", b.get_attribute("data-reason"))
+        self.assertFalse(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
         self.assertNotIn("less the total as printed", self.page.inner_text("#compare-grid"))
 
     def test_find_changes_beta(self):

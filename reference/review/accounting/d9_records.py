@@ -19,6 +19,10 @@ So the 'unidentified' start override is cleared: the lifecycle derives a new lin
 years before fall outside its life instead of reading as missing figures. FY2027 stays as its documents print it
 (H.Rept. 119-696 p.396 '---', recorded as 0; no confirmed absence from a table's dash).
 
+Part 6, CJS Title III FY2026 Senate Reported total (owner-approved 2026-10-15): OBS-1436 recorded $33,908,257,000,
+the FY2025 column of S.Rept. 119-44's 'Total, Title III, Science' (p.219). The Committee recommendation column
+prints 33,909,609 thousand, so OBS-1436 is superseded by a record of $33,909,609,000.
+
     python reference/review/accounting/d9_records.py           # what would change
     python reference/review/accounting/d9_records.py --write   # write it (idempotent)
 """
@@ -26,6 +30,7 @@ years before fall outside its life instead of reading as missing figures. FY2027
 import argparse
 import collections
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -277,6 +282,37 @@ def doc_pages(data):
     return out
 
 
+# (old observation, the figure its column prints, the column's text in the document): read from the text layer
+SUPERSEDE = [("OBS-1436", 33909609000, "SRC-CRPT-119SRPT44", "219", "Total, Title III, Science",
+              "Committee recommendation column; OBS-1436 held the FY2025 column's 33,908,257 thousand "
+              "(owner-approved 2026-10-15, D-9 part 6)")]
+
+
+def part6(data, retired, pending=()):
+    """Supersede the observations in SUPERSEDE: -> [(old, new)] (idempotent)."""
+    obs = {o["observation_id"]: o for o in data["observations"]}
+    alloc = IDS.Allocator([o["observation_id"] for o in list(data["observations"]) + list(pending)]
+                          + list(retired.get("observations", {})))
+    out = []
+    for old_id, amount, doc, page, label, why in SUPERSEDE:
+        old = obs[old_id]
+        assert (old["source_document_id"], old["source_page"]) == (doc, page), old_id
+        if old["verification_status"] == "superseded":
+            continue                                          # done already (the text check ran then)
+        text = (ROOT / "document_store" / f"{doc}.txt").read_text()
+        line = next(x for x in text.splitlines() if label in x)
+        printed = [int(n.replace(",", "")) * 1000 for n in re.findall(r"\d{1,3}(?:,\d{3})+", line)]
+        if amount not in printed:
+            raise SystemExit(f"STOP: {doc} prints {printed} on '{label}', not {amount:,}")
+        new = dict(old, observation_id=alloc.next("OBS", "CJS"), amount=amount,
+                   source_table_or_section=f"{old['source_table_or_section']} -- supersedes {old_id}: {why}")
+        new.pop("superseded_by_observation_id", None)
+        old["verification_status"] = "superseded"
+        old["superseded_by_observation_id"] = new["observation_id"]
+        out.append((old, new))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
@@ -300,8 +336,12 @@ def main():
     print(f"part 2: {LIMITATION} start override {'cleared, note updated' if life else 'already cleared'}")
     pages = doc_pages(data)
     print(f"document table pages recorded: {pages or 'none needed'}")
-    if args.write and (obs or cas or life or pages):
-        data["observations"] += obs
+    sup = part6(data, retired, obs)
+    for old, new in sup:
+        print(f"part 6: {old['observation_id']} ${old['amount']:,} -> {new['observation_id']} ${new['amount']:,} "
+              f"({new['source_document_id']} p.{new['source_page']})")
+    if args.write and (obs or cas or life or pages or sup):
+        data["observations"] += obs + [n for _, n in sup]
         data["confirmed_absences"] += cas
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
         print("data/staged.json updated")

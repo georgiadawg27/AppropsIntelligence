@@ -136,7 +136,7 @@ missing_figure, so their gaps now show: Title II FY2017-FY2021 (8 cells: the Med
 inside the title total, no evidence rows for the title totals yet), the bill total FY2017 and FY2021 Senate, NIH FY2023 and
 FY2025 Senate, OS FY2024, FY2026 and FY2027 request.
 
-## Existing figures that changed (owner approval needed)
+## Existing figures that changed (owner-approved 2026-10-15)
 
 Part 4's evaluation lines change three published request-stage program-level figures (computed status before and after).
 Each new figure equals the table's printed program-level subtotal:
@@ -146,6 +146,12 @@ Each new figure equals the table's printed program-level subtotal:
 | CDC Public Health Scientific Services | 2024 | President's Budget | Program level | $791,222,000 | $961,564,000 | S.Rept. 118-84 p.377 ('Evaluation Tap Funding' 170,342; program-level subtotal 961,564) |
 | CDC Environmental Health | 2023 | President's Budget | Program level | $394,850,000 | $401,850,000 | H.Rept. 117-403 p.812 ('Evaluation Tap Funding' 7,000; subtotal 401,850) |
 | CDC Environmental Health | 2024 | President's Budget | Program level | $413,850,000 | $420,850,000 | S.Rept. 118-84 p.377 ('Evaluation Tap Funding' 7,000) |
+
+Part 6 supersedes one recorded total (old record kept, marked superseded):
+
+| Account | FY | Stage | Old | New | Source |
+|---|---|---|---|---|---|
+| CJS Title III total | 2026 | Senate Reported | OBS-1436 $33,908,257,000 (the FY2025 column) | OBS-1584 $33,909,609,000 | S.Rept. 119-44 p.219, 'Total, Title III, Science', Committee recommendation column |
 
 ## Owner questions
 
@@ -169,8 +175,8 @@ Each new figure equals the table's printed program-level subtotal:
    ('Subtotal' 8,045,320 = 7,519,320 + 106,000 + 420,000; Title III 'Emergency appropriations' (716,000) = 296,000 + 420,000).
    Our line cites S.Rept. 118-198 p.227, another document, so it stays outside. Count it on the House table's arithmetic?
 4. CJS Title III FY2026 Senate: the total observation holds $33,908,257,000, the FY2025 column of S.Rept. 119-44 p.219;
-   the Committee recommendation column prints $33,909,609,000 (and the accounts held add to it). Correct the figure
-   (supersede, old -> new) on your approval.
+   the Committee recommendation column prints $33,909,609,000 (and the accounts held add to it). Approved 2026-10-15:
+   superseded by OBS-1584 (part 6).
 
 ## What stays n/a and what would close it
 
