@@ -1019,3 +1019,22 @@ wait for fonts and a frame (`GridBrowser.settle`, called by `open` and the `go` 
 Test: `test_touch_swipe_moves_the_grid_with_the_bar` (raw CDP touch events; synthesizeScrollGesture doesn't scroll
 the page headless). Owner approved the departures: panel full width under ~980px, 200px account minimum, 17/20px
 panel type, definitions closed by default and not opened by Reviewer mode.
+
+## Platform Phase 1: site data on R2 (2026-10-15)
+Brief: /mnt/project-files/platform/platform-plan.md, Phase 1 (owner approved 2026-10-15). Everything is gated;
+with no R2 secrets the export job behaves as before.
+- `export_static.py`: `--data-base URL` / `APPROPS_DATA_BASE` sets the page's `approps-data` meta (`data_meta`:
+  https only, trailing "/"). R1: a split subcommittee (past `SPLIT_BYTES`) no longer keeps its whole file; the
+  feature flags are worked out before it is removed. `read_grid(data, name)` puts a split grid back together for
+  Python readers (tests, scripts/grid_counts.py, reference/review/account_lifecycle.py).
+- `web/index.html`, R2: a split grid is fetched by year. `loadSubcommittee(name, years)` (no `years`: every year,
+  as the account page, Find changes and the watchlist import use it). The grid fetches `gridYears`: fy-1, fy, a, b;
+  every year for Enacted history or while something is selected (the panel's enacted bars). `SPLIT` / `absorbYear`
+  merge each year file into the same row objects; `ready()` drops a draw a later change has overtaken.
+- `platform/data-worker/`: the public Worker (R2 binding `DATA`, key `data/<path>.json`, CORS *, ETag, 5 min cache).
+  Not deployed by CI. README lists the owner's setup steps.
+- `.github/workflows/export-static.yml`: R2 upload when the three R2 secrets exist (bucket: variable `R2_BUCKET`,
+  default approps-data); with the variable `DATA_BASE_URL` too, the page points at the Worker, the job checks the
+  Worker's index.json against the upload, and docs/data/ is no longer committed. tests.yml runs the Worker's tests.
+Open items: removing docs/data/ from git (and stopping PRs from committing it) waits for the owner, after the Worker
+has served the page; Find changes and the account page still load every year of a split subcommittee.

@@ -17,11 +17,13 @@ import sys
 from pathlib import Path
 
 DOCS = Path(__file__).resolve().parents[2] / "docs" / "data"
+sys.path.insert(0, str(DOCS.parents[1]))
+from export_static import read_grid  # noqa: E402
 
 
 def rows():
     for code in json.loads((DOCS / "subcommittees.json").read_text())["subcommittees"]:
-        g = json.loads((DOCS / "subcommittees" / f"{code}.json").read_text())
+        g = read_grid(DOCS, code)
         every = g["rows"] + [t["total"] for t in g["titles"] if t["total"]] + ([g["bill_total"]] if g.get("bill_total") else [])
         for r in every:
             L, a = r["lifecycle"], r["account"]

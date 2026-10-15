@@ -32,7 +32,7 @@ FLAGGED_CELLS = GRID_COUNTS["flagged_cells"]
 
 
 def grid(sc):
-    return json.loads((DOCS / "data" / "subcommittees" / f"{sc}.json").read_text())
+    return E.read_grid(DOCS / "data", sc)
 
 
 def headline_observations(g):
@@ -1002,16 +1002,22 @@ class AccountingLayer(unittest.TestCase):
         self.assertEqual(n, len(self.data["account_attributes"]))
 
     def test_split_files_hold_the_same_grid(self):
+        # a subcommittee past SPLIT_BYTES is published one file per fiscal year instead of whole (R1: not both);
+        # test_static.py checks the years put back together are the live answer
         index = json.loads((DOCS / "data" / "index.json").read_text())
         for sc, g in self.grids.items():
             folder = DOCS / "data" / "subcommittees" / sc
-            size = (DOCS / "data" / "subcommittees" / f"{sc}.json").stat().st_size
+            whole = DOCS / "data" / "subcommittees" / f"{sc}.json"
+            size = len((json.dumps(g, sort_keys=True, ensure_ascii=False, separators=(",", ":")) + "\n").encode())
             self.assertEqual(sc in index["split_subcommittees"], size > E.SPLIT_BYTES, sc)
             self.assertEqual(folder.is_dir(), size > E.SPLIT_BYTES, sc)
+            self.assertEqual(whole.exists(), size <= E.SPLIT_BYTES, sc)
             if not folder.is_dir():
                 continue
             head = json.loads((folder / "index.json").read_text())
             self.assertEqual(head["fiscal_years"], g["fiscal_years"])
+            self.assertEqual(sorted(p.name for p in folder.glob("*.json")),
+                             sorted(["index.json"] + list(head["files"].values())))
             parts = [json.loads((folder / head["files"][str(fy)]).read_text()) for fy in g["fiscal_years"]]
             for p in parts:
                 self.assertLess((folder / f"{p['fiscal_year']}.json").stat().st_size, E.SPLIT_BYTES)
@@ -1019,5 +1025,6 @@ class AccountingLayer(unittest.TestCase):
                 cells = {}
                 for p in parts:
                     self.assertEqual(p["rows"][i]["account"], row["account"])
+                    self.assertTrue(all(k.startswith(f"{p['fiscal_year']}|") for k in p["rows"][i]["cells"]))
                     cells.update(p["rows"][i]["cells"])
                 self.assertEqual(cells, row["cells"])

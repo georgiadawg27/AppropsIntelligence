@@ -10,6 +10,8 @@ sys.path.insert(0, str(ROOT / "reference" / "review" / "lhhs" / "backfill"))
 _argv, sys.argv = sys.argv, sys.argv[:1]
 import build_year as B  # noqa: E402
 sys.argv = _argv
+sys.path.insert(0, str(ROOT))
+import export_static as E  # noqa: E402
 
 
 class FormerNamesByYear(unittest.TestCase):
@@ -40,7 +42,7 @@ class FormerNamesByYear(unittest.TestCase):
 
 
 def published(sc="LHHS"):
-    g = json.loads((ROOT / "docs" / "data" / "subcommittees" / f"{sc}.json").read_text())
+    g = E.read_grid(ROOT / "docs" / "data", sc)
     return {r["account"]["canonical_account_id"]: r for r in g["rows"]}
 
 
@@ -233,7 +235,7 @@ class NotReported(unittest.TestCase):
         living = [c for c in cells if not c.get("outside_life")]
         states = {line["state"] for c in living for line in c.get("lines", [])}
         self.assertEqual(states, {"not_reported"})
-        counts = json.loads((ROOT / "docs" / "data" / "subcommittees" / "LHHS.json").read_text())["state_counts"]
+        counts = E.read_grid(ROOT / "docs" / "data", "LHHS")["state_counts"]
         self.assertGreaterEqual(counts["not_reported"], len(living))         # (and the Title II total row)
 
 

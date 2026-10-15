@@ -16,6 +16,7 @@ import functools
 import importlib.util
 import http.server
 import json
+import re
 import shutil
 import sqlite3
 import sys
@@ -637,22 +638,39 @@ class CompareBrowser(GridBrowser):
                 self.assertEqual(self.shown(), self.expected(self.grid, [(fy - 1, "Enacted")] + [(fy, st) for st in FOUR]))
 
     def test_split_subcommittee_loads_the_same_grid(self):
-        # a subcommittee file past export_static.SPLIT_BYTES is also published per fiscal year (UI-0); the static
-        # page reads those files and puts back exactly the whole file (which stays published), and the live /api
-        # answer is the same grid
+        # a subcommittee file past export_static.SPLIT_BYTES is published per fiscal year instead of whole (UI-0, R1);
+        # the static page reads those files and puts back exactly the live /api answer
         index = json.loads((self.out / "data" / "index.json").read_text())
         self.assertIn("LHHS", index["split_subcommittees"])
-        whole = json.loads((self.out / "data" / "subcommittees" / "LHHS.json").read_text())
+        self.assertFalse((self.out / "data" / "subcommittees" / "LHHS.json").exists())
+        whole = E.read_grid(self.out / "data", "LHHS")
         self.assertEqual(whole, self.lhhs)
         self.open("static", "?view=compare&sc=LHHS")
         got = self.page.evaluate("source.subcommittee('LHHS')")
         self.assertEqual(got, whole)
+
+    def test_split_subcommittee_fetches_only_the_years_on_screen(self):
+        # R2: the grid fetches the year shown and the one before it (Stages), the two compared (Years), and every
+        # year only for Enacted history or a selection (the account's enacted bars)
+        years = lambda urls: sorted({int(u.rsplit("/", 1)[1][:-5]) for u in urls
+                                     if re.search(r"/subcommittees/LHHS/\d{4}\.json$", u)})
         fetched = []
         self.page.on("request", lambda r: fetched.append(r.url))
-        self.page.reload()
-        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-        self.assertTrue(any(u.endswith("/subcommittees/LHHS/2026.json") for u in fetched), fetched)
+        self.open("static", "?view=compare&sc=LHHS&fy=2024")
         self.assertFalse(any(u.endswith("/subcommittees/LHHS.json") for u in fetched))
+        shown = years(fetched)
+        self.assertTrue({2023, 2024} <= set(shown), shown)
+        self.assertLess(len(shown), len(self.lhhs["fiscal_years"]), shown)
+        # what the grid shows is the whole grid's cells for those years
+        self.menu("click", "#expand-all")
+        self.assertEqual(self.shown(), self.expected(self.lhhs, [(2023, "Enacted")] + [(2024, st) for st in FOUR]))
+        fetched.clear()
+        self.open("static", "?view=compare&sc=LHHS&grid=years&a=2019&b=2021")
+        self.assertTrue({2019, 2021} <= set(years(fetched)), years(fetched))
+        self.assertNotIn(2017, years(fetched))
+        fetched.clear()
+        self.open("static", "?view=compare&sc=LHHS&grid=history")
+        self.assertEqual(years(fetched), self.lhhs["fiscal_years"])
 
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
@@ -1856,6 +1874,7 @@ class ExploreV1(GridBrowser):
                 self.assertNotIn("Bill / law", panel.inner_text())
                 # "See every stage for this account" opens the account
                 self.page.click("[data-testid=src-account-btn]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 self.assertEqual(panel.get_attribute("data-mode"), "account")
 
     # ---- UI-2b: grid and panel polish (owner review, 2026-10-13) ---------------------------------------------
@@ -2015,6 +2034,7 @@ class ExploreV1(GridBrowser):
                          "Source for National Heart, Lung, and Blood Institute, FY2026 House")
         # and for an open account
         self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+        self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
         self.assertEqual(panel.get_attribute("data-mode"), "account")
         self.page.keyboard.press("Escape")
         self.assertEqual(panel.get_attribute("data-mode"), "overview")
@@ -2034,6 +2054,7 @@ class ExploreV1(GridBrowser):
         self.assertEqual(bg(target), "rgb(255, 241, 194)")
         # the selected account row: light yellow, over the hover and the enacted wash
         self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+        self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
         row = self.page.locator("tr[data-account=ACC-HHS-NIH-NCI]")
         self.cell("ACC-HHS-NIH-NCI", 2026, "Enacted").hover()
         self.assertEqual({bg(td) for td in row.locator("td").all()}, {"rgb(255, 246, 220)"})
@@ -2044,6 +2065,7 @@ class ExploreV1(GridBrowser):
             with self.subTest(where=where):
                 self.go("?sc=LHHS&fy=2026&open=ACC-HHS-NIH-TOTAL,ACC-HHS-CMS-TOTAL", where)
                 self.page.click("tr[data-account=ACC-HHS-NIH-NCI] [data-testid=row-name]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 self.assertIn("acct=ACC-HHS-NIH-NCI", self.page.url)
                 self.assertEqual(self.page.get_attribute("tr[data-account=ACC-HHS-NIH-NCI]", "data-sel"), "row")
                 text = lambda t: self.page.inner_text(f"[data-testid={t}]")
@@ -2082,6 +2104,7 @@ class ExploreV1(GridBrowser):
                 stages.nth(2).locator("[data-testid=acct-stage-fig]").click()
                 self.assertEqual(self.page.inner_text("[data-testid=src-stage]"), "FY2026 House")
                 self.page.click("[data-testid=src-account-btn]")
+                self.page.wait_for_selector("#side-panel[data-mode=account]")   # every year fetched first (R2)
                 # enacted history: one bar per year; the CR year lighter; the bars are the enacted figures held
                 bars = self.page.locator("[data-testid=acct-bar]")
                 self.assertEqual([b.get_attribute("data-fy") for b in bars.all()], [str(y) for y in YEARS])
@@ -2561,6 +2584,7 @@ class PageScroll(GridBrowser):
         # and selecting an account
         toggle.click()
         self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=row-name]").click()
+        self.page.wait_for_selector("#side-panel[data-mode=account]")      # its enacted bars: every year fetched first (R2)
         self.assertTrue(self.page.is_visible("#side-panel"))
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "account")
         self.assertEqual(toggle.inner_text(), "Hide panel")
@@ -2741,6 +2765,8 @@ class PhoneV1(GridBrowser):
                 # tapping a line opens the sheet: the exact $K, five stages each with document · page · bill
                 self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain").click()
                 sheet = self.page.locator("#p-sheet")
+                # the sheet's enacted bars read every year: a split subcommittee fetches the rest first (R2)
+                self.page.wait_for_selector("#p-sheet [data-testid=p-sheet-close]")
                 self.assertTrue(sheet.is_visible())
                 self.assertEqual(sheet.get_attribute("role"), "dialog")
                 self.assertEqual(sheet.locator("[data-testid=acct-name]").inner_text(), "National Cancer Institute")
@@ -2856,6 +2882,7 @@ class PhoneV1(GridBrowser):
         line = self.page.locator(f"#p-list .prow[data-account='{self.NCI}'] .pmain")
         line.focus()
         self.page.keyboard.press("Enter")
+        self.page.wait_for_selector("#p-sheet [data-testid=p-sheet-close]")      # every year fetched first (R2)
         self.assertTrue(self.page.is_visible("#p-sheet"))
         self.assertEqual(self.page.evaluate("document.activeElement.dataset.testid"), "p-sheet-close")
         for _ in range(25):

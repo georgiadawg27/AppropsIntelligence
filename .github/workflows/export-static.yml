@@ -5,6 +5,15 @@
 # only writer of that file (pull requests don't commit it).
 # The export is deterministic, so a run that changes nothing commits nothing.
 # Commits made with GITHUB_TOKEN don't trigger workflows, so this can't loop.
+#
+# The R2 copy of the site data (platform plan, Phase 1), off until the owner turns it on:
+#   - with the R2_ACCOUNT_ID, R2_ACCESS_KEY_ID and R2_SECRET_ACCESS_KEY secrets set, the job also uploads docs/data/
+#     to the R2 bucket (repository variable R2_BUCKET, default approps-data) under data/, which
+#     platform/data-worker/ serves publicly; docs/data/ is still committed and the page still reads it
+#   - with the repository variable DATA_BASE_URL set as well (the Worker's address ending in /data/), the page
+#     reads the data from that address instead, the job checks the Worker answers with the index.json it just
+#     uploaded before committing, and docs/data/ is no longer committed (removing the copy in git is a separate step)
+#   With neither, the job is what it was.
 name: Export static site
 
 on:
@@ -53,17 +62,65 @@ jobs:
           python-version: "3.11.17"
       - name: Install export dependencies (the pinned versions the tests ran on)
         run: pip install -r requirements.lock
+      - name: Is the R2 copy turned on?
+        # true only with all three secrets set; their values are never printed
+        id: r2
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          DATA_BASE_URL: ${{ vars.DATA_BASE_URL }}
+        run: |
+          if [ -n "$R2_ACCOUNT_ID" ] && [ -n "$R2_ACCESS_KEY_ID" ] && [ -n "$R2_SECRET_ACCESS_KEY" ]; then
+            echo "upload=true" >> "$GITHUB_OUTPUT"
+            if [ -n "$DATA_BASE_URL" ]; then echo "serve=true" >> "$GITHUB_OUTPUT"; fi
+          else
+            echo "R2 secrets not set -- docs/data/ is committed as before, nothing is uploaded"
+          fi
       - name: Build the workbook from data/staged.json and export docs/, with the Download workbook
-        # the only writer of docs/Approps_Pilot_Schema_Loaded.xlsx (pull requests don't commit it)
+        # the only writer of docs/Approps_Pilot_Schema_Loaded.xlsx (pull requests don't commit it); the page reads
+        # its data from data/ next to it, or from the Worker once DATA_BASE_URL is set (with the R2 copy on)
+        env:
+          APPROPS_DATA_BASE: ${{ steps.r2.outputs.serve == 'true' && vars.DATA_BASE_URL || '' }}
         run: python export_static.py --publish-workbook
       - name: The Download workbook holds the data's values and formulas
         # every cell's value and formula on every sheet, against the digest the data's commit carries
         run: python scripts/workbook_digest.py docs/Approps_Pilot_Schema_Loaded.xlsx --compare tests/fixtures/workbook_values.json
       - name: Regenerate reference/accounts.json from the same build
         run: python reference/build_accounts.py
-      - name: Commit docs/ and reference/accounts.json if they changed
+      - name: Upload the site data to R2
+        # docs/data/ to the bucket's data/ (files no longer exported are removed there too), before the commit that
+        # points the page at it
+        if: steps.r2.outputs.upload == 'true'
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          # R2 doesn't take the checksum headers newer AWS CLIs send by default
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+          R2_BUCKET: ${{ vars.R2_BUCKET || 'approps-data' }}
         run: |
-          git add -A docs reference/accounts.json
+          aws s3 sync docs/data "s3://$R2_BUCKET/data" --delete --only-show-errors \
+            --content-type "application/json; charset=utf-8" \
+            --endpoint-url "https://$R2_ACCOUNT_ID.r2.cloudflarestorage.com"
+          echo "uploaded $(find docs/data -type f | wc -l) files to the R2 bucket" >> "$GITHUB_STEP_SUMMARY"
+      - name: The Worker serves the data just uploaded
+        if: steps.r2.outputs.serve == 'true'
+        env:
+          DATA_BASE_URL: ${{ vars.DATA_BASE_URL }}
+        run: curl -fsS --retry 3 "${DATA_BASE_URL}index.json" | cmp - docs/data/index.json
+      - name: Commit docs/ and reference/accounts.json if they changed
+        env:
+          # once the page reads the Worker, docs/data/ stays out of git
+          SKIP_DATA: ${{ steps.r2.outputs.serve == 'true' && '1' || '' }}
+        run: |
+          if [ -n "$SKIP_DATA" ]; then
+            git add -A docs reference/accounts.json ':(exclude)docs/data'
+          else
+            git add -A docs reference/accounts.json
+          fi
           if git diff --cached --quiet; then
             echo "docs/ unchanged -- nothing to commit"
             exit 0

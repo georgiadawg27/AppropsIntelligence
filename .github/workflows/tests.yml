@@ -9,7 +9,8 @@
 #               checks the site's copy (lookup results stored) against LibreOffice's results,
 #               uploads it as an artifact, then runs the store, ingest, extraction and build tests
 #               (every module but the three below)
-#   browser  -- the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node), and
+#   browser  -- the data Worker's tests (platform/data-worker/, node), then
+#               the page: tests/test_web.py, test_compare.py, test_static.py (playwright + node), and
 #               tests/test_any_subcommittee.py again, whose page check (a third subcommittee on the page) needs
 #               Chromium and skips in the data job
 # The toolchain is pinned: ubuntu-24.04, Python 3.11.17, requirements.lock (exact package versions) and
@@ -223,6 +224,8 @@ jobs:
       - uses: actions/setup-node@v4     # tests/test_static.py: match.js parity under node
         with:
           node-version: "22"
+      - name: The data Worker (platform/data-worker/, no packages)
+        run: node --test platform/data-worker/test/index.test.mjs
       - name: Install dependencies
         run: pip install -r requirements.lock
       - name: Browser cache key
