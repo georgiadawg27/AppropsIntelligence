@@ -1396,7 +1396,10 @@ class CompareBrowser(GridBrowser):
             # NSF R&RA's headlines are the paragraph's total (D-3): the table's nondefense and defense lines are the note
             self.assertTrue(all(x.startswith(("The House subcommittee draft's", "Includes $2,500,000,000",
                                               "Funded within PHSSEF", "S.Rept. 118-84 restates FY2023",
-                                              "The table prints 'Health Surveillance"))
+                                              "The table prints 'Health Surveillance",
+                                              # D-9's new FY2024 request-only accounts (Customer Experience, ASPR
+                                              # Manufacturing and Production) and the Senate table's figure beside the bill's
+                                              "Proposed in the FY2024 request", "S.Rept. 118-84 p.390 prints"))
                                 or "the paragraph's amount counts both" in x for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
