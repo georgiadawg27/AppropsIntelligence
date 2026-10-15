@@ -1,5 +1,32 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## UI-9: Non-defense filter, fewer marks, plain n/a (2026-10-15, this PR)
+
+Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). Spec:
+`reference/specs/anchored-totals.md` (UI-9 row); owner decisions A and D.
+
+- Non-defense (decision D): Filter › Advanced "Non-defense" (`f-nodef`, URL `defense=excl`, chip, badge, subline and
+  export header " · non-defense"). Every figure, total, difference, adjustment line and export reads the published
+  `views_nondefense` (feature `nondefense`); the page takes nothing out itself. One exclusion at a time until D-8
+  publishes a combined set: turning on one turns the other off, with a note (`excl-note`); a URL with both keeps
+  Exclude earmarks.
+- The View tab's Defense portion and Nondefense columns are gone (owner: "remove the defense/non-defense in the view
+  tab"). `defense_split` left BUILT; a defense portion still lists in the source panel's components. Old links:
+  `cols=defense,nondefense` is ignored; `fig=...|nondefense` opens the stage's figure.
+- Σ (decision A): only on a total that is our own sum (computed, accounts_behind), differs from As printed, so no
+  printed line backs it. No mark on a checked figure or a sum equal to As printed. Overview reads the same.
+- n/a: a not computable cell reads "n/a" for accounts and totals alike; hover is one plain line ("n/a on <basis>:
+  <why>"), worded from the data's reason by `whyText` (missing figure, request language, budget class, money in no
+  account held, ...). The source panel shows that line, then "Details:" with the full reason (documents, pages). The
+  raw reason is on the cell as `data-reason`. UI-10 swaps the reading for D-8's cause codes.
+- The `printed_total` adjustment line reads "Printed in the report as one program-level total (not itemised: CDC-Wide
+  Activities and Program Support has no figure entered yet)"; lines whose reason differs are separate lines.
+
+Open:
+- web/ui_contract.json still calls `nondefense` and `defense_split` "column" features (spec_row text); D-8 owns the
+  contract (v9) and can reword them.
+- The overview tiles still say "Not computable" (not a grid cell); UI-10 can align them with cause words.
+
 ## D-7: Printed summary lines (2026-10-14, this PR)
 
 The summary lines each held Labor-HHS and CJS report prints under its grand total and title totals, recorded as
