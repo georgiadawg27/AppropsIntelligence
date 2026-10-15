@@ -4,8 +4,8 @@
 
 - 2026-10-15 rulings applied: CDC request changes approved; Title III FY2026 Senate superseded (OBS-1436 -> OBS-1584);
   NSF FY2025 request emergency counted (Senate table prints it inside the same totals); ARPA-H/NIRSQ counted in the
-  total the table prints them under (part 7); four new accounts (part 8). Open: Customer Experience FY2024 $20M, budget
-  class for the new accounts, the Child Support advance option.
+  total the table prints them under (part 7); four new accounts (part 8). Customer Experience FY2024 and the Child Support
+  advance (first option, part 9) done. Open: budget class for the new accounts.
 - Parts 1-4 as in `reference/progress/D-9.md`; part 5 adds 22 evidence rows (`total_lines_inside.csv`). Review, counts and
   owner questions: `reference/review/accounting/review-D9.md`.
 - n/a entries: accounts 604 -> 602, totals 2,116 -> 1,890. Six CJS Title III totals now reach their printed figure.

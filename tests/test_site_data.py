@@ -545,7 +545,7 @@ class AccountingLayer(unittest.TestCase):
         for k, r in listed.items():
             self.assertEqual(r["published"] == "yes", r["lines_printed_inside"] != "" and int(r["short"]) == 0, k)
         self.assertEqual(listed[("ACC-HHS-CMS-TOTAL", "2021|House Reported")]["short"], "1000")
-        self.assertGreater(len(gaps), 30)
+        self.assertGreater(len(gaps), 20)      # D-9 closed some (29 left): the list is still more than a handful
 
     # ------------------------------------------------------------ D-6 round 3: held lines need position evidence
     def total_cell(self, aid, fy, stage):
@@ -565,7 +565,10 @@ class AccountingLayer(unittest.TestCase):
         import site_accounting as SA
         evidence = list(csv.DictReader((ROOT / "reference" / "review" / "accounting" / "total_lines_inside.csv").open()))
         inside = {(r["total_observation_id"], r["line_observation_id"]) for r in evidence if r["inside"] == "yes"}
-        self.assertTrue(all(r["line_document"] == r["document"] for r in evidence if r["inside"] == "yes"))
+        # a line from another document than the total's table is outside, except an advance tagged from the bill or
+        # law text (a component) that the table prints inside the total (owner, 2026-10-15, D-9)
+        self.assertTrue(all(r["line_document"] == r["document"] or r["line_observation_id"].startswith("CMP-")
+                            for r in evidence if r["inside"] == "yes"))
         self.assertTrue(all(r["where"] and r["evidence"] for r in evidence if r["inside"] == "yes"))
         cases = [
             # printed outside: another document's line (P.L. 114-254's MCH line beside H.Rept. 115-244's total), closing

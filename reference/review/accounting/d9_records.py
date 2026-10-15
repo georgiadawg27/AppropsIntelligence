@@ -273,6 +273,9 @@ FIGURES += [
     (CX, 2025, "President's Budget", 14000000, "SRC-CRPT-118SRPT207", "451",
      "Title II, Office of the Secretary -- printed as 'Customer Experience' [Budget estimate column] 14,000 (2024 "
      "appropriation and Committee recommendation columns blank) (D-9)"),
+    (CX, 2024, "President's Budget", 20000000, "SRC-CRPT-118SRPT84", "391",
+     "Title II, Office of the Secretary -- printed as 'Customer Experience' [Budget estimate column] 20,000 (2023 "
+     "appropriation and Committee recommendation columns blank; owner-approved 2026-10-15) (D-9)"),
     (ASPR_MP, 2024, "President's Budget", 400000000, "SRC-CRPT-118SRPT84", "390",
      "Title II, ASPR -- printed as 'Pandemic Preparedness and Biodefense' under 'Manufacturing and Production' "
      "[Budget estimate column] 400,000 ('Subtotal, Manufacturing and Production' 400,000); the narrative (p.194) "
@@ -298,6 +301,12 @@ ABSENCES += [
      "no mention) (D-9)."),
     (CX, 2025, "Senate Reported", "SRC-BILLS-118S4942RS",
      "S. 4942 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: no "
+     "mention) (D-9)."),
+    (CX, 2024, "House Reported", "SRC-BILLS-118HR5894IH",
+     "H.R. 5894 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: "
+     "no mention) (D-9)."),
+    (CX, 2024, "Senate Reported", "SRC-BILLS-118S2624RS",
+     "S. 2624 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: no "
      "mention) (D-9)."),
     (ASPR_MP, 2024, "House Reported", "SRC-BILLS-118HR5894IH",
      "H.R. 5894 has no 'Manufacturing and Production' heading or appropriation under ASPR (whole text searched for "

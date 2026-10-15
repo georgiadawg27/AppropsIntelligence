@@ -565,6 +565,17 @@ class Layer:
         beside = held_lines(lines)
         # owner, D-6 round 3: only the held lines the table prints inside this total (INSIDE_FILE's evidence)
         inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
+        # owner, 2026-10-15 (D-9): an advance tagged from the bill or law text beside a headline, which the table prints
+        # inside the total (its 'New advance, 1st quarter' row), counts as held (the evidence row names the component)
+        for m, mc in lines:
+            have = {x["component_id"] for x in beside if x["account"] == m and x["component_id"]}
+            for c in mc.get("components") or []:
+                if (not c["in_headline"] and c["type"] == "advance_enacted" and c["component_id"] not in have
+                        and (h["observation_id"], c["component_id"]) in self.inside):
+                    inside.append({"account": m, "observation_id": c["component_id"], "amount": c["amount"],
+                                   "label": c["type"], "source_document_id": c.get("source_document_id"),
+                                   "source_page": c.get("source_page"), "component_id": c["component_id"],
+                                   "component_type": c["type"]})
         # D-9: the total's own lines the table prints inside it, with evidence: in the printed figure, held on the total
         own = [{"account": a["canonical_account_id"], "observation_id": o["observation_id"], "amount": o["amount"],
                 "label": o["component"], "source_document_id": o["source_document_id"],

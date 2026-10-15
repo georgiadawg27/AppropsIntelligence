@@ -167,7 +167,7 @@ Part 6 supersedes one recorded total (old record kept, marked superseded):
    117-403's two cells (`total_members_printed.csv`) and leaves NIH's; NIRSQ counts in the NIH FY2018-FY2021 request totals
    (evidence rows). The opioid response, Customer Experience, ASPR Manufacturing and SAMHSA lines need new accounts: owner
    asked whether in this PR or the next.
-2. ACF's Child Support advance (FY2021 Enacted $1,400,000,000; FY2022 and FY2023 every stage $1,300,000,000; FY2024
+2. (Ruled 2026-10-15: the first option, part 9.) ACF's Child Support advance (FY2021 Enacted $1,400,000,000; FY2022 and FY2023 every stage $1,300,000,000; FY2024
    request and Senate $1,400,000,000; the 'New advance, 1st quarter' rows, e.g. H.Rept. 117-403 p.823). We already hold each
    as an advance_enacted component from the bill or law text, beside the headline, but the build-down counts only held
    observation lines, and a line from another document than the table is outside by rule. Adding the table's line as an
@@ -220,8 +220,32 @@ Confirmed absences from bill text (whole text searched): Customer Experience FY2
 (S. 4942); Manufacturing and Production FY2024 House (H.R. 5894); the Block Grant FY2026 House (H.R. 5304) and Senate (S. 2587), FY2027 House (H.R. 9260). The opioid account ends after FY2018 Enacted (no
 FY2019 heading in P.L. 115-245, H.R. 6470 or S. 3158), so later cells fall outside its life. Budget class is not
 recorded for any of the four (no Appendix account mapped), so their discretionary views stay n/a (no_class).
-Held for the owner: Customer Experience FY2024 request $20,000,000 (S.Rept. 118-84 p.391), exactly OS's FY2024 gap.
-Total gaps 115 -> 102.
+Customer Experience FY2024 request $20,000,000 (S.Rept. 118-84 p.391), owner-approved 2026-10-15, with absences from
+H.R. 5894 and S. 2624; it closes OS's FY2024 gap. Total gaps 115 -> 101.
+
+## Part 9: the Child Support advance (owner, 2026-10-15: the first option)
+
+The build-down counts an advance tagged from the bill or law text beside the Child Support headline as held, where the
+table prints it inside the ACF total ('New advance, 1st quarter' under Child Support; 'Advance appropriations' under
+'Total, Administration for Children and Families'). 11 evidence rows name the component (`site_accounting.total_layer`).
+No data changed. Nine ACF totals now reach their printed figure.
+
+| FY | Stage | Component (law/bill text) | Table, pages | Short after |
+|---|---|---|---|---|
+| 2021 | Enacted | CMP-LHHS-0635 $1,400,000,000 (P.L. 116-260) | H.Rept. 117-96 pp.484-488 | -$463,000 (as FY2021 House) |
+| 2022 | President's Budget | CMP-LHHS-1002 $1,300,000,000 | H.Rept. 117-96 pp.484-488 | 0 |
+| 2022 | House Reported | CMP-LHHS-0562 $1,300,000,000 | H.Rept. 117-96 pp.484-488 | $200,000,000 (not found yet) |
+| 2022 | Senate Reported | CMP-LHHS-0574 $1,300,000,000 | FY2022 Senate statement pp.354-356 | 0 |
+| 2022 | Enacted | CMP-LHHS-0587 $1,300,000,000 | H.Rept. 117-403 pp.823-828 | 0 |
+| 2023 | President's Budget | CMP-LHHS-0992 $1,300,000,000 | H.Rept. 117-403 pp.823-828 | 0 |
+| 2023 | House Reported | CMP-LHHS-0523 $1,300,000,000 | H.Rept. 117-403 pp.823-828 | 0 |
+| 2023 | Senate Reported | CMP-LHHS-0524 $1,300,000,000 | FY2023 Senate statement pp.411-414 | 0 |
+| 2023 | Enacted | CMP-LHHS-0522 $1,300,000,000 | S.Rept. 118-84 pp.384-387 | 0 |
+| 2024 | President's Budget | CMP-LHHS-0993 $1,400,000,000 | S.Rept. 118-84 pp.384-387 | 0 |
+| 2024 | Senate Reported | CMP-LHHS-0144 $1,400,000,000 | S.Rept. 118-84 pp.384-387 | 0 |
+
+The held-line test now allows an evidence row whose line is such a component from another document (owner ruling);
+the gap-list test's floor moved from more than 30 listed gaps to more than 20 (29 remain).
 
 ## What stays n/a and what would close it
 

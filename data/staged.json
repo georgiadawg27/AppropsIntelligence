@@ -134579,6 +134579,27 @@
    "verification_status": "unverified",
    "component": "",
    "headline_observation_id": ""
+  },
+  {
+   "observation_id": "OBS-LHHS-5098",
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "fiscal_year": 2024,
+   "stage": "President's Budget",
+   "chamber": "N/A",
+   "bill_id": "",
+   "report_id": "",
+   "amount": 20000000,
+   "amount_type": "budget authority",
+   "offsetting_collections": "FALSE",
+   "transfer_link_account_id": "",
+   "source_document_id": "SRC-CRPT-118SRPT84",
+   "source_page": "391",
+   "source_table_or_section": "Title II, Office of the Secretary -- printed as 'Customer Experience' [Budget estimate column] 20,000 (2023 appropriation and Committee recommendation columns blank; owner-approved 2026-10-15) (D-9)",
+   "extraction_method": "text-extracted",
+   "confidence": 0.95,
+   "verification_status": "unverified",
+   "component": "",
+   "headline_observation_id": ""
   }
  ],
  "source_docs": [
@@ -380189,6 +380210,28 @@
    "source_document_id": "SRC-BILLS-119HR9260RH",
    "evidence": "H.R. 9260 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
    "confirmed_date": "2026-10-15"
+  },
+  {
+   "confirmed_absence_id": "CA-LHHS-0172",
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "fiscal_year": 2024,
+   "stage": "House Reported",
+   "amount_type": "budget authority",
+   "component": "",
+   "source_document_id": "SRC-BILLS-118HR5894IH",
+   "evidence": "H.R. 5894 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: no mention) (D-9).",
+   "confirmed_date": "2026-10-15"
+  },
+  {
+   "confirmed_absence_id": "CA-LHHS-0173",
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "fiscal_year": 2024,
+   "stage": "Senate Reported",
+   "amount_type": "budget authority",
+   "component": "",
+   "source_document_id": "SRC-BILLS-118S2624RS",
+   "evidence": "S. 2624 has no 'Customer Experience' heading or appropriation (whole text searched for /Customer Experience/: no mention) (D-9).",
+   "confirmed_date": "2026-10-15"
   }
  ],
  "components": [
@@ -463521,6 +463564,12 @@
    "fiscal_year": 2027,
    "stage_basis": "enacted",
    "note": "075-0379-0-1-551: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+  },
+  {
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "fiscal_year": 2024,
+   "stage_basis": "request",
+   "note": "no Appendix account mapped (appendix_map.csv): none found"
   },
   {
    "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
