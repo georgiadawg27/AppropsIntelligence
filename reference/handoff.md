@@ -16,6 +16,7 @@
   FY2021 E, FY2021 S (the NIH table prints a separate '(with transfer)' total equal to the computed view; H.Rept.
   117-96 p.477, FY2021 Senate report p.252) and CDC FY2023 S (p.405 prints no Fund line). Failures stay 19.
 - Open for the owner: the account choices from purpose wording (sec. 237 list; NEF building money to B&F).
+
 ## UI-10: Total build-up, cause words, both exclusions together (2026-10-15, this PR)
 
 Page only (web/index.html, docs/index.html regenerated; web/ui_contract.json wording and the page's BUILT set). No
