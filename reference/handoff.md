@@ -1,5 +1,19 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-9: Data fills for the anchored totals (2026-10-15, this PR)
+
+- Parts 1-4 as in `reference/progress/D-9.md`; part 5 adds 22 evidence rows (`total_lines_inside.csv`). Review, counts and
+  owner questions: `reference/review/accounting/review-D9.md`.
+- n/a entries: accounts 604 -> 602, totals 2,116 -> 1,890. Six CJS Title III totals now reach their printed figure.
+- Three request program-level figures change (CDC Scientific Services FY2024, Environmental Health FY2023 and FY2024):
+  each now equals the table's printed program-level subtotal; owner approval asked.
+- Open, for the owner: lines in accounts not held (OS Cures opioid $500M FY2017-18, ARPA-H in the OS total, AHRQ as NIRSQ
+  in the FY2018-21 requests, OS Customer Experience, ASPR pandemic lines, SAMHSA FY2026-27 requests); the Child Support
+  advance (count the law-text component, or add the table line); NSF FY2025 request emergency on the House table's
+  arithmetic; CJS Title III FY2026 Senate total holds the FY2025 column ($33,908,257,000 vs $33,909,609,000, p.219).
+- Not done: evidence rows for the Title II and bill totals FY2017-FY2021 (their gaps show now that their cells are
+  complete); HRSA FY2017 Enacted (P.L. 114-254's line is another document's); ACF FY2017 request's $10,000,000.
+
 ## D-8: Anchored totals (2026-10-15, this PR)
 
 Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewritten. Review items:
