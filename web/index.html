@@ -1664,10 +1664,11 @@ let scLabels = {};
 let dataVersion = "";
 const SHOW_PROPOSED = { stages: true, years: true, history: false };
 const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true, true, true, true], basis: 3,
-            // Amount basis, advance timing, Account type (Filter), the defense column (View › Columns): UI-3
-            amt: "printed", timing: "available", type: "all", defcol: false,
-            // Exclude earmarks (Filter › Advanced) and the nondefense column (View › Columns): UI-3b
-            noear: false, ndcol: false,
+            // Amount basis, advance timing, Account type (Filter): UI-3
+            amt: "printed", timing: "available", type: "all",
+            // Exclude earmarks (Filter › Advanced, UI-3b) and Non-defense (Filter › Advanced, UI-9; it replaced the
+            // View tab's defense and nondefense columns, owner decision D)
+            noear: false, nodef: false,
             units: "k", reviewer: false, panelOff: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
             minPct: null, minK: null, drafts: true, review: false,
@@ -1684,7 +1685,7 @@ let open = new Set();           // expanded rows: agency totals and (with adjust
 // ---- feature flags (SPEC section 9): a feature shows only when this page has built it AND the data
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
-                        "accounting_views", "budget_class", "defense_split", "exclude_earmarks", "nondefense", "phone",
+                        "accounting_views", "budget_class", "exclude_earmarks", "nondefense", "phone",
                         "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new", "basis_adjustments"]);
 let FEAT = {}, featLoaded = false, DEFAULT_SC = null;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
@@ -1794,11 +1795,17 @@ const basisLabel = (b = basisOf()) => BASES.find(([k]) => k === b)[1];
 // Exclude earmarks (UI-0b views_excluding_earmarks, every basis including printed): the page reads the published view,
 // never takes an earmark out itself. A cell shows a view under any basis but As printed, or with earmarks excluded
 const noEar = () => has("exclude_earmarks") && G.noear;
-const usesViews = () => basisOf() !== "printed" || noEar();
-const viewKey = () => (noEar() ? "views_excluding_earmarks" : "views");
-// the basis in words: "All appropriations, advances when available", each with " · excl. earmarks" when on
+// Non-defense (UI-9, owner decision D): every figure, total, difference and export reads the published
+// views_nondefense (UI-0b), each figure less its tagged defense portion. The page never takes defense out itself. Until
+// D-8 publishes a combined set, Non-defense and Exclude earmarks are one at a time: turning one on turns the other off
+const noDef = () => has("nondefense") && G.nodef && !noEar();
+const usesViews = () => basisOf() !== "printed" || noEar() || noDef();
+const viewKey = () => (noEar() ? "views_excluding_earmarks" : noDef() ? "views_nondefense" : "views");
+// the exclusion in view, in words: " · excl. earmarks" or " · non-defense"
+const exclWord = () => (noEar() ? " · excl. earmarks" : noDef() ? " · non-defense" : "");
+// the basis in words: "All appropriations, advances when available", with the exclusion in view
 const basisPhrase = (lower = false) => (lower ? basisLabel().toLowerCase() : basisLabel())
-  + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "");
+  + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) + exclWord();
 // the cell's published view entry for the basis and timing in view: the timing's own entry, else the "available"
 // one, which holds for both timings where no "enacted" entry is published (web/ui_contract.json shapes)
 function viewOf(row, y, st, basis = basisOf(), key = viewKey()) {
@@ -1927,37 +1934,74 @@ function figureCell(row, y, st, c, name) {
 }
 
 // the published view of a printed figure (SPEC 5.6, brief UI-3 item 4): its amount when checked or computed;
-// "excl." when the basis leaves the account out; "n/a" (an account) or "not computable" (a total) when not computable,
-// the reason on hover; a computed total (the sum of its accounts, no printed total to check) gets a small "Σ" after it. Never a number the data doesn't hold. Each is a button to the figure's source, where the
-// panel shows the printed headline, the components and the arithmetic.
+// "excl." when the basis leaves the account out; "n/a" when not computable (accounts and totals alike, UI-9), why in one
+// plain line on hover. A checked figure carries no mark (owner decision A); a small "Σ" follows only a total that is our
+// own sum of its accounts, differs from As printed, and has no printed line to check it. Never a number the data
+// doesn't hold. Each is a button to the figure's source, where the panel shows the printed headline, the components,
+// the arithmetic, and for n/a what is missing and where.
 const VIEW_WORDS = { checked: "checked against a printed total", matches: "matches the report's printed line", computed: "computed from the printed figure and its tagged components",
                      excluded: "excluded", not_computable: "not computable" };
 function viewText(e) {
-  if (!e) return { text: "n/a", why: "no published view for this cell" };
+  if (!e) return { text: "n/a", why: "no published view for this cell", plain: "No figure is published for this cell on this basis" };
   if (VALUED.has(e.status)) return { text: null, why: e.reason || "" };
   if (e.status === "excluded") return { text: "excl.", why: e.reason || "" };
-  return { text: e.accounts_behind != null ? "not computable" : "n/a", why: e.reason || "" };
+  return { text: "n/a", why: e.reason || "", plain: plainWhy(e.reason) };
 }
-// a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it
-const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null;
+// why a cell is not computable, in one plain line (UI-9), from the data's reason. Wording only: the full reason, with
+// its documents and pages, stays in the source panel. D-8's cause codes replace this reading (UI-10)
+function whyText(reason) {
+  const t = String(reason || "").replace(/^not computable:\s*/, "").trim();
+  const line = (x) => {
+    let m = x.match(/^(.+?) is not computable \((.*)\)(?:; and (\d+) more)?$/);
+    if (m) {
+      const more = m[3] ? `; ${m[3]} more line${m[3] === "1" ? "" : "s"} under it ${m[3] === "1" ? "has" : "have"} no figure on this basis` : "";
+      const inner = line(m[2]);
+      return (/^no figure entered yet/.test(inner) ? `${m[1]} has ${inner}` : `${m[1]}: ${inner}`) + more;
+    }
+    if (/^no figure\b/.test(x)) return "no figure entered yet";
+    m = x.match(/: (-?)\$([\d,]+) is in no account held/);
+    if (m) return m[1] ? `the accounts held add up to $${m[2]} more than the printed total`
+                       : `the printed total includes $${m[2]} that is in no account held here`;
+    if (/request language not found|no request language read/.test(x))
+      return "the request has no language of its own for this account, so its parts aren’t known";
+    m = x.match(/^(\w+) not tagged for this stage/);
+    if (m) return `${m[1]} not tagged for this stage`;
+    if (/no budget_class on file/.test(x)) return "no budget class (discretionary or mandatory) on file for this year";
+    if (/not a budget-authority headline/.test(x)) return "its figure isn’t budget authority, so it has none on this basis";
+    if (/no account behind it is inside its life/.test(x)) return "none of its accounts exists in this year";
+    if (/no component the view uses is tagged/.test(x)) return "its parts aren’t tagged for this cell yet";
+    return x;
+  };
+  return t ? line(t) : "not computable on this basis";
+}
+const plainWhy = (reason) => whyText(reason).replace(/^./, (c) => c.toUpperCase());
+// a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it (D-8: a
+// computed total built down from a printed anchor has one, so it is not a sum)
+const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null && !e.anchor;
+// Σ (owner decision A, UI-9): only on a total that is our own sum, differs from As printed, and has no printed line
+// backing it (status computed, not checked). A sum equal to As printed carries no mark
+const sumMarked = (row, y, st, e) => summed(e) && e.amount !== asPrinted(row, y, st);
 const sigma = (e) => el("span", { class: "sigma", "data-testid": "sum-mark", title: e.reason || "", "aria-label": e.reason || "sum of its accounts", text: "Σ" });
 const viewHead = (e) => `${basisPhrase()}: ${summed(e) ? "the published sum of its accounts" : e ? VIEW_WORDS[e.status] || e.status : "not computable"}`;
 function viewCell(row, y, st, o, ctx, td) {
   const e = viewOf(row, y, st), v = viewText(e);
   td.dataset.view = e ? e.status : "none";
-  const title = `${viewHead(e)}${v.why ? " — " + v.why : ""} · ${clickFor(o)}`;
+  // n/a: why in one plain line; a figure: how the data reached it
+  const title = v.plain != null ? `n/a on ${basisPhrase(true)}: ${v.plain} · ${clickFor(o)}`
+    : `${viewHead(e)}${v.why ? " — " + v.why : ""} · ${clickFor(o)}`;
   if (v.text == null) {
     // a printed zero whose view is zero too shows as the printed zero does; any other view amount is its number
     const dash = e.amount === 0 && o.amount === 0;
     const text = dash ? "—" : GridMath.number(e.amount, G.units);
-    const props = { "data-testid": "amount", title, "data-view": e.status, ...(dash ? { class: "tok dash" } : {}) };
+    const props = { "data-testid": "amount", title, "data-view": e.status, "data-reason": e.reason || "", ...(dash ? { class: "tok dash" } : {}) };
     const fig = linksToSource() ? figButton(o, text, ctx, props) : el("span", { ...props, "data-source": srcLabel(o), text });
-    if (!summed(e)) return fig;
+    if (!sumMarked(row, y, st, e)) return fig;
     const f = document.createDocumentFragment();
     f.append(fig, sigma(e));
     return f;
   }
-  const props = { class: "tok" + (v.text === "excl." ? "" : " miss"), "data-testid": "view-state", "data-view": e ? e.status : "none", title };
+  const props = { class: "tok" + (v.text === "excl." ? "" : " miss"), "data-testid": "view-state", "data-view": e ? e.status : "none",
+                  "data-reason": e ? e.reason || "" : "", title };
   return linksToSource() ? figButton(o, v.text, ctx, props) : el("span", { ...props, "aria-label": title, text: v.text });
 }
 
@@ -1977,23 +2021,30 @@ function otherLines(row, y, st, lines, h) {
 
 // ---- basis adjustments (D-6 `adjustments`, feature basis_adjustments; brief UI-8): what turns As printed into the
 // figure in view, one line per published adjustment under an expanded account or agency. Read from the data; the page
-// adds nothing up. Only where the basis, timing, Exclude earmarks or the Nondefense column make a figure differ from
-// As printed: on As printed with no toggles there are none
-const adjOn = () => has("basis_adjustments") && (usesViews() || (G.ndcol && has("nondefense")));
+// adds nothing up. Only where the basis, timing, Exclude earmarks or Non-defense make a figure differ from As printed:
+// on As printed with no toggles there are none
+const adjOn = () => has("basis_adjustments") && usesViews();
 // the cell's As printed figure (views.printed), the figure every view's adjustments start from
 function asPrinted(row, y, st) {
   const x = row && headOf(row, y, st), p = x && !x.cell.outside_life && x.cell.views && x.cell.views.printed;
   return p && p.length && p[0].amount != null ? p[0].amount : printedFig(row, y, st);
 }
-// a column's published entry, when it lists adjustments and differs from As printed: a stage column's view on the
-// basis in view, the Nondefense column's nondefense view
+// a stage column's published entry on the basis in view, when it lists adjustments and differs from As printed
 function adjEntry(row, c) {
-  const at = c.fig || c.nondef;
-  if (!at || !adjOn() || (c.fig && !usesViews())) return null;
-  const y = at[0], st = STAGES4[at[1]];
+  if (!c.fig || !adjOn()) return null;
+  const y = c.fig[0], st = STAGES4[c.fig[1]];
   if (printedFig(row, y, st) == null) return null;
-  const e = c.fig ? viewOf(row, y, st) : viewOf(row, y, st, basisOf(), "views_nondefense");
+  const e = viewOf(row, y, st);
   return e && VALUED.has(e.status) && (e.adjustments || []).length && e.amount !== asPrinted(row, y, st) ? e : null;
+}
+// an adjustment's name. A printed_total adjustment (D-6: the lines could not be summed, so the report's own total for
+// the basis stands) is worded as the report's line, with what is not itemised (UI-9); D-8 retires the type
+const TOTAL_WORD = { program_level: "program-level", discretionary: "discretionary", discretionary_designated: "discretionary (incl. designated)" };
+function adjLabel(a, e) {
+  if (a.type !== "printed_total") return a.label;
+  const r = (e && e.reason) || "", k = r.lastIndexOf("; not summed: ");
+  const why = k < 0 ? "" : whyText(r.slice(k + 14));
+  return `Printed in the report as one ${TOTAL_WORD[basisOf()] ? TOTAL_WORD[basisOf()] + " " : ""}total (not itemised${why ? ": " + why : ""})`;
 }
 // the row's adjustment lines over the columns in view: one per published adjustment (its type, sign and label),
 // each holding the adjustment of every column that lists it. Where one entry lists several alike (a Prevention and
@@ -2005,14 +2056,15 @@ function adjLines(row, cols) {
     const e = adjEntry(row, c);
     if (!e) continue;
     const count = new Map(), seen = new Map();
-    for (const a of e.adjustments) count.set(`${a.sign}|${a.type}|${a.label}`, (count.get(`${a.sign}|${a.type}|${a.label}`) || 0) + 1);
+    const name = (a) => adjLabel(a, e);
+    for (const a of e.adjustments) count.set(`${a.sign}|${a.type}|${name(a)}`, (count.get(`${a.sign}|${a.type}|${name(a)}`) || 0) + 1);
     for (const a of e.adjustments) {
-      const base = `${a.sign}|${a.type}|${a.label}`, many = count.get(base) > 1, item = many ? itemOf(a) : "";
+      const base = `${a.sign}|${a.type}|${name(a)}`, many = count.get(base) > 1, item = many ? itemOf(a) : "";
       const n = seen.get(base + item) || 0;
       seen.set(base + item, n + 1);
-      const k = `${base}|${item}|${n}`, label = item ? `${a.label} · ${item}` : a.label;
+      const k = `${base}|${item}|${n}`, label = item ? `${name(a)} · ${item}` : name(a);
       if (!lines.has(k)) lines.set(k, { key: k, sign: a.sign, type: a.type, label, at: new Map() });
-      lines.get(k).at.set(c.col, { a, y: (c.fig || c.nondef)[0], st: STAGES4[(c.fig || c.nondef)[1]], set: c.fig ? viewKey() : "views_nondefense" });
+      lines.get(k).at.set(c.col, { a, label: name(a), y: c.fig[0], st: STAGES4[c.fig[1]], set: viewKey() });
     }
   }
   return [...lines.values()];
@@ -2058,16 +2110,14 @@ const srcWords = (x) => `${x.what ? x.what + ": " : ""}${x.doc ? docName(x.doc) 
 // an adjustment's amount: a link to its source page, or (several sources, or none with an address) a button to the
 // figure's source panel, whose build-up lists each source
 function adjAmount(row, at, short) {
-  const { a, y, st, set } = at, text = signed(a, short), src = adjSources(a, y, st);
+  const { a, label, y, st, set } = at, text = signed(a, short), src = adjSources(a, y, st);
   const hrefs = [...new Set(src.map((x) => x.href).filter(Boolean))];
   const props = { class: "adjfig", "data-testid": "adj-amount", "data-sign": a.sign, "data-amount": String(a.amount), "data-fy": String(y), "data-stage": st, "data-set": set,
-                  title: `${a.label}: ${text} (${short ? "dollars" : unitsLong()}) · ${[...new Set(src.map(srcWords))].join("; ")}`,
-                  "aria-label": `${a.label}, ${plainName(row.account.canonical_name)}, ${stageText(current.grid, y, STAGES4.indexOf(st))}: ${text}` };
-  // a Nondefense-column amount opens that figure's nondefense build-up (its source linked there)
-  const nd = set === "views_nondefense";
-  if (!nd && hrefs.length === 1 && src.every((x) => x.href)) return el("a", { ...props, href: hrefs[0], target: "_blank", rel: "noopener", text });
+                  title: `${label}: ${text} (${short ? "dollars" : unitsLong()}) · ${[...new Set(src.map(srcWords))].join("; ")}`,
+                  "aria-label": `${label}, ${plainName(row.account.canonical_name)}, ${stageText(current.grid, y, STAGES4.indexOf(st))}: ${text}` };
+  if (hrefs.length === 1 && src.every((x) => x.href)) return el("a", { ...props, href: hrefs[0], target: "_blank", rel: "noopener", text });
   const b = el("button", { type: "button", ...props, text });
-  b.addEventListener("click", () => select({ kind: "fig", id: row.account.canonical_account_id, y, st, ...(nd ? { nd: true } : {}) }));
+  b.addEventListener("click", () => select({ kind: "fig", id: row.account.canonical_account_id, y, st }));
   return b;
 }
 const lineName = (...kids) => el("td", {}, el("div", { class: "namecell" }, el("span", { class: "namebox" }, el("span", { class: "adjlabel" }, ...kids))));
@@ -2121,7 +2171,7 @@ function buildUp(row, y, st, e, phrase) {
   const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
   const kids = [line("As printed", GridMath.number(asPrinted(row, y, st), G.units), "", "arith-term")];
   for (const a of e.adjustments || []) {
-    const t = line(a.label, signed(a).replace(" ", ""), "", "arith-term");
+    const t = line(adjLabel(a, e), signed(a).replace(" ", ""), "", "arith-term");
     t.dataset.sign = a.sign;
     kids.push(t);
     const src = adjSources(a, y, st);
@@ -2214,19 +2264,6 @@ function layout(grid) {
     { label: `FY${y}`, cols: stagesIn(grid, y).map((i) => ({ fig: [y, i], label: STAGE_NAME[i], lead: i === lead })) },
     { label: enacted ? "Change vs" : "Change", cls: "delta", cols: chg },
   ];
-  // View › Columns: the lead stage's defense portion (defense_split: cells' defense_portion, only where tagged)
-  if (G.defcol && has("defense_split") && lead != null)
-    groups.push({ label: `FY${y} ${STAGE_WORD[lead]}`, cls: "def", cols: [{ def: [y, lead], label: "Defense portion",
-      what: `FY${y} ${STAGE_WORD[lead]}: the defense portion tagged on the printed figure` }] });
-  // View › Columns: the lead stage's nondefense view (nondefense: cells' views_nondefense, the basis in view), next
-  // to the defense portion when both are on
-  if (G.ndcol && has("nondefense") && lead != null) {
-    const nd = { nondef: [y, lead], label: "Nondefense", what: `FY${y} ${STAGE_WORD[lead]}: nondefense, ${basisLabel().toLowerCase()}`
-      + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) };
-    const g = groups[groups.length - 1];
-    if (g.cls === "def") g.cols.push(nd);
-    else groups.push({ label: `FY${y} ${STAGE_WORD[lead]}`, cls: "def", cols: [nd] });
-  }
   return groups;
 }
 function flatCols(groups) {
@@ -2238,48 +2275,7 @@ function flatCols(groups) {
 // a change column's two figures for a row ([null, null] for a change column with nothing to compare)
 const changeOf = (row, c) => c.chg ? [figure(row, c.chg[0][0], STAGES4[c.chg[0][1]]), figure(row, c.chg[1][0], STAGES4[c.chg[1][1]])] : [null, null];
 function cellsFor(row, cols, name) {
-  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name) : c.def ? defenseCell(row, c, name)
-    : c.nondef ? nondefenseCell(row, c, name)
-    : changeCell(...changeOf(row, c), c));
-}
-// the defense portion of a printed figure: the amount the data holds (defense_portion), a button to the figure's
-// source (the panel lists the components); no tag is not zero, so an untagged cell is empty. Nondefense is its own
-// column (nondefenseCell), read from the published view.
-function defenseCell(row, c, name) {
-  const [y, i] = c.def, st = STAGES4[i];
-  const td = el("td", { class: "num def " + (c.cls || ""), dataset: { testid: "defense-cell", defFy: String(y), defStage: st, col: String(c.col) } });
-  const x = headOf(row, y, st), o = cellObs(row, y, st), dp = x && !x.cell.outside_life && x.cell.defense_portion;
-  if (!dp || !o) { td.title = `${c.what}: no defense_portion component tagged (not the same as zero)`; return td; }
-  const comps = (x.cell.components || []).filter((k) => dp.component_ids.includes(k.component_id));
-  const title = `${c.what}: ` + comps.map((k) => `${k.component_id} ${GridMath.number(k.amount, G.units)}, ${docName(k.source_document_id)}`
-    + (k.source_page ? ` p. ${k.source_page}` : "")).join("; ");
-  const ctx = { name, stage: `${stageText(current.grid, y, i)}, defense portion` };
-  td.dataset.amount = String(dp.amount);
-  td.append(linksToSource() ? figButton(o, GridMath.number(dp.amount, G.units), ctx, { "data-testid": "defense", title })
-    : el("span", { "data-testid": "defense", title, text: GridMath.number(dp.amount, G.units) }));
-  return td;
-}
-
-// the nondefense view of a printed figure (UI-0b views_nondefense.<basis>, the basis and timing in view, earmarks
-// never taken out of it): the published amount when checked or computed, a button to the figure's source. Empty where
-// it is not computable, the reason on hover; never zero for a figure the data doesn't hold (SPEC section 1)
-function nondefenseCell(row, c, name) {
-  const [y, i] = c.nondef, st = STAGES4[i];
-  const td = el("td", { class: "num def " + (c.cls || ""), dataset: { testid: "nondefense-cell", ndFy: String(y), ndStage: st, col: String(c.col) } });
-  const o = printedFig(row, y, st) != null ? cellObs(row, y, st) : null;
-  const e = o ? viewOf(row, y, st, basisOf(), "views_nondefense") : null;
-  if (!e || !VALUED.has(e.status)) {
-    td.dataset.view = e ? e.status : "none";
-    td.title = `${c.what}: ${!o ? "no printed figure" : !e ? "no published nondefense view for this cell" : `not computable — ${e.reason || ""}`}`;
-    return td;
-  }
-  const title = `${c.what}: ${VIEW_WORDS[e.status]}${e.reason ? " — " + e.reason : ""} · ${clickFor(o)}`;
-  const ctx = { name, stage: `${stageText(current.grid, y, i)}, nondefense` };
-  td.dataset.view = e.status;
-  td.dataset.amount = String(e.amount);
-  td.append(linksToSource() ? figButton(o, GridMath.number(e.amount, G.units), ctx, { "data-testid": "nondefense", title })
-    : el("span", { "data-testid": "nondefense", title, text: GridMath.number(e.amount, G.units) }));
-  return td;
+  return cols.map((c) => c.fig ? figureCell(row, c.fig[0], STAGES4[c.fig[1]], c, name) : changeCell(...changeOf(row, c), c));
 }
 
 // ---- which rows show: the filters (agency, status, search) over each row's life in the columns in view
@@ -2615,7 +2611,7 @@ function renderOverview(grid) {
     // a total under a basis: checked against a printed total, or the published sum of its accounts (Σ, its reason on
     // hover), or not computable (the data's reason on hover)
     const ve = usesViews() ? viewOf(row, y, STAGES4[lead]) : null;
-    const basisWord = usesViews() ? `${basisPhrase(true)}, ${summed(ve) ? "Σ sum of its accounts" : "checked"}` : "as printed";
+    const basisWord = usesViews() ? basisPhrase(true) + (sumMarked(row, y, STAGES4[lead], ve) ? ", Σ sum of its accounts" : "") : "as printed";
     const tile = (l, val, sub, cls, tid) => el("div", { class: "ovtile", "data-testid": tid, ...(tid === "ov-headline" && ve && ve.reason ? { title: ve.reason } : {}) },
       el("div", { class: "l", text: l }), el("div", { class: "v " + (cls || ""), text: val }), el("div", { class: "s", text: sub }));
     const chTile = (l, a, b, tid) => {
@@ -2752,16 +2748,18 @@ const componentWord = (k) => (COMPONENT_WORDS[k.type] || k.type.replace(/_/g, " 
 // under a basis other than As printed (brief UI-3 item 5): the view, then the printed headline, each component
 // (type, amount, source) and the arithmetic. The terms are the components the view used, as published
 // (component_ids); the result is the published amount. The page adds nothing up.
-function viewBlock(grid, row, y, st, o, nd) {
-  // nd: the Nondefense column's figure (views_nondefense on the basis in view), built up the same way
-  const x = headOf(row, y, st), e = nd ? viewOf(row, y, st, basisOf(), "views_nondefense") : viewOf(row, y, st), v = viewText(e);
-  const comps = (x && x.cell.components) || [], phrase = nd ? `Nondefense, ${basisPhrase(true)}` : basisPhrase();
+function viewBlock(grid, row, y, st, o) {
+  const x = headOf(row, y, st), e = viewOf(row, y, st), v = viewText(e);
+  const comps = (x && x.cell.components) || [], phrase = basisPhrase();
   const used = new Set((e && e.component_ids) || []), ears = [];
   const head = [el("div", { class: "bigfig", "data-testid": "src-view-value", "data-view": e ? e.status : "none",
                             text: v.text == null ? GridMath.number(e.amount, G.units) : v.text }),
-    el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${nd ? "Nondefense, " + viewHead(e).replace(/^./, (c) => c.toLowerCase()) : viewHead(e)}` })];
-  if (summed(e)) head.splice(1, 0, el("div", { class: "ovsmall", "data-testid": "src-sum-mark" }, sigma(e), " sum of its accounts (reason below)"));
-  if (v.why) head.push(el("div", { class: "ovsmall", "data-testid": "src-view-reason", style: "margin-top:4px", text: v.why.replace(/^./, (c) => c.toUpperCase()) }));
+    el("div", { class: "ovsmall", "data-testid": "src-view-status", text: `${unitsLong()} · ${viewHead(e)}` })];
+  if (sumMarked(row, y, st, e)) head.splice(1, 0, el("div", { class: "ovsmall", "data-testid": "src-sum-mark" }, sigma(e), " sum of its accounts (reason below)"));
+  // n/a (UI-9): what is missing in one plain line, then the data's full reason, which names where (documents, pages)
+  if (v.plain != null) head.push(el("div", { class: "ovsmall", "data-testid": "src-view-why", style: "margin-top:4px", text: v.plain }));
+  if (v.why) head.push(el("div", { class: "ovsmall", "data-testid": "src-view-reason", style: "margin-top:4px",
+    text: (v.plain != null ? "Details: " : "") + (v.plain != null ? v.why : v.why.replace(/^./, (c) => c.toUpperCase())) }));
   const tail = [el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Components of the printed figure" })];
   if (!comps.length) tail.push(el("div", { class: "ovsmall", "data-testid": "src-no-components", text: "None tagged on this figure." }));
   for (const k of comps)
@@ -2782,7 +2780,7 @@ function viewBlock(grid, row, y, st, o, nd) {
   }
   // Exclude earmarks (brief UI-3b item 3): the earmark components the published view took out, each with its amount,
   // document and page, then the published result. Listed, never added: the result is the data's amount
-  if (noEar() && !nd) {
+  if (noEar()) {
     const tagged = comps.filter((k) => k.type === "earmark" && used.has(k.component_id));
     const where = (k) => k.source_page ? `p. ${k.source_page}` : ((k.source_table_or_section || "").match(/\(([^()]*)\)\s*$/) || [])[1]?.split(";")[0] || "";
     // inside the "Source document" block (UI-2b layout), after "Printed as" and before the button
@@ -2853,12 +2851,12 @@ function renderSource(grid, box, sel = SEL, back = null) {
   const i = STAGES4.indexOf(st), name = plainName(row.account.canonical_name);
   const zero = o.amount === 0;
   const first = (o.source_page || "").split("-")[0], href = sourceHref(o);
-  const VB = sel.nd ? viewBlock(grid, row, y, st, o, true) : usesViews() ? viewBlock(grid, row, y, st, o) : null;
+  const VB = usesViews() ? viewBlock(grid, row, y, st, o) : null;
   // the figure in full dollars, then the form the document prints it in (owner, 2026-10-13, UI-2b)
   const kids = [back || backRow(grid),
     el("div", { class: "ovk", style: "margin-top:14px", text: "Source for this figure" }),
     el("div", { class: "ovtitle", "data-testid": "src-account", text: name }),
-    el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) + (sel.nd ? ", nondefense" : "") }),
+    el("div", { class: "srcstage", "data-testid": "src-stage", text: stageText(grid, y, i) }),
     ...(VB ? [...VB.head, el("hr", { class: "srcrule" }), el("div", { class: "ovk", text: "Printed headline" })] : []),
     el("div", { class: VB ? "medfig" : "bigfig", "data-testid": "src-value", text: fullDollars(o.amount) }),
     el("div", { class: "ovsmall", "data-testid": "src-short",
@@ -3031,8 +3029,7 @@ function markSelection() {
   const tr = document.querySelector(`#compare-grid tbody tr[data-account="${CSS.escape(SEL.id)}"]`);
   if (!tr) return;
   if (SEL.kind === "acct") { tr.dataset.sel = "row"; return; }
-  const td = SEL.nd ? tr.querySelector(`td[data-nd-fy="${SEL.y}"][data-nd-stage="${CSS.escape(SEL.st)}"]`)
-    : tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
+  const td = tr.querySelector(`td[data-fy="${SEL.y}"][data-stage="${CSS.escape(SEL.st)}"]`);
   if (td) td.dataset.sel = "fig";
 }
 // the phone list: the selected account's line (a figure's account too) gets the light yellow fill
@@ -3108,7 +3105,7 @@ function renderCompare(grid) {
   const lead = G.grid === "stages" ? leadStage(grid, G.fy) : 3;
   const beta = BETA.has(basisOf());
   $("#grid-subline").replaceChildren(`${G.units === "m" ? "$ millions" : "$ thousands"} · ${basisLabel().toLowerCase()}${beta ? " " : ""}`, beta ? betaTag(basisOf()) : "",
-    (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`) + (noEar() ? " · excl. earmarks" : "")
+    (basisOf() === "printed" ? "" : ` · advances when ${G.timing}`) + exclWord()
     + (lead == null ? ` · FY${G.fy} not yet enacted · no printed totals yet` : lead !== 3 ? ` · FY${G.fy} not yet enacted · latest: ${STAGE_NAME[lead]}` : ""),
     beta ? el("span", { class: "betanote", "data-testid": "beta-line", text: ` · ${BETA_LINE}` }) : "");
   const groups = layout(grid), cols = flatCols(groups);
@@ -3194,7 +3191,7 @@ function renderLegend() {
     el("span", { text: "blank = outside the account’s life" }),
     ...(has("budget_class") ? [el("span", { "data-testid": "class-legend", text: "dashed tag = provisional budget class" })] : []),
     ...(!usesViews() ? [] : [el("span", { "data-testid": "basis-legend",
-      text: `${basisPhrase()}: excl. = left out by this basis · n/a, not computable = no figure on this basis · Σ = a total’s sum of its accounts, no printed total to check (hover for why)` })]));
+      text: `${basisPhrase()}: excl. = left out by this basis · n/a = no figure on this basis (hover for why) · Σ = our sum of a total’s accounts, unlike As printed, with no printed line to check it` })]));
 }
 
 // The page has one vertical scrollbar, its own (owner, 2026-10-13, UI-2c). The grid shows every row and is not a
@@ -3356,8 +3353,7 @@ $("#compare-grid").addEventListener("click", (e) => {
   const b = e.target.closest("td button.fig");
   if (!b) return;
   const td = b.closest("td"), tr = td.closest("tr");
-  select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy || td.dataset.defFy || td.dataset.ndFy),
-          st: td.dataset.stage || td.dataset.defStage || td.dataset.ndStage, ...(td.dataset.ndFy ? { nd: true } : {}) });
+  select({ kind: "fig", id: tr.dataset.account, y: Number(td.dataset.fy), st: td.dataset.stage });
 });
 
 // ---- state <-> URL (SPEC 5.7): every control and the expanded rows
@@ -3371,10 +3367,10 @@ function compareURL() {
   }
   if (G.units !== "k") q.set("units", G.units);
   if (G.dense) q.set("density", "compact");
-  if (G.reqcol || G.defcol || G.ndcol)
-    q.set("cols", [G.reqcol && "request", G.defcol && "defense", G.ndcol && "nondefense"].filter(Boolean).join(","));
+  if (G.reqcol) q.set("cols", "request");
   if (G.amt !== "printed") q.set("amt", G.amt);
   if (G.noear) q.set("earmarks", "excl");
+  if (G.nodef) q.set("defense", "excl");
   if (G.timing !== "available") q.set("timing", G.timing);
   if (G.type !== "all") q.set("type", G.type);
   if (G.reviewer) q.set("rev", "1");
@@ -3392,7 +3388,7 @@ function compareURL() {
   if (open.size) q.set("open", [...open].sort().join(","));
   if (G.pstage != null) q.set("pstage", STAGE_WORD[G.pstage].toLowerCase());
   if (G.table) q.set("table", "1");
-  if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}${SEL.nd ? "|nondefense" : ""}`);
+  if (SEL && SEL.kind === "fig") q.set("fig", `${SEL.id}|${SEL.y}|${SEL.st}`);
   if (SEL && SEL.kind === "acct") q.set("acct", SEL.id);
   return "?" + q.toString();
 }
@@ -3420,9 +3416,9 @@ function settle(grid, want) {
     G.panelOff = want.panel === "hidden";
     G.dense = want.density === "compact";
     G.reqcol = String(want.cols || "").split(",").includes("request");
-    G.defcol = String(want.cols || "").split(",").includes("defense");
-    G.ndcol = String(want.cols || "").split(",").includes("nondefense");
     G.noear = want.earmarks === "excl";
+    // one exclusion at a time until D-8 (UI-9): a link asking for both keeps Exclude earmarks
+    G.nodef = want.defense === "excl" && !G.noear;
     G.amt = BASES.some(([k]) => k === want.amt) ? want.amt : "printed";
     G.timing = want.timing === "enacted" ? "enacted" : "available";
     G.type = TYPES.some(([k]) => k === want.type) ? want.type : "all";
@@ -3454,8 +3450,9 @@ function settle(grid, want) {
     G.table = want.table === "1";
     open = new Set(String(want.open || "").split(",").filter(Boolean));
     const f = String(want.fig || "").split("|");
+    // a link from before UI-9 may name the retired Nondefense column's figure ("|nondefense"): the stage's figure
     SEL = (f.length === 3 || (f.length === 4 && f[3] === "nondefense")) && /^\d{4}$/.test(f[1]) && STAGES4.includes(f[2])
-      ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2], ...(f[3] ? { nd: true } : {}) }
+      ? { kind: "fig", id: f[0], y: Number(f[1]), st: f[2] }
       : want.acct ? { kind: "acct", id: String(want.acct) } : null;
   }
   SEL = validSel(grid, SEL);
@@ -3519,6 +3516,7 @@ function filterChips(grid) {
   if (has("accounting_views") && G.amt !== "printed") chips.push({ label: `Basis: ${basisLabel()}`, clear: () => { G.amt = "printed"; } });
   if (has("accounting_views") && G.timing !== "available") chips.push({ label: "Advances: when enacted", clear: () => { G.timing = "available"; } });
   if (noEar()) chips.push({ label: "Earmarks excluded", clear: () => { G.noear = false; } });
+  if (noDef()) chips.push({ label: "Non-defense", clear: () => { G.nodef = false; } });
   if (G.status !== "any") chips.push({ label: `Status in FY${y}: ${STATUS.find(([k]) => k === G.status)[1]}`, clear: () => { G.status = "any"; } });
   if (G.minPct != null || G.minK != null)
     chips.push({ label: "Change of at least " + [G.minPct != null && `${G.minPct}%`, G.minK != null && `$${G.minK.toLocaleString("en-US")}K`].filter(Boolean).join(" or "),
@@ -3535,7 +3533,7 @@ function filterChips(grid) {
 // every filter back to its default (Reset, Clear all)
 function resetFilters() {
   G.agency = ""; G.status = "any"; G.minPct = null; G.minK = null; G.drafts = true; G.review = false;
-  G.type = "all"; G.amt = "printed"; G.timing = "available"; G.noear = false;
+  G.type = "all"; G.amt = "printed"; G.timing = "available"; G.noear = false; G.nodef = false;
   G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
 }
 let advOpen = false;      // the Advanced disclosure (not part of the URL: it changes no figure)
@@ -3593,8 +3591,9 @@ function renderFilterPanel(grid) {
     reset.addEventListener("click", () => { resetFilters(); redraw(); });
     const done = el("button", { type: "button", class: "xbtn primary", "data-testid": "filter-done", "data-key": "done", text: "Done" });
     done.addEventListener("click", () => closeMenu(true));
-    // Advanced: Amount basis and advance timing (accounting_views), Exclude earmarks (its own flag, exclude_earmarks:
-    // UI-0b publishes the view; the page never computes one), then the items no flag gates (SPEC section 9)
+    // Advanced: Amount basis and advance timing (accounting_views), Exclude earmarks and Non-defense (their own flags,
+    // exclude_earmarks and nondefense: UI-0b publishes the views; the page never computes one), then the items no flag
+    // gates (SPEC section 9)
     const check = (id, label, checked, set, extra = {}) => {
       const c = el("input", { type: "checkbox", id, "data-key": id, ...extra });
       c.checked = checked;
@@ -3614,11 +3613,12 @@ function renderFilterPanel(grid) {
     const views = has("accounting_views");
     const summary = views
       ? [basisLabel(), `advances when ${G.timing}`, ...(has("exclude_earmarks") ? [noEar() ? "earmarks excluded" : "earmarks included"] : []),
+         ...(noDef() ? ["non-defense"] : []),
          ...(G.minPct != null || G.minK != null ? ["change threshold set"] : []), ...(G.drafts ? [] : ["drafts left out"]),
          ...(G.show.ended ? ["ended accounts shown"] : []), ...(G.review ? ["pending review or flagged only"] : [])]
       : [G.minPct != null || G.minK != null ? "change threshold set" : "any change", G.drafts ? "drafts included" : "drafts left out",
          G.show.ended ? "ended accounts shown" : "current accounts", G.review ? "pending review or flagged only" : "every figure",
-         ...(noEar() ? ["earmarks excluded"] : [])];
+         ...(noEar() ? ["earmarks excluded"] : []), ...(noDef() ? ["non-defense"] : [])];
     const option = (group, k, label, def, on, set) => {
       const beta = group === "basis" && BETA.has(k);
       const b = el("button", { type: "button", class: "opt" + (on ? " on" : ""), dataset: { [group]: k, key: group + "-" + k }, "aria-pressed": String(on) },
@@ -3644,9 +3644,15 @@ function renderFilterPanel(grid) {
          text: summary.join(" · ").replace(/^./, (c) => c.toUpperCase()) })),
       el("span", { "aria-hidden": "true", class: "advc", text: advOpen ? "▴" : "▾" }));
     adv.addEventListener("click", () => { advOpen = !advOpen; renderFilterPanel(grid); });
-    const earBox = has("exclude_earmarks") ? [check("f-noear", "Exclude earmarks (CDS / CPF)", G.noear, (v) => { G.noear = v; },
+    const earBox = has("exclude_earmarks") ? [check("f-noear", "Exclude earmarks (CDS / CPF)", G.noear, (v) => { G.noear = v; if (v) G.nodef = false; },
       { "data-testid": "f-noear", title: "Each figure less its tagged congressionally directed spending (CDS / CPF), as the data publishes it" })] : [];
-    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox, ...earBox,
+    // Non-defense (UI-9, owner decision D): every figure and total less its tagged defense portion, as published
+    const defBox = has("nondefense") ? [check("f-nodef", "Non-defense", noDef(), (v) => { G.nodef = v; if (v) G.noear = false; },
+      { "data-testid": "f-nodef", title: "Each figure and total less its tagged defense portion (national defense, function 050), as the data publishes it" })] : [];
+    // until D-8 publishes a combined set the page can't show both, so they are one at a time
+    const oneNote = earBox.length && defBox.length
+      ? [el("div", { class: "optd", "data-testid": "excl-note", text: "One at a time for now: turning on one turns the other off." })] : [];
+    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox, ...earBox, ...defBox, ...oneNote,
       el("div", { class: "pair2" },
         number("f-min-pct", "Change of at least (%)", G.minPct, (v) => { G.minPct = v; }, "e.g. 10"),
         number("f-min-k", "or at least ($K)", G.minK, (v) => { G.minK = v; }, "e.g. 50,000")),
@@ -3690,10 +3696,6 @@ function renderViewMenu(grid) {
     if (lead != null && lead !== 0)
       colChecks.push(check("col-req", lead === 3 ? `Change vs FY${G.fy} request` : `Request vs FY${G.fy - 1} enacted`, G.reqcol, (v) => { G.reqcol = v; },
                            { "data-testid": "col-request" }));
-    if (lead != null && has("defense_split"))
-      colChecks.push(check("col-def", "Defense portion", G.defcol, (v) => { G.defcol = v; }, { "data-testid": "col-defense" }));
-    if (lead != null && has("nondefense"))
-      colChecks.push(check("col-nondef", "Nondefense", G.ndcol, (v) => { G.ndcol = v; }, { "data-testid": "col-nondefense" }));
     if (colChecks.length) kids.push(el("div", { class: "glabel", text: "Columns" }), ...colChecks);
     if (G.grid === "years") {
       const checks = el("div", { "data-testid": "stage-checks" }, ...STAGE_NAME.map((n, i) =>
@@ -3828,9 +3830,6 @@ function exportTable() {
         // no change value (a figure is missing): "Not computable", never a blank
         if (!d) line.push("Not computable", "Not computable");
         else line.push(shownNumber(d.textContent), /\d/.test(pct) ? shownNumber(pct) : pct === "—" ? "No change (both zero)" : pct);
-      } else {
-        const n = td.querySelector("[data-testid=defense], [data-testid=nondefense]");
-        line.push(n ? shownNumber(n.textContent) : "");
       }
     });
     out.push(line);
@@ -3864,7 +3863,7 @@ async function exportHeader(rowsOut) {
     ["Fiscal year", fy],
     ["Compare mode", mode],
     ["Units", unitsLong()],
-    ["Amount basis", basisLabel() + (noEar() ? " · excl. earmarks" : "")],
+    ["Amount basis", basisLabel() + exclWord()],
     ["Advance timing", TIMINGS.find(([k]) => k === G.timing)[1] + (basisOf() === "printed" ? " (not used: As printed)" : "")],
     ["Filters", filters.join("; ") || "None"],
     ["Rows", EXP_ROWS.find(([k]) => k === EXP.rows)[1] + ` (${rowsOut} row${rowsOut === 1 ? "" : "s"})`],
@@ -4113,7 +4112,7 @@ function renderSummary(grid, y, lead) {
   }
   const v = figure(row, y, STAGES4[lead]), gap = viewGap(row, y, STAGES4[lead]);
   const ve = usesViews() ? viewOf(row, y, STAGES4[lead]) : null;
-  const basisWord = usesViews() ? `${basisPhrase(true)}, ${summed(ve) ? "Σ sum of its accounts" : "checked"}` : "as printed";
+  const basisWord = usesViews() ? basisPhrase(true) + (sumMarked(row, y, STAGES4[lead], ve) ? ", Σ sum of its accounts" : "") : "as printed";
   const chg = (a, what, tid) => {
     const c = GridMath.change(a, v);
     return c ? el("span", { class: GridMath.direction(c.delta) || "flat", "data-testid": tid,
@@ -5007,7 +5006,7 @@ function route() {
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "panel", "show", "density", "cols",
                                    "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct",
-                                   "amt", "timing", "type", "earmarks", "pstage", "table"].map((k) => [k, params.get(k)]));
+                                   "amt", "timing", "type", "earmarks", "defense", "pstage", "table"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);

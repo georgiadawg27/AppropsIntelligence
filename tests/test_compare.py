@@ -2179,7 +2179,7 @@ class ExploreV1(GridBrowser):
                 body["features"][flag] = False
             route.fulfill(json=body)
         words = ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
-                 "appropriated mandatory", "earmark", "nondefense")
+                 "appropriated mandatory", "earmark", "non-defense")
         for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
             for flagged_off in (True, False):
                 if flagged_off:
@@ -2195,7 +2195,7 @@ class ExploreV1(GridBrowser):
                     if flagged_off:
                         self.assertNotIn(word, html, (where, word))
                     elif word in ("amount basis", "account type", "advance appropriations count", "defense", "incl. mandatory",
-                                  "earmark", "nondefense"):
+                                  "earmark", "non-defense"):
                         self.assertIn(word, html, (where, word))
                 if flagged_off:
                     self.page.unroute(pattern)
@@ -2963,7 +2963,7 @@ def view_expected(row, fy, stage, basis, timing):
         return ("—" if e["amount"] == 0 and p == 0 else thousands(e["amount"])), e["amount"]
     if e["status"] == "excluded":
         return "excl.", None
-    return ("not computable" if e.get("accounts_behind") is not None else "n/a"), None
+    return "n/a", None      # UI-9: accounts and totals alike
 
 
 def view_entry_of(row, fy, stage, basis, timing, key):
@@ -3022,7 +3022,12 @@ class AmountBasis(GridBrowser):
                                     e = view_entry(row, fy, st, basis, timing)
                                     self.assertEqual(self.cell(aid, fy, st).get_attribute("data-view"), e["status"] if e else "none")
                                     if e and e.get("reason"):
-                                        self.assertIn(e["reason"], self.cell(aid, fy, st).locator("button.fig").get_attribute("title"))
+                                        btn = self.cell(aid, fy, st).locator("button.fig")
+                                        self.assertEqual(btn.get_attribute("data-reason"), e["reason"])
+                                        if e["status"] != "not_computable":
+                                            self.assertIn(e["reason"], btn.get_attribute("title"))
+                                        else:       # n/a (UI-9): why in one plain line
+                                            self.assertTrue(btn.get_attribute("title").startswith("n/a on "))
                             a, b = figs.get((2025, "Enacted")), figs.get((2026, "Enacted"))
                             delta = self.page.locator(f"tr[data-account={aid}] [data-testid=change-cell]").first.get_attribute("data-delta")
                             self.assertEqual(delta, None if a is None or b is None else str(b - a), (aid, basis, timing))
@@ -3157,26 +3162,20 @@ class AmountBasis(GridBrowser):
                 total = next(t for t in self.lhhs["titles"] if t["title"] == "Title II")["total"]
                 self.assertEqual(self.text(total["account"]["canonical_account_id"], 2026, "Enacted"), thousands(printed(total, 2026, "Enacted")))
 
-    def test_defense_column(self):
-        conn = S.connect(self.db, readonly=True)
-        cjs = plain(S.subcommittee_grid(conn, "CJS"))
-        conn.close()
-        tagged = {r["account"]["canonical_account_id"]: r["cells"]["2026|Enacted"]["defense_portion"]["amount"]
-                  for r in cjs["rows"] if "defense_portion" in (r["cells"].get("2026|Enacted") or {})}
-        self.assertTrue(tagged)
-        parents = sorted({r["member_of"] for r in cjs["rows"] if r["account"]["canonical_account_id"] in tagged and r["member_of"]})
-        self.go("?sc=CJS&fy=2026&open=" + ",".join(parents))
-        self.assertEqual(self.page.locator("[data-testid=defense-cell]").count(), 0)
-        self.menu("check", "#col-def")
-        self.page.wait_for_function("location.search.includes('cols=defense')")
-        cells = self.page.eval_on_selector_all("[data-testid=defense-cell]", "ts => ts.map(t => [t.closest('tr').dataset.account, t.innerText.trim()])")
-        self.assertTrue(cells)
-        for aid, text in cells:
-            self.assertEqual(text, thousands(tagged[aid]) if aid in tagged else "", aid)      # untagged is empty, not 0
-        aid = next(iter(tagged))
-        self.page.click(f"tr[data-account={aid}] [data-testid=defense-cell] button.fig")
-        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
-        self.assertIn("fig=" + aid, self.page.url)
+    def test_no_defense_columns(self):
+        # UI-9 (owner decision D): the View tab's Defense portion and Nondefense columns are gone (Filter › Non-defense
+        # replaces them); a link from before still opens, with no extra column and nothing taken out
+        self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
+        heads = self.page.inner_text("#compare-grid thead")
+        self.page.click("#view-btn")
+        menu = self.page.inner_text("#view-menu").lower()
+        self.page.keyboard.press("Escape")
+        self.assertNotIn("defense", menu)
+        self.assertEqual(self.page.locator("#col-def, #col-nondef").count(), 0)
+        self.go("?sc=CJS&fy=2026&cols=defense,nondefense&open=ACC-NSF-TOTAL")
+        self.assertEqual(self.page.inner_text("#compare-grid thead"), heads)
+        self.assertEqual(self.page.locator("[data-testid=defense-cell], [data-testid=nondefense-cell]").count(), 0)
+        self.assertEqual(self.text("ACC-NSF-RRA", 2026, "Enacted"), "7,176,500")
 
     def test_url_round_trip_every_option(self):
         def snap():
@@ -3205,8 +3204,9 @@ class AmountBasis(GridBrowser):
             self.page.click(f"#f-type button[data-type={kind}]")
             self.page.keyboard.press("Escape")
             round_trip(f"type={kind}" if kind != "all" else "amt=program_level")
-        self.menu("check", "#col-def")
-        round_trip("cols=defense")
+        self.advanced("check", "#f-nodef")
+        round_trip("defense=excl")
+        self.advanced("uncheck", "#f-nodef")
         # all of them at once, with a selected figure; chips and badge count each non-default choice
         self.advanced("click", "#f-timing button[data-timing=enacted]")
         self.page.click("#filter-btn"); self.page.click("#f-type button[data-type=mandatory]"); self.page.keyboard.press("Escape")
@@ -3223,8 +3223,8 @@ class AmountBasis(GridBrowser):
 
 
 class ExcludeEarmarks(GridBrowser):
-    """Brief UI-3b (SPEC 5.6, 4): Filter › Advanced "Exclude earmarks (CDS / CPF)" and View › Columns "Nondefense",
-    each read from the published views (UI-0b views_excluding_earmarks, views_nondefense), never computed."""
+    """Brief UI-3b (SPEC 5.6, 4): Filter › Advanced "Exclude earmarks (CDS / CPF)", and UI-9's "Non-defense" (owner
+    decision D), each read from the published views (UI-0b views_excluding_earmarks, views_nondefense), never computed."""
 
     HSPS, OPEN = "ACC-HHS-SAMHSA-PROGRAM-SUPPORT", "ACC-HHS-SAMHSA-TOTAL"
     RRA = "ACC-NSF-RRA"
@@ -3244,15 +3244,15 @@ class ExcludeEarmarks(GridBrowser):
     def text(self, aid, fy, stage):
         return self.cell(aid, fy, stage).evaluate(CELL_TEXT_JS)
 
-    def expected(self, row, fy, stage, basis, timing):
+    def expected(self, row, fy, stage, basis, timing, key="views_excluding_earmarks"):
         if printed(row, fy, stage) is None:
             return None
-        e = view_entry_of(row, fy, stage, basis, timing, "views_excluding_earmarks")
+        e = view_entry_of(row, fy, stage, basis, timing, key)
         if e is None:
             return "n/a"
         if e["status"] in ("checked", "computed", "matches"):
             return "—" if e["amount"] == 0 and printed(row, fy, stage) == 0 else thousands(e["amount"])
-        return "excl." if e["status"] == "excluded" else ("not computable" if e.get("accounts_behind") is not None else "n/a")
+        return "excl." if e["status"] == "excluded" else "n/a"
 
     def nd_row(self, aid):
         return next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == aid)
@@ -3284,7 +3284,7 @@ class ExcludeEarmarks(GridBrowser):
                             e = view_entry_of(row, fy, st, basis, timing, "views_excluding_earmarks")
                             self.assertEqual(self.cell(aid, fy, st).get_attribute("data-view"), e["status"] if e else "none")
                             if e and e.get("reason"):
-                                self.assertIn(e["reason"], self.cell(aid, fy, st).locator("button.fig").get_attribute("title"))
+                                self.assertEqual(self.cell(aid, fy, st).locator("button.fig").get_attribute("data-reason"), e["reason"])
 
     def test_known_earmark_figures(self):
         # SAMHSA HSPS FY2026 Enacted: printed 171,566 less its tagged earmark CMP-LHHS-0209 (54,311, P.L. 119-75) =
@@ -3328,8 +3328,8 @@ class ExcludeEarmarks(GridBrowser):
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),
-                         thousands(t["amount"]) if t["status"] in ("checked", "computed", "matches") else "not computable")
-        self.assertIn(t["reason"], self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("title"))
+                         thousands(t["amount"]) if t["status"] in ("checked", "computed", "matches") else "n/a")
+        self.assertEqual(self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("data-reason"), t["reason"])
         # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
@@ -3348,62 +3348,91 @@ class ExcludeEarmarks(GridBrowser):
         self.page.wait_for_function("!location.search.includes('earmarks=')")
         self.assertEqual(self.text(self.HSPS, 2026, "Enacted"), "171,566")
 
-    def test_nondefense_column(self):
-        # NSF R&RA FY2026 Enacted: the nondefense view equals the published one (its defense portion is printed
-        # beside the headline); every other line's cell is its published amount or empty; NSF's total is not computable
+    def test_nondefense_filter(self):
+        # Filter › Advanced "Non-defense" (UI-9): every cell, total and difference reads views_nondefense on the basis
+        # and timing in view; the label, chip, badge and URL say so. NSF R&RA FY2026 Enacted less its defense portion
         rra = self.nd_row(self.RRA)
+        nsf = self.nd_row("ACC-NSF-TOTAL")
+        rows = [r for r in self.cjs["rows"] if r["member_of"] == "ACC-NSF-TOTAL"] + [nsf]
         self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
-        self.assertEqual(self.page.locator("[data-testid=nondefense-cell]").count(), 0)
-        self.menu("check", "#col-nondef")
-        self.page.wait_for_function("location.search.includes('cols=nondefense')")
+        self.assertEqual(self.text(self.RRA, 2026, "Enacted"), "7,176,500")
+        self.advanced("check", "#f-nodef")
+        self.page.wait_for_function("location.search.includes('defense=excl')")
+        self.assertIn("· non-defense", self.page.inner_text("#grid-subline"))
+        self.assertEqual(self.page.inner_text("#filter-badge"), "1")
+        self.assertIn("Non-defense", self.page.inner_text("#chips"))
+        self.assertEqual(self.text(self.RRA, 2026, "Enacted"), "7,057,700")
         for basis in BASES:
             with self.subTest(basis=basis):
-                self.go(f"?sc=CJS&fy=2026&cols=defense,nondefense&amt={basis}&open=ACC-NSF-TOTAL")
-                cells = self.page.eval_on_selector_all("[data-testid=nondefense-cell]",
-                                                       "ts => ts.map(t => [t.closest('tr').dataset.account, t.innerText.trim(), t.title])")
-                self.assertTrue(cells)
-                for aid, text, title in cells:
-                    row = next((r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == aid), None) \
-                        or next(t["total"] for t in self.cjs["titles"] if t["total"]["account"]["canonical_account_id"] == aid)
-                    e = view_entry_of(row, 2026, "Enacted", basis, "available", "views_nondefense") \
-                        if printed(row, 2026, "Enacted") is not None else None
-                    if e and e["status"] in ("checked", "computed", "matches"):
-                        self.assertEqual(text, thousands(e["amount"]), aid)
-                    else:
-                        self.assertEqual(text, "", aid)          # not computable: empty, never 0
-                        if e:
-                            self.assertIn(e["reason"], title, aid)
+                self.go(f"?sc=CJS&fy=2026&defense=excl&amt={basis}&open=ACC-NSF-TOTAL")
+                self.assertIn("non-defense", self.page.inner_text("#grid-subline"))
+                for row in rows:
+                    aid = row["account"]["canonical_account_id"]
+                    figs = {}
+                    for fy, st in self.DEFAULT:
+                        exp = self.expected(row, fy, st, basis, "available", "views_nondefense")
+                        if exp is None:
+                            continue
+                        self.assertEqual(self.text(aid, fy, st), exp, (aid, fy, st))
+                        e = view_entry_of(row, fy, st, basis, "available", "views_nondefense")
+                        figs[(fy, st)] = e["amount"] if e and e["status"] in ("checked", "computed", "matches") else None
+                    # the change column is the difference of the two non-defense figures
+                    a, b = figs.get((2025, "Enacted")), figs.get((2026, "Enacted"))
+                    delta = self.page.locator(f"tr[data-account={aid}] [data-testid=change-cell]").first.get_attribute("data-delta")
+                    self.assertEqual(delta, None if a is None or b is None else str(b - a), (aid, basis))
                 pub = view_entry_of(rra, 2026, "Enacted", basis, "available", "views_nondefense")
-                self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), thousands(pub["amount"]))
-                # the nondefense column sits right after the defense portion
-                cols = self.page.eval_on_selector(f"tr[data-account={self.RRA}]", "tr => ['defense-cell', 'nondefense-cell']"
-                                                  ".map(t => Number(tr.querySelector(`[data-testid=${t}]`).dataset.col))")
-                self.assertEqual(cols[1], cols[0] + 1)
-        self.assertEqual(self.page.inner_text(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell]"), "7,057,700")
-        self.page.click(f"tr[data-account={self.RRA}] [data-testid=nondefense-cell] button.fig")
-        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
-        # NSF's total (D-6): the sum of its accounts' nondefense views, R&RA's defense portion out
-        nsf = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == "ACC-NSF-TOTAL")
+                self.assertEqual(self.text(self.RRA, 2026, "Enacted"), thousands(pub["amount"]))
+        # NSF's total (D-6): the sum of its accounts' nondefense views, R&RA's defense portion out; our own sum, unlike
+        # As printed, with no printed line to check it: Σ
         e = view_entry_of(nsf, 2026, "Enacted", "printed", None, "views_nondefense")
         self.assertEqual((e["status"], e["amount"]), ("computed", 8_631_200_000))
-        self.go("?sc=CJS&fy=2026&cols=nondefense&open=ACC-NSF-TOTAL")
-        self.assertEqual(self.page.inner_text("tr[data-account=ACC-NSF-TOTAL] [data-testid=nondefense-cell]").strip(),
-                         "8,631,200")
+        self.go("?sc=CJS&fy=2026&defense=excl&open=ACC-NSF-TOTAL")
+        self.assertEqual(self.text("ACC-NSF-TOTAL", 2026, "Enacted"), "8,631,200")
+        self.assertEqual(self.cell("ACC-NSF-TOTAL", 2026, "Enacted").locator("[data-testid=sum-mark]").count(), 1)
         # a not computable view (NIH's FY2022 Enacted total: its accounts as printed don't add up to it, and no held
-        # line explains the difference): empty, the reason on hover
+        # line explains the difference): n/a, why in one plain line on hover, the data's reason kept
         nih = self.lrow("ACC-HHS-NIH-TOTAL")
         e = view_entry_of(nih, 2022, "Enacted", "printed", None, "views_nondefense")
         self.assertEqual(e["status"], "not_computable")
         self.assertIn("is in no account held", e["reason"])
-        self.go("?sc=LHHS&fy=2022&cols=nondefense&open=ACC-HHS-NIH-TOTAL")
-        nd = self.page.locator("tr[data-account=ACC-HHS-NIH-TOTAL] [data-testid=nondefense-cell]")
-        self.assertEqual(nd.inner_text().strip(), "")
-        self.assertEqual(nd.get_attribute("data-view"), "not_computable")
-        self.assertIn(e["reason"], nd.get_attribute("title"))
+        self.go("?sc=LHHS&fy=2022&defense=excl&open=ACC-HHS-NIH-TOTAL")
+        self.assertEqual(self.text("ACC-HHS-NIH-TOTAL", 2022, "Enacted"), "n/a")
+        b = self.cell("ACC-HHS-NIH-TOTAL", 2022, "Enacted").locator("button.fig")
+        self.assertEqual(b.get_attribute("data-reason"), e["reason"])
+        self.assertIn(": -$1,000,000,000 is in no account held", e["reason"])
+        self.assertIn(": The accounts held add up to $1,000,000,000 more than the printed total · ", b.get_attribute("title"))
+        # the source panel says what is missing, then the full reason (where)
+        b.click()
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "n/a")
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-why]"), "The accounts held add up to $1,000,000,000 more than the printed total")
+        self.assertIn(e["reason"], self.page.inner_text("[data-testid=src-view-reason]"))
+        # the box off: as printed again
+        self.advanced("uncheck", "#f-nodef")
+        self.page.wait_for_function("!location.search.includes('defense=')")
+        self.assertNotIn("non-defense", self.page.inner_text("#grid-subline"))
+
+    def test_one_exclusion_at_a_time(self):
+        # until D-8 publishes a combined set, turning on one exclusion turns the other off, with a note; a link asking
+        # for both keeps Exclude earmarks
+        self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
+        self.advanced("check", "#f-noear")
+        self.page.wait_for_function("location.search.includes('earmarks=excl')")
+        self.advanced("check", "#f-nodef")
+        self.page.wait_for_function("location.search.includes('defense=excl') && !location.search.includes('earmarks=')")
+        self.assertIn("One at a time for now", self.page.inner_text("[data-testid=excl-note]"))
+        self.assertEqual(self.page.inner_text("#filter-badge"), "1")
+        self.advanced("check", "#f-noear")
+        self.page.wait_for_function("location.search.includes('earmarks=excl') && !location.search.includes('defense=')")
+        self.go("?sc=CJS&fy=2026&earmarks=excl&defense=excl&open=ACC-NSF-TOTAL")
+        sub = self.page.inner_text("#grid-subline")
+        self.assertIn("excl. earmarks", sub)
+        self.assertNotIn("non-defense", sub)
+        self.assertNotIn("defense=", self.page.url)
 
     def test_each_flag_hides_its_control(self):
         # each control is absent with its own flag forced false, the other still shown; a URL asking for it changes nothing
-        for flag, gone, kept in (("exclude_earmarks", "#f-noear", "#col-nondef"), ("nondefense", "#col-nondef", "#f-noear")):
+        for flag, gone, kept, q, word in (("exclude_earmarks", "#f-noear", "#f-nodef", "earmarks=excl", "excl. earmarks"),
+                                          ("nondefense", "#f-nodef", "#f-noear", "defense=excl", "non-defense")):
             for where, pattern in (("static", "**/data/index.json"), ("live", "**/api/features")):
                 with self.subTest(flag=flag, where=where):
                     def off(route, request, flag=flag):
@@ -3411,18 +3440,17 @@ class ExcludeEarmarks(GridBrowser):
                         body["features"][flag] = False
                         route.fulfill(json=body)
                     self.page.route(pattern, off)
-                    self.go("?sc=CJS&fy=2026&earmarks=excl&cols=nondefense&open=ACC-NSF-TOTAL", where)
-                    self.page.click("#filter-btn"); self.page.click("#f-adv")
-                    self.page.keyboard.press("Escape")
-                    self.page.click("#view-btn")
+                    self.go(f"?sc=CJS&fy=2026&{q}&open=ACC-NSF-TOTAL", where)
+                    self.page.click("#filter-btn")
+                    if self.page.get_attribute("#f-adv", "aria-expanded") != "true":
+                        self.page.click("#f-adv")
                     self.assertEqual(self.page.locator(gone).count(), 0)
                     self.assertEqual(self.page.locator(kept).count(), 1)
+                    self.assertEqual(self.page.locator("[data-testid=excl-note]").count(), 0)
                     self.page.keyboard.press("Escape")
-                    if flag == "exclude_earmarks":
-                        self.assertNotIn("excl. earmarks", self.page.inner_text("#grid-subline"))
-                        self.assertEqual(self.page.locator("#chips [data-testid=chip]").count(), 0)
-                    else:
-                        self.assertEqual(self.page.locator("[data-testid=nondefense-cell]").count(), 0)
+                    self.assertNotIn(word, self.page.inner_text("#grid-subline"))
+                    self.assertEqual(self.page.locator("#chips [data-testid=chip]").count(), 0)
+                    self.assertEqual(self.text(self.RRA, 2026, "Enacted"), "7,176,500")
                     self.page.unroute(pattern)
 
     def test_url_round_trip(self):
@@ -3431,24 +3459,32 @@ class ExcludeEarmarks(GridBrowser):
             return {"url": self.page.url.split("?", 1)[1], "grid": self.page.inner_html("#compare-grid"),
                     "panel": self.page.inner_html("#side-panel"), "chips": self.page.inner_html("#chips"),
                     "sub": self.page.inner_text("#grid-subline")}
+        def round_trip(params):
+            before = snap()
+            for p in params:
+                self.assertIn(p, before["url"])
+            self.page.click("#share")
+            self.page.goto(self.page.get_attribute("#share", "data-copied"))
+            self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
+            self.assertEqual(snap(), before)
         self.go(f"?sc=LHHS&fy=2026&open={self.OPEN}")
         self.advanced("check", "#f-noear")
         self.advanced("click", "#f-basis button[data-basis=program_level]")
-        self.menu("check", "#col-nondef")
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
-        before = snap()
-        for p in ("earmarks=excl", "cols=nondefense", "amt=program_level", "fig="):
-            self.assertIn(p, before["url"])
-        self.page.click("#share")
-        self.page.goto(self.page.get_attribute("#share", "data-copied"))
-        self.page.wait_for_selector("[data-testid=compare-result]:not([hidden])")
-        self.assertEqual(snap(), before)
+        round_trip(("earmarks=excl", "amt=program_level", "fig="))
         self.assertEqual(self.page.locator("[data-testid=src-earmark]").count(), 1)
         self.assertTrue(self.page.evaluate("document.querySelector('[data-testid=advanced-summary]').textContent")
                         .startswith("Program level · advances when available · earmarks excluded"))
         self.page.click("[data-testid=clear-all]")
         self.assertNotIn("earmarks=", self.page.url)
-
+        # Non-defense, with a selected figure
+        self.go("?sc=CJS&fy=2026&open=ACC-NSF-TOTAL")
+        self.advanced("check", "#f-nodef")
+        self.cell(self.RRA, 2026, "Enacted").locator("button.fig").click()
+        round_trip(("defense=excl", "fig="))
+        self.assertIn("non-defense", self.page.evaluate("document.querySelector('[data-testid=advanced-summary]').textContent"))
+        self.page.click("[data-testid=clear-all]")
+        self.assertNotIn("defense=", self.page.url)
 
 ADJ_JS = """(aid) => [...document.querySelectorAll(`#compare-grid tr[data-testid=adj-line][data-adj-of="${aid}"]`)].flatMap((tr) =>
     [...tr.querySelectorAll('[data-testid=adj-amount]')].map((a) => [Number(a.dataset.fy), a.dataset.stage, a.dataset.set, tr.dataset.type,
@@ -3457,8 +3493,9 @@ ADJ_JS = """(aid) => [...document.querySelectorAll(`#compare-grid tr[data-testid
 
 class AdjustmentLines(GridBrowser):
     """Brief UI-8: the published adjustments from As printed under an expanded account or agency (basis_adjustments),
-    a total's published sum (Σ) or "not computable", contained lines read as included, the build-up in the source
-    panel, and the beta label on the discretionary bases. The page computes nothing: every line is the data's."""
+    a total's published sum (Σ, UI-9: only where it differs from As printed) or n/a, contained lines read as included,
+    the build-up in the source panel, and the beta label on the discretionary bases. The page computes nothing: every
+    line is the data's."""
 
     CDC, CHRONIC, NSF, RRA = "ACC-HHS-CDC-TOTAL", "ACC-HHS-CDC-CHRONIC-DISEASE", "ACC-NSF-TOTAL", "ACC-NSF-RRA"
     FY2025 = [(2024, "Enacted")] + [(2025, st) for st in ("President's Budget", "House Reported", "Senate Reported", "Enacted")]
@@ -3482,11 +3519,11 @@ class AdjustmentLines(GridBrowser):
     def as_printed(row, fy, stage):
         return row["cells"][f"{fy}|{stage}"]["views"]["printed"][0]["amount"]
 
-    def expected(self, row, cols, basis, key="views", nd=None):
-        """The published adjustments the page lists for a row: each column's entry (the basis' view; the nondefense
-        view in the Nondefense column) where it has an amount that differs from As printed."""
+    def expected(self, row, cols, basis, key="views"):
+        """The published adjustments the page lists for a row: each column's entry (the basis' view in the view set in
+        view) where it has an amount that differs from As printed."""
         out = []
-        for fy, st, k in [(fy, st, key) for fy, st in cols] + ([(*nd, "views_nondefense")] if nd else []):
+        for fy, st, k in [(fy, st, key) for fy, st in cols]:
             if printed(row, fy, st) is None:
                 continue
             e = view_entry_of(row, fy, st, basis, "available", k)
@@ -3537,11 +3574,12 @@ class AdjustmentLines(GridBrowser):
             if row:
                 self.assertEqual(sorted(self.page.evaluate(ADJ_JS, aid)), self.expected(row, self.FY2025, "printed", "views_excluding_earmarks"), aid)
         self.assertTrue(any(self.page.evaluate(ADJ_JS, a) for a in ids))
-        # NSF R&RA FY2026 with the Nondefense column (As printed): its defense portion, in that column only
+        # NSF R&RA FY2026 with Non-defense (As printed): its defense portion, in each stage column
         rra = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == self.RRA)
-        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
+        self.go(f"?sc=CJS&fy=2026&defense=excl&open={self.NSF},{self.RRA}")
         got = sorted(self.page.evaluate(ADJ_JS, self.RRA))
-        self.assertEqual(got, self.expected(rra, [], "printed", nd=(2026, "Enacted")))
+        cols = [(2025, "Enacted")] + [(2026, st) for st in ("President's Budget", "House Reported", "Senate Reported", "Enacted")]
+        self.assertEqual(got, self.expected(rra, cols, "printed", "views_nondefense"))
         self.assertEqual({g[3] for g in got}, {"defense_portion"})
         self.assertEqual(self.page.locator(f"[data-testid=adj-line][data-adj-of={self.RRA}] [data-testid=adj-amount]").first.inner_text(),
                          "− " + thousands(got[0][5]))
@@ -3603,33 +3641,43 @@ class AdjustmentLines(GridBrowser):
             self.assertEqual(json.load(r)["documents"], listed)
 
     def test_nondefense_panel_build_up(self):
-        # a Nondefense-column adjustment opens that figure's nondefense build-up: As printed, less the defense
-        # portion with its source, "=" the nondefense figure (owner, 2026-10-14)
+        # with Non-defense on, a figure's panel builds it up: As printed, less the defense portion with its source,
+        # "=" the non-defense figure (owner, 2026-10-14)
         rra = next(r for r in self.cjs["rows"] if r["account"]["canonical_account_id"] == self.RRA)
         e = view_entry_of(rra, 2026, "Enacted", "printed", None, "views_nondefense")
-        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
-        self.page.locator(f"[data-testid=adj-line][data-adj-of={self.RRA}] button[data-testid=adj-amount][data-set=views_nondefense]").click()
+        self.go(f"?sc=CJS&fy=2026&defense=excl&open={self.NSF},{self.RRA}")
+        self.cell(self.RRA, 2026, "Enacted").locator("button.fig").click()
         self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
-        self.assertTrue(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), thousands(e["amount"]))
         terms = self.page.eval_on_selector_all("[data-testid=arith-term]", "es => es.map(e => e.innerText.replace(/\\s+/g, ' '))")
         self.assertEqual(terms, [f"As printed {thousands(self.as_printed(rra, 2026, 'Enacted'))}"] +
                          [f"{a['label']} \u2212{thousands(a['amount'])}" for a in e["adjustments"]])
         self.assertEqual({a["type"] for a in e["adjustments"]}, {"defense_portion"})
-        self.assertTrue(self.page.inner_text("[data-testid=arith-result]").startswith("= Nondefense"))
+        self.assertTrue(self.page.inner_text("[data-testid=arith-result]").startswith("= As printed · non-defense"))
         self.assertEqual(self.page.inner_text("[data-testid=arith-result]").split()[-1], thousands(e["amount"]))
         a = e["adjustments"][0]
         self.assertEqual(self.page.get_attribute("[data-testid=arith-src] a", "href"),
                          self.docs[a["source_document_id"]] + f"#page={a['source_page'].split('-')[0]}")
-        # the selection is in the URL and survives a reload; the nondefense cell is the one marked
-        self.assertIn("%7Cnondefense", self.page.url)
+        # the selection is in the URL and survives a reload
         self.page.reload()
         self.page.wait_for_selector("[data-testid=arith-result]")
-        self.assertTrue(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
-        self.assertEqual(self.page.locator("td[data-sel=fig]").get_attribute("data-testid"), "nondefense-cell")
-        # the stage column's figure keeps the basis panel
-        self.cell(self.RRA, 2026, "Enacted").locator("button.fig").click()
-        self.assertFalse(self.page.inner_text("[data-testid=src-stage]").endswith(", nondefense"))
+        self.assertEqual(self.page.locator("td[data-sel=fig]").get_attribute("data-stage"), "Enacted")
+        # a link from before UI-9 naming the retired Nondefense column's figure opens the stage's figure
+        self.go(f"?sc=CJS&fy=2026&fig={self.RRA}|2026|Enacted|nondefense")
+        self.assertEqual(self.page.get_attribute("#side-panel", "data-mode"), "source")
+        self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$7,176,500,000")
+
+    def test_printed_total_line_reads_as_the_report(self):
+        # CDC FY2025 House on Program level (CDC-Wide has no figure). UI-9 worded D-6's printed_total line; D-8 retired
+        # it: the enacted timing matches the report's own program-level line, and the available timing, with a part
+        # unknown, is n/a saying what is missing (owner decision E, strict). No line reads as a total less itself
+        self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC}")
+        self.assertEqual(self.page.locator("[data-testid=adj-line][data-type=printed_total]").count(), 0)
+        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "n/a")
+        b = self.cell(self.CDC, 2025, "House Reported").locator("button.fig")
+        self.assertTrue(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
+        self.assertIn("CDC-Wide Activities and Program Support (no figure", b.get_attribute("data-reason"))
+        self.assertNotIn("less the total as printed", self.page.inner_text("#compare-grid"))
 
     def test_find_changes_beta(self):
         # Find changes' Amount basis: the discretionary bases read "(beta)", and the chosen one shows the tag and line
@@ -3645,12 +3693,13 @@ class AdjustmentLines(GridBrowser):
                 self.assertIn("computed from the bill text; not yet confirmed by a printed total for most figures", box.inner_text())
 
     def test_sum_mark_and_not_computable_totals(self):
-        # Σ only on a computed total (the sum of its accounts), its reason on hover; a total the data marks not
-        # computable reads "not computable" with the data's reason; "not checked" is gone
+        # Σ only on a total that is our own sum (computed), differs from As printed and has no printed line to check it
+        # (owner decision A, UI-9), its reason on hover; a checked total, or a sum equal to As printed, has no mark. A
+        # total the data marks not computable reads "n/a", why in one plain line on hover; "not checked" is gone
         totals = [r for r in self.lhhs["rows"] if r["rollup"] == "agency"] + [t["total"] for t in self.lhhs["titles"] if t["total"]]
+        n = {"marked": 0, "unmarked_sum": 0, "not_computable": 0}
         for basis in ("program_level", "discretionary"):
             self.go(f"?sc=LHHS&fy=2025&amt={basis}")
-            n = {"computed": 0, "not_computable": 0}
             for row in totals:
                 aid = row["account"]["canonical_account_id"]
                 if not self.page.locator(f"tr[data-account={aid}]").count():
@@ -3661,22 +3710,30 @@ class AdjustmentLines(GridBrowser):
                         continue
                     td = self.cell(aid, fy, st)
                     mark = td.locator("[data-testid=sum-mark]")
-                    sums = e["status"] == "computed" and e.get("accounts_behind") is not None
-                    self.assertEqual(mark.count(), 1 if sums else 0, (aid, fy, st, basis))
-                    if sums:
+                    # D-8: a computed total built down from a printed anchor is not our sum (it has a printed line)
+                    sums = e["status"] == "computed" and e.get("accounts_behind") is not None and not e.get("anchor")
+                    marked = sums and e["amount"] != self.as_printed(row, fy, st)
+                    self.assertEqual(mark.count(), 1 if marked else 0, (aid, fy, st, basis))
+                    if marked:
                         self.assertEqual(mark.get_attribute("title"), e["reason"])
-                        n["computed"] += 1
-                    if e["status"] == "not_computable" and e.get("accounts_behind") is not None:
-                        self.assertEqual(td.evaluate(CELL_TEXT_JS), "not computable")
-                        self.assertIn(e["reason"], td.locator("button.fig").get_attribute("title"))
+                        n["marked"] += 1
+                    elif sums:
+                        n["unmarked_sum"] += 1
+                    if e["status"] == "not_computable":
+                        self.assertEqual(td.evaluate(CELL_TEXT_JS), "n/a")
+                        b = td.locator("button.fig")
+                        self.assertEqual(b.get_attribute("data-reason"), e["reason"])
+                        self.assertTrue(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
                         n["not_computable"] += 1
-            self.assertTrue(n["computed"], basis)
             self.assertNotIn("not checked", self.page.inner_text("body").lower())
+            self.assertNotIn("not computable", self.page.inner_text("#compare-grid").lower())
+        self.assertTrue(all(n.values()), n)
         # the panel: Σ and the reason
-        row = next(r for r in totals for fy, st in self.FY2025
-                   if printed(r, fy, st) is not None and (view_entry(r, fy, st, "program_level", "available") or {}).get("status") == "computed")
-        fy, st = next((fy, st) for fy, st in self.FY2025 if printed(row, fy, st) is not None
-                      and view_entry(row, fy, st, "program_level", "available")["status"] == "computed")
+        row, fy, st = next((r, fy, st) for r in totals for fy, st in self.FY2025 if printed(r, fy, st) is not None
+                           and (view_entry(r, fy, st, "program_level", "available") or {}).get("status") == "computed"
+                           and view_entry(r, fy, st, "program_level", "available").get("accounts_behind") is not None
+                           and not view_entry(r, fy, st, "program_level", "available").get("anchor")
+                           and view_entry(r, fy, st, "program_level", "available")["amount"] != self.as_printed(r, fy, st))
         self.go(f"?sc=LHHS&fy=2025&amt=program_level&fig={row['account']['canonical_account_id']}|{fy}|{st}")
         self.assertEqual(self.page.locator("[data-testid=src-sum-mark]").count(), 1)
         self.assertIn(view_entry(row, fy, st, "program_level", "available")["reason"].capitalize()[:20],
@@ -3685,7 +3742,7 @@ class AdjustmentLines(GridBrowser):
     def test_contained_line_reads_as_included(self):
         # NSF R&RA's Defense function, inside its paragraph's total: "of which: <label>", "included above", the
         # printed amounts; never a reading that adds it
-        self.go(f"?sc=CJS&fy=2026&cols=nondefense&open={self.NSF},{self.RRA}")
+        self.go(f"?sc=CJS&fy=2026&defense=excl&open={self.NSF},{self.RRA}")
         line = self.page.locator(f"[data-testid=other-line][data-line-of={self.RRA}]")
         self.assertEqual(line.count(), 1)
         self.assertTrue(line.locator(".adjlabel").inner_text().startswith("of which: Defense function"))

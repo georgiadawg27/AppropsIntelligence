@@ -286,8 +286,9 @@ def anchor_words(anchor):
 
 
 def unknown_words(acc, u):
-    who = acc[u["account"]]["canonical_name"] if u["account"] else "money in no account held"
-    return f"{who}{' ' + AC.money(u['amount']) if u['amount'] is not None else ''} ({u['why']})"
+    if not u["account"]:
+        return f"money in no account held ({u['why']})"       # its why carries the amount
+    return f"{acc[u['account']]['canonical_name']}{' ' + AC.money(u['amount']) if u['amount'] is not None else ''} ({u['why']})"
 
 
 def cell_state(cell):
@@ -589,7 +590,7 @@ class Layer:
                 line_adj.append(dict(x, why=why))
         if parts["unheld"]:
             unknown.append({"account": None, "amount": parts["unheld"], "cause": NOT_HELD if parts["n"] else NO_ANCHOR,
-                            "why": "money the total prints that is in no account held"
+                            "why": f"the total as printed less its accounts: {AC.money(parts['unheld'])} is in no account held"
                                    + (" (or in the lines above with no figure)" if parts["nofig"] else "")
                                    + ("" if parts["n"] else " (no account behind it is held in this cell)")})
         return used, left, line_adj, unknown
