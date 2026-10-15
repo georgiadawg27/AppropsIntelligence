@@ -1011,6 +1011,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2904"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-LHHS-2904"
           }
@@ -1260,6 +1266,12 @@
           {
            "human_review_status": null,
            "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2606"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
            "rule_applied": "law_text",
            "validation_id": "VAL-TXT-LHHS-2606"
           }
@@ -1481,6 +1493,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-LHHS-10255"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2508"
           },
           {
            "human_review_status": null,
@@ -4332,6 +4350,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2904"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-TXT-LHHS-2904"
      }
@@ -4515,6 +4539,12 @@
      {
       "human_review_status": null,
       "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2508"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
       "rule_applied": "bill_text",
       "validation_id": "VAL-TXT-LHHS-2508"
      }
@@ -4582,6 +4612,12 @@
       "result": "pass",
       "rule_applied": "law_text",
       "validation_id": "VAL-LHHS-11005"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2606"
      },
      {
       "human_review_status": null,

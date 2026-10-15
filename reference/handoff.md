@@ -1,5 +1,22 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Component backfill follow-ups (PR #86, 2026-10-15)
+
+- Rebuilt on main after D-1 to D-9. D-1 already tags the FY2022 Senate section 241 taps and AHRQ's section 241
+  provisos, so #86 keeps only what main lacks.
+- `LHHS-PROVISION-LINES` (components): `reference/review/accounting/provision_lines.csv`, written by
+  `provision_lines.py` from each bill or law's full text (govinfo HTML, or the Senate PDF; cached in
+  `document_store/provision_text/`). 14 rows: Nonrecurring Expenses Fund transfers (FY2018 E CDC B&F $240M; FY2020 E
+  sec. 237 NIH B&F $225M, sec. 238 CDC B&F $225M; FY2021 E sec. 237 NIH B&F $225M; FY2021 S sec. 237 items (1)-(8)
+  to Primary Health Care, Ryan White, CDC HIV, NIH B&F and PHSSEF x4; FY2023 S sec. 235 CDC B&F $37.5M) and FY2020 E
+  sec. 239's $85M deposit from CDC-Wide into the Infectious Diseases Rapid Response Reserve Fund (transfer_out).
+- `LHHS-IDRRRF` (phrase): "transferred to and merged with the Infectious Diseases Rapid Response Reserve Fund" ->
+  transfer_out (FY2020 House CDC-Wide $50M).
+- measure_reconcile: nef_transfer_untagged (4) resolves; nef_outside_printed_program_level (4) is new: NIH FY2020 E,
+  FY2021 E, FY2021 S (the NIH table prints a separate '(with transfer)' total equal to the computed view; H.Rept.
+  117-96 p.477, FY2021 Senate report p.252) and CDC FY2023 S (p.405 prints no Fund line). Failures stay 19.
+- Open for the owner: the account choices from purpose wording (sec. 237 list; NEF building money to B&F).
+
 ## UI-10: Total build-up, cause words, both exclusions together (2026-10-15, this PR)
 
 Page only (web/index.html, docs/index.html regenerated; web/ui_contract.json wording and the page's BUILT set). No

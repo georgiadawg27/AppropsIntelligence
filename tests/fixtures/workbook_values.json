@@ -1,12 +1,12 @@
 {
- "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13; D-3: the President's Budget PPHF rows (request column), 2026-10-14; D-3: the designation read to its end (parser), 2026-10-14; D-3: NSF R&RA headlines from the bill and law paragraphs, defense inside, 2026-10-14; D-3b: CA-LHHS-0037 retired (FY2023 Appendix language prints CDC's total under the heading), 2026-10-14; D-3b: the CDC FY2025 request's section 241 amount read past the phrase window, 2026-10-14; D-3b: NSF R&RA request headlines from the Appendix paragraphs, defense inside, 2026-10-14; D-7: the printed summary lines of every held report's bill and title totals, 2026-10-14; D-8: the 302(b) comparison lines on the bill totals; D-9: data fills for the anchored totals)",
- "data_sha256": "7886564dad7c5e90db28222afb4fd5277ae72995735392a9eea76a967b2117f3",
+ "workbook": "build of data/staged.json (FY2024 House Labor-HHS draft, H.R. 5894 NEF rescission, triage, page checks, law_text and its follow-ups of 2026-10-08; the FY2022 Labor-HHS backfill and FY2022/FY2023 Medicaid derived headlines; the owner's FY2022 decisions; the FY2021 Labor-HHS backfill; the owner's FY2021 decisions; the FY2020 Labor-HHS backfill; the FY2019 Labor-HHS backfill; the FY2018 Labor-HHS backfill; the owner's restatement decisions of 2026-10-09; the FY2017 Labor-HHS backfill; explicit relationship types; start-basis override and proposed_consolidation; the bill and law text check, 2026-10-11; bill or law text over the report table, within rounding, resolved by rule, 2026-10-11; accounting views phase 1: components, account attributes, measure_reconcile, 2026-10-11; phase 1 follow-ups: more phrase rules, CR anomalies, causes, 2026-10-11; phase 1b: PPHF allocation table, ONC headlines, CR anomaly components, FY2021 Senate headings, 2026-10-11; the bill text parser fix and ONC confirmations, 2026-10-11; accounting views phase 2: account attributes from the Budget Appendix, mandatory portions, the discretionary view, 2026-10-12; phase 2 follow-ups: report marks, own-volume codes, Account fund_type, provisional, 2026-10-12; the component backfill FY2017-FY2023: auto-tagged cells, PPHF tables, advances, classes carried from the last mark, 2026-10-12; D-1 accounting follow-up: FY2027 House auto-tagged, the evaluation-tap and ONC tap-line rules; the owner's D-1 rulings (AHRQ total read, Quarantine not a component, two resolutions), 2026-10-13; D-2: the President's Budget request language (appendix_text), ruling 7d, ACF FY2023 emergency lines, FY2027 House PPHF, the SAMHSA FY2023 P.L. 117-180 line, CDC-Wide/Birth Defects/EEOICP/ONC FY2023 bill headlines, ACL read, the earmark rule check, CJS FY2024-FY2025 auto-tagged, 2026-10-13; D-3: the President's Budget PPHF rows (request column), 2026-10-14; D-3: the designation read to its end (parser), 2026-10-14; D-3: NSF R&RA headlines from the bill and law paragraphs, defense inside, 2026-10-14; D-3b: CA-LHHS-0037 retired (FY2023 Appendix language prints CDC's total under the heading), 2026-10-14; D-3b: the CDC FY2025 request's section 241 amount read past the phrase window, 2026-10-14; D-3b: NSF R&RA request headlines from the Appendix paragraphs, defense inside, 2026-10-14; D-7: the printed summary lines of every held report's bill and title totals, 2026-10-14; D-8: the 302(b) comparison lines on the bill totals; D-9: data fills for the anchored totals; the component backfill follow-ups: Nonrecurring Expenses Fund provision lines and the Rapid Response Reserve Fund transfer rule, 2026-10-15)",
+ "data_sha256": "dc4254c02166b85969196a75f20df85fc29926cc64a7a886b4f15c840b2f42ee",
  "note": "values only (formulas as text), per sheet; scripts/workbook_digest.py. Regenerate when data/staged.json changes on purpose.",
  "sheets": {
   "Read Me": {
    "rows": 87,
    "columns": 1,
-   "sha256": "ef17ce0d81fcd40905c58a88d36dda69db8a7e159811349f189bbd8dcb79d049"
+   "sha256": "715582a5a913440ae797772b13d95c02a0fd9a11b57510380ff9b5cffca48bf3"
   },
   "Account": {
    "rows": 147,
@@ -44,9 +44,9 @@
    "sha256": "1947917600e4ed957dc6a1015f2a4897dcd61b7f308e738ebab126357e3366b7"
   },
   "Validation Record": {
-   "rows": 21642,
+   "rows": 21654,
    "columns": 9,
-   "sha256": "769f367a0b26335107c8c6ac7f02a342c57f560c956e7eeab2b535a1774501aa"
+   "sha256": "6d5711bf71b142a832705f8af153d32e52e572b927185250636cb47505a69062"
   },
   "Component": {
    "rows": 53,
@@ -54,9 +54,9 @@
    "sha256": "9556d7bf0b85db82958b09fe9389dd6df72f369c57db9d590709a60c91c57139"
   },
   "Observation Component": {
-   "rows": 1462,
+   "rows": 1479,
    "columns": 16,
-   "sha256": "69f0cb060956d0a174f4a17bbeedd98da0306db9916fb1f8e3ce34895b9e11c7"
+   "sha256": "206c5fe20a035cff8a8091b8e69754ed327c61a9de8064725704ac614a04442b"
   },
   "Account Attribute": {
    "rows": 4393,
