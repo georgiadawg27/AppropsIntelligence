@@ -202,6 +202,22 @@ def inside_lines(path=None):
                 if r["inside"] == "yes"}
 
 
+# owner, 2026-10-15 (D-9): a line counts in the total the table prints it under. An account the table prints under
+# another agency's total in a cell (ARPA-H under the Office of the Secretary in H.Rept. 117-403) leaves the total it
+# is held under and joins that one, for that cell and that table only; one row per (account, cell, document)
+MEMBERS_FILE = ROOT / "reference" / "review" / "accounting" / "total_members_printed.csv"
+
+
+def printed_members(path=None):
+    """(account, fiscal year, stage, document) -> (total it is held under, total the table prints it under)."""
+    path = path or MEMBERS_FILE
+    if not path.exists():
+        return {}
+    with path.open() as f:
+        return {(r["account"], int(r["fiscal_year"]), r["stage"], r["document"]): (r["held_under"], r["printed_under"])
+                for r in csv.DictReader(f)}
+
+
 def held_lines(lines):
     """The lines held in a total's accounts' cells beside their headlines (not the budget-authority headline, not a
     line inside it or a printed parallel total): a supplemental, an advance, a program line printed under the
@@ -339,6 +355,15 @@ class Layer:
         self.rows = {}
         # D-6 round 3: (total's printed observation, held line's observation) pairs the table prints inside the total
         self.inside = inside_lines()
+        # D-9: accounts the table prints under another total in a cell (MEMBERS_FILE)
+        self.moved_members = printed_members()
+        # D-9: a total's own lines printed inside it (a 'contained' line on the total, e.g. NIH's proposed NIRSQ), by
+        # the printed figure they sit in
+        self.own_lines = collections.defaultdict(list)
+        for o in data["observations"]:
+            if (o.get("headline_observation_id") and kinds.get(o.get("component") or "") == "contained"
+                    and o["verification_status"] != "superseded"):
+                self.own_lines[o["headline_observation_id"]].append(o)
         # an agency held only as its total (no account lines): its total is its one line
         self.lone = {a["canonical_account_id"] for a in data["accounts"]
                      if a.get("total_scope") == "agency" and not M.members(data, a)}
@@ -490,12 +515,24 @@ class Layer:
                 and not M.members(self.data, x)]
         return self.total_members(a) + lone
 
-    def behind(self, a, key):
+    def members_in(self, a, key, doc):
+        """The accounts an agency total adds up in one cell of one table: lines_behind, less an account that table
+        prints under another total, plus one it prints under this one (MEMBERS_FILE)."""
+        ms = self.lines_behind(a)
+        if a.get("total_scope") != "agency" or not doc:
+            return ms
+        fy, stage = key.split("|")
+        aid = a["canonical_account_id"]
+        moved = {m: v for (m, y, st, d), v in self.moved_members.items() if (y, st, d) == (int(fy), stage, doc)}
+        return [m for m in ms if moved.get(m, (None,))[0] != aid] + sorted(
+            m for m, (_, to) in moved.items() if to == aid and m not in ms)
+
+    def behind(self, a, key, doc=None):
         """The total's lines in one cell: -> (lines [(account, cell)] holding a printed figure, accounts with a
         confirmed absence (nothing), lines with no figure [(account, state)]). A line outside its life, or before it
-        existed (no_figure), is not behind the total in that cell."""
+        existed (no_figure), is not behind the total in that cell. doc: the total's table (members_in)."""
         lines, absent, nofig = [], [], []
-        for m in self.lines_behind(a):
+        for m in self.members_in(a, key, doc):
             row = self.rows.get(m)
             mc = row["cells"].get(key) if row else None
             if mc is None or mc.get("outside_life"):
@@ -522,20 +559,37 @@ class Layer:
         key = f"{fy}|{stage}"
         self.cell_key = (fy, stage)
         self.cell_head = h
-        lines, absent, nofig = self.behind(a, key)
+        lines, absent, nofig = self.behind(a, key, h["source_document_id"])
         n = len(lines) + len(absent)
         held = sum(mc["views"]["printed"][0]["amount"] for _, mc in lines)
         beside = held_lines(lines)
         # owner, D-6 round 3: only the held lines the table prints inside this total (INSIDE_FILE's evidence)
         inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
-        unheld = h["amount"] - held - sum(x["amount"] for x in inside)
+        # owner, 2026-10-15 (D-9): an advance tagged from the bill or law text beside a headline, which the table prints
+        # inside the total (its 'New advance, 1st quarter' row), counts as held (the evidence row names the component)
+        for m, mc in lines:
+            have = {x["component_id"] for x in beside if x["account"] == m and x["component_id"]}
+            for c in mc.get("components") or []:
+                if (not c["in_headline"] and c["type"] == "advance_enacted" and c["component_id"] not in have
+                        and (h["observation_id"], c["component_id"]) in self.inside):
+                    inside.append({"account": m, "observation_id": c["component_id"], "amount": c["amount"],
+                                   "label": c["type"], "source_document_id": c.get("source_document_id"),
+                                   "source_page": c.get("source_page"), "component_id": c["component_id"],
+                                   "component_type": c["type"]})
+        # D-9: the total's own lines the table prints inside it, with evidence: in the printed figure, held on the total
+        own = [{"account": a["canonical_account_id"], "observation_id": o["observation_id"], "amount": o["amount"],
+                "label": o["component"], "source_document_id": o["source_document_id"],
+                "source_page": o.get("source_page"), "component_id": None, "component_type": None}
+               for o in self.own_lines.get(h["observation_id"], [])
+               if (h["observation_id"], o["observation_id"]) in self.inside]
+        unheld = h["amount"] - held - sum(x["amount"] for x in inside + own)
         if not nofig and n and held != h["amount"]:
             self.gaps.append({"subcommittee": a["subcommittee"], "total": a["canonical_account_id"],
                               "agency": a["agency"], "fiscal_year": fy, "stage": stage, "printed": h["amount"],
                               "printed_observation_id": h["observation_id"],
                               "source_document_id": h["source_document_id"], "source_page": h.get("source_page"),
                               "held": held, "gap": h["amount"] - held, "lines": lines, "beside": beside,
-                              "inside": inside, "counted": inside if not unheld else []})
+                              "inside": inside + own, "counted": inside + own if not unheld else []})
         heads = [h] + [self.obs[mc["views"]["printed"][0]["printed_observation_id"]] for _, mc in lines]
         prints = [o for o in self.printed[(a["canonical_account_id"], fy, stage)]
                   if o["source_document_id"] == h["source_document_id"]]

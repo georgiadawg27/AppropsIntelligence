@@ -1,0 +1,589 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0169",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in House (BILLS-119hr5304rh). The bill or law text for BR-LHHS-FY2026-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR5304RH.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "H.R. 5304 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+        "fiscal_year": 2026,
+        "publication_date": "2025-09-11",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119HR5304RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 4025411000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5096",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT271",
+         "source_page": "348",
+         "source_table_or_section": "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2026 Request column] 4,025,411 (evaluation tap funding (100,239) and program level 4,125,650 beside), inside 'Total, SAMHSA' 5,562,611 (page image) (D-9)",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
+         "validation": [],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0170",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in Senate (BILLS-119s2587rs). The bill or law text for BR-LHHS-FY2026-SENATE; parsed into data/legislative_text/SRC-BILLS-119S2587RS.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "S. 2587 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+        "fiscal_year": 2026,
+        "publication_date": "2025-07-31",
+        "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119S2587RS",
+        "stage": "Senate Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": {
+        "amount_type": "budget authority",
+        "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+        "component": null,
+        "confirmed_absence_id": "CA-LHHS-0171",
+        "confirmed_date": "2026-10-15",
+        "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr9260rh). The bill or law text for BR-LHHS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR9260RH.json (scripts/fetch_legislative_text.py).",
+        "document_type": "bill",
+        "evidence": "H.R. 9260 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+        "fiscal_year": 2027,
+        "publication_date": "2026-06-11",
+        "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+        "source_document_id": "SRC-BILLS-119HR9260RH",
+        "stage": "House Reported",
+        "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf"
+       },
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "amount": 4520411000,
+         "amount_type": "budget authority",
+         "bill_id": "PREX 2.8:2027/APP",
+         "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+         "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5097",
+         "offsetting_collections": 0,
+         "publication_date": "2026-06-11",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT696",
+         "source_page": "379",
+         "source_table_or_section": "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2027 Request column] 4,520,411 (evaluation tap funding (100,239) and program level 4,620,650 beside), inside 'Total, SAMHSA' 6,552,543 (page image) (D-9)",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+         "validation": [],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "budget authority",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "budget authority",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0169",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in House (BILLS-119hr5304rh). The bill or law text for BR-LHHS-FY2026-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR5304RH.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "H.R. 5304 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+    "fiscal_year": 2026,
+    "publication_date": "2025-09-11",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119HR5304RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr5304rh/pdf/BILLS-119hr5304rh.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0170",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2026, and for other purposes. -- reported in Senate (BILLS-119s2587rs). The bill or law text for BR-LHHS-FY2026-SENATE; parsed into data/legislative_text/SRC-BILLS-119S2587RS.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "S. 2587 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+    "fiscal_year": 2026,
+    "publication_date": "2025-07-31",
+    "source_agency": "U.S. Senate (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119S2587RS",
+    "stage": "Senate Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119s2587rs/pdf/BILLS-119s2587rs.pdf"
+   },
+   {
+    "amount_type": "budget authority",
+    "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+    "component": null,
+    "confirmed_absence_id": "CA-LHHS-0171",
+    "confirmed_date": "2026-10-15",
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr9260rh). The bill or law text for BR-LHHS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR9260RH.json (scripts/fetch_legislative_text.py).",
+    "document_type": "bill",
+    "evidence": "H.R. 9260 has no 'Behavioral Health Innovation Block Grant' heading or appropriation (whole text searched for /Innovation Block Grant/: no mention) (D-9).",
+    "fiscal_year": 2027,
+    "publication_date": "2026-06-11",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119HR9260RH",
+    "stage": "House Reported",
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr9260rh/pdf/BILLS-119hr9260rh.pdf"
+   }
+  ],
+  "account": {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "bureau": "Behavioral Health Innovation Block Grant",
+   "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+   "canonical_name": "Behavioral Health Innovation Block Grant",
+   "display_order": 109,
+   "fund_type": "general",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "FY2026 and FY2027 requests only: the House tables print it in the request column inside 'Total, SAMHSA' (H.Rept. 119-271 p.348, 4,025,411; H.Rept. 119-696 p.379, 4,520,411; each with an evaluation-tap line beside, program level 4,125,650 and 4,620,650). No House or Senate bill on file has it. Budget class not recorded. Added in D-9 (owner, 2026-10-15).",
+   "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
+   "status": "proposed",
+   "subcommittee": "LHHS",
+   "title": "Title II",
+   "treasury_account_symbol": null
+  },
+  "coverage": {
+   "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ],
+    [
+     2027,
+     "President's Budget"
+    ]
+   ],
+   "enacted_through": 2026,
+   "not_reported": [
+    [
+     2020,
+     "Senate Reported"
+    ]
+   ]
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2026,
+    "Enacted"
+   ]
+  ],
+  "observations": [
+   {
+    "amount": 4025411000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5096",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT271",
+    "source_page": "348",
+    "source_table_or_section": "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2026 Request column] 4,025,411 (evaluation tap funding (100,239) and program level 4,125,650 beside), inside 'Total, SAMHSA' 5,562,611 (page image) (D-9)",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt271/CRPT-119hrpt271.pdf",
+    "validation": [],
+    "verification_status": "unverified"
+   },
+   {
+    "amount": 4520411000,
+    "amount_type": "budget authority",
+    "bill_id": "PREX 2.8:2027/APP",
+    "bill_report_reference_id": "BR-LHHS-FY2027-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2027-APP/pdf/BUDGET-2027-APP.pdf",
+    "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5097",
+    "offsetting_collections": 0,
+    "publication_date": "2026-06-11",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT696",
+    "source_page": "379",
+    "source_table_or_section": "Title II, SAMHSA -- printed as 'Behavioral Health Innovation Block Grant' [FY 2027 Request column] 4,520,411 (evaluation tap funding (100,239) and program level 4,620,650 beside), inside 'Total, SAMHSA' 6,552,543 (page image) (D-9)",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt696/CRPT-119hrpt696.pdf",
+    "validation": [],
+    "verification_status": "unverified"
+   }
+  ],
+  "open_cells": [
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "relationships": [],
+  "stage_notes": {
+   "2020|Senate Reported": "Not reported: the Senate Committee on Appropriations never reported a FY2020 Labor-HHS bill and released no chair's draft (S. 2533 and S.Rept. 116-84 are unrelated measures)",
+   "2021|Senate Reported": "Senate chair's draft bill and explanatory statement released 2020-11-10; never introduced, so no bill number (Congress.gov lists none)",
+   "2022|Senate Reported": "Senate chair's draft released 2021-10-18; S. 3062 introduced 2021-10-25 and referred, never reported",
+   "2023|Senate Reported": "committee draft released 2022-07-28; S. 4659 introduced and referred, never reported (CRS R47233)"
+  },
+  "total_scope": null
+ }
+}

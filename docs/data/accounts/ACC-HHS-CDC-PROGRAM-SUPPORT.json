@@ -1051,6 +1051,12 @@
            "result": "pass",
            "rule_applied": "structural",
            "validation_id": "VAL-LHHS-11539"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2784"
           }
          ],
          "verification_status": "auto-validated"
@@ -1278,6 +1284,12 @@
            "result": "flag",
            "rule_applied": "cross_document",
            "validation_id": "VAL-LHHS-10903"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-LHHS-2386"
           }
          ],
          "verification_status": "auto-validated"
@@ -2316,9 +2328,53 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "amount": 511570000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.9029",
+         "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr9029rh/pdf/BILLS-118hr9029rh.pdf",
+         "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+         "cell_note": "H.Rept. 118-585 p.316 prints no budget-authority line for the account, only 'Subtotal, CDC-Wide Activities' (511,570) in parentheses in the Bill column (the Prevention and Public Health Fund line '---'); its narrative (p.80) gives the Committee Recommendation as $511,570,000 [bill text] (D-9)",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2025,
+         "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2025, and for other purposes. -- reported in House (BILLS-118hr9029rh). The bill or law text for BR-LHHS-FY2025-HOUSE; parsed into data/legislative_text/SRC-BILLS-118HR9029RH.json (scripts/fetch_legislative_text.py).",
+         "document_stage": "House Reported",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-LHHS-5082",
+         "offsetting_collections": 0,
+         "publication_date": "2024-07-12",
+         "report_id": "H.Rept.118-585",
+         "report_jes_url": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-118HR9029RH",
+         "source_page": "64",
+         "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in H.R. 9029 under 'CDC-Wide Activities and Program Support': '... for the Centers for Disease Control and Prevention, $511,570,000, of which $360,000,000 shall remain available through September 30, 2026, for public health infrastructure and capacity'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 118-585 p.316 prints no budget-authority line for the account, only 'Subtotal, CDC-Wide Activities' (511,570) in parentheses in the Bill column (the Prevention and Public Health Fund line '---'); its narrative (p.80) gives the Committee Recommendation as $511,570,000 [bill text] (D-9)",
+         "stage": "House Reported",
+         "status_text": "Resolved by rule: bill text controls",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118hr9029rh/pdf/BILLS-118hr9029rh.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "info",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-LHHS-5082"
+          }
+         ],
+         "verification_status": "resolved-by-rule"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -3294,10 +3350,6 @@
    [
     2023,
     "President's Budget"
-   ],
-   [
-    2025,
-    "House Reported"
    ]
   ],
   "observations": [
@@ -4010,6 +4062,12 @@
       "result": "pass",
       "rule_applied": "structural",
       "validation_id": "VAL-LHHS-11539"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2784"
      }
     ],
     "verification_status": "auto-validated"
@@ -4177,6 +4235,12 @@
       "result": "flag",
       "rule_applied": "cross_document",
       "validation_id": "VAL-LHHS-10903"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-LHHS-2386"
      }
     ],
     "verification_status": "auto-validated"
@@ -5108,6 +5172,49 @@
     "verification_status": "auto-validated"
    },
    {
+    "amount": 511570000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.9029",
+    "bill_report_reference_id": "BR-LHHS-FY2025-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-118hr9029rh/pdf/BILLS-118hr9029rh.pdf",
+    "canonical_account_id": "ACC-HHS-CDC-PROGRAM-SUPPORT",
+    "cell_note": "H.Rept. 118-585 p.316 prints no budget-authority line for the account, only 'Subtotal, CDC-Wide Activities' (511,570) in parentheses in the Bill column (the Prevention and Public Health Fund line '---'); its narrative (p.80) gives the Committee Recommendation as $511,570,000 [bill text] (D-9)",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2025,
+    "document_notes": "Making appropriations for the Departments of Labor, Health and Human Services, and Education, and related agencies for the fiscal year ending September 30, 2025, and for other purposes. -- reported in House (BILLS-118hr9029rh). The bill or law text for BR-LHHS-FY2025-HOUSE; parsed into data/legislative_text/SRC-BILLS-118HR9029RH.json (scripts/fetch_legislative_text.py).",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-LHHS-5082",
+    "offsetting_collections": 0,
+    "publication_date": "2024-07-12",
+    "report_id": "H.Rept.118-585",
+    "report_jes_url": "https://www.congress.gov/118/crpt/hrpt585/CRPT-118hrpt585.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-118HR9029RH",
+    "source_page": "64",
+    "source_table_or_section": "Title II, Centers for Disease Control and Prevention -- printed in H.R. 9029 under 'CDC-Wide Activities and Program Support': '... for the Centers for Disease Control and Prevention, $511,570,000, of which $360,000,000 shall remain available through September 30, 2026, for public health infrastructure and capacity'; bill or law text controls over the report table for the same scope (owner 2026-10-11) -- Note: H.Rept. 118-585 p.316 prints no budget-authority line for the account, only 'Subtotal, CDC-Wide Activities' (511,570) in parentheses in the Bill column (the Prevention and Public Health Fund line '---'); its narrative (p.80) gives the Committee Recommendation as $511,570,000 [bill text] (D-9)",
+    "stage": "House Reported",
+    "status_text": "Resolved by rule: bill text controls",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-118hr9029rh/pdf/BILLS-118hr9029rh.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "info",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-LHHS-5082"
+     }
+    ],
+    "verification_status": "resolved-by-rule"
+   },
+   {
     "amount": 521570000,
     "amount_type": "budget authority",
     "bill_id": "S.4942",
@@ -5721,10 +5828,6 @@
    [
     2023,
     "President's Budget"
-   ],
-   [
-    2025,
-    "House Reported"
    ],
    [
     2027,

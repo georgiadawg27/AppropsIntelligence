@@ -254,6 +254,7 @@ PHRASE_CASES = {
                    ("designated", "other", "")),
     "LHHS-PRIF": ("SRC-BILL-LHHS-FY2021-SENATE", "P0077", 7, "LHHS", 2021, "Senate Reported",
                   ("transfer_in", "", "10-year Pediatric Research Initiative Fund (PRIF)")),
+    "LHHS-IDRRRF": ("SRC-BILLS-116HR2740RH", "P0049", 2, "LHHS", 2020, "House Reported", ("transfer_out", "", "")),
     # vetoes: the amount is no component (the core alone would read a transfer)
     "LHHS-QUARANTINE": ("SRC-BILLS-119HR9260RH", "P0035", 1, "LHHS", 2027, "House Reported", None),
 }
@@ -283,7 +284,8 @@ class MovedRules(unittest.TestCase):
     def test_every_moved_rule_has_its_case_here(self):
         covered = set(PHRASE_CASES) | set(KIND_CASES) | {
             "LHHS-PPHF-SOURCE", "LHHS-241-SUBALLOCATION", "LHHS-LAYOUT", "CJS-LAYOUT", "LHHS-APPENDIX", "CJS-APPENDIX", "LHHS-ONC-EVAL-TAP-LINE",
-            "CJS-NSF-DEFENSE", "CJS-FY2027-TRANSFER", "CJS-FY2027-OFFSETTING", "LHHS-VICTF-LINES", "LHHS-PPHF-TABLE",
+            "CJS-NSF-DEFENSE", "CJS-FY2027-TRANSFER", "CJS-FY2027-OFFSETTING", "LHHS-VICTF-LINES", "LHHS-REQUEST-EVALUATION-LINE",
+            "LHHS-PPHF-TABLE", "LHHS-PROVISION-LINES",
             "LHHS-TOTAL-ONLY", "LHHS-ADVANCES", "LHHS-CR-ANOMALIES", "LHHS-CR-PPHF", "CJS-CR-LEVEL-ONLY",
             "LHHS-CHECKS", "LHHS-ONC-VIEW-CHECK", "LHHS-LOOKS-LIKE", "LHHS-241-NOT-MAIN", "LHHS-241-DERIVATION",
             "LHHS-241-NO-MAIN", "LHHS-ONC-CELL-NOTE"}
@@ -409,16 +411,44 @@ class MovedRules(unittest.TestCase):
         self.assertFalse(r.scope.contains("LHHS", "ACC-HHS-HRSA-OTHER", 2023, "Enacted"))
         self.assertFalse(r.scope.contains("CJS", "ACC-HHS-HRSA-VICTF", 2023, "Enacted"))
 
+    def test_request_evaluation_line(self):
+        # D-9 part 4: the request column's evaluation line under PHSS FY2023 (H.Rept. 117-403 p.811), beside the headline
+        rep = collections.defaultdict(list)
+        got = [c for c in TC.table_lines(STAGED, self.heads, rep) if c["observation_id"] == "OBS-LHHS-0949"]
+        self.assertEqual([(c["component_type"], c["amount"], c["in_headline"], c["transfer_from"]) for c in got],
+                         [("transfer_in", 143540000, "FALSE", R.active().modules["LHHS"].PHS_241)])
+        with without("LHHS-REQUEST-EVALUATION-LINE"):
+            rep = collections.defaultdict(list)
+            self.assertFalse([c for c in TC.table_lines(STAGED, self.heads, rep)
+                              if c["observation_id"] == "OBS-LHHS-0949"])
+            self.assertTrue(rep["unknown_table_line"])
+        r = rule("LHHS-REQUEST-EVALUATION-LINE")
+        self.assertFalse(r.scope.contains("LHHS", "ACC-HHS-CDC-SCIENTIFIC-SERVICES", 2023, "House Reported"))
+
     def test_pphf_table(self):
         rep = collections.defaultdict(list)
-        got = TC.rule_components(STAGED, self.heads, rep)
-        want = comps_where(tag_method="table_line", transfer_from=R.active().modules["LHHS"].PPHF)
+        pphf = R.active().modules["LHHS"].PPHF
+        got = [c for c in TC.rule_components(STAGED, self.heads, rep) if c["transfer_from"] == pphf]
+        want = comps_where(tag_method="table_line", transfer_from=pphf)
         self.assertEqual(len(got), len(want))
         self.assertEqual({(c["observation_id"], c["amount"]) for c in got},
                          {(c["observation_id"], c["amount"]) for c in want})
         with without("LHHS-PPHF-TABLE"):
-            self.assertEqual(TC.rule_components(STAGED, self.heads, collections.defaultdict(list)), [])
+            self.assertFalse([c for c in TC.rule_components(STAGED, self.heads, collections.defaultdict(list))
+                              if c["transfer_from"] == pphf])
         self.assertEqual(R.active().rules("components", "CJS"), [])
+
+    def test_provision_lines(self):
+        got = [c for c in TC.rule_components(STAGED, self.heads, collections.defaultdict(list))
+               if "provision_lines.py" in c["tag_rule"]]
+        self.assertTrue(got)
+        held = {(c["observation_id"], c["amount"], c["source_location"]) for c in STAGED["observation_components"]}
+        self.assertEqual({(c["observation_id"], c["amount"], c["source_location"]) for c in got} - held, set())
+        # the FY2018 Enacted CDC Buildings and Facilities proviso: $240,000,000 derived by transfer from the Fund
+        self.assertIn(("OBS-LHHS-3630", 240000000), {(c["observation_id"], c["amount"]) for c in got})
+        with without("LHHS-PROVISION-LINES"):
+            self.assertFalse([c for c in TC.rule_components(STAGED, self.heads, collections.defaultdict(list))
+                              if "provision_lines.py" in c["tag_rule"]])
 
     def test_total_only(self):
         texts, exempt = TEXTS, CT.load_exempt(L.TEXT_DIR)
@@ -483,12 +513,12 @@ class MovedRules(unittest.TestCase):
     def test_checks(self):
         records, outcomes = MR.run(STAGED)
         mine = {r["validation_id"]: r for r in records}
-        self.assertIn("VAL-MRC-NEF-TRANSFER-UNTAGGED", mine)
+        self.assertIn("VAL-MRC-NEF-OUTSIDE-PRINTED-PROGRAM-LEVEL", mine)
         self.assertIn("Evaluation Tap Funding", mine["VAL-MRV-LHHS-2664"]["expected_result"])
         self.assertEqual(mine["VAL-MRV-LHHS-2664"]["result"], "pass")
         with without("LHHS-CHECKS"):
             r2 = {r["validation_id"] for r in MR.run(STAGED)[0]}
-            self.assertNotIn("VAL-MRC-NEF-TRANSFER-UNTAGGED", r2)
+            self.assertNotIn("VAL-MRC-NEF-OUTSIDE-PRINTED-PROGRAM-LEVEL", r2)
         with without("LHHS-ONC-VIEW-CHECK"):
             r3 = {r["validation_id"]: r for r in MR.run(STAGED)[0]}
             self.assertNotIn("Evaluation Tap Funding", r3.get("VAL-MRV-LHHS-2664", {}).get("expected_result", ""))

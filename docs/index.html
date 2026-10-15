@@ -185,6 +185,10 @@
   #grid-title { margin: 2px 0 0; font-size: 24px; letter-spacing: -0.015em; font-weight: 600; }
   .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; position: relative; }
   .unitlabel { font-size: 13px; color: var(--x-ink2); background: #ebe9e2; border-radius: 6px; padding: 5px 10px; }
+  .naline { margin: -4px 0 10px; font-size: 13px; color: var(--x-ink2); }
+  .naline .napart { appearance: none; background: none; border: 0; padding: 0; font: inherit; color: var(--x-accent-text); cursor: pointer;
+                    text-decoration: underline dotted; text-underline-offset: 3px; }
+  .naline .napart[aria-pressed=true] { font-weight: 600; text-decoration-style: solid; }
   .workspace { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
   /* one vertical scrollbar, the page's own (owner, 2026-10-13, UI-2c): the grid shows every row at full length and
      is not a scroll box in either axis (overflow-x: clip makes no scroll container), so its header rows stick under
@@ -287,6 +291,11 @@
   button.adjfig { appearance: none; background: none; border: 0; padding: 0; margin: 0; font: inherit; cursor: pointer; }
   a.adjfig:hover, button.adjfig:hover { color: var(--x-accent-text); text-decoration-color: var(--x-accent); }
   .chev.achev { width: 20px; height: 20px; margin-left: -22px; font-size: 11px; }
+  /* a total's build-up (brief UI-10): its As printed line and its "=" line, in the adjustment lines' style */
+  .grid tr.build td.acct .adjlabel { color: var(--x-ink2); }
+  .grid tr.build.eq td { border-top: 1px solid var(--x-rule-strong); }
+  .grid tr.build.eq td.num { font-weight: 600; }
+  .bmatch { display: block; font-size: 11px; font-weight: 400; color: var(--x-muted); }
   /* a total's published sum (D-6 computed): a small Σ after its figure */
   .sigma { margin-left: 3px; font-size: 11px; font-weight: 400; color: var(--x-muted); cursor: help; }
   .tag.beta { background: #e8eef8; color: #16325f; margin-left: 2px; vertical-align: 1px; }
@@ -786,6 +795,7 @@
           <div class="xpanel" id="export-menu" role="dialog" aria-label="Export" data-testid="export-menu" hidden></div>
         </div>
       </div>
+      <div class="naline small" id="na-line" data-testid="na-line" role="status" hidden></div>
       <div class="workspace">
         <div class="tablebox" id="grid-wrap" data-testid="grid-wrap"><table class="grid" id="compare-grid" data-testid="compare-grid"></table>
           <div class="hbar" id="grid-hbar" data-testid="grid-hbar" hidden><div></div></div></div>
@@ -1702,6 +1712,8 @@ const G = { sc: null, grid: "stages", fy: null, a: null, b: null, stages: [true,
             units: "k", reviewer: false, panelOff: false, dense: false, reqcol: false, agency: "", status: "any", search: "",
             // Filter › Advanced (the items no flag gates): a change threshold, committee drafts, figures pending review
             minPct: null, minK: null, drafts: true, review: false,
+            // the n/a line above the grid (brief UI-10 item 4): only the rows with an n/a cell of this cause ("" none)
+            na: "",
             // the phone (SPEC section 6): the stage its list shows (null: the lead stage); table: the grid on a phone
             pstage: null, table: false,
             // "Accounts shown" (the account lifecycle): proposed-only accounts per view, ended accounts after
@@ -1716,7 +1728,8 @@ let open = new Set();           // expanded rows: agency totals and (with adjust
 // publishes what it reads (docs/data/index.json "features", or the live /api/features)
 const BUILT = new Set(["grid", "search_filter", "overview_panel", "interaction_state", "abbreviations", "figure_source", "account_panel",
                         "accounting_views", "budget_class", "exclude_earmarks", "nondefense", "phone",
-                        "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new", "basis_adjustments"]);
+                        "account_page", "export_csv", "find_changes", "find_moves", "watchlist", "whats_new", "basis_adjustments",
+                        "anchored_totals", "nondefense_excluding_earmarks"]);
 let FEAT = {}, featLoaded = false, DEFAULT_SC = null;
 const has = (name) => BUILT.has(name) && FEAT[name] === true;
 // a figure is a button that opens its source in the side panel (SPEC 5.1) when the figure_source fields are published
@@ -1839,13 +1852,15 @@ const basisLabel = (b = basisOf()) => BASES.find(([k]) => k === b)[1];
 // never takes an earmark out itself. A cell shows a view under any basis but As printed, or with earmarks excluded
 const noEar = () => has("exclude_earmarks") && G.noear;
 // Non-defense (UI-9, owner decision D): every figure, total, difference and export reads the published
-// views_nondefense (UI-0b), each figure less its tagged defense portion. The page never takes defense out itself. Until
-// D-8 publishes a combined set, Non-defense and Exclude earmarks are one at a time: turning one on turns the other off
-const noDef = () => has("nondefense") && G.nodef && !noEar();
+// views_nondefense (UI-0b), each figure less its tagged defense portion. The page never takes defense out itself. Both
+// on read the published combined set views_nondefense_excluding_earmarks (D-8, feature nondefense_excluding_earmarks;
+// brief UI-10 item 5). Without that set published, they stay one at a time (the earlier rule, UI-9)
+const bothExcl = () => has("nondefense_excluding_earmarks");
+const noDef = () => has("nondefense") && G.nodef && (bothExcl() || !noEar());
 const usesViews = () => basisOf() !== "printed" || noEar() || noDef();
-const viewKey = () => (noEar() ? "views_excluding_earmarks" : noDef() ? "views_nondefense" : "views");
-// the exclusion in view, in words: " · excl. earmarks" or " · non-defense"
-const exclWord = () => (noEar() ? " · excl. earmarks" : noDef() ? " · non-defense" : "");
+const viewKey = () => (noEar() && noDef() ? "views_nondefense_excluding_earmarks" : noEar() ? "views_excluding_earmarks" : noDef() ? "views_nondefense" : "views");
+// the exclusion in view, in words: " · excl. earmarks", " · non-defense" or both
+const exclWord = () => (noDef() ? " · non-defense" : "") + (noEar() ? " · excl. earmarks" : "");
 // the basis in words: "All appropriations, advances when available", with the exclusion in view
 const basisPhrase = (lower = false) => (lower ? basisLabel().toLowerCase() : basisLabel())
   + (basisOf() === "printed" ? "" : `, advances when ${G.timing}`) + exclWord();
@@ -1977,47 +1992,82 @@ function figureCell(row, y, st, c, name) {
 }
 
 // the published view of a printed figure (SPEC 5.6, brief UI-3 item 4): its amount when checked or computed;
-// "excl." when the basis leaves the account out; "n/a" when not computable (accounts and totals alike, UI-9), why in one
-// plain line on hover. A checked figure carries no mark (owner decision A); a small "Σ" follows only a total that is our
+// "excl." when the basis leaves the account out; "n/a" when not computable (accounts and totals alike, UI-9), why in
+// words from its cause on hover (UI-10). A checked figure carries no mark (owner decision A); a small "Σ" follows only a total that is our
 // own sum of its accounts, differs from As printed, and has no printed line to check it. Never a number the data
 // doesn't hold. Each is a button to the figure's source, where the panel shows the printed headline, the components,
 // the arithmetic, and for n/a what is missing and where.
 const VIEW_WORDS = { checked: "checked against a printed total", matches: "matches the report's printed line", computed: "computed from the printed figure and its tagged components",
-                     excluded: "excluded", not_computable: "not computable" };
+                     excluded: "excluded", not_computable: "n/a" };
 function viewText(e) {
   if (!e) return { text: "n/a", why: "no published view for this cell", plain: "No figure is published for this cell on this basis" };
   if (VALUED.has(e.status)) return { text: null, why: e.reason || "" };
   if (e.status === "excluded") return { text: "excl.", why: e.reason || "" };
-  return { text: "n/a", why: e.reason || "", plain: plainWhy(e.reason) };
+  return { text: "n/a", why: e.reason || "", plain: plainWhy(e), cause: e.cause || "" };
 }
-// why a cell is not computable, in one plain line (UI-9), from the data's reason. Wording only: the full reason, with
-// its documents and pages, stays in the source panel. D-8's cause codes replace this reading (UI-10)
-function whyText(reason) {
-  const t = String(reason || "").replace(/^not computable:\s*/, "").trim();
-  const line = (x) => {
-    let m = x.match(/^(.+?) is not computable \((.*)\)(?:; and (\d+) more)?$/);
-    if (m) {
-      const more = m[3] ? `; ${m[3]} more line${m[3] === "1" ? "" : "s"} under it ${m[3] === "1" ? "has" : "have"} no figure on this basis` : "";
-      const inner = line(m[2]);
-      return (/^no figure entered yet/.test(inner) ? `${m[1]} has ${inner}` : `${m[1]}: ${inner}`) + more;
-    }
-    if (/^no figure\b/.test(x)) return "no figure entered yet";
-    m = x.match(/: (-?)\$([\d,]+) is in no account held/);
-    if (m) return m[1] ? `the accounts held add up to $${m[2]} more than the printed total`
-                       : `the printed total includes $${m[2]} that is in no account held here`;
-    if (/request language not found|no request language read/.test(x))
-      return "the request has no language of its own for this account, so its parts aren’t known";
-    m = x.match(/^(\w+) not tagged for this stage/);
-    if (m) return `${m[1]} not tagged for this stage`;
-    if (/no budget_class on file/.test(x)) return "no budget class (discretionary or mandatory) on file for this year";
-    if (/not a budget-authority headline/.test(x)) return "its figure isn’t budget authority, so it has none on this basis";
-    if (/no account behind it is inside its life/.test(x)) return "none of its accounts exists in this year";
-    if (/no component the view uses is tagged/.test(x)) return "its parts aren’t tagged for this cell yet";
-    return x;
-  };
-  return t ? line(t) : "not computable on this basis";
+// why a cell is n/a, in words, from the data's cause code (D-8, brief UI-10 item 3). The words are the page's; the code
+// is the data's. A cause the page doesn't know yet reads as the code itself, never a guess
+const CAUSE_WORDS = { missing_figure: "figure not entered yet", no_class: "no budget class on file",
+  components_unknown: "request components not known", no_anchor: "no printed line to check, and a part is unknown",
+  not_held: "the report prints money in a line we don't hold yet" };
+const causeWords = (c) => CAUSE_WORDS[c] || (c ? c.replace(/_/g, " ") : "not computable on this basis");
+// the accounts a total's reason names (D-8: "not computable: <account> [$N] (<why>); <account> (<why>); ..."), in its
+// own words; an account's reason names none (it is about itself). "money in no account held" is the not_held cause's
+// own subject, not an account
+function namedAccounts(reason) {
+  const t = String(reason || ""), k = t.indexOf(": ");
+  if (!/^not computable/.test(t) || k < 0) return [];
+  const out = [];
+  let depth = 0, part = "";
+  for (const ch of t.slice(k + 2) + ";") {
+    if (ch === "(") depth++;
+    if (ch === ")") depth--;
+    if (ch === ";" && depth === 0) {
+      const m = part.trim().match(/^(.+?)(?: -?\$[\d,]+)? \(/);
+      if (m && !/^money in no account held|^the report prints/.test(m[1])) out.push(m[1]);
+      part = "";
+    } else part += ch;
+  }
+  return out;
 }
-const plainWhy = (reason) => whyText(reason).replace(/^./, (c) => c.toUpperCase());
+// the cause of a cell that shows n/a on the basis in view ("none": no view published), or null. Read from the data
+function naCause(row, y, st) {
+  if (!usesViews() || !cellObs(row, y, st)) return null;
+  const e = viewOf(row, y, st);
+  return !e ? "none" : e.status === "not_computable" ? e.cause || "none" : null;
+}
+// the n/a line above the grid (brief UI-10 item 4): the n/a cells shown, counted by cause (counting states, not
+// figures), each part a filter to the rows holding those cells
+function renderNaLine() {
+  const box = $("#na-line");
+  const cells = usesViews() ? [...document.querySelectorAll("#compare-grid tbody [data-testid=view-state][data-view=not_computable], #compare-grid tbody [data-testid=view-state][data-view=none]")] : [];
+  const by = new Map();
+  for (const c of cells) { const k = c.dataset.cause || "none"; by.set(k, (by.get(k) || 0) + 1); }
+  box.hidden = !cells.length && !(G.na && usesViews());
+  if (box.hidden) { box.replaceChildren(); return; }
+  const n = (k) => `${k.toLocaleString("en-US")} cell${k === 1 ? "" : "s"}`;
+  const word = (k) => (k === "none" ? "no figure published" : causeWords(k));
+  const parts = [...by.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([k, v], i) => {
+    const b = el("button", { type: "button", class: "napart", "data-testid": "na-part", "aria-pressed": String(G.na === k),
+                             dataset: { cause: k, count: String(v) }, title: G.na === k ? "Show every row" : `Show only the rows with these cells`,
+                             text: `${v.toLocaleString("en-US")} ${word(k)}` });
+    b.addEventListener("click", () => { G.na = G.na === k ? "" : k; redraw(); });
+    return [i ? ", " : "", b];
+  }).flat();
+  const kids = [el("span", { "data-testid": "na-total", text: `${n(cells.length)} n/a on this basis${cells.length ? ": " : ""}` }), ...parts];
+  if (G.na) {
+    const all = el("button", { type: "button", class: "linkbtn", "data-testid": "na-clear", text: "Show all rows" });
+    all.addEventListener("click", () => { G.na = ""; redraw(); });
+    kids.push(` · showing the rows with ${word(G.na)}. `, all);
+  }
+  box.replaceChildren(...kids);
+}
+// the hover line: the cause's words, then the accounts the data names ("...: A, B and 3 more")
+function plainWhy(e) {
+  const names = namedAccounts(e.reason), w = causeWords(e.cause);
+  const who = names.length > 2 ? `${names.slice(0, 2).join(", ")} and ${names.length - 2} more` : names.join(" and ");
+  return (w + (who ? ` (${who})` : "")).replace(/^./, (c) => c.toUpperCase());
+}
 // a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it (D-8: a
 // computed total built down from a printed anchor has one, so it is not a sum)
 const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null && !e.anchor;
@@ -2044,7 +2094,7 @@ function viewCell(row, y, st, o, ctx, td) {
     return f;
   }
   const props = { class: "tok" + (v.text === "excl." ? "" : " miss"), "data-testid": "view-state", "data-view": e ? e.status : "none",
-                  "data-reason": e ? e.reason || "" : "", title };
+                  "data-reason": e ? e.reason || "" : "", ...(v.cause != null ? { "data-cause": v.cause } : {}), title };
   return linksToSource() ? figButton(o, v.text, ctx, props) : el("span", { ...props, "aria-label": title, text: v.text });
 }
 
@@ -2080,14 +2130,18 @@ function adjEntry(row, c) {
   const e = viewOf(row, y, st);
   return e && VALUED.has(e.status) && (e.adjustments || []).length && e.amount !== asPrinted(row, y, st) ? e : null;
 }
-// an adjustment's name. A printed_total adjustment (D-6: the lines could not be summed, so the report's own total for
-// the basis stands) is worded as the report's line, with what is not itemised (UI-9); D-8 retires the type
-const TOTAL_WORD = { program_level: "program-level", discretionary: "discretionary", discretionary_designated: "discretionary (incl. designated)" };
+// an adjustment's name. A total's group (D-8) reads as the report would print it: the one label its components share
+// ("Transfer in, from the Prevention and Public Health Fund ..."), else the group's own; a not_itemised adjustment
+// reads "Not itemised: <the accounts the data names>", the money in no account held named as such (brief UI-10)
+const cap = (t) => String(t || "").replace(/^./, (c) => c.toUpperCase());
 function adjLabel(a, e) {
-  if (a.type !== "printed_total") return a.label;
-  const r = (e && e.reason) || "", k = r.lastIndexOf("; not summed: ");
-  const why = k < 0 ? "" : whyText(r.slice(k + 14));
-  return `Printed in the report as one ${TOTAL_WORD[basisOf()] ? TOTAL_WORD[basisOf()] + " " : ""}total (not itemised${why ? ": " + why : ""})`;
+  if (a.type === "not_itemised") {
+    const parts = ((e && e.remainder && e.remainder.accounts) || []).map((x) => (x.account ? nameOf(x.account) : "money in no account held"));
+    return `Not itemised${parts.length ? ": " + [...new Set(parts)].join(", ") : ""}`;
+  }
+  if (!a.accounts) return a.label;           // an account's: its component's own label (UI-8)
+  const own = new Set(a.accounts.flatMap((x) => (x.components || []).map((k) => k.label)));
+  return cap(own.size === 1 ? [...own][0] : a.label);
 }
 // the row's adjustment lines over the columns in view: one per published adjustment (its type, sign and label),
 // each holding the adjustment of every column that lists it. Where one entry lists several alike (a Prevention and
@@ -2095,11 +2149,14 @@ function adjLabel(a, e) {
 const itemOf = (a) => ((a.source_location || "").match(/'([^']+)'/) || [])[1] || "";
 function adjLines(row, cols) {
   const lines = new Map();
+  // a not itemised line over several columns: one line, each figure naming its own accounts on hover (the panel and
+  // a single column name them in the line)
+  const many = cols.filter((c) => adjEntry(row, c)).length > 1;
   for (const c of cols) {
     const e = adjEntry(row, c);
     if (!e) continue;
     const count = new Map(), seen = new Map();
-    const name = (a) => adjLabel(a, e);
+    const name = (a) => (a.type === "not_itemised" && many ? "Not itemised (hover a figure for the accounts)" : adjLabel(a, e));
     for (const a of e.adjustments) count.set(`${a.sign}|${a.type}|${name(a)}`, (count.get(`${a.sign}|${a.type}|${name(a)}`) || 0) + 1);
     for (const a of e.adjustments) {
       const base = `${a.sign}|${a.type}|${name(a)}`, many = count.get(base) > 1, item = many ? itemOf(a) : "";
@@ -2107,7 +2164,7 @@ function adjLines(row, cols) {
       seen.set(base + item, n + 1);
       const k = `${base}|${item}|${n}`, label = item ? `${name(a)} · ${item}` : name(a);
       if (!lines.has(k)) lines.set(k, { key: k, sign: a.sign, type: a.type, label, at: new Map() });
-      lines.get(k).at.set(c.col, { a, label: name(a), y: c.fig[0], st: STAGES4[c.fig[1]], set: viewKey() });
+      lines.get(k).at.set(c.col, { a, label: adjLabel(a, e), y: c.fig[0], st: STAGES4[c.fig[1]], set: viewKey() });
     }
   }
   return [...lines.values()];
@@ -2209,13 +2266,17 @@ function otherLineRows(row, cols, cls, lvl) {
   });
 }
 // the build-up under a basis (brief UI-8 item 4): As printed, each published adjustment with its source, then "="
-// the figure; all from the data (D-6: As printed + the adjustments = the amount)
+// the figure; all from the data (D-6: As printed + the adjustments = the amount). A total's reads like the report
+// (D-8, brief UI-10): its line as printed, each group, then "=" the anchor's own label and page, "matches" where the
+// data says so; with no anchor "= sum on this basis (no printed line to check)"
 function buildUp(row, y, st, e, phrase) {
   const line = (k, val, cls, tid) => el("div", { class: "ovline " + (cls || ""), "data-testid": tid }, el("span", { class: "k", text: k }), el("span", { class: "val", text: val }));
-  const kids = [line("As printed", GridMath.number(asPrinted(row, y, st), G.units), "", "arith-term")];
+  const total = isTotalEntry(e);
+  const kids = [line(total ? `${printedLabel(row, y, st)} (as printed)` : "As printed", GridMath.number(asPrinted(row, y, st), G.units), "", "arith-term")];
   for (const a of e.adjustments || []) {
     const t = line(adjLabel(a, e), signed(a).replace(" ", ""), "", "arith-term");
     t.dataset.sign = a.sign;
+    t.dataset.type = a.type;
     kids.push(t);
     const src = adjSources(a, y, st);
     kids.push(el("ul", { class: "arsrc", "data-testid": "arith-src" }, ...src.map((x) => el("li", {},
@@ -2225,8 +2286,80 @@ function buildUp(row, y, st, e, phrase) {
                                             : `p. ${x.page}`] : []),
       ...(x.where && !x.page ? [el("span", { class: "muted", text: ` · ${x.where}` })] : [])))));
   }
-  kids.push(line(`= ${phrase}`, GridMath.number(e.amount, G.units), "eq", "arith-result"));
+  if (!total) {
+    kids.push(line(`= ${phrase}`, GridMath.number(e.amount, G.units), "eq", "arith-result"));
+    return el("div", { class: "arith", "data-testid": "src-arith" }, ...kids);
+  }
+  const res = line(`= ${anchorWords(e)}`, GridMath.number(e.amount, G.units), "eq", "arith-result");
+  res.dataset.status = e.status;
+  const href = e.anchor && docHref(e.anchor.document, e.anchor.page);
+  // the anchor's page is the one link, to that page
+  if (href) res.querySelector(".k").replaceChildren(`= ${e.anchor.label} (${docName(e.anchor.document)}, `,
+    el("a", { href, target: "_blank", rel: "noopener", "data-testid": "anchor-link", text: `p.${e.anchor.page}` }), ")");
+  kids.push(res);
+  if (e.status === "matches") kids.push(el("div", { class: "ovsmall", "data-testid": "build-matches", text: "matches" }));
   return el("div", { class: "arith", "data-testid": "src-arith" }, ...kids);
+}
+// ---- a total's build-up (D-8 anchored totals, feature anchored_totals; brief UI-10 item 1): under a total's chevron,
+// where the basis or a filter makes it differ from As printed: its line as printed, each adjustment group with its
+// source, then "=" the printed line it is built down to (the anchor), "matches" where the data's status says so. Every
+// figure is the data's; the page adds nothing up
+const buildOn = () => has("anchored_totals") && adjOn();
+// a total's entry carries accounts_behind (web/ui_contract.json shapes); an account's never does
+const isTotalEntry = (e) => !!e && e.accounts_behind != null && has("anchored_totals");
+// the total's line as the document prints it ("Total, Centers for Disease Control and Prevention"), else its name
+function printedLabel(row, y, st) {
+  const o = cellObs(row, y, st), m = o && (o.source_table_or_section || "").match(/printed as '([^']+)'/);
+  return m ? m[1] : plainName(row.account.canonical_name);
+}
+// "=" what the total is built down to: the anchor's own label, document and page; with no anchor, our sum
+const anchorWords = (e) => (e.anchor ? `${e.anchor.label} (${docName(e.anchor.document)}, p.${e.anchor.page})`
+                                     : "sum on this basis (no printed line to check)");
+// the columns where a total has a build-up: its entry differs from As printed and lists adjustments
+const buildCols = (row, cols) => cols.map((c) => ({ c, e: adjEntry(row, c) })).filter((x) => isTotalEntry(x.e));
+function buildRows4(row, cols, cls, lvl) {
+  const at = buildCols(row, cols);
+  if (!at.length) return [];
+  const id = row.account.canonical_account_id, by = new Map(at.map((x) => [x.c.col, x]));
+  const focus = at.find((x) => x.c.fig[0] === (current ? focusYear(current.grid) : G.fy) && x.c.fig[1] === 3) || at[0];
+  const fy = (x) => [x.c.fig[0], STAGES4[x.c.fig[1]]];
+  const nameTd = (label, tid) => {
+    const n = lineName(label);
+    n.className = "acct " + lvl;
+    n.querySelector(".adjlabel").dataset.testid = tid;
+    return n;
+  };
+  // As printed: each column's printed figure, a link to its page
+  const printedTr = el("tr", { class: cls + " adj build", dataset: { testid: "build-printed", buildOf: id } },
+    nameTd(`${printedLabel(row, ...fy(focus))} (as printed)`, "build-label"),
+    ...cols.map((c) => {
+      const td = el("td", { class: "num " + (c.cls || ""), dataset: { col: String(c.col) } }), x = by.get(c.col);
+      if (!x) return td;
+      const [y, st] = fy(x), o = cellObs(row, y, st), href = o && sourceHref(o), t = GridMath.number(asPrinted(row, y, st), G.units);
+      const props = { class: "adjfig", "data-testid": "build-amount", "data-amount": String(asPrinted(row, y, st)), "data-fy": String(y), "data-stage": st,
+                      title: `${printedLabel(row, y, st)}, as printed${o ? " · " + clickFor(o) : ""}` };
+      td.append(href ? el("a", { ...props, href, target: "_blank", rel: "noopener", text: t }) : el("span", { ...props, text: t }));
+      return td;
+    }));
+  // "=": the anchor's label where every column with a build-up has the same one, else the report's line
+  const labels = [...new Set(at.map((x) => (x.e.anchor ? x.e.anchor.label : "")))];
+  const eqLabel = at.length === 1 ? anchorWords(at[0].e)
+    : labels.length === 1 && labels[0] ? labels[0] + " (printed)"
+    : !labels.some(Boolean) ? "sum on this basis (no printed line to check)" : "the report's printed line for this basis (or our sum where it prints none)";
+  const eqTr = el("tr", { class: cls + " adj build eq", dataset: { testid: "build-result", buildOf: id } },
+    nameTd(`= ${eqLabel}`, "build-label"),
+    ...cols.map((c) => {
+      const td = el("td", { class: "num " + (c.cls || ""), dataset: { col: String(c.col) } }), x = by.get(c.col);
+      if (!x) return td;
+      const [y, st] = fy(x), e = x.e, t = GridMath.number(e.amount, G.units), href = e.anchor && docHref(e.anchor.document, e.anchor.page);
+      td.dataset.status = e.status;
+      const props = { class: "adjfig", "data-testid": "build-amount", "data-amount": String(e.amount), "data-fy": String(y), "data-stage": st,
+                      title: `= ${anchorWords(e)}${e.status === "matches" ? ", matches" : ""}` };
+      td.append(href ? el("a", { ...props, href, target: "_blank", rel: "noopener", text: t }) : el("span", { ...props, text: t }));
+      if (e.status === "matches") td.append(el("span", { class: "bmatch", "data-testid": "build-matches", text: "matches" }));
+      return td;
+    }));
+  return [printedTr, ...adjRows(row, adjLines(row, cols), cols, cls, lvl), eqTr];
 }
 
 // the later figure against the earlier one: $ change over % of the earlier figure; only two values
@@ -2400,9 +2533,12 @@ function rowFilters(grid, cols) {
   // Account type: the row's own budget_class for the year (a total has none: it shows for its lines that match)
   const typing = has("budget_class") && G.type !== "all";
   const typeOK = (r) => !typing || (classOf(r, y) || {}).cls === G.type;
+  // the n/a line's part (brief UI-10 item 4): rows with an n/a cell of that cause in a column in view
+  const naing = !!G.na && usesViews();
+  const naOK = (r) => !naing || cols.some((c) => c.fig && naCause(r, c.fig[0], STAGES4[c.fig[1]]) === G.na);
   const ok = (r) => inView(r) && (!G.agency || r.account.agency === G.agency)
-    && (G.status === "any" || statusOf(r, y) === G.status) && (!has("search_filter") || searchOK(r)) && changeOK(r) && reviewOK(r) && typeOK(r);
-  return { inView, ok, filtering: !!(q || G.agency || G.status !== "any" || G.minPct != null || G.minK != null || G.review || typing) };
+    && (G.status === "any" || statusOf(r, y) === G.status) && (!has("search_filter") || searchOK(r)) && changeOK(r) && reviewOK(r) && typeOK(r) && naOK(r);
+  return { inView, ok, filtering: !!(q || G.agency || G.status !== "any" || G.minPct != null || G.minK != null || G.review || typing || naing) };
 }
 
 // ---- rows: per title, the printed total band, then the three sections (SPEC section 4)
@@ -2545,9 +2681,14 @@ function buildRows(grid, cols) {
   const filtered = !!G.agency;
   for (const group of grid.titles) {
     if (group.total) {
-      out.push(el("tr", { class: "title", dataset: { account: group.total.account.canonical_account_id, testid: "compare-row" } },
-        nameCell({ name: `Total, ${group.title} (printed${filtered ? ", all accounts" : ""})`, tags: [] }), ...cellsFor(group.total, cols, `Total, ${group.title}`)));
+      // a title total's chevron opens its build-up (brief UI-10), where the basis or a filter makes it differ
+      const tid = group.total.account.canonical_account_id, build = buildOn() ? buildRows4(group.total, cols, "child agencyadj", "") : [];
+      const tOpen = build.length > 0 && open.has(tid);
+      out.push(el("tr", { class: "title" + (tOpen ? " open" : ""), dataset: { account: tid, testid: "compare-row" } },
+        nameCell({ name: `Total, ${group.title} (printed${filtered ? ", all accounts" : ""})`, tags: [], key: tid, chev: build.length > 0, open: tOpen }),
+        ...cellsFor(group.total, cols, `Total, ${group.title}`)));
       out[out.length - 1].querySelector(".plain").dataset.testid = "total";
+      if (tOpen) out.push(...build);
     } else {
       out.push(labelRow("title", group.title ? `${group.title} · no printed total on file` : "Not yet placed in a title", ncols, "title-head"));
     }
@@ -2563,7 +2704,8 @@ function buildRows(grid, cols) {
                    noteTestid: "total" }),
         ...cellsFor(r, cols, name)));
       // its adjustments, grouped as the data groups them, above its lines (brief UI-8)
-      if (isOpen && adjOn()) out.push(...adjRows(r, adjLines(r, cols), cols, "child agencyadj", ""));
+      if (isOpen && buildOn()) out.push(...buildRows4(r, cols, "child agencyadj", ""));
+      else if (isOpen && adjOn()) out.push(...adjRows(r, adjLines(r, cols), cols, "child agencyadj", ""));
       if (isOpen) pushMembers(lines, lvl);
     }
     if (P.other.length) {
@@ -2630,12 +2772,15 @@ const STATE_WORDS = { value: "on file", not_collected: "not yet collected", not_
                       not_reported: "not reported", not_funded: "not funded", no_printed_total: "no printed total", no_figure: "no figure" };
 // a printed figure with no figure on the basis in view: what the overview says instead (a total's view shows where
 // the data marks it checked or computed; otherwise "not computable", the data's reason on hover)
-const gapWord = (gap) => gap.replace(/^./, (c) => c.toUpperCase());
+// UI-10: "n/a" with the cause's words (overview tiles and stage lines, the phone's headline)
+const gapWord = (gap) => (gap === "excluded" ? "Excluded" : "n/a");
 function viewGap(row, y, st) {
   if (!usesViews() || printedFig(row, y, st) == null || figure(row, y, st) != null) return null;
   const e = viewOf(row, y, st);
-  return e && e.status === "excluded" ? "excluded" : "not computable";
+  return e && e.status === "excluded" ? "excluded" : "n/a";
 }
+// the words for a gap: the cause's for n/a
+const gapWhy = (row, y, st) => { const e = viewOf(row, y, st); return e ? causeWords(e.cause) : "no figure published"; };
 function renderOverview(grid) {
   const box = $("#side-panel");
   if (!has("overview_panel")) { box.hidden = true; return; }
@@ -2665,7 +2810,7 @@ function renderOverview(grid) {
     };
     kids.push(el("div", { class: "ovtiles" },
       tile(enacted ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`, v == null ? (gap ? gapWord(gap) : "—") : GridMath.short(v),
-           v == null ? gap ? `${gap} · ${basisLabel()}` : STATE_WORDS[stateOf(row, y, STAGES4[lead])] || "no figure"
+           v == null ? gap ? `${gap === "n/a" ? gapWhy(row, y, STAGES4[lead]) : gap} · ${basisLabel()}` : STATE_WORDS[stateOf(row, y, STAGES4[lead])] || "no figure"
              : `${GridMath.number(v, G.units)} ${unitWord} · ${basisWord}`, gap ? "state" : "", "ov-headline"),
       chTile(prior, figure(row, y - 1, "Enacted"), v, "ov-vs-prior"),
       lead !== 0 ? chTile(`vs FY${y} request`, figure(row, y, STAGES4[0]), v, "ov-vs-request") : null));
@@ -2675,7 +2820,10 @@ function renderOverview(grid) {
       const f = figure(row, y, STAGES4[i]), st = stateOf(row, y, STAGES4[i]), g = viewGap(row, y, STAGES4[i]);
       const e = usesViews() ? viewOf(row, y, STAGES4[i]) : null;
       kids.push(el("div", { class: "ovline", "data-testid": "ov-stage", ...(e && e.reason ? { title: e.reason } : {}) }, el("span", { class: "k", text: STAGE_LONG[i] }),
-        el("span", { class: "val" + (f == null ? " state" : ""), text: f == null ? (g || STATE_WORDS[st] || "—") : GridMath.number(f, G.units) })));
+        el("span", { class: "val" + (f == null ? " state" : ""), ...(g === "n/a" ? { "data-cause": (e && e.cause) || "none" } : {}),
+                     text: f == null ? (g || STATE_WORDS[st] || "—") : GridMath.number(f, G.units) })));
+      // n/a: the cause's words on a line of their own (UI-10)
+      if (g === "n/a") kids.push(el("div", { class: "ovsmall", "data-testid": "ov-stage-why", style: "margin:-4px 0 4px;text-align:right", text: gapWhy(row, y, STAGES4[i]) }));
     }
   } else {
     kids.push(el("p", { class: "ovsmall", "data-testid": "ov-no-total",
@@ -2872,7 +3020,8 @@ function figureNotes(grid, row, y, st, onPage) {
     }
     out.push(li);
   }
-  const rest = x.lines.filter((l) => l !== x.h && l.state === "value" && l.observations.length);
+  // the 302(b) comparison lines are listed apart, as references (refs302b)
+  const rest = x.lines.filter((l) => l !== x.h && l.state === "value" && l.observations.length && !is302b(l));
   if (rest.length) {
     const li = el("li", { "data-testid": "src-note", dataset: { lines: String(rest.length) } },
       `${rest.length} other line${rest.length === 1 ? "" : "s"} on file, ${unitsLong()} (listed, never added): ` +
@@ -2886,6 +3035,41 @@ function figureNotes(grid, row, y, st, onPage) {
     out.push(li);
   }
   return out;
+}
+// the report's 302(b) comparison lines (D-8: recorded on the bill total, components allocation_302b_* and
+// bill_302b_*), under "Reference: 302(b) allocation" on a bill total's panel (brief UI-10 item 7): each as the report
+// labels it, with its amount and page. References only: never added to or compared with a figure
+const is302b = (l) => /^(allocation|bill)_302b_/.test(l.component || "");
+function refs302b(grid, row, y, st) {
+  const x = headOf(row, y, st);
+  if (!x || !grid.bill_total || row !== grid.bill_total) return [];
+  const lines = x.lines.filter((l) => is302b(l) && l.state === "value" && l.observations.length);
+  if (!lines.length) return [];
+  const words = (l) => {
+    const t = l.observations[0].source_table_or_section || "", m = t.match(/printed as '([^']+)' \[([^;\]]+)/);
+    return m ? `${m[1]}, ${m[2]}` : `${l.component_label}, ${l.amount_type}`;
+  };
+  return [el("div", { class: "srcnotes", "data-testid": "src-302b" }, el("div", { class: "ovk", text: "Reference: 302(b) allocation" }),
+    el("ul", {}, ...lines.map((l) => {
+      const o = l.observations[0], href = sourceHref(o);
+      return el("li", { "data-testid": "ref-302b", dataset: { component: l.component, amountType: l.amount_type, amount: String(o.amount), obs: o.observation_id } },
+        `${words(l)}: ${GridMath.number(o.amount, G.units)} · ${docName(o.source_document_id)}`,
+        ...(o.source_page ? [" · ", href ? el("a", { href, target: "_blank", rel: "noopener", text: `p. ${o.source_page}` }) : `p. ${o.source_page}`] : []));
+    })),
+    el("div", { class: "ovsmall", text: `${unitsLong()}. A reference, as the report prints it: never added to or compared with a figure.` }))];
+}
+// the grid holds no bill total row (As printed stays as it was, UI-10); a title total's panel opens the bill's grand
+// total at the same stage, whose panel lists the 302(b) references
+function billLink(grid, row, y, st) {
+  const B = grid.bill_total;
+  if (!B || !grid.titles.some((t) => t.total === row) || !cellObs(B, y, st)) return [];
+  const o = cellObs(B, y, st);
+  const b = el("button", { type: "button", class: "linkbtn", "data-testid": "src-bill-total",
+                           text: `Grand total of the bill: ${GridMath.number(o.amount, G.units)} (printed)` });
+  b.addEventListener("click", () => select({ kind: "fig", id: B.account.canonical_account_id, y, st }));
+  const has302b = (headOf(B, y, st) || { lines: [] }).lines.some((l) => is302b(l) && l.state === "value");
+  return [el("div", { class: "srcnotes", "data-testid": "src-bill-link" }, el("div", { class: "ovk", text: "Bill" }), b,
+    ...(has302b ? [el("div", { class: "ovsmall", text: "Its panel lists the report's 302(b) comparison lines." })] : []))];
 }
 // sel: the figure (the grid's SEL by default); back: the account page's own back link (it has no overview, and no
 // "See every stage" button: it is that page)
@@ -2926,6 +3110,7 @@ function renderSource(grid, box, sel = SEL, back = null) {
   const notes = figureNotes(grid, row, y, st, !!back);
   if (notes.length)
     kids.push(el("div", { class: "srcnotes", "data-testid": "src-notes" }, el("div", { class: "ovk", text: "Notes" }), el("ul", {}, ...notes)));
+  kids.push(...refs302b(grid, row, y, st), ...billLink(grid, row, y, st));
   kids.push(el("div", { class: "srcrec", "data-testid": "src-record", text: `Record ${o.observation_id}` }));
   if (VB) kids.push(...VB.tail, el("hr", { class: "srcrule" }));
   if (!back && ownPage(grid, id)) {
@@ -3127,6 +3312,7 @@ function renderBody() {
   $("#compare-grid tbody").replaceWith(tbody);
   if (isPhone()) keepFocus($("#phone"), () => renderPhoneList(current.grid));
   markSelection();
+  renderNaLine();
   pinHeader();
 }
 function headingOf(grid) {
@@ -3137,7 +3323,7 @@ function headingOf(grid) {
 }
 function renderCompare(grid) {
   NAME_OF.clear(); STATUS_OF.clear(); ROW_OF.clear();
-  for (const r of grid.rows.concat(grid.titles.filter((t) => t.total).map((t) => t.total))) {
+  for (const r of grid.rows.concat(grid.titles.filter((t) => t.total).map((t) => t.total), grid.bill_total ? [grid.bill_total] : [])) {
     NAME_OF.set(r.account.canonical_account_id, r.account.canonical_name);
     STATUS_OF.set(r.account.canonical_account_id, r.account.status);
     ROW_OF.set(r.account.canonical_account_id, r);
@@ -3430,6 +3616,7 @@ function compareURL() {
   if (G.minK != null) q.set("mink", String(G.minK));
   if (!G.drafts) q.set("drafts", "0");
   if (G.review) q.set("review", "1");
+  if (G.na && usesViews()) q.set("na", G.na);
   // "Accounts shown", where it differs from the view's defaults: the list of what is shown
   if (G.show.proposed[G.grid] !== SHOW_PROPOSED[G.grid] || G.show.ended || G.show.created)
     q.set("show", [G.show.proposed[G.grid] && "proposed", G.show.ended && "ended", G.show.created && "new"].filter(Boolean).join(",") || "none");
@@ -3466,7 +3653,7 @@ function settle(grid, want) {
     G.reqcol = String(want.cols || "").split(",").includes("request");
     G.noear = want.earmarks === "excl";
     // one exclusion at a time until D-8 (UI-9): a link asking for both keeps Exclude earmarks
-    G.nodef = want.defense === "excl" && !G.noear;
+    G.nodef = want.defense === "excl" && (bothExcl() || !G.noear);
     G.amt = BASES.some(([k]) => k === want.amt) ? want.amt : "printed";
     G.timing = want.timing === "enacted" ? "enacted" : "available";
     G.type = TYPES.some(([k]) => k === want.type) ? want.type : "all";
@@ -3493,6 +3680,7 @@ function settle(grid, want) {
     G.minPct = num(want.minpct); G.minK = num(want.mink);
     G.drafts = want.drafts !== "0";
     G.review = want.review === "1";
+    G.na = /^[a-z_]+$/.test(want.na || "") ? want.na : "";
     const si = STAGE_WORD.findIndex((w) => w.toLowerCase() === String(want.pstage || "").toLowerCase());
     G.pstage = si < 0 ? null : si;
     G.table = want.table === "1";
@@ -3576,11 +3764,12 @@ function filterChips(grid) {
     chips.push({ label: G.show.proposed[G.grid] ? "Proposed-only accounts shown" : "Proposed-only accounts hidden",
                  clear: () => { G.show.proposed[G.grid] = SHOW_PROPOSED[G.grid]; } });
   if (G.review) chips.push({ label: "Only figures pending review or flagged", clear: () => { G.review = false; } });
+  if (G.na && usesViews()) chips.push({ label: `Only rows n/a: ${G.na === "none" ? "no figure published" : causeWords(G.na)}`, clear: () => { G.na = ""; } });
   return chips;
 }
 // every filter back to its default (Reset, Clear all)
 function resetFilters() {
-  G.agency = ""; G.status = "any"; G.minPct = null; G.minK = null; G.drafts = true; G.review = false;
+  G.agency = ""; G.status = "any"; G.minPct = null; G.minK = null; G.drafts = true; G.review = false; G.na = "";
   G.type = "all"; G.amt = "printed"; G.timing = "available"; G.noear = false; G.nodef = false;
   G.show = { proposed: { ...SHOW_PROPOSED }, ended: false, created: false };
 }
@@ -3692,15 +3881,12 @@ function renderFilterPanel(grid) {
          text: summary.join(" · ").replace(/^./, (c) => c.toUpperCase()) })),
       el("span", { "aria-hidden": "true", class: "advc", text: advOpen ? "▴" : "▾" }));
     adv.addEventListener("click", () => { advOpen = !advOpen; renderFilterPanel(grid); });
-    const earBox = has("exclude_earmarks") ? [check("f-noear", "Exclude earmarks (CDS / CPF)", G.noear, (v) => { G.noear = v; if (v) G.nodef = false; },
+    const earBox = has("exclude_earmarks") ? [check("f-noear", "Exclude earmarks (CDS / CPF)", G.noear, (v) => { G.noear = v; if (v && !bothExcl()) G.nodef = false; },
       { "data-testid": "f-noear", title: "Each figure less its tagged congressionally directed spending (CDS / CPF), as the data publishes it" })] : [];
     // Non-defense (UI-9, owner decision D): every figure and total less its tagged defense portion, as published
-    const defBox = has("nondefense") ? [check("f-nodef", "Non-defense", noDef(), (v) => { G.nodef = v; if (v) G.noear = false; },
+    const defBox = has("nondefense") ? [check("f-nodef", "Non-defense", noDef(), (v) => { G.nodef = v; if (v && !bothExcl()) G.noear = false; },
       { "data-testid": "f-nodef", title: "Each figure and total less its tagged defense portion (national defense, function 050), as the data publishes it" })] : [];
-    // until D-8 publishes a combined set the page can't show both, so they are one at a time
-    const oneNote = earBox.length && defBox.length
-      ? [el("div", { class: "optd", "data-testid": "excl-note", text: "One at a time for now: turning on one turns the other off." })] : [];
-    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox, ...earBox, ...defBox, ...oneNote,
+    const body = el("div", { id: "f-adv-body", "data-testid": "advanced-body" }, ...basisBox, ...earBox, ...defBox,
       el("div", { class: "pair2" },
         number("f-min-pct", "Change of at least (%)", G.minPct, (v) => { G.minPct = v; }, "e.g. 10"),
         number("f-min-k", "or at least ($K)", G.minK, (v) => { G.minK = v; }, "e.g. 50,000")),
@@ -4168,7 +4354,7 @@ function renderSummary(grid, y, lead) {
   };
   box.replaceChildren(
     el("div", { class: "l", text: (lead === 3 ? `${S.who} enacted, FY${y}` : `${S.who}, ${STAGE_NAME[lead]}, FY${y}`) + " · "
-                                  + (v == null && gap ? `${gap} · ${basisLabel()}` : basisWord) }),
+                                  + (v == null && gap ? `${gap === "n/a" ? gapWhy(row, y, STAGES4[lead]) : gap} · ${basisLabel()}` : basisWord) }),
     el("div", { class: "v", "data-testid": "p-headline", text: v == null ? (gap ? gapWord(gap) : "—") : GridMath.short(v) }),
     el("div", { class: "chgs" }, chg(figure(row, y - 1, "Enacted"), `vs FY${y - 1} enacted`, "p-vs-prior"),
        lead !== 0 ? chg(figure(row, y, STAGES4[0]), "vs request", "p-vs-request") : null));
@@ -4185,8 +4371,10 @@ function phoneValue(row, y, st) {
     if (v.text == null)
       return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", "data-view": e.status, title },
                 e.amount === 0 && printedFig(row, y, st) === 0 ? "—" : GridMath.short(e.amount), summed(e) ? sigma(e) : null);
+    // n/a on a phone (no hover): the cause's words under it (UI-10)
     return el("span", { class: "pval", "data-testid": "p-value", "data-state": h.state, "data-view": e ? e.status : "none" },
-      el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title, text: v.text }));
+      el("span", { class: "tok" + (v.text === "excl." ? "" : " miss"), title: v.plain != null ? v.plain : title, ...(v.cause != null ? { "data-cause": v.cause } : {}), text: v.text }),
+      ...(v.plain != null ? [el("span", { class: "bmatch", "data-testid": "p-na-why", text: causeWords(v.cause) })] : []));
   }
   if (h.state === "value") return el("span", { class: "pval", "data-testid": "p-value", "data-state": "value", text: GridMath.short(h.observations[0].amount) });
   const [text, meaning] = TOKENS[h.state] || [h.state, h.state];
@@ -4268,11 +4456,19 @@ function renderPhoneList(grid) {
         out.push(prow(r, "agency top", { name: plainName(r.account.canonical_name), key: id, chev: A.all.length > 0, open: A.isOpen,
           tags: inclMandatory(A.all.filter((m) => F.inView(m)), y),
           note: A.isOpen ? (A.n ? `Agency total · sum of the ${A.n} line${A.n === 1 ? "" : "s"} below` : "Agency total") : "" }));
+        // the total's build-up for the stage shown (brief UI-10): as printed, its groups, "=" the printed line it reaches
+        const be = A.isOpen && buildOn() ? adjEntry(r, { fig: [y, i], col: 0 }) : null, build = isTotalEntry(be);
+        const pline = (tid, label, fig, extra) => el("div", { class: "prow line adj build", dataset: { testid: tid, buildOf: id } },
+          el("span", { class: "pmain" }, el("span", { class: "pname" }, el("span", { class: "adjlabel", "data-testid": "build-label", text: label }), ...(extra || [])),
+            el("span", { class: "pfig", text: fig })));
+        if (build) out.push(pline("p-build-printed", `${printedLabel(r, y, STAGES4[i])} (as printed)`, GridMath.short(asPrinted(r, y, STAGES4[i]))));
         if (A.isOpen && adjOn())
           for (const line of adjLines(r, [{ fig: [y, i], col: 0 }]))
             out.push(el("div", { class: "prow line adj", dataset: { testid: "p-adj-line", adjOf: id, type: line.type, sign: line.sign } },
               el("span", { class: "pmain" }, el("span", { class: "pname" }, el("span", { class: "adjlabel", "data-testid": "adj-label", text: line.label })),
                 el("span", { class: "pfig" }, adjAmount(r, line.at.get(0), true)))));
+        if (build) out.push(pline("p-build-result", `= ${anchorWords(be)}`, GridMath.short(be.amount),
+                                  be.status === "matches" ? [el("span", { class: "bmatch", "data-testid": "build-matches", text: "matches" })] : []));
         if (A.isOpen) pushLines(id, A.lines, abbrOf(id) || plainName(r.account.canonical_name));
       }
       for (const r of P.other) out.push(prow(r, "top acct", { name: plainName(r.account.canonical_name), tags: tagsOf(r) }));
@@ -5058,7 +5254,7 @@ function route() {
   const params = new URLSearchParams(location.search);
   const want = Object.fromEntries(["sc", "grid", "fy", "a", "b", "stages", "basis", "units", "rev", "panel", "show", "density", "cols",
                                    "agency", "status", "search", "open", "minpct", "mink", "drafts", "review", "fig", "acct",
-                                   "amt", "timing", "type", "earmarks", "defense", "pstage", "table"].map((k) => [k, params.get(k)]));
+                                   "amt", "timing", "type", "earmarks", "defense", "pstage", "table", "na"].map((k) => [k, params.get(k)]));
   if (params.get("account")) {
     showView("account");
     showAccountAt(params.get("account"), params.get("fy") ? { fy: Number(params.get("fy")), stage: params.get("stage") } : null);

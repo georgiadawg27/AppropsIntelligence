@@ -1,5 +1,70 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Component backfill follow-ups (PR #86, 2026-10-15)
+
+- Rebuilt on main after D-1 to D-9. D-1 already tags the FY2022 Senate section 241 taps and AHRQ's section 241
+  provisos, so #86 keeps only what main lacks.
+- `LHHS-PROVISION-LINES` (components): `reference/review/accounting/provision_lines.csv`, written by
+  `provision_lines.py` from each bill or law's full text (govinfo HTML, or the Senate PDF; cached in
+  `document_store/provision_text/`). 14 rows: Nonrecurring Expenses Fund transfers (FY2018 E CDC B&F $240M; FY2020 E
+  sec. 237 NIH B&F $225M, sec. 238 CDC B&F $225M; FY2021 E sec. 237 NIH B&F $225M; FY2021 S sec. 237 items (1)-(8)
+  to Primary Health Care, Ryan White, CDC HIV, NIH B&F and PHSSEF x4; FY2023 S sec. 235 CDC B&F $37.5M) and FY2020 E
+  sec. 239's $85M deposit from CDC-Wide into the Infectious Diseases Rapid Response Reserve Fund (transfer_out).
+- `LHHS-IDRRRF` (phrase): "transferred to and merged with the Infectious Diseases Rapid Response Reserve Fund" ->
+  transfer_out (FY2020 House CDC-Wide $50M).
+- measure_reconcile: nef_transfer_untagged (4) resolves; nef_outside_printed_program_level (4) is new: NIH FY2020 E,
+  FY2021 E, FY2021 S (the NIH table prints a separate '(with transfer)' total equal to the computed view; H.Rept.
+  117-96 p.477, FY2021 Senate report p.252) and CDC FY2023 S (p.405 prints no Fund line). Failures stay 19.
+- Open for the owner: the account choices from purpose wording (sec. 237 list; NEF building money to B&F).
+
+## UI-10: Total build-up, cause words, both exclusions together (2026-10-15, this PR)
+
+Page only (web/index.html, docs/index.html regenerated; web/ui_contract.json wording and the page's BUILT set). No
+data, export or figure change. Spec `reference/specs/anchored-totals.md` rule 6; screenshots `screenshots/ui-10/`.
+
+- Build-up (feature anchored_totals): an agency, title or bill total's chevron, where the basis or a filter makes it
+  differ from As printed, opens "<the line as printed> (as printed)", each adjustment group (UI-8's lines, a group
+  named by its components' shared label), then "= <anchor label>" ending on the published amount, "matches" under
+  each figure whose status says so; no anchor: "= sum on this basis (no printed line to check)". A not_itemised group
+  reads "Not itemised: <remainder accounts>" (one column; over several, "hover a figure for the accounts"). The
+  source panel shows the same for one cell, the anchor's page as the link. Phone: the same three parts for the stage
+  shown. Accounts keep UI-8's lines. Σ unchanged (only our own unbacked sum).
+- Cause words: n/a reads `cause` (CAUSE_WORDS), hover = words + the accounts the total's reason names; the panel keeps
+  "Details:"; UI-9's whyText is gone. Phone lists show the words under n/a. Overview tiles and stage lines: "n/a" +
+  words, never "Not computable".
+- n/a line above the grid (#na-line): the n/a cells shown, counted by cause; each part filters the rows (URL `na=`,
+  a chip); counts follow expand/collapse.
+- Both exclusions (feature nondefense_excluding_earmarks): both on read views_nondefense_excluding_earmarks; the
+  one-at-a-time note is gone; a URL with both keeps both (without the combined set published, the old rule holds).
+- 302(b): a title total's source panel links to the bill's grand total at the same stage ("Grand total of the bill:
+  N (printed)"; the grid gains no row, so As printed stays as it was); the bill total's panel lists the report's
+  302(b) lines under "Reference: 302(b) allocation", each as the report labels it, with its page; never added or
+  compared. The phone list has no total rows, so no phone path to them.
+
+Open:
+- A bill total row in the grid was offered to Chase (decision card); built as the panel link because the brief keeps
+  As printed unchanged and a bill row changes the grid's row set across ~20 tests. A row is a small follow-up.
+- The hover names a total's accounts by reading its reason text (no field carries them); a `cause_accounts` field
+  in the data would end that parsing.
+
+## D-9: Data fills for the anchored totals (2026-10-15, this PR)
+
+- 2026-10-15 rulings applied: CDC request changes approved; Title III FY2026 Senate superseded (OBS-1436 -> OBS-1584);
+  NSF FY2025 request emergency counted (Senate table prints it inside the same totals); ARPA-H/NIRSQ counted in the
+  total the table prints them under (part 7); four new accounts (part 8). Customer Experience FY2024 and the Child Support
+  advance (first option, part 9) done. Open: budget class for the new accounts.
+- Parts 1-4 as in `reference/progress/D-9.md`; part 5 adds 22 evidence rows (`total_lines_inside.csv`). Review, counts and
+  owner questions: `reference/review/accounting/review-D9.md`.
+- n/a entries: accounts 604 -> 602, totals 2,116 -> 1,890. Six CJS Title III totals now reach their printed figure.
+- Three request program-level figures change (CDC Scientific Services FY2024, Environmental Health FY2023 and FY2024):
+  each now equals the table's printed program-level subtotal; owner approval asked.
+- Open, for the owner: lines in accounts not held (OS Cures opioid $500M FY2017-18, ARPA-H in the OS total, AHRQ as NIRSQ
+  in the FY2018-21 requests, OS Customer Experience, ASPR pandemic lines, SAMHSA FY2026-27 requests); the Child Support
+  advance (count the law-text component, or add the table line); NSF FY2025 request emergency on the House table's
+  arithmetic; CJS Title III FY2026 Senate total holds the FY2025 column ($33,908,257,000 vs $33,909,609,000, p.219).
+- Not done: evidence rows for the Title II and bill totals FY2017-FY2021 (their gaps show now that their cells are
+  complete); HRSA FY2017 Enacted (P.L. 114-254's line is another document's); ACF FY2017 request's $10,000,000.
+
 ## D-8: Anchored totals (2026-10-15, this PR)
 
 Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewritten. Review items:
