@@ -4319,8 +4319,14 @@
            "validation_id": "VAL-LHHS-02223"
           },
           {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MRC-NEF-OUTSIDE-PRINTED-PROGRAM-LEVEL"
+          },
+          {
            "human_review_status": null,
-           "result": "pass",
+           "result": "info",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-0551"
           }
@@ -10263,8 +10269,14 @@
       "validation_id": "VAL-LHHS-02223"
      },
      {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MRC-NEF-OUTSIDE-PRINTED-PROGRAM-LEVEL"
+     },
+     {
       "human_review_status": null,
-      "result": "pass",
+      "result": "info",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-0551"
      }
