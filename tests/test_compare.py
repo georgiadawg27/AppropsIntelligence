@@ -3392,22 +3392,23 @@ class ExcludeEarmarks(GridBrowser):
         self.go("?sc=CJS&fy=2026&defense=excl&open=ACC-NSF-TOTAL")
         self.assertEqual(self.text("ACC-NSF-TOTAL", 2026, "Enacted"), "8,631,200")
         self.assertEqual(self.cell("ACC-NSF-TOTAL", 2026, "Enacted").locator("[data-testid=sum-mark]").count(), 1)
-        # a not computable view (NIH's FY2022 Enacted total: its accounts as printed don't add up to it, and no held
-        # line explains the difference): n/a, why in one plain line on hover, the data's reason kept
-        nih = self.lrow("ACC-HHS-NIH-TOTAL")
-        e = view_entry_of(nih, 2022, "Enacted", "printed", None, "views_nondefense")
+        # a not computable view (CDC's FY2024 House total: its accounts as printed add up to more than it, and no
+        # held line explains the difference; NIH's FY2022 Enacted was this example until D-9 counted ARPA-H in the OS
+        # total the table prints it under): n/a, why in one plain line on hover, the data's reason kept
+        cdc = self.lrow("ACC-HHS-CDC-TOTAL")
+        e = view_entry_of(cdc, 2024, "House Reported", "printed", None, "views_nondefense")
         self.assertEqual(e["status"], "not_computable")
         self.assertIn("is in no account held", e["reason"])
-        self.go("?sc=LHHS&fy=2022&defense=excl&open=ACC-HHS-NIH-TOTAL")
-        self.assertEqual(self.text("ACC-HHS-NIH-TOTAL", 2022, "Enacted"), "n/a")
-        b = self.cell("ACC-HHS-NIH-TOTAL", 2022, "Enacted").locator("button.fig")
+        self.go("?sc=LHHS&fy=2024&defense=excl&open=ACC-HHS-CDC-TOTAL")
+        self.assertEqual(self.text("ACC-HHS-CDC-TOTAL", 2024, "House Reported"), "n/a")
+        b = self.cell("ACC-HHS-CDC-TOTAL", 2024, "House Reported").locator("button.fig")
         self.assertEqual(b.get_attribute("data-reason"), e["reason"])
-        self.assertIn(": -$1,000,000,000 is in no account held", e["reason"])
-        self.assertIn(": The accounts held add up to $1,000,000,000 more than the printed total · ", b.get_attribute("title"))
+        self.assertIn(": -$50,000 is in no account held", e["reason"])
+        self.assertIn(": The accounts held add up to $50,000 more than the printed total · ", b.get_attribute("title"))
         # the source panel says what is missing, then the full reason (where)
         b.click()
         self.assertEqual(self.page.inner_text("[data-testid=src-view-value]"), "n/a")
-        self.assertEqual(self.page.inner_text("[data-testid=src-view-why]"), "The accounts held add up to $1,000,000,000 more than the printed total")
+        self.assertEqual(self.page.inner_text("[data-testid=src-view-why]"), "The accounts held add up to $50,000 more than the printed total")
         self.assertIn(e["reason"], self.page.inner_text("[data-testid=src-view-reason]"))
         # the box off: as printed again
         self.advanced("uncheck", "#f-nodef")
