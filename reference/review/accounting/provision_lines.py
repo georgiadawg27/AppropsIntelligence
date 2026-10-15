@@ -2,18 +2,14 @@
 Components the phrase rules cannot read (component backfill follow-ups): money a bill or law makes available to an
 account where the words that make it a component sit outside the amount's own phrase window, or in a general
 provision that names the account by its purpose rather than its heading. Each is read from the full text of the
-bill or law and written to provision_lines.csv, which scripts/tag_components.py reads (offline).
+bill or law and written to provision_lines.csv, which the LHHS-PROVISION-LINES rule (reference/rules/LHHS.py) reads
+into components (offline).
 
   Nonrecurring Expenses Fund (section 223 of division G of P.L. 110-161)  'shall be derived by transfer from the
       Fund established by Public Law 110-161, division G, title II, section 223' (a proviso whose words run past the
       amount's window) and the general provisions 'Of the unobligated balances available in the "Nonrecurring
       Expenses Fund" ..., $X ... shall be available for <purpose>' -> transfer_in beside the headline of the
       account the purpose names (FY2018, FY2020, FY2021 Enacted; FY2021 and FY2023 Senate).
-  Section 241 evaluation funds  '$X is available to this appropriation, for the purposes under this heading, from
-      amounts provided pursuant to section 241 of the PHS Act' (FY2022 Senate: the window ends at 'purs'), and AHRQ's
-      'in addition to amounts provided herein, $X shall be available from amounts available under section 241'
-      (AHRQ is held only as its total, and the tagger reads no total's paragraph) -> transfer_in beside the
-      headline.
   Infectious Diseases Rapid Response Reserve Fund  FY2020 Enacted sec. 239: 'Of the funds provided under the
       heading "CDC-Wide Activities and Program Support", $85,000,000 ... shall be available ... for deposit in the
       Infectious Diseases Rapid Response Reserve Fund' -> transfer_out inside the headline.
@@ -47,7 +43,6 @@ import tag_components as TC  # noqa: E402
 OUT = Path(__file__).resolve().parent / "provision_lines.csv"
 TEXT_DIR = ROOT / "data" / "legislative_text"
 NEF = "the Nonrecurring Expenses Fund (section 223 of division G of P.L. 110-161)"
-S241 = "section 241 of the PHS Act (evaluation funds)"
 NEF_GP = r"Of the unobligated balances available (?:in fiscal year 2021 )?in the\W+Nonrecurring Expenses Fund\W+established"
 COLUMNS = ["observation_id", "canonical_account_id", "fiscal_year", "stage", "component_type", "designation",
            "transfer_from", "amount", "in_headline", "source_document_id", "source_location", "quoted_text",
@@ -102,24 +97,6 @@ ITEMS = [
      37500000, "FALSE", r"Sec\. 235\. " + NEF_GP, r"Sec\. 236\.",
      "sec. 235 makes it available for acquisition of real property, design, construction and renovation for the "
      "CDC's replacement Lake Lynn Experimental Mine and Laboratory: the Buildings and Facilities account's purposes"),
-    ("SRC-BILLS-117S3062IS", "ACC-HHS-CDC-SCIENTIFIC-SERVICES", 2022, "Senate Reported", "transfer_in", S241,
-     132000000, "FALSE", r"Provided, That in addition to amounts provided herein, \$132,000,000 is available",
-     r"(?<=PHS Act)", "the Public Health Scientific Services paragraph's proviso"),
-    ("SRC-BILLS-117S3062IS", "ACC-HHS-CDC-ENVIRONMENTAL-HEALTH", 2022, "Senate Reported", "transfer_in", S241,
-     7000000, "FALSE", r"Provided, That in addition to amounts provided herein, \$7,000,000 is available",
-     r"(?<=PHS Act)", "the Environmental Health paragraph's proviso"),
-    ("SRC-BILLS-117S3062IS", "ACC-HHS-AHRQ-TOTAL", 2022, "Senate Reported", "transfer_in", S241, 27000000, "FALSE",
-     r"Provided further, That, in addition to amounts provided herein, \$27,000,000 shall be available",
-     r"(?<=PHS Act)", "the Healthcare Research and Quality paragraph's proviso (AHRQ is held only as its total)"),
-    ("SRC-BILLS-117HR4502RH", "ACC-HHS-AHRQ-TOTAL", 2022, "House Reported", "transfer_in", S241, 129208000, "FALSE",
-     r"Provided, That in addition to amounts provided herein \$129,208,000 shall be available", r"(?<=PHS Act)",
-     "the Healthcare Research and Quality paragraph's proviso (AHRQ is held only as its total)"),
-    ("SRC-BILLS-116HR7614RH", "ACC-HHS-AHRQ-TOTAL", 2021, "House Reported", "transfer_in", S241, 199909000, "FALSE",
-     r"Provided, That in addition to amounts provided herein, \$199,909,000 shall be available", r"(?<=PHS Act)",
-     "the Healthcare Research and Quality paragraph's proviso (AHRQ is held only as its total)"),
-    ("SRC-BILLS-116HR2740RH", "ACC-HHS-AHRQ-TOTAL", 2020, "House Reported", "transfer_in", S241, 18408000, "FALSE",
-     r"Provided, That in addition to amounts provided herein, \$18,408,000 shall be available", r"(?<=PHS Act)",
-     "the Healthcare Research and Quality paragraph's proviso (AHRQ is held only as its total)"),
 ]
 
 
