@@ -245,7 +245,7 @@ No data changed. Nine ACF totals now reach their printed figure.
 | 2024 | Senate Reported | CMP-LHHS-0144 $1,400,000,000 | S.Rept. 118-84 pp.384-387 | 0 |
 
 The held-line test now allows an evidence row whose line is such a component from another document (owner ruling);
-the gap-list test's floor moved from more than 30 listed gaps to more than 20 (29 remain).
+the gap-list test's floor moved from more than 30 listed gaps to more than 20 (29 remain). Both test changes owner-approved 2026-10-15.
 
 ## What stays n/a and what would close it
 
