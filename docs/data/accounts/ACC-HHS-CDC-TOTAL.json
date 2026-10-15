@@ -815,7 +815,7 @@
           },
           {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-3644"
           }
@@ -2065,7 +2065,7 @@
           },
           {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-2883"
           }
@@ -3026,14 +3026,8 @@
            "validation_id": "VAL-LHHS-10163"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MRC-NEF-TRANSFER-UNTAGGED"
-          },
-          {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-2487"
           }
@@ -3681,14 +3675,8 @@
            "validation_id": "VAL-LHHS-08303"
           },
           {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MRC-EVALUATION-TAP-PHRASE-UNTAGGED"
-          },
-          {
            "human_review_status": null,
-           "result": "info",
+           "result": "pass",
            "rule_applied": "measure_reconcile",
            "validation_id": "VAL-MRV-LHHS-2058"
           }
@@ -7747,7 +7735,7 @@
      },
      {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-3644"
      }
@@ -8757,7 +8745,7 @@
      },
      {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-2883"
      }
@@ -9157,14 +9145,8 @@
       "validation_id": "VAL-LHHS-10163"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
-      "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MRC-NEF-TRANSFER-UNTAGGED"
-     },
-     {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-2487"
      }
@@ -9699,14 +9681,8 @@
       "validation_id": "VAL-LHHS-08303"
      },
      {
-      "human_review_status": "pending",
-      "result": "flag",
-      "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MRC-EVALUATION-TAP-PHRASE-UNTAGGED"
-     },
-     {
       "human_review_status": null,
-      "result": "info",
+      "result": "pass",
       "rule_applied": "measure_reconcile",
       "validation_id": "VAL-MRV-LHHS-2058"
      }

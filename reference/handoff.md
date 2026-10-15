@@ -1,8 +1,54 @@
-# Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
+# Handoff: accounting views, component backfill follow-ups, 2026-10-15
 
 Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
 
-## Component backfill FY2017-FY2023 (this PR)
+## Component backfill follow-ups (this PR)
+
+- New source `reference/review/accounting/provision_lines.py` -> `provision_lines.csv` (read from each bill or law's
+  full text, govinfo HTML or the Senate PDF, cached in `document_store/provision_text/`; the tagger reads the CSV
+  offline, tag_method `auto_text`, so the text check never uses them). 20 rows: Nonrecurring Expenses Fund transfers
+  (FY2018 E CDC B&F $240M; FY2020 E sec. 237 NIH B&F $225M and sec. 238 CDC B&F $225M; FY2021 E sec. 237 NIH B&F
+  $225M; FY2021 S sec. 237 items (1)-(8): Primary Health Care $87M, Ryan White $50M, CDC HIV $60M, NIH B&F $229M,
+  PHSSEF $24M + 3 x $50M; FY2023 S sec. 235 CDC B&F $37.5M), section 241 taps (FY2022 S CDC Scientific Services
+  $132M, Environmental Health $7M; AHRQ total FY2022 S $27M, FY2022 H $129.208M, FY2021 H $199.909M, FY2020 H
+  $18.408M), and the FY2020 E sec. 239 $85M deposit from CDC-Wide into the Infectious Diseases Rapid Response Reserve
+  Fund (transfer_out, inside).
+- New phrase rule: "transferred to and merged with (amounts in) the Infectious Diseases Rapid Response Reserve Fund"
+  -> transfer_out (FY2020 House CDC-Wide $50M). FY2021 House's $400M is in the bill's Title VI, not the headline's
+  paragraph, so it is not tagged.
+- Components 1,185 -> 1,206 (21 new, 0 retired, 0 changed). Base 797 -> 812 pass, 0 fail.
+- Views 213 pass / 25 fail / 121 not checked -> 218 / 20 / 121. Resolved causes: nef_transfer_untagged (4),
+  agency_total_only (3), evaluation_tap_phrase_untagged (1). New cause nef_outside_printed_program_level (3, NIH
+  FY2020 E, FY2021 E, FY2021 S): the NIH table prints 'Total, NIH Program Level' without the NEF transfer and a
+  separate '(with transfer)' total equal to the computed view (H.Rept. 117-96 p.477; FY2021 Senate report p.252,
+  whose 2020 column covers FY2020 E). CDC FY2023 S (member_no_headline) now differs by $122.5M, not $160M: the
+  $160M block grant less the $37.5M Lake Lynn NEF transfer, which the Senate report's CDC program level leaves out
+  (p.405 prints Buildings and Facilities 35,000 and no NEF line).
+- The 70 unchecked agency totals now say what is missing: 66 President's Budget (the request's transfers in and
+  trust-fund limitations are not tagged; the request's Appendix language and CJs are not read for them) and 4
+  FY2027 House (not auto-tagged; a trial run showed OS passes, ACL is account_not_held, but CDC (+$1.398B) and
+  SAMHSA (+$12M) need the FY2027 House report's PPHF allocation table first, so the cell was left out).
+- Untagged phrases: OS-GDM FY2023 S sec. 243 $350M is the headline's own appropriation (565,394,000 + 350,000,000
+  = the printed 915,394,000), not a component. The $6.8M teen-pregnancy evaluation amounts are sub-allocations of
+  the section 241 transfer. Pandemic flu balances (FY2017): no FY2017 Labor-HHS bill or law text mentions P.L.
+  111-32 balances, so nothing to tag from text; stays in review.
+- No headline figure changed. Page images 0.
+
+## Open items (this PR)
+
+1. VAL-MRC causes pending owner review: emergency_lines_not_held 1, headline_superseded 4, member_no_headline 2,
+   nef_outside_printed_program_level 3, onc_evaluation_tap_line 2, onc_no_headline 1, pandemic_flu_balances 4,
+   prif_outside_printed_program_level 2 (request_stage_class 1 resolved).
+2. Account choices made from the text's purpose wording (flag any you disagree with): FY2021 S sec. 237 items to
+   Primary Health Care, Ryan White, CDC HIV, NIH B&F and PHSSEF (HPP, 319F-2(a), 319L, pandemic flu); NEF building
+   money to CDC or NIH Buildings and Facilities.
+3. Next for the unchecked totals: an Appendix-language reader for request-stage section 241 and PPHF transfers (66
+   PB cells); the FY2027 House PPHF table, then add the cell to AUTO_CELLS.
+
+# Earlier handoff: component backfill FY2017-FY2023, 2026-10-12
+Start here instead of the long thread. The rules themselves are in `reference/ACCOUNTING_RULES.md`.
+
+## Component backfill FY2017-FY2023 (#54)
 
 - The tagger now auto-tags every Labor-HHS and CJS cell FY2017-FY2023, every stage (`AUTO_CELLS` = the pilot
   cells plus `BACKFILL` in `scripts/tag_components.py`). 1,185 components (was 583): 602 new, 0 retired, 0 existing
