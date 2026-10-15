@@ -205,6 +205,54 @@ ACC-HHS-ACF-SSBG,LHHS,2026,enacted,filled,075-1534-0-1-506,mandatory,general,506
 ACC-HHS-ACF-SSBG,LHHS,2026,request,same as enacted,075-1534-0-1-506,mandatory,general,506,SRC-BUDGET-APP-FY2026-HHS p.378,
 ACC-HHS-ACF-SSBG,LHHS,2027,enacted,filled,075-1534-0-1-506,mandatory,general,506,SRC-BUDGET-APP-FY2027-HHS p.479,"075-1534-0-1-506: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
 ACC-HHS-ACF-SSBG,LHHS,2027,request,same as enacted,075-1534-0-1-506,mandatory,general,506,SRC-BUDGET-APP-FY2027-HHS p.479,
+ACC-HHS-ACL-TOTAL,LHHS,2017,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2017-HHS p.500,
+ACC-HHS-ACL-TOTAL,LHHS,2017,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2017-HHS p.500,
+ACC-HHS-ACL-TOTAL,LHHS,2018,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2018-HHS p.466,
+ACC-HHS-ACL-TOTAL,LHHS,2018,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2018-HHS p.466,
+ACC-HHS-ACL-TOTAL,LHHS,2019,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2019-HHS p.470,
+ACC-HHS-ACL-TOTAL,LHHS,2019,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-ACL-TOTAL,LHHS,2020,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2020-HHS p.472,
+ACC-HHS-ACL-TOTAL,LHHS,2020,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-ACL-TOTAL,LHHS,2021,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2021-HHS p.486,
+ACC-HHS-ACL-TOTAL,LHHS,2021,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-ACL-TOTAL,LHHS,2022,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2022-HHS p.485,
+ACC-HHS-ACL-TOTAL,LHHS,2022,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2022-HHS p.485,
+ACC-HHS-ACL-TOTAL,LHHS,2023,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2023-HHS p.478,
+ACC-HHS-ACL-TOTAL,LHHS,2023,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2023-HHS p.478,
+ACC-HHS-ACL-TOTAL,LHHS,2024,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2024-HHS p.465,
+ACC-HHS-ACL-TOTAL,LHHS,2024,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2024-HHS p.465,
+ACC-HHS-ACL-TOTAL,LHHS,2025,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2025-HHS p.447,
+ACC-HHS-ACL-TOTAL,LHHS,2025,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2025-HHS p.447,
+ACC-HHS-ACL-TOTAL,LHHS,2026,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2026-HHS p.381,
+ACC-HHS-ACL-TOTAL,LHHS,2026,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2026-HHS p.381,075-0142-0-1-506: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-ACL-TOTAL,LHHS,2027,enacted,mixed,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2027-HHS p.483,"075-0142-0-1-506: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ACC-HHS-ACL-TOTAL,LHHS,2027,request,same as enacted,075-0142-0-1-506,mixed,general,506,SRC-BUDGET-APP-FY2027-HHS p.483,075-0142-0-1-506: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHA-TOTAL,LHHS,2026,request,empty,,,,,,"an agency held only as its total (decision B, D-9), proposed in the FY2026 and FY2027 requests: the Appendix spreads it over several new accounts (075-0381, -0382, -0383, -0384, -0385, -0395 and others; discretionary and PAYGO proposals), and the tables' AHA line is only the part 'not displayed under other HHS accounts' (H.Rept. 119-271 p.334 footnote 1/), which no single account matches, so no attribute"
+ACC-HHS-AHA-TOTAL,LHHS,2027,request,empty,,,,,,"an agency held only as its total (decision B, D-9), proposed in the FY2026 and FY2027 requests: the Appendix spreads it over several new accounts (075-0381, -0382, -0383, -0384, -0385, -0395 and others; discretionary and PAYGO proposals), and the tables' AHA line is only the part 'not displayed under other HHS accounts' (H.Rept. 119-271 p.334 footnote 1/), which no single account matches, so no attribute"
+ACC-HHS-AHRQ-TOTAL,LHHS,2017,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2017-HHS p.465,
+ACC-HHS-AHRQ-TOTAL,LHHS,2017,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-AHRQ-TOTAL,LHHS,2018,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2018-HHS p.438,
+ACC-HHS-AHRQ-TOTAL,LHHS,2018,request,same as enacted,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2018-HHS p.438,075-1700-0-1-552: no budget authority in the 2018 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHRQ-TOTAL,LHHS,2019,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2019-HHS p.438,
+ACC-HHS-AHRQ-TOTAL,LHHS,2019,request,same as enacted,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2019-HHS p.438,075-1700-0-1-552: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHRQ-TOTAL,LHHS,2020,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2020-HHS p.441,
+ACC-HHS-AHRQ-TOTAL,LHHS,2020,request,same as enacted,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2020-HHS p.441,075-1700-0-1-552: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHRQ-TOTAL,LHHS,2021,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2021-HHS p.456,
+ACC-HHS-AHRQ-TOTAL,LHHS,2021,request,same as enacted,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2021-HHS p.456,075-1700-0-1-552: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHRQ-TOTAL,LHHS,2022,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2022-HHS p.458,
+ACC-HHS-AHRQ-TOTAL,LHHS,2022,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-AHRQ-TOTAL,LHHS,2023,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2023-HHS p.449,
+ACC-HHS-AHRQ-TOTAL,LHHS,2023,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-AHRQ-TOTAL,LHHS,2024,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2024-HHS p.435,
+ACC-HHS-AHRQ-TOTAL,LHHS,2024,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-AHRQ-TOTAL,LHHS,2025,enacted,mixed,075-1700-0-1-552,mixed,general,552,SRC-BUDGET-APP-FY2025-HHS p.416,
+ACC-HHS-AHRQ-TOTAL,LHHS,2025,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-AHRQ-TOTAL,LHHS,2026,enacted,filled,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2026-HHS p.355,
+ACC-HHS-AHRQ-TOTAL,LHHS,2026,request,same as enacted,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2026-HHS p.355,075-1700-0-1-552: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-AHRQ-TOTAL,LHHS,2027,enacted,filled,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2027-HHS p.458,"075-1700-0-1-552: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ACC-HHS-AHRQ-TOTAL,LHHS,2027,request,same as enacted,075-1700-0-1-552,discretionary,general,552,SRC-BUDGET-APP-FY2027-HHS p.458,075-1700-0-1-552: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)
+ACC-HHS-ASPR-MANUFACTURING,LHHS,2024,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-ASPR-MANUFACTURING,LHHS,2024,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-ASPR-OPER,LHHS,2024,enacted,filled,075-1001-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2026-HHS p.382,"account_id_code, fund_type and budget_subfunction read from the FY2026 Appendix: no Program and Financing schedule for 075-1001 (Administration for Strategic Preparedness and Response, Operations, Preparedness, and Emergency Response) in the FY2024 Appendix"
 ACC-HHS-ASPR-OPER,LHHS,2024,request,differs from enacted (account_id_code),075-0140-0-1-551,,,,SRC-BUDGET-APP-FY2024-HHS p.471,
 ACC-HHS-ASPR-OPER,LHHS,2025,enacted,filled,075-1001-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2027-HHS p.484,"account_id_code, fund_type and budget_subfunction read from the FY2027 Appendix: no Program and Financing schedule for 075-1001 (Administration for Strategic Preparedness and Response, Operations, Preparedness, and Emergency Response) in the FY2025 Appendix"
@@ -628,6 +676,7 @@ ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2019,enacted,mixed,075-0511-0-1-550,mixed,ge
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2020,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2020-HHS p.445,
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2021,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2021-HHS p.460,
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2022,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2022-HHS p.462,
+ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2023,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2023-HHS p.453,
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2024,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2024-HHS p.439,
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2025,enacted,mixed,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2025-HHS p.420,
 ACC-HHS-GP-MEDICARE-OPERATIONS,LHHS,2025,request,same as enacted,075-0511-0-1-550,mixed,general,550,SRC-BUDGET-APP-FY2025-HHS p.420,
@@ -1519,6 +1568,8 @@ ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2026,enacted,filled,075-0379-0-1-551,manda
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2026,request,same as enacted,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2026-HHS p.394,
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2027,enacted,filled,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2027-HHS p.495,"075-0379-0-1-551: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
 ACC-HHS-OS-COMMISSIONED-OFFICERS,LHHS,2027,request,same as enacted,075-0379-0-1-551,mandatory,general,551,SRC-BUDGET-APP-FY2027-HHS p.495,
+ACC-HHS-OS-CUSTOMER-EXPERIENCE,LHHS,2024,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-OS-CUSTOMER-EXPERIENCE,LHHS,2025,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-OS-GDM,LHHS,2017,enacted,mixed,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.501,
 ACC-HHS-OS-GDM,LHHS,2017,request,same as enacted,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.501,
 ACC-HHS-OS-GDM,LHHS,2018,enacted,mixed,075-9912-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2018-HHS p.468,
@@ -1622,6 +1673,7 @@ ACC-HHS-OS-ONC,LHHS,2022,request,same as enacted,075-0130-0-1-551,discretionary,
 ACC-HHS-OS-ONC,LHHS,2023,enacted,filled,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2023-HHS p.481,
 ACC-HHS-OS-ONC,LHHS,2023,request,same as enacted,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2023-HHS p.481,
 ACC-HHS-OS-ONC,LHHS,2024,enacted,filled,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2024-HHS p.469,
+ACC-HHS-OS-ONC,LHHS,2024,request,same as enacted,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2024-HHS p.469,
 ACC-HHS-OS-ONC,LHHS,2025,enacted,filled,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2025-HHS p.451,
 ACC-HHS-OS-ONC,LHHS,2025,request,same as enacted,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2025-HHS p.451,
 ACC-HHS-OS-ONC,LHHS,2026,enacted,filled,075-0130-0-1-551,discretionary,general,551,SRC-BUDGET-APP-FY2026-HHS p.385,
@@ -1645,6 +1697,11 @@ ACC-HHS-OS-PHSSEF,LHHS,2024,enacted,partly filled,075-0140-0-1-551,,general,551,
 ACC-HHS-OS-PHSSEF,LHHS,2024,request,differs from enacted (budget_class),,discretionary,,,,
 ACC-HHS-OS-PHSSEF,LHHS,2025,enacted,partly filled,075-0140-0-1-551,,general,551,SRC-BUDGET-APP-FY2025-HHS p.452,075-0140-0-1-551: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)
 ACC-HHS-OS-PHSSEF,LHHS,2025,request,differs from enacted (budget_class),,discretionary,,,,
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2017,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2018,enacted,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-OS-STATE-OPIOID-RESPONSE,LHHS,2018,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-SAMHSA-BH-INNOVATION-BG,LHHS,2026,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
+ACC-HHS-SAMHSA-BH-INNOVATION-BG,LHHS,2027,request,empty,,,,,,no Appendix account mapped (appendix_map.csv): none found
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2017,enacted,mixed,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.464,
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2017,request,same as enacted,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2017-HHS p.464,
 ACC-HHS-SAMHSA-MENTAL-HEALTH,LHHS,2018,enacted,mixed,075-1362-0-1-551,mixed,general,551,SRC-BUDGET-APP-FY2018-HHS p.437,

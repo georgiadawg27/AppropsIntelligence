@@ -64,7 +64,12 @@ read from the text layer (no page images) into `appendix_schedules.json`.
   accounts; each correction is noted on the account. A general-fund account with `trust_fund_limitation`
   components (CMS Program Management, Medicare Hearings and Appeals: funded by transfers from the trust funds) is
   consistent, not a disagreement.
-- Totals and part lines carry no attributes; an account with no schedule found is left empty with a note
+- Totals and part lines carry no attributes, except an agency held only as its total (no account lines: AHRQ, ACL,
+  AHA). Its total is its one line, so it takes its Appendix account's attributes as an account would: codes and
+  fund type from FY N's volume, `budget_class` from the FY N+2 actuals, FY2026-FY2027 provisional (owner decision
+  B, D-9, 2026-10-15; until D-9 totals carried none). AHRQ maps to 075-1700 and ACL to 075-0142; AHA, which the
+  FY2026 and FY2027 requests spread over several new accounts, maps to none and stays without attributes (noted).
+  An account with no schedule found is left empty with a note
   (`account_attribute_notes`, `reference/review/accounting/appendix_coverage.csv`). Nothing is guessed. The
   defense split stays on the `defense_portion` lines; no subfunction implies one.
 
@@ -93,7 +98,12 @@ negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
 stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text`,
 `carried_forward`, `cr_anomaly`, `appendix_text` (the request's proposed language in the Budget Appendix) or
-`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). `within_component_id` names the component this one is part of (HCFAC's cap
+`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). A request with no Budget Appendix language of
+its own for the account takes the lines the House or Senate comparative table prints under the account in the
+request column as `table_line` components, cited to the report page (decision C, D-9): the Prevention and Public
+Health Fund line (`pphf_table.csv`) and the evaluation funds line (`table_lines.csv`, a `transfer_in` from section
+241 beside the headline). A line printed '---' is nothing; an account whose table prints nothing beside it stays
+components unknown. `within_component_id` names the component this one is part of (HCFAC's cap
 adjustment inside the amount transferred from the trust funds): the base subtracts only the outer one. Views add
 top-level components only; a nested component is used only when a view splits its parent (picks it without the
 parent, as a view leaving out the cap adjustment but keeping the trust-fund amount would), so no view ever counts a

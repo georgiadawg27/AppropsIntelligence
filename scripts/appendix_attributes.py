@@ -38,8 +38,10 @@ For each account and fiscal year we hold a figure for (FY2017-FY2027):
 
 An account that is one program activity of a larger Appendix account (a HRSA program, a CDC program, an NIH
 institute) takes that account's attributes, and its activity line must be printed in the schedule; otherwise the
-fields stay empty with a note. Agency and title totals get no attributes of their own. Nothing is guessed: an
-account with no schedule we can find is noted, not filled.
+fields stay empty with a note. Agency and title totals get no attributes of their own, except an agency held only
+as its total (no account lines: AHRQ, ACL, AHA), whose total is its one line and takes its Appendix account's
+attributes as an account would (owner decision B, D-9). Nothing is guessed: an account with no schedule we can find
+is noted, not filled.
 """
 
 import argparse
@@ -468,13 +470,24 @@ def enacted_volume(fy):
     return fy + 2 if fy + 2 <= AC.LAST_FY else fy + 1 if fy + 1 <= AC.LAST_FY else fy
 
 
+def lone_agencies(data):
+    """The agencies held only as their total (no account lines; site_accounting's 'lone'): their total is their one
+    line, so it takes the attributes an account would (owner decision B, D-9)."""
+    import measure_reconcile as M  # noqa: E402 (scripts/, beside this file)
+    return {a["canonical_account_id"] for a in data["accounts"]
+            if a.get("total_scope") == "agency" and not M.members(data, a)}
+
+
 def held(data):
-    """-> {(account, fy): {stages}} for every account (not totals) we hold a figure for."""
+    """-> {(account, fy): {stages}} for every account we hold a figure for (not totals, except an agency held only
+    as its total)."""
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
+    lone = lone_agencies(data)
     out = collections.defaultdict(set)
     for o in data["observations"]:
         a = acc[o["canonical_account_id"]]
-        if a.get("total_scope") or o.get("component") or o["verification_status"] == "superseded":
+        if (a.get("total_scope") and a["canonical_account_id"] not in lone) or o.get("component") \
+                or o["verification_status"] == "superseded":
             continue
         fy = int(o["fiscal_year"])
         if AC.FIRST_FY <= fy <= AC.LAST_FY:

@@ -164,6 +164,12 @@
   },
   {
    "agency": "Administration for Strategic Preparedness and Response",
+   "canonical_account_id": "ACC-HHS-ASPR-MANUFACTURING",
+   "canonical_name": "Manufacturing and Production",
+   "historical_names": []
+  },
+  {
+   "agency": "Administration for Strategic Preparedness and Response",
    "canonical_account_id": "ACC-HHS-ASPR-OPER",
    "canonical_name": "Operations, Preparedness, and Emergency Response",
    "historical_names": []
@@ -614,6 +620,12 @@
   },
   {
    "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-CUSTOMER-EXPERIENCE",
+   "canonical_name": "Customer Experience",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
    "canonical_account_id": "ACC-HHS-OS-GDM",
    "canonical_name": "General Departmental Management",
    "historical_names": []
@@ -650,8 +662,20 @@
   },
   {
    "agency": "Office of the Secretary",
+   "canonical_account_id": "ACC-HHS-OS-STATE-OPIOID-RESPONSE",
+   "canonical_name": "Account for the State Response to the Opioid Abuse Crisis, CURES Act",
+   "historical_names": []
+  },
+  {
+   "agency": "Office of the Secretary",
    "canonical_account_id": "ACC-HHS-OS-TOTAL",
    "canonical_name": "Office of the Secretary (agency total)",
+   "historical_names": []
+  },
+  {
+   "agency": "Substance Abuse and Mental Health Services Administration",
+   "canonical_account_id": "ACC-HHS-SAMHSA-BH-INNOVATION-BG",
+   "canonical_name": "Behavioral Health Innovation Block Grant",
    "historical_names": []
   },
   {
@@ -904,21 +928,21 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-15T01:32:44+00:00",
-  "data_sha256": "7d1ed85ba04121d97bad57a020aa5cd3c685f4809cb83f059dbf1ad299e14ea2",
+  "data_committed": "2026-10-15T19:21:42+00:00",
+  "data_sha256": "7886564dad7c5e90db28222afb4fd5277ae72995735392a9eea76a967b2117f3",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
-   "account": 142,
-   "account_attribute": 4292,
+   "account": 146,
+   "account_attribute": 4392,
    "account_relationship": 14,
-   "appropriations_observation": 6535,
+   "appropriations_observation": 6553,
    "bill_report_reference": 83,
    "component": 52,
-   "confirmed_absence": 308,
+   "confirmed_absence": 342,
    "historical_name": 14,
-   "observation_component": 1447,
+   "observation_component": 1461,
    "source_document": 151,
-   "validation_record": 21621
+   "validation_record": 21641
   },
   "version": "v38",
   "warnings": [],

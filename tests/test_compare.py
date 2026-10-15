@@ -891,9 +891,10 @@ class CompareBrowser(GridBrowser):
             self.assertEqual(self.cell("ACC-HHS-HRSA-PROGRAM-SUPPORT", y, "Enacted").get_attribute("data-state"), "value", y)
 
     def test_a_missing_cell_inside_a_life_still_shows_a_question_mark(self):
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025")
+        # D-9 entered FY2025 House's figure (H.R. 9029); FY2023's request is still not entered
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
         self.menu("click", "#expand-all")
-        c = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2025, "House Reported")
+        c = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget")
         self.assertEqual((c.get_attribute("data-state"), c.locator("[data-testid=token-missing]").inner_text()), ("missing", "missing"))
 
     def test_no_tiles_the_overview_shows_the_printed_title_total(self):
@@ -1359,11 +1360,13 @@ class CompareBrowser(GridBrowser):
         titles = notes.evaluate_all("ns => ns.map(n => n.title)")
         self.assertEqual(sum(1 for x in titles if x.startswith("Includes $2,500,000,000 from Division N")), 1)
         # (and ARPA-H's first enacted year, FY2022: the lifecycle's 'Created FY2022.'; and since D-2, the report-table
-        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A)
+        # figure noted on CDC-Wide Activities' FY2023 House and Senate headlines, read from the bill text, decision 4 A;
+        # and since D-9, a Senate figure read from the explanatory statement's narrative)
         self.assertTrue(all(x.startswith(("Includes $", "Funded within PHSSEF", "Funded through the PHS evaluation",
                                           "S.Rept. 118-84 restates FY2023", "Created FY2022",
                                           "H.Rept. 117-403 p.813 prints no budget-authority line",
-                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'"))
+                                          "the FY2023 Senate explanatory statement prints the account's 'Subtotal'",
+                                          "the FY2023 Senate explanatory statement's narrative"))
                             for x in titles), titles)
         n = self.cell("ACC-HHS-ACF-LIHEAP", 2023, "Enacted").locator("[data-testid=cell-note]")
         self.assertEqual(n.count(), 1)
@@ -1393,7 +1396,10 @@ class CompareBrowser(GridBrowser):
             # NSF R&RA's headlines are the paragraph's total (D-3): the table's nondefense and defense lines are the note
             self.assertTrue(all(x.startswith(("The House subcommittee draft's", "Includes $2,500,000,000",
                                               "Funded within PHSSEF", "S.Rept. 118-84 restates FY2023",
-                                              "The table prints 'Health Surveillance"))
+                                              "The table prints 'Health Surveillance",
+                                              # D-9's new FY2024 request-only accounts (Customer Experience, ASPR
+                                              # Manufacturing and Production) and the Senate table's figure beside the bill's
+                                              "Proposed in the FY2024 request", "S.Rept. 118-84 p.390 prints"))
                                 or "the paragraph's amount counts both" in x for x in titles), titles)
         cell = self.cell("ACC-HHS-CDC-GLOBAL-HEALTH", 2024, "House Reported")
         n = cell.locator("[data-testid=cell-note]")
@@ -2163,8 +2169,8 @@ class ExploreV1(GridBrowser):
             self.assertRegex(a.get_attribute("aria-label"), r"^Source for Centers for Disease Control and Prevention, FY20\d\d ")
             self.assertTrue(a.get_attribute("title").startswith("Click for its source: "))
         # the state tokens (SPEC section 4)
-        self.go("?sc=LHHS&fy=2025&open=ACC-HHS-CDC-TOTAL")
-        m = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2025, "House Reported").locator("[data-testid=token-missing]")
+        self.go("?sc=LHHS&fy=2023&open=ACC-HHS-CDC-TOTAL")
+        m = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget").locator("[data-testid=token-missing]")
         self.assertEqual((m.inner_text(), m.get_attribute("title")), ("missing", "Document on file; figure not yet entered"))
         self.assertEqual(m.evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).fontStyle, getComputedStyle(e).color]"),
                          ["12px", "italic", "rgb(91, 99, 114)"])
@@ -3398,17 +3404,18 @@ class ExcludeEarmarks(GridBrowser):
         self.go("?sc=CJS&fy=2026&defense=excl&open=ACC-NSF-TOTAL")
         self.assertEqual(self.text("ACC-NSF-TOTAL", 2026, "Enacted"), "8,631,200")
         self.assertEqual(self.cell("ACC-NSF-TOTAL", 2026, "Enacted").locator("[data-testid=sum-mark]").count(), 1)
-        # a not computable view (NIH's FY2022 Enacted total: its accounts as printed don't add up to it, and no held
-        # line explains the difference): n/a, why in one plain line on hover, the data's reason kept
-        nih = self.lrow("ACC-HHS-NIH-TOTAL")
-        e = view_entry_of(nih, 2022, "Enacted", "printed", None, "views_nondefense")
+        # a not computable view (CDC's FY2024 House total: its accounts as printed add up to more than it, and no
+        # held line explains the difference; NIH's FY2022 Enacted was this example until D-9 counted ARPA-H in the OS
+        # total the table prints it under): n/a, why in one plain line on hover, the data's reason kept
+        cdc = self.lrow("ACC-HHS-CDC-TOTAL")
+        e = view_entry_of(cdc, 2024, "House Reported", "printed", None, "views_nondefense")
         self.assertEqual(e["status"], "not_computable")
         self.assertIn("is in no account held", e["reason"])
-        self.go("?sc=LHHS&fy=2022&defense=excl&open=ACC-HHS-NIH-TOTAL")
-        self.assertEqual(self.text("ACC-HHS-NIH-TOTAL", 2022, "Enacted"), "n/a")
-        b = self.cell("ACC-HHS-NIH-TOTAL", 2022, "Enacted").locator("button.fig")
+        self.go("?sc=LHHS&fy=2024&defense=excl&open=ACC-HHS-CDC-TOTAL")
+        self.assertEqual(self.text("ACC-HHS-CDC-TOTAL", 2024, "House Reported"), "n/a")
+        b = self.cell("ACC-HHS-CDC-TOTAL", 2024, "House Reported").locator("button.fig")
         self.assertEqual(b.get_attribute("data-reason"), e["reason"])
-        self.assertIn(": -$1,000,000,000 is in no account held", e["reason"])
+        self.assertIn(": -$50,000 is in no account held", e["reason"])
         # UI-10: worded from the cause code
         self.assertEqual(e["cause"], "not_held")
         self.assertIn(": The report prints money in a line we don't hold yet · ", b.get_attribute("title"))
@@ -3700,15 +3707,14 @@ class AdjustmentLines(GridBrowser):
         self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$7,176,500,000")
 
     def test_printed_total_line_reads_as_the_report(self):
-        # CDC FY2025 House on Program level (CDC-Wide has no figure). UI-9 worded D-6's printed_total line; D-8 retired
-        # it: the enacted timing matches the report's own program-level line, and the available timing, with a part
-        # unknown, is n/a saying what is missing (owner decision E, strict). No line reads as a total less itself
+        # CDC FY2025 House on Program level. UI-9 worded D-6's printed_total line; D-8 retired it: the enacted timing
+        # matches the report's own program-level line. D-9 filled CDC-Wide Activities' figure, so the cell is the
+        # report's 7,446,058 thousand (H.Rept. 118-585 p.316), not n/a. No line reads as a total less itself
         self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC}")
         self.assertEqual(self.page.locator("[data-testid=adj-line][data-type=printed_total]").count(), 0)
-        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "n/a")
+        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "7,446,058")
         b = self.cell(self.CDC, 2025, "House Reported").locator("button.fig")
-        self.assertTrue(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
-        self.assertIn("CDC-Wide Activities and Program Support (no figure", b.get_attribute("data-reason"))
+        self.assertFalse(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
         self.assertNotIn("less the total as printed", self.page.inner_text("#compare-grid"))
 
     def test_find_changes_beta(self):
@@ -4372,24 +4378,24 @@ class AccountPage(GridBrowser):
                         self.assertEqual(dashed, "none")
 
     def test_unidentified_start(self):
+        # D-9 part 2 cleared the only 'unidentified' start (the Medicare limitation line is a new provision in FY2026,
+        # P.L. 119-75 div. B sec. 241): no account carries the override now, and the line's years before FY2026 are
+        # outside its life -- blank and not clickable, never a zero or a 'missing'
+        self.assertFalse([r for r in self.lhhs["rows"] if r["lifecycle"].get("start_basis") == "unidentified"])
         row = self.lrow(self.UNIDENTIFIED)
-        self.assertEqual(row["lifecycle"].get("start_basis"), "unidentified")
         for where in self.urls:
             with self.subTest(where=where):
                 self.go(f"?account={self.UNIDENTIFIED}", where)
-                self.assertIn("Start not identified", self.page.inner_text("[data-testid=ap-start]"))
-                # no change since a first year is stated: the record's start is not known
-                sentence = self.page.inner_text("[data-testid=ap-sentence]")
-                self.assertIn("not identified", sentence)
-                self.assertEqual(self.page.locator("[data-testid=ap-sentence-change]").count(), 0)
-                # the years before its one figure show their state, never a blank or a zero
+                self.page.wait_for_selector("[data-testid=ap-table]")
+                self.assertNotIn("not identified", self.page.inner_text("[data-testid=ap-sentence]"))
                 for y in self.enacted_years():
-                    want = expected_headline(row, y, "Enacted")
+                    if y >= 2026:
+                        continue
+                    self.assertTrue(row["cells"][f"{y}|Enacted"].get("outside_life"), y)
                     td = self.ap_cell(y, "Enacted")
-                    if want["state"] != "value":
-                        self.assertEqual(td.get_attribute("data-state"), want["state"], y)
-                        self.assertNotIn("0", td.inner_text())
-                        self.assertNotEqual(td.inner_text().strip(), "", y)
+                    if td.count():          # a year outside the life may have no cell on the page at all
+                        self.assertEqual(td.first.inner_text().strip(), "", y)
+                        self.assertEqual(td.first.locator("button").count(), 0, y)
                 self.assertIn("general-provision", self.page.inner_text("[data-testid=ap-parents]"))
 
     def test_open_account_page_lands_with_account_and_year(self):

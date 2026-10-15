@@ -283,7 +283,8 @@ class MovedRules(unittest.TestCase):
     def test_every_moved_rule_has_its_case_here(self):
         covered = set(PHRASE_CASES) | set(KIND_CASES) | {
             "LHHS-PPHF-SOURCE", "LHHS-241-SUBALLOCATION", "LHHS-LAYOUT", "CJS-LAYOUT", "LHHS-APPENDIX", "CJS-APPENDIX", "LHHS-ONC-EVAL-TAP-LINE",
-            "CJS-NSF-DEFENSE", "CJS-FY2027-TRANSFER", "CJS-FY2027-OFFSETTING", "LHHS-VICTF-LINES", "LHHS-PPHF-TABLE",
+            "CJS-NSF-DEFENSE", "CJS-FY2027-TRANSFER", "CJS-FY2027-OFFSETTING", "LHHS-VICTF-LINES", "LHHS-REQUEST-EVALUATION-LINE",
+            "LHHS-PPHF-TABLE",
             "LHHS-TOTAL-ONLY", "LHHS-ADVANCES", "LHHS-CR-ANOMALIES", "LHHS-CR-PPHF", "CJS-CR-LEVEL-ONLY",
             "LHHS-CHECKS", "LHHS-ONC-VIEW-CHECK", "LHHS-LOOKS-LIKE", "LHHS-241-NOT-MAIN", "LHHS-241-DERIVATION",
             "LHHS-241-NO-MAIN", "LHHS-ONC-CELL-NOTE"}
@@ -408,6 +409,20 @@ class MovedRules(unittest.TestCase):
         r = rule("LHHS-VICTF-LINES")
         self.assertFalse(r.scope.contains("LHHS", "ACC-HHS-HRSA-OTHER", 2023, "Enacted"))
         self.assertFalse(r.scope.contains("CJS", "ACC-HHS-HRSA-VICTF", 2023, "Enacted"))
+
+    def test_request_evaluation_line(self):
+        # D-9 part 4: the request column's evaluation line under PHSS FY2023 (H.Rept. 117-403 p.811), beside the headline
+        rep = collections.defaultdict(list)
+        got = [c for c in TC.table_lines(STAGED, self.heads, rep) if c["observation_id"] == "OBS-LHHS-0949"]
+        self.assertEqual([(c["component_type"], c["amount"], c["in_headline"], c["transfer_from"]) for c in got],
+                         [("transfer_in", 143540000, "FALSE", R.active().modules["LHHS"].PHS_241)])
+        with without("LHHS-REQUEST-EVALUATION-LINE"):
+            rep = collections.defaultdict(list)
+            self.assertFalse([c for c in TC.table_lines(STAGED, self.heads, rep)
+                              if c["observation_id"] == "OBS-LHHS-0949"])
+            self.assertTrue(rep["unknown_table_line"])
+        r = rule("LHHS-REQUEST-EVALUATION-LINE")
+        self.assertFalse(r.scope.contains("LHHS", "ACC-HHS-CDC-SCIENTIFIC-SERVICES", 2023, "House Reported"))
 
     def test_pphf_table(self):
         rep = collections.defaultdict(list)

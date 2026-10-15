@@ -117,8 +117,8 @@ class BuildChecksStopTheBuild(unittest.TestCase):
     def test_a_start_basis_without_a_reason(self):
         # the lifecycle override (Account.start_basis 'unidentified') is never set without its written reason
         def bad(d):
-            a = next(a for a in d["accounts"] if a.get("start_basis"))
-            a["start_basis_reason"] = ""
+            # D-9 cleared the only override; set one with no reason
+            d["accounts"][0].update(start_basis="unidentified", start_basis_reason="")
         self.assertIn("needs a start_basis_reason", self.run_with(bad))
 
     def test_a_start_basis_outside_its_list(self):
