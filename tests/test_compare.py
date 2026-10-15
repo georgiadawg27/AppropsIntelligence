@@ -891,9 +891,10 @@ class CompareBrowser(GridBrowser):
             self.assertEqual(self.cell("ACC-HHS-HRSA-PROGRAM-SUPPORT", y, "Enacted").get_attribute("data-state"), "value", y)
 
     def test_a_missing_cell_inside_a_life_still_shows_a_question_mark(self):
-        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2025")
+        # D-9 entered FY2025 House's figure (H.R. 9029); FY2023's request is still not entered
+        self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2023")
         self.menu("click", "#expand-all")
-        c = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2025, "House Reported")
+        c = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget")
         self.assertEqual((c.get_attribute("data-state"), c.locator("[data-testid=token-missing]").inner_text()), ("missing", "missing"))
 
     def test_no_tiles_the_overview_shows_the_printed_title_total(self):
@@ -2163,8 +2164,8 @@ class ExploreV1(GridBrowser):
             self.assertRegex(a.get_attribute("aria-label"), r"^Source for Centers for Disease Control and Prevention, FY20\d\d ")
             self.assertTrue(a.get_attribute("title").startswith("Click for its source: "))
         # the state tokens (SPEC section 4)
-        self.go("?sc=LHHS&fy=2025&open=ACC-HHS-CDC-TOTAL")
-        m = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2025, "House Reported").locator("[data-testid=token-missing]")
+        self.go("?sc=LHHS&fy=2023&open=ACC-HHS-CDC-TOTAL")
+        m = self.cell("ACC-HHS-CDC-PROGRAM-SUPPORT", 2023, "President's Budget").locator("[data-testid=token-missing]")
         self.assertEqual((m.inner_text(), m.get_attribute("title")), ("missing", "Document on file; figure not yet entered"))
         self.assertEqual(m.evaluate("e => [getComputedStyle(e).fontSize, getComputedStyle(e).fontStyle, getComputedStyle(e).color]"),
                          ["12px", "italic", "rgb(91, 99, 114)"])
@@ -4103,24 +4104,24 @@ class AccountPage(GridBrowser):
                         self.assertEqual(dashed, "none")
 
     def test_unidentified_start(self):
+        # D-9 part 2 cleared the only 'unidentified' start (the Medicare limitation line is a new provision in FY2026,
+        # P.L. 119-75 div. B sec. 241): no account carries the override now, and the line's years before FY2026 are
+        # outside its life -- blank and not clickable, never a zero or a 'missing'
+        self.assertFalse([r for r in self.lhhs["rows"] if r["lifecycle"].get("start_basis") == "unidentified"])
         row = self.lrow(self.UNIDENTIFIED)
-        self.assertEqual(row["lifecycle"].get("start_basis"), "unidentified")
         for where in self.urls:
             with self.subTest(where=where):
                 self.go(f"?account={self.UNIDENTIFIED}", where)
-                self.assertIn("Start not identified", self.page.inner_text("[data-testid=ap-start]"))
-                # no change since a first year is stated: the record's start is not known
-                sentence = self.page.inner_text("[data-testid=ap-sentence]")
-                self.assertIn("not identified", sentence)
-                self.assertEqual(self.page.locator("[data-testid=ap-sentence-change]").count(), 0)
-                # the years before its one figure show their state, never a blank or a zero
+                self.page.wait_for_selector("[data-testid=ap-table]")
+                self.assertNotIn("not identified", self.page.inner_text("[data-testid=ap-sentence]"))
                 for y in self.enacted_years():
-                    want = expected_headline(row, y, "Enacted")
+                    if y >= 2026:
+                        continue
+                    self.assertTrue(row["cells"][f"{y}|Enacted"].get("outside_life"), y)
                     td = self.ap_cell(y, "Enacted")
-                    if want["state"] != "value":
-                        self.assertEqual(td.get_attribute("data-state"), want["state"], y)
-                        self.assertNotIn("0", td.inner_text())
-                        self.assertNotEqual(td.inner_text().strip(), "", y)
+                    if td.count():          # a year outside the life may have no cell on the page at all
+                        self.assertEqual(td.first.inner_text().strip(), "", y)
+                        self.assertEqual(td.first.locator("button").count(), 0, y)
                 self.assertIn("general-provision", self.page.inner_text("[data-testid=ap-parents]"))
 
     def test_open_account_page_lands_with_account_and_year(self):

@@ -526,7 +526,7 @@ RULES = [
              "mandatory_portion"),
     Rule("LHHS-REQUEST-EVALUATION-LINE", "table_line", Scope(CODE, accounts=ANY, fiscal_years=ANY,
                                                              stages={"President's Budget"}),
-         fn=request_evaluation_line,
+         fn=request_evaluation_line, moved_from="none: new in D-9 part 4 (written as a rule, not moved from the core)",
          doc="a request's evaluation funds line in the report's comparative table (request column) -> transfer_in from "
              "section 241, beside the headline (D-9, decision C)"),
     Rule("LHHS-PPHF-TABLE", "components", ALL, fn=pphf_table, moved_from=f"{TC_FILE} pphf_table(), PPHF_TABLE",

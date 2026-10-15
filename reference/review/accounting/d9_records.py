@@ -255,6 +255,28 @@ def part1(data, retired):
     return added_obs, added_ca, skipped
 
 
+# the table pages of a document a part 1 figure cites, where the document had none: H.R. 9029 (RH) Title II, from
+# 'TITLE II' (PDF p.53) to the page before 'TITLE III' (p.129)
+DOC_PAGES = {"SRC-BILLS-118HR9029RH": "53-128"}
+# pages a part 1 figure cites outside its document's recorded table pages, added to them: the Medicare Operations
+# general provisions (P.L. 117-328 p.426; S. 2624 p.127)
+DOC_EXTRA_PAGES = {"SRC-PLAW-117PUBL328": "426", "SRC-BILLS-118S2624RS": "127"}
+
+
+def doc_pages(data):
+    """Record DOC_PAGES on documents whose source_page is blank, and DOC_EXTRA_PAGES: -> the documents changed."""
+    out = []
+    for d in data["source_docs"]:
+        if d["document_id"] in DOC_PAGES and not d["source_page"]:
+            d["source_page"] = DOC_PAGES[d["document_id"]]
+            out.append(d["document_id"])
+        extra = DOC_EXTRA_PAGES.get(d["document_id"])
+        if extra and extra not in [x.strip() for x in d["source_page"].split(";")]:
+            d["source_page"] = f"{d['source_page']}; {extra}"
+            out.append(d["document_id"])
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
@@ -276,7 +298,9 @@ def main():
     print("  by account:", dict(sorted(by.items())))
     life = part2(data)
     print(f"part 2: {LIMITATION} start override {'cleared, note updated' if life else 'already cleared'}")
-    if args.write and (obs or cas or life):
+    pages = doc_pages(data)
+    print(f"document table pages recorded: {pages or 'none needed'}")
+    if args.write and (obs or cas or life or pages):
         data["observations"] += obs
         data["confirmed_absences"] += cas
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))

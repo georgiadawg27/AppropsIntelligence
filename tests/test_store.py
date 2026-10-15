@@ -710,14 +710,16 @@ class GridStates(StoreTest):
         # there, and the Medicare limitation general provision has none yet
         self.assertEqual(self.state("ACC-HHS-NIH-TOTAL", 2025, "Enacted")["state"], "value")
         rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
-        # inside an account's life a gap stays missing (CDC Program Support, FY2025 House)
+        # CDC Program Support FY2025 House, the earlier missing example, holds H.R. 9029's figure since D-9 part 1
         self.assertEqual(S.headline_state(rows["ACC-HHS-CDC-PROGRAM-SUPPORT"]["cells"]["2025|House Reported"]["lines"]),
-                         "missing")
-        # the Medicare limitation general provision's first evidence is FY2026, but its start is not identified
-        # (Account.start_basis 'unidentified', 2026-10-11): its cells before FY2026 read missing again, not blank
+                         "value")
+        # inside an account's life a gap stays missing: some FY2025-FY2027 cell of a held account still has no figure
+        # (D-9: 'document on file, figure not yet entered')
+        self.assertTrue(any(S.headline_state(c["lines"]) == "missing" and not c.get("outside_life")
+                            for r in rows.values() for k, c in r["cells"].items()))
+        # the Medicare limitation general provision starts FY2026 Enacted (D-9 part 2): FY2025 is outside its life
         row = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]
-        self.assertEqual(S.headline_state(row["cells"]["2025|Enacted"]["lines"]), "missing")
-        self.assertNotIn("outside_life", row["cells"]["2025|Enacted"])
+        self.assertTrue(row["cells"]["2025|Enacted"].get("outside_life"))
 
     def test_a_year_with_no_documents_is_not_yet_collected_not_missing(self):
         # no Labor-HHS document on file covers FY2027 Senate Reported (no Senate FY2027 bill is on file; the
@@ -924,22 +926,18 @@ class Lifecycle(StoreTest):
 
     def test_an_unidentified_start_leaves_no_blank_cell_before_the_first_evidence(self):
         # Account.start_basis 'unidentified': the first year with evidence is not the start -- no cell before it
-        # is outside the life; the gaps read missing
+        # is outside the life; the gaps read missing. D-9 part 2 cleared the only such override (the Medicare
+        # limitation line: P.L. 119-75 div. B sec. 241, a new provision in FY2026), so its years before FY2026 are
+        # outside its life now, not missing
         rows = {r["account"]["canonical_account_id"]: r for r in S.subcommittee_grid(self.conn, "LHHS")["rows"]}
         overridden = [a for (a,) in self.conn.execute("SELECT canonical_account_id FROM account "
                                                       "WHERE start_basis = 'unidentified'")]
-        self.assertEqual(overridden, ["ACC-HHS-GP-MEDICARE-LIMITATION"])
-        for aid in overridden:
-            L = rows[aid]["lifecycle"]
-            self.assertEqual((L["type"], L["start_basis"], L["first_label"]), ("ongoing", "unidentified", "start not identified"))
-            self.assertEqual(L["start_basis_reason"], "FY2026 provision not yet identified; earlier years unknown.")
-            first = min(L["enacted"]["first"], L["proposed"]["first"])
-            before = {k: c for k, c in rows[aid]["cells"].items() if int(k.split("|")[0]) < first}
-            self.assertTrue(before)
-            self.assertFalse([k for k, c in before.items() if c.get("outside_life")], aid)
-        missing = [k for k, c in rows["ACC-HHS-GP-MEDICARE-LIMITATION"]["cells"].items()
-                   if S.headline_state(c["lines"]) == "missing"]
-        self.assertEqual(len(missing), 38)
+        self.assertEqual(overridden, [])
+        cells = rows["ACC-HHS-GP-MEDICARE-LIMITATION"]["cells"]
+        before = {k: c for k, c in cells.items() if int(k.split("|")[0]) < 2026}
+        self.assertTrue(before)
+        self.assertTrue(all(c.get("outside_life") for c in before.values()))
+        self.assertFalse([k for k, c in before.items() if S.headline_state(c["lines"]) == "missing"])
 
     def test_the_load_refuses_a_start_basis_without_a_reason(self):
         import openpyxl
@@ -947,7 +945,10 @@ class Lifecycle(StoreTest):
             wb = openpyxl.load_workbook(S.reference_workbook(), data_only=True)
             ws = wb["Account"]
             head = [c.value for c in ws[1]]
-            row = next(r for r in ws.iter_rows(min_row=2) if r[head.index("start_basis")].value == "unidentified")
+            # D-9 cleared the only override, so the test sets one without its reason
+            row = next(r for r in ws.iter_rows(min_row=2)
+                       if r[head.index("canonical_account_id")].value == "ACC-HHS-GP-MEDICARE-LIMITATION")
+            row[head.index("start_basis")].value = "unidentified"
             row[head.index("start_basis_reason")].value = None
             wb.save(Path(d) / "no_reason.xlsx")
             with self.assertRaisesRegex(S.LoadError, "has no start_basis_reason"):
