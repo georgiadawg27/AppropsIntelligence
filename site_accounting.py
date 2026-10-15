@@ -21,33 +21,27 @@ shows for the cell) gets:
   earmark            {amount, component_ids} -- only where earmark components are tagged (none tagged is not zero)
   defense_portion    {amount, component_ids} -- only where defense_portion components are tagged
 
-A total (agency, title or bill; owner, D-6) gets, on every basis and timing and in each exclusion field, the sum of
-its lines' published entries: an agency total's accounts (measure_reconcile.members); a title or bill total's
-accounts plus each agency held only as its total (that total is its one line, read as an account). Lines outside
-their life are not behind it; a confirmed absence counts as nothing. Status:
-  checked        a printed total measure_reconcile matched equals the sum (as before D-6)
-  computed       "sum of N accounts; no printed total to check", or "...; differs from the printed total by $X
-                 (VAL-MRC-<cause>)" where measure_reconcile flagged that printed total; accounts the basis leaves out
-                 (excluded) are not summed and are counted ("N accounts, M left out by this basis")
+A total (agency, title or bill) gets, on every basis and timing and in each exclusion field, a figure built down from
+its printed anchor (owner, D-8; reference/specs/anchored-totals.md, ACCOUNTING_RULES 'Totals'): the build-up starts
+from the total as printed (P) and adds the known adjustments of its lines (an agency total's accounts; a title or
+bill total's accounts plus each agency held only as its total). Lines outside their life are not behind it; a
+confirmed absence counts as nothing. Status:
+  matches        a printed line of the total for the basis (anchor) equals P + the itemised adjustments
+  computed       against an anchor, the anchor with the rest as one 'not itemised' remainder (remainder: amount,
+                 accounts, why); with no anchor, P + adjustments where every part is known
   excluded       every line is left out by the basis
-  not_computable a line is ("not computable: <account> is not computable (<its reason>)"), or has no figure, or
-                 the lines as printed don't add up to the printed total (owner, 2026-10-14: "its N accounts as
-                 printed sum to $Y, not the printed $Z: $X is in no account held"; the cells are listed in
-                 reference/review/accounting/total_gaps.csv), unless lines the table prints inside the total that
-                 we hold beside an account's headline make it equal exactly (owner, D-6 rounds 2-3: only lines with
-                 position evidence in total_lines_inside.csv count, each as its basis counts it -- held_lines,
-                 line_counts). A printed total measure_reconcile
-                 matched still gives its checked view there.
-Every total entry but As printed carries accounts_behind (its lines in the cell). As printed stays the printed total.
+  not_computable no anchor and a part unknown: a line not computable or with no figure, money in no account held
+                 (cause, one of CAUSES)
+Every total entry carries accounts_behind; an anchored one its anchor {observation_id, label, document, page, kind}.
+As printed stays the printed total. Every not computable entry, account or total, carries a cause.
 
 Every entry with an amount lists adjustments (D-6): what turns the As printed figure into it. An account's: per
 component the view takes out (sign -) or adds (+): {component_id, type, label, sign, amount, source_document_id,
-source_page, source_location}. A total's: grouped by component type and sign, {type, label, sign, amount,
-accounts: [{canonical_account_id, amount, components}]}, then the accounts the basis leaves out (type
-left_out_by_basis, their As printed figure) and the held lines it doesn't count separately (type
-held_line_not_counted) -- or, where a printed total gives the view without a sum, that printed
-total (type printed_total). As printed + the adjustments = the amount, exactly; equal to As printed: an empty list
-(unless two adjustments offset, e.g. an advance in and out).
+source_page, source_location}. A total's (its build-up): grouped by component type and sign, {type, label, sign,
+amount, accounts: [{canonical_account_id, amount, components}]}, then the accounts the basis leaves out (type
+left_out_by_basis, their As printed figure), the held lines it doesn't count separately (type held_line_not_counted)
+and, against an anchor, the remainder (type not_itemised). As printed + the adjustments = the amount, exactly; equal
+to As printed: an empty list (unless two adjustments offset, e.g. an advance in and out).
 
 Every row gets attributes.<FY> from account_attributes (the enacted basis, with each attribute's citation; the
 request basis under "request" where the President's Budget has its own value).
@@ -83,14 +77,32 @@ PRINTED_BASIS = {
     "excluding_emergencies": [("discretionary", None)],
 }
 ATTR_FIELDS = AC.ATTRIBUTES
-# UI-0b: the cell field each exclusion view is published under
-EXCLUSION_FIELDS = {"excluding_earmarks": "views_excluding_earmarks", "nondefense": "views_nondefense"}
-EXCLUSION_WORD = {"excluding_earmarks": "excluding earmarks", "nondefense": "excluding defense"}
+# UI-0b: the cell field each exclusion view is published under; D-8 (owner decision D): both together, so the
+# Non-defense filter and Exclude earmarks can be on at once
+EXCLUSION_FIELDS = {"excluding_earmarks": "views_excluding_earmarks", "nondefense": "views_nondefense",
+                    "nondefense_excluding_earmarks": "views_nondefense_excluding_earmarks"}
+EXCLUSION_PARTS = {"excluding_earmarks": ("excluding_earmarks",), "nondefense": ("nondefense",),
+                   "nondefense_excluding_earmarks": ("excluding_earmarks", "nondefense")}
+# the component types each exclusion takes out (accounting.VIEWS' remove)
+EXCLUSION_TYPES = {x: tuple(AC.EXCLUSIONS[p] for p in parts) for x, parts in EXCLUSION_PARTS.items()}
+EXCLUSION_WORD = {"excluding_earmarks": "excluding earmarks", "nondefense": "excluding defense",
+                  "nondefense_excluding_earmarks": "excluding defense and earmarks"}
 UNTAGGED = {"excluding_earmarks": "earmarks not tagged for this stage",
-            "nondefense": "defense not tagged for this stage"}
+            "nondefense": "defense not tagged for this stage",
+            "nondefense_excluding_earmarks": "earmarks or defense not tagged for this stage"}
+
+# D-8: why an entry is not computable, a code on every not computable entry (spec rule 5), most telling first
+MISSING_FIGURE = "missing_figure"       # a line behind the total has no figure
+NOT_HELD = "not_held"                   # the total prints money held in no account, and no line to build down from
+NO_ANCHOR = "no_anchor"                 # no account behind the total is held in the cell, and no line for the basis
+NO_CLASS = "no_class"                   # no budget_class on file for the year and stage
+COMPONENTS_UNKNOWN = "components_unknown"   # the components the view needs are not known (not tagged, not read)
+CAUSES = [MISSING_FIGURE, NOT_HELD, NO_ANCHOR, NO_CLASS, COMPONENTS_UNKNOWN]
 
 
-VALUED = ("checked", "computed")
+# a total's entry that reaches its printed anchor with every step itemised (D-8) is "matches"
+MATCHES = "matches"
+VALUED = ("checked", "computed", MATCHES)
 # the printed defense lines of a cell (Component vocabulary): NSF R&RA's 'Defense function'
 DEFENSE_LINES = ("defense", "defense_inside")
 STATE_WORDS = {"missing": "document on file, figure not yet entered", "not_collected": "not yet collected",
@@ -106,7 +118,8 @@ TYPE_LABEL = {"advance_enacted": "advance appropriation enacted in this bill",
               "defense_portion": "defense portion", "other_law": "amount provided by another law",
               "earmark": "earmark (CDS / CPF)", "mandatory_portion": "mandatory portion"}
 LEFT_OUT = "left_out_by_basis"
-PRINTED_TOTAL = "printed_total"
+# D-8: a total's remainder against its anchor, one named line (the D-6 'printed_total' type is retired)
+NOT_ITEMISED = "not_itemised"
 
 
 def label_of(c):
@@ -247,6 +260,37 @@ def pick(entries, timing):
         next((e for e in entries if e["timing"] == "available"), entries[0])
 
 
+def collapse(entries):
+    """One entry where both timings give the same amount and status ("available" then holds for both)."""
+    if len(entries) == 2 and (entries[0]["amount"], entries[0]["status"]) == (entries[1]["amount"], entries[1]["status"]):
+        return entries[:1]
+    return entries
+
+
+def cause_of(reason):
+    """The cause code of an account's not computable view, from accounting's reason."""
+    return NO_CLASS if "budget_class" in (reason or "") else COMPONENTS_UNKNOWN
+
+
+def anchor_of(o):
+    """A total's anchor (spec rule 5): the printed line, in the report's own words, with its document and page.
+    kind: table_line (a committee table's or explanatory statement's line) or text (bill or law text)."""
+    doc = o["source_document_id"]
+    return {"observation_id": o["observation_id"], "label": TC.printed(o), "document": doc,
+            "page": o.get("source_page"),
+            "kind": "text" if doc.startswith(("SRC-BILL", "SRC-PLAW")) else "table_line"}
+
+
+def anchor_words(anchor):
+    return f"'{anchor['label']}' ({anchor['document']} p.{anchor['page'] or '?'})"
+
+
+def unknown_words(acc, u):
+    if not u["account"]:
+        return f"money in no account held ({u['why']})"       # its why carries the amount
+    return f"{acc[u['account']]['canonical_name']}{' ' + AC.money(u['amount']) if u['amount'] is not None else ''} ({u['why']})"
+
+
 def cell_state(cell):
     """The cell's headline state (approps_store.headline_state)."""
     head = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]), None) \
@@ -314,7 +358,7 @@ class Layer:
             why = (f"the base is negative ({AC.money(base)}): the components the headline includes exceed it "
                    f"(VAL-MR-{M.suffix(h['observation_id'])}, pending review)")
             return {b: [{"amount": None, "timing": None if b == "printed" else "available",
-                         "status": "not_computable", "reason": why}] for b in AC.BASES}
+                         "status": "not_computable", "cause": COMPONENTS_UNKNOWN, "reason": why}] for b in AC.BASES}
         auto = TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage)
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)
         cls = rec["value"] if rec else None
@@ -329,8 +373,10 @@ class Layer:
                 got = AC.basis_amount(h["amount"], cs, basis, timing, cls)
                 if got[0] != "value":
                     e = {"amount": None, "timing": timing, "status": got[0], "reason": got[1]}
+                    if got[0] == "not_computable":
+                        e["cause"] = cause_of(got[1])
                 elif not auto and not relevant:
-                    e = {"amount": None, "timing": timing, "status": "not_computable",
+                    e = {"amount": None, "timing": timing, "status": "not_computable", "cause": COMPONENTS_UNKNOWN,
                          "reason": "no component the view uses is tagged for this cell ("
                                    + TC.not_covered_reason(a["canonical_account_id"], fy, stage)
                                    + "), so its components are not known"}
@@ -414,64 +460,21 @@ class Layer:
                 out.append((m, mh))
         return out
 
-    def convention(self, headlines):
+    def convention(self, headlines, moved=()):
         """The advance timing a sum of printed headlines keeps: 'both' (no advance tagged on any), 'available',
-        'enacted', or None (mixed)."""
+        'enacted', or None (mixed). moved: components beside a headline whose line the table prints inside the
+        total (D-8): inside the sum."""
         cs = [c for h in headlines for c in self.comps.get(h["observation_id"], [])
               if c["component_type"] in ("advance_enacted", "advance_available")]
         if not cs:
             return "both"
-        inside = {c["component_type"] for c in cs if c["in_headline"] == "TRUE"}
-        beside = {c["component_type"] for c in cs if c["in_headline"] != "TRUE"}
+        inside = {c["component_type"] for c in cs if c["in_headline"] == "TRUE" or c["component_id"] in moved}
+        beside = {c["component_type"] for c in cs if c["in_headline"] != "TRUE" and c["component_id"] not in moved}
         if inside <= {"advance_enacted"} and beside <= {"advance_available"}:
             return "enacted"
         if inside <= {"advance_available"} and beside <= {"advance_enacted"}:
             return "available"
         return None
-
-    def printed_found(self, a, fy, stage, h, mh):
-        """The total's printed view lines measure_reconcile matched: -> (found {(basis, timing): checked entry},
-        mixed {basis: why a matching printed total gives no timing}, failed {(basis, timing): (line, outcome)})."""
-        found, mixed, failed = {}, {}, {}
-        for o, out in self.printed_checks(a["canonical_account_id"], fy, stage):
-            if not out:
-                continue
-            vid = "VAL-MRV-" + M.suffix(o["observation_id"])
-            if out["result"] == "fail":
-                for basis, timing in PRINTED_BASIS.get(o["component"], []):
-                    for t in ([timing] if timing else AC.TIMINGS):
-                        failed.setdefault((basis, t), (o, out))
-                continue
-            if out["result"] != "pass" or vid not in self.records:
-                continue
-            if o["component"] == "excluding_emergencies":
-                bar = self.emergency_scope([(a["canonical_account_id"], h)] + mh, fy, stage)
-                if bar:
-                    self.unused.add((o["observation_id"], bar))
-                    continue
-            for basis, timing in PRINTED_BASIS.get(o["component"], []):
-                heads = [h] + [x for _, x in mh]
-                if o["component"] == "discretionary":
-                    heads = [h] + [x for m, x in mh if (AC.attribute_value(self.attrs, m, fy, "budget_class", stage)
-                                                        or {}).get("value") != "mandatory"]
-                    designated = any(c["component_type"] == "designated" and c["in_headline"] == "TRUE"
-                                     for x in heads for c in self.comps.get(x["observation_id"], []))
-                    if basis == "discretionary" and designated:
-                        continue        # the printed total counts designated amounts: discretionary_designated
-                timings = [timing] if timing else (
-                    {"both": ["available", "enacted"], "available": ["available"], "enacted": ["enacted"]}
-                    .get(self.convention(heads), []))
-                if not timings:
-                    mixed.setdefault(basis, f"the printed '{TC.printed(o)}' ({vid}) matches measure_reconcile, but its "
-                                            "accounts print advances on different timings, so it is neither the "
-                                            "available nor the enacted view")
-                for t in timings:
-                    found.setdefault((basis, t), {
-                        "amount": o["amount"], "timing": t, "status": "checked",
-                        "printed_observation_id": o["observation_id"], "validation_id": vid,
-                        "reason": f"the printed '{TC.printed(o)}' ({o['source_document_id']} "
-                                  f"p.{o.get('source_page') or '?'}), equal to the view measure_reconcile computes"})
-        return found, mixed, failed
 
     # ------------------------------------------------------------------ totals from their accounts (D-6)
     def lines_behind(self, a):
@@ -510,145 +513,131 @@ class Layer:
         return lines, absent, nofig
 
     def total_layer(self, a, fy, stage, h, cell):
-        """views, views_excluding_earmarks and views_nondefense of a total: on every basis and timing, the sum of
-        its lines' published views (owner, D-6). A total whose own lines don't add up to it as printed (money in no
-        account held), or with a line that has no figure, is not computable on every basis; As printed keeps the
-        printed total."""
+        """views and the exclusion fields of a total (owner, D-8: reference/specs/anchored-totals.md): on every basis
+        and timing, built down from the printed anchor. The build-up starts from the total as printed (P), so money
+        printed in the total but held in no account stays in, and adds the known adjustments of each line whose view
+        is known (anchored). With an anchor A the total is A; R = A - P - known adjustments is one named 'not
+        itemised' line, never spread over accounts. With no anchor it is P + adjustments where every part is known,
+        otherwise not computable with a cause."""
         key = f"{fy}|{stage}"
         self.cell_key = (fy, stage)
         self.cell_head = h
         lines, absent, nofig = self.behind(a, key)
         n = len(lines) + len(absent)
-        printed = {"amount": h["amount"], "timing": None, "status": "checked", "reason": "the figure as printed",
-                   "printed_observation_id": h["observation_id"], "adjustments": []}
         held = sum(mc["views"]["printed"][0]["amount"] for _, mc in lines)
-        bar = None
-        if nofig:
-            m, st = nofig[0]
-            bar = (f"not computable: {self.acc[m]['canonical_name']} is not computable ("
-                   + ("its figure is not a budget-authority headline, so it has no published view" if st == "value"
-                      else f"no figure: {STATE_WORDS.get(st, st)}") + ")" + (f"; and {len(nofig) - 1} more" if len(nofig) > 1 else ""))
-        elif not n:
-            bar = "not computable: no account behind it is inside its life in this cell"
-        extra = []
-        if not bar and n and held != h["amount"]:
-            # owner, D-6 round 2: lines the table prints inside the total that we hold beside an account's headline
-            # (a supplemental, Medicaid's advance for next year, NSF's request defense line ...) count in the sum
-            # when the fewest of them that add up to the difference make it equal the printed total exactly
-            beside = held_lines(lines)
-            # only the lines the table prints inside this total (evidence: INSIDE_FILE, the row's position under the
-            # total or the table's printed arithmetic), never chosen because they make the sum match
-            inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
-            extra = inside if inside and sum(x["amount"] for x in inside) == h["amount"] - held else []
+        beside = held_lines(lines)
+        # owner, D-6 round 3: only the held lines the table prints inside this total (INSIDE_FILE's evidence)
+        inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
+        unheld = h["amount"] - held - sum(x["amount"] for x in inside)
+        if not nofig and n and held != h["amount"]:
             self.gaps.append({"subcommittee": a["subcommittee"], "total": a["canonical_account_id"],
                               "agency": a["agency"], "fiscal_year": fy, "stage": stage, "printed": h["amount"],
                               "printed_observation_id": h["observation_id"],
                               "source_document_id": h["source_document_id"], "source_page": h.get("source_page"),
                               "held": held, "gap": h["amount"] - held, "lines": lines, "beside": beside,
-                              "inside": inside, "counted": extra})
-            if not extra:
-                short = h["amount"] - held - sum(x["amount"] for x in inside)
-                bar = (f"not computable: its {n} accounts as printed sum to {AC.money(held)}"
-                       + (f", and the {len(inside)} line{'s' if len(inside) > 1 else ''} the table prints inside the "
-                          f"total held beside their headlines to {AC.money(sum(x['amount'] for x in inside))}"
-                          if inside else "")
-                       + f", not the printed {AC.money(h['amount'])}: {AC.money(short)} is in no account held")
-        mh = [(m, self.obs[mc["views"]["printed"][0]["printed_observation_id"]]) for m, mc in lines]
-        found, mixed, failed = self.printed_found(a, fy, stage, h, mh)
-        out = {}
-        for field in ("views",) + tuple(EXCLUSION_FIELDS.values()):
+                              "inside": inside, "counted": inside if not unheld else []})
+        heads = [h] + [self.obs[mc["views"]["printed"][0]["printed_observation_id"]] for _, mc in lines]
+        prints = [o for o in self.printed[(a["canonical_account_id"], fy, stage)]
+                  if o["source_document_id"] == h["source_document_id"]]
+        parts = {"lines": lines, "absent": absent, "nofig": nofig, "inside": inside, "unheld": unheld, "n": n,
+                 "heads": heads, "prints": prints}
+        out = {"views": {"printed": [{"amount": h["amount"], "timing": None, "status": "checked",
+                                      "reason": "the figure as printed", "printed_observation_id": h["observation_id"],
+                                      "accounts_behind": n, "adjustments": []}]}}
+        unknown = {("printed", None): self.line_parts(parts, "views", "printed", None)[3]}
+        for basis in AC.BASES[1:]:
+            entries = []
+            for timing in AC.TIMINGS:
+                e, unknown[(basis, timing)] = self.anchored(a, h, parts, basis, timing)
+                entries.append(e)
+            out["views"][basis] = collapse(entries)
+        for exclusion, field in EXCLUSION_FIELDS.items():
             out[field] = {}
             for basis in AC.BASES:
-                if field == "views" and basis == "printed":
-                    out[field][basis] = [dict(printed)]
-                    continue
-                entries = []
-                for timing in ([None] if basis == "printed" else AC.TIMINGS):
-                    if bar:
-                        e = self.kept_check(field, basis, timing, lines, found, out, cell, bar) or \
-                            {"amount": None, "timing": timing, "status": "not_computable", "reason": bar}
-                    else:
-                        e = self.total_sum(a, lines, absent, field, basis, timing, found, mixed, failed, out, extra)
-                        if e["status"] == "not_computable":
-                            e = self.kept_check(field, basis, timing, lines, found, out, cell, e["reason"]) or e
-                    e["accounts_behind"] = n
-                    entries.append(e)
-                if len(entries) == 2 and (entries[0]["amount"], entries[0]["status"]) == \
-                        (entries[1]["amount"], entries[1]["status"]):
-                    entries = entries[:1]
-                out[field][basis] = entries
+                entries = [self.total_exclusion(a, h, parts, exclusion, basis, timing, out["views"],
+                                                unknown.get((basis, timing), []))
+                           for timing in ([None] if basis == "printed" else AC.TIMINGS)]
+                out[field][basis] = collapse(entries)
         return out
 
-    def kept_check(self, field, basis, timing, lines, found, out, cell, bar):
-        """A total that cannot be summed (bar: why) keeps the view a printed total measure_reconcile matched, as
-        before D-6: views' checked entry; an exclusion view reuses it where no line, nor the total, has a component
-        of the exclusion's type and every line's own exclusion entry is known."""
-        if basis == "printed":
-            return None
-        why = "; not summed: " + bar.removeprefix("not computable: ")
-        if field == "views":
-            hit = found.get((basis, timing))
-            if not hit:
-                return None
-            o = self.obs[hit["printed_observation_id"]]
-            effect = hit["amount"] - self.cell_head["amount"]
-            # the lines aren't summed: the printed parallel total itself turns As printed into the view
-            adj = [{"type": PRINTED_TOTAL, "label": f"the printed '{TC.printed(o)}' total (measure_reconcile matched "
-                                                     f"it) less the total as printed",
-                    "sign": sign_of(effect), "amount": abs(effect), "printed_observation_id": o["observation_id"],
-                    "source_document_id": o["source_document_id"], "source_page": o.get("source_page")}] \
-                if effect else []
-            return dict(hit, reason=hit["reason"] + why, adjustments=adj)
-        exclusion = next(x for x, f in EXCLUSION_FIELDS.items() if f == field)
-        ctype = AC.EXCLUSIONS[exclusion]
-        base = pick(out["views"][basis], timing)
-        if base["status"] != "checked":
-            return None
-        if any(c["type"] == ctype for c in cell.get("components") or []) or any(
-                c["type"] == ctype for _, mc in lines for c in mc.get("components") or []):
-            return None
-        # owner, #62: reused only when every account behind it is inside coverage
-        fy, stage = self.cell_key
-        if any(not TC.covered(m, self.acc[m]["subcommittee"], fy, stage) for m, _ in lines):
-            return None
-        article = "an" if ctype[0] in "aeiou" else "a"
-        return dict(base, reason=f"{base['reason'].split('; not summed: ')[0]}; none of its accounts has {article} "
-                                 f"{ctype} component tagged{why}")
-
-    def total_sum(self, a, lines, absent, field, basis, timing, found, mixed, failed, out, extra=()):
-        """One entry of a total: the sum of its lines' entries for the field, basis and timing, plus the held lines
-        printed under them that the total counts (extra), each as its basis counts it (line_counts)."""
-        total, used, left = 0, [], []
-        for m, mc in lines:
+    def line_parts(self, parts, field, basis, timing):
+        """A total's parts on one field, basis and timing: -> (used [(account, cell, entry)] with a known view, left
+        [(account, cell, entry)] the basis leaves out, line_adj: held lines printed inside the total that the basis
+        doesn't count separately, unknown: what the build-up can't itemise -- [{account, amount, cause, why}], account
+        None for money held in no account)."""
+        used, left, unknown = [], [], []
+        for m, mc in parts["lines"]:
             e = pick(mc[field][basis], timing)
             if e["status"] in VALUED:
-                total += e["amount"]
                 used.append((m, mc, e))
             elif e["status"] == "excluded":
                 left.append((m, mc, e))
             else:
-                return {"amount": None, "timing": timing, "status": "not_computable",
-                        "reason": f"not computable: {self.acc[m]['canonical_name']} is not computable ({e['reason']})"}
-        n = len(lines) + len(absent)
+                unknown.append({"account": m, "amount": mc["views"]["printed"][0]["amount"],
+                                "cause": e.get("cause") or COMPONENTS_UNKNOWN, "why": e["reason"]})
+        for m, st in parts["nofig"]:
+            unknown.append({"account": m, "amount": None, "cause": MISSING_FIGURE,
+                            "why": ("its figure is not a budget-authority headline, so it has no published view"
+                                    if st == "value" else f"no figure: {STATE_WORDS.get(st, st)}")})
         entry_of = {m: e for m, _, e in used + left}
         line_adj = []
-        for x in extra:
-            counted, why = line_counts(x, entry_of[x["account"]], field, basis)
-            if counted:
-                total += x["amount"]
-            else:
+        for x in parts["inside"]:
+            e = entry_of.get(x["account"])
+            if e is None:
+                continue            # its account is unknown: the line goes with it
+            counted, why = line_counts(x, e, field, basis)
+            if not counted:
                 line_adj.append(dict(x, why=why))
-        if not used and not absent:
-            return {"amount": None, "timing": timing, "status": "excluded",
-                    "reason": f"every one of its {n} accounts is left out by this basis"}
-        head = (f"sum of {n} accounts" + (f", {len(left)} left out by this basis" if left else "")
-                + (f" ({len(absent)} with a confirmed absence, counted as nothing)" if absent else ""))
-        if extra:
-            head += (f", and {len(extra)} line{'s' if len(extra) > 1 else ''} the table prints inside the total, held "
-                     "beside an account's headline: " + "; ".join(line_words(x) for x in extra)
-                     + (f" ({len(line_adj)} not counted separately on this basis)" if line_adj else ""))
-        e = {"amount": total, "timing": timing, "status": "computed"}
-        adjustments = grouped_adjustments(used, left, field, basis, timing)
+        if parts["unheld"]:
+            unknown.append({"account": None, "amount": parts["unheld"], "cause": NOT_HELD if parts["n"] else NO_ANCHOR,
+                            "why": f"the total as printed less its accounts: {AC.money(parts['unheld'])} is in no account held"
+                                   + (" (or in the lines above with no figure)" if parts["nofig"] else "")
+                                   + ("" if parts["n"] else " (no account behind it is held in this cell)")})
+        return used, left, line_adj, unknown
+
+    def anchor_for(self, basis, timing, parts, known):
+        """The printed line a basis and timing must reach (spec rule 1): a printed parallel total of the cell, from
+        the total's own document, whose scope is the basis (PRINTED_BASIS). A line that doesn't say its timing keeps
+        its table's advance convention (convention): where the lines print no advance and every part is known, it
+        holds for both timings; where some part is unknown, only for the committee tables' own convention, advances
+        counted in the bill that appropriates them ('enacted'). 'discretionary' stands for Discretionary (without
+        designated amounts) and 'excluding emergencies' for Discretionary only where every part is known and the
+        scope allows it (as measure_reconcile reads them). -> the observation, or None."""
+        # the headlines the basis counts (a line it leaves out is not in the printed line either), with the advance
+        # lines the table prints inside the total read as inside it
+        out_ids = {m for m, mc in parts["lines"] if pick(mc["views"][basis], timing)["status"] == "excluded"}
+        heads = [parts["heads"][0]] + [x for x in parts["heads"][1:] if x["canonical_account_id"] not in out_ids]
+        moved = {x["component_id"] for x in parts["inside"] if x["component_id"]}
+        for o in parts["prints"]:
+            for b, t in PRINTED_BASIS.get(o["component"], []):
+                if b != basis:
+                    continue
+                if t is None:
+                    conv = self.convention(heads, moved)
+                    timings = {"both": AC.TIMINGS if known else ["enacted"], "available": ["available"],
+                               "enacted": ["enacted"]}.get(conv, [])
+                    if timing not in timings:
+                        continue
+                elif t != timing:
+                    continue
+                if o["component"] == "discretionary" and basis == "discretionary":
+                    if not known or any(c["component_type"] == "designated" and c["in_headline"] == "TRUE"
+                                        for x in heads for c in self.comps.get(x["observation_id"], [])):
+                        continue    # the printed total counts designated amounts: discretionary_designated
+                if o["component"] == "excluding_emergencies":
+                    fy, stage = self.cell_key
+                    bar = None if known else "a part of the total is not known"
+                    bar = bar or self.emergency_scope([(x["canonical_account_id"], x) for x in heads], fy, stage)
+                    if bar:
+                        self.unused.add((o["observation_id"], bar))
+                        continue
+                return o
+        return None
+
+    def anchored(self, a, h, parts, basis, timing):
+        """One views entry of a total (spec rules 2-3) -> (entry, its unknown parts)."""
+        used, left, line_adj, unknown = self.line_parts(parts, "views", basis, timing)
+        adjustments = grouped_adjustments(used, left, "views", basis, timing)
         if line_adj:
             effect = -sum(x["amount"] for x in line_adj)
             adjustments.append({"type": HELD_LINE, "label": "lines printed inside the total, held beside an account's "
@@ -657,44 +646,141 @@ class Layer:
                                 "lines": [{k: x[k] for k in ("account", "observation_id", "label", "amount",
                                                              "source_document_id", "source_page", "why")}
                                           for x in line_adj]})
-        if field == "views":
-            hit = found.get((basis, timing))
-            if hit and hit["amount"] == total:
-                e = dict(hit, reason=f"{head}; equals {hit['reason']}")
-            elif hit:
-                e.update(reason=f"{head}; differs from the printed total by {AC.money(hit['amount'] - total)} "
-                                f"({hit['validation_id']})", printed_observation_id=hit["printed_observation_id"],
-                         validation_id=hit["validation_id"])
-            elif (basis, timing) in failed:
-                o, res = failed[(basis, timing)]
-                cause = (res.get("cause") or "unexplained").upper().replace("_", "-")
-                e.update(reason=f"{head}; differs from the printed total by {AC.money(o['amount'] - total)} "
-                                f"(VAL-MRC-{cause})", printed_observation_id=o["observation_id"],
-                         validation_id="VAL-MRV-" + M.suffix(o["observation_id"]))
-            elif basis in mixed:
-                e["reason"] = f"{head}; {mixed[basis]}"
+        known = sum(effect_of(x) for x in adjustments)
+        n = parts["n"]
+        head = (f"the total as printed and the adjustments of its {n} account{'s' if n != 1 else ''}"
+                + (f" ({len(left)} left out by this basis)" if left else "")
+                + (f" ({len(parts['absent'])} with a confirmed absence, counted as nothing)" if parts["absent"] else ""))
+        o = self.anchor_for(basis, timing, parts, not unknown)
+        e = {"timing": timing, "accounts_behind": n}
+        if o is not None:
+            anchor = anchor_of(o)
+            r = o["amount"] - h["amount"] - known
+            e.update(amount=o["amount"], anchor=anchor)
+            if not r:
+                e.update(status=MATCHES, reason=f"{head} reach the report's {anchor_words(anchor)}: matches")
             else:
-                e["reason"] = f"{head}; no printed total to check"
+                why = ("the report's line less the total as printed and its itemised adjustments"
+                       + (": " + "; ".join(unknown_words(self.acc, u) for u in unknown) if unknown else
+                          ": every account behind it is itemised, so the difference is the report's own")
+                       + self.reconcile_note(o))
+                remainder = {"amount": r, "accounts": [{k: u[k] for k in ("account", "amount", "cause")}
+                                                       for u in unknown], "why": why}
+                adjustments = adjustments + [{"type": NOT_ITEMISED, "label": "not itemised", "sign": sign_of(r),
+                                              "amount": abs(r), "printed_observation_id": o["observation_id"],
+                                              "source_document_id": o["source_document_id"],
+                                              "source_page": o.get("source_page"),
+                                              "source_location": f"not itemised against {anchor_words(anchor)}"}]
+                e.update(status="computed", remainder=remainder,
+                         reason=f"the report's {anchor_words(anchor)}; {head}, and {AC.money(r)} not itemised ({why})")
+        elif unknown:
+            u = min(unknown, key=lambda u: CAUSES.index(u["cause"]))
+            return dict(e, amount=None, status="not_computable", cause=u["cause"],
+                        reason="not computable: " + "; ".join(unknown_words(self.acc, x) for x in unknown)
+                               + "; the report prints no line for this basis to build down from"), unknown
+        elif not used and not parts["absent"]:
+            return dict(e, amount=None, status="excluded",
+                        reason=f"every one of its {n} accounts is left out by this basis"), unknown
         else:
-            # an exclusion view: checked where the views entry is checked and no line carries a component of the
-            # exclusion's type (the printed total is then the view)
-            ctype = AC.EXCLUSIONS[next(x for x, f in EXCLUSION_FIELDS.items() if f == field)]
-            base = pick(out["views"][basis], timing)
-            tagged = any(c["type"] == ctype for _, mc, _ in used + left for c in mc.get("components") or [])
-            if basis != "printed" and base["status"] == "checked" and not tagged and base["amount"] == total:
-                e = dict(base, reason=f"{base['reason']}; none of its accounts has {'an' if ctype[0] in 'aeiou' else 'a'} "
-                                      f"{ctype} component tagged")
-            else:
-                word = EXCLUSION_WORD[next(x for x, f in EXCLUSION_FIELDS.items() if f == field)]
-                e["reason"] = f"{head}; no printed total {word} to check"
+            e.update(amount=h["amount"] + known, status="computed",
+                     reason=f"{head}; the report prints no line for this basis")
         e["adjustments"] = adjustments
+        return e, unknown
+
+    def reconcile_note(self, o):
+        out = self.outcome.get(o["observation_id"])
+        if out and out["result"] == "fail":
+            cause = (out.get("cause") or "unexplained").upper().replace("_", "-")
+            return f" (VAL-MRV-{M.suffix(o['observation_id'])}, VAL-MRC-{cause}, pending review)"
+        return ""
+
+    def total_exclusion(self, a, h, parts, exclusion, basis, timing, views, unknown):
+        """One exclusion entry of a total: its views entry (anchored) less what the exclusion takes out of each
+        line. Every part must be known for the exclusion: a line whose own exclusion entry is, a part the views
+        entry could not itemise only where a structural rule says the exclusion takes nothing out of it (a request
+        carries no earmarks; an account outside function 050)."""
+        base = pick(views[basis], timing) if basis != "printed" else views["printed"][0]
+        e = {k: v for k, v in base.items() if k not in ("adjustments", "printed_observation_id", "validation_id")}
+        e["timing"] = timing
+        if base["status"] not in VALUED:
+            return e
+        field = EXCLUSION_FIELDS[exclusion]
+        fy, stage = self.cell_key
+        gone, missing = [], []
+        for m, mc in parts["lines"]:
+            v, x = pick(mc["views"][basis], timing), pick(mc[field][basis], timing)
+            if v["status"] == "excluded":
+                continue
+            if v["status"] in VALUED and x["status"] in VALUED:
+                ids = {y.get("component_id") for y in v.get("adjustments") or []}
+                for y in x.get("adjustments") or []:
+                    if y.get("component_id") not in ids:
+                        gone.append((m, y))
+            elif v["status"] in VALUED or not self.takes_nothing(m, mc, exclusion):
+                missing.append({"account": m, "cause": x.get("cause") or COMPONENTS_UNKNOWN, "why": x["reason"]})
+        # a held line printed inside the total that the views entry counts but the exclusion doesn't (NSF's request
+        # defense line under Non-defense)
+        dropped = []
+        for x in parts["inside"]:
+            m = x["account"]
+            mc = next(mc for k, mc in parts["lines"] if k == m)
+            v, y = pick(mc["views"][basis], timing), pick(mc[field][basis], timing)
+            if v["status"] in VALUED and y["status"] in VALUED and line_counts(x, v, "views", basis)[0] \
+                    and not line_counts(x, y, field, basis)[0]:
+                dropped.append(dict(x, why=line_counts(x, y, field, basis)[1]))
+        # parts the views entry could not itemise and no line of it holds: a line with no figure, money in no account
+        # held -- known to hold none of the exclusion only where the stage carries none (a request, earmarks)
+        held_ids = {m for m, _ in parts["lines"]}
+        none_here = stage == TC.REQUEST_STAGE and EXCLUSION_PARTS[exclusion] == ("excluding_earmarks",)
+        for u in unknown:
+            if u["account"] not in held_ids and not none_here:
+                missing.append(dict(u, why=f"{u['why']}; what it holds to exclude is not known"))
+        word = EXCLUSION_WORD[exclusion]
+        if missing:
+            u = min(missing, key=lambda u: CAUSES.index(u["cause"]))
+            return {"amount": None, "timing": timing, "status": "not_computable", "cause": u["cause"],
+                    "accounts_behind": parts["n"],
+                    "reason": f"not computable {word}: "
+                              + "; ".join(f"{self.acc[x['account']]['canonical_name'] if x['account'] else 'money in no account held'}"
+                                          f" ({x['why']})" for x in missing)}
+        taken = sum(effect_of(y) for _, y in gone) - sum(x["amount"] for x in dropped)
+        groups = {}
+        for m, y in gone:
+            g = groups.setdefault((y["type"], y["sign"]), {"type": y["type"], "label": TYPE_LABEL.get(y["type"], y["type"]),
+                                                           "sign": y["sign"], "amount": 0, "accounts": {}})
+            g["amount"] += y["amount"]
+            acc = g["accounts"].setdefault(m, {"canonical_account_id": m, "amount": 0, "components": []})
+            acc["amount"] += y["amount"]
+            acc["components"].append({k: y[k] for k in ("component_id", "label", "amount", "source_document_id",
+                                                        "source_page")})
+        e["amount"] = base["amount"] + taken
+        e["adjustments"] = list(base.get("adjustments") or []) + [dict(g, accounts=list(g["accounts"].values()))
+                                                                  for _, g in sorted(groups.items())]
+        if dropped:
+            e["adjustments"].append({"type": HELD_LINE, "label": "lines printed inside the total, held beside an "
+                                                                 "account's headline, that this view leaves out",
+                                     "sign": "-", "amount": sum(x["amount"] for x in dropped),
+                                     "lines": [{k: x[k] for k in ("account", "observation_id", "label", "amount",
+                                                                  "source_document_id", "source_page", "why")}
+                                               for x in dropped]})
+        if taken or basis == "printed":
+            e["status"] = "computed"
+            e["reason"] = f"{base['reason']}; {word}: less {AC.money(-taken)} tagged in its accounts"
+        else:
+            e["reason"] = f"{base['reason']}; {word}: nothing tagged to take out of its accounts"
         return e
+
+    def takes_nothing(self, m, mc, exclusion):
+        """A structural rule says the exclusion takes nothing out of this line, whatever was read (structural)."""
+        fy, stage = self.cell_key
+        x = self.obs[mc["views"]["printed"][0]["printed_observation_id"]]
+        return all(self.structural(self.acc[m], fy, stage, x, one, mc) for one in EXCLUSION_PARTS[exclusion])
 
     # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
     def untagged(self, exclusion, behind=None, why=None):
         """The entries of a cell whose stage the tagger has not read (outside tag_components.coverage(), or a
         President's Budget account whose request language was not found): untagged is never 'none tagged'."""
-        e = {"amount": None, "status": "not_computable",
+        e = {"amount": None, "status": "not_computable", "cause": COMPONENTS_UNKNOWN,
              "reason": UNTAGGED[exclusion] + (f" ({why})" if why else "")}
         if behind is not None:
             e["accounts_behind"] = behind
@@ -742,18 +828,31 @@ class Layer:
 
     def account_exclusion(self, a, fy, stage, h, exclusion, views, cell=None):
         """views_excluding_earmarks / views_nondefense of an account cell: each basis's view (account_views) with the
-        exclusion's components inside the headline taken out (accounting.excluded_amount)."""
-        rule = self.structural(a, fy, stage, h, exclusion, cell)
-        if rule:
-            return self.same_as_views(views, rule)
+        exclusion's components inside the headline taken out (accounting.excluded_amount). Both together (D-8): where
+        a structural rule clears one of them, the other's entries; where it clears both, the views."""
+        if len(EXCLUSION_PARTS[exclusion]) > 1:
+            rules = {p: self.structural(a, fy, stage, h, p, cell) for p in EXCLUSION_PARTS[exclusion]}
+            if all(rules.values()):
+                return self.same_as_views(views, "; ".join(rules.values()))
+            for p, rule in rules.items():
+                if rule:
+                    other = EXCLUSION_FIELDS[next(q for q in rules if q != p)]
+                    # the rule fills in nothing: a not computable or excluded entry stays as the other's
+                    return {b: [dict(e, reason=f"{rule}; {e['reason']}") if e["status"] in VALUED else dict(e)
+                                for e in es] for b, es in cell[other].items()}
+        else:
+            rule = self.structural(a, fy, stage, h, exclusion, cell)
+            if rule:
+                return self.same_as_views(views, rule)
         if not TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage):
             return self.untagged(exclusion, why=TC.not_covered_reason(a["canonical_account_id"], fy, stage)
                                  if stage == TC.REQUEST_STAGE else None)
-        ctype = AC.EXCLUSIONS[exclusion]
+        types = EXCLUSION_TYPES[exclusion]
+        ctype = " or ".join(types)
         cs = self.cell_components(h)
         if AC.split(h["amount"], cs)[0] < 0:          # account_views' negative base: the same not_computable entries
             return {b: [dict(e) for e in es] for b, es in views.items()}
-        beside = [c for c in cs if c["component_type"] == ctype and c["in_headline"] != "TRUE"]
+        beside = [c for c in cs if c["component_type"] in types and c["in_headline"] != "TRUE"]
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)
         cls = rec["value"] if rec else None
         out = {}
@@ -762,10 +861,11 @@ class Layer:
             for timing in ([None] if basis == "printed" else AC.TIMINGS):
                 got = AC.excluded_amount(h["amount"], cs, basis, timing, cls, exclusion)
                 if got[0] != "value":
-                    entries.append({"amount": None, "timing": timing, "status": got[0], "reason": got[1]})
+                    entries.append({"amount": None, "timing": timing, "status": got[0], "reason": got[1]}
+                                   | ({"cause": cause_of(got[1])} if got[0] == "not_computable" else {}))
                     continue
                 _, amount, used, note = got
-                taken = [c for c in used if c["component_type"] == ctype]
+                taken = [c for c in used if c["component_type"] in types]
                 view = "the figure as printed" if basis == "printed" else f"the {basis} view"
                 if taken:
                     why = (f"{view} less {len(taken)} {ctype} component{'s' if len(taken) > 1 else ''} inside the "

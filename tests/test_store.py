@@ -97,7 +97,7 @@ class Load(StoreTest):
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (1331, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines
+                          cjs("confirmed_absence", "canonical_account_id")), (1457, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -212,10 +212,11 @@ class Load(StoreTest):
         # Other Appropriations citations fell outside Title III-only ranges
         # until v20 recorded the full tables
         self.assertEqual([w for w in self.report["warnings"] if "outside" in w and "effective dates" not in w], [])
-        for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
-                         ("SRC-CRPT-115HRPT704", "120-135"), ("SRC-CRPT-118SRPT198", "220-231"),
-                         ("SRC-CRPT-116HRPT455", "178-197"), ("SRC-CRPT-116SRPT127", "186-195"),
-                         ("SRC-CRPT-116HRPT101", "139-152")):
+        # D-8: each also lists its 302(b) comparison page (reference/review/accounting/d8_records.py)
+        for doc, rng in (("SRC-CRPT-118SRPT62", "212-225; 193"), ("SRC-CRPT-117HRPT395", "210-230; 207"),
+                         ("SRC-CRPT-115HRPT704", "120-135; 118"), ("SRC-CRPT-118SRPT198", "220-231; 199"),
+                         ("SRC-CRPT-116HRPT455", "178-197; 176"), ("SRC-CRPT-116SRPT127", "186-195; 185"),
+                         ("SRC-CRPT-116HRPT101", "139-152; 136")):
             self.assertEqual(self.conn.execute("SELECT source_page FROM source_document WHERE document_id = ?",
                                                (doc,)).fetchone()[0], rng, doc)
 
@@ -582,9 +583,12 @@ class FactKey(StoreCopyTest):
             "WHERE a.subcommittee = ?", (sub,))}
         # CJS uses every part component but 'emergency'; the breakdowns (CURES, parallel scopes) are Labor-HHS's,
         # but for NSF R&RA's defense line inside the paragraph's total (defense_inside, D-3) and the summary lines its
-        # tables print under the bill and title totals (D-7: no mandatory or discretionary line in a CJS table)
+        # tables print under the bill and title totals (D-7: no mandatory or discretionary line in a CJS table), and
+        # each report's 302(b) comparison on the bill total (D-8)
         cjs_summary = {"appropriations", "emergency_appropriations", "rescissions", "rescissions_emergency",
-                       "advance_appropriations_emergency", "excluding_other_appropriations"}
+                       "advance_appropriations_emergency", "excluding_other_appropriations",
+                       "allocation_302b_discretionary", "allocation_302b_mandatory", "bill_302b_discretionary",
+                       "bill_302b_mandatory"}
         self.assertLessEqual(cjs_summary, set(accounts.SUMMARY_COMPONENTS))
         self.assertEqual(used("CJS"), {None, "defense_inside"} | cjs_summary
                          | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
@@ -1120,9 +1124,9 @@ class V22Merged(StoreTest):
                 (r["canonical_account_id"], int(r["fiscal_year"]), r["stage"], r["amount_type"], r["component"])).fetchall()
             self.assertEqual([tuple(g) for g in got], [(int(r["amount_dollars"]), r["source_document_id"], r["source_page"])],
                              r["canonical_account_id"])
-        # the page it needed: H.Rept. 119-272's full table
+        # the page it needed: H.Rept. 119-272's full table (D-8: and its 302(b) comparison page)
         self.assertEqual(self.conn.execute("SELECT source_page FROM source_document WHERE document_id = 'SRC-CRPT-119HRPT272'"
-                                           ).fetchone()[0], "244-262")
+                                           ).fetchone()[0], "244-262; 242")
 
 
 class LoadRefuses(unittest.TestCase):
@@ -1233,13 +1237,13 @@ class LoadRefuses(unittest.TestCase):
         # the full comparative-table ranges (as v20 records them) clear every
         # page warning; a page outside its document's table still warns
         def edit(wb):
-            for doc, rng in (("SRC-CRPT-118SRPT62", "212-225"), ("SRC-CRPT-117HRPT395", "210-230"),
-                             ("SRC-CRPT-115HRPT704", "120-135")):
+            for doc, rng in (("SRC-CRPT-118SRPT62", "212-225; 193"), ("SRC-CRPT-117HRPT395", "210-230; 207"),
+                             ("SRC-CRPT-115HRPT704", "120-135; 118")):
                 self.cell(wb, "Source Document", doc, "source_page").value = rng
             self.cell(wb, "Appropriations Observation", "OBS-0987", "source_page").value = "300"      # outside
         report = S.load(self.mutate(edit), self.dir / "x.db")
         self.assertEqual(report["warnings"],
-                         ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's table pages '178-197'"])
+                         ["observation OBS-0987: source_page '300' is outside SRC-CRPT-116HRPT455's table pages '178-197; 176'"])
 
     def test_display_list_drift(self):
         path = self.mutate(lambda wb: setattr(self.cell(wb, "Account", "ACC-NASA-EXPLORATION", "historical_names"),

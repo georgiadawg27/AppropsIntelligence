@@ -259,6 +259,21 @@ SUMMARY_COMPONENTS = {
     "discretionary_before_rescissions_and_other": ("(Discretionary)", "view",
                                                    "parallel total printed with scope 'discretionary, the titles only' "
                                                    "(under the first of two grand totals)", "S.Rept. 118-207 p.467"),
+    # D-8: each committee report's comparison of the bill with its subcommittee's 302(b) allocation (the section
+    # 308(a) table, in millions; budget authority and outlays each as amount_type), on the bill total
+    # (reference/review/accounting/d8_records.py). The scored figures anchor no basis (ACCOUNTING_RULES 'Totals' 7)
+    "allocation_302b_discretionary": ("302(b) allocation, discretionary", "view",
+                                      "the subcommittee's 302(b) allocation, discretionary, as the report's section "
+                                      "308(a) comparison prints it", "S.Rept. 118-207 p.331"),
+    "allocation_302b_mandatory": ("302(b) allocation, mandatory", "view",
+                                  "the subcommittee's 302(b) allocation, mandatory, as the report's section 308(a) "
+                                  "comparison prints it", "S.Rept. 118-207 p.331"),
+    "bill_302b_discretionary": ("this bill, discretionary (302(b) comparison)", "view",
+                                "the bill's discretionary amount as the report's section 308(a) comparison with the "
+                                "302(b) allocation prints it (scored)", "S.Rept. 118-207 p.331"),
+    "bill_302b_mandatory": ("this bill, mandatory (302(b) comparison)", "view",
+                            "the bill's mandatory amount as the report's section 308(a) comparison with the 302(b) "
+                            "allocation prints it (scored)", "S.Rept. 118-207 p.331"),
 }
 BREAKDOWN_COMPONENTS = (frozenset(INCLUDED_COMPONENTS) | frozenset(PARALLEL_SCOPE_COMPONENTS)
                         | frozenset(SUMMARY_COMPONENTS))

@@ -1,5 +1,41 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-8: Anchored totals (2026-10-15, this PR)
+
+Spec `reference/specs/anchored-totals.md` built; ACCOUNTING_RULES 'Totals' rewritten. Review items:
+`reference/review/accounting/review-D8.md`. No account view, headline or printed figure changed.
+
+- Totals (`site_accounting.Layer.total_layer`, `anchored`, `total_exclusion`): built down from the printed anchor
+  (PRINTED_BASIS, the total's own document): P + known adjustments; with an anchor the total is A, status `matches`
+  (R = 0) or `computed` with `remainder` and a last `not_itemised` adjustment; with no anchor P + adjustments where
+  every part is known, else `not_computable` with `cause` (missing_figure, not_held, no_anchor, no_class,
+  components_unknown; accounts carry causes too). A line without its own timing holds for both timings only where
+  every part is known and no advance prints, else only 'enacted' (the tables' convention). D-6's kept_check and
+  `printed_total` are gone. Exclusions: the total's views entry less each line's exclusion delta.
+- Combined exclusion `views_nondefense_excluding_earmarks` (accounting.VIEWS, decision D).
+- 302(b): `allocation_302b_rows.csv` (page images, checked against the text layer `allocation_302b.py` ->
+  `allocation_302b_text.csv`), `d8_records.py --write`: 200 observations on the two bill totals (each report's table pages gain its 302(b) page), components
+  `allocation_302b_*` / `bill_302b_*` (view kind, amount_type budget authority / outlay, millions x 1e6). Anchor
+  nothing. Outcomes: `allocation_302b_lines.csv`.
+- ui_contract v9: features `anchored_totals`, `nondefense_excluding_earmarks` (not in the page's BUILT: UI-10).
+  The page only learned "matches" as a valued status (VALUED, VIEW_WORDS).
+- Counts (both timings, four bases, vs main): checked -> matches 275, not computable -> matches/computed 77,
+  6 cells' amounts changed to their printed line (review-D8 section 1), 41 entries lost a figure (section 2:
+  mostly the 'available' timing where a part is unknown; decision E).
+- Site data grew: LHHS.json 27.6 -> 38.3 MB, CJS.json 5.8 -> 9.5 MB (the combined set, anchors, causes).
+
+Open:
+- Owner ruled 2026-10-15: H.Rept. 118-585's 185,797 (printed under 302(b) Outlays) recorded as budget authority
+  (OBS-LHHS-5081); the 'available' timing where a part is unknown stays strict (review-D8 section 2).
+- D-9: fills (CDC-Wide FY2025 House, Medicare limitation life, AHRQ/ACL/AHA class, request components, unheld
+  table lines) close most not computable cells; the 302(b) lines of the four Labor-HHS House reports with no bill
+  total (FY2017-FY2020).
+- Merged with UI-9 (main): the page's Σ skips a computed total with an anchor (it has a printed line);
+  UI-9's printed_total line wording no longer applies (D-8 retired that adjustment: not_itemised).
+  Money in no account held carries its amount in the reason again ('...: -$1,000,000,000 is in no account held'),
+  which UI-9's whyText reads.
+- allocation_302b.py's header detection misses four House layouts (114-699, 115-244, 115-862, 119-652); those rows
+  were checked against their pdftotext lines.
 ## UI-9: Non-defense filter, fewer marks, plain n/a (2026-10-15, this PR)
 
 Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). Spec:

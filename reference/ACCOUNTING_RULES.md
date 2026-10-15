@@ -141,40 +141,74 @@ basis view that is itself not computable or excluded: the exclusion view copies 
    more than one function), a subfunction read from a later volume, or none on file doesn't qualify: those cells
    keep the tagging rule (untagged is not none tagged).
 
-### Totals (owner, D-6, 2026-10-14)
+### Totals: built down from a printed anchor (owner, D-8, 2026-10-14; replaces D-6's sum-first rule)
 
-A total's view, on every basis, timing and exclusion, is the sum of its lines' published views: an agency total's
-accounts; a title or bill total's accounts plus each agency held only as its total. Lines outside their life are
-not behind it; a confirmed absence counts as nothing; accounts a basis leaves out (excluded) are not summed and are
-counted in the reason. checked where a printed total measure_reconcile matched equals the sum; otherwise computed,
-with the printed total's difference and its `VAL-MRC-<cause>` where measure_reconcile flagged it. Not computable
-where a line is (named, with its reason), where a line has no figure, or where the lines as printed don't add up to
-the printed total -- the money is in no account held, so their sum is not the total
-(`reference/review/accounting/total_gaps.csv`). As printed is always the printed total.
+Spec: `reference/specs/anchored-totals.md`. Accounts stay as strict as before (no guessed figure; untagged is not
+none tagged). Only totals change (`site_accounting.Layer.total_layer`).
+
+1. **Anchor.** For each total, basis, timing and stage, the printed line that basis must reach, from the total's
+   own document: the committee table's line for that total in the stage's column (agency program level and
+   discretionary lines, D-7's title and bill lines; the President's Budget takes the request column of the House
+   and Senate tables), or bill or law text where it states one. Which printed scope anchors which basis is
+   `site_accounting.PRINTED_BASIS` (program level -> Program level; discretionary -> Discretionary incl. designated,
+   and Discretionary where no designated amount is inside; excluding emergencies -> Discretionary where every
+   designated amount is emergency and nothing is mandatory; appropriated in this bill / available this fiscal year
+   -> All appropriations, enacted / available). A line that doesn't state its timing keeps its table's advance
+   convention, read from the headlines it counts (an advance line the table prints inside the total counts as
+   inside); it holds for both timings only where the lines print no advance and every part is known, otherwise
+   only for the committee tables' own convention, advances counted in the bill that appropriates them (enacted).
+   As printed's anchor is the printed total itself. Scopes that are no basis (current year, excluding ARPA-H, with
+   CURES, after scorekeeping, excluding Other Appropriations, the titles only) anchor nothing.
+2. **Build-up.** From the total as printed (P), not the sum of accounts, so money the total prints that is in no
+   account held stays in: plus the known adjustments of each line whose view is known (grouped by type as before),
+   less the accounts the basis leaves out, less the held lines printed inside the total that the basis doesn't count
+   separately (D-6 rounds 2-3 evidence, `total_lines_inside.csv`; counted as before).
+3. **Reconcile.** With an anchor A: R = A - P - known adjustments, and the total is A. R = 0: status `matches`, every
+   step itemised. R != 0: status `computed`, and R is one named 'not itemised' line (adjustment type
+   `not_itemised`, published as `remainder`: amount, the parts not known -- each account with its cause, or money in
+   no account held -- and why, with measure_reconcile's `VAL-MRC` cause where it flagged the line), cited to the
+   anchor. It is never spread over accounts.
+   With no anchor: every part known -> P + adjustments, `computed`; otherwise `not_computable` with a `cause`.
+   Every part left out by the basis -> `excluded`.
+4. **Owner decision E: strict.** No account is counted as printed by assumption, and money in no account held is
+   not assumed to hold nothing a basis needs. Such cells close with data (D-9), not by assumption.
+5. **Causes** on every not computable entry (accounts too): `missing_figure` (a line behind the total has no
+   figure), `not_held` (money in no account held, no anchor), `no_anchor` (no account behind the total held in the
+   cell, no anchor), `no_class` (no budget_class on file), `components_unknown` (the components the view needs are
+   not tagged or not read). A total takes the first in that order among its parts.
+6. **Exclusions** (excluding earmarks, nondefense, and both together -- `views_nondefense_excluding_earmarks`, owner
+   decision D): the total's views entry less what the exclusion takes out of each line (the line's own exclusion
+   entry less its views entry, and a held line inside the total the exclusion leaves out). Every part must be known
+   for the exclusion: a part the views entry could not itemise only where a structural rule clears it (a request
+   carries no earmarks; an account outside function 050). `matches` carries over where nothing is taken out.
+7. **302(b).** Each committee report's comparison of the bill with its 302(b) allocation (section 308(a) table) is
+   recorded on the bill total (`d8_records.py`) in the report's own words, and anchors no basis: its scored figures
+   are not the table's totals (scorekeeping, cap adjustments, emergency and advance treatment). Reconciling a whole
+   bill from it down to accounts needs every account of the bill held: a later phase.
 
 Held lines (owner, D-6 rounds 2-3): a line we hold beside an account's headline (a supplemental, Medicaid's advance
 for next year, NSF's request 'Defense function' line, a program line printed under the account, a rescission)
-counts in the total's sum only because the table prints it inside that total -- its position under the total, or
+counts in the total only because the table prints it inside that total -- its position under the total, or
 the table's own printed arithmetic (a subtotal or the total's printed breakdown that includes it) -- never because
-it makes the sum match. The evidence, one row per (total, line) with the page and the printed rows, is
+it makes a sum match. The evidence, one row per (total, line) with the page and the printed rows, is
 `reference/review/accounting/total_lines_inside.csv` (judged from `total_lines.py`'s report and, for scanned pages,
-the page image); a line from another document than the total's is outside by definition. Every line with that
-evidence counts; the total is published (computed; the reason names the lines) only if the sum then equals the
-printed total exactly -- no rounding.
+the page image); a line from another document than the total's is outside by definition.
 On a basis each line counts as its basis would count it: out with its account when the basis leaves the account
 out; a line matching a component the basis decides by itself (an advance by timing, a transfer in) is in the
 account's view where the basis counts it and never added twice; a designated line (a supplemental) is out of
 Discretionary; a defense line out of Nondefense, an earmark out of excluding earmarks; any other line counts as
-printed. A total still short stays not computable.
+printed. The cells whose accounts as printed don't add up to the printed total are listed in
+`reference/review/accounting/total_gaps.csv` ('published' yes where the inside lines close the gap exactly).
 
-### Adjustments (D-6)
+### Adjustments (D-6, D-8)
 
 Every published view entry with an amount lists `adjustments`: what turns the As printed figure into it. An
 account's: one item per component the view takes out (sign -) or adds (sign +), with its id, type, label, amount
-and source document and page. A total's: grouped by component type and sign, with the accounts behind each, plus
-the accounts the basis leaves out (their As printed figure, sign -), and the held lines the basis doesn't count
-separately (sign -). As printed + the adjustments = the amount,
-exactly (tests/test_site_data.py checks every entry). An entry equal to As printed has an empty list.
+and source document and page. A total's (its build-up): grouped by component type and sign, with the accounts behind
+each, plus the accounts the basis leaves out (`left_out_by_basis`, their As printed figure, sign -), the held lines
+the basis doesn't count separately (`held_line_not_counted`, sign -), and last, against an anchor, the remainder
+(`not_itemised`). As printed + the adjustments = the amount, exactly (tests/test_site_data.py checks every entry).
+An entry equal to As printed has an empty list. The D-6 `printed_total` type is retired.
 
 ## Defaults (the owner's decisions)
 

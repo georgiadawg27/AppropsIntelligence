@@ -288,6 +288,9 @@ VIEWS = {
                               "remove": (("designated", "emergency"),), "add": ()},
     "excluding_earmarks": {"label": "excluding earmarks", "remove": ("earmark",), "add": ()},
     "nondefense": {"label": "nondefense (defense split out)", "remove": ("defense_portion",), "add": ()},
+    # D-8 (owner decision D): the Non-defense filter and Exclude earmarks together
+    "nondefense_excluding_earmarks": {"label": "nondefense, excluding earmarks",
+                                      "remove": ("earmark", "defense_portion"), "add": ()},
 }
 # The printed parallel totals (Component vocabulary, kind 'view') a computed view is checked against. A printed
 # view not listed here (e.g. 'discretionary', which needs every account's budget_class -- phase 2) is not checked.

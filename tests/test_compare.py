@@ -201,7 +201,7 @@ class GridData(CompareTest):
                         if y in by_year and st in by_year[y]:
                             # the accounting layer (UI-0, UI-0b; site_accounting.py) adds its own keys beside the lines
                             layer = {"views", "components", "earmark", "defense_portion", "views_excluding_earmarks",
-                                     "views_nondefense"}
+                                     "views_nondefense", "views_nondefense_excluding_earmarks"}   # D-8: the combined one
                             self.assertEqual({k: v for k, v in cell.items() if k not in layer},
                                              {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
                         else:
@@ -2959,7 +2959,7 @@ def view_expected(row, fy, stage, basis, timing):
     e = view_entry(row, fy, stage, basis, timing)
     if e is None:
         return "n/a", None
-    if e["status"] in ("checked", "computed"):
+    if e["status"] in ("checked", "computed", "matches"):
         return ("—" if e["amount"] == 0 and p == 0 else thousands(e["amount"])), e["amount"]
     if e["status"] == "excluded":
         return "excl.", None
@@ -3096,20 +3096,24 @@ class AmountBasis(GridBrowser):
                 e = view_entry(total, 2026, "Enacted", basis, "available")
                 head = self.page.inner_text("[data-testid=ov-headline]")
                 # D-6: a total's view is the sum of its accounts (computed) or a printed total (checked)
-                if e["status"] in ("checked", "computed"):
+                if e["status"] in ("checked", "computed", "matches"):
                     self.assertIn(thousands(e["amount"]), head)
                 else:
                     self.assertIn("Not computable", head)
                 stages = self.page.eval_on_selector_all("[data-testid=ov-stage] .val", "es => es.map(e => e.innerText)")
                 for i, st in enumerate(("President's Budget", "House Reported", "Senate Reported", "Enacted")):
                     x = view_entry(total, 2026, st, basis, "available")
-                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed")
+                    self.assertEqual(stages[i], thousands(x["amount"]) if x["status"] in ("checked", "computed", "matches")
                                      else "not computable")
         self.go("?sc=LHHS&fy=2026&amt=discretionary_designated")
         self.assertIn("Not computable", self.page.inner_text("[data-testid=ov-headline]"))
-        # Title II's checked discretionary-with-designated figure is no longer the overview's: it is on its own total row
-        x = view_entry(title2, 2026, "Enacted", "discretionary_designated", "available")
-        self.assertEqual((x["status"], thousands(x["amount"])), ("checked", "114,797,239"))
+        # Title II's discretionary-with-designated figure is no longer the overview's: it is on its own total row. D-8:
+        # the report's printed line holds for advances when enacted (the table's convention); when available a part
+        # of the title is not known, so it is not computable there
+        x = view_entry(title2, 2026, "Enacted", "discretionary_designated", "enacted")
+        self.assertEqual((x["anchor"]["label"], thousands(x["amount"])),
+                         ("Total, Title II, Department of Health and Human Services discretionary", "114,797,239"))
+        self.go("?sc=LHHS&fy=2026&amt=discretionary_designated&timing=enacted")
         self.assertIn("114,797,239", self.text("ACC-HHS-TITLE-II-TOTAL", 2026, "Enacted"))
 
     def test_account_type_and_class_tags(self):
@@ -3246,7 +3250,7 @@ class ExcludeEarmarks(GridBrowser):
         e = view_entry_of(row, fy, stage, basis, timing, key)
         if e is None:
             return "n/a"
-        if e["status"] in ("checked", "computed"):
+        if e["status"] in ("checked", "computed", "matches"):
             return "—" if e["amount"] == 0 and printed(row, fy, stage) == 0 else thousands(e["amount"])
         return "excl." if e["status"] == "excluded" else "n/a"
 
@@ -3324,7 +3328,7 @@ class ExcludeEarmarks(GridBrowser):
         total = trow["account"]["canonical_account_id"]
         t = view_entry_of(trow, 2026, "Enacted", "printed", None, "views_excluding_earmarks")
         self.assertEqual(self.text(total, 2026, "Enacted"),
-                         thousands(t["amount"]) if t["status"] in ("checked", "computed") else "n/a")
+                         thousands(t["amount"]) if t["status"] in ("checked", "computed", "matches") else "n/a")
         self.assertEqual(self.cell(total, 2026, "Enacted").locator("button.fig").get_attribute("data-reason"), t["reason"])
         # the panel: the earmark taken out (amount, document, location) and the published result; nothing added up
         self.cell(self.HSPS, 2026, "Enacted").locator("button.fig").click()
@@ -3371,7 +3375,7 @@ class ExcludeEarmarks(GridBrowser):
                             continue
                         self.assertEqual(self.text(aid, fy, st), exp, (aid, fy, st))
                         e = view_entry_of(row, fy, st, basis, "available", "views_nondefense")
-                        figs[(fy, st)] = e["amount"] if e and e["status"] in ("checked", "computed") else None
+                        figs[(fy, st)] = e["amount"] if e and e["status"] in ("checked", "computed", "matches") else None
                     # the change column is the difference of the two non-defense figures
                     a, b = figs.get((2025, "Enacted")), figs.get((2026, "Enacted"))
                     delta = self.page.locator(f"tr[data-account={aid}] [data-testid=change-cell]").first.get_attribute("data-delta")
@@ -3523,7 +3527,7 @@ class AdjustmentLines(GridBrowser):
             if printed(row, fy, st) is None:
                 continue
             e = view_entry_of(row, fy, st, basis, "available", k)
-            if e and e["status"] in ("checked", "computed") and e["adjustments"] and e["amount"] != self.as_printed(row, fy, st):
+            if e and e["status"] in ("checked", "computed", "matches") and e["adjustments"] and e["amount"] != self.as_printed(row, fy, st):
                 out += [[fy, st, k, a["type"], a["sign"], a["amount"]] for a in e["adjustments"]]
         return sorted(out)
 
@@ -3664,13 +3668,15 @@ class AdjustmentLines(GridBrowser):
         self.assertEqual(self.page.inner_text("[data-testid=src-value]"), "$7,176,500,000")
 
     def test_printed_total_line_reads_as_the_report(self):
-        # CDC FY2025 House on Program level (CDC-Wide has no figure): the report's own program-level total stands, one
-        # line worded as the report's line, naming what is not itemised (UI-9)
+        # CDC FY2025 House on Program level (CDC-Wide has no figure). UI-9 worded D-6's printed_total line; D-8 retired
+        # it: the enacted timing matches the report's own program-level line, and the available timing, with a part
+        # unknown, is n/a saying what is missing (owner decision E, strict). No line reads as a total less itself
         self.go(f"?sc=LHHS&fy=2025&amt=program_level&open={self.CDC}")
-        lines = self.page.eval_on_selector_all(f"[data-testid=adj-line][data-adj-of={self.CDC}][data-type=printed_total] [data-testid=adj-label]",
-                                               "ls => ls.map(l => l.innerText)")
-        self.assertIn("Printed in the report as one program-level total (not itemised: CDC-Wide Activities and Program Support "
-                      "has no figure entered yet)", lines)
+        self.assertEqual(self.page.locator("[data-testid=adj-line][data-type=printed_total]").count(), 0)
+        self.assertEqual(self.cell(self.CDC, 2025, "House Reported").evaluate(CELL_TEXT_JS), "n/a")
+        b = self.cell(self.CDC, 2025, "House Reported").locator("button.fig")
+        self.assertTrue(b.get_attribute("title").startswith("n/a on "), b.get_attribute("title"))
+        self.assertIn("CDC-Wide Activities and Program Support (no figure", b.get_attribute("data-reason"))
         self.assertNotIn("less the total as printed", self.page.inner_text("#compare-grid"))
 
     def test_find_changes_beta(self):
@@ -3704,7 +3710,8 @@ class AdjustmentLines(GridBrowser):
                         continue
                     td = self.cell(aid, fy, st)
                     mark = td.locator("[data-testid=sum-mark]")
-                    sums = e["status"] == "computed" and e.get("accounts_behind") is not None
+                    # D-8: a computed total built down from a printed anchor is not our sum (it has a printed line)
+                    sums = e["status"] == "computed" and e.get("accounts_behind") is not None and not e.get("anchor")
                     marked = sums and e["amount"] != self.as_printed(row, fy, st)
                     self.assertEqual(mark.count(), 1 if marked else 0, (aid, fy, st, basis))
                     if marked:
@@ -3725,6 +3732,7 @@ class AdjustmentLines(GridBrowser):
         row, fy, st = next((r, fy, st) for r in totals for fy, st in self.FY2025 if printed(r, fy, st) is not None
                            and (view_entry(r, fy, st, "program_level", "available") or {}).get("status") == "computed"
                            and view_entry(r, fy, st, "program_level", "available").get("accounts_behind") is not None
+                           and not view_entry(r, fy, st, "program_level", "available").get("anchor")
                            and view_entry(r, fy, st, "program_level", "available")["amount"] != self.as_printed(r, fy, st))
         self.go(f"?sc=LHHS&fy=2025&amt=program_level&fig={row['account']['canonical_account_id']}|{fy}|{st}")
         self.assertEqual(self.page.locator("[data-testid=src-sum-mark]").count(), 1)

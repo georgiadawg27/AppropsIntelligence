@@ -1784,7 +1784,8 @@ const BASES = [
 ];
 const TIMINGS = [["available", "When available", "An advance counts in the year it becomes available (CBO; the default)."],
                  ["enacted", "When enacted", "An advance counts in the bill that appropriates it."]];
-const VALUED = new Set(["checked", "computed"]);
+// D-8: a total built down from its printed line that reaches it with every step itemised is "matches"
+const VALUED = new Set(["checked", "computed", "matches"]);
 // beta (brief UI-8 item 6): the discretionary bases, computed from the bill text; few figures have a printed total
 // that confirms them. The other bases carry no tag
 const BETA = new Set(["discretionary", "discretionary_designated"]);
@@ -1939,7 +1940,7 @@ function figureCell(row, y, st, c, name) {
 // own sum of its accounts, differs from As printed, and has no printed line to check it. Never a number the data
 // doesn't hold. Each is a button to the figure's source, where the panel shows the printed headline, the components,
 // the arithmetic, and for n/a what is missing and where.
-const VIEW_WORDS = { checked: "checked against a printed total", computed: "computed from the printed figure and its tagged components",
+const VIEW_WORDS = { checked: "checked against a printed total", matches: "matches the report's printed line", computed: "computed from the printed figure and its tagged components",
                      excluded: "excluded", not_computable: "not computable" };
 function viewText(e) {
   if (!e) return { text: "n/a", why: "no published view for this cell", plain: "No figure is published for this cell on this basis" };
@@ -1975,8 +1976,9 @@ function whyText(reason) {
   return t ? line(t) : "not computable on this basis";
 }
 const plainWhy = (reason) => whyText(reason).replace(/^./, (c) => c.toUpperCase());
-// a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it
-const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null;
+// a total's published sum (D-6 status computed): the sum of its accounts, with no printed total to check it (D-8: a
+// computed total built down from a printed anchor has one, so it is not a sum)
+const summed = (e) => !!e && e.status === "computed" && e.accounts_behind != null && !e.anchor;
 // Σ (owner decision A, UI-9): only on a total that is our own sum, differs from As printed, and has no printed line
 // backing it (status computed, not checked). A sum equal to As printed carries no mark
 const sumMarked = (row, y, st, e) => summed(e) && e.amount !== asPrinted(row, y, st);
