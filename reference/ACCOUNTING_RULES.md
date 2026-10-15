@@ -98,7 +98,12 @@ negative; every other type is positive. IDs: `CMP-NNNN` (CJS), `CMP-LHHS-NNNN` (
 reused or renumbered: a record no longer produced is retired (`observation_components_retired`) and its ID
 stays retired. `tag_method` says where a record came from: `retagged`, `table_line`, `auto_text`,
 `carried_forward`, `cr_anomaly`, `appendix_text` (the request's proposed language in the Budget Appendix) or
-`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). `within_component_id` names the component this one is part of (HCFAC's cap
+`report_text` (a report's own statement, e.g. that EEOICP's funds are mandatory). A request with no Budget Appendix language of
+its own for the account takes the lines the House or Senate comparative table prints under the account in the
+request column as `table_line` components, cited to the report page (decision C, D-9): the Prevention and Public
+Health Fund line (`pphf_table.csv`) and the evaluation funds line (`table_lines.csv`, a `transfer_in` from section
+241 beside the headline). A line printed '---' is nothing; an account whose table prints nothing beside it stays
+components unknown. `within_component_id` names the component this one is part of (HCFAC's cap
 adjustment inside the amount transferred from the trust funds): the base subtracts only the outer one. Views add
 top-level components only; a nested component is used only when a view splits its parent (picks it without the
 parent, as a view leaving out the cap adjustment but keeping the trust-fund amount would), so no view ever counts a

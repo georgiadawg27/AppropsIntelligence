@@ -274,6 +274,20 @@ def victf_line(row, ctx):
                      + ("administrative line" if claims else "claims line")}
 
 
+def request_evaluation_line(row, ctx):
+    """A request's evaluation funds line (D-9 part 4, decision C): where the President's request has no Budget
+    Appendix language of its own for the account, the line the House or Senate comparative table prints under the
+    account in the request column ('Evaluation Funding (PHS Act Sec. 241)', 'Evaluation Tap Funding') is a
+    transfer_in from section 241 beside the request's headline, cited to the report page."""
+    if not re.search(r"PHS Act Sec\.? 241|Evaluation Tap Funding", row["line"]):
+        return None
+    return {"component_type": "transfer_in", "transfer_from": PHS_241, "in_headline": "FALSE",
+            "tag_rule": f"the request column's '{row['line']}' line under the account in the report's comparative "
+                        f"table: the request has no Appendix language of its own for the account (decision C; "
+                        f"{row['read_from']})",
+            "notes": "beside the headline: section 241 evaluation funds are transferred in, not new budget authority"}
+
+
 def pphf_table(data, heads, report, ctx):
     """The Prevention and Public Health Fund allocation (pphf_table.csv): the general provision (sec. 222) transfers
     the Fund "to the accounts specified, in the amounts specified" in the report's table; each row is a transfer_in
@@ -510,6 +524,11 @@ RULES = [
          fn=victf_line, moved_from=f"{TC_FILE} table_lines(): the VICTF lines",
          doc="VICTF's 'HRSA Administrative expenses' -> trust_fund_limitation, 'Post-FY 1988 Claims' -> "
              "mandatory_portion"),
+    Rule("LHHS-REQUEST-EVALUATION-LINE", "table_line", Scope(CODE, accounts=ANY, fiscal_years=ANY,
+                                                             stages={"President's Budget"}),
+         fn=request_evaluation_line,
+         doc="a request's evaluation funds line in the report's comparative table (request column) -> transfer_in from "
+             "section 241, beside the headline (D-9, decision C)"),
     Rule("LHHS-PPHF-TABLE", "components", ALL, fn=pphf_table, moved_from=f"{TC_FILE} pphf_table(), PPHF_TABLE",
          doc="the PPHF allocation (pphf_table.csv): a transfer_in beside each receiving account's headline"),
     Rule("LHHS-TOTAL-ONLY", "extract", Scope(CODE, accounts=TOTAL_ONLY, fiscal_years=ANY, stages=ANY),
