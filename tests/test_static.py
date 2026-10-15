@@ -174,7 +174,7 @@ class Export(StaticTest):
         self.assertEqual(got, src)
         page = (self.out / "index.html").read_text()
         hrefs = re.findall(r'<link rel="(?:icon|apple-touch-icon)" href="([^"]+)"', page)
-        self.assertEqual(len(hrefs), 3)
+        self.assertEqual(len(hrefs), 5)
         for href in hrefs:
             self.assertTrue((self.out / href).is_file(), href)
 

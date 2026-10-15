@@ -29,6 +29,35 @@ Open:
 - The 3 differences are untagged components (tag_components), for review.
 - The not-checked reason names the held count, not "N accounts not held" (the tables' account rows aren't read).
 
+## Amount basis plan: anchored totals spec (2026-10-14, this PR)
+
+Docs only. `reference/specs/anchored-totals.md` (owner-approved): totals build down from the printed anchor
+(table lines, D-7's summary lines, the 302(b) comparison), with known adjustments, a named "not itemised"
+remainder, and cause codes; accounts stay strict. Owner decisions A-E and G are recorded there. Brief order: UI-9,
+D-8 (after D-7), UI-10, D-9. Investigation findings (counts by basis and cause, CDC House FY2025 cause, Σ on 750
+unchanged totals) are in the spec.
+
+Open:
+- The 302(b) comparison tables in the House and Senate reports: not yet inventoried by report (D-8).
+- Whole-bill holding (Labor, Education, the rest of CJS) for closing the chain to accounts: later phase.
+
+## Search listing: title, description, logo (2026-10-14, this PR)
+
+- The Explore (landing) view now leaves the tab title as the bare
+  "Approps Intelligence"; it used to set "Explore · Approps Intelligence",
+  which is what Google indexed after running the page's script. Account and
+  Find changes titles are unchanged.
+- web/index.html <head> gains a meta description, Open Graph tags and
+  schema.org JSON-LD (WebSite name for the site-name line, Organization logo
+  = brand/icon-512.png). No canonical or og:url: account pages live at
+  ?account= URLs and a fixed canonical would fold them into the home page.
+- New icons: brand/favicon-48.png (from favicon.svg) and brand/favicon-192.png
+  (from icon.svg), rendered in Chromium the same way as favicon-32 (re-render
+  of favicon-32 matched byte for byte in pixels). Google wants favicons at a
+  multiple of 48px. test_static now expects 5 icon links.
+- Open: the visible h1/subtitle ("Appropriations history ...") is untouched;
+  UI-9 owns the page body. Search engines pick up head changes on recrawl.
+
 ## UI-8: Adjustment lines and clearer basis states (2026-10-14, this PR)
 
 Page only (web/index.html, docs/index.html regenerated from it; no data, contract or export change). The page reads
