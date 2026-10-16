@@ -1,5 +1,25 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-3c: confirmed absences re-cited to bill or law text (2026-10-16, this PR)
+
+Details: `reference/review/accounting/review-D3c.md`; per absence: `d3c_absences.csv`.
+
+- `d3c_absences.py` checks each of the 218 absences of `absence_audit.csv` against its own stage's text (bill; law,
+  the subcommittee's division; FY2025 Enacted: P.L. 119-4 and the FY2024 division it continues; request: the
+  Appendix chapter's proposed language) and supersedes the confirmed ones: 215 new absences (CA-0199 ... CA-0395,
+  CA-LHHS-0174 ... CA-LHHS-0191) citing the text, the old IDs retired. `--check` re-reads the text and fails if an
+  outcome or a re-cited evidence would change (needs the govinfo downloads; not in CI).
+- `absence_audit.csv`: 3 left (from 218). No figure or cell state changes; grid counts unchanged.
+- Tests follow the new IDs (CA-0027 -> CA-0225, CA-LHHS-0011 -> CA-LHHS-0181); V22Merged accepts a v22 absence
+  superseded by D-3c.
+- ARPA-H FY2021: the new evidence keeps 'did not exist' (the store's outside-life test), citing P.L. 117-103's
+  first ARPA-H heading.
+
+Open:
+- ASPR FY2023 request, House, Senate (CA-LHHS-0030/0031/0033): left citing the reports; the text funds ASPR's
+  programs under PHSSEF, so it is a scope ruling for the owner (options in review-D3c.md).
+- ARP sec. 7502 ($600,000,000 to NSF, FY2021, no account named): no `supplemental_act` line recorded. Not changed.
+
 ## D-5: added dates, What's new on (2026-10-16, this PR)
 
 - `observations[].added_date` and `source_docs[].first_added` (YYYY-MM-DD, UTC) in data/staged.json, the workbook

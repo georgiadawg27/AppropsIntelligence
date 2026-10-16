@@ -326,10 +326,11 @@ class Browser(BrowserBase):
         self.assertEqual((states["budget authority"], states["supplemental"]), ("value", "not_funded"))
         text = next(t for a, _, t in lines if a == "supplemental")
         self.assertIn("Not funded", text)
-        self.assertIn("SRC-CRPT-114SRPT239", text)
+        # D-3c: the absence cites S. 2837's text (CA-0225), no longer S.Rept. 114-239's table (CA-0027, retired)
+        self.assertIn("SRC-BILLS-114S2837PCS", text)
         self.assertNotIn("$0", text)
         conn = S.connect(self.db)
-        evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0027'").fetchone()[0]
+        evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0225'").fetchone()[0]
         conn.close()
         self.assertEqual(self.page.get_attribute(
             "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-funded]", "title"), evidence)

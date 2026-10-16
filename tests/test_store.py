@@ -630,7 +630,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
         self.assertIn("contradicts an observation", str(cm.exception))
 
     def test_observation_of_an_absent_fact_is_refused(self):
-        with self.assertRaises(sqlite3.IntegrityError) as cm:          # CA-0027: FY2017 Senate Exploration supplemental
+        with self.assertRaises(sqlite3.IntegrityError) as cm:          # CA-0225: FY2017 Senate Exploration supplemental
             self.conn.execute("INSERT INTO appropriations_observation (observation_id, canonical_account_id, fiscal_year, "
                               "stage, amount, amount_type, offsetting_collections, source_document_id, extraction_method, "
                               "confidence, verification_status) VALUES ('OBS-X', 'ACC-NASA-EXPLORATION', 2017, "
@@ -668,7 +668,7 @@ class ConfirmedAbsenceRules(StoreCopyTest):
                                next(r for r in g["rows"] if r["fiscal_year"] == fy)["cells"][st]}
         fy17 = cell(2017, "Senate Reported")
         self.assertEqual((fy17["budget authority"]["state"], fy17["supplemental"]["state"]), ("value", "not_funded"))
-        self.assertEqual(fy17["supplemental"]["absence"]["confirmed_absence_id"], "CA-0027")
+        self.assertEqual(fy17["supplemental"]["absence"]["confirmed_absence_id"], "CA-0225")   # CA-0027, re-cited (D-3c)
         self.assertEqual(cell(2024, "Enacted")["supplemental"]["state"], "value")
         # FY2027: House Reported is covered (H.Rept. 119-652) but has no supplemental line -> missing; no
         # enacted law yet; no FY2027 request or Senate document on file
@@ -702,7 +702,8 @@ class GridStates(StoreTest):
 
     def test_a_confirmed_absence_is_not_funded_with_its_evidence(self):
         line = self.state("ACC-HHS-GP-ADOPTION-INCENTIVES-RESCISSION", 2026, "Senate Reported", "rescission")
-        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("not_funded", "CA-LHHS-0011"))
+        # CA-LHHS-0011 re-cited to S. 2587's text as CA-LHHS-0181 (D-3c)
+        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("not_funded", "CA-LHHS-0181"))
         self.assertTrue(line["absence"]["evidence"])
 
     def test_covered_but_unrecorded_is_missing(self):
@@ -1093,14 +1094,24 @@ class V22Merged(StoreTest):
     are in the store as sent."""
 
     def test_the_48_absences_are_in_the_store_as_sent(self):
+        # D-3c superseded each one that cited a report's table: its fact is held by a new absence citing the bill or
+        # law text (the evidence names the old ID and the report), and the old ID is on the retired list
         rows = review_csv("confirmed_absence_rows_v22.csv")
         self.assertEqual((len(rows), rows[0]["confirmed_absence_id"], rows[-1]["confirmed_absence_id"]), (48, "CA-0151", "CA-0198"))
+        retired = json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text())["confirmed_absences"]
         for r in rows:
+            fact = (r["canonical_account_id"], int(r["fiscal_year"]), r["stage"], r["amount_type"], r["component"] or None)
             got = self.conn.execute("SELECT canonical_account_id, fiscal_year, stage, amount_type, component, "
                                     "source_document_id, evidence FROM confirmed_absence WHERE confirmed_absence_id = ?",
                                     (r["confirmed_absence_id"],)).fetchone()
-            self.assertEqual(tuple(got), (r["canonical_account_id"], int(r["fiscal_year"]), r["stage"], r["amount_type"],
-                                          r["component"] or None, r["source_document_id"], r["evidence"]), r["confirmed_absence_id"])
+            if got is not None:
+                self.assertEqual(tuple(got), fact + (r["source_document_id"], r["evidence"]), r["confirmed_absence_id"])
+                continue
+            self.assertIn("D-3c", retired[r["confirmed_absence_id"]])
+            new = self.conn.execute("SELECT confirmed_absence_id, evidence FROM confirmed_absence WHERE canonical_account_id = ? "
+                                    "AND fiscal_year = ? AND stage = ? AND amount_type = ? AND component IS ?", fact).fetchone()
+            self.assertIn(f"supersedes {r['confirmed_absence_id']}, which cited {r['source_document_id']}", new[1])
+            self.assertIn(new[0], retired[r["confirmed_absence_id"]])
 
     def test_only_the_unchecked_cells_are_still_missing(self):
         unchecked = {(r["canonical_account_id"], int(r["fiscal_year"]), r["stage"], r["amount_type"])
