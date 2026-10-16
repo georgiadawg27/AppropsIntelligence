@@ -15,10 +15,10 @@ Legislative Branch), run end to end by `tests/test_any_subcommittee.py`.
 - Upper-case letters and digits, 2-10 characters, starting with a letter (`ids.CODE`), and not a reserved word
   (`ids.RESERVED`: TXT, MR, MRV, MRC, MRE and the record types). It is stored on every account and Bill Report
   Reference row and goes into every ID: `OBS-<CODE>-0001`, `VAL-<CODE>-00001`, `CMP-<CODE>-0001`.
-- In `subcommittees.py`: map the words its bills' titles use to the code (`SUBCOMMITTEES`; several entries there
-  today hold a long name such as "Legislative Branch", which can't go into an ID -- replace it with the short
-  code) and give it a display name (`DISPLAY_NAMES`). The page, the export and the workbook show the display name;
-  only the code is stored.
+- In `subcommittees.py`: the words its bills' titles use already map to the code (`SUBCOMMITTEES`; add a title
+  spelling there if its documents use another, as State-Foreign Ops' House title does) and the code has a display
+  name (`DISPLAY_NAMES`). The page, the export and the workbook show the display name; only the code is stored.
+  NSRP is retired (`RETIRED_CODES`) and can't mint an ID.
 
 ## 2. Create the rule file
 

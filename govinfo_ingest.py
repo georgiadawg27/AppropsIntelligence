@@ -305,7 +305,7 @@ def ingest_local(pdf_path, manifest, *, subcommittee, fiscal_year, stage, doc_ty
     """
     if subcommittee not in SUBCOMMITTEES.values():
         # the extractor finds a multi-division document's division by this name
-        raise ValueError(f"subcommittee must be one of {sorted(SUBCOMMITTEES.values())}, got {subcommittee!r}")
+        raise ValueError(f"subcommittee must be one of {sorted(set(SUBCOMMITTEES.values()))}, got {subcommittee!r}")
     if stage not in STAGES:
         raise ValueError(f"stage must be one of {STAGES}, got {stage!r}")
     if doc_type not in DOC_TYPES:
@@ -540,7 +540,7 @@ def main_ingest_local(argv):
     parser = argparse.ArgumentParser(prog="govinfo_ingest.py ingest-local",
                                      description="Store a document the pipeline can't fetch itself.")
     parser.add_argument("pdf")
-    parser.add_argument("--subcommittee", required=True, choices=sorted(SUBCOMMITTEES.values()),
+    parser.add_argument("--subcommittee", required=True, choices=sorted(set(SUBCOMMITTEES.values())),
                         help="e.g. CJS, LHHS")
     parser.add_argument("--fiscal-year", type=int, required=True)
     parser.add_argument("--stage", required=True, choices=STAGES)

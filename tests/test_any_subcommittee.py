@@ -109,6 +109,27 @@ class IdNamespaces(unittest.TestCase):
         for rid in ("VAL-TXT-0001", "VAL-TXT-LHHS-0001", "VAL-MR-LHHS-0003", "VAL-MRC-UNEXPLAINED"):
             self.assertIsNone(IDS.parse(rid))
 
+    def test_every_listed_code_is_the_approved_one_and_mints_ids(self):
+        # owner, 2026-10-15 (CLAUDE.md, "Standing decisions"): the codes are permanent, since they are in every ID
+        self.assertEqual(set(SC.SUBCOMMITTEES.values()), {"AG", "CJS", "DEF", "EW", "FSGG", "HS", "INT", "LEG",
+                                                          "LHHS", "MCVA", "SFOPS", "THUD"})
+        for code in set(SC.SUBCOMMITTEES.values()):
+            IDS.check_code(code)
+            self.assertIn(code, SC.DISPLAY_NAMES)
+            self.assertIn(code, SC.known())
+        self.assertEqual(IDS.Allocator().next("OBS", "MCVA"), "OBS-MCVA-0001")
+
+    def test_state_foreign_ops_house_title_is_an_alias_and_nsrp_is_retired(self):
+        self.assertEqual(SC.subcommittee_of("NATIONAL SECURITY, DEPARTMENT OF STATE, AND RELATED PROGRAMS "
+                                            "APPROPRIATIONS ACT, 2025"), "SFOPS")
+        self.assertEqual(SC.subcommittee_of("DEPARTMENT OF STATE, FOREIGN OPERATIONS, AND RELATED PROGRAMS"), "SFOPS")
+        # a title naming both spellings names the code once
+        self.assertEqual(SC.subcommittees_named("NATIONAL SECURITY, DEPARTMENT OF STATE ... STATE, FOREIGN "
+                                                "OPERATIONS"), ["SFOPS"])
+        self.assertNotIn("NSRP", SC.known())
+        with self.assertRaisesRegex(IDS.IdError, "retired"):
+            IDS.Allocator().next("OBS", "NSRP")
+
     def test_existing_ids_keep_their_patterns_and_the_next_follows_them(self):
         used = [c["component_id"] for c in STAGED["observation_components"]] + STAGED["observation_components_retired"]
         a = IDS.Allocator(used)

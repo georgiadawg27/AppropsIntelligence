@@ -1,5 +1,16 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Readiness fix 1: approved subcommittee codes (2026-10-16, this PR)
+
+Brief: backfill readiness report B1 (`/mnt/project-files/backfill-readiness/report.md`), codes approved by the owner
+2026-10-15. `subcommittees.SUBCOMMITTEES` now stores AG, EW, HS, INT, LEG, MCVA, DEF (was long names that
+`ids.check_code` refuses); CJS, FSGG, LHHS, THUD unchanged. The House's "National Security, Department of State"
+title maps to SFOPS (alias; `subcommittees_named` names a code once). NSRP is in `RETIRED_CODES`: not `known()`,
+and `ids.check_code` refuses it. Every code has a display name. No data held any changed code, so no figure, ID,
+fixture or workbook value changed. Tests: `IdNamespaces` (approved list, alias, retired code).
+
+Open: the other readiness fixes, in the report's order (B2 split `data/staged.json`, then R1/R2 site JSON).
+
 ## D-7 cleanup: the three differences, Title II's rescission lines (2026-10-16, this PR)
 
 Brief: the Library's "later" line (tag D-7's 3 differences; give Title II's rescission lines a view). No headline
