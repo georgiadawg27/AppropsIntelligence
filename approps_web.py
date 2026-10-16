@@ -33,6 +33,9 @@ API
   GET /api/whats-new
       -> approps_store.whats_new(): every source document and figure by the date it first entered the record,
          newest first (the page's "What's new"; the export writes the same answer to data/whats_new.json)
+  GET /api/ops
+      -> {"intake": approps_store.ops_intake()}: committee drafts and whether each awaits its official version,
+         documents added in the last 30 days (brief D-5; the export writes the same answer to data/ops.json)
   GET /api/documents
       -> approps_store.documents(): every source document's id, short name (web/documents.js) and address, for
          the page's source links (the export writes the same answer to data/documents.json)
@@ -126,6 +129,23 @@ def whats_new(db):
         conn.close()
 
 
+def ops(db):
+    """data/ops.json (brief D-5): {"intake": approps_store.ops_intake()}."""
+    conn = S.connect(db, readonly=True)
+    try:
+        return {"intake": S.ops_intake(conn)}
+    finally:
+        conn.close()
+
+
+def stage_status(db):
+    conn = S.connect(db, readonly=True)
+    try:
+        return S.stage_status(conn)
+    finally:
+        conn.close()
+
+
 def payloads(db):
     """Every answer the page can read, keyed by the path the static export writes it to under docs/data/:
     index.json (the matching pool), subcommittees.json, subcommittees/<name>.json, accounts/<id>.json --
@@ -135,10 +155,11 @@ def payloads(db):
         pool = S.accounts_for_matching(conn)
     finally:
         conn.close()
-    out = {"index.json": {"accounts": F.index_accounts(pool)}}
+    out = {"index.json": {"accounts": F.index_accounts(pool), "stage_status": stage_status(db)}}
     listing = subcommittees(db)
     out["subcommittees.json"] = listing
     out["whats_new.json"] = whats_new(db)
+    out["ops.json"] = ops(db)
     out["documents.json"] = documents(db)
     for name in listing["subcommittees"]:
         out[f"subcommittees/{name}.json"] = subcommittee(db, name)
@@ -211,6 +232,8 @@ def make_handler(db):
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
                 if url.path == "/api/whats-new":
                     return self.json(HTTPStatus.OK, whats_new(db))
+                if url.path == "/api/ops":
+                    return self.json(HTTPStatus.OK, ops(db))
                 if url.path == "/api/documents":
                     return self.json(HTTPStatus.OK, documents(db))
                 if url.path == "/api/subcommittees":

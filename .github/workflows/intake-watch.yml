@@ -1,0 +1,52 @@
+# The daily intake check (brief D-5): has govinfo published a new or changed bill, committee report or public law
+# for a subcommittee in the data, for the current or next fiscal year? scripts/intake_watch.py, read-only, with the
+# GOVINFO_API_KEY repository secret (sent as a request header, never printed or saved). It commits nothing and
+# opens nothing: nothing new -> one summary line; something new -> the summary lists it and the plan (one draft PR
+# per document, opened by D-4's engine once it lands) is kept as the run's artifact. See reference/INTAKE.md.
+name: Intake check
+
+on:
+  schedule:
+    - cron: "17 11 * * *"           # daily, 11:17 UTC (schedules run only from the default branch)
+  workflow_dispatch:
+    inputs:
+      since_days:
+        description: "Look back this many days"
+        type: string
+        default: "3"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: intake-watch
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11.17"
+          cache: pip
+      - name: Install dependencies
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        run: pip install -r requirements.lock
+      - name: Check govinfo
+        env:
+          GOVINFO_API_KEY: ${{ secrets.GOVINFO_API_KEY }}
+          SINCE_DAYS: ${{ inputs.since_days || '3' }}
+        run: |
+          case "$SINCE_DAYS" in ''|*[!0-9]*) echo "::error::since_days must be a whole number"; exit 1;; esac
+          python scripts/intake_watch.py --since-days "$SINCE_DAYS" --plan-out intake-plan.json \
+            --summary "$GITHUB_STEP_SUMMARY"
+      - name: Keep the plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: intake-plan
+          path: intake-plan.json
+          retention-days: 30

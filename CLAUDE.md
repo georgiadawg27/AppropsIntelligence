@@ -8,7 +8,8 @@ Security and settings
 - Never change repo visibility, GitHub Pages, branch protection or secrets.
 - Never print a secret value, and never add steps that echo environment
   variables. GOVINFO_API_KEY stays a repository secret, used only by the
-  manual fetch workflow.
+  manual fetch workflow and the daily intake check (intake-watch.yml, brief
+  D-5; owner approved 2026-10-16), always sent as a request header.
 - The scoping doc is read-only: never commit it, quote it or copy it into the
   repo. Never commit the NTU workbook or copy its rows (terms unconfirmed).
 - Ask before deleting data or changing what is public (IP review pending).

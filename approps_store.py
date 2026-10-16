@@ -1295,6 +1295,7 @@ def history(conn, account_id):
                      "direction": "from" if r["from_account_id"] == account_id else "to",
                      **relationship_cites(conn, r["evidence"])})
     stage_rank = {s: i for i, s in enumerate(STAGE_ORDER)}
+    drafts = {(c["reference_id"], c["document_id"]): c["release_date"] for c in committee_drafts(conn)}
     obs = []
     for r in conn.execute(
             "SELECT o.*, d.document_type, d.source_agency, d.url_or_identifier, d.publication_date, "
@@ -1306,6 +1307,10 @@ def history(conn, account_id):
             "LEFT JOIN component c ON c.component_id = o.component "
             "WHERE o.canonical_account_id = ?", (account_id,)):
         rec = dict(r)
+        # D-5: a figure from a committee draft (unofficial) says so, with the draft's release date
+        if (r["bill_report_reference_id"], r["source_document_id"]) in drafts:
+            rec["source_label"] = DRAFT_LABEL
+            rec["draft_release_date"] = drafts[(r["bill_report_reference_id"], r["source_document_id"])]
         # v33 columns, carried only when they say something (an export of earlier data stays as it was)
         for k in ("document_notes", "superseded_by_observation_id"):
             if rec[k] is None:
@@ -2008,6 +2013,86 @@ def subcommittee_grid(conn, subcommittee):
     # attributes -- from the store's own records, by the code measure_reconcile uses (site_accounting.py)
     import site_accounting
     return site_accounting.Layer(accounting_data(conn)).annotate(grid)
+
+
+# D-5: a committee draft is a document a draft stage's figures cite (Bill Report Reference draft = TRUE) that is not
+# official text: not a govinfo or Congress.gov document (a bill as introduced, which a draft may accompany, is)
+DRAFT_LABEL = "Committee draft, unofficial"
+OFFICIAL_HOSTS = ("govinfo.gov", "congress.gov")
+
+
+def is_official_text(url):
+    host = re.sub(r"^https?://", "", url or "").split("/", 1)[0].lower()
+    return any(host == h or host.endswith("." + h) for h in OFFICIAL_HOSTS)
+
+
+def committee_drafts(conn):
+    """Every committee draft the data holds, per draft stage that cites it: its Bill Report Reference, subcommittee,
+    fiscal year and stage, its release date (source_document.publication_date; None where none is on file), and
+    how many of that stage's figures cite it now and how many were superseded (by its official version,
+    scripts/reconcile_draft.py). Derived from the records, never a list kept by hand."""
+    out = []
+    for r in conn.execute(
+            "SELECT b.reference_id, b.subcommittee, b.fiscal_year, b.stage, d.document_id, d.url_or_identifier, "
+            "d.publication_date, SUM(o.verification_status != 'superseded') AS current, "
+            "SUM(o.verification_status = 'superseded') AS superseded "
+            "FROM bill_report_reference b "
+            "JOIN appropriations_observation o ON o.bill_report_reference_id = b.reference_id "
+            "JOIN source_document d ON d.document_id = o.source_document_id "
+            "WHERE b.draft = 1 GROUP BY b.reference_id, d.document_id "
+            "ORDER BY b.subcommittee, b.fiscal_year, b.stage, d.document_id"):
+        if is_official_text(r["url_or_identifier"]):
+            continue
+        out.append({"reference_id": r["reference_id"], "subcommittee": r["subcommittee"],
+                    "fiscal_year": r["fiscal_year"], "stage": r["stage"], "document_id": r["document_id"],
+                    "release_date": r["publication_date"], "figures": r["current"], "superseded": r["superseded"]})
+    return out
+
+
+def stage_status(conn):
+    """{subcommittee: {fiscal year: {stage: "draft"}}} for every stage whose current figures come from a committee
+    draft (docs/data/index.json "stage_status"). A stage whose draft was reconciled against its official version
+    (every draft figure superseded) is no longer one."""
+    out = {}
+    for c in committee_drafts(conn):
+        if c["figures"]:
+            out.setdefault(c["subcommittee"], {}).setdefault(str(c["fiscal_year"]), {})[c["stage"]] = "draft"
+    return out
+
+
+def fiscal_year_of(day):
+    """The federal fiscal year a YYYY-MM-DD date falls in (FY N runs October 1, N-1 to September 30, N)."""
+    d = dt.date.fromisoformat(day)
+    return d.year + 1 if d.month >= 10 else d.year
+
+
+def ops_intake(conn):
+    """docs/data/ops.json "intake" (brief D-5), as of the newest added date in the data (both serving modes give the
+    same answer, with no clock): every committee draft, whether it still awaits its official version (its fiscal
+    year has not ended by that date and its figures are current) and for how many days since its release, and the
+    documents first added in the 30 days up to that date. The daily check (scripts/intake_watch.py) commits nothing
+    when it finds nothing, so its last run is not in the data: last_check is None (see its workflow's runs)."""
+    as_of = conn.execute("SELECT max(x) FROM (SELECT max(first_added) AS x FROM source_document "
+                         "UNION ALL SELECT max(added_date) FROM appropriations_observation)").fetchone()[0]
+    drafts = []
+    for c in committee_drafts(conn):
+        awaiting = bool(as_of and c["figures"] and c["fiscal_year"] >= fiscal_year_of(as_of))
+        drafts.append({k: c[k] for k in ("document_id", "subcommittee", "fiscal_year", "stage", "release_date",
+                                          "figures", "superseded")}
+                      | {"awaiting_official": awaiting,
+                         "days_waiting": ((dt.date.fromisoformat(as_of) - dt.date.fromisoformat(c["release_date"])).days
+                                          if awaiting and c["release_date"] else None)})
+    added = []
+    if as_of:
+        since = (dt.date.fromisoformat(as_of) - dt.timedelta(days=30)).isoformat()
+        added = [dict(r) for r in conn.execute(
+            "SELECT document_id, document_type, fiscal_year, stage, first_added FROM source_document "
+            "WHERE first_added > ? ORDER BY first_added DESC, document_id", (since,))]
+    return {"as_of": as_of, "drafts": drafts, "added_last_30_days": added, "last_check": None,
+            "basis": "drafts: committee drafts the data cites (Bill Report Reference draft, not govinfo or "
+                     "Congress.gov text); awaiting_official: its fiscal year has not ended by as_of. "
+                     "added_last_30_days: source_document.first_added. last_check: not in the data (the daily "
+                     "check commits nothing when nothing is new)."}
 
 
 def whats_new(conn):
