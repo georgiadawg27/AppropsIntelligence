@@ -109,6 +109,9 @@ STATE_WORDS = {"missing": "document on file, figure not yet entered", "not_colle
                "not_enacted": "not yet enacted", "not_reported": "not reported", "no_printed_total": "no printed total"}
 
 
+# D-7 cleanup: the structural rule for a rescission line's excluding-earmarks view
+RESCISSION_NO_EARMARKS = "a rescission carries no earmarks (CDS / CPF are appropriations)"
+
 # D-6: the words an adjustment uses for a component type
 TYPE_LABEL = {"advance_enacted": "advance appropriation enacted in this bill",
               "advance_available": "advance appropriation available this year",
@@ -329,11 +332,23 @@ def component_record(c):
 
 def headline_of_cell(cell):
     """The observation the grid shows for a cell (the page's headOf), when the cell holds a printed figure: a value,
-    or a printed zero (ONC's $0 headline has a program level). A confirmed absence holds no observation."""
+    or a printed zero (ONC's $0 headline has a program level). A confirmed absence holds no observation. A cell with
+    no budget-authority line whose figure is a rescission (a rescission-only account: the HHS general provisions'
+    Nonrecurring Expenses Fund and Adoption Incentives rescissions) takes its rescission line (D-7 cleanup)."""
     line = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]), None)
+    if line is None:
+        line = rescission_line(cell)
     if line is None or line["state"] not in ("value", "not_funded") or not line["observations"]:
         return None
     return line["observations"][0]
+
+
+def rescission_line(cell):
+    """A cell's rescission line, where the cell has no budget-authority line at all: the line amount_type
+    'rescission' with no component (its '(emergency)' rescission, a separate line, stays a line beside it)."""
+    if any(l["amount_type"] == "budget authority" for l in cell["lines"]):
+        return None
+    return next((l for l in cell["lines"] if l["amount_type"] == "rescission" and not l["component"]), None)
 
 
 class Layer:
@@ -379,7 +394,8 @@ class Layer:
     def account_views(self, a, fy, stage, h):
         cs = self.cell_components(h)
         base = AC.split(h["amount"], cs)[0]
-        if base < 0:
+        # a rescission line is negative as printed (signed as its effect on budget authority): no negative base
+        if base < 0 and h["amount_type"] != "rescission":
             why = (f"the base is negative ({AC.money(base)}): the components the headline includes exceed it "
                    f"(VAL-MR-{M.suffix(h['observation_id'])}, pending review)")
             return {b: [{"amount": None, "timing": None if b == "printed" else "available",
@@ -400,7 +416,7 @@ class Layer:
                     e = {"amount": None, "timing": timing, "status": got[0], "reason": got[1]}
                     if got[0] == "not_computable":
                         e["cause"] = cause_of(got[1])
-                elif not auto and not relevant:
+                elif not auto and not relevant and h["amount_type"] != "rescission":
                     e = {"amount": None, "timing": timing, "status": "not_computable", "cause": COMPONENTS_UNKNOWN,
                          "reason": "no component the view uses is tagged for this cell ("
                                    + TC.not_covered_reason(a["canonical_account_id"], fy, stage)
@@ -411,6 +427,11 @@ class Layer:
                          "component_ids": sorted(c["component_id"] for c in used)}
                     e.update(self.confirm(printed, basis, timing, amount,
                                           self.emergency_scope([(a["canonical_account_id"], h)], fy, stage)))
+                    if h["amount_type"] == "rescission" and not cs:
+                        # D-7 cleanup: a rescission is budget authority (negative) on every basis; no component
+                        # changes it (an advance, a transfer, a mandatory portion or a designation is not read
+                        # into a rescission line: its '(emergency)' rescission prints as its own line)
+                        e["reason"] = f"a rescission line, as printed: no component applies; {e['reason']}"
                     if note:
                         e["reason"] = f"{note}; {e['reason']}"
                 entries.append(e)
@@ -537,6 +558,13 @@ class Layer:
             mc = row["cells"].get(key) if row else None
             if mc is None or mc.get("outside_life"):
                 continue
+            if mc.get("views") and rescission_line(mc) is not None:
+                where = self.rescission_place(a, mc, doc)
+                if where == "outside":
+                    continue
+                if where != "inside":
+                    nofig.append((m, where))
+                    continue
             if mc.get("views"):
                 lines.append((m, mc))
                 continue
@@ -548,6 +576,26 @@ class Layer:
             else:
                 nofig.append((m, st))
         return lines, absent, nofig
+
+    def rescission_place(self, a, mc, doc):
+        """D-7 cleanup: where a title or bill total's table prints a rescission-only line (the HHS general provisions'
+        rescissions), from the line's own record: -> 'inside' (the total's own table prints it inside the total: a
+        title's '<title>, ...' section, or any title's for a bill total), 'outside' (the total's own table prints it
+        outside its title, e.g. the Senate reports' 'Discretionary Rescissions' after the grand total: not behind a
+        title total), or why it is not known (another document records it, so the total's table is not read for it;
+        a bill total's line printed outside every title)."""
+        o = self.obs[rescission_line(mc)["observations"][0]["observation_id"]]
+        section = (o.get("source_table_or_section") or "").split(" -- ")[0]
+        page = f"{o['source_document_id']} p.{o.get('source_page') or '?'}"
+        if o["source_document_id"] != doc:
+            return (f"rescission: the rescission is recorded from {page}, not from this total's table, so whether "
+                    f"the table prints it inside the total is not read")
+        if a.get("total_scope") == "title":
+            return "inside" if section.startswith(f"{a.get('title')},") else "outside"
+        if section.startswith("Title "):
+            return "inside"
+        return (f"rescission: the table prints the rescission outside every title ('{section}', {page}); whether "
+                f"its bill total counts it is not read")
 
     def total_layer(self, a, fy, stage, h, cell):
         """views and the exclusion fields of a total (owner, D-8: reference/specs/anchored-totals.md): on every basis
@@ -632,7 +680,8 @@ class Layer:
         for m, st in parts["nofig"]:
             unknown.append({"account": m, "amount": None, "cause": MISSING_FIGURE,
                             "why": ("its figure is not a budget-authority headline, so it has no published view"
-                                    if st == "value" else f"no figure: {STATE_WORDS.get(st, st)}")})
+                                    if st == "value" else st.removeprefix("rescission: ")
+                                    if st.startswith("rescission: ") else f"no figure: {STATE_WORDS.get(st, st)}")})
         entry_of = {m: e for m, _, e in used + left}
         line_adj = []
         for x in parts["inside"]:
@@ -844,12 +893,14 @@ class Layer:
         """A structural rule (owner, D-6; ACCOUNTING_RULES 'Structural rules') that makes the exclusion take nothing
         out of the cell, whatever was read: -> the reason, or None.
           excluding_earmarks: a request carries no earmarks (CDS / CPF are added by Congress), so every President's
-            Budget cell's excluding-earmarks view is its view.
+            Budget cell's excluding-earmarks view is its view; nor does a rescission line (D-7 cleanup).
           nondefense: an account whose subfunction (FY N's own Budget Appendix volume) is outside function 050
             (not 05x), with no defense line printed in the cell and no defense_portion tagged, holds no defense.
             Subfunction 999 (spans functions) or none on file doesn't qualify."""
         if exclusion == "excluding_earmarks":
-            return "a request carries no earmarks" if stage == TC.REQUEST_STAGE else None
+            if stage == TC.REQUEST_STAGE:
+                return "a request carries no earmarks"
+            return RESCISSION_NO_EARMARKS if h["amount_type"] == "rescission" else None
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_subfunction", stage)
         if not rec or not rec["source_document_id"].startswith(f"SRC-BUDGET-APP-FY{fy}"):
             return None
@@ -904,7 +955,8 @@ class Layer:
         types = EXCLUSION_TYPES[exclusion]
         ctype = " or ".join(types)
         cs = self.cell_components(h)
-        if AC.split(h["amount"], cs)[0] < 0:          # account_views' negative base: the same not_computable entries
+        if AC.split(h["amount"], cs)[0] < 0 and h["amount_type"] != "rescission":
+            # account_views' negative base: the same not_computable entries
             return {b: [dict(e) for e in es] for b, es in views.items()}
         beside = [c for c in cs if c["component_type"] in types and c["in_headline"] != "TRUE"]
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)

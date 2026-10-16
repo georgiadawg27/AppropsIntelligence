@@ -13,6 +13,15 @@ into components (offline).
   Infectious Diseases Rapid Response Reserve Fund  FY2020 Enacted sec. 239: 'Of the funds provided under the
       heading "CDC-Wide Activities and Program Support", $85,000,000 ... shall be available ... for deposit in the
       Infectious Diseases Rapid Response Reserve Fund' -> transfer_out inside the headline.
+  D-7 cleanup (the title's printed summary lines name them; the bill text labels each plainly):
+      FY2023 Senate sec. 244: 'Of the amounts made available by this Act under the heading "...Refugee and Entrant
+      Assistance", $2,500,000,000 is designated by the Congress as being for an emergency requirement' ->
+      designated emergency inside the headline (a general provision, outside the paragraph);
+      FY2025 Senate Child Support: S. 4942 heads the paragraph 'Payments to States for Child Support Services and
+      Family Support Programs', a name the account does not carry, so the paragraph is not matched to it; its
+      '... for the first quarter of fiscal year 2026, $1,700,000,000' -> advance_enacted inside the headline.
+
+A component_type 'designated/<designation>' carries its designation.
 
 Each item names the sentence that holds it; the reader finds that sentence in the document's full text, checks the
 amount is printed in it, and records the sentence as quoted_text. Nothing is fitted: an item whose sentence or
@@ -97,6 +106,20 @@ ITEMS = [
      37500000, "FALSE", r"Sec\. 235\. " + NEF_GP, r"Sec\. 236\.",
      "sec. 235 makes it available for acquisition of real property, design, construction and renovation for the "
      "CDC's replacement Lake Lynn Experimental Mine and Laboratory: the Buildings and Facilities account's purposes"),
+    ("SRC-BILLS-117S4659IS", "ACC-HHS-ACF-REFUGEE", 2023, "Senate Reported", "designated/emergency", "", 2500000000,
+     "TRUE", r"Sec\. 244\. Of the amounts made available by this Act under the heading\W+Department of Health and Human "
+             r"Services\W+Administration for Children and Families\W+Refugee and Entrant Assistance",
+     r"This title may be cited|Sec\. 245\.",
+     "sec. 244 designates $2,500,000,000 of the amounts made available under the Refugee and Entrant Assistance "
+     "heading as an emergency requirement: part of the heading's own funds (Senate FY2023 explanatory statement "
+     "p.412 prints it as 'Unaccompanied Children, BA (emergency)')"),
+    ("SRC-BILLS-118S4942RS", "ACC-HHS-ACF-CHILD-SUPPORT", 2025, "Senate Reported", "advance_enacted", "", 1700000000,
+     "TRUE", r"(?<=family support programs )For carrying out, except as otherwise provided, titles I, IV-D",
+     r" For carrying out, after May 31",
+     "the paragraph headed 'Payments to States for Child Support Services and Family Support Programs' (the "
+     "account's paragraph under the name S. 4942 gives it) appropriates 'for such purposes for the first quarter of "
+     "fiscal year 2026, $1,700,000,000': the next year's first-quarter advance, inside the headline (S.Rept. 118-207 "
+     "p.443 prints it as 'New advance, 1st quarter, FY 2026')"),
 ]
 
 
@@ -188,14 +211,16 @@ def main(argv=None):
             problems.append(f"{doc} {acc} FY{fy} {stage}: no headline in the cell")
             continue
         sec = re.match(r"(Sec\.|SEC\.) (\d+)\.", sentence)
-        where = (f"sec. 237({item.group(1)})" if item else f"sec. {sec.group(2)}" if sec else "proviso") + (f" ({page_at(pages, m.start())})"
+        where = (f"sec. 237({item.group(1)})" if item else f"sec. {sec.group(2)}" if sec else
+                 "proviso" if sentence.startswith("Provided") else "paragraph") + (f" ({page_at(pages, m.start())})"
                                                                   if page_at(pages, m.start()) else "")
         k = sentence.find(printed)
         parsed = parsed_where(doc, abs(amt), sentence[:k]) if k > 0 else ""
         if parsed:
             where += "; " + parsed
+        typ_, _, designation = typ.partition("/")
         rows.append({"observation_id": h["observation_id"], "canonical_account_id": acc, "fiscal_year": fy,
-                     "stage": stage, "component_type": typ, "designation": "", "transfer_from": frm, "amount": amt,
+                     "stage": stage, "component_type": typ_, "designation": designation, "transfer_from": frm, "amount": amt,
                      "in_headline": inside, "source_document_id": doc, "source_location": where,
                      "quoted_text": sentence[:900], "tag_rule": "read from the full text (provision_lines.py): " + why,
                      "notes": ("beside the headline: in addition to the amount the paragraph appropriates"

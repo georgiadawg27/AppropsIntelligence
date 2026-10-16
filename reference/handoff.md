@@ -1,5 +1,72 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-7 cleanup: the three differences, Title II's rescission lines (2026-10-16, this PR)
+
+Brief: the Library's "later" line (tag D-7's 3 differences; give Title II's rescission lines a view). No headline
+or printed figure changed; three components added, all read from bill text the standing decision covers (plainly
+labelled advance or emergency, tagged with the citation).
+- FY2023 Senate Refugee and Entrant Assistance: S. 4659 sec. 244 designates $2,500,000,000 of the heading's
+  amounts as an emergency requirement -> CMP-LHHS-1404, designated emergency, inside the $9,370,013,000 headline.
+  A general provision, so the phrase rules never saw it.
+- FY2025 Senate Child Support: S. 4942 heads the paragraph 'Payments to States for Child Support Services and
+  Family Support Programs' (every other bill: '... Enforcement ...'), so the text check never matched it to the
+  account; its 'first quarter of fiscal year 2026, $1,700,000,000' -> CMP-LHHS-1405, advance_enacted inside the
+  $5,624,000,000 headline.
+- FY2024 Senate ASPR $75 million: already tagged on main (Manufacturing and Production's own bill-text figure,
+  OBS-LHHS-5095); the D-7 note's "inferred" account is now read (S. 2624 p.107).
+- Both read by `provision_lines.py` (two new ITEMS; component_type 'designated/<designation>' now carries one).
+  measure_reconcile: D-7 summary lines 35 pass / 2 differ -> 37 / 0; SUMMARY_CAUSES emptied; the two VAL-MRC review
+  items (EMERGENCY-LINE-UNTAGGED, ADVANCE-LINE-UNTAGGED) are gone; base checks 1036 -> 1037. View failures stay 19.
+- Rescission lines (site_accounting): a cell with no budget-authority line whose figure is a rescission (the HHS
+  general provisions' Nonrecurring Expenses Fund and Adoption Incentives rescissions, 36 cells; no other account
+  has one) now has views: the rescission as printed on every basis (no component applies; a mixed class counts as
+  discretionary, as for any account; 14 cells have no budget_class on file, so Discretionary stays not computable),
+  excluding earmarks = the view (a rescission carries no earmarks). Its '(emergency)' rescission stays its own line.
+- In a title total, a rescission line counts only where the total's own table prints it in that title (the line's
+  own record: same document, section '<title>, ...'); one the table prints after the grand total (S.Rept.
+  118-84, 118-207, 119-55, H.Rept. 117-403) or under Title V (H.Rept. 114-699) is not behind Title II; one recorded
+  from bill or law text or the Appendix (another document) stays unknown, with that reason, not counted. A bill
+  total: counted only when its table prints the line inside a title.
+- Effect: no Title II cell becomes computable (each also has money in no account held, mainly Medicaid and Medicare
+  advances); the reasons now name the rescission's document where it is not read. total_gaps.csv 101 -> 115 cells
+  (14 Title II cells whose only line with no figure was the rescission now list their gap). Grid fixture: printed
+  checked 3,749 -> 3,785 (the 36 lines). Workbook fixture: Observation Component +2 rows, Validation Record -1 (two review items gone, one base check added), Read Me (data version).
+
+Open:
+- The FY2025 Senate heading name ('Child Support Services') is not on the account: the bill-text check still
+  reports VAL-TXT-LHHS-0629 'not matched' (info). A historical-name record would match it; it needs the owner's
+  approval (historical names are owner-approved).
+- Rescission lines recorded from bill or law text (FY2018-FY2022, FY2024 House) leave Title II's build-up unknown in
+  those cells until the reports' tables are read for the line.
+- The emergency rescission line beside FY2025 PB's NEF rescission (-$10M) counts as a held line on every basis,
+  Discretionary included (held lines carry no designation). One cell; Title II is not computable there anyway.
+- headline_superseded (Medicaid FY2021 House/Senate, $1,000): falls under the owner's rounding-unit decision
+  (2026-10-16: pass with a note); not applied here (outside this brief). Next: the readiness fixes.
+
+## Backfill follow-ups (#86): items it dropped, recorded open (2026-10-16)
+
+#86 was narrowed to the NEF and Rapid Response Reserve Fund lines; these items of its Library list
+(`/mnt/project-files/component-backfill/report.md`, handover.md section 3 item 1 and section 6) were not done and had
+no recorded decision. Source: `/mnt/project-files/brief-scope-audit/report.md`. None is decided; each needs a brief
+or an owner ruling.
+- pandemic_flu_balances (4 views, still failing): CDC and OS FY2017 Senate and Enacted program levels count the
+  'Pandemic Flu balances (Public Law 111-32)' line ($15M each), balances of another law no phrase rule tags.
+- About 17 of the report's 20 untagged phrase rows (D-1 and #86 covered CDC Scientific Services $132M, Environmental
+  Health $7M and the Rapid Response Reserve Fund transfer): among them PPHF lines, Head Start's section 640
+  sub-allocations, LIHEAP, CCDBG and HRSA sub-allocations, PHSSEF 'of which ... shall remain available', HRSA and CDC
+  program support, PSSF kinship navigator, HCFAC, CLIA collections, OS GDM $350M FY2023 Senate. Most look like
+  sub-allocations (not components); each needs a call.
+- The failure causes it skipped: onc_evaluation_tap_line, member_no_headline, agency_total_only, Medicaid
+  headline_superseded, emergency_lines_not_held, prif_outside_printed_program_level. Still failing on main today:
+  headline_superseded (4) and prif_outside_printed_program_level (2); the others no longer appear in
+  measure_reconcile's failures (fixed by later work, not by a recorded decision).
+- The new cause #86 added: nef_outside_printed_program_level (4 views: NIH FY2020 E, FY2021 E, FY2021 S; CDC
+  FY2023 S); the report's program level leaves the Fund money out. Failures stayed 19.
+- The FY2021 Senate sec. 237 account assignments (purpose wording -> account) are flagged for review, not ruled on.
+- The OS General Departmental Management $350M FY2023 Senate decision was made in the #86 thread but not written to
+  the repo: copy it here from that thread.
+- #86 skipped report-back items: mixed-class counts, text-check before/after, the report file.
+
 ## D-5 part 2: daily check, drafts, official replaces draft (2026-10-16, this PR)
 
 Owner chose "D-5 now" (before D-4). Brief: Library ui-build-briefs.md, D-5. #90 built only part 4's added dates

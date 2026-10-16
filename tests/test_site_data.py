@@ -325,7 +325,12 @@ class AccountingLayer(unittest.TestCase):
                     yield sc, row, key, cell
 
     def headline(self, cell):
-        line = next(l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"])
+        # the budget authority line with no component; a rescission-only cell's rescission line (D-7 cleanup)
+        line = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]),
+                    None)
+        if line is None:
+            import site_accounting as SA
+            line = SA.rescission_line(cell)
         return self.obs[line["observations"][0]["observation_id"]]
 
     def test_every_view_is_measure_reconciles_record(self):
@@ -692,6 +697,11 @@ class AccountingLayer(unittest.TestCase):
                 continue
             h = self.headline(cell)
             base = self.AC.split(h["amount"], self.by_obs.get(h["observation_id"], []))[0]
+            if h["amount_type"] == "rescission":
+                # a rescission line is negative as printed (its sign is its effect on budget authority): its views
+                # are the rescission, never a negative base (D-7 cleanup)
+                self.assertEqual(cell["views"]["printed"][0]["amount"], h["amount"])
+                continue
             if base < 0:
                 for basis, entries in cell["views"].items():
                     if basis == "printed" and h["amount"] < 0 and re.search(r"-(TITLE-[IVX]+|BILL)-TOTAL$",
@@ -706,6 +716,10 @@ class AccountingLayer(unittest.TestCase):
         for sc, row, key, cell in self.cells():
             line = next((l for l in cell["lines"] if l["amount_type"] == "budget authority" and not l["component"]),
                         None)
+            if line is None:
+                # a rescission-only cell (the HHS general provisions' rescissions): its rescission line (D-7 cleanup)
+                line = next((l for l in cell["lines"] if l["amount_type"] == "rescission" and not l["component"]),
+                            None) if not any(l["amount_type"] == "budget authority" for l in cell["lines"]) else None
             has = bool(line and line["state"] in ("value", "not_funded") and line["observations"])
             self.assertEqual("views" in cell, has, (row["account"]["canonical_account_id"], key))
 
@@ -763,7 +777,8 @@ class AccountingLayer(unittest.TestCase):
                 continue
             h = self.headline(cell)
             cs = self.by_obs.get(h["observation_id"], [])
-            if self.AC.split(h["amount"], cs)[0] < 0:
+            # a rescission line is negative as printed, not a negative base (D-7 cleanup)
+            if self.AC.split(h["amount"], cs)[0] < 0 and h["amount_type"] != "rescission":
                 for _, field, basis, entries in self.exclusion_entries(cell):
                     self.assertEqual(entries, cell["views"][basis])
                 continue
@@ -829,7 +844,7 @@ class AccountingLayer(unittest.TestCase):
                 continue        # a total builds down from its anchor (test_totals_build_down_from_their_anchor)
             for exclusion, field, basis, entries in self.exclusion_entries(cell):
                 if cell[field]["printed"][0]["reason"].startswith(("a request carries no earmarks",
-                                                                   "not a defense function")):
+                                                                   "not a defense function", SA.RESCISSION_NO_EARMARKS)):
                     seen.add("structural")
                     continue    # a structural rule (test_structural_rules)
                 if fy == "2027":
@@ -874,8 +889,10 @@ class AccountingLayer(unittest.TestCase):
                                       for l in cell["lines"])
                           and not any(c["component_type"] == "defense_portion"
                                       for c in self.by_obs.get(h["observation_id"], [])))
-            for field, applies, why in (("views_excluding_earmarks", stage == "President's Budget",
-                                         "a request carries no earmarks"),
+            rescission = h["amount_type"] == "rescission" and stage != "President's Budget"
+            for field, applies, why in (("views_excluding_earmarks", stage == "President's Budget" or rescission,
+                                         "a rescission carries no earmarks" if rescission
+                                         else "a request carries no earmarks"),
                                         ("views_nondefense", nondefense, "not a defense function (subfunction ")):
                 for basis, entries in cell[field].items():
                     base = cell["views"][basis]

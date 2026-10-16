@@ -54,15 +54,11 @@ SUMMARY_CHECKED = ("mandatory", "emergency_appropriations", "advance_appropriati
 # (reference/review/lhhs/title_ii_totals.py); Labor-HHS Titles I, III, IV and every CJS title are held only in part.
 TITLES_HELD = {"LHHS": ("Title II",)}
 # D-7: why a printed summary line differs, read from the title's own table for the cell (total, fiscal year, stage,
-# line) -> cause. Each is reviewed once for every cell it covers; none changes a figure.
-SUMMARY_CAUSES = {
-    # 'Unaccompanied Children, BA (emergency)' 2,500,000 under Refugee and Entrant Assistance (Senate FY2023, p.412)
-    ("ACC-HHS-TITLE-II-TOTAL", 2023, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
-    # 'Pandemic Preparedness and Biodefense (emergency)' 75,000 under ASPR (S.Rept. 118-84 p.390)
-    ("ACC-HHS-TITLE-II-TOTAL", 2024, "Senate Reported", "emergency_appropriations"): "emergency_line_untagged",
-    # 'New advance, 1st quarter, FY 2026' 1,700,000 under Child Support Enforcement (S.Rept. 118-207 p.443)
-    ("ACC-HHS-TITLE-II-TOTAL", 2025, "Senate Reported", "advance_appropriations"): "advance_line_untagged",
-}
+# line) -> cause. Each is reviewed once for every cell it covers; none changes a figure. D-7's three
+# (emergency_line_untagged FY2023 and FY2024 Senate, advance_line_untagged FY2025 Senate) are tagged from the bill
+# text now (D-7 cleanup: provision_lines.csv; the FY2024 $75 million under ASPR Manufacturing and Production), so
+# none is listed; a new difference is 'unexplained' until its cause is read.
+SUMMARY_CAUSES = {}
 # the earmark rule (owner 2026-10-11): a headline that counts the account's congressionally directed spending /
 # community project funding inside, replacing the table's account line
 EARMARK_RULE = re.compile(r"Congressionally Directed Spending|Community Project Funding", re.I)

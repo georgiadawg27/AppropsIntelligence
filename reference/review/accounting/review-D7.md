@@ -13,6 +13,13 @@ and title total rows (`d7_records.py`; per-line outcome in `summary_lines.csv`, 
 
 Each fix is a component tag on the account's own observation (tag_components), not a change to the printed line.
 
+Resolved (D-7 cleanup, 2026-10-16): all three are tagged from the bill text, which labels each plainly (standing
+decision: tagged with the citation without asking). FY2023 Senate: S. 4659 sec. 244 designates $2,500,000,000 of
+Refugee and Entrant Assistance as emergency (CMP-LHHS-1404). FY2024 Senate: the $75 million is ASPR Manufacturing and
+Production's own figure, designated emergency in S. 2624 p.107 (already tagged on main). FY2025 Senate: S. 4942's
+Child Support paragraph appropriates $1,700,000,000 for the first quarter of FY2026 (CMP-LHHS-1405). The summary
+lines now give 37 pass, 0 differ.
+
 ## Not checked
 
 - A line of a title whose accounts aren't all held is "not checked: accounts not held". The count of accounts not
