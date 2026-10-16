@@ -394,6 +394,9 @@ class StaticVersusLive(StaticTest):
         handler = functools.partial(Quiet, directory=str(cls.out))
         cls.static = http.server.ThreadingHTTPServer(("127.0.0.1", 0), handler)
         cls.live = W.serve(cls.db, port=0, verbose=False)
+        # the live server works out its feature flags from every payload on the first /api/features (cached per
+        # store); done here, so the first page that asks for them doesn't spend its wait on it
+        W.features(str(cls.db))
         for srv in (cls.static, cls.live):
             threading.Thread(target=srv.serve_forever, daemon=True).start()
         cls.static_url = f"http://127.0.0.1:{cls.static.server_address[1]}/"
