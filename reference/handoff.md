@@ -1,5 +1,29 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-5: added dates, What's new on (2026-10-16, this PR)
+
+- `observations[].added_date` and `source_docs[].first_added` (YYYY-MM-DD, UTC) in data/staged.json, the workbook
+  (last column of Appropriations Observation and Source Document) and the store (`store_schema.sql`). Set once,
+  never changed; a superseding figure is a new observation with its own date. `added_dates.py`: check (default,
+  `--base origin/main` also holds dates to main's), `--stamp [--write]`, `--from-git [--write]` (the backfill).
+- Backfill: the date of the first commit on main's first-parent history whose data/staged.json holds the ID (a
+  merged PR: its merge date). 2,598 figures and 35 documents were already held when data/staged.json entered the
+  repo (2026-10-07, 7a42cfa, v38); their real add date is not on file, so they carry 2026-10-07 and the page reads
+  "On file by October 7, 2026". Not guessed earlier.
+- Going forward: `scripts/intake.py --write` stamps every undated record before its checks;
+  `fetch_legislative_text.py` and `appendix_attributes.py` stamp the documents they add. A record stamped in a PR
+  carries the day it was written, not the merge day.
+- What's new: `approps_store.whats_new()` reads the dates: `documents[]` (first_added), `additions[]` (per date and
+  document: new document and/or figures added that day, so later figures from an old document show), `baseline`,
+  `undated`/`undated_figures` (0 now). Flag on from the data; `waits_for` removed; contract_version 10. Test:
+  tests/test_find_changes.py `test_whats_new_lists_first_added_dates`; tests/test_added_dates.py.
+
+Open:
+- Not dated: components, observation_components, account attributes, confirmed absences, validations (the brief
+  names figures and documents). Add the same field to any of them if What's new should list it.
+- Rebuild order: no new step for a data change other than intake; run `python added_dates.py` before committing data
+  written by other scripts (the test names any undated record).
+
 ## Component backfill follow-ups (merged 2026-10-15, PR #86)
 
 - Rebuilt on main after D-1 to D-9. D-1 already tags the FY2022 Senate section 241 taps and AHRQ's section 241

@@ -39,6 +39,9 @@ In `data/staged.json` (each figure with its document and page; blank is not zero
 
   (CJS keeps its code-less pattern, `OBS-####`; no ID is ever renumbered or reused.)
 
+  Leave `added_date` (observations) and `first_added` (documents) blank: intake `--write` dates them (step 5).
+  `tests/test_added_dates.py` fails on any record without one, or on a date that differs from main's.
+
 ## 4. Commit the text
 
 For every House, Senate and Enacted stage: `python scripts/fetch_legislative_text.py` (the manual fetch workflow
@@ -53,8 +56,9 @@ rule file names (hook `appendix`) by `reference/review/accounting/request_langua
 
 It stops on a missing input and says what is missing (no Bill Report Reference row, no text and no exemption, no
 request language, a code it doesn't know). Otherwise it reads each headline's paragraph and components, runs the
-checks (with `--write`: the text check, the tagger and measure_reconcile write their records into
-`data/staged.json`) and writes `reference/review/<CODE>/intake/FY<N>-<STAGE>.csv`. Exit 0: nothing to review;
+checks (with `--write`: first every new figure and document gets today's date as its `added_date` /
+`first_added`, `added_dates.py`, a date already set never changes; then the text check, the tagger and
+measure_reconcile write their records into `data/staged.json`) and writes `reference/review/<CODE>/intake/FY<N>-<STAGE>.csv`. Exit 0: nothing to review;
 2: items to review; 1: stopped.
 
 ## 6. Work the review items
