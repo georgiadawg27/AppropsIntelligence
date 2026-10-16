@@ -377,8 +377,9 @@ class NoPrintedTotalAndCoverage(BrowserBase):
         self.open_account("ACC-HHS-CMS-MEDICAID")
         # Medicaid's FY2023 and FY2024 request/Senate headlines are derived now: no cell of it is "no printed total"
         self.assertEqual(self.chip(2024, "President's Budget").get_attribute("data-state"), "value")
-        self.open_account("ACC-HHS-ASPR-TOTAL")
-        line = self.chip(2023, "House Reported")
+        # (ASPR's FY2023 absences are retired, D-3c: the AHA total's FY2026 House cell is the example)
+        self.open_account("ACC-HHS-AHA-TOTAL")
+        line = self.chip(2026, "House Reported")
         self.assertEqual(line.get_attribute("data-state"), "no_printed_total")
         self.assertEqual(line.locator("[data-testid=no-printed-total]").inner_text(), "No printed total")
         # a rescission line with nothing else of its account in the cell: still "None"

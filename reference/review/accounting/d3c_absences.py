@@ -525,6 +525,20 @@ FIELDS = ["confirmed_absence_id", "canonical_account_id", "fiscal_year", "stage"
 SUPERSEDES = re.compile(rf"\({TAG}; supersedes ([A-Z]+(?:-[A-Z]+)?-\d+), which cited ([\w-]+)\)$")
 
 
+# owner ruling (2026-10-16, option 2 of review-D3c.md): the ASPR FY2023 absences are retired, the cells become
+# missing -- ASPR was not an entity apart from the Office of the Secretary until FY2024. Kept here as they were, so
+# a re-run still checks them and the output stays the same.
+OWNER_RETIRED = {
+    "CA-LHHS-0030": ("ACC-HHS-ASPR-TOTAL", 2023, "President's Budget", "SRC-CRPT-117HRPT403"),
+    "CA-LHHS-0031": ("ACC-HHS-ASPR-TOTAL", 2023, "House Reported", "SRC-CRPT-117HRPT403"),
+    "CA-LHHS-0033": ("ACC-HHS-ASPR-TOTAL", 2023, "Senate Reported", "SRC-EXPL-LHHS-FY2023-SENATE"),
+}
+RETIRED_REASON = ("ASPR FY2023: rested on a report's table; the FY2023 text funds ASPR's programs under the Office "
+                  "of the Secretary's Public Health and Social Services Emergency Fund, and ASPR was not an entity "
+                  f"apart from the Office of the Secretary until FY2024 (owner, {DATE}): retired, the cell is "
+                  f"missing ({TAG})")
+
+
 def targets(data):
     """[(row, live re-cited absence or None)]: the absences citing a report (absence_audit), and the ones this
     script already re-cited, rebuilt as they were (so a re-run checks them again and the output stays the same)."""
@@ -533,6 +547,11 @@ def targets(data):
         m = SUPERSEDES.search(c["evidence"])
         if m:
             out.append(({**c, "confirmed_absence_id": m.group(1), "source_document_id": m.group(2)}, c))
+    live = {c["confirmed_absence_id"] for c in data["confirmed_absences"]}
+    for cid, (aid, fy, stage, doc) in OWNER_RETIRED.items():
+        if cid not in live:
+            out.append(({"confirmed_absence_id": cid, "canonical_account_id": aid, "fiscal_year": fy, "stage": stage,
+                         "amount_type": "budget authority", "component": "", "source_document_id": doc}, None))
     return sorted(out, key=lambda t: IDS.parse(t[0]["confirmed_absence_id"])[1:])
 
 
@@ -553,6 +572,8 @@ def run(data):
         a = acc[row["canonical_account_id"]]
         res = check(data, row, a, amap, [b for b in acc.values() if b["agency_key"] == a["agency_key"]
                                          and "(agency total)" not in b["canonical_name"]])
+        if row["confirmed_absence_id"] in OWNER_RETIRED and res["outcome"] == "review":
+            res = {**res, "outcome": "retired", "reason": res["reason"] + f". Owner ruling ({DATE}): retired"}
         out = {"confirmed_absence_id": row["confirmed_absence_id"],
                "canonical_account_id": row["canonical_account_id"], "fiscal_year": row["fiscal_year"],
                "stage": row["stage"], "amount_type": row["amount_type"], "component": row.get("component", ""),
@@ -596,6 +617,9 @@ def apply(data, retired, rows):
         gone[c["confirmed_absence_id"]] = (f"rested on a report or explanatory statement ({c['source_document_id']}); "
                                            f"re-cited to bill or law text as {nid} ({TAG}, {DATE})")
         r["new_confirmed_absence_id"] = nid
+    for r in rows:
+        if r["outcome"] == "retired" and r["confirmed_absence_id"] in old:
+            gone[r["confirmed_absence_id"]] = RETIRED_REASON
     data["confirmed_absences"] = [c for c in data["confirmed_absences"] if c["confirmed_absence_id"] not in gone] + new
     retired["confirmed_absences"].update(gone)
     return new, gone
@@ -609,7 +633,9 @@ def main(argv=None):
     data = json.loads(STAGED.read_text())
     rows, drift = run(data)
     n = sum(r["outcome"] == "confirmed" for r in rows)
-    print(f"absences checked: {len(rows)}; confirmed by text: {n}; for review: {len(rows) - n}")
+    k = sum(r["outcome"] == "retired" for r in rows)
+    print(f"absences checked: {len(rows)}; confirmed by text: {n}; retired (owner ruling): {k}; "
+          f"for review: {len(rows) - n - k}")
     if drift:
         print(f"re-cited absences the text no longer gives the same evidence for: {', '.join(drift)}")
     if args.write:
@@ -617,7 +643,7 @@ def main(argv=None):
         new, gone = apply(data, retired, rows)
         STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
         RETIRED.write_text(json.dumps(retired, indent=1, ensure_ascii=False) + "\n")
-        print(f"superseded {len(gone)} absences; added {len(new)}")
+        print(f"retired {len(gone)} absences (superseded or by ruling); added {len(new)}")
     text = render(rows)
     if args.check:
         if drift or not OUT.exists() or OUT.read_text() != text:

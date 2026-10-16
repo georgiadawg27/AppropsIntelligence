@@ -8,7 +8,7 @@ the Budget Appendix's proposed language. D-3b listed 218 live absences citing a 
 | outcome | President's Budget | House Reported | Senate Reported | Enacted | total |
 |---|---|---|---|---|---|
 | confirmed by text, re-cited | 60 | 59 | 40 | 56 | 215 |
-| left for review | 1 | 1 | 1 | 0 | 3 |
+| retired (owner ruling, ASPR FY2023) | 1 | 1 | 1 | 0 | 3 |
 
 Confirmed: CJS 197 (NASA rescission 68, NASA supplemental 62, NSF supplemental 67), Labor-HHS 18. Each one is
 superseded, not overwritten: a new absence (CA-0199 ... CA-0395, CA-LHHS-0174 ... CA-LHHS-0191) holds the same fact
@@ -49,15 +49,15 @@ and rescission lines of these six accounts that are not `supplemental_act` (e.g.
 cancellation via 080X0115, FY2020 Science -$70,000,000 in S. 2584 sec. 523 and P.L. 116-93, FY2024 Senate
 Exploration $280,000,000, FY2025 request Construction $296,000,000).
 
-## For review (3, unchanged)
+## ASPR FY2023: retired (owner ruling, 2026-10-16)
 
 ASPR (Administration for Strategic Preparedness and Response, agency total), FY2023 President's Budget
 (CA-LHHS-0030), House Reported (CA-LHHS-0031) and Senate Reported (CA-LHHS-0033). The FY2023 Appendix (HHS p.483),
 H.R. 8295 and S. 4659 print no ASPR heading, but appropriate ASPR's programs (BARDA among them) under the Office of
-the Secretary's 'Public Health and Social Services Emergency Fund'. Whether the account is absent before FY2024 is a
-question of its scope (which headings make up ASPR), which the text's silence does not settle. Options: keep the
-absences citing the reports (an exception to the rule), retire them (the cells become missing), or record
-FY2023 from the PHSSEF heading's ASPR programs under a scope ruling.
+the Secretary's 'Public Health and Social Services Emergency Fund', so the text cannot confirm an absence. Owner
+(option 2 of three): retired; ASPR did not become an entity apart from the Office of the Secretary until FY2024.
+The account's history starts at FY2024; the Labor-HHS grid still reads 'no figure' for those cells (funded within
+PHSSEF, REL-LHHS-0009/0010/0016), and `coverage.csv` counts them as unchecked (24 -> 27).
 
 ## Outside this brief (no change)
 

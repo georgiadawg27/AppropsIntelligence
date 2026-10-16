@@ -967,9 +967,16 @@ class NoPrintedTotal(StoreCopyTest):
         return next(l for l in row["cells"][stage] if l["amount_type"] == amount_type and l["component"] is None)
 
     def test_fy2023_aspr_total(self):
-        # the ASPR total the FY2023 House report doesn't print
-        line = self.head("ACC-HHS-ASPR-TOTAL", 2023, "House Reported")
-        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0031"))
+        # D-3c (owner, 2026-10-16): the FY2023 ASPR absences rested on the reports' tables and ASPR was not apart from
+        # the Office of the Secretary until FY2024, so they are retired; the account's history starts at FY2024
+        g = S.history_grid(S.history(self.conn, "ACC-HHS-ASPR-TOTAL"))
+        self.assertEqual(min(r["fiscal_year"] for r in g["rows"]), 2024)
+        retired = json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text())["confirmed_absences"]
+        for cid in ("CA-LHHS-0030", "CA-LHHS-0031", "CA-LHHS-0033"):
+            self.assertIn("D-3c", retired[cid])
+        # the AHA total the FY2026 House bill doesn't fund (the report prints its rows): still no printed total
+        line = self.head("ACC-HHS-AHA-TOTAL", 2026, "House Reported")
+        self.assertEqual((line["state"], line["absence"]["confirmed_absence_id"]), ("no_printed_total", "CA-LHHS-0174"))
 
     def test_fy2022_and_fy2023_medicaid_headlines_are_derived(self):
         # the FY2022 and FY2023 tables print Medicaid's views and its advance, never its headline: the headline is
