@@ -672,6 +672,44 @@ class CompareBrowser(GridBrowser):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.assertEqual(years(fetched), self.lhhs["fiscal_years"])
 
+    def test_split_subcommittee_reads_one_accounts_years_from_its_row_file(self):
+        # R2: an account's every year (the account page, the panel's enacted bars) comes from its row file
+        # (subcommittees/LHHS/rows/<id>.json), and Find changes and a shared watchlist read only the years they use,
+        # never every year of every row
+        years = lambda urls: sorted({int(u.rsplit("/", 1)[1][:-5]) for u in urls
+                                     if re.search(r"/subcommittees/LHHS/\d{4}\.json$", u)})
+        rows = lambda urls: sorted(u.rsplit("/", 1)[1][:-5] for u in urls if "/subcommittees/LHHS/rows/" in u)
+        aid = "ACC-HHS-ACF-CCDBG"
+        row = next(r for r in self.lhhs["rows"] if r["account"]["canonical_account_id"] == aid)
+        fetched = []
+        self.page.on("request", lambda r: fetched.append(r.url))
+        # the panel: the year shown, the one before it, and the row's file
+        self.open("static", f"?view=compare&sc=LHHS&fy=2024&acct={aid}")
+        self.page.wait_for_selector("[data-testid=acct-bars]")
+        self.assertLess(len(years(fetched)), len(self.lhhs["fiscal_years"]), years(fetched))
+        self.assertEqual(rows(fetched), [aid])
+        self.assertEqual(self.page.evaluate("(id) => { const r = gridRow(scCache.get('LHHS'), id); "
+                                            "return { cells: r.cells, attributes: r.attributes || null }; }", aid),
+                         {"cells": row["cells"], "attributes": row.get("attributes")})
+        # the account page: one year file and the row's file
+        fetched.clear()
+        self.page.goto(self.urls["static"] + f"?account={aid}")
+        self.page.wait_for_selector("[data-testid=ap-history]")
+        self.assertLessEqual(len(years(fetched)), 1, years(fetched))
+        self.assertEqual(rows(fetched), [aid])
+        # Find changes: the year chosen and the one before it
+        fetched.clear()
+        self.page.goto(self.urls["static"] + "?view=changes&sc=LHHS&fy=2024")
+        self.page.wait_for_selector("[data-testid=fc-count]")
+        self.assertTrue({2023, 2024} <= set(years(fetched)), years(fetched))
+        self.assertLessEqual(len(years(fetched)), 3, years(fetched))
+        self.assertEqual(rows(fetched), [])
+        # a shared watchlist: the rows' names only
+        fetched.clear()
+        self.page.goto(self.urls["static"] + f"?view=changes&sc=LHHS&fy=2024&preset=moves&watch={aid}")
+        self.page.wait_for_selector("[data-testid=watch-import-banner]")
+        self.assertLessEqual(len(years(fetched)), 1, years(fetched))
+
     def test_enacted_history_and_two_years_show_the_same_cells(self):
         self.open("static", "?view=compare&sc=LHHS&grid=history")
         self.menu("click", "#expand-all")

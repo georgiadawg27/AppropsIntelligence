@@ -1035,6 +1035,16 @@ class AccountingLayer(unittest.TestCase):
             self.assertEqual(head["fiscal_years"], g["fiscal_years"])
             self.assertEqual(sorted(p.name for p in folder.glob("*.json")),
                              sorted(["index.json"] + list(head["files"].values())))
+            # and one file per row, title total and bill total: its cells and attributes in every year (R2)
+            every = E.grid_rows(g)
+            self.assertEqual(sorted(p.stem for p in (folder / head["row_files"]).glob("*.json")),
+                             sorted(r["account"]["canonical_account_id"] for r in every))
+            for row in every:
+                aid = row["account"]["canonical_account_id"]
+                part = json.loads((folder / head["row_files"] / f"{aid}.json").read_text())
+                self.assertEqual((part["subcommittee"], part["canonical_account_id"]), (sc, aid))
+                self.assertEqual(part["cells"], row["cells"], aid)
+                self.assertEqual(part.get("attributes"), row.get("attributes"), aid)
             parts = [json.loads((folder / head["files"][str(fy)]).read_text()) for fy in g["fiscal_years"]]
             for p in parts:
                 self.assertLess((folder / f"{p['fiscal_year']}.json").stat().st_size, E.SPLIT_BYTES)

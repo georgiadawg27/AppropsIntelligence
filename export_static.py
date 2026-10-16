@@ -29,7 +29,10 @@ that answers the same questions as approps_web.py without a server.
     SPLIT_BYTES is written per fiscal year instead:
     docs/data/subcommittees/<name>/<FY>.json + index.json (split_grid),
     so the page fetches only the years on screen; the whole file is not
-    kept (it would be the same cells twice).
+    kept (it would be the same cells twice). Each row of a split one also
+    gets <name>/rows/<account id>.json (its cells and attributes in every
+    year), so the account page, and the panel's enacted bars, read one row's
+    years without fetching every year of every row.
   - Writes docs/data/whats_new.json: approps_web.whats_new() (the live
     /api/whats-new answer), every source document and figure by the date
     it first entered the record, newest first, for the page's "What's new".
@@ -209,10 +212,27 @@ def split_grid(g, folder):
              folder / f"{fy}.json", compact=True)
     head = {k: v for k, v in g.items() if k not in ("rows", "titles", "bill_total")}
     head["files"] = {str(fy): f"{fy}.json" for fy in years}
+    head["row_files"] = "rows"
     dump(head, folder / "index.json")
     for stale in folder.glob("*.json"):
         if stale.name != "index.json" and stale.stem not in {str(y) for y in years}:
             stale.unlink()
+    # one file per row (a title or bill total too): its every year, for a page that reads one account's years
+    ids = []
+    for row in grid_rows(g):
+        aid = row["account"]["canonical_account_id"]
+        ids.append(aid)
+        dump({"subcommittee": g["subcommittee"], "canonical_account_id": aid, "cells": row["cells"],
+              **({"attributes": row["attributes"]} if "attributes" in row else {})},
+             folder / "rows" / f"{aid}.json", compact=True)
+    for stale in (folder / "rows").glob("*.json"):
+        if stale.stem not in ids:
+            stale.unlink()
+
+
+def grid_rows(g):
+    """Every row of a subcommittee grid: its account rows, the title totals and the bill total."""
+    return g["rows"] + [t["total"] for t in g["titles"] if t.get("total")] + ([g["bill_total"]] if g.get("bill_total") else [])
 
 
 def read_grid(data, name):
@@ -225,6 +245,7 @@ def read_grid(data, name):
     folder = data / "subcommittees" / name
     grid = json.loads((folder / "index.json").read_text())
     files = grid.pop("files")
+    grid.pop("row_files", None)
     parts = [json.loads((folder / files[str(fy)]).read_text()) for fy in grid["fiscal_years"]]
 
     def join(pieces):

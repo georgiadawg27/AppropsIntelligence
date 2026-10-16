@@ -1,5 +1,26 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Readiness fix 3: site data reads (R1/R2), 2026-10-16, this PR
+
+Brief: backfill readiness report R1/R2. R1 (no whole file beside a split subcommittee's year files) and the grid's
+"fetch only the years on screen" already landed in Platform Phase 1 (87e556b). This PR finishes R2: the readers that
+still fetched every year of every row.
+- export_static.split_grid also writes `subcommittees/<name>/rows/<account id>.json` per row, title total and bill
+  total (its cells and attributes in every year); the head's `row_files` names the folder. LHHS: 110 files, 38 MB raw,
+  1.6 MB gzipped (the same cells as the year files, cut the other way).
+- Page: `source.loadRow(grid, id)` merges one row's file into that row. The account page reads one year file (names,
+  links) and its own row file; the grid's account panel and the phone sheet (enacted bars) read the selected row's
+  file instead of every year; Find changes reads the year chosen and the one before; a shared watchlist reads one year
+  file per subcommittee. Enacted history still reads every year (it shows them all).
+- No figure, fixture or workbook value changed.
+- Tests: test_compare `test_split_subcommittee_reads_one_accounts_years_from_its_row_file`, test_site_data
+  split files (row files hold the whole grid's cells), test_static (row files are part of the split payload).
+
+Open: R3 (the four view variants are 56% of each grid) is not done; next is the full CJS load.
+- Local only: `test_find_changes.py::test_a_blank_request_is_not_an_elimination` (FY2023) fails here on main too
+  (Medicare Operations' FY2023 request is now a confirmed absence, CA-LHHS-0153); CI on main is green, so it is the
+  local workbook, not the code.
+
 ## Readiness fix 2: data/staged.json split per subcommittee (2026-10-16, this PR)
 
 Brief: backfill readiness report B2 (`/mnt/project-files/backfill-readiness/report.md`; one file would pass GitHub's
