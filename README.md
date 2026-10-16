@@ -9,18 +9,22 @@ history with a source citation for every figure.
 | `govinfo_ingest.py` | Finds and stores bills, committee reports and public laws |
 | `extract_approps.py` | Extracts comparative tables (text layer, OCR, or vision) into observations |
 | `validate_approps.py` | Arithmetic, structural, unit and account-identity checks |
-| `data/staged.json` + `scripts/build_workbook.py` | The canonical data, and the script that builds the workbook from it (see **Data**) |
-| `approps_store.py` | SQLite store loaded from the workbook built from `data/staged.json`; account matching and history queries (CLI) |
+| `data/staged/` + `scripts/build_workbook.py` | The canonical data, and the script that builds the workbook from it (see **Data**) |
+| `approps_store.py` | SQLite store loaded from the workbook built from `data/staged/`; account matching and history queries (CLI) |
 | `approps_web.py` + `web/` | Read-only local web UI over the store |
 | `export_static.py` → `docs/` | Static copy of the UI for GitHub Pages |
 
 ## Data
 
-**Where it lives.** The source of truth is `data/staged.json`: every account,
+**Where it lives.** The source of truth is `data/staged/`: every account,
 observation, source document, Bill Report Reference row, validation record and
-the rest, one JSON document. `scripts/build_workbook.py` builds the workbook
+the rest, one JSON document stored as one file per subcommittee and record type
+(`data/staged/<CODE>/<table>.json`; records of no one subcommittee in `shared/`)
+plus `manifest.json`, which keeps each table's record order. Read and write it only
+with `staged_data.load()` and `staged_data.save(data)`; `python staged_data.py --check`
+checks the files against the manifest. `scripts/build_workbook.py` builds the workbook
 (`Approps_Pilot_Schema_Loaded.xlsx`) from it. No workbook is committed: the site,
-the store and the tests all read a build of `data/staged.json`.
+the store and the tests all read a build of `data/staged/`.
 
 **How to rebuild.**
 
@@ -74,7 +78,7 @@ IDs are never reused or renumbered (REL-LHHS-0003/0004 stay retired).
 committee draft -- the full committee never reported the bill (CJS FY2021-23 Senate, CJS FY2024 House,
 Labor-HHS FY2023 Senate and FY2024 House). The grid labels those columns "House (draft)" / "Senate (draft)".
 The FY2024 House Labor-HHS rows were added by `reference/review/lhhs/fy2024_house/build_rows.py`
-(appends to `data/staged.json`; its bill-text and cross-document reports sit beside it).
+(appends to `data/staged/`; its bill-text and cross-document reports sit beside it).
 
 **Bill and law text.** Every House, Senate and Enacted figure is checked against the bill or law text for
 that same stage. `data/legislative_text/<document_id>.json` holds each bill or law's text parsed into
@@ -107,20 +111,20 @@ record marked "within rounding" (never a printed line amount). With nothing to c
 `resolved-by-rule`, shown as "Resolved by rule: bill text controls (explanatory table prints ...)" rather than
 unverified. CI fails when a document at a bill or
 law stage has no text file and no exemption, when an exemption is stale or has no reason, when a text file
-was parsed by another parser version, or when `data/staged.json` is not up to date with the check. The job
+was parsed by another parser version, or when `data/staged/` is not up to date with the check. The job
 summary prints matched / mismatched / ambiguous / no paragraph / exempt and the change since the base branch.
 Documents with no usable text are exempted, each with its reason, in one file:
 `data/legislative_text/exemptions.json`.
 
 **Adding a bill or law (ingestion steps).** After its Bill Report Reference or Source Document row is in
-`data/staged.json`:
+`data/staged/`:
 
 1. Fetch its text: `python scripts/fetch_legislative_text.py` (GOVINFO_API_KEY in the environment or `.env`),
    or run the **Fetch bill and law text** workflow by hand on your branch (it uses the repository secret and
    commits the result). It takes govinfo's USLM XML, else the bill XML, else its HTML text, else the PDF's
    text layer (committee drafts: the PDF's text layer); never page images. It prints the API calls it made.
-2. `python scripts/check_legislative_text.py --write` writes the results into `data/staged.json`.
-3. Commit `data/legislative_text/` and `data/staged.json`. The check runs on the pull request.
+2. `python scripts/check_legislative_text.py --write` writes the results into `data/staged/`.
+3. Commit `data/legislative_text/` and `data/staged/`. The check runs on the pull request.
 
 A document with no usable text is listed by the fetch: add it to `exemptions.json` with the reason. After a
 parser change (`legislative_text.py`), `python scripts/fetch_legislative_text.py --reparse` re-parses the
@@ -132,7 +136,7 @@ again and checks the sha256 and the parse against the committed files.
 components (advances, designations, transfers, trust-fund limitations, fees and offsets, rescissions, defense
 portions, other laws, earmarks) are records beside it, so later views are sums: see
 [reference/ACCOUNTING_RULES.md](reference/ACCOUNTING_RULES.md) for the types, the views and the owner's
-defaults. After changing data or text, run in this order and commit `data/staged.json`:
+defaults. After changing data or text, run in this order and commit `data/staged/`:
 
 1. `python scripts/tag_components.py --write` (re-tags held lines, reads the table lines and the pilot's bill
    and law text; IDs are kept and never reused)
@@ -140,7 +144,7 @@ defaults. After changing data or text, run in this order and commit `data/staged
 3. `python scripts/measure_reconcile.py --write` (headline = base + included components; printed view totals
    against the computed views; differences go to review, no figure changes)
 
-CI runs all three with `--ci` and fails when `data/staged.json` is not up to date.
+CI runs all three with `--ci` and fails when `data/staged/` is not up to date.
 
 **Review statuses.** Two fields, never inferred from wording on the page:
 
@@ -159,7 +163,7 @@ CI runs all three with `--ci` and fails when `data/staged.json` is not up to dat
 ## Local UI (live)
 
 ```
-python approps_store.py load     # builds the workbook from data/staged.json, then loads it
+python approps_store.py load     # builds the workbook from data/staged/, then loads it
 python approps_web.py            # http://127.0.0.1:8765/
 ```
 
@@ -204,7 +208,7 @@ Python matching rule, held to identical answers by `tests/test_static.py`.
 Values, "not applicable" (confirmed absences) and "missing" render exactly as
 in the live UI, as does the note when a name matched through a former name.
 
-**Freshness: as of the last committed `data/staged.json` — updated
+**Freshness: as of the last committed `data/staged/` — updated
 automatically, not in real time.** The page shows which data (path, version,
 commit date, sha256) it was built from, and links the workbook built from it.
 

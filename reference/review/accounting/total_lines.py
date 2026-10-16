@@ -18,7 +18,6 @@ Needs pdftotext (poppler). The PDFs are public; nothing here uses a key.
 
 import argparse
 import csv
-import json
 import re
 import subprocess
 import sys
@@ -31,6 +30,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 import approps_store as S  # noqa: E402
+import staged_data  # noqa: E402
 import total_gaps  # noqa: E402
 
 OUT = HERE / "total_lines_found.csv"
@@ -99,7 +99,7 @@ def main(argv=None):
     args = p.parse_args(argv)
     cache = Path(args.cache)
     cache.mkdir(parents=True, exist_ok=True)
-    data = json.loads(S.STAGED.read_text())
+    data = staged_data.load()
     docs = {d["document_id"]: d for d in data["source_docs"]}
     obs = {o["observation_id"]: o for o in data["observations"]}
     with tempfile.TemporaryDirectory() as tmp:

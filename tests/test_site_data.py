@@ -1,5 +1,5 @@
 """
-The site reads data/staged.json: the workbook is built from it (approps_store.reference_workbook),
+The site reads data/staged/: the workbook is built from it (approps_store.reference_workbook),
 the export publishes that build as docs/Approps_Pilot_Schema_Loaded.xlsx, and nothing reads a
 committed workbook. These tests hold the switch to what the site showed before it.
 """
@@ -13,6 +13,7 @@ from pathlib import Path
 
 import approps_store as S
 import export_static as E
+import staged_data
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -57,11 +58,10 @@ class SiteReadsData(unittest.TestCase):
 
     def test_index_names_the_data(self):
         src = json.loads((DOCS / "data" / "index.json").read_text())["source"]
-        self.assertEqual(src["data"], "data/staged.json")
+        self.assertEqual(src["data"], "data/staged")
         self.assertEqual(src["version"], "v38")
         self.assertEqual(src["download"], "Approps_Pilot_Schema_Loaded.xlsx")
-        import hashlib
-        self.assertEqual(src["data_sha256"], hashlib.sha256(S.STAGED.read_bytes()).hexdigest())
+        self.assertEqual(src["data_sha256"], staged_data.digest(staged_data.load()))
 
     def test_grid_state_counts_unchanged(self):
         for sc, want in STATE_COUNTS.items():
@@ -80,7 +80,7 @@ class SiteReadsData(unittest.TestCase):
         # pass (the approved former names, the derived CDC-Wide headline); 11 stay pending. The bill and law text
         # check's mismatches and ambiguous results (VAL-TXT-) wait for review too, and so do measure_reconcile's
         # failed bases and printed views that differ from the computed ones (VAL-MR-; one VAL-MRC- item per cause of the printed views that differ)
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         # the backfill years (FY2022 and earlier), whose records the triage and owner rules resolve
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] <= 2022
                   and o["observation_id"].startswith("OBS-LHHS-")}
@@ -113,7 +113,7 @@ class SiteReadsData(unittest.TestCase):
 
     def test_triage_resolutions_follow_the_proposal(self):
         import csv
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         by_id = {v["validation_id"]: v for v in data["validations"]}
         with open(ROOT / "reference" / "review" / "triage_proposal.csv", newline="") as f:
             rows = [r for r in csv.DictReader(f) if r["id"].startswith("VAL-")]
@@ -156,7 +156,7 @@ class SiteReadsData(unittest.TestCase):
 
 class DraftStages(unittest.TestCase):
     def test_bill_report_reference_draft_column(self):
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         self.assertEqual({r["draft"] for r in data["bill_report_refs"]}, {"TRUE", "FALSE"})
         self.assertEqual(sorted(r["reference_id"] for r in data["bill_report_refs"] if r["draft"] == "TRUE"),
                          ["BR-CJS-FY2021-SENATE", "BR-CJS-FY2022-SENATE", "BR-CJS-FY2023-SENATE", "BR-CJS-FY2024-HOUSE",
@@ -169,7 +169,7 @@ class DraftStages(unittest.TestCase):
                          ["BR-LHHS-FY2020-SENATE"])
 
     def test_fy2024_house_reference(self):
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         r = next(r for r in data["bill_report_refs"] if r["reference_id"] == "BR-LHHS-FY2024-HOUSE")
         self.assertEqual((r["lookup_key"], r["bill_id"], r["report_id"], r["draft"]),
                          ("LHHS-2024-House Reported", "H.R.5894", "JES_LHHS_H.R.5894", "TRUE"))
@@ -191,7 +191,7 @@ class DownloadWorkbook(unittest.TestCase):
             for i in (1, 2):
                 built = S.build_workbook(Path(d) / f"build{i}.xlsx")       # a fresh build each time
                 out = Path(d) / f"published{i}.xlsx"
-                E.publish_workbook(built, out, E.committed_date(S.STAGED))
+                E.publish_workbook(built, out, E.committed_date(*staged_data.GIT_PATHS))
                 files.append(out.read_bytes())
             self.assertNotEqual((Path(d) / "build1.xlsx").read_bytes(), (Path(d) / "build2.xlsx").read_bytes(),
                                 "openpyxl stamps the build time -- the publish step is what makes it stable")
@@ -217,7 +217,7 @@ class ReviewList(unittest.TestCase):
         page_items = [r for r in self.rows() if r["reason"] == "page not confirmed by text search"]
         self.assertEqual((len(page_items), len(sheet)), (140, 129))      # less the 11 derived figures (resolved)
         self.assertEqual(sum(bool(r["nearby_page"]) for r in sheet), 13)
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         obs = {o["observation_id"]: o for o in data["observations"]}
         docs = {d["document_id"]: d["url_or_identifier"] for d in data["source_docs"]}
         import re
@@ -246,7 +246,7 @@ class ReviewList(unittest.TestCase):
         self.assertEqual(Counter(r["result"] for r in res), {"confirmed": 70, "narrowed": 58, "resolved_by_owner": 1})
         self.assertEqual([r["observation_id"] for r in res if r["result"] == "resolved_by_owner"], ["OBS-0771"])
         self.assertTrue((ROOT / "reference" / "review" / "page_checks" / "OBS-0771-CRPT-118hrpt582-p248.png").is_file())
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         obs = {o["observation_id"]: o for o in data["observations"]}
         for r in res:
             o = obs[r["observation_id"]]
@@ -277,7 +277,7 @@ class ReviewList(unittest.TestCase):
         self.assertEqual(len(reads), 26)
 
     def test_cbo_observations_tagged_interim(self):
-        data = json.loads(S.STAGED.read_text())
+        data = staged_data.load()
         cbo = sorted(o["observation_id"] for o in data["observations"] if o["source_document_id"] == "SRC-CBO-HR8845-FY2027")
         # 18 of the 22 were re-sourced to H.Rept. 119-652's tables (2026-10-11); these 4 the tables don't print
         self.assertEqual(cbo, ["OBS-0966", "OBS-0967", "OBS-0970", "OBS-0983"])
@@ -297,7 +297,7 @@ def grid_rows(g):
 
 class AccountingLayer(unittest.TestCase):
     """The accounting layer of the site data (UI-0, site_accounting.py): every published view, component, earmark,
-    defense portion and attribute is what data/staged.json and measure_reconcile hold."""
+    defense portion and attribute is what data/staged/ and measure_reconcile hold."""
 
     @classmethod
     def setUpClass(cls):
@@ -308,7 +308,7 @@ class AccountingLayer(unittest.TestCase):
         cls.AC = AC
         import tag_components as TC
         cls.TC = TC
-        cls.data = json.loads(S.STAGED.read_text())
+        cls.data = staged_data.load()
         cls.obs = {o["observation_id"]: o for o in cls.data["observations"]}
         cls.comps = {c["component_id"]: c for c in cls.data["observation_components"]}
         cls.by_obs = AC.components_by_observation(cls.data)
@@ -359,7 +359,7 @@ class AccountingLayer(unittest.TestCase):
                         continue
                     if e["status"] == "checked":
                         # a printed total confirms it: measure_reconcile passed that printed view line, and the
-                        # record is in data/staged.json
+                        # record is in data/staged/
                         p = self.obs[e["printed_observation_id"]]
                         self.assertEqual(e["amount"], p["amount"])
                         self.assertEqual((p["canonical_account_id"], f"{p['fiscal_year']}|{p['stage']}"),
@@ -417,7 +417,7 @@ class AccountingLayer(unittest.TestCase):
 
     # ------------------------------------------------------------ D-6: totals from their accounts
     def lines_behind(self, sc, row, key=None, doc=None):
-        """A total's lines, worked out here from data/staged.json (owner, D-6): an agency total's accounts; a title
+        """A total's lines, worked out here from data/staged/ (owner, D-6): an agency total's accounts; a title
         or bill total's accounts plus each agency held only as its total. None for an agency held only as its
         total (it is its own line). With a cell and its table (D-9): an account that table prints under another
         agency's total moves to it (total_members_printed.csv)."""

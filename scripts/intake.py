@@ -3,13 +3,13 @@ Intake for one cell -- (subcommittee, fiscal year, stage) -- of any subcommittee
 The generalized form of reference/review/lhhs/backfill/ (those per-year scripts stay as history).
 
     python scripts/intake.py --subcommittee CODE --fy N --stage S            # what it finds; nothing written
-    python scripts/intake.py --subcommittee CODE --fy N --stage S --write    # also bring data/staged.json's checks
+    python scripts/intake.py --subcommittee CODE --fy N --stage S --write    # also bring data/staged/'s checks
                                                                              # and components up to date
 
 Stages: "President's Budget", "House Reported", "Senate Reported", "Enacted" (or PB, HOUSE, SENATE, ENACTED).
 With APPROPS_DATA_ROOT (paths.py) it works on another data root.
 
-It never adds or changes a figure: the cell's figures are entered first (data/staged.json, each with its source
+It never adds or changes a figure: the cell's figures are entered first (data/staged/, each with its source
 page). Then, in order:
 
   0. inputs     the subcommittee code is one the code knows (subcommittees.py or a rule file) and usable in IDs
@@ -35,7 +35,6 @@ Exit status: 0 when nothing needs review, 1 when a missing input stopped it, 2 w
 import argparse
 import collections
 import csv
-import json
 import os
 import subprocess
 import sys
@@ -52,6 +51,7 @@ import measure_reconcile as MR  # noqa: E402
 import paths  # noqa: E402
 import rules_registry as R  # noqa: E402
 import subcommittees as SC  # noqa: E402
+import staged_data  # noqa: E402
 import tag_components as TC  # noqa: E402
 
 STAGES = {"PB": "President's Budget", "HOUSE": "House Reported", "SENATE": "Senate Reported", "ENACTED": "Enacted"}
@@ -76,7 +76,7 @@ def inputs(data, sc, fy, stage):
         out.append(item("missing input", "missing", f"subcommittee {sc} is unknown: add reference/rules/{sc}.py "
                                                     "(reference/ADDING_A_SUBCOMMITTEE.md)"))
     if not any(a["subcommittee"] == sc for a in data["accounts"]):
-        out.append(item("missing input", "missing", f"no account of {sc} in data/staged.json"))
+        out.append(item("missing input", "missing", f"no account of {sc} in data/staged/"))
     ref = next((r for r in data["bill_report_refs"] if r["subcommittee"] == sc and int(r["fiscal_year"]) == fy
                 and r["stage"] == stage), None)
     if ref is None:
@@ -202,16 +202,16 @@ def write(items, sc, fy, stage):
 def intake(sc, fy, stage, write_checks=False):
     """-> (items, path of the review file, exit status)"""
     stage = STAGES.get(stage.upper(), stage)
-    data = json.loads(paths.staged().read_text())
+    data = staged_data.load()
     missing = inputs(data, sc, fy, stage)
     if missing:
         return missing, write(missing, sc, fy, stage), 1
     if write_checks:
         # D-5: the cell's new figures and documents get today's date (added_dates.py); a date set is never changed
         if any(added_dates.stamp(data).values()):
-            paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
+            staged_data.save(data)
         run_checks()
-        data = json.loads(paths.staged().read_text())
+        data = staged_data.load()
     items = review(data, sc, fy, stage)
     return items, write(items, sc, fy, stage), 2 if any(i["status"] == "review" for i in items) else 0
 

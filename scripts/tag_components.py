@@ -1,12 +1,12 @@
 """
 Tag each headline's components (accounting views, phase 1; accounting.py has the schema, reference/
-ACCOUNTING_RULES.md the rules). Offline and deterministic: it reads data/staged.json, the committed bill and law
+ACCOUNTING_RULES.md the rules). Offline and deterministic: it reads data/staged/, the committed bill and law
 text (data/legislative_text/) and the table lines read for components (reference/review/accounting/
 table_lines.csv), and gives the same records every run.
 
     python scripts/tag_components.py              # what it would record; counts
-    python scripts/tag_components.py --write      # write data/staged.json's observation_components
-    python scripts/tag_components.py --ci         # fail when data/staged.json is not up to date with this
+    python scripts/tag_components.py --write      # write data/staged/'s observation_components
+    python scripts/tag_components.py --ci         # fail when data/staged/ is not up to date with this
     python scripts/tag_components.py --report X   # every tag and every untagged component-like phrase as CSV
 
 This is the core: the general rules only. What is true of one subcommittee's documents or accounts lives in its
@@ -66,6 +66,7 @@ import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
 import paths  # noqa: E402
 import rules_registry as R  # noqa: E402
+import staged_data  # noqa: E402
 
 ACCOUNTING = paths.accounting_dir()
 TABLE_LINES = ACCOUNTING / "table_lines.csv"
@@ -110,11 +111,11 @@ def cr_laws(data):
 
 
 def coverage(data=None):
-    """-> (auto cells, CR cells): the cells read for components, from the data (G-1). data None: data/staged.json
+    """-> (auto cells, CR cells): the cells read for components, from the data (G-1). data None: data/staged/
     (paths.staged()), read once."""
     if data is None:
         if "default" not in _COVERAGE:
-            _COVERAGE["default"] = coverage(json.loads(paths.staged().read_text()))
+            _COVERAGE["default"] = coverage(staged_data.load())
         return _COVERAGE["default"]
     cr = {(sc, fy, "Enacted") for sc, fy in cr_laws(data)}
     return text_cells(data) | cr, cr
@@ -1125,7 +1126,7 @@ def main(argv=None):
     ap.add_argument("--ci", action="store_true")
     ap.add_argument("--report", type=Path)
     a = ap.parse_args(argv)
-    data = json.loads(paths.staged().read_text())
+    data = staged_data.load()
     records, retired, report = build(data)
     errs = AC.component_errors(records, {o["observation_id"]: o for o in data["observations"]},
                                {d["document_id"] for d in data["source_docs"]})
@@ -1155,11 +1156,11 @@ def main(argv=None):
     if a.write and stale:
         data["observation_components"] = records
         data["observation_components_retired"] = retired
-        paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
-        print("data/staged.json updated")
+        staged_data.save(data)
+        print("data/staged/ updated")
     if a.ci and stale:
-        print("data/staged.json is not up to date with the component tagging -- run "
-              "python scripts/tag_components.py --write and commit data/staged.json")
+        print("data/staged/ is not up to date with the component tagging -- run "
+              "python scripts/tag_components.py --write and commit data/staged/")
         return 1
     return 0
 

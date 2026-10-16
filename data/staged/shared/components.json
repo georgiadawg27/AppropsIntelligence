@@ -1,0 +1,314 @@
+[
+ {
+  "component_id": "defense",
+  "label": "Defense function",
+  "kind": "part",
+  "description": "a line printed under the account's own line (Defense function)"
+ },
+ {
+  "component_id": "chimp",
+  "label": "FY27 CHIMP",
+  "kind": "part",
+  "description": "a line printed under the account's own line (CHIMP)"
+ },
+ {
+  "component_id": "chimp_pop_up",
+  "label": "FY27 CHIMP Pop-Up",
+  "kind": "part",
+  "description": "a line printed under the account's own line (CHIMP Pop-Up)"
+ },
+ {
+  "component_id": "supplemental_act",
+  "label": "OTHER APPROPRIATIONS",
+  "kind": "part",
+  "description": "a separate supplemental appropriations act (Other Appropriations)"
+ },
+ {
+  "component_id": "budget_amendment",
+  "label": "OTHER APPROPRIATIONS",
+  "kind": "part",
+  "description": "a budget amendment to the President's request"
+ },
+ {
+  "component_id": "emergency",
+  "label": "(emergency)",
+  "kind": "part",
+  "description": "a separate line of the account designated emergency ('... (emergency)'), where the account's amount type has no emergency form: an emergency rescission"
+ },
+ {
+  "component_id": "program_level",
+  "label": "program level",
+  "kind": "view",
+  "description": "parallel total printed with scope 'program level'"
+ },
+ {
+  "component_id": "fiscal_year_program_level",
+  "label": "fiscal year program level",
+  "kind": "view",
+  "description": "parallel total printed with scope 'fiscal year program level'"
+ },
+ {
+  "component_id": "program_level_with_cures_and_phs_evaluation_act_funding",
+  "label": "program level (with CURES and PHS Evaluation Act Funding)",
+  "kind": "view",
+  "description": "parallel total printed with scope 'program level with cures and phs evaluation act funding'"
+ },
+ {
+  "component_id": "program_level_excluding_arpa_h",
+  "label": "program level (excluding ARPA-H)",
+  "kind": "view",
+  "description": "parallel total printed with scope 'program level excluding arpa h'"
+ },
+ {
+  "component_id": "program_level_available_this_fiscal_year",
+  "label": "program level, available this fiscal year",
+  "kind": "view",
+  "description": "parallel total printed with scope 'program level available this fiscal year'"
+ },
+ {
+  "component_id": "program_level_including_emergencies",
+  "label": "program level, including emergencies",
+  "kind": "view",
+  "description": "parallel total printed with scope 'program level including emergencies'"
+ },
+ {
+  "component_id": "available_this_fiscal_year",
+  "label": "available this fiscal year",
+  "kind": "view",
+  "description": "parallel total printed with scope 'available this fiscal year'"
+ },
+ {
+  "component_id": "current_year",
+  "label": "Current Year",
+  "kind": "view",
+  "description": "parallel total printed with scope 'current year'"
+ },
+ {
+  "component_id": "appropriated_in_this_bill",
+  "label": "appropriated in this bill",
+  "kind": "view",
+  "description": "parallel total printed with scope 'appropriated in this bill'"
+ },
+ {
+  "component_id": "available_in_this_bill",
+  "label": "available in this bill",
+  "kind": "view",
+  "description": "parallel total printed with scope 'available in this bill'"
+ },
+ {
+  "component_id": "excluding_emergencies",
+  "label": "excluding emergencies",
+  "kind": "view",
+  "description": "parallel total printed with scope 'excluding emergencies'"
+ },
+ {
+  "component_id": "including_phs_eval_tap",
+  "label": "including PHS Eval Tap",
+  "kind": "view",
+  "description": "parallel total printed with scope 'including phs eval tap'"
+ },
+ {
+  "component_id": "discretionary",
+  "label": "discretionary",
+  "kind": "view",
+  "description": "parallel total printed with scope 'discretionary'"
+ },
+ {
+  "component_id": "congressionally_directed_spending",
+  "label": "Community Project Funding / Congressionally Directed Spending",
+  "kind": "contained",
+  "description": "community project funding / congressionally directed spending printed as its own line inside the account's figure (already in the headline: never add it again)"
+ },
+ {
+  "component_id": "kids_first",
+  "label": "Gabriella Miller Kids First Research Act (Common Fund add)",
+  "kind": "contained",
+  "description": "the Gabriella Miller Kids First Research Act line printed under the NIH Office of the Director (inside the Office of the Director's figure: never add it again)"
+ },
+ {
+  "component_id": "chamber_proposal",
+  "label": "Diaper Grants",
+  "kind": "part",
+  "description": "a one-off line a chamber proposed under the account's heading, not in the account's own line (the cell shows it as a note)"
+ },
+ {
+  "component_id": "request_proposal",
+  "label": "National Institute for Research on Safety and Quality (NIRSQ)",
+  "kind": "contained",
+  "description": "a line the President's request proposed, printed inside the account's total (not enacted); the cell shows it as a note"
+ },
+ {
+  "component_id": "request_proposal_opioids",
+  "label": "Combatting Opioids Abuse and Misuse and Addressing Mental Illness",
+  "kind": "contained",
+  "description": "a line the President's request proposed, printed inside the account's total (not enacted); the cell shows it as a note"
+ },
+ {
+  "component_id": "request_proposal_rac_appeals",
+  "label": "Office of Medicare Hearings and Appeals and Departmental Appeals Board Recovery Audit Contractor (RAC) appeals related expenses",
+  "kind": "contained",
+  "description": "a line the President's request proposed, printed inside the account's total (not enacted); the cell shows it as a note"
+ },
+ {
+  "component_id": "request_proposal_ssbg",
+  "label": "Discretionary Funds",
+  "kind": "part",
+  "description": "a one-off line the President's request proposed under the account's heading, not in the account's own line (the cell shows it as a note)"
+ },
+ {
+  "component_id": "request_proposal_childrens_research",
+  "label": "Children's research and technical assistance",
+  "kind": "contained",
+  "description": "a line the President's request proposed, printed inside the account's total (not enacted); the cell shows it as a note"
+ },
+ {
+  "component_id": "chamber_proposal_opioid_response",
+  "label": "Comprehensive Opioid Response Grants",
+  "kind": "part",
+  "description": "a one-off line a chamber proposed under the account's heading, not in the account's own line (the cell shows it as a note)"
+ },
+ {
+  "component_id": "request_proposal_ssbg_research",
+  "label": "Social Services Block Grant Research/Evaluation",
+  "kind": "part",
+  "description": "a one-off line the President's request proposed under the account's heading, not in the account's own line (the cell shows it as a note)"
+ },
+ {
+  "component_id": "defense_inside",
+  "label": "Defense function (inside the paragraph's total)",
+  "kind": "contained",
+  "description": "the NSF Research and Related Activities 'Defense function' line, inside the headline: the bill or law paragraph's amount counts it (never add it again)"
+ },
+ {
+  "component_id": "advance_appropriations",
+  "label": "Advance appropriations",
+  "kind": "contained",
+  "description": "the first advance appropriations line (the next fiscal year), printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "advance_appropriations_emergency",
+  "label": "Emergency advance appropriations",
+  "kind": "contained",
+  "description": "advance appropriations designated emergency, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "advance_appropriations_emergency_later",
+  "label": "(Advance appropriations, FY 24-26)(emergency)",
+  "kind": "contained",
+  "description": "a further emergency advance appropriations line: inside the total"
+ },
+ {
+  "component_id": "advance_appropriations_later",
+  "label": "FY 2020 Advance",
+  "kind": "contained",
+  "description": "a further advance appropriations line (a later fiscal year), printed under the bill or title total after the first: inside it"
+ },
+ {
+  "component_id": "appropriations",
+  "label": "Appropriations",
+  "kind": "contained",
+  "description": "the regular appropriations, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "before_rescissions_and_other",
+  "label": "Grand total",
+  "kind": "view",
+  "description": "parallel total printed with scope 'the titles only': the first of two grand totals, ahead of the table's rescission, CHIMP and Other Appropriations sections"
+ },
+ {
+  "component_id": "discretionary_after_scorekeeping",
+  "label": "Total, discretionary",
+  "kind": "view",
+  "description": "parallel total printed with scope 'discretionary' after the RECAP's scorekeeping adjustments"
+ },
+ {
+  "component_id": "discretionary_available_this_fiscal_year",
+  "label": "Subtotal, discretionary, current year",
+  "kind": "view",
+  "description": "parallel total printed with scope 'discretionary, current year'"
+ },
+ {
+  "component_id": "discretionary_before_rescissions_and_other",
+  "label": "(Discretionary)",
+  "kind": "view",
+  "description": "parallel total printed with scope 'discretionary, the titles only' (under the first of two grand totals)"
+ },
+ {
+  "component_id": "emergency_appropriations",
+  "label": "Emergency appropriations",
+  "kind": "contained",
+  "description": "the amounts designated emergency, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "excluding_other_appropriations",
+  "label": "Grand total excluding Other Appropriations",
+  "kind": "view",
+  "description": "parallel total printed with scope 'excluding Other Appropriations'"
+ },
+ {
+  "component_id": "federal_funds",
+  "label": "Federal Funds",
+  "kind": "contained",
+  "description": "the federal-fund amounts, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "mandatory",
+  "label": "Mandatory, total in bill",
+  "kind": "view",
+  "description": "parallel total printed with scope 'mandatory' (the bill's or title's mandatory budget authority)"
+ },
+ {
+  "component_id": "mandatory_available_this_fiscal_year",
+  "label": "Total, mandatory, current year",
+  "kind": "view",
+  "description": "parallel total printed with scope 'mandatory, current year'"
+ },
+ {
+  "component_id": "mandatory_before_rescissions_and_other",
+  "label": "(Mandatory)",
+  "kind": "view",
+  "description": "parallel total printed with scope 'mandatory, the titles only' (under the first of two grand totals)"
+ },
+ {
+  "component_id": "rescissions",
+  "label": "Rescissions",
+  "kind": "contained",
+  "description": "the rescissions, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "rescissions_emergency",
+  "label": "Rescissions of emergency funding",
+  "kind": "contained",
+  "description": "rescissions of emergency funding, printed under the bill total: inside it"
+ },
+ {
+  "component_id": "trust_funds",
+  "label": "Trust Funds",
+  "kind": "contained",
+  "description": "the trust-fund amounts, printed under the bill or title total: inside it"
+ },
+ {
+  "component_id": "allocation_302b_discretionary",
+  "label": "302(b) allocation, discretionary",
+  "kind": "view",
+  "description": "the subcommittee's 302(b) allocation, discretionary, as the report's section 308(a) comparison prints it"
+ },
+ {
+  "component_id": "allocation_302b_mandatory",
+  "label": "302(b) allocation, mandatory",
+  "kind": "view",
+  "description": "the subcommittee's 302(b) allocation, mandatory, as the report's section 308(a) comparison prints it"
+ },
+ {
+  "component_id": "bill_302b_discretionary",
+  "label": "this bill, discretionary (302(b) comparison)",
+  "kind": "view",
+  "description": "the bill's discretionary amount as the report's section 308(a) comparison with the 302(b) allocation prints it (scored)"
+ },
+ {
+  "component_id": "bill_302b_mandatory",
+  "label": "this bill, mandatory (302(b) comparison)",
+  "kind": "view",
+  "description": "the bill's mandatory amount as the report's section 308(a) comparison with the 302(b) allocation prints it (scored)"
+ }
+]

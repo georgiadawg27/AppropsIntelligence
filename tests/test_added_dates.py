@@ -1,12 +1,11 @@
 """
 The date each figure and document first entered the record (brief D-5, added_dates.py): every record in
-data/staged.json carries one, no date ever changes once main holds it, and stamping dates only what has none.
+data/staged/ carries one, no date ever changes once main holds it, and stamping dates only what has none.
 
 Run:  python -m unittest tests.test_added_dates -v
 """
 
 import copy
-import json
 import os
 import subprocess
 import sys
@@ -17,14 +16,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import added_dates as A  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = json.loads((ROOT / "data" / "staged.json").read_text())
+STAGED = staged_data.load()
 
 
 def main_data():
-    """origin/main's data/staged.json, or None where the ref is not fetched (a local shallow clone; CI fetches it)."""
-    r = subprocess.run(["git", "show", "origin/main:data/staged.json"], cwd=ROOT, capture_output=True, text=True)
-    return json.loads(r.stdout) if r.returncode == 0 else None
+    """origin/main's data, or None where the ref is not fetched (a local shallow clone; CI fetches it)."""
+    return staged_data.load_git("origin/main", ROOT)
 
 
 class AddedDates(unittest.TestCase):

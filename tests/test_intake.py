@@ -20,10 +20,11 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import approps_store as S  # noqa: E402
+import staged_data  # noqa: E402
 import intake_watch as W  # noqa: E402
 import reconcile_draft as R  # noqa: E402
 
-STAGED = json.loads((ROOT / "data" / "staged.json").read_text())
+STAGED = staged_data.load()
 RECORDED = ROOT / "tests" / "fixtures" / "intake_watch" / "recorded_2026-10-16.json"
 SINCE = "https://api.govinfo.gov/collections/{}/2026-09-16T00:00:00Z?pageSize=1000&offsetMark=*"
 
@@ -103,14 +104,14 @@ class DailyCheck(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             rec = Path(d) / "rec.json"
             rec.write_text(json.dumps(answers))
-            before = (ROOT / "data" / "staged.json").read_bytes()
+            before = staged_data.digest(staged_data.load())
             out = io.StringIO()
             with redirect_stdout(out):
                 self.assertEqual(W.main(["--recorded", str(rec), "--today", "2026-10-16", "--since-days", "30",
                                          "--plan-out", str(Path(d) / "plan.json")]), 0)
             self.assertTrue(out.getvalue().startswith("Intake check 2026-10-16: nothing new or changed on govinfo"))
             self.assertEqual(json.loads((Path(d) / "plan.json").read_text())["documents"], [])
-            self.assertEqual((ROOT / "data" / "staged.json").read_bytes(), before)
+            self.assertEqual(staged_data.digest(staged_data.load()), before)
 
     def test_the_recorded_day_finds_the_continuing_resolution(self):
         found = W.plan(STAGED, packages(recorded()), "2026-10-16")
@@ -216,7 +217,7 @@ class OfficialReplacesDraft(unittest.TestCase):
 
 
 class PublishedIntake(unittest.TestCase):
-    """The committed export (docs/data/) against data/staged.json."""
+    """The committed export (docs/data/) against data/staged/."""
 
     def test_drafts_are_the_committee_drafts_the_data_cites(self):
         ops = json.loads((ROOT / "docs" / "data" / "ops.json").read_text())["intake"]

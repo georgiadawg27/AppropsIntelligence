@@ -25,7 +25,6 @@ fit inside its headline, is reported, not recorded.
 
 import argparse
 import csv
-import json
 import re
 import subprocess
 import sys
@@ -37,6 +36,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import check_legislative_text as CT  # noqa: E402
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "mandatory_lines.csv"
 PSSF = "ACC-HHS-ACF-PSSF"
@@ -177,7 +177,7 @@ def main(argv=None):
     ap.add_argument("--cache", type=Path, default=ROOT / "document_store")
     a = ap.parse_args(argv)
     a.cache.mkdir(exist_ok=True)
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     docs = {d["document_id"]: d for d in data["source_docs"]}
     rows, misses = [], []
     pssf_text(data, rows, misses)

@@ -18,13 +18,14 @@ import argparse
 import collections
 import csv
 import io
-import json
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 OUT = Path(__file__).resolve().parent / "absence_audit.csv"
 TEXT_TYPES = {"bill", "public_law"}
 REQUEST_TYPES = {"budget_appendix"}
@@ -58,7 +59,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     rows = audit(data)
     text = render(rows)
     total = len(data["confirmed_absences"])

@@ -252,7 +252,7 @@ def attribute_errors(rows, accounts, documents):
 
 
 def data_errors(data):
-    """Both checks over a data/staged.json document."""
+    """Both checks over a data/staged/ document."""
     obs = {o["observation_id"]: o for o in data["observations"]}
     docs = {d["document_id"] for d in data["source_docs"]}
     accs = {a["canonical_account_id"] for a in data["accounts"]}

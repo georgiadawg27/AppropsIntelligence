@@ -49,8 +49,9 @@ sys.path.insert(0, str(HERE))
 import absence_audit as AUDIT  # noqa: E402
 import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 TEXT_DIR = ROOT / "data" / "legislative_text"
 CACHE = ROOT / "document_store" / "legislative_text"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
@@ -630,7 +631,7 @@ def main(argv=None):
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     rows, drift = run(data)
     n = sum(r["outcome"] == "confirmed" for r in rows)
     k = sum(r["outcome"] == "retired" for r in rows)
@@ -641,7 +642,7 @@ def main(argv=None):
     if args.write:
         retired = json.loads(RETIRED.read_text())
         new, gone = apply(data, retired, rows)
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         RETIRED.write_text(json.dumps(retired, indent=1, ensure_ascii=False) + "\n")
         print(f"retired {len(gone)} absences (superseded or by ruling); added {len(new)}")
     text = render(rows)

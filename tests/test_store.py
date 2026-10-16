@@ -24,9 +24,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def staged_rows():
-    """The row count of every tab, from data/staged.json: the counts move with each backfill year, so tests read
+    """The row count of every tab, from data/staged/: the counts move with each backfill year, so tests read
     them from the data instead of hard-coding them."""
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     tabs = {"account": "accounts", "historical_name": "historical_names_tab", "source_document": "source_docs",
             "bill_report_reference": "bill_report_refs", "component": "components",
             "appropriations_observation": "observations", "confirmed_absence": "confirmed_absences",
@@ -36,6 +36,7 @@ def staged_rows():
 sys.path.insert(0, str(ROOT))
 
 import approps_store as S  # noqa: E402
+import staged_data  # noqa: E402
 
 try:
     import openpyxl

@@ -18,7 +18,6 @@ their status.
 import argparse
 import collections
 import csv
-import json
 import sys
 from pathlib import Path
 
@@ -27,8 +26,9 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 PROPOSAL = HERE / "triage_proposal.csv"
 REVIEWER = "owner (group approval 2026-10-08)"
 CR_REASON = ("Owner decision: FY2025 was funded by a full-year CR (P.L. 119-4) with no dollar level; the enacted figure "
@@ -57,7 +57,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     resolve = decisions()
     by_id = {v["validation_id"]: v for v in data["validations"]}
     for vid in resolve:
@@ -81,7 +81,7 @@ def main(argv=None):
     for (s, old, new), n in sorted(changed.items()):
         print(f"  {s}: {old} -> {new}: {n}")
     if a.write:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

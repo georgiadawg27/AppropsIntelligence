@@ -3,8 +3,8 @@ measure_reconcile: each headline against its tagged components, and each printed
 computed from them (accounting views, phase 1; accounting.py, reference/ACCOUNTING_RULES.md). Offline.
 
     python scripts/measure_reconcile.py            # the summary and every failure
-    python scripts/measure_reconcile.py --write    # write the records (and the statuses they give) into data/staged.json
-    python scripts/measure_reconcile.py --ci       # fail when data/staged.json is not up to date with this check
+    python scripts/measure_reconcile.py --write    # write the records (and the statuses they give) into data/staged/
+    python scripts/measure_reconcile.py --ci       # fail when data/staged/ is not up to date with this check
 
 1. headline = base + the components the headline includes. Base is what is left, and it must never be negative:
    a negative base is a 'fail' (pending review), on the headline. One record per headline with components,
@@ -29,7 +29,6 @@ flag counts neither way (validate_approps.NEUTRAL_FLAG_RULES); a fail flags the 
 
 import argparse
 import collections
-import json
 import os
 import re
 import sys
@@ -39,10 +38,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import accounting as AC  # noqa: E402
-import paths  # noqa: E402
 import rules_registry as R  # noqa: E402
 import tag_components as TC  # noqa: E402
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
 RULE = "measure_reconcile"
 PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-", "VAL-MRS-")
@@ -623,7 +622,7 @@ def main(argv=None):
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--ci", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(paths.staged().read_text())
+    data = staged_data.load()
     records, outcomes = run(data)
     new_vals = merged(data, records)
     want = statuses(data, new_vals)
@@ -641,11 +640,11 @@ def main(argv=None):
         data["validations"] = new_vals
         for o in data["observations"]:
             o["verification_status"] = want[o["observation_id"]]
-        paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
-        print("data/staged.json updated")
+        staged_data.save(data)
+        print("data/staged/ updated")
     if a.ci and stale:
-        print("data/staged.json is not up to date with measure_reconcile -- run python scripts/measure_reconcile.py "
-              "--write and commit data/staged.json")
+        print("data/staged/ is not up to date with measure_reconcile -- run python scripts/measure_reconcile.py "
+              "--write and commit data/staged/")
         return 1
     return 0
 

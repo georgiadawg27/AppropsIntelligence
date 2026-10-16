@@ -28,7 +28,7 @@ subcommittee; add rules only when step 6 shows a need.
 
 ## 3. Enter the data
 
-In `data/staged.json` (each figure with its document and page; blank is not zero; never a guessed figure):
+In `data/staged/` (each figure with its document and page; blank is not zero; never a guessed figure):
 
 - accounts (`subcommittee` = the code; `ACC-...` IDs), with any agency or title totals (`total_scope`);
 - a Bill Report Reference row per fiscal year and stage (`BR-<CODE>-FY<N>-PB|HOUSE|SENATE|ENACTED`; an Enacted
@@ -60,7 +60,7 @@ It stops on a missing input and says what is missing (no Bill Report Reference r
 request language, a code it doesn't know). Otherwise it reads each headline's paragraph and components, runs the
 checks (with `--write`: first every new figure and document gets today's date as its `added_date` /
 `first_added`, `added_dates.py`, a date already set never changes; then the text check, the tagger and
-measure_reconcile write their records into `data/staged.json`) and writes `reference/review/<CODE>/intake/FY<N>-<STAGE>.csv`. Exit 0: nothing to review;
+measure_reconcile write their records into `data/staged/`) and writes `reference/review/<CODE>/intake/FY<N>-<STAGE>.csv`. Exit 0: nothing to review;
 2: items to review; 1: stopped.
 
 ## 6. Work the review items
@@ -116,7 +116,7 @@ files. To move one:
    law's CR provision joins `tag_components.CR_LAWS`.
 2. Delete it from every rule file; move its tests to the core's tests (`tests/test_accounting.py`).
 3. Prove nothing moved: `tag_components.py --ci`, `measure_reconcile.py --ci`, `check_legislative_text.py --ci`
-   pass with `data/staged.json` unchanged, and the export's `docs/data` is byte-identical.
+   pass with `data/staged/` unchanged, and the export's `docs/data` is byte-identical.
 4. List it in `reference/handoff.md`: rule id, old file -> core function.
 
 ## 8. Check the whole

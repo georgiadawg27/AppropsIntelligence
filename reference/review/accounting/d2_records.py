@@ -20,7 +20,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 # confirmed absences the new bill-text headlines contradict: each rested on the report table's silence, which a
 # confirmed absence may not (CLAUDE.md, Data); retired, IDs never reused (decision 4 A, owner 2026-10-13)
@@ -133,7 +135,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = data["observations"]
     n = max(int(o["observation_id"].split("-")[-1]) for o in obs if o["observation_id"].startswith("OBS-LHHS-"))
     added = []
@@ -164,7 +166,7 @@ def main(argv=None):
         data["confirmed_absences"] = [c for c in data["confirmed_absences"]
                                       if c["confirmed_absence_id"] not in RETIRE_ABSENCES]
         retired["confirmed_absences"].update(RETIRE_ABSENCES)
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         RETIRED.write_text(json.dumps(retired, indent=1) + "\n")
         print("data/staged.json and retired_ids.json updated")
 

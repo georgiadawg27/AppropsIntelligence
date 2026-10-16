@@ -15,13 +15,15 @@ as a 1-based PDF page index) and, when page_check.py found the figure within 40 
 
 import csv
 import html
-import json
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 REVIEW_LIST = HERE / "review_list.csv"
 MISSES = HERE / "links" / "page_check_misses_v36.csv"
 PROPOSAL = HERE / "triage_proposal.csv"
@@ -40,7 +42,7 @@ def pages(sp):
 
 
 def rows():
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     docs = {d["document_id"]: d for d in data["source_docs"]}

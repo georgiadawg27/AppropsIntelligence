@@ -4,7 +4,7 @@ approps_store.py
 The relational store (SQLite, schema in store_schema.sql) and the thinnest
 query surface on it.
 
-    python approps_store.py load [path/to/workbook.xlsx] [--db approps.db]   (default: built from data/staged.json)
+    python approps_store.py load [path/to/workbook.xlsx] [--db approps.db]   (default: built from data/staged/)
     python approps_store.py history "NASA Science" [--db approps.db] [--json]
     python approps_store.py resolve-relationship REL-0001 --reviewer NAME --resolution TEXT [--db approps.db]
 
@@ -38,6 +38,7 @@ from pathlib import Path
 
 import accounts as A
 import paths
+import staged_data
 
 ROOT = Path(__file__).resolve().parent
 SCHEMA = ROOT / "store_schema.sql"
@@ -58,7 +59,7 @@ class LoadError(Exception):
     pass
 
 
-# The canonical data is data/staged.json; scripts/build_workbook.py builds the
+# The canonical data is data/staged/; scripts/build_workbook.py builds the
 # workbook from it (and stops on any failed check). Nothing reads a committed
 # workbook: reference_workbook() builds BUILT_WORKBOOK when it is missing or older
 # than the data or the script, and returns it.
@@ -69,7 +70,7 @@ class LoadError(Exception):
 # build is followed by calculate_lookups(), which stores each formula's result next
 # to it, as a spreadsheet does when it recalculates and saves; CI checks those
 # results against LibreOffice's (scripts/recalc_check.py --compare-cached).
-STAGED = paths.staged()                           # data/staged.json (APPROPS_DATA_ROOT: another data root's)
+STAGED = paths.staged()                           # data/staged/ (APPROPS_DATA_ROOT: another data root's)
 BUILD_SCRIPT = ROOT / "scripts" / "build_workbook.py"
 BUILT_WORKBOOK = paths.data_root() / "build" / "site" / "Approps_Pilot_Schema_Loaded.xlsx"
 
@@ -137,11 +138,10 @@ def calculate_lookups(src, dst):
 
 
 def build_workbook(out=None):
-    """Build the workbook from data/staged.json (scripts/build_workbook.py), then store its
+    """Build the workbook from data/staged/ (scripts/build_workbook.py), then store its
     lookup formulas' results (calculate_lookups) -> its path. The script reads data/ and
     writes build/ relative to its working directory; it runs in a scratch copy and the result
     is moved into place, so a concurrent reader (parallel tests) never sees half a file."""
-    import shutil
     import subprocess
     import tempfile
     out = Path(out) if out else BUILT_WORKBOOK
@@ -149,7 +149,7 @@ def build_workbook(out=None):
     with tempfile.TemporaryDirectory(dir=out.parent) as tmp:
         (Path(tmp) / "data").mkdir()
         (Path(tmp) / "build").mkdir()
-        shutil.copy(STAGED, Path(tmp) / "data" / "staged.json")
+        staged_data.copy(tmp)
         r = subprocess.run([sys.executable, str(BUILD_SCRIPT)], cwd=tmp, capture_output=True, text=True)
         if r.returncode != 0:
             raise LoadError(f"building the workbook from {STAGED.relative_to(ROOT)} stopped:\n"
@@ -160,7 +160,7 @@ def build_workbook(out=None):
 
 
 def reference_workbook(folder=None):
-    """The workbook the store, the site and the tests load: built from data/staged.json
+    """The workbook the store, the site and the tests load: built from data/staged/
     (build_workbook) unless the build is current. With a folder: the highest-vNN
     Approps_Pilot_Schema_Loaded_vNN.xlsx in it (WORKBOOK_PATTERNS)."""
     if folder is None:
@@ -168,7 +168,7 @@ def reference_workbook(folder=None):
         BUILT_WORKBOOK.parent.mkdir(parents=True, exist_ok=True)
         with open(BUILT_WORKBOOK.parent / ".build.lock", "w") as lock:
             fcntl.flock(lock, fcntl.LOCK_EX)              # one build at a time; the others then find it current
-            newest_input = max(STAGED.stat().st_mtime, BUILD_SCRIPT.stat().st_mtime, Path(__file__).stat().st_mtime)
+            newest_input = max(staged_data.mtime(), BUILD_SCRIPT.stat().st_mtime, Path(__file__).stat().st_mtime)
             if not BUILT_WORKBOOK.exists() or BUILT_WORKBOOK.stat().st_mtime < newest_input:
                 build_workbook()
         return BUILT_WORKBOOK
@@ -2158,7 +2158,7 @@ def documents(conn, names=None):
 
 
 def accounting_data(conn):
-    """The store's accounting records in data/staged.json's shape (accounts, observations, the Component
+    """The store's accounting records in data/staged/'s shape (accounts, observations, the Component
     vocabulary, observation_components, account_attributes), for accounting.py and measure_reconcile, which read
     that shape. Nothing is recomputed: blank text is '' and in_headline 'TRUE'/'FALSE', as the staged data holds
     them."""
@@ -2289,7 +2289,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1], formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd", required=True)
     pl = sub.add_parser("load", help="build the database from the pilot workbook")
-    pl.add_argument("workbook", nargs="?", help="default: the workbook built from data/staged.json")
+    pl.add_argument("workbook", nargs="?", help="default: the workbook built from data/staged/")
     pl.add_argument("--db", default=str(DEFAULT_DB))
     pl.add_argument("--waive", action="append", default=[], choices=sorted(WAIVABLE),
                     help="load despite this cross-tab check's problems (listed in the report)")

@@ -37,8 +37,9 @@ import rules_registry as R  # noqa: E402
 import subcommittees as SC  # noqa: E402
 import tag_components as TC  # noqa: E402
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = json.loads((ROOT / "data" / "staged.json").read_text())
+STAGED = staged_data.load()
 FIXTURE = ROOT / "tests" / "fixtures" / "any_subcommittee"
 try:
     from playwright.sync_api import sync_playwright
@@ -656,7 +657,7 @@ class SyntheticSubcommittee(unittest.TestCase):
             with open(cls.root / "reference" / "review" / "SYNLB" / "intake" / f"FY2031-{st}.csv") as f:
                 import csv
                 cls.intake[st] = (cls.intake[st], list(csv.DictReader(f)))
-        cls.data = json.loads((cls.root / "data" / "staged.json").read_text())
+        cls.data = staged_data.load(cls.root)
 
     @classmethod
     def tearDownClass(cls):
@@ -723,7 +724,7 @@ class SyntheticSubcommittee(unittest.TestCase):
                                 "--stage", "PB", "--write"], cwd=ROOT, env=env, capture_output=True, text=True)
             self.assertEqual(r.returncode, 1, r.stdout + r.stderr)
             self.assertIn("stopped: a missing input", r.stdout)
-            self.assertEqual(json.loads((Path(d) / "data" / "staged.json").read_text())["validations"], [])
+            self.assertEqual(staged_data.load(d)["validations"], [])
 
     def test_tagger_and_measure_reconcile(self):
         comps = [(c["component_id"], c["observation_id"], c["component_type"], c["designation"], c["amount"],
@@ -772,7 +773,7 @@ class SyntheticSubcommittee(unittest.TestCase):
             for table in ("observations", "validations", "observation_components", "source_docs"):
                 ids_ = [next(iter(r.values())) for r in merged[table]]
                 self.assertEqual(len(ids_), len(set(ids_)), table)
-            (root / "data" / "staged.json").write_text(json.dumps(merged, indent=1, ensure_ascii=False))
+            staged_data.save(merged, root)
             env = dict(self.env, APPROPS_DATA_ROOT=str(root))
             wb, out = root / "build" / "wb.xlsx", root / "docs"
             for args in (["-c", f"import approps_store as S; S.build_workbook({str(wb)!r})"],

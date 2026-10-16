@@ -14,11 +14,13 @@ Lifecycle follow-ups to PR #41 (owner, 2026-10-11). Changes data/staged.json; ne
 """
 
 import argparse
-import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 LIMITATION = "ACC-HHS-GP-MEDICARE-LIMITATION"
 REASON = "FY2026 provision not yet identified; earlier years unknown."
 # relationship -> (from, to) as they stand; each is re-typed proposed_move -> proposed_consolidation
@@ -34,7 +36,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     acct = next(x for x in data["accounts"] if x["canonical_account_id"] == LIMITATION)
     if acct.get("start_basis") != "unidentified":
         acct["start_basis"], acct["start_basis_reason"] = "unidentified", REASON
@@ -49,7 +51,7 @@ def main(argv=None):
             print(f"{rid} {frm} -> {to}: proposed_move -> proposed_consolidation")
             r["relationship_type"] = "proposed_consolidation"
     if a.write:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

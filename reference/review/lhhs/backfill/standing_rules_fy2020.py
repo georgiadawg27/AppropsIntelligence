@@ -29,8 +29,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 STORE = ROOT / "document_store"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 TODAY = "2026-10-09"
@@ -147,7 +148,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = data["observations"]
     assert "SRC-PLAW-116PUBL94" not in {d["document_id"] for d in data["source_docs"]}, "already applied"
     print("text checks:", check_texts())
@@ -255,7 +256,7 @@ def main(argv=None):
         vorder = list(data["validations"][0])
         data["validations"] += [{k: v[k] for k in vorder} for v in new_val]
         data["confirmed_absences"] += new_abs
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

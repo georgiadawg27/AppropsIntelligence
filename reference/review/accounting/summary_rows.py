@@ -20,7 +20,6 @@ Needs pdftotext (poppler). The PDFs are public; nothing here uses a key. Nothing
 
 import argparse
 import csv
-import json
 import re
 import subprocess
 import sys
@@ -28,8 +27,10 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 HERE = Path(__file__).resolve().parent
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 OUT = HERE / "summary_rows.csv"
 IMAGES = HERE / "summary_rows_images.csv"
 COLUMNS = ["source_document_id", "pdf_page", "block", "seq", "label", "line", "c1", "c2", "c3", "d1", "d2",
@@ -272,7 +273,7 @@ def main():
         return merge_images(args.merge_images)
     cache = Path(args.cache)
     cache.mkdir(exist_ok=True)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     docs = {s["document_id"]: s for s in data["source_docs"]}
     held = sorted({o["source_document_id"] for o in data["observations"]
                    if docs.get(o["source_document_id"], {}).get("document_type")

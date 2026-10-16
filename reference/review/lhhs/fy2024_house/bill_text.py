@@ -99,8 +99,9 @@ def norm(h):
 
 def compare_extracted(rows):
     """Our FY2024 House headline figures (budget authority, no component) vs the bill's heading amounts."""
-    import json
-    data = json.loads((HERE.parents[3] / "data" / "staged.json").read_text())
+    sys.path.insert(0, str(HERE.parents[3]))
+    import staged_data
+    data = staged_data.load()
     acct = {a["canonical_account_id"]: a for a in data["accounts"] if a["subcommittee"] == "LHHS"}
     by_head = {}
     for r in rows:

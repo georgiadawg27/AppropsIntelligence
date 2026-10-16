@@ -23,7 +23,6 @@ The short sums these lines explain are resolved with that reason (reviewer "owne
 
 import argparse
 import collections
-import json
 import re
 import sys
 from pathlib import Path
@@ -35,8 +34,9 @@ sys.argv, _argv = sys.argv[:1], sys.argv
 import build_year as B  # noqa: E402
 sys.argv = _argv
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 TODAY = "2026-10-08"
 REVIEWER = "owner rules (2026-10-08)"
 HRSA_PS, NIH_OD, SSBG = "ACC-HHS-HRSA-PROGRAM-SUPPORT", "ACC-HHS-NIH-OD", "ACC-HHS-ACF-SSBG"
@@ -77,7 +77,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = data["observations"]
     by_id = {o["observation_id"]: o for o in obs}
     acct = {x["canonical_account_id"]: x for x in data["accounts"]}
@@ -224,7 +224,7 @@ def main(argv=None):
                                              "confidence": 1.0, "human_reviewed": "TRUE"})
         data["observations"] += [{k: o.get(k, "") for k in order if k in o} for o in new_obs]
         data["validations"] += [{k: v[k] for k in vorder} for v in new_val]
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

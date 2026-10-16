@@ -18,11 +18,13 @@ Anything else with an old type is reported as ambiguous and left unchanged.
 """
 
 import argparse
-import json
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 TYPES = ("renamed", "merged_into", "split_from", "moved", "proposed_move", "proposed_consolidation")
 PROPOSED = "Proposed, not enacted"
 # the one enacted move: the law itself moves it (REL-LHHS-0018, the Strategic National Stockpile, P.L. 116-94)
@@ -48,7 +50,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     ambiguous = []
     for r in data["relationships"]:
         new, why = explicit(r)
@@ -62,7 +64,7 @@ def main(argv=None):
     for rid, why in ambiguous:
         print("AMBIGUOUS", rid, why)
     if a.write and not ambiguous:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
     return ambiguous
 

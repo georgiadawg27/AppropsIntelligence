@@ -35,7 +35,7 @@ its own page, verification `unverified`, never `human-verified`).
   `python govinfo_ingest.py ingest-local <pdf> --advance-copy --source-url <committee link> ...` stores it
   (`confirmation_status` "unconfirmed", its hash and public link; `ingest_local` refuses `--advance-copy` for an
   explanatory statement, which is stored without it), then the source document, the Bill Report Reference row with `draft`
-  TRUE, and the figures go into `data/staged.json`, then `scripts/intake.py --write`. A link and an attached file
+  TRUE, and the figures go into `data/staged/`, then `scripts/intake.py --write`. A link and an attached file
   whose hashes differ stop the intake; neither is picked.
 
 What the site publishes for it:

@@ -58,8 +58,7 @@ def main(argv):
     out_dir = Path(argv[0])
     out_dir.mkdir(parents=True, exist_ok=True)
     want = set(argv[1:]) or {"not_found", "wrong_column"}
-    import json
-    obs = {o["observation_id"]: o for o in json.loads(P.STAGED.read_text())["observations"]}
+    obs = {o["observation_id"]: o for o in P.staged_data.load()["observations"]}
     with open(P.OUT, newline="") as f:
         rows = [r for r in csv.DictReader(f) if r["status"] in want]
     by_page = defaultdict(list)

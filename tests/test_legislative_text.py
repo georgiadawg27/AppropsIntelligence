@@ -3,7 +3,7 @@ The bill and law text check: the parser (legislative_text.py), the comparison an
 (scripts/check_legislative_text.py).
 
 Offline, every test but the last class: they read only small inline fixtures and the committed files
-(data/staged.json, data/legislative_text/). LiveTextReparse is a network test: it downloads each document
+(data/staged/, data/legislative_text/). LiveTextReparse is a network test: it downloads each document
 again from govinfo and checks the bytes' sha256 and the re-parse against the committed file. It's skipped
 unless RUN_NETWORK_TESTS=1 (and GOVINFO_API_KEY) is set:
     RUN_NETWORK_TESTS=1 python -m pytest tests/test_legislative_text.py -m network -v
@@ -22,6 +22,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 import check_legislative_text as C  # noqa: E402
 
 try:
@@ -247,11 +248,11 @@ class Comparison(unittest.TestCase):
 
 class CommittedData(unittest.TestCase):
     """The committed data: every required document has text or an exemption, every file is current, and the
-    results written into data/staged.json are this check's results."""
+    results written into data/staged/ are this check's results."""
 
     @classmethod
     def setUpClass(cls):
-        cls.data = json.loads(L.STAGED.read_text())
+        cls.data = staged_data.load()
         cls.texts = C.load_texts(L.TEXT_DIR)
         cls.exempt = C.load_exempt(L.TEXT_DIR)
 
@@ -320,7 +321,7 @@ class LiveTextReparse(unittest.TestCase):
     def test_download_and_reparse(self):
         import fetch_legislative_text as F
         key = F.api_key()
-        reqs, _ = L.required_documents(json.loads(L.STAGED.read_text()))
+        reqs, _ = L.required_documents(staged_data.load())
         for doc_id, t in sorted(C.load_texts(L.TEXT_DIR).items()):
             with self.subTest(doc_id):
                 rf = t["retrieved_from"]

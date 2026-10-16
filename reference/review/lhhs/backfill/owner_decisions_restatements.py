@@ -40,8 +40,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 TODAY = "2026-10-09"
 REVIEWER = "owner (2026-10-09)"
@@ -65,7 +66,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     assert not any(r["relationship_id"] == "REL-LHHS-0017" for r in data["relationships"]), "already applied"
     retired = json.loads(RETIRED.read_text())
     obs = {o["observation_id"]: o for o in data["observations"]}
@@ -251,7 +252,7 @@ def main(argv=None):
         retired.setdefault("observations", {}).update({i: why for i in sorted(gone_ids)})
         retired.setdefault("validations", {}).update({v["validation_id"]: f"a record of a retired observation "
                                                       f"({v['observation_id']})" for v in gone_val})
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         RETIRED.write_text(json.dumps(retired, indent=1) + "\n")
         print("wrote", STAGED.relative_to(ROOT), "and", RETIRED.relative_to(ROOT))
 

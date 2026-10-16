@@ -1,6 +1,6 @@
 # Regenerate the static site (docs/, served by GitHub Pages) and reference/accounts.json
-# whenever the canonical data (data/staged.json) -- or anything the export depends on --
-# is committed. The export builds the workbook from data/staged.json
+# whenever the canonical data (data/staged/) -- or anything the export depends on --
+# is committed. The export builds the workbook from data/staged/
 # (scripts/build_workbook.py) and publishes it as docs/Approps_Pilot_Schema_Loaded.xlsx; this job is the
 # only writer of that file (pull requests don't commit it).
 # The export is deterministic, so a run that changes nothing commits nothing.
@@ -25,6 +25,7 @@ on:
       # the canonical data and the script that builds the workbook from it
       - "data/**"
       - "scripts/build_workbook.py"
+      - "staged_data.py"
       - "reference/build_accounts.py"
       - "approps_store.py"
       - "subcommittees.py"
@@ -77,7 +78,7 @@ jobs:
           else
             echo "R2 secrets not set -- docs/data/ is committed as before, nothing is uploaded"
           fi
-      - name: Build the workbook from data/staged.json and export docs/, with the Download workbook
+      - name: Build the workbook from data/staged/ and export docs/, with the Download workbook
         # the only writer of docs/Approps_Pilot_Schema_Loaded.xlsx (pull requests don't commit it); the page reads
         # its data from data/ next to it, or from the Worker once DATA_BASE_URL is set (with the R2 copy on)
         env:
@@ -127,6 +128,6 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Regenerate static export (docs/) from data/staged.json ($(python -c 'import approps_store as S; print(S.data_version(S.reference_workbook()))'))" \
+          git commit -m "Regenerate static export (docs/) from data/staged/ ($(python -c 'import approps_store as S; print(S.data_version(S.reference_workbook()))'))" \
                      -m "Automated by .github/workflows/export-static.yml for ${GITHUB_SHA::7}."
           git push origin "HEAD:${GITHUB_REF_NAME}"

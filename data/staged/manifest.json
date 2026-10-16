@@ -1,0 +1,20 @@
+{
+ "note": "data/staged/: the canonical data, one file per subcommittee and record type (staged_data.py). The runs put each record type's records back in order; read and write it only with staged_data.load() and save().",
+ "format": 1,
+ "tables": {
+  "accounts": [["CJS", 30], ["LHHS", 100], ["CJS", 6], ["LHHS", 10]],
+  "observations": [["CJS", 870], ["LHHS", 4128], ["CJS", 461], ["LHHS", 876], ["CJS", 16], ["LHHS", 8], ["CJS", 24], ["LHHS", 8], ["CJS", 8], ["LHHS", 8], ["CJS", 32], ["LHHS", 16], ["CJS", 16], ["LHHS", 4], ["CJS", 8], ["LHHS", 8], ["CJS", 8], ["LHHS", 13], ["CJS", 12], ["LHHS", 4], ["CJS", 2], ["LHHS", 11], ["CJS", 1], ["LHHS", 11]],
+  "source_docs": [["shared", 151]],
+  "validations": [["CJS", 89], ["LHHS", 7388], ["CJS", 152], ["LHHS", 9840], ["CJS", 500], ["LHHS", 2221], ["CJS", 13], ["LHHS", 29], ["CJS", 25], ["LHHS", 494], ["CJS", 5], ["LHHS", 507], ["CJS", 3], ["LHHS", 246], ["CJS", 59], ["LHHS", 1], ["CJS", 8], ["LHHS", 72]],
+  "relationships": [["LHHS", 14]],
+  "bill_report_refs": [["CJS", 41], ["LHHS", 42]],
+  "historical_names_tab": [["CJS", 7], ["LHHS", 7]],
+  "confirmed_absences": [["LHHS", 124], ["CJS", 197], ["LHHS", 18]],
+  "components": [["shared", 52]],
+  "observation_components": [["LHHS", 1401], ["CJS", 79]],
+  "observation_components_retired": [["shared", 48]],
+  "account_attributes": [["LHHS", 3665], ["CJS", 727]],
+  "account_attribute_notes": [["CJS", 8], ["LHHS", 707], ["CJS", 11]],
+  "account_attributes_retired": [["shared", 120]]
+ }
+}

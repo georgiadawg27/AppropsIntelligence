@@ -1,7 +1,7 @@
 """
 The published grid's counts, as a fixture the tests compare against: each subcommittee's state counts and the
 number of headline cells whose observation is flagged. Regenerate with the workbook fingerprint whenever
-data/staged.json changes on purpose (after export_static.py); the diff shows what a change moved.
+data/staged/ changes on purpose (after export_static.py); the diff shows what a change moved.
 
     python scripts/grid_counts.py > tests/fixtures/grid_counts.json
 """
@@ -33,7 +33,7 @@ def headline_observations(g):
 
 
 def counts():
-    out = {"note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged.json changes "
+    out = {"note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged/ changes "
                    "on purpose", "state_counts": {}, "outside_life_cells": {}, "flagged_cells": {},
            "view_status_counts": {}, "views_excluding_earmarks_status_counts": {},
            "views_nondefense_status_counts": {}, "views_nondefense_excluding_earmarks_status_counts": {}}

@@ -7,7 +7,6 @@ Run:  python -m unittest tests.test_lhhs_workbook -v
 
 import csv
 import io
-import json
 import sys
 import unittest
 from contextlib import redirect_stdout
@@ -19,6 +18,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(WB))
 
 import approps_store as S  # noqa: E402
+import staged_data  # noqa: E402
 import merge_check  # noqa: E402
 
 
@@ -27,9 +27,9 @@ def rows(name):
 
 
 def staged_count(account_id, headline=True):
-    """How many observations of an account data/staged.json holds (its headline only, by default): the Title II
+    """How many observations of an account data/staged/ holds (its headline only, by default): the Title II
     and CURES counts grow with each backfill year."""
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     return sum(1 for o in data["observations"] if o["canonical_account_id"] == account_id
                and (not headline or (not o["component"] and o["amount_type"] == "budget authority"))
                and o.get("verification_status") != "superseded")
@@ -45,7 +45,7 @@ class LhhsRowsLoad(unittest.TestCase):
         self.assertEqual(self.report["warnings"], [])
         # v33 carries every row of these CSVs (the account list and the FY2023 rows came after them, outside
         # these files): merging them adds no observation or account the workbook doesn't already have
-        staged = json.loads((ROOT / "data" / "staged.json").read_text())
+        staged = staged_data.load()
         self.assertEqual(self.report["rows"]["account"], len(staged["accounts"]))
         self.assertEqual(self.report["rows"]["appropriations_observation"], len(staged["observations"]))
         ids = {o["observation_id"] for o in rows("observation")} - merge_check.RETIRED   # retired IDs never return

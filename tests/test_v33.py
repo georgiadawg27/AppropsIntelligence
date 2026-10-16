@@ -11,7 +11,6 @@ Needs openpyxl (loading only).
 """
 
 import collections
-import json
 import contextlib
 import io
 import shutil
@@ -26,9 +25,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def staged_rows():
-    """The row count of every tab, from data/staged.json: the counts move with each backfill year, so tests read
+    """The row count of every tab, from data/staged/: the counts move with each backfill year, so tests read
     them from the data instead of hard-coding them."""
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     tabs = {"account": "accounts", "historical_name": "historical_names_tab", "source_document": "source_docs",
             "bill_report_reference": "bill_report_refs", "component": "components",
             "appropriations_observation": "observations", "confirmed_absence": "confirmed_absences",
@@ -40,6 +39,7 @@ sys.path.insert(0, str(ROOT))
 import approps_store as S  # noqa: E402
 import govinfo_ingest as g  # noqa: E402
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
 try:
     import openpyxl
@@ -145,7 +145,7 @@ class V33Store(unittest.TestCase):
         # + LIHEAP FY2023, matched across divisions H + N; + FY2022 (H.R. 2471 div. H) and FY2023 Medicaid's derived headline;
         # + Refugee FY2022's other-law note (an info law_text record from the table, not the law); PHSSEF FY2022 matches the sum
         # of its heading's four paragraphs; earlier records the paragraph sum now matches updated to pass (owner, 2026-10-08)
-        staged = json.loads((ROOT / "data" / "staged.json").read_text())
+        staged = staged_data.load()
         want = collections.Counter(v["result"] for v in staged["validations"] if v["rule_applied"] == "law_text"
                                    and not v["validation_id"].startswith("VAL-TXT-"))
         self.assertEqual(dict(rows), dict(want))

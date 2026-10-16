@@ -1,4 +1,3 @@
-import json
 import os
 import re
 import sys
@@ -15,12 +14,12 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.utils import get_column_letter
 
-# run from a folder holding data/staged.json (approps_store.build_workbook runs it in a scratch copy); writes build/
+# run from a folder holding data/staged/ (approps_store.build_workbook runs it in a scratch copy); writes build/
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import subcommittees as _SC  # noqa: E402
+import staged_data  # noqa: E402
 
-with open("data/staged.json") as f:
-    data = json.load(f)
+data = staged_data.load(Path.cwd())
 
 # ---------------------------------------------------------------------------
 # Allowed values. ONE definition, used by both the dropdowns below and the

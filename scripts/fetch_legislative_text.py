@@ -20,7 +20,7 @@ The govinfo API key comes from GOVINFO_API_KEY (environment, or .env locally; a 
 is sent as a request header, so it is never in a URL, a log line or a saved file. Raw downloads are cached in
 document_store/legislative_text/ (gitignored) -- only the parsed JSON is committed.
 
-A Source Document row (data/staged.json) is added for a document the data has no row for yet (a bill or law
+A Source Document row (data/staged/) is added for a document the data has no row for yet (a bill or law
 named only by its Bill Report Reference), with the next free id SRC-<package>; ids are never reused.
 """
 
@@ -41,6 +41,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import added_dates  # noqa: E402
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 
 API = "https://api.govinfo.gov"
 CACHE = ROOT / "document_store" / "legislative_text"
@@ -207,7 +208,7 @@ def main(argv=None):
     ap.add_argument("--reparse", action="store_true", help="re-parse cached downloads with the current parser")
     ap.add_argument("--only", nargs="*", default=None, help="document ids")
     a = ap.parse_args(argv)
-    data = json.loads(L.STAGED.read_text())
+    data = staged_data.load()
     reqs, nodoc = L.required_documents(data)
     exempt = L.load_exemptions()
     key = api_key()
@@ -246,7 +247,7 @@ def main(argv=None):
     if new_rows:
         data["source_docs"].extend(new_rows)
         added_dates.stamp(data)                              # D-5: each new document's first-added date, today
-        L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        L.staged_data.save(data)
     for w in written:
         print("wrote %-34s %-9s %4d paragraphs %5d amounts" % w)
     for doc_id, why in unusable:

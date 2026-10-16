@@ -11,7 +11,6 @@ printed views, derive the headline (derived_headlines), and retire those confirm
 
 import argparse
 import collections
-import json
 import sys
 from pathlib import Path
 
@@ -19,9 +18,10 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 import derived_headlines as DH  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 AID = "ACC-HHS-CMS-MEDICAID"
 # (fiscal year, stage): (confirmed absence retired, document, page, column, printed labels of the two views,
 # 'appropriated in this bill', program level), in thousands (the text layers of S.Rept. 118-84 p.382 and the FY2023
@@ -52,7 +52,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     n, bad = DH.check_rule(data["observations"], AID)
     assert n and not bad, bad
     obs = [o for o in data["observations"] if o["canonical_account_id"] == AID and o["fiscal_year"] in (2023, 2024)]
@@ -117,7 +117,7 @@ def main(argv=None):
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         data["confirmed_absences"] = [c for c in data["confirmed_absences"] if c["confirmed_absence_id"] not in retired]
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

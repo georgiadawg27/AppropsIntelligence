@@ -2,7 +2,7 @@
 Where the pipeline reads its data and rules from -- one place, so the same code can run on another data root
 (the synthetic subcommittee of tests/test_any_subcommittee.py) without a code edit.
 
-    APPROPS_DATA_ROOT    a folder laid out like the repository's data: data/staged.json, data/legislative_text/,
+    APPROPS_DATA_ROOT    a folder laid out like the repository's data: data/staged/, data/legislative_text/,
                          reference/review/accounting/ (the tagger's line files). Default: the repository.
     APPROPS_RULES_DIRS   more rule-file folders (os.pathsep-separated), read after reference/rules/
                          (rules_registry.py). Default: none.
@@ -21,7 +21,7 @@ def data_root():
 
 
 def staged():
-    return data_root() / "data" / "staged.json"
+    return data_root() / "data" / "staged"           # the canonical data, split (staged_data.py)
 
 
 def text_dir():

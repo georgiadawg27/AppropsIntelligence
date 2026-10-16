@@ -2,7 +2,7 @@
 site_accounting.py -- the accounting layer of the site data (UI-0): what the page needs to offer the Amount basis
 views, the Account type filter and the defense column without computing anything in the browser.
 
-    layer = Layer(data)            # data: data/staged.json, or approps_store.accounting_data(conn) (the same shape)
+    layer = Layer(data)            # data: data/staged/, or approps_store.accounting_data(conn) (the same shape)
     layer.annotate(grid)           # grid: approps_store.subcommittee_grid(); adds the fields below in place
 
 Every cell whose headline holds a printed figure (a value or a printed zero; the headline: the observation the grid
