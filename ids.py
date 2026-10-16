@@ -41,6 +41,9 @@ def check_code(code):
                       "and digits (subcommittees.py SUBCOMMITTEES), e.g. 'LEG'")
     if code in RESERVED:
         raise IdError(f"subcommittee code {code!r} is reserved (a derived-ID qualifier or a record type): pick another")
+    from subcommittees import RETIRED_CODES
+    if code in RETIRED_CODES:
+        raise IdError(f"subcommittee code {code!r} is retired (subcommittees.py RETIRED_CODES): use the one listed")
     return code
 
 

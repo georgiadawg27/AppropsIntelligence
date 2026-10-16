@@ -15,24 +15,42 @@ import re
 
 SUBCOMMITTEES = {
     "COMMERCE, JUSTICE, SCIENCE": "CJS",
-    "AGRICULTURE, RURAL DEVELOPMENT": "Agriculture-FDA",
-    "ENERGY AND WATER": "Energy-Water",
+    "AGRICULTURE, RURAL DEVELOPMENT": "AG",
+    "ENERGY AND WATER": "EW",
     "FINANCIAL SERVICES AND GENERAL GOVERNMENT": "FSGG",
-    "HOMELAND SECURITY": "Homeland Security",
-    "INTERIOR, ENVIRONMENT": "Interior-Environment",
+    "HOMELAND SECURITY": "HS",
+    "INTERIOR, ENVIRONMENT": "INT",
     "LABOR, HEALTH AND HUMAN SERVICES": "LHHS",
-    "LEGISLATIVE BRANCH": "Legislative Branch",
-    "MILITARY CONSTRUCTION, VETERANS AFFAIRS": "MilCon-VA",
-    "NATIONAL SECURITY, DEPARTMENT OF STATE": "NSRP",
+    "LEGISLATIVE BRANCH": "LEG",
+    "MILITARY CONSTRUCTION, VETERANS AFFAIRS": "MCVA",
+    # the House's title for the State-Foreign Ops bill: an alias, so one bill lineage keeps one code
+    "NATIONAL SECURITY, DEPARTMENT OF STATE": "SFOPS",
     "STATE, FOREIGN OPERATIONS": "SFOPS",
     "TRANSPORTATION, HOUSING AND URBAN DEVELOPMENT": "THUD",
-    "DEPARTMENT OF DEFENSE APPROPRIATIONS": "Defense",
+    "DEPARTMENT OF DEFENSE APPROPRIATIONS": "DEF",
 }
 # The values above are the stored subcommittee codes (Account.subcommittee,
 # Bill Report Reference.subcommittee and lookup_key, the manifest): the short
-# form, matching the ID prefixes (BR-LHHS-..., OBS-LHHS-...). A name for people
-# to read is a display mapping, never stored; a code not listed displays as itself.
-DISPLAY_NAMES = {"CJS": "Commerce, Justice, Science", "LHHS": "Labor-HHS-Education"}
+# form, matching the ID prefixes (BR-LHHS-..., OBS-LHHS-...), approved by the
+# owner 2026-10-15 (CLAUDE.md, "Standing decisions"). Never renamed: a code is
+# in every ID it mints. A name for people to read is a display mapping, never
+# stored; a code not listed displays as itself.
+DISPLAY_NAMES = {
+    "AG": "Agriculture-FDA",
+    "CJS": "Commerce, Justice, Science",
+    "DEF": "Defense",
+    "EW": "Energy-Water",
+    "FSGG": "Financial Services and General Government",
+    "HS": "Homeland Security",
+    "INT": "Interior-Environment",
+    "LEG": "Legislative Branch",
+    "LHHS": "Labor-HHS-Education",
+    "MCVA": "MilCon-VA",
+    "SFOPS": "State-Foreign Operations",
+    "THUD": "Transportation-HUD",
+}
+# codes retired before use: never a subcommittee's code, never in an ID (ids.check_code)
+RETIRED_CODES = {"NSRP"}           # State-Foreign Ops' House title; SFOPS holds the lineage (owner, 2026-10-15)
 # the subcommittee the page opens on, published with the data (docs/data/index.json and /api/features
 # "default_subcommittee"); used only when the data holds it, else the first code
 DEFAULT_SUBCOMMITTEE = "LHHS"
@@ -61,7 +79,7 @@ def codes(data):
 def known():
     """Every subcommittee code the code knows: SUBCOMMITTEES' values and every rule file's (reference/rules/)."""
     import rules_registry
-    return set(SUBCOMMITTEES.values()) | set(rules_registry.active().codes)
+    return (set(SUBCOMMITTEES.values()) | set(rules_registry.active().codes)) - RETIRED_CODES
 
 
 def normalize(text):
@@ -70,9 +88,10 @@ def normalize(text):
 
 
 def subcommittees_named(text):
-    """Every subcommittee whose name appears in text, in SUBCOMMITTEES order."""
+    """Every subcommittee whose name (or an alias) appears in text, once each, in SUBCOMMITTEES order."""
     t = normalize(text)
-    return [name for needle, name in SUBCOMMITTEES.items() if normalize(needle) in t]
+    named = [code for needle, code in SUBCOMMITTEES.items() if normalize(needle) in t]
+    return list(dict.fromkeys(named))          # an alias names its code once
 
 
 def subcommittee_of(text):
