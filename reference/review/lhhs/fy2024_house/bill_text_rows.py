@@ -17,7 +17,6 @@ data/staged.json; never changes an existing row or ID.
 
 import argparse
 import hashlib
-import json
 import re
 import sys
 from pathlib import Path
@@ -27,8 +26,9 @@ ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 PDF = ROOT / "document_store" / "BILLS-118hr5894ih.pdf"
 SHA256 = "67108f5ba780b2e43443bb6bd6d40406c8b668cfc9e7b83d237f5419254c28f1"
 SRC = "SRC-BILLS-118HR5894IH"
@@ -60,7 +60,7 @@ def main(argv=None):
         assert "SEC. 236." in p118 and "$1,000,000,000 are hereby rescinded" in p118, "sec. 236 not on p.118"
         gh = next(t for t in pages.values() if "GLOBAL HEALTH" in t)
         assert "$370,772,000" in gh, "Global Health's amount not in the bill text"
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     have_ids = {o["observation_id"] for o in data["observations"]}
     if any(d["document_id"] == SRC for d in data["source_docs"]):
         print("already added")
@@ -113,7 +113,7 @@ def main(argv=None):
         data["validations"].extend(vals)
         # the standard rule: a pending cross_document flag makes the figure flagged
         gh["verification_status"] = gh_status
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("appended to", STAGED.relative_to(ROOT))
 
 

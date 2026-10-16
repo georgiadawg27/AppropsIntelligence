@@ -1,12 +1,11 @@
 """
-The workbook is built from data/staged.json by scripts/build_workbook.py (CI does it in the
+The workbook is built from data/staged/ by scripts/build_workbook.py (CI does it in the
 data job). These tests build it and hold it to the reference build (tests/fixtures/workbook_values.json;
 v38 plus the FY2024 House Labor-HHS draft), value for value,
 and check that the build's own checks stop it on bad data.
 """
 
 import json
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,11 +15,12 @@ from pathlib import Path
 import openpyxl
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
 import workbook_digest as W  # noqa: E402
 
 SCRIPT = ROOT / "scripts" / "build_workbook.py"
-STAGED = ROOT / "data" / "staged.json"
 V38 = ROOT / "tests" / "fixtures" / "workbook_values.json"     # the reference build (v38 until the FY2024 House draft)
 OUT = "build/Approps_Pilot_Schema_Loaded.xlsx"
 
@@ -35,8 +35,7 @@ class BuiltWorkbook(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.tmp = tempfile.TemporaryDirectory()
-        (Path(cls.tmp.name) / "data").mkdir()
-        shutil.copy(STAGED, Path(cls.tmp.name) / "data" / "staged.json")
+        staged_data.copy(cls.tmp.name)
         r = build(cls.tmp.name)
         assert r.returncode == 0, r.stdout + r.stderr
         cls.path = Path(cls.tmp.name) / OUT
@@ -64,7 +63,7 @@ class BuiltWorkbook(unittest.TestCase):
         self.assertTrue(diffs[0].startswith("Appropriations Observation:"))
 
     def test_formulas_are_the_four_lookups_on_every_observation(self):
-        n_obs = len(json.loads(STAGED.read_text())["observations"])
+        n_obs = len(staged_data.load()["observations"])
         formulas = [(ws.title, c.column_letter) for ws in self.wb.worksheets
                     for row in ws.iter_rows() for c in row if c.data_type == "f"]
         self.assertEqual(len(formulas), 4 * n_obs)
@@ -88,11 +87,10 @@ class BuildChecksStopTheBuild(unittest.TestCase):
     """Each kind of bad data stops the build (exit code != 0) and writes no workbook."""
 
     def run_with(self, change):
-        data = json.loads(STAGED.read_text())
+        data = staged_data.load()
         change(data)
         with tempfile.TemporaryDirectory() as d:
-            (Path(d) / "data").mkdir()
-            (Path(d) / "data" / "staged.json").write_text(json.dumps(data))
+            staged_data.save(data, d)
             r = build(d)
             self.assertNotEqual(r.returncode, 0, "the build should have stopped")
             self.assertFalse((Path(d) / OUT).exists())

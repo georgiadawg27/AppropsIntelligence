@@ -3,7 +3,7 @@
 # it passes on that same commit.
 #
 # Two jobs run side by side, each with pytest-xdist across the runner's CPUs:
-#   data     -- builds the workbook from data/staged.json (scripts/build_workbook.py, which stops on
+#   data     -- builds the workbook from data/staged/ (scripts/build_workbook.py, which stops on
 #               any failed check), runs the bill and law text check (scripts/check_legislative_text.py,
 #               offline), recalculates it in LibreOffice and fails on any formula error,
 #               checks the site's copy (lookup results stored) against LibreOffice's results,
@@ -98,7 +98,7 @@ jobs:
         env:
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
         run: pip install -r requirements.lock
-      - name: Build the workbook from data/staged.json
+      - name: Build the workbook from data/staged/
         if: needs.changes.outputs.data == 'true'
         # the script runs its own checks first (allowed values, broken references, duplicate IDs,
         # effective dates, govinfo landing pages, enactment fields off Enacted rows) and stops on any
@@ -107,7 +107,7 @@ jobs:
         if: needs.changes.outputs.data == 'true'
         # every House, Senate and Enacted figure against its stage's committed bill or law text
         # (data/legislative_text/); fails on a stage with no text and no exemption, a text file from another
-        # parser version, or check results in data/staged.json that are out of date. The summary (counts and the
+        # parser version, or check results in data/staged/ that are out of date. The summary (counts and the
         # change since the base branch) goes to the job summary.
         env:
           EVENT: ${{ github.event_name }}
@@ -125,7 +125,7 @@ jobs:
           python scripts/check_legislative_text.py --ci $args
       - name: Components and measure_reconcile (offline)
         if: needs.changes.outputs.data == 'true'
-        # accounting views, phase 1 (reference/ACCOUNTING_RULES.md): the tagged components in data/staged.json
+        # accounting views, phase 1 (reference/ACCOUNTING_RULES.md): the tagged components in data/staged/
         # are what scripts/tag_components.py gives from the committed data and text, and the measure_reconcile
         # records are up to date; each writes its summary to the job summary
         run: |

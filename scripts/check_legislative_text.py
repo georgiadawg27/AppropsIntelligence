@@ -1,16 +1,16 @@
 """
 The bill and law text check: every House, Senate and Enacted headline figure against the bill or law text for
-that same stage. Offline: it reads only committed files (data/staged.json and data/legislative_text/), never
+that same stage. Offline: it reads only committed files (data/staged/ and data/legislative_text/), never
 the network.
 
     python scripts/check_legislative_text.py            # compare; print the summary
-    python scripts/check_legislative_text.py --write    # also write the results into data/staged.json
+    python scripts/check_legislative_text.py --write    # also write the results into data/staged/
     python scripts/check_legislative_text.py --ci       # CI: fail on any gap (below); the summary goes to the
                                                         # job summary, with the change since --base-dir
 
 For each observation -- stage House Reported / Senate Reported / Enacted, budget authority, no component (the
 headline), not a rollup total, not superseded -- find its paragraph in that stage's text: the appropriation
-heading with the account's name (canonical or former; data/staged.json historical names) under its agency,
+heading with the account's name (canonical or former; data/staged/ historical names) under its agency,
 in the stage's division. Compare the headline: the paragraph's main appropriated amount -- not an "of which",
 a transfer, a limitation, an allowance or an advance for a later year. Where we record a derived headline
 (Medicaid: appropriated in this bill - the new advance) the text's figure is derived the same way.
@@ -28,7 +28,7 @@ a transfer, a limitation, an allowance or an advance for a later year. Where we 
                 Vaccine Injury Compensation trust-fund limitation, read from the report's table): the text
                 confirms that component, not the headline, so it neither confirms nor flags the figure
 
-Like with like: the components recorded with a headline independently of this text (data/staged.json
+Like with like: the components recorded with a headline independently of this text (data/staged/
 observation_components with tag_method retagged, table_line or carried_forward -- never the auto_text ones,
 which were themselves fitted to this paragraph) also give the text's figure: the headline plus the components
 beside it that the paragraph prints inside its main amount, less the ones the headline includes that the
@@ -44,7 +44,7 @@ CI fails (--ci) when
     written reason), or an exemption is stale (the document has a text file, or names nothing we hold)
   - a text file was parsed by another parser version than legislative_text.py's (re-parse and commit:
     python scripts/fetch_legislative_text.py --reparse), or is malformed
-  - data/staged.json holds other bill_text / law_text records or statuses than this check gives (run --write)
+  - data/staged/ holds other bill_text / law_text records or statuses than this check gives (run --write)
 """
 
 import argparse
@@ -61,6 +61,7 @@ sys.path.insert(0, str(ROOT))
 import legislative_text as L  # noqa: E402
 import rules_registry as R  # noqa: E402
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
 RESULTS = ("match", "mismatch", "ambiguous", "no paragraph", "component match")
 RESULT_CODE = {"match": "pass", "mismatch": "fail", "ambiguous": "flag", "no paragraph": "info",
@@ -773,18 +774,18 @@ def summary(outcomes, base=None, problems=(), moved=None, pending_added=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser()
-    ap.add_argument("--write", action="store_true", help="write the results into data/staged.json")
+    ap.add_argument("--write", action="store_true", help="write the results into data/staged/")
     ap.add_argument("--ci", action="store_true", help="fail on gaps or stale records; job summary")
     ap.add_argument("--base-dir", type=Path, help="a checkout of the base branch, for the change since main")
     ap.add_argument("--report", type=Path, help="write every outcome as CSV here")
     a = ap.parse_args(argv)
-    data = json.loads(L.STAGED.read_text())
+    data = staged_data.load()
     texts, exempt = load_texts(L.TEXT_DIR), load_exempt(L.TEXT_DIR)
     outcomes = check(data, texts, exempt)
     base = None
     if a.base_dir:
         try:
-            bdata = json.loads((a.base_dir / "data" / "staged.json").read_text())
+            bdata = staged_data.load_tree(a.base_dir)
             bdir = a.base_dir / "data" / "legislative_text"
             base = check(bdata, load_texts(bdir), load_exempt(bdir))
         except Exception as e:                                       # noqa: BLE001 -- the base is for comparison only
@@ -804,9 +805,9 @@ def main(argv=None):
     stale = new_vals != data["validations"] or bool(moved)
     if a.ci and stale:
         n = sum(1 for v in new_vals if old_ids.get(v["validation_id"]) != v)
-        problems.append(f"data/staged.json is not up to date with this check ({n} records, "
+        problems.append(f"data/staged/ is not up to date with this check ({n} records, "
                         f"{sum(moved.values())} statuses) -- run python scripts/check_legislative_text.py --write "
-                        "and commit data/staged.json")
+                        "and commit data/staged/")
     text = summary(outcomes, base, problems, moved if a.write else None, pending_added if a.write else None)
     print(text)
     if a.ci and os.environ.get("GITHUB_STEP_SUMMARY"):
@@ -826,8 +827,8 @@ def main(argv=None):
         data["validations"] = new_vals
         for o in data["observations"]:
             o["verification_status"] = want_status[o["observation_id"]]
-        L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
-        print(f"data/staged.json updated: {sum(1 for v in new_vals if old_ids.get(v['validation_id']) != v)} records")
+        staged_data.save(data)
+        print(f"data/staged/ updated: {sum(1 for v in new_vals if old_ids.get(v['validation_id']) != v)} records")
     if a.ci and problems:
         return 1
     return 0

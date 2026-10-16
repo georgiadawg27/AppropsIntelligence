@@ -13,7 +13,6 @@ law_text record on the same observation passes.
 """
 
 import argparse
-import json
 import re
 import sys
 from pathlib import Path
@@ -22,8 +21,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 REVIEWER = "owner rules (2026-10-08)"
 
 
@@ -31,7 +31,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     law = {v["observation_id"]: v for v in data["validations"] if v["rule_applied"] == "law_text"
            and v["result"] == "pass" and "(enrolled)" in (v["expected_result"] or "")}
@@ -72,7 +72,7 @@ def main(argv=None):
         print("resolved", *d)
     print(f"{len(done)} resolved, {len(kept)} kept pending {kept}; statuses: {changed}")
     if a.write:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

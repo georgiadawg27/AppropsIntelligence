@@ -12,6 +12,7 @@ import build_year as B  # noqa: E402
 sys.argv = _argv
 sys.path.insert(0, str(ROOT))
 import export_static as E  # noqa: E402
+import staged_data  # noqa: E402
 
 
 class FormerNamesByYear(unittest.TestCase):
@@ -20,7 +21,7 @@ class FormerNamesByYear(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.data = json.loads((ROOT / "data" / "staged.json").read_text())
+        cls.data = staged_data.load()
 
     def test_the_name_resolves_differently_by_year(self):
         pm = ("ACC-HHS-HRSA-PROGRAM-SUPPORT", "program management")
@@ -131,7 +132,7 @@ class Fy2017(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.data = json.loads((ROOT / "data" / "staged.json").read_text())
+        cls.data = staged_data.load()
         cls.obs = [o for o in cls.data["observations"] if o["fiscal_year"] == 2017
                    and o["verification_status"] != "superseded"]
 
@@ -212,7 +213,7 @@ class RetiredIds(unittest.TestCase):
     """A retired ID (reference/review/lhhs/retired_ids.json) is gone from the data and never reused."""
 
     def test_never_reused(self):
-        data = json.loads((ROOT / "data" / "staged.json").read_text())
+        data = staged_data.load()
         retired = json.loads((ROOT / "reference" / "review" / "lhhs" / "retired_ids.json").read_text())
         live = {x["confirmed_absence_id"] for x in data["confirmed_absences"]} | \
             {r["relationship_id"] for r in data["relationships"]}

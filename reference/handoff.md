@@ -1,5 +1,31 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Readiness fix 2: data/staged.json split per subcommittee (2026-10-16, this PR)
+
+Brief: backfill readiness report B2 (`/mnt/project-files/backfill-readiness/report.md`; one file would pass GitHub's
+100 MB limit at about six subcommittees). The data is now `data/staged/`: `<CODE>/<table>.json` per subcommittee and
+record type, `shared/<table>.json` for records of no one subcommittee (source documents, the component vocabulary,
+the retired-ID lists, a record whose account is not on file), and `manifest.json`, whose runs keep each table's
+record order. `staged_data.load()` returns the same document as before and `save(data)` writes it split; every
+script, test and review script goes through them (`paths.staged()` is the folder). A record's subcommittee: its own
+field, else its account's, else its observation's account's.
+- No record changed: `staged_data.digest()` (sha256 of the old single-file serialization) is still
+  8d43b625cd3b220c..., so the workbook fixture, grid counts and data_sha256 are unchanged. Only
+  `docs/data/index.json` (source.data 'data/staged', data_committed = this PR's data commit) and
+  `reference/accounts.json` (source label) moved.
+- load() stops when a file and the manifest disagree, or on a file the manifest does not list (a hand edit or a merge
+  that kept one side's manifest): rewrite with save(). Two PRs adding to the same subcommittee table conflict on the
+  manifest line, which is the signal to re-run the writing script after merging.
+- History readers handle both forms: `added_dates.py --from-git/--base` and `tests/test_added_dates.py` use
+  `staged_data.load_git(rev)`; the text check's `--base-dir` uses `load_tree()`.
+- Largest file today: `LHHS/validations.json` 9.2 MB. At Defense scale (3-5x LHHS) one subcommittee's validations
+  would be 30-45 MB: under the limit, near GitHub's 50 MB warning. If that comes, split by fiscal year inside a
+  subcommittee (a change to staged_data only).
+- Tests: `tests/test_staged_data.py` (round trip, one subcommittee per file, manifest mismatch, stray file, digest,
+  pre-split checkout).
+
+Open: the remaining readiness fixes (R1/R2 site JSON, speed, security, hosting), then the full CJS load.
+
 ## Readiness fix 1: approved subcommittee codes (2026-10-16, this PR)
 
 Brief: backfill readiness report B1 (`/mnt/project-files/backfill-readiness/report.md`), codes approved by the owner
@@ -9,7 +35,7 @@ title maps to SFOPS (alias; `subcommittees_named` names a code once). NSRP is in
 and `ids.check_code` refuses it. Every code has a display name. No data held any changed code, so no figure, ID,
 fixture or workbook value changed. Tests: `IdNamespaces` (approved list, alias, retired code).
 
-Open: the other readiness fixes, in the report's order (B2 split `data/staged.json`, then R1/R2 site JSON).
+Open: the other readiness fixes, in the report's order (B2 split `data/staged.json` (done, above), then R1/R2 site JSON).
 
 ## D-7 cleanup: the three differences, Title II's rescission lines (2026-10-16, this PR)
 

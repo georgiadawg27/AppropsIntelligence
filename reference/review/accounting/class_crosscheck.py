@@ -22,7 +22,6 @@ Needs pdftotext (poppler) and the report PDFs (downloaded when missing).
 import argparse
 import collections
 import csv
-import json
 import re
 import subprocess
 import sys
@@ -33,6 +32,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import accounting as AC  # noqa: E402
+import staged_data  # noqa: E402
 import measure_reconcile as MR  # noqa: E402
 import tag_components as TC  # noqa: E402
 
@@ -220,7 +220,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--cache", type=Path, default=ROOT / "document_store")
     a = ap.parse_args(argv)
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     data["_components"] = [dict(c, _account=obs[c["observation_id"]]["canonical_account_id"])
                            for c in data["observation_components"]]

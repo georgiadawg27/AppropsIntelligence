@@ -6,7 +6,7 @@ that answers the same questions as approps_web.py without a server.
 
     python export_static.py [--workbook X.xlsx] [--out docs] [--publish-workbook] [--data-base URL]
 
-  - Builds the workbook from the canonical data, data/staged.json
+  - Builds the workbook from the canonical data, data/staged/
     (approps_store.reference_workbook(): scripts/build_workbook.py, which
     stops on any failed check), and loads it into a throwaway store with
     approps_store.load().
@@ -16,7 +16,7 @@ that answers the same questions as approps_web.py without a server.
   - Writes docs/data/index.json: the matching pool
     (approps_store.accounts_for_matching(): canonical names + reviewed
     former names), the matching constants from accounts.py, and which data
-    this is (data/staged.json: its sha256, the date it was committed, its
+    this is (data/staged/: its sha256, the date it was committed, its
     version from the workbook's Read Me), and "features": per feature in
     web/ui_contract.json, true only if every data field it reads is in the
     export (with the contract's "contract_version").
@@ -57,13 +57,12 @@ that answers the same questions as approps_web.py without a server.
     the export leaves docs/'s copy as committed: pull requests don't commit it.
 
 Output is deterministic (sorted keys, no timestamps), so re-running on an
-unchanged data/staged.json changes nothing -- .github/workflows/export-static.yml
+unchanged data/staged/ changes nothing -- .github/workflows/export-static.yml
 commits docs/ only when it did change. Freshness = as of the last committed
 data, not real time.
 """
 
 import argparse
-import hashlib
 import json
 import os
 import re
@@ -79,6 +78,7 @@ import accounts as A
 import approps_store as S
 import approps_web as W
 import subcommittees as SC
+import staged_data
 import features as F
 
 ROOT = Path(__file__).resolve().parent
@@ -119,7 +119,7 @@ def default_data_base(to_docs, publish, environ=os.environ):
 
 
 def reference_workbook():
-    """approps_store.reference_workbook(): built from data/staged.json."""
+    """approps_store.reference_workbook(): built from data/staged/."""
     try:
         return S.reference_workbook()
     except S.LoadError as e:
@@ -156,12 +156,12 @@ def publish_workbook(workbook, target, when):
         tmp.replace(target)
 
 
-def committed_date(path):
-    """UTC ISO time of the last commit touching the workbook, or None outside git.
+def committed_date(*paths):
+    """UTC ISO time of the last commit touching the workbook (or the data: its paths), or None outside git.
     Formatted here, not by git: git versions render %cI differently (+00:00 vs Z),
     which would make the export differ between a laptop and the Actions runner."""
     try:
-        out = subprocess.run(["git", "log", "-1", "--format=%ct", "--", str(path)], cwd=ROOT,
+        out = subprocess.run(["git", "log", "-1", "--format=%ct", "--", *map(str, paths)], cwd=ROOT,
                              capture_output=True, text=True, check=True).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         return None
@@ -284,11 +284,11 @@ def export(workbook, out, download=True, data_base=DATA_BASE):
         for stale in (out / "data" / folder).glob("*.json"):
             if stale.stem not in keep:
                 stale.unlink()
-    data_committed = committed_date(S.STAGED)
+    data_committed = committed_date(*staged_data.GIT_PATHS)
     built = workbook.resolve() == S.BUILT_WORKBOOK.resolve()
     index = {
         "source": {"data": str(S.STAGED.relative_to(ROOT)) if built else None,
-                   "data_sha256": hashlib.sha256(S.STAGED.read_bytes()).hexdigest() if built else None,
+                   "data_sha256": staged_data.digest(staged_data.load()) if built else None,
                    "data_committed": data_committed if built else committed_date(workbook),
                    "version": S.data_version(workbook),
                    "workbook": workbook.name,
@@ -353,7 +353,7 @@ def export(workbook, out, download=True, data_base=DATA_BASE):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[1])
-    p.add_argument("--workbook", help="default: the workbook built from data/staged.json")
+    p.add_argument("--workbook", help="default: the workbook built from data/staged/")
     p.add_argument("--out", default=str(ROOT / "docs"))
     p.add_argument("--publish-workbook", action="store_true",
                    help="also write docs/" + DOWNLOAD + " (only CI's export job on main passes this)")

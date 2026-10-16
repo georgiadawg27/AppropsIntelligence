@@ -2,7 +2,7 @@
 Build reference/accounts.json from the pilot workbook -- the canonical account
 list that OCR-garbled labels are fuzzy-matched against (accounts.py).
 
-    python reference/build_accounts.py              # from the workbook built from data/staged.json
+    python reference/build_accounts.py              # from the workbook built from data/staged/
     python reference/build_accounts.py path/to/workbook.xlsx
 
 CI regenerates it (.github/workflows/export-static.yml) whenever the data changes;
@@ -73,8 +73,9 @@ def accounts_from_workbook(workbook):
     built = _store().BUILT_WORKBOOK
     if Path(workbook).resolve() == built.resolve():
         # the build stamps its own time into the file, so name the data it was built from
+        import staged_data
         staged = _store().STAGED
-        label = f"{staged.relative_to(staged.parents[1])} (sha256 {hashlib.sha256(staged.read_bytes()).hexdigest()[:16]})"
+        label = f"{staged.relative_to(staged.parents[1])} (sha256 {staged_data.digest(staged_data.load())[:16]})"
     else:
         label = f"{Path(workbook).name} (sha256 {hashlib.sha256(Path(workbook).read_bytes()).hexdigest()[:16]})"
     return {"source": f"{label}, Account and Historical Name tabs; "

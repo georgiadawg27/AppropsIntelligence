@@ -31,7 +31,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 REQUEST_LANGUAGE = ROOT / "reference" / "review" / "accounting" / "request_language.json"
 sys.path.insert(0, str(ROOT))
@@ -172,7 +174,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     retired = json.loads(RETIRED.read_text())
     changed = retire_absences(data, retired)
     added = nsf_request(data)
@@ -184,7 +186,7 @@ def main():
     if not changed:
         print("nothing to change")
     if args.write and changed:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         RETIRED.write_text(json.dumps(retired, indent=1) + "\n")
         print("data/staged.json and retired_ids.json updated")
 

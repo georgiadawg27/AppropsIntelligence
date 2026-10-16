@@ -19,7 +19,6 @@ the headline. Nothing is guessed: a page without the line, or without the headli
 
 import argparse
 import csv
-import json
 import re
 import subprocess
 import sys
@@ -27,6 +26,8 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 OUT = Path(__file__).resolve().parent / "table_lines.csv"
 ACCOUNT = "ACC-HHS-HRSA-VICTF"
 TOTAL = re.compile(r"Total,? Vaccine Injury Compensation", re.I)
@@ -101,7 +102,7 @@ def main(argv=None):
     ap.add_argument("--cache", type=Path, default=ROOT / "document_store")
     a = ap.parse_args(argv)
     a.cache.mkdir(exist_ok=True)
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     docs = {d["document_id"]: d for d in data["source_docs"]}
     rows, misses = [], []
     for o in sorted(data["observations"], key=lambda o: o["observation_id"]):

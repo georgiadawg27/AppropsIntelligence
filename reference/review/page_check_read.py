@@ -27,9 +27,11 @@ import pymupdf
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 sys.path.insert(0, str(HERE / "links"))
 SHEET = HERE / "page_check_sheet.csv"
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 CACHE = Path.home() / ".cache" / "approps_page_read"
 OUT = HERE / "page_check_matches.csv"
 DPI = 400
@@ -349,7 +351,7 @@ def match_row(r, o, texts):
 
 def cmd_match():
     rows, _ = page_list()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     out = []
     for r in rows:
@@ -426,7 +428,7 @@ def cmd_apply():
     with open(SHEET, newline="") as f:
         sheet = {r["observation_id"]: r for r in csv.DictReader(f)}
     res = results()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     rows = []
     narrowed = 0
@@ -459,7 +461,7 @@ def cmd_apply():
         w = csv.DictWriter(f, fieldnames=list(rows[0]), lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
-    STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+    staged_data.save(data)
     import collections
     print(collections.Counter(r["result"] for r in rows), f"{narrowed} source_page values narrowed")
 

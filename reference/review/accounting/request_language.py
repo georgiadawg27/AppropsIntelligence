@@ -42,6 +42,7 @@ import appendix_attributes as A  # noqa: E402
 import check_legislative_text as CT  # noqa: E402
 import legislative_text as L  # noqa: E402
 import rules_registry as R  # noqa: E402
+import staged_data  # noqa: E402
 
 OUT = Path(__file__).resolve().parent / "request_language.json"
 STAGE = "President's Budget"
@@ -502,7 +503,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
     args = ap.parse_args(argv)
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     out = build(data)
     text = json.dumps(out, indent=1, ensure_ascii=False) + "\n"
     if args.check:

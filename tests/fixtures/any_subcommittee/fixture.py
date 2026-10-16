@@ -1,7 +1,7 @@
 """
 The synthetic subcommittee SYNLB (tests/test_any_subcommittee.py): two accounts, one fiscal year, every stage, with
 bill and law text. Invented names and amounts -- no real figure. build(root) lays out a data root the pipeline reads
-with APPROPS_DATA_ROOT=root (paths.py): data/staged.json, data/legislative_text/ (parsed by the repository's own
+with APPROPS_DATA_ROOT=root (paths.py): data/staged/, data/legislative_text/ (parsed by the repository's own
 parser, legislative_text.parse, from the bill XML below) and an empty reference/review/accounting/.
 
 The House bill carries only the House's account and the Senate bill only the Senate's (Legislative Branch's custom;
@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 
 import legislative_text as L
+import staged_data
 
 HERE = Path(__file__).resolve().parent
 RULES = HERE / "rules"
@@ -134,7 +135,7 @@ def build(root, vocabulary, request=True):
     (root / "data" / "legislative_text").mkdir(parents=True, exist_ok=True)
     (root / "reference" / "review" / "accounting").mkdir(parents=True, exist_ok=True)
     data = staged(vocabulary)
-    (root / "data" / "staged.json").write_text(json.dumps(data, indent=1, ensure_ascii=False))
+    staged_data.save(data, root)
     if request:
         (root / "reference" / "review" / "accounting" / "request_language.json").write_text(
             json.dumps(request_language(data), indent=1))

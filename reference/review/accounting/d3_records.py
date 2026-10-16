@@ -19,7 +19,6 @@ the old headline + the defense line and the list in decisions-D2.md (EXPECTED); 
 """
 
 import argparse
-import json
 import re
 import sys
 from pathlib import Path
@@ -28,9 +27,10 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 import tag_components as TC  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 ACCOUNT = "ACC-NSF-RRA"
 RULING = "NSF R&RA: the paragraph's total, defense inside (D-3, owner 2026-10-13)"
 LINE_RULING = "D-3, owner 2026-10-14"
@@ -117,7 +117,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     docs = {d["document_id"]: d for d in data["source_docs"]}
     n = max(int(o["observation_id"].split("-")[1]) for o in data["observations"] if re.match(r"OBS-\d+$", o["observation_id"]))
@@ -208,7 +208,7 @@ def main(argv=None):
             old["verification_status"] = "superseded"
             old["superseded_by_observation_id"] = new["observation_id"]
             data["observations"].append(new)
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("data/staged.json updated")
 
 

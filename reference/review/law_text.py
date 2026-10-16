@@ -22,7 +22,6 @@ import collections
 import csv
 import hashlib
 import html
-import json
 import re
 import sys
 import urllib.request
@@ -32,8 +31,9 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 XML_DIR = ROOT / "document_store" / "enrolled_xml"
 OUT = HERE / "law_text_comparison.csv"
 SOURCES = HERE / "law_text_sources.csv"
@@ -222,7 +222,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     acc = {x["canonical_account_id"]: x for x in data["accounts"]}
     hist = collections.defaultdict(list)
     for h in data.get("historical_names_tab", []):
@@ -357,7 +357,7 @@ def write(data, recs, updates=()):
             moved[(o["canonical_account_id"].split("-")[1] if o["observation_id"].startswith("OBS-LHHS") else "CJS",
                    o["fiscal_year"], o["verification_status"], new)] += 1
             o["verification_status"] = new
-    STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+    staged_data.save(data)
     print(f"{len(recs)} law_text records appended; status changes: {dict(moved)}")
 
 

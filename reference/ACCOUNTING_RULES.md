@@ -9,7 +9,7 @@ Code: `accounting.py` (schema, checks, views), `scripts/tag_components.py` (writ
 
 ## Two new tables
 
-### Account Attribute (`account_attributes` in data/staged.json)
+### Account Attribute (`account_attributes` in data/staged/)
 
 One value per account, fiscal year, attribute and `stage_basis`, each with its evidence (source document, location
 and the words that show it). Filled in phase 2 from the Budget Appendix (`scripts/appendix_attributes.py`).

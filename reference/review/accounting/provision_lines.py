@@ -45,6 +45,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 import check_legislative_text as CT  # noqa: E402
 import tag_components as TC  # noqa: E402
@@ -183,7 +185,7 @@ def main(argv=None):
     ap.add_argument("--cache", default=str(ROOT / "document_store"), help="where the full texts are cached")
     args = ap.parse_args(argv)
     cache = Path(args.cache) / "provision_text"
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     heads = TC.headline_of(data)
     texts, rows, problems = {}, [], []
     for doc, acc, fy, stage, typ, frm, amt, inside, start, end, why in ITEMS:

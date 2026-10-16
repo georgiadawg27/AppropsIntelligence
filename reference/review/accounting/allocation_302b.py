@@ -19,7 +19,6 @@ address in data/staged.json).
 
 import argparse
 import csv
-import json
 import re
 import sys
 import urllib.request
@@ -28,6 +27,8 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "allocation_302b_text.csv"
 COLUMNS = ["source_document_id", "pdf_page", "printed_page", "chamber", "row", "label", "allocation_ba",
@@ -153,7 +154,7 @@ def main(argv=None):
     args = p.parse_args(argv)
     cache = Path(args.cache)
     cache.mkdir(exist_ok=True)
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     rows = []
     for d in sorted(data["source_docs"], key=lambda d: d["document_id"]):
         if d["document_type"] != "committee_report":

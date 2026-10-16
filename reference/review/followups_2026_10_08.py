@@ -19,7 +19,6 @@ no ID reused.
 
 import argparse
 import collections
-import json
 import sys
 from pathlib import Path
 
@@ -28,9 +27,10 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 import law_text as L  # noqa: E402
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 NOTE_0771 = ("emergency piece of the FY2025 request; printed in the Senate report (p.227); not printed as its own "
              "line in H.Rept. 118-582")
 
@@ -39,7 +39,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     vals = data["validations"]
 
@@ -93,7 +93,7 @@ def main(argv=None):
         print("moved", *m)
     print(f"{len(moved)} status changes")
     if a.write:
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("wrote", STAGED.relative_to(ROOT))
 
 

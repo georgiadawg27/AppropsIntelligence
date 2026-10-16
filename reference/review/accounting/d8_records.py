@@ -25,11 +25,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 sys.path.insert(0, str(ROOT))
 import accounts as A  # noqa: E402
 import ids as IDS  # noqa: E402
+import staged_data  # noqa: E402
 
 ROWS = HERE / "allocation_302b_rows.csv"
 OUT = HERE / "allocation_302b_lines.csv"
@@ -60,7 +61,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     retired = json.loads(RETIRED.read_text())
     docs = {s["document_id"]: s for s in data["source_docs"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
@@ -152,7 +153,7 @@ def main():
             docs[d_id]["source_page"] = ps
         data["components"] += comps_new
         data["observations"] += added
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("data/staged.json updated")
 
 

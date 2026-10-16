@@ -54,7 +54,7 @@ jobs:
           if [ "$MODE" = "all" ] || [ "$MODE" = "reparse" ]; then args="--all"; fi
           if [ -n "$DOCUMENTS" ]; then args="$args --only $DOCUMENTS"; fi
           python scripts/fetch_legislative_text.py $args | tee -a "$GITHUB_STEP_SUMMARY"
-      - name: Write the check's results into data/staged.json
+      - name: Write the check's results into data/staged/
         run: python scripts/check_legislative_text.py --write | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Commit data/ if it changed
         run: |

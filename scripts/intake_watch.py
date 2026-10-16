@@ -9,7 +9,7 @@ for any subcommittee in the data, for the current or next fiscal year?
 
 Read-only: it lists govinfo's BILLS, CRPT and PLAW collections modified since the cutoff (GET
 /collections/<C>/<since>, the key in a header, never printed), reads each package's title for the subcommittee
-(subcommittees.subcommittees_named) and fiscal year, and compares it with what the data holds (data/staged.json's
+(subcommittees.subcommittees_named) and fiscal year, and compares it with what the data holds (data/staged/'s
 source documents and data/legislative_text/). It never changes a file in the repository.
 
   nothing new  -> one summary line; exit 0; no commit, no issue.
@@ -38,6 +38,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import approps_store as S  # noqa: E402
 import paths  # noqa: E402
 import subcommittees as SC  # noqa: E402
+import staged_data  # noqa: E402
 
 API = "https://api.govinfo.gov"
 COLLECTIONS = ("BILLS", "CRPT", "PLAW")
@@ -85,7 +86,7 @@ def held(data, root=None):
 
 def drafts_by_cell(data):
     """{(subcommittee, fiscal year, stage): [committee draft document ids]}: the documents a draft stage's figures
-    cite that are not govinfo or Congress.gov text (approps_store.committee_drafts, read from data/staged.json)."""
+    cite that are not govinfo or Congress.gov text (approps_store.committee_drafts, read from data/staged/)."""
     acc = {a["canonical_account_id"]: a["subcommittee"] for a in data["accounts"]}
     docs = {d["document_id"]: d for d in data["source_docs"]}
     draft = {(r["subcommittee"], r["fiscal_year"], r["stage"]) for r in data["bill_report_refs"]
@@ -128,7 +129,7 @@ def plan(data, packages, today, root=None):
         cells = [{"subcommittee": c, "fiscal_year": year, "stage": stage} for c in subs] if stage else []
         reconcile = [{"cell": cell, "drafts": drafts[key]} for cell in cells
                      if (key := (cell["subcommittee"], cell["fiscal_year"], cell["stage"])) in drafts]
-        steps = ["register the source document (data/staged.json source_docs; added_dates.py dates it)",
+        steps = ["register the source document (data/staged/ source_docs; added_dates.py dates it)",
                  f"python scripts/fetch_legislative_text.py --documents <its id>  ({pid})"]
         steps += [f"python scripts/intake.py --subcommittee {c['subcommittee']} --fy {year} --stage {stage} --write"
                   for c in cells]
@@ -202,7 +203,7 @@ def main(argv=None):
     a = p.parse_args(argv)
     today = a.today or datetime.datetime.now(datetime.timezone.utc).date().isoformat()
     since = (datetime.date.fromisoformat(today) - datetime.timedelta(days=a.since_days)).isoformat()
-    data = json.loads(paths.staged().read_text())
+    data = staged_data.load()
     get = recorded_get(a.recorded) if a.recorded else live_get()
     packages = [p for c in COLLECTIONS for p in listing(c, since, get)]
     found = plan(data, packages, today)

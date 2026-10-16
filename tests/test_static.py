@@ -9,7 +9,6 @@ tests need playwright + chromium, as tests/test_web.py.
 """
 
 import functools
-import hashlib
 import http.server
 import json
 import multiprocessing
@@ -33,6 +32,7 @@ import approps_store as S  # noqa: E402
 import approps_web as W  # noqa: E402
 import export_static as E  # noqa: E402
 import workbook_digest as WD  # noqa: E402
+import staged_data  # noqa: E402
 from test_web import WORKBOOK, chromium_path, sync_playwright  # noqa: E402
 
 NODE = shutil.which("node")
@@ -235,7 +235,7 @@ class Export(StaticTest):
         self.assertEqual(sorted(a), sorted(b))
         self.assertEqual([k for k in a if a[k] != b[k] and k != Path(E.DOWNLOAD)], [])
         want = json.loads((ROOT / "tests" / "fixtures" / "workbook_values.json").read_text())
-        self.assertEqual(want["data_sha256"], hashlib.sha256(S.STAGED.read_bytes()).hexdigest(),
+        self.assertEqual(want["data_sha256"], staged_data.digest(staged_data.load()),
                          "tests/fixtures/workbook_values.json is from other data: regenerate it")
         self.assertEqual(WD.compare(WD.digest(self.out / E.DOWNLOAD), want["sheets"]), [])
 
@@ -504,7 +504,7 @@ class StaticVersusLive(StaticTest):
         self.page.goto(self.static_url + "?view=account")
         self.page.wait_for_selector("[data-testid=freshness]:not([hidden])")
         text = self.page.text_content("[data-testid=freshness]")
-        self.assertIn("data/staged.json (v38)", text)
+        self.assertIn("data/staged (v38)", text)
         self.assertIn("not live", text)
         # the Download workbook link opens docs/Approps_Pilot_Schema_Loaded.xlsx, the CI-built workbook
         link = self.page.locator("[data-testid=freshness] [data-testid=download-workbook]")

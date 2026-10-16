@@ -23,11 +23,14 @@ import csv
 import glob
 import json
 import re
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
-STAGED = ROOT / "data" / "staged.json"
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
+STAGED = ROOT / "data" / "staged"
 REVIEW_LIST = HERE / "review_list.csv"
 
 CONFIRMING = ("structural", "table_total", "cross_document", "arithmetic")
@@ -154,7 +157,7 @@ def confirming_passes(vals, v):
 
 
 def main():
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     obs = {o["observation_id"]: o for o in data["observations"]}
     acc = {a["canonical_account_id"]: a for a in data["accounts"]}
     by_obs = collections.defaultdict(list)

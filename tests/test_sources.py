@@ -31,6 +31,7 @@ import approps_store as S  # noqa: E402
 import extract_approps as ex  # noqa: E402
 import govinfo_ingest as g  # noqa: E402
 import public_links as pl  # noqa: E402
+import staged_data  # noqa: E402
 from test_ingest import TempStore  # noqa: E402
 
 WORKBOOK = S.reference_workbook()
@@ -101,7 +102,7 @@ class PageLinks(Store):
         # v36: the eight Labor-HHS report/JES links point at PDFs, not govinfo's app/details pages
         # (bill_url isn't cited at a page; twelve Labor-HHS bill_url values are still landing pages)
         rows = self.conn.execute("SELECT reference_id, report_jes_url FROM bill_report_reference").fetchall()
-        self.assertEqual(len(rows), len(json.loads((ROOT / "data" / "staged.json").read_text())["bill_report_refs"]))
+        self.assertEqual(len(rows), len(staged_data.load()["bill_report_refs"]))
         self.assertEqual([r[0] for r in rows if "govinfo.gov/app/details" in (r[1] or "")], [])
 
 

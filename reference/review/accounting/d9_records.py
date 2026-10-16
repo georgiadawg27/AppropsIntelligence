@@ -35,11 +35,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 sys.path.insert(0, str(ROOT))
 import ids as IDS  # noqa: E402
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
 DATE = "2026-10-15"
 STAGE_CHAMBER = {"House Reported": "House", "Senate Reported": "Senate"}
@@ -448,7 +449,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     args = ap.parse_args()
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     retired = json.loads(RETIRED.read_text())
     added_accounts = new_accounts(data)
     print(f"part 8: accounts added {added_accounts or 'none (already there)'}")
@@ -476,7 +477,7 @@ def main():
     if args.write and (added_accounts or obs or cas or life or pages or sup):
         data["observations"] += obs + [n for _, n in sup]
         data["confirmed_absences"] += cas
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("data/staged.json updated")
 
 

@@ -43,6 +43,7 @@ sys.path.insert(0, str(ROOT / "reference" / "review"))
 sys.path.insert(0, str(ROOT / "reference" / "review" / "lhhs" / "fy2024_house"))
 
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 import triage as T  # noqa: E402
 import derived_headlines as DH  # noqa: E402
 from build_rows import AGENCY_TOTALS, AGENCY_KEY, PRINTED  # noqa: E402
@@ -65,7 +66,7 @@ def clean(label):
 
     return re.sub(r"(?<=[a-z]) \d$", "", s)
 
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 TODAY = "2026-10-08"
 HOUSE_TABLES = ["SRC-CRPT-119HRPT696", "SRC-CRPT-119HRPT271", "SRC-CRPT-118HRPT585", "SRC-EXPL-LHHS-FY2024-HOUSE",
                 "SRC-CRPT-117HRPT403", "SRC-CRPT-117HRPT96", "SRC-CRPT-116HRPT450", "SRC-CRPT-116HRPT62",
@@ -858,7 +859,7 @@ def main(argv=None):
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
     fy, cfg = a.fy, YEARS[a.fy]
-    data = json.loads(STAGED.read_text())
+    data = staged_data.load()
     acct = {x["canonical_account_id"]: x for x in data["accounts"] if x["subcommittee"] == "LHHS"}
     comps = {c["component_id"]: c for c in data["components"] + cfg.get("components", [])}
     lhhs_obs = [o for o in data["observations"] if o["canonical_account_id"] in acct]
@@ -1439,7 +1440,7 @@ def main(argv=None):
             data["confirmed_absences"].append({"confirmed_absence_id": next(ca_ids), **c})
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("appended to", STAGED.relative_to(ROOT))
     return {"obs": new_obs, "val": new_val, "cross": cross, "unmatched": unmatched}
 

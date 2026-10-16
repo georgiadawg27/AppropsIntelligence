@@ -39,6 +39,7 @@ ROOT = HERE.parents[3]
 sys.path.insert(0, str(ROOT))
 
 import validate_approps as V  # noqa: E402
+import staged_data  # noqa: E402
 
 PKG = "MANUAL-LHHS-FY2024-HouseReported-explanatory_statement-408e3388"
 SHA256 = "408e33889225be0225d2c1fff15e095f5532df9d5b8fd8dd1c0125dbf0f8ff8d"
@@ -59,7 +60,7 @@ ABSENT = {
     ("ACC-HHS-GP-MEDICARE-LIMITATION", "budget authority"): (
         "Limitation for Title XVIII of the Social Security Act", "/Title XVIII|1834\\(l\\)/"),
 }
-STAGED = ROOT / "data" / "staged.json"
+STAGED = ROOT / "data" / "staged"
 DRAFT_NOTE = ("House subcommittee draft; the full committee never reported a FY2024 Labor-HHS bill; accompanies H.R. 5894 "
               "(introduced 2023); the July 14, 2023 subcommittee mark is an earlier version")
 
@@ -136,8 +137,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
-    raw = STAGED.read_text()
-    data = json.loads(raw)
+    data = staged_data.load()
     acct = {x["canonical_account_id"]: x for x in data["accounts"] if x["subcommittee"] == "LHHS"}
     comps = {c["component_id"]: c for c in data["components"]}
     obs_all = data["observations"]
@@ -381,7 +381,7 @@ def main(argv=None):
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         data["confirmed_absences"].extend(new_ca)
-        STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print("appended to", STAGED.relative_to(ROOT))
     print(f"confirmed absences {len(new_ca)}:", [(c['confirmed_absence_id'], c['canonical_account_id']) for c in new_ca])
     return {"obs": new_obs, "val": new_val, "ca": new_ca, "missing": missing, "ambiguous": ambiguous, "cross": cross, "flagged": flagged}

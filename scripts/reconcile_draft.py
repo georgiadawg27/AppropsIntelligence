@@ -3,12 +3,12 @@ A committee draft's official version arrives (brief D-5 part 3): reconcile the s
 
     python scripts/reconcile_draft.py --subcommittee CODE --fy N --stage "House Reported" \\
         --official SRC-CRPT-119HRPT652 --rows official_rows.json            # what it would do; nothing written
-    ... --write                                                            # write data/staged.json
+    ... --write                                                            # write data/staged/
 
 Inputs (a missing one is said and the run stops; nothing is guessed):
   - a draft stage: its Bill Report Reference row has draft TRUE, and its current figures cite a committee draft
     (approps_store.committee_drafts: not govinfo or Congress.gov text);
-  - the official document, already registered in data/staged.json source_docs, and official text (govinfo or
+  - the official document, already registered in data/staged/ source_docs, and official text (govinfo or
     Congress.gov);
   - --rows: the official version's figures for the stage, as its own pages print them (JSON list of
     {canonical_account_id, amount_type, component, amount, source_page, source_table_or_section,
@@ -42,6 +42,7 @@ import approps_store as S  # noqa: E402
 import ids as IDS  # noqa: E402
 import intake_watch as W  # noqa: E402
 import paths  # noqa: E402
+import staged_data  # noqa: E402
 
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 COPIED = ("canonical_account_id", "fiscal_year", "stage", "chamber", "amount_type", "component",
@@ -69,7 +70,7 @@ def reconcile(data, sc, fy, stage, official_id, rows, retired=(), when=None):
     "official_only": [...], "review": [validation ids]}; raises MissingInput naming what is missing."""
     docs = {d["document_id"]: d for d in data["source_docs"]}
     if official_id not in docs:
-        raise MissingInput(f"{official_id} is not a source document in data/staged.json: register it first")
+        raise MissingInput(f"{official_id} is not a source document in data/staged/: register it first")
     if not S.is_official_text(docs[official_id]["url_or_identifier"]):
         raise MissingInput(f"{official_id} is not govinfo or Congress.gov text, so it can't be the official version")
     drafts = W.drafts_by_cell(data).get((sc, fy, stage))
@@ -171,7 +172,7 @@ def main(argv=None):
     p.add_argument("--rows", required=True, help="the official version's figures (JSON list)")
     p.add_argument("--write", action="store_true")
     a = p.parse_args(argv)
-    data = json.loads(paths.staged().read_text())
+    data = staged_data.load()
     retired = json.loads(RETIRED.read_text()) if RETIRED.exists() else {}
     try:
         out = reconcile(data, a.subcommittee, a.fy, a.stage, a.official, json.loads(Path(a.rows).read_text()),
@@ -182,7 +183,7 @@ def main(argv=None):
     for k, v in out.items():
         print(f"{k}: {len(v)}" + (f" ({', '.join(v)})" if v else ""))
     if a.write:
-        paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
+        staged_data.save(data)
         print(f"wrote {paths.staged()}; next: python scripts/intake.py --subcommittee {a.subcommittee} --fy {a.fy} "
               f"--stage {a.stage!r} --write")
     return 2 if out["review"] else 0

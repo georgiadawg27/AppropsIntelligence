@@ -2,13 +2,12 @@
 Accounting views, phases 1 and 2: the component and attribute schema (accounting.py), the build and the loader
 refusing bad records, the tagging rules (scripts/tag_components.py), the measure_reconcile check
 (scripts/measure_reconcile.py) and the text check's like-with-like step. Offline: small inline fixtures and
-the committed data/staged.json.
+the committed data/staged/.
 """
 
 import collections
 import copy
 import json
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -22,11 +21,12 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import accounting as AC  # noqa: E402
 import approps_store as S  # noqa: E402
+import staged_data  # noqa: E402
 import check_legislative_text as C  # noqa: E402
 import measure_reconcile as MR  # noqa: E402
 import tag_components as TC  # noqa: E402
 
-STAGED = json.loads((ROOT / "data" / "staged.json").read_text())
+STAGED = staged_data.load()
 
 
 def headline(oid="OBS-LHHS-9001", amount=1000, acc="ACC-X", fy=2024, stage="Enacted"):
@@ -279,9 +279,8 @@ class BuildAndLoaderRefuse(unittest.TestCase):
 
     def test_the_build_stops_on_a_bad_component(self):
         with tempfile.TemporaryDirectory() as tmp:
-            (Path(tmp) / "data").mkdir()
             (Path(tmp) / "build").mkdir()
-            (Path(tmp) / "data" / "staged.json").write_text(json.dumps(self.bad()))
+            staged_data.save(self.bad(), tmp)
             r = subprocess.run([sys.executable, str(ROOT / "scripts" / "build_workbook.py")], cwd=tmp,
                                capture_output=True, text=True)
             self.assertNotEqual(r.returncode, 0)

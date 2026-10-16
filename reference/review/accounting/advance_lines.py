@@ -19,13 +19,14 @@ Needs pdftotext (poppler). Read from the text layer only; nothing is fitted.
 """
 
 import csv
-import json
 import re
 import subprocess
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
+import staged_data  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
 import appendix_attributes as A  # noqa: E402
 
@@ -103,7 +104,7 @@ def headlines(data, account):
 
 
 def main():
-    data = json.loads((ROOT / "data" / "staged.json").read_text())
+    data = staged_data.load()
     rows, misses = [], []
     years = sorted({y for y, ch, *_ in A.CHAPTERS if ch == "HHS"})
     for account, start in ACCOUNTS.items():

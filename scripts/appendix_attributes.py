@@ -6,10 +6,10 @@ schema, reference/ACCOUNTING_RULES.md the rules).
                                                       # downloaded from govinfo when missing) into the committed
                                                       # schedule extract (reference/review/accounting/appendix_schedules.json)
     python scripts/appendix_attributes.py             # what it would record; coverage
-    python scripts/appendix_attributes.py --write     # write data/staged.json's account_attributes and
+    python scripts/appendix_attributes.py --write     # write data/staged/'s account_attributes and
                                                       # account_attribute_notes, the Appendix source documents, and
                                                       # the review CSVs (reference/review/accounting/appendix_*.csv)
-    python scripts/appendix_attributes.py --ci        # fail when data/staged.json is not up to date with this
+    python scripts/appendix_attributes.py --ci        # fail when data/staged/ is not up to date with this
 
 Text only: every value is read from the PDF's text layer (no page image). The extract keeps, for each account we
 map (appendix_map.csv), its Program and Financing schedule: the identification code, the printed pages, each
@@ -59,6 +59,7 @@ import accounting as AC  # noqa: E402
 import added_dates  # noqa: E402
 import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
+import staged_data  # noqa: E402
 
 CACHE = ROOT / "document_store" / "appendix"
 REVIEW = ROOT / "reference" / "review" / "accounting"
@@ -688,7 +689,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.extract:
         extract()
-    data = json.loads(L.STAGED.read_text())
+    data = staged_data.load()
     extract_ = json.loads(EXTRACT.read_text())
     recs, notes, cover = build(data, extract_, read_map())
     recs, retired = assign_ids(data, recs)
@@ -711,11 +712,11 @@ def main(argv=None):
             data["account_attributes_retired"] = retired
             data["source_docs"] += docs
             added_dates.stamp(data)                          # D-5: each new document's first-added date, today
-            L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
-            print("data/staged.json updated")
+            staged_data.save(data)
+            print("data/staged/ updated")
     if a.ci and stale:
-        print("data/staged.json is not up to date with appendix_attributes -- run python scripts/appendix_attributes.py "
-              "--write and commit data/staged.json")
+        print("data/staged/ is not up to date with appendix_attributes -- run python scripts/appendix_attributes.py "
+              "--write and commit data/staged/")
         return 1
     return 0
 
