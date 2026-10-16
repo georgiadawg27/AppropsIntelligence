@@ -827,7 +827,7 @@ def main(argv=None):
         data["validations"] = new_vals
         for o in data["observations"]:
             o["verification_status"] = want_status[o["observation_id"]]
-        L.staged_data.save(data)
+        staged_data.save(data)
         print(f"data/staged/ updated: {sum(1 for v in new_vals if old_ids.get(v['validation_id']) != v)} records")
     if a.ci and problems:
         return 1

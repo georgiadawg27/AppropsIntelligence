@@ -247,7 +247,7 @@ def main(argv=None):
     if new_rows:
         data["source_docs"].extend(new_rows)
         added_dates.stamp(data)                              # D-5: each new document's first-added date, today
-        L.staged_data.save(data)
+        staged_data.save(data)
     for w in written:
         print("wrote %-34s %-9s %4d paragraphs %5d amounts" % w)
     for doc_id, why in unusable:

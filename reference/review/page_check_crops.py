@@ -24,6 +24,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 import page_check_read as P  # noqa: E402
+import staged_data  # noqa: E402
 
 DPI = 220
 
@@ -58,7 +59,7 @@ def main(argv):
     out_dir = Path(argv[0])
     out_dir.mkdir(parents=True, exist_ok=True)
     want = set(argv[1:]) or {"not_found", "wrong_column"}
-    obs = {o["observation_id"]: o for o in P.staged_data.load()["observations"]}
+    obs = {o["observation_id"]: o for o in staged_data.load()["observations"]}
     with open(P.OUT, newline="") as f:
         rows = [r for r in csv.DictReader(f) if r["status"] in want]
     by_page = defaultdict(list)

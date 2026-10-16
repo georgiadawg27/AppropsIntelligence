@@ -712,7 +712,7 @@ def main(argv=None):
             data["account_attributes_retired"] = retired
             data["source_docs"] += docs
             added_dates.stamp(data)                          # D-5: each new document's first-added date, today
-            L.staged_data.save(data)
+            staged_data.save(data)
             print("data/staged/ updated")
     if a.ci and stale:
         print("data/staged/ is not up to date with appendix_attributes -- run python scripts/appendix_attributes.py "
