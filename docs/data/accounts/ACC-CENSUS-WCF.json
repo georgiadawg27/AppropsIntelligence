@@ -1,0 +1,1237 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": 0,
+         "amount_type": "rescission",
+         "bill_id": "P.L.119-4",
+         "bill_report_reference_id": "BR-CJS-FY2025-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ4/pdf/PLAW-119publ4.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2025,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1809",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-12",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT272",
+         "source_page": "259",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [FY 2025 Enacted] -- printed '---'",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1016"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1017"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1018"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1019"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-17637"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "not_funded"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -15000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.119-74",
+         "bill_report_reference_id": "BR-CJS-FY2026-ENACTED",
+         "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ74/pdf/PLAW-119publ74.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1810",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-06",
+         "report_id": "JES_CJS_P.L.119-74",
+         "report_jes_url": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-FY2026-PB",
+         "source_page": "132",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DDC, Census Working Capital Fund (rescission)' [Final Bill]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1020"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1021"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1022"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1023"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DDC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1024"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18241"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -15000000,
+         "amount_type": "rescission",
+         "bill_id": "H.R.5342",
+         "bill_report_reference_id": "BR-CJS-FY2026-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr5342rh/pdf/BILLS-119hr5342rh.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1811",
+         "offsetting_collections": 0,
+         "publication_date": "2025-09-12",
+         "report_id": "H.Rept.119-272",
+         "report_jes_url": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT272",
+         "source_page": "259",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1025"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1026"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1027"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1028"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18385"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -15000000,
+         "amount_type": "rescission",
+         "bill_id": "PREX 2.8:2026/APP",
+         "bill_report_reference_id": "BR-CJS-FY2026-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.5,
+         "document_fiscal_year": 2026,
+         "document_stage": "Enacted",
+         "document_type": "explanatory_statement",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1812",
+         "offsetting_collections": 0,
+         "publication_date": "2026-01-06",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-FY2026-PB",
+         "source_page": "132",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DDC, Census Working Capital Fund (rescission)' [FY 2026 Request]",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1029"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1030"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1031"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DDC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1032"
+          },
+          {
+           "human_review_status": "pending",
+           "result": "flag",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18531"
+          }
+         ],
+         "verification_status": "unverified"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -15000000,
+         "amount_type": "rescission",
+         "bill_id": "S.2354",
+         "bill_report_reference_id": "BR-CJS-FY2026-SENATE",
+         "bill_url": "https://www.congress.gov/119/bills/s2354/BILLS-119s2354rs.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2026,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2026,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1813",
+         "offsetting_collections": 0,
+         "publication_date": "2025-07-17",
+         "report_id": "S.Rept.119-44",
+         "report_jes_url": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119SRPT44",
+         "source_page": "220",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1033"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1034"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1035"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1036"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18656"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": 0,
+         "amount_type": "rescission",
+         "bill_id": "H.R.8845",
+         "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+         "canonical_account_id": "ACC-CENSUS-WCF",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-1814",
+         "offsetting_collections": 0,
+         "publication_date": "2026-05-15",
+         "report_id": "H.Rept.119-652",
+         "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT652",
+         "source_page": "172",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Bill] -- printed '---'",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-1037"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-1038"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-1039"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-1040"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18798"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "not_funded"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "rescission",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Department of Commerce",
+   "bureau": "Bureau of the Census",
+   "canonical_account_id": "ACC-CENSUS-WCF",
+   "canonical_name": "Census Working Capital Fund",
+   "display_order": 103,
+   "fund_type": "revolving",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Rescission-only line (Title V); the fund has no appropriation in the bill.",
+   "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
+   "status": "active",
+   "subcommittee": "CJS",
+   "title": "Title V",
+   "treasury_account_symbol": null
+  },
+  "coverage": {
+   "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
+     2020,
+     "Senate Reported"
+    ],
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ]
+   ],
+   "enacted_through": 2026,
+   "not_reported": []
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ]
+  ],
+  "observations": [
+   {
+    "added_date": "2026-10-16",
+    "amount": 0,
+    "amount_type": "rescission",
+    "bill_id": "P.L.119-4",
+    "bill_report_reference_id": "BR-CJS-FY2025-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ4/pdf/PLAW-119publ4.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2025,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1809",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-12",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "source_page": "259",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [FY 2025 Enacted] -- printed '---'",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1016"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1017"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1018"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1019"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-17637"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -15000000,
+    "amount_type": "rescission",
+    "bill_id": "PREX 2.8:2026/APP",
+    "bill_report_reference_id": "BR-CJS-FY2026-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2026-APP/pdf/BUDGET-2026-APP.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.5,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1812",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-06",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "source_page": "132",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DDC, Census Working Capital Fund (rescission)' [FY 2026 Request]",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1029"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1030"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1031"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DDC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1032"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18531"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -15000000,
+    "amount_type": "rescission",
+    "bill_id": "H.R.5342",
+    "bill_report_reference_id": "BR-CJS-FY2026-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr5342rh/pdf/BILLS-119hr5342rh.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1811",
+    "offsetting_collections": 0,
+    "publication_date": "2025-09-12",
+    "report_id": "H.Rept.119-272",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT272",
+    "source_page": "259",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt272/CRPT-119hrpt272.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1025"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1026"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1027"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1028"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18385"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -15000000,
+    "amount_type": "rescission",
+    "bill_id": "S.2354",
+    "bill_report_reference_id": "BR-CJS-FY2026-SENATE",
+    "bill_url": "https://www.congress.gov/119/bills/s2354/BILLS-119s2354rs.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1813",
+    "offsetting_collections": 0,
+    "publication_date": "2025-07-17",
+    "report_id": "S.Rept.119-44",
+    "report_jes_url": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119SRPT44",
+    "source_page": "220",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/srpt44/CRPT-119srpt44.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1033"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1034"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1035"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1036"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18656"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -15000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.119-74",
+    "bill_report_reference_id": "BR-CJS-FY2026-ENACTED",
+    "bill_url": "https://www.govinfo.gov/content/pkg/PLAW-119publ74/pdf/PLAW-119publ74.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2026,
+    "document_stage": "Enacted",
+    "document_type": "explanatory_statement",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2026,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1810",
+    "offsetting_collections": 0,
+    "publication_date": "2026-01-06",
+    "report_id": "JES_CJS_P.L.119-74",
+    "report_jes_url": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2026-PB",
+    "source_page": "132",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DDC, Census Working Capital Fund (rescission)' [Final Bill]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://rules.house.gov/sites/evo-subsites/rules.house.gov/files/documents/division-a-commerce-justice-science_0.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1020"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1021"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1022"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1023"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DDC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1024"
+     },
+     {
+      "human_review_status": "pending",
+      "result": "flag",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18241"
+     }
+    ],
+    "verification_status": "unverified"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": 0,
+    "amount_type": "rescission",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-CENSUS-WCF",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-1814",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-15",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT652",
+    "source_page": "172",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'DOC, Census Working Capital Fund (rescission)' [Bill] -- printed '---'",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-1037"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-1038"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-1039"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('DOC, Census Working Capital Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-1040"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18798"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "open_cells": [
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "relationships": [],
+  "total_scope": null
+ }
+}

@@ -1,0 +1,141 @@
+{
+ "drafts": {
+  "2021|Senate Reported": {
+   "bill_id": "N/A",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-FY2021-SENATE)",
+   "document_id": "SRC-EXPL-FY2021-SENATE"
+  },
+  "2022|Senate Reported": {
+   "bill_id": "S.3042",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-FY2022-SENATE)",
+   "document_id": "SRC-EXPL-FY2022-SENATE"
+  },
+  "2023|Senate Reported": {
+   "bill_id": "S.4664",
+   "document": "Senate Committee on Appropriations explanatory statement (SRC-EXPL-FY2023-SENATE)",
+   "document_id": "SRC-EXPL-FY2023-SENATE"
+  },
+  "2024|House Reported": {
+   "bill_id": "H.R.5893",
+   "document": "House Committee on Appropriations explanatory statement (SRC-EXPL-FY2024-HOUSE)",
+   "document_id": "SRC-EXPL-FY2024-HOUSE"
+  }
+ },
+ "enactments": {
+  "2017": {
+   "bill_id": "P.L.115-31",
+   "division": "B",
+   "enactment_date": "2017-05-05",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 244"
+  },
+  "2018": {
+   "bill_id": "P.L.115-141",
+   "division": "B",
+   "enactment_date": "2018-03-23",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 1625"
+  },
+  "2019": {
+   "bill_id": "P.L.116-6",
+   "division": "C",
+   "enactment_date": "2019-02-15",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.J.Res. 31"
+  },
+  "2020": {
+   "bill_id": "P.L.116-93",
+   "division": "B",
+   "enactment_date": "2019-12-20",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 1158"
+  },
+  "2021": {
+   "bill_id": "P.L.116-260",
+   "division": "B",
+   "enactment_date": "2020-12-27",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 133"
+  },
+  "2022": {
+   "bill_id": "P.L.117-103",
+   "division": "B",
+   "enactment_date": "2022-03-15",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 2471"
+  },
+  "2023": {
+   "bill_id": "P.L.117-328",
+   "division": "B",
+   "enactment_date": "2022-12-29",
+   "funding_type": "omnibus",
+   "vehicle_bill_id": "H.R. 2617"
+  },
+  "2024": {
+   "bill_id": "P.L.118-42",
+   "division": "C",
+   "enactment_date": "2024-03-09",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 4366"
+  },
+  "2025": {
+   "bill_id": "P.L.119-4",
+   "division": "A",
+   "enactment_date": "2025-03-15",
+   "funding_type": "full_year_cr",
+   "vehicle_bill_id": "H.R. 1968"
+  },
+  "2026": {
+   "bill_id": "P.L.119-74",
+   "division": "A",
+   "enactment_date": "2026-01-23",
+   "funding_type": "minibus",
+   "vehicle_bill_id": "H.R. 6938"
+  }
+ },
+ "files": {
+  "2017": "2017.json",
+  "2018": "2018.json",
+  "2019": "2019.json",
+  "2020": "2020.json",
+  "2021": "2021.json",
+  "2022": "2022.json",
+  "2023": "2023.json",
+  "2024": "2024.json",
+  "2025": "2025.json",
+  "2026": "2026.json",
+  "2027": "2027.json"
+ },
+ "fiscal_years": [
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026,
+  2027
+ ],
+ "outside_life_cells": 364,
+ "row_files": "rows",
+ "stages": [
+  "President's Budget",
+  "House Reported",
+  "Senate Reported",
+  "Enacted"
+ ],
+ "state_counts": {
+  "missing": 451,
+  "no_figure": 0,
+  "no_printed_total": 0,
+  "not_collected": 214,
+  "not_enacted": 107,
+  "not_funded": 96,
+  "not_reported": 0,
+  "value": 3608
+ },
+ "subcommittee": "CJS"
+}
