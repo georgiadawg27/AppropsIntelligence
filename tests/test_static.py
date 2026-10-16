@@ -299,9 +299,9 @@ class Features(StaticTest):
         # each payload the server reads is the file the export wrote
         served = W.payloads(str(self.db))
         written = sorted(p.relative_to(self.out / "data").as_posix() for p in (self.out / "data").rglob("*.json"))
-        # the export writes a large subcommittee one file per fiscal year (subcommittees/<name>/...) instead of whole:
-        # put back together, each is the payload the server answers with; every other file is one such payload
-        split = {p for p in written if p.count("/") == 2 and p.startswith("subcommittees/")}
+        # the export writes a large subcommittee one file per fiscal year, and one per row (subcommittees/<name>/...),
+        # instead of whole: put back together, each is the payload the server answers with; every other file is one
+        split = {p for p in written if any(p.startswith(f"subcommittees/{n}/") for n in self.index["split_subcommittees"])}
         joined = {f"subcommittees/{n}.json" for n in self.index["split_subcommittees"]}
         self.assertTrue(joined)
         self.assertFalse(joined & set(written))

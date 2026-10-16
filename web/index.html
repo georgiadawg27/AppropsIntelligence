@@ -878,6 +878,9 @@ const source = STATIC_BASE ? staticSource(STATIC_BASE) : {
 // a split subcommittee's grid (staticSource): where its year files are and which are in it so far
 const SPLIT = new WeakMap();
 const yearLoaded = (grid, fy) => !SPLIT.has(grid) || SPLIT.get(grid).loaded.has(fy);
+// one row's cells in every year: fetched on their own (its rows/ file), or every year is in
+const rowLoaded = (grid, id) => !SPLIT.has(grid) || SPLIT.get(grid).rows.has(id)
+  || grid.fiscal_years.every((fy) => SPLIT.get(grid).loaded.has(fy));
 // one year's file into the grid: the first gives the rows, each later one adds its cells to the same rows
 function absorbYear(grid, part) {
   const fresh = (r) => Object.assign({}, r, { cells: Object.assign({}, r.cells) },
@@ -930,7 +933,9 @@ function staticSource(base) {
     // a large subcommittee is published one file per fiscal year instead of whole (index.json "split_subcommittees":
     // subcommittees/<name>/index.json + <FY>.json). years: the fiscal years to fetch now ([]: just enough for the
     // rows, the year a first visit opens on; omitted: every year); loadYears adds more to the same grid later. Each
-    // year's cells go into the same rows (the files list them in the same order); nothing is recomputed.
+    // year's cells go into the same rows (the files list them in the same order); nothing is recomputed. Each row also
+    // has its own file (subcommittees/<name>/rows/<id>.json, its every year: index.json "row_files"), which loadRow
+    // adds to that row alone, for a page that reads one account's years (the account page, the panel's enacted bars).
     async subcommittee(name, years) {
       const idx = await loadIndex();
       const one = base + "subcommittees/" + encodeURIComponent(name);
@@ -938,7 +943,10 @@ function staticSource(base) {
       const head = await getJSON(one + "/index.json");
       const grid = Object.assign({}, head);
       delete grid.files;
-      SPLIT.set(grid, { url: (fy) => one + "/" + head.files[String(fy)], loaded: new Set(), fetching: new Map() });
+      delete grid.row_files;
+      SPLIT.set(grid, { url: (fy) => one + "/" + head.files[String(fy)], loaded: new Set(), fetching: new Map(),
+                        rowUrl: head.row_files ? (id) => one + "/" + head.row_files + "/" + encodeURIComponent(id) + ".json" : null,
+                        rows: new Set(), rowFetching: new Map() });
       await this.loadYears(grid, years || head.fiscal_years, years && !years.length ? [defaultYear(head)] : []);
       return grid;
     },
@@ -955,6 +963,21 @@ function staticSource(base) {
         absorbYear(grid, p);
         S.loaded.add(want[k]);
       });
+    },
+    // one row's cells and attributes in every year (a split grid; an unsplit one has them already), into that row
+    async loadRow(grid, id) {
+      const S = SPLIT.get(grid);
+      if (!S || rowLoaded(grid, id)) return;
+      if (!S.rowUrl) return this.loadYears(grid, grid.fiscal_years);
+      if (!grid.rows) await this.loadYears(grid, [], [defaultYear(grid)]);
+      if (!S.rowFetching.has(id)) S.rowFetching.set(id, getJSON(S.rowUrl(id)));
+      const part = await S.rowFetching.get(id);
+      if (S.rows.has(id)) return;
+      const row = gridRow(grid, id);
+      if (!row) throw new Error(`${grid.subcommittee}: the row file of ${id} names no row of the grid`);
+      Object.assign(row.cells, part.cells);
+      if (part.attributes) row.attributes = Object.assign(row.attributes || {}, part.attributes);
+      S.rows.add(id);
     },
   };
 }
@@ -1080,7 +1103,8 @@ async function showAccount(data, at) {
     } else {
       if (!Object.keys(scLabels).length) { const list = await source.subcommittees(); scLabels = list.names || {}; }
       if (STATIC_BASE && !dataVersion) dataVersion = (await source.loadIndex()).source.version || "";
-      const grid = a.subcommittee ? await loadSubcommittee(a.subcommittee) : null;
+      // the page reads its own row in every year and the others' names and links: one year file and its row's file
+      const grid = a.subcommittee ? await loadSubcommittee(a.subcommittee, NO_YEARS, a.canonical_account_id) : null;
       if (ticket !== apTicket) return;
       if (grid) for (const x of grid.rows) ROW_OF.set(x.account.canonical_account_id, x);
       const row = grid && gridRow(grid, a.canonical_account_id);
@@ -1757,20 +1781,24 @@ function compareStatus(msg, isError) {
   $("#compare-message").className = isError ? "error" : "";
 }
 
-// years(grid): the fiscal years about to be read (a split subcommittee fetches only those); omitted, every year
-async function loadSubcommittee(name, years) {
+// years(grid): the fiscal years about to be read (a split subcommittee fetches only those); omitted, every year.
+// row: an account whose every year is read besides (its own file, not every year of every row)
+async function loadSubcommittee(name, years, row) {
   if (!scCache.has(name)) scCache.set(name, await source.subcommittee(name, years ? [] : undefined));
   const grid = scCache.get(name);
   if (source.loadYears) await source.loadYears(grid, years ? years(grid) : grid.fiscal_years);
+  if (row && source.loadRow) await source.loadRow(grid, row);
   return grid;
 }
 // the years the grid reads as set (G): the year shown and the one before it (Stages, the overview, the phone list),
-// the two compared (Years), a selected figure's; every year for Enacted history or an account's view (the account
-// panel, and the phone's sheet for any selection), whose enacted bars read them all
-const allYears = () => G.grid === "history" || (SEL && (SEL.kind === "acct" || isPhone()));
+// the two compared (Years), a selected figure's; every year for Enacted history. An account's view (the account
+// panel, and the phone's sheet for any selection) reads its own row in every year (its enacted bars): selRow
+const allYears = () => G.grid === "history";
+const selRow = () => (SEL && (SEL.kind === "acct" || isPhone()) ? SEL.id : null);
 const gridYears = (grid) => (allYears() ? grid.fiscal_years
   : [G.fy - 1, G.fy, G.a, G.b].concat(SEL && SEL.kind === "fig" ? [SEL.y] : []));
-const yearsIn = (grid) => gridYears(grid).every((y) => !grid.fiscal_years.includes(y) || yearLoaded(grid, y));
+const yearsIn = (grid) => gridYears(grid).every((y) => !grid.fiscal_years.includes(y) || yearLoaded(grid, y))
+  && (!selRow() || rowLoaded(grid, selRow()));
 const NO_YEARS = () => [];
 // still the grid and years asked for once its years are in (a later change draws instead, with its own years)
 const ready = (grid) => scCache.get(G.sc) === grid && yearsIn(grid);
@@ -3273,7 +3301,7 @@ function select(s) {
   const grid = current.grid;
   if (!yearsIn(grid)) {
     // an account's enacted bars read every year: fetched first, then the panel drawn if nothing changed meanwhile
-    loadSubcommittee(G.sc, gridYears).then(() => { if (current && current.grid === grid && SEL === s) renderPanel(grid); });
+    loadSubcommittee(G.sc, gridYears, selRow()).then(() => { if (current && current.grid === grid && SEL === s) renderPanel(grid); });
   } else renderPanel(grid);
   // selecting a figure or an account while the panel is hidden shows it again
   if (s && G.panelOff) { G.panelOff = false; applyPanel(); pinHeader(); }
@@ -4572,7 +4600,7 @@ $("#p-full").addEventListener("click", (e) => {
 async function redraw(replace) {
   const grid = await loadSubcommittee(G.sc, NO_YEARS);
   settle(grid);
-  await loadSubcommittee(G.sc, gridYears);
+  await loadSubcommittee(G.sc, gridYears, selRow());
   if (!ready(grid)) return;
   renderControls(grid);
   commit(replace);
@@ -4603,7 +4631,7 @@ async function showCompare(want, replace = true) {
     const grid = await loadSubcommittee(G.sc, NO_YEARS);
     for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
     settle(grid, want || {});
-    await loadSubcommittee(G.sc, gridYears);
+    await loadSubcommittee(G.sc, gridYears, selRow());
     compareStatus("");
     if (!ready(grid)) return;
     renderControls(grid);
@@ -4712,18 +4740,22 @@ async function showChanges(want, replace = true) {
     if (!has("find_changes")) { msg.textContent = "Find changes needs the grid's data, which isn't in this build yet."; msg.className = "error"; return; }
     if (want && want.watch) fcImport = [...new Set(String(want.watch).split(",").map((x) => x.trim()).filter(Boolean))];
     FC.sc = want && scNames.includes(want.sc) ? want.sc : FC.sc || G.sc || defaultSc();
-    const grid = await loadSubcommittee(FC.sc);
+    const grid = await loadSubcommittee(FC.sc, NO_YEARS);
     for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
     fcSettle(grid, want);
+    await loadSubcommittee(FC.sc, fcYears);
     msg.textContent = "";
     fcCommit(replace);
     fcRender(grid);
   } catch (e) { msg.textContent = "Error: " + e.message; msg.className = "error"; }
 }
+// the years a search reads: the year chosen and the one before it (FC_STAGES); Moves reads the rows' relationships
+const fcYears = () => (FC.moves ? [] : [FC.fy - 1, FC.fy]);
 async function fcRedraw(replace) {
-  const grid = await loadSubcommittee(FC.sc);
+  const grid = await loadSubcommittee(FC.sc, NO_YEARS);
   for (const r of grid.rows) ROW_OF.set(r.account.canonical_account_id, r);
   fcSettle(grid);
+  await loadSubcommittee(FC.sc, fcYears);
   fcCommit(replace);
   fcRender(grid);
 }
@@ -5135,7 +5167,8 @@ async function fcWatchlist() {
     text: "This browser is blocking storage, so the watchlist lasts only until you leave this page." }));
   // a shared list (watch= in the link): offered, never added on its own
   if (fcImport) {
-    if (scNames) await Promise.all(scNames.map((n) => loadSubcommittee(n).then((g) => g.rows.forEach((r) => ROW_OF.set(r.account.canonical_account_id, r)))));
+    // only the rows' names: one year file of each subcommittee, not every year
+    if (scNames) await Promise.all(scNames.map((n) => loadSubcommittee(n, NO_YEARS).then((g) => g.rows.forEach((r) => ROW_OF.set(r.account.canonical_account_id, r)))));
     const known = fcImport.filter((id) => ROW_OF.has(id)), unknown = fcImport.filter((id) => !ROW_OF.has(id));
     const add = el("button", { type: "button", class: "xbtn primary", "data-testid": "watch-import", text: `Add ${known.length} to my watchlist` });
     add.addEventListener("click", () => {
