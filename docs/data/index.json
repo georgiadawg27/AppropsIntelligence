@@ -895,7 +895,7 @@
    "historical_names": []
   }
  ],
- "contract_version": 9,
+ "contract_version": 10,
  "default_subcommittee": "LHHS",
  "features": {
   "abbreviations": true,
@@ -919,7 +919,7 @@
   "phone": true,
   "search_filter": true,
   "watchlist": true,
-  "whats_new": false
+  "whats_new": true
  },
  "matching": {
   "accept_max_distance": 2,
@@ -928,8 +928,8 @@
  },
  "source": {
   "data": "data/staged.json",
-  "data_committed": "2026-10-15T20:22:55+00:00",
-  "data_sha256": "dc4254c02166b85969196a75f20df85fc29926cc64a7a886b4f15c840b2f42ee",
+  "data_committed": "2026-10-16T02:58:10+00:00",
+  "data_sha256": "03002fa43d7208bea380b28c2590c3ecb9ddba21fe8fba6b8a7f448dbc188039",
   "download": "Approps_Pilot_Schema_Loaded.xlsx",
   "rows": {
    "account": 146,

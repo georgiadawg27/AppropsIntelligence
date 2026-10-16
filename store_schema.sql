@@ -92,7 +92,10 @@ CREATE TABLE source_document (
     -- not in the Data Dictionary; carried from the workbook
     source_page         TEXT,
     also_covers         TEXT,
-    notes               TEXT
+    notes               TEXT,
+    -- D-5: the date the document first entered the record (added_dates.py); set once, never changed.
+    -- Not retrieval_timestamp, which changes on every re-fetch or reparse
+    first_added         TEXT CHECK (first_added IS NULL OR date(first_added) IS first_added)
 ) STRICT;
 
 -- The bill / report for one subcommittee x fiscal year x stage (the
@@ -193,6 +196,9 @@ CREATE TABLE appropriations_observation (
     -- the observation that replaced this one's value (a later official document, reconcile.py):
     -- set exactly when verification_status is 'superseded'; both rows stay queryable
     superseded_by_observation_id TEXT REFERENCES appropriations_observation (observation_id) DEFERRABLE INITIALLY DEFERRED,
+    -- D-5: the date this figure (this observation ID) first entered the record (added_dates.py); set
+    -- once, never changed -- a superseding figure is a new observation with its own date
+    added_date               TEXT CHECK (added_date IS NULL OR date(added_date) IS added_date),
     CHECK ((superseded_by_observation_id IS NULL) = (verification_status <> 'superseded')),
     CHECK (superseded_by_observation_id IS NULL OR superseded_by_observation_id <> observation_id)
 ) STRICT;

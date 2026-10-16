@@ -18,8 +18,10 @@ page). Then, in order:
                 (reference/review/accounting/request_language.py). A missing input is reported and the run stops.
   1. extraction each headline's paragraph in the stage's text (check_legislative_text.check) and its components
                 (tag_components: the core's rules and the subcommittee's rule file)
-  2. checks     --write runs, over the data root: check_legislative_text, tag_components, measure_reconcile
-                (each --write), then the text check again (statuses)
+  2. checks     --write dates each figure and document that has no added date yet with today's (added_dates.py,
+                brief D-5; a date already set is never changed), then runs, over the data root:
+                check_legislative_text, tag_components, measure_reconcile (each --write), then the text check again
+                (statuses)
   3. review     reference/review/<CODE>/intake/FY<N>-<STAGE>.csv under the data root: every thing the core and the
                 rule files can't account for, named -- a text figure that differs or can't be placed, a paragraph
                 no account reads, an account with no figure and no confirmed absence, a phrase no rule reads, a line
@@ -42,6 +44,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
+import added_dates  # noqa: E402
 import check_legislative_text as CT  # noqa: E402
 import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
@@ -204,6 +207,9 @@ def intake(sc, fy, stage, write_checks=False):
     if missing:
         return missing, write(missing, sc, fy, stage), 1
     if write_checks:
+        # D-5: the cell's new figures and documents get today's date (added_dates.py); a date set is never changed
+        if any(added_dates.stamp(data).values()):
+            paths.staged().write_text(json.dumps(data, indent=1, ensure_ascii=False))
         run_checks()
         data = json.loads(paths.staged().read_text())
     items = review(data, sc, fy, stage)

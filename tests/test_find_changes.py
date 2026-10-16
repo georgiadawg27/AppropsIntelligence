@@ -342,33 +342,37 @@ class FindChanges(GridBrowser):
         self.assertEqual(self.errors, [])
 
     # ---- What's new
-    def test_whats_new_is_hidden_until_first_added_dates(self):
-        # owner, 2026-10-14: the retrieval date changes on every re-fetch or reparse, so it is not an added date; the
-        # flag stays off until D-5 publishes first-added dates (web/ui_contract.json "waits_for"). The export still
-        # writes the list, newest first
+    def test_whats_new_lists_first_added_dates(self):
+        # D-5: every document and figure carries the date it first entered the record (added_dates.py), so the flag
+        # is on (owner, 2026-10-14: not the retrieval date, which changes on every re-fetch or reparse). Each date
+        # lists its new documents and the figures added from documents already on file, newest first
         data = json.loads((self.out / "data" / "whats_new.json").read_text())
         self.assertTrue(data["documents"])
-        dates = [d["retrieved"] for d in data["documents"]]
+        self.assertEqual((data["undated"], data["undated_figures"]), ([], 0))
+        dates = [d["first_added"] for d in data["documents"]]
         self.assertEqual(dates, sorted(dates, reverse=True))
+        self.assertEqual([a["date"] for a in data["additions"]], sorted((a["date"] for a in data["additions"]), reverse=True))
+        firsts = {d["document_id"]: d["first_added"] for d in data["documents"]}
+        self.assertEqual({(a["document_id"], a["date"]) for a in data["additions"] if a["new_document"]}, set(firsts.items()))
+        self.assertTrue([a for a in data["additions"] if not a["new_document"] and a["figures"]])  # added later
+        self.assertEqual(data["baseline"], "2026-10-07")
         contract = json.loads((ROOT / "web" / "ui_contract.json").read_text())["features"]["whats_new"]
-        self.assertIn("D-5", contract["waits_for"])
-        self.assertFalse(json.loads((self.out / "data" / "index.json").read_text())["features"]["whats_new"])
+        self.assertNotIn("waits_for", contract)
+        self.assertTrue(json.loads((self.out / "data" / "index.json").read_text())["features"]["whats_new"])
+        by = {d["document_id"]: d for d in data["documents"]}
+        want = [[a["document_id"], a["date"]] for a in data["additions"]
+                if "CJS" in by[a["document_id"]]["subcommittees"] or not by[a["document_id"]]["subcommittees"]]
         for where in ("static", "live"):
             with self.subTest(where=where):
                 self.go("?view=changes&sc=CJS&fy=2026", where)
-                self.assertTrue(self.page.is_hidden("[data-testid=whats-new]"))
-                self.assertEqual(self.page.locator("[data-testid=whats-new-item]").count(), 0)
-        # the code is kept: with the flag on, the list renders from the file
-        def flag_on(route):
-            body = json.loads(route.fetch().text())
-            body["features"]["whats_new"] = True
-            route.fulfill(json=body)
-        self.page.route("**/data/index.json", flag_on)
-        self.go("?view=changes&sc=CJS&fy=2026")
-        items = self.page.eval_on_selector_all("[data-testid=whats-new-item]", "li => li.map(x => [x.dataset.doc, x.dataset.retrieved])")
-        self.assertEqual(items, [[d["document_id"], d["retrieved"]] for d in data["documents"]
-                                 if "CJS" in d["subcommittees"] or not d["subcommittees"]])
-        self.assertIn("no alerts or emails", self.page.inner_text("[data-testid=whats-new]"))
+                self.page.wait_for_selector("[data-testid=whats-new-item]", state="attached")
+                items = self.page.eval_on_selector_all("[data-testid=whats-new-item]",
+                                                       "li => li.map(x => [x.dataset.doc, x.dataset.added])")
+                self.assertEqual(items, want)
+                heads = self.page.eval_on_selector_all("[data-testid=whats-new] h3", "h => h.map(x => x.textContent)")
+                self.assertIn("On file by October 7, 2026", heads)
+                self.assertIn("no alerts or emails", self.page.inner_text("[data-testid=whats-new]"))
+                self.assertEqual(self.page.locator("[data-testid=whats-new-undated]").count(), 0)
 
     def test_account_tab_is_named_account(self):
         # the tab opens the account page (UI-5: the One account view is the account page), so it reads "Account"

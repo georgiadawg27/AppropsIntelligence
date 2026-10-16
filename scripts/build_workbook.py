@@ -317,9 +317,10 @@ ws_obs = wb.create_sheet("Appropriations Observation")
 headers = ["observation_id", "canonical_account_id", "fiscal_year", "stage", "chamber", "bill_id", "report_id",
            "amount", "amount_type", "component", "offsetting_collections", "transfer_link_account_id",
            "source_document_id", "source_page", "source_table_or_section", "extraction_method", "confidence",
-           "verification_status", "bill_url", "report_jes_url", "headline_observation_id", "superseded_by_observation_id"]
+           "verification_status", "bill_url", "report_jes_url", "headline_observation_id", "superseded_by_observation_id",
+           "added_date"]
 write_rows(ws_obs, headers, data["observations"],
-           [14, 22, 10, 16, 10, 14, 14, 16, 18, 16, 12, 20, 18, 12, 42, 16, 10, 16, 40, 40, 20, 20],
+           [14, 22, 10, 16, 10, 14, 14, 16, 18, 16, 12, 20, 18, 12, 42, 16, 10, 16, 40, 40, 20, 20, 12],
            flag_col="verification_status", flag_value="flagged")
 n_obs = len(data["observations"]) + 1
 add_dropdown(ws_obs, "D", STAGE_ALL, 2, n_obs)
@@ -351,8 +352,9 @@ for row in ws.iter_rows(min_row=2, max_row=n, min_col=6, max_col=6):
 # ---------------------------------------------------------------------------
 ws = wb.create_sheet("Source Document")
 headers = ["document_id", "source_agency", "url_or_identifier", "document_type", "congress_session",
-           "fiscal_year", "publication_date", "stage", "retrieval_timestamp", "source_page", "also_covers", "notes"]
-write_rows(ws, headers, data["source_docs"], [24, 32, 55, 22, 16, 12, 14, 16, 16, 12, 45, 60])
+           "fiscal_year", "publication_date", "stage", "retrieval_timestamp", "source_page", "also_covers", "notes",
+           "first_added"]
+write_rows(ws, headers, data["source_docs"], [24, 32, 55, 22, 16, 12, 14, 16, 16, 12, 45, 60, 12])
 n = len(data["source_docs"]) + 1
 add_dropdown(ws, "D", DOC_TYPE, 2, n)
 add_dropdown(ws, "H", STAGE_ALL, 2, n)

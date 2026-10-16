@@ -56,6 +56,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 import accounting as AC  # noqa: E402
+import added_dates  # noqa: E402
 import ids as IDS  # noqa: E402
 import legislative_text as L  # noqa: E402
 
@@ -709,6 +710,7 @@ def main(argv=None):
             data["account_attribute_notes"] = notes
             data["account_attributes_retired"] = retired
             data["source_docs"] += docs
+            added_dates.stamp(data)                          # D-5: each new document's first-added date, today
             L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
             print("data/staged.json updated")
     if a.ci and stale:

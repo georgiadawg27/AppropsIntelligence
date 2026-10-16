@@ -652,6 +652,13 @@ class SyntheticSubcommittee(unittest.TestCase):
         self.assertEqual({st: r.returncode for st, (r, _) in self.intake.items()},
                          {"PB": 0, "HOUSE": 2, "SENATE": 0, "ENACTED": 0})
 
+    def test_intake_dates_each_new_figure_and_document(self):
+        # D-5: intake --write gives every figure and document its first-added date (today, UTC), once
+        import added_dates
+        self.assertEqual(added_dates.problems(self.data), [])
+        days = {r["added_date"] for r in self.data["observations"]} | {r["first_added"] for r in self.data["source_docs"]}
+        self.assertEqual(len(days), 1, days)                                   # the day intake ran
+
     def test_the_unknown_phrase_lands_in_review(self):
         _, items = self.intake["HOUSE"]
         review = [i for i in items if i["status"] == "review"]
@@ -765,7 +772,7 @@ class SyntheticSubcommittee(unittest.TestCase):
                 self.assertEqual((out / "data" / rel).read_bytes(), (committed / rel).read_bytes(), rel)
             mine = {d["document_id"] for d in self.data["source_docs"]}
             new, old = (json.loads((x / "whats_new.json").read_text()) for x in (out / "data", committed))
-            for k in ("documents", "undated"):
+            for k in ("documents", "additions", "undated"):
                 new[k] = [x for x in new[k] if not (set(json.dumps(x).split('"')) & mine)]
             self.assertEqual(new, old)
             new, old = (json.loads((x / "documents.json").read_text()) for x in (out / "data", committed))
