@@ -326,10 +326,11 @@ class Browser(BrowserBase):
         self.assertEqual((states["budget authority"], states["supplemental"]), ("value", "not_funded"))
         text = next(t for a, _, t in lines if a == "supplemental")
         self.assertIn("Not funded", text)
-        self.assertIn("SRC-CRPT-114SRPT239", text)
+        # D-3c: the absence cites S. 2837's text (CA-0225), no longer S.Rept. 114-239's table (CA-0027, retired)
+        self.assertIn("SRC-BILLS-114S2837PCS", text)
         self.assertNotIn("$0", text)
         conn = S.connect(self.db)
-        evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0027'").fetchone()[0]
+        evidence = conn.execute("SELECT evidence FROM confirmed_absence WHERE confirmed_absence_id = 'CA-0225'").fetchone()[0]
         conn.close()
         self.assertEqual(self.page.get_attribute(
             "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-funded]", "title"), evidence)
@@ -376,8 +377,9 @@ class NoPrintedTotalAndCoverage(BrowserBase):
         self.open_account("ACC-HHS-CMS-MEDICAID")
         # Medicaid's FY2023 and FY2024 request/Senate headlines are derived now: no cell of it is "no printed total"
         self.assertEqual(self.chip(2024, "President's Budget").get_attribute("data-state"), "value")
-        self.open_account("ACC-HHS-ASPR-TOTAL")
-        line = self.chip(2023, "House Reported")
+        # (ASPR's FY2023 absences are retired, D-3c: the AHA total's FY2026 House cell is the example)
+        self.open_account("ACC-HHS-AHA-TOTAL")
+        line = self.chip(2026, "House Reported")
         self.assertEqual(line.get_attribute("data-state"), "no_printed_total")
         self.assertEqual(line.locator("[data-testid=no-printed-total]").inner_text(), "No printed total")
         # a rescission line with nothing else of its account in the cell: still "None"
