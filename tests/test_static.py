@@ -167,6 +167,26 @@ class Export(StaticTest):
         self.assertEqual(static, live.replace("<head>", "<head>\n" + E.DATA_META, 1))
         self.assertEqual((self.out / "match.js").read_text(), (ROOT / "web" / "match.js").read_text())
 
+    def test_exports_to_docs_keep_the_committed_data_address(self):
+        # only the export job on main (--publish-workbook) sets the address; any other export to docs/ keeps the one
+        # committed, so a pull request's re-export can't turn the live page back to data/
+        with tempfile.TemporaryDirectory() as tmp:
+            page = Path(tmp) / "index.html"
+            self.assertEqual(E.committed_data_base(page), E.DATA_BASE)                  # no page
+            page.write_text("<head>\n" + E.data_meta("https://data.example.org/data/") + "\n</head>")
+            self.assertEqual(E.committed_data_base(page), "https://data.example.org/data/")
+            page.write_text('<head>\n<meta name="approps-data" content="http://x.example/data/">\n</head>')
+            with self.assertRaises(SystemExit):
+                E.committed_data_base(page)
+            with mock.patch.object(E, "committed_data_base", lambda: "https://data.example.org/data/"):
+                self.assertEqual(E.default_data_base(True, False, {}), "https://data.example.org/data/")
+                self.assertEqual(E.default_data_base(True, True, {}), E.DATA_BASE)      # the export job
+                self.assertEqual(E.default_data_base(False, False, {}), E.DATA_BASE)    # another --out
+                self.assertEqual(E.default_data_base(True, True, {"APPROPS_DATA_BASE": "https://w.example/data/"}),
+                                 "https://w.example/data/")
+                self.assertEqual(E.default_data_base(True, False, {"APPROPS_DATA_BASE": ""}),
+                                 "https://data.example.org/data/")
+
     def test_page_can_read_the_data_from_another_address(self):
         # the R2 copy's Worker (platform plan, Phase 1): an https:// address ending in "/", nothing else
         self.assertEqual(E.data_meta(), E.DATA_META)
@@ -204,8 +224,13 @@ class Export(StaticTest):
         # it), so here its CONTENT is compared, not its bytes: every cell's value and formula on every
         # sheet of the export's workbook against tests/fixtures/workbook_values.json, the digest the
         # data's own commit carries (scripts/workbook_digest.py)
+        # The page's data address is the deployment's, not the data's: the export job on main writes the
+        # Worker's address once the R2 copy serves (export_static.committed_data_base), so docs/index.html is
+        # compared as exported with the address it carries (the address is its only difference)
         committed = ROOT / "docs"
         a = {p.relative_to(self.out): p.read_bytes() for p in self.out.rglob("*") if p.is_file()}
+        page = Path("index.html")
+        a[page] = a[page].replace(E.DATA_META.encode(), E.data_meta(E.committed_data_base()).encode(), 1)
         b = {p.relative_to(committed): p.read_bytes() for p in committed.rglob("*") if p.is_file()}
         self.assertEqual(sorted(a), sorted(b))
         self.assertEqual([k for k in a if a[k] != b[k] and k != Path(E.DOWNLOAD)], [])

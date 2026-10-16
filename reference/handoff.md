@@ -18,6 +18,12 @@ Details: `reference/review/accounting/review-D3c.md`; per absence: `d3c_absences
 - ARPA-H FY2021: the new evidence keeps 'did not exist' (the store's outside-life test), citing P.L. 117-103's
   first ARPA-H heading.
 
+- The page's data address (owner, 2026-10-16: make it durable): once main's export job wrote the Worker's address
+  into docs/index.html, test_static's docs/ check failed on every PR, and any PR re-exporting docs/ would have put
+  the page back on data/. Now only the export job (--publish-workbook) sets the address; every other export to
+  docs/ keeps the committed one (export_static.committed_data_base), and the check compares index.html against it.
+  No workflow change. If docs/data/ is later removed from git, that check's file list will need the same treatment.
+
 Open:
 - ARP sec. 7502 ($600,000,000 to NSF, FY2021, no account named): no `supplemental_act` line recorded. Not changed.
 

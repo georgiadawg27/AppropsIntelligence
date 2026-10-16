@@ -95,6 +95,26 @@ def data_meta(base=DATA_BASE):
     return f'<meta name="approps-data" content="{base}">'
 
 
+def committed_data_base(page=None):
+    """The data address docs/index.html carries as committed (data/ if it has none). Only the export job on main
+    sets it (its DATA_BASE_URL once the R2 copy serves the data), so every other export to docs/ keeps it instead
+    of turning the page back to data/, and test_static's check of docs/ compares against it."""
+    page = Path(page) if page else ROOT / "docs" / "index.html"
+    m = re.search(r'<meta name="approps-data" content="([^"]*)">', page.read_text()) if page.is_file() else None
+    base = m.group(1) if m else DATA_BASE
+    data_meta(base)                                 # an address the export itself would refuse is an error here too
+    return base
+
+
+def default_data_base(to_docs, publish, environ=os.environ):
+    """--data-base when none is given: APPROPS_DATA_BASE if set; else data/ for the export job on main (the only
+    one passing --publish-workbook, which sets the address from its own variables) and for any other --out; else
+    (an export to docs/ in a pull request or on a laptop) the address docs/index.html already carries."""
+    if environ.get("APPROPS_DATA_BASE"):
+        return environ["APPROPS_DATA_BASE"]
+    return committed_data_base() if to_docs and not publish else DATA_BASE
+
+
 def reference_workbook():
     """approps_store.reference_workbook(): built from data/staged.json."""
     try:
@@ -330,16 +350,17 @@ def main(argv=None):
     p.add_argument("--out", default=str(ROOT / "docs"))
     p.add_argument("--publish-workbook", action="store_true",
                    help="also write docs/" + DOWNLOAD + " (only CI's export job on main passes this)")
-    p.add_argument("--data-base", default=os.environ.get("APPROPS_DATA_BASE") or DATA_BASE,
-                   help="the address the page reads data/ from (default data/, next to the page; "
-                        "APPROPS_DATA_BASE in the environment sets it too)")
+    p.add_argument("--data-base",
+                   help="the address the page reads data/ from (default: APPROPS_DATA_BASE in the environment; "
+                        "else, exporting to docs/ without --publish-workbook, the address docs/index.html carries; "
+                        "else data/, next to the page)")
     args = p.parse_args(argv)
     # one builder: docs/'s Download workbook is written only by .github/workflows/export-static.yml on main;
     # anywhere else the export leaves it as committed (another --out always gets its own copy)
     to_docs = Path(args.out).resolve() == (ROOT / "docs").resolve()
     download = args.publish_workbook or not to_docs
     r = export(Path(args.workbook) if args.workbook else reference_workbook(), args.out, download=download,
-               data_base=args.data_base)
+               data_base=args.data_base or default_data_base(to_docs, args.publish_workbook))
     print(f"exported {r['accounts']} accounts from {r['workbook']} to {r['out']}"
           + ("" if download else f" ({DOWNLOAD} left as committed: CI's export job on main writes it)"))
     return 0
