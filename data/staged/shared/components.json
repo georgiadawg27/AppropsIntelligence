@@ -310,5 +310,17 @@
   "label": "this bill, mandatory (302(b) comparison)",
   "kind": "view",
   "description": "the bill's mandatory amount as the report's section 308(a) comparison with the 302(b) allocation prints it (scored)"
+ },
+ {
+  "component_id": "census_2020",
+  "label": "2020 Census (H. Res. 293; HR 2021)",
+  "kind": "part",
+  "description": "the 2020 Census line printed under Periodic Censuses and Programs, inside the Census Bureau's total (a note)"
+ },
+ {
+  "component_id": "request_proposal_nist_construction",
+  "label": "(Legislative Proposal)",
+  "kind": "part",
+  "description": "a one-off line the President's request proposed under the account's heading (a note)"
  }
 ]
