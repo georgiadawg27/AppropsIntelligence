@@ -10,6 +10,8 @@ Legislative Branch), run end to end by `tests/test_any_subcommittee.py`.
 
 ## 1. Pick the code
 
+- The codes are already chosen (owner, 2026-10-15; list in `CLAUDE.md`, "Standing decisions"): AG, CJS, DEF,
+  EW, FSGG, HS, INT, LEG, LHHS, MCVA, SFOPS, THUD. Use the one listed; don't invent another.
 - Upper-case letters and digits, 2-10 characters, starting with a letter (`ids.CODE`), and not a reserved word
   (`ids.RESERVED`: TXT, MR, MRV, MRC, MRE and the record types). It is stored on every account and Bill Report
   Reference row and goes into every ID: `OBS-<CODE>-0001`, `VAL-<CODE>-00001`, `CMP-<CODE>-0001`.

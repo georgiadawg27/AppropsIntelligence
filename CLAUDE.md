@@ -34,6 +34,34 @@ Data
 - Missing input: say what is missing and stop. Never guess a figure.
 - Never adjust a figure silently.
 
+Standing decisions (owner, 2026-10-16; apply without asking)
+- Request lines the documents don't print: where a request doesn't print an
+  account as its own line (CDC and HRSA programs the Budget Appendix rolls
+  into one account; the FY2026-FY2027 HHS restructuring requests), the request
+  cell stays blank and the proposed new accounts are recorded as printed. Agency
+  budget justifications are not a source for program splits.
+- Before an account existed: when evidence shows the fiscal year an account
+  was created, earlier years are not listed unless printed as their own line
+  (as with AHA in years it wasn't proposed). The cell shows as missing, with no
+  absence record and no ruling for the owner.
+- Reconcile differences within the table's rounding unit (usually $1K) pass
+  automatically, with a note. Anything larger goes to review.
+- Bill text that plainly labels an amount as advance, emergency or a rescission
+  is tagged with its citation without asking. Only conflicts go to review.
+- A check already failing on main that blocks a PR is fixed in that same PR
+  when that makes sense, keeping the check just as strict. Check open PRs first
+  so the fix doesn't collide with another thread's work; coordinate if it would.
+- Subcommittee codes (approved 2026-10-15): CJS, FSGG, LHHS, THUD stay; AG
+  (Agriculture-FDA), EW (Energy-Water), HS (Homeland Security), INT
+  (Interior-Environment), LEG (Legislative Branch), MCVA (MilCon-VA), DEF
+  (Defense), SFOPS (State-Foreign Ops, FY2017 on; the House's "National
+  Security, Department of State" title is an alias). NSRP is retired before use.
+
+Where things are
+- Briefs (UI and data, paste-ready, in order):
+  /mnt/project-files/handoff/ui-build-briefs.md. Standing rules and decisions:
+  /mnt/project-files/standing-rules-and-decisions.md.
+
 ## Token discipline
 
 - Never read full bill text, statute text, or other large source documents into
