@@ -76,7 +76,8 @@ GOVINFO = "https://www.govinfo.gov/content/pkg/"
 # The chapters (govinfo part files) and their printed page ranges (accounting views phase 1 report, "Phase 2 prep")
 CHAPTER_NAMES = {"HHS": "Department of Health and Human Services", "COM": "Department of Commerce",
                  "DOJ": "Department of Justice", "NASA": "National Aeronautics and Space Administration",
-                 "NSF": "National Science Foundation", "EOP": "Executive Office of the President"}
+                 "NSF": "National Science Foundation", "EOP": "Executive Office of the President",
+                 "OIA": "Other Independent Agencies"}
 CHAPTERS = [
     (2017, "HHS", 443, 516, "1-11"), (2017, "COM", 185, 222, "1-6"), (2017, "DOJ", 741, 786, "1-15"),
     (2017, "NASA", 1183, 1194, "1-26"), (2017, "NSF", 1195, 1200, "1-27"), (2017, "EOP", 1157, 1168, "1-24"),
@@ -100,6 +101,11 @@ CHAPTERS = [
     (2026, "NASA", 997, 1006, "2-25"), (2026, "NSF", 1007, 1012, "2-26"), (2026, "EOP", 965, 980, "2-23"),
     (2027, "HHS", 427, 502, "2-9"), (2027, "COM", 195, 234, "2-6"), (2027, "DOJ", 703, 744, "2-13"),
     (2027, "NASA", 1113, 1122, "2-25"), (2027, "NSF", 1123, 1128, "2-26"), (2027, "EOP", 1081, 1096, "2-23"),
+    # CJS Title IV's related agencies (the full CJS load): the Other Independent Agencies chapter
+    (2017, "OIA", 1237, 1362, "1-31"), (2018, "OIA", 1121, 1238, "1-31"), (2019, "OIA", 1131, 1250, "1-31"),
+    (2020, "OIA", 1147, 1266, "1-31"), (2021, "OIA", 1227, 1350, "1-31"), (2022, "OIA", 1243, 1370, "1-30"),
+    (2023, "OIA", 1215, 1346, "1-30"), (2024, "OIA", 1181, 1300, "1-30"), (2025, "OIA", 1123, 1244, "1-30"),
+    (2026, "OIA", 1043, 1164, "2-30"), (2027, "OIA", 1159, 1280, "2-30"),
 ]
 # govinfo's dateIssued for each volume (the FY2026 volume is the Technical Supplement's Appendix)
 PUBLISHED = {2017: "2016-02-09", 2018: "2017-05-23", 2019: "2018-02-12", 2020: "2019-03-18", 2021: "2020-02-10",
