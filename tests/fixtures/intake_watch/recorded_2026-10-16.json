@@ -1,0 +1,119 @@
+{
+ "note": "govinfo /collections answers recorded 2026-10-16 (since 2026-09-16): every package with an appropriations title, plus three others; nextPage dropped",
+ "answers": {
+  "https://api.govinfo.gov/collections/BILLS/2026-09-16T00:00:00Z?pageSize=1000&offsetMark=*": {
+   "count": 3,
+   "message": null,
+   "nextPage": null,
+   "previousPage": null,
+   "packages": [
+    {
+     "congress": "119",
+     "dateIssued": "2026-09-23",
+     "docClass": "s",
+     "lastModified": "2026-10-16T04:34:57Z",
+     "packageId": "BILLS-119s5475is",
+     "packageLink": "https://api.govinfo.gov/packages/BILLS-119s5475is/summary",
+     "title": "Timely Access to Coverage Decisions Act"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-10-15",
+     "docClass": "hr",
+     "lastModified": "2026-10-16T02:24:47Z",
+     "packageId": "BILLS-119hr10826ih",
+     "packageLink": "https://api.govinfo.gov/packages/BILLS-119hr10826ih/summary",
+     "title": "Justice for Citizens Wrongfully Detained by ICE Act"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-10-15",
+     "docClass": "hres",
+     "lastModified": "2026-10-16T02:24:41Z",
+     "packageId": "BILLS-119hres1625ih",
+     "packageLink": "https://api.govinfo.gov/packages/BILLS-119hres1625ih/summary",
+     "title": "Expressing support for a whole child approach to education and recognizing the role of parents, educators, and community members in providing a whole child approach to education for each student."
+    }
+   ]
+  },
+  "https://api.govinfo.gov/collections/CRPT/2026-09-16T00:00:00Z?pageSize=1000&offsetMark=*": {
+   "count": 3,
+   "message": null,
+   "nextPage": null,
+   "previousPage": null,
+   "packages": [
+    {
+     "congress": "119",
+     "dateIssued": "2026-09-23",
+     "docClass": "SRPT",
+     "lastModified": "2026-10-15T11:55:41Z",
+     "packageId": "CRPT-119srpt151",
+     "packageLink": "https://api.govinfo.gov/packages/CRPT-119srpt151/summary",
+     "title": "REPORT ON THE ACTIVITIES of the COMMITTEE ON THE BUDGET UNITED STATES SENATE during the ONE HUNDRED EIGHTEENTH CONGRESS pursuant to Paragraph 8(b) of Rule XXVI of the Standing Rules of the United States Senate"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-10-06",
+     "docClass": "HRPT",
+     "lastModified": "2026-10-15T08:26:28Z",
+     "packageId": "CRPT-119hrpt841",
+     "packageLink": "https://api.govinfo.gov/packages/CRPT-119hrpt841/summary",
+     "title": "NATIONAL CEMETERY ADMINISTRATION ANNUAL REPORT ACT OF 2026"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-09-24",
+     "docClass": "HRPT",
+     "lastModified": "2026-10-15T08:25:58Z",
+     "packageId": "CRPT-119hrpt834",
+     "packageLink": "https://api.govinfo.gov/packages/CRPT-119hrpt834/summary",
+     "title": "VETERAN INFECTION PREVENTION ACT"
+    }
+   ]
+  },
+  "https://api.govinfo.gov/collections/PLAW/2026-09-16T00:00:00Z?pageSize=1000&offsetMark=*": {
+   "count": 4,
+   "message": null,
+   "nextPage": null,
+   "previousPage": null,
+   "packages": [
+    {
+     "congress": "119",
+     "dateIssued": "2026-09-02",
+     "docClass": "PUBLIC",
+     "lastModified": "2026-09-21T13:17:46Z",
+     "packageId": "PLAW-119publ103",
+     "packageLink": "https://api.govinfo.gov/packages/PLAW-119publ103/summary",
+     "title": "Continuing Appropriations and Extensions Act, 2027"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2025-09-05",
+     "docClass": "PUBLIC",
+     "lastModified": "2026-10-15T14:29:59Z",
+     "packageId": "PLAW-119publ36",
+     "packageLink": "https://api.govinfo.gov/packages/PLAW-119publ36/summary",
+     "title": "Homebuyers Privacy Protection Act"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-10-07",
+     "docClass": "PUBLIC",
+     "lastModified": "2026-10-15T12:15:49Z",
+     "packageId": "PLAW-119publ120",
+     "packageLink": "https://api.govinfo.gov/packages/PLAW-119publ120/summary",
+     "title": "Billion Dollar Boondoggle Act of 2025"
+    },
+    {
+     "congress": "119",
+     "dateIssued": "2026-09-25",
+     "docClass": "PUBLIC",
+     "lastModified": "2026-10-10T13:32:40Z",
+     "packageId": "PLAW-119publ116",
+     "packageLink": "https://api.govinfo.gov/packages/PLAW-119publ116/summary",
+     "title": "Modernizing Access to Our Public Oceans Act"
+    }
+   ]
+  }
+ }
+}

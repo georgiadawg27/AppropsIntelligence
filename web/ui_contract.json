@@ -1,5 +1,5 @@
 {
- "contract_version": 10,
+ "contract_version": 11,
  "spec": "reference/ui/explore-v1/SPEC.md section 9",
  "path_syntax": "<file under docs/data/, glob allowed>:<dotted path>. 'name[]' steps into every item of a list, '*' into every value of an object. A field is present when at least one file gives it a value that is not null, empty text, an empty list or an empty object.",
  "features": {
@@ -244,6 +244,22 @@
    "brief": "D-8",
    "fields": [
     "subcommittees/*.json:rows[].cells.*.views_nondefense_excluding_earmarks.*[].amount"
+   ]
+  },
+  "draft_note": {
+   "spec_row": "Draft note: a stage whose figures come from a committee draft (stage_status draft) and each such figure's source label \"Committee draft, unofficial\" with the draft's release date",
+   "brief": "D-5 (page: UI-7)",
+   "fields": [
+    "index.json:stage_status",
+    "subcommittees/*.json:rows[].cells.*.lines[].observations[].source_label"
+   ]
+  },
+  "ops_intake": {
+   "spec_row": "Operations console intake: committee drafts awaiting their official version (days waiting), documents added in the last 30 days",
+   "brief": "D-5 (page: UI-7)",
+   "fields": [
+    "ops.json:intake.drafts[].document_id",
+    "ops.json:intake.as_of"
    ]
   }
  },

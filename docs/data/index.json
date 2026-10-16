@@ -895,7 +895,7 @@
    "historical_names": []
   }
  ],
- "contract_version": 10,
+ "contract_version": 11,
  "default_subcommittee": "LHHS",
  "features": {
   "abbreviations": true,
@@ -906,6 +906,7 @@
   "basis_adjustments": true,
   "budget_class": true,
   "defense_split": true,
+  "draft_note": true,
   "exclude_earmarks": true,
   "export_csv": true,
   "figure_source": true,
@@ -915,6 +916,7 @@
   "interaction_state": true,
   "nondefense": true,
   "nondefense_excluding_earmarks": true,
+  "ops_intake": true,
   "overview_panel": true,
   "phone": true,
   "search_filter": true,
@@ -950,5 +952,35 @@
  },
  "split_subcommittees": [
   "LHHS"
- ]
+ ],
+ "stage_status": {
+  "CJS": {
+   "2021": {
+    "Senate Reported": "draft"
+   },
+   "2022": {
+    "Senate Reported": "draft"
+   },
+   "2023": {
+    "Senate Reported": "draft"
+   },
+   "2024": {
+    "House Reported": "draft"
+   }
+  },
+  "LHHS": {
+   "2021": {
+    "Senate Reported": "draft"
+   },
+   "2022": {
+    "Senate Reported": "draft"
+   },
+   "2023": {
+    "Senate Reported": "draft"
+   },
+   "2024": {
+    "House Reported": "draft"
+   }
+  }
+ }
 }

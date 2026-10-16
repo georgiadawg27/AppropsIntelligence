@@ -1,5 +1,28 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## D-5 part 2: daily check, drafts, official replaces draft (2026-10-16, this PR)
+
+Owner chose "D-5 now" (before D-4). Brief: Library ui-build-briefs.md, D-5. #90 built only part 4's added dates
+(the brief was missed; not rescoped). This PR: `reference/INTAKE.md`.
+- Part 1: `scripts/intake_watch.py` + `.github/workflows/intake-watch.yml` (daily 11:17 UTC + dispatch, read-only,
+  GOVINFO_API_KEY as a header). Output: summary + `intake-plan.json` artifact (one PR plan per document). Live dry
+  run 2026-10-16 (30 days): 1 new, PLAW-119publ103 "Continuing Appropriations and Extensions Act, 2027" (FY2027 CR,
+  CJS and LHHS); not held. Opening the PRs waits for D-4.
+- Part 2 (issue form ops-add-committee-draft): not built, needs D-4.
+- Part 3: `scripts/reconcile_draft.py` (official rows in, supersede + cross_document pass/flag, one-version rows
+  flagged). Fixtures only: the data holds no official version of any draft stage.
+- Part 4: `approps_store.committee_drafts / stage_status / ops_intake`; index.json `stage_status` (8 draft stages),
+  `source_label` + `draft_release_date` on draft figures, `docs/data/ops.json` intake (10 drafts, none awaiting).
+  ui_contract 11: `draft_note`, `ops_intake` (flags on; the page is UI-7's).
+- No figure changed: data/staged.json untouched; the workbook fixture unchanged.
+
+Open:
+- CLAUDE.md says GOVINFO_API_KEY is used only by the manual fetch workflow; the brief puts it in the daily check
+  too. CLAUDE.md not edited: the owner's call.
+- Schedules run only from main, so the workflow's first live run is after merge (dry-run done locally).
+- ops.json `last_check` stays null (the check commits nothing when nothing is new); D-4/UI-7 decide how to surface it.
+- SRC-BILL-CJS-FY2021-SENATE has no publication date: its draft_release_date is null.
+
 ## D-3c: confirmed absences re-cited to bill or law text (2026-10-16, this PR)
 
 Details: `reference/review/accounting/review-D3c.md`; per absence: `d3c_absences.csv`.

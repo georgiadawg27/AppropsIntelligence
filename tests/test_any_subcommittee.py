@@ -766,7 +766,7 @@ class SyntheticSubcommittee(unittest.TestCase):
             # documents.json's documents); every other file -- CJS's and Labor-HHS's grids, every account -- is byte
             # for byte the same
             same = [p.relative_to(committed) for p in committed.rglob("*.json")
-                    if p.name not in ("index.json", "subcommittees.json", "whats_new.json", "documents.json")]
+                    if p.name not in ("index.json", "subcommittees.json", "whats_new.json", "documents.json", "ops.json")]
             self.assertTrue(same)
             for rel in same:
                 self.assertEqual((out / "data" / rel).read_bytes(), (committed / rel).read_bytes(), rel)
@@ -775,6 +775,9 @@ class SyntheticSubcommittee(unittest.TestCase):
             for k in ("documents", "additions", "undated"):
                 new[k] = [x for x in new[k] if not (set(json.dumps(x).split('"')) & mine)]
             self.assertEqual(new, old)
+            # ops.json: the same committee drafts (the synthetic subcommittee has none); its as_of is the newest date
+            new, old = (json.loads((x / "ops.json").read_text())["intake"] for x in (out / "data", committed))
+            self.assertEqual(new["drafts"], old["drafts"])
             new, old = (json.loads((x / "documents.json").read_text()) for x in (out / "data", committed))
             self.assertTrue([d for d in new["documents"] if d["document_id"] in mine])
             new["documents"] = [d for d in new["documents"] if d["document_id"] not in mine]

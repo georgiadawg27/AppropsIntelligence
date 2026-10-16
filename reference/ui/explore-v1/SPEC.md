@@ -244,6 +244,8 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Watch | browser storage only; no alerts or email | ready (UI-6; built: ☆ Watch on Find changes results, the account panel, the phone sheet and the account page; the list on Find changes, with its link export / import) |
 | Find changes (`find_changes`, `find_moves`) | cell states, printed figures and their sources; `rows[].relationships` for Moves | ready (UI-6) |
 | What's new (`whats_new`) | a first-added date per source document (`documents[].first_added`) and an added date per figure (`observations[].added_date`), D-5; the retrieval date is not one (it changes on every re-fetch or reparse) | ready (D-5, contract_version 10): lists each date's new documents and the figures added from documents already on file; the baseline date reads "On file by" |
+| Draft note (`draft_note`) | `index.json` `stage_status` (a stage whose figures come from a committee draft: "draft") and each such figure's `source_label` ("Committee draft, unofficial") and `draft_release_date` (D-5) | data ready (D-5, contract_version 11); page: UI-7 |
+| Operations intake (`ops_intake`) | `ops.json` `intake`: committee drafts (`awaiting_official`, `days_waiting`), documents added in the last 30 days, `as_of` (D-5) | data ready (D-5); page: UI-7 |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)
 

@@ -31,8 +31,11 @@ that answers the same questions as approps_web.py without a server.
     so the page fetches only the years on screen; the whole file is not
     kept (it would be the same cells twice).
   - Writes docs/data/whats_new.json: approps_web.whats_new() (the live
-    /api/whats-new answer), every source document with the date it was
-    retrieved into the record, newest first, for the page's "What's new".
+    /api/whats-new answer), every source document and figure by the date
+    it first entered the record, newest first, for the page's "What's new".
+  - Writes docs/data/ops.json: approps_web.ops() (the live /api/ops answer):
+    the intake list (committee drafts, documents added in the last 30 days;
+    brief D-5).
   - Writes docs/data/documents.json: approps_web.documents() (the live
     /api/documents answer), every source document's id, short name and
     address, for the page's source links (brief UI-8).
@@ -262,6 +265,8 @@ def export(workbook, out, download=True, data_base=DATA_BASE):
         names = listing["subcommittees"]
         dump(listing, out / "data" / "subcommittees.json")
         dump(W.whats_new(str(db)), out / "data" / "whats_new.json")
+        dump(W.ops(str(db)), out / "data" / "ops.json")
+        stage_statuses = W.stage_status(str(db))
         dump(W.documents(str(db)), out / "data" / "documents.json")
         split = []
         for name in names:
@@ -293,6 +298,8 @@ def export(workbook, out, download=True, data_base=DATA_BASE):
                      "ambiguity_margin": A.AMBIGUITY_MARGIN},
         "split_subcommittees": split,
         "default_subcommittee": SC.default_subcommittee(names),
+        # D-5: every (subcommittee, fiscal year, stage) whose figures come from a committee draft -> "draft"
+        "stage_status": stage_statuses,
         "accounts": F.index_accounts(pool),
     }
     # the flags read every subcommittee's whole file, so a split one's goes only after they are worked out
