@@ -93,12 +93,12 @@ class Load(StoreTest):
         # each total's scope is Account.total_scope: 13 agency totals, the title totals (Labor-HHS Title II; D-7: + 5
         # CJS, + 5 Labor-HHS) and each subcommittee's bill total (D-7)
         self.assertEqual(dict(self.conn.execute("SELECT ifnull(total_scope, '-'), count(*) FROM account "
-                                                "GROUP BY 1").fetchall()), {"-": 120, "agency": 13, "title": 11, "bill": 2})
+                                                "GROUP BY 1").fetchall()), {"-": 194, "agency": 13, "title": 11, "bill": 2})   # the full CJS load: + 74
         cjs = lambda table, key: self.conn.execute(
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (1458, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded)
+                          cjs("confirmed_absence", "canonical_account_id")), (5194, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded); the full CJS load: + 3,736
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -255,19 +255,21 @@ class NasaScienceAcceptance(StoreTest):
                       if o["canonical_account_id"] == "ACC-NASA-SCIENCE")
         self.assertEqual(got, want)
         ba = [o for o in h["observations"] if o["amount_type"] == "budget authority"]
-        self.assertEqual(len(ba), 40)
-        self.assertEqual({(o["fiscal_year"], o["stage"]) for o in ba}, {(y, s) for y in range(2017, 2027) for s in FOUR})
+        self.assertEqual(len(ba), 41)     # the full CJS load: + FY2027 House (H.Rept. 119-652 p.169)
+        self.assertEqual({(o["fiscal_year"], o["stage"]) for o in ba},
+                         {(y, s) for y in range(2017, 2027) for s in FOUR} | {(2027, "House Reported")})
         self.assertEqual({(o["fiscal_year"], o["stage"], o["amount"]) for o in h["observations"]
                           if o["amount_type"] == "rescission"},
                          {(2020, "Enacted", -70_000_000), (2020, "Senate Reported", -70_000_000)})
 
     def test_fy2027_is_reported_missing_not_zero(self):
         _, h = self.query("NASA Science")
-        # only FY2027 House Reported is covered by a document on file (H.Rept. 119-652)
-        self.assertEqual(h["missing_cells"], [(2027, "House Reported")])
+        # only FY2027 House Reported is covered by a document on file (H.Rept. 119-652), and the full CJS load
+        # holds it; the other FY2027 stages aren't on file, so nothing is reported missing
+        self.assertEqual(h["missing_cells"], [])
         g = S.history_grid(h)
         fy27 = {st: [l["state"] for l in c] for st, c in next(r for r in g["rows"] if r["fiscal_year"] == 2027)["cells"].items()}
-        self.assertEqual({st: v[0] for st, v in fy27.items()}, {"President's Budget": "not_collected", "House Reported": "missing",
+        self.assertEqual({st: v[0] for st, v in fy27.items()}, {"President's Budget": "not_collected", "House Reported": "value",
                                                                   "Senate Reported": "not_collected", "Enacted": "not_enacted"})
 
     def test_values_match_the_printed_documents(self):
@@ -314,7 +316,7 @@ class ExplorationAcceptance(StoreTest):
     def test_base_and_supplemental_split(self):
         _, h = self.query("NASA Exploration")
         obs = h["observations"]
-        self.assertEqual(len(obs), 50)
+        self.assertEqual(len(obs), 51)     # the full CJS load: + FY2027 House
         self.assertEqual(len(h["absences"]), 31)
         by = {(o["fiscal_year"], o["stage"], o["amount_type"]): o["amount"] for o in obs}
         self.assertEqual({t for (_, _, t) in by}, {"budget authority", "supplemental", "other"})
@@ -327,7 +329,7 @@ class ExplorationAcceptance(StoreTest):
             res, h = self.query(text)
             self.assertEqual((res["account"]["canonical_account_id"], res["match"], res["via"]),
                              ("ACC-NASA-EXPLORATION", kind, "historical_name"))
-            self.assertEqual(len(h["observations"]), 50)
+            self.assertEqual(len(h["observations"]), 51)
 
     def test_exploration_technology_is_a_former_name_of_space_technology(self):
         # v24: REL-0005 resolved by folding the line in (FY2019 Budget
@@ -380,8 +382,8 @@ class Resolve(StoreTest):
     def test_same_name_in_two_agencies_is_not_guessed(self):
         res, _ = self.query("Office of Inspector General")
         self.assertEqual((res["match"], res["account"]), ("ambiguous", None))
-        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:4],
-                         ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])      # v33: HHS's too
+        self.assertEqual([c["canonical_account_id"] for c in res["candidates"]][:5],
+                         ["ACC-DOC-OIG", "ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])      # v33: HHS's too; the full CJS load: Commerce's
         self.assertEqual(self.query("NSF Office of Inspector General")[0]["account"]["canonical_account_id"], "ACC-NSF-OIG")
         self.assertEqual(self.query("Office of Inspector General", agency="NASA")[0]["account"]["canonical_account_id"],
                          "ACC-NASA-OIG")
@@ -516,6 +518,11 @@ class ResolutionCascade(StoreCopyTest):
         exploration_before = self.conn.execute("SELECT count(*) FROM validation_record v JOIN appropriations_observation o "
                                                "USING (observation_id) WHERE o.canonical_account_id = 'ACC-NASA-EXPLORATION'"
                                                ).fetchone()[0]
+        conf = lambda: dict(self.conn.execute(
+            "SELECT observation_id, confidence FROM appropriations_observation WHERE canonical_account_id IN "
+            "('ACC-NASA-EXPLORATION', 'ACC-NASA-SPACETECH') AND observation_id NOT IN ('OBS-0522', 'OBS-0523', 'OBS-0524')"
+        ).fetchall())
+        conf_before = conf()
         s = S.resolve_relationship(self.conn, "REL-T", "Reviewer", "renamed line")
         self.assertEqual(s["observations"], self.EXPLTECH)
         self.assertEqual(s["records_updated"], ["VAL-ID"])
@@ -536,9 +543,12 @@ class ResolutionCascade(StoreCopyTest):
                                            "USING (observation_id) WHERE o.canonical_account_id = 'ACC-NASA-EXPLORATION'"
                                            ).fetchone()[0], exploration_before)
         for acct in ("ACC-NASA-EXPLORATION", "ACC-NASA-SPACETECH"):
+            # the human-verified rows (1.0); the full CJS load's FY2027 House rows keep their read's 0.95
             self.assertEqual({r[0] for r in self.conn.execute(
                 "SELECT DISTINCT confidence FROM appropriations_observation WHERE canonical_account_id = ? "
-                "AND observation_id NOT IN ('OBS-0522', 'OBS-0523', 'OBS-0524')", (acct,))}, {1.0}, acct)
+                "AND observation_id NOT IN ('OBS-0522', 'OBS-0523', 'OBS-0524') AND fiscal_year < 2027", (acct,))},
+                {1.0}, acct)
+        self.assertEqual(conf(), conf_before)
         self.assertEqual(S.stale_resolution_warnings(self.conn), [])
 
     def test_another_open_finding_keeps_its_observation_flagged(self):
@@ -573,9 +583,11 @@ class FactKey(StoreCopyTest):
         rows = self.conn.execute("SELECT canonical_account_id, component, transfer_link_account_id FROM "
                                  "appropriations_observation WHERE canonical_account_id IN ('ACC-NSF-RRA', 'ACC-DOJ-CVF') "
                                  "AND amount_type IN ('budget authority', 'transfer', 'rescission')").fetchall()
-        self.assertEqual(sum(1 for r in rows if r[1] == "defense"), 40)
+        self.assertEqual(sum(1 for r in rows if r[1] == "defense"), 41)     # the full CJS load: + FY2027 House
         self.assertEqual({(r[1], r[2]) for r in rows if r[0] == "ACC-DOJ-CVF"},
-                         {(None, "ACC-DOJ-VAWA"), (None, "ACC-DOJ-OIG"), ("chimp", None), ("chimp_pop_up", None)})
+                         {(None, "ACC-DOJ-VAWA"), (None, "ACC-DOJ-OIG"), ("chimp", None), ("chimp_pop_up", None),
+                          # the full CJS load: the FY2018 request's transfers to two OJP accounts, its rescission
+                          (None, "ACC-DOJ-OJP-JJ"), (None, "ACC-DOJ-OJP-SLLEA"), (None, None)})
 
     def test_components_are_the_canonical_vocabulary(self):
         import accounts
@@ -591,8 +603,9 @@ class FactKey(StoreCopyTest):
                        "allocation_302b_discretionary", "allocation_302b_mandatory", "bill_302b_discretionary",
                        "bill_302b_mandatory"}
         self.assertLessEqual(cjs_summary, set(accounts.SUMMARY_COMPONENTS))
-        self.assertEqual(used("CJS"), {None, "defense_inside"} | cjs_summary
-                         | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
+        # the full CJS load: the 2020 Census and NIST's legislative proposal lines (one-off, PROPOSAL_COMPONENTS)
+        self.assertEqual(used("CJS"), {None, "defense_inside", "census_2020", "request_proposal_nist_construction"}
+                         | cjs_summary | (set(accounts.VOCABULARY) - accounts.BREAKDOWN_COMPONENTS))
         self.assertLessEqual(used("LHHS") - {None}, set(accounts.VOCABULARY) | {"emergency"} | set(accounts.PROPOSAL_COMPONENTS))
         # v33: the CURES Act money is its own account, no longer a component of NIH's total
         self.assertNotIn("CURES", used("LHHS"))
@@ -787,8 +800,9 @@ class PipelineToStore(StoreCopyTest):
     def test_same_facts_confirm_new_facts_add_nothing_twice(self):
         before = self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0]
         out = S.add_observations(self.conn, self.rows)
-        self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 19, "conflicting": 0, "added": 19, "held": 0})
-        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before + 19)
+        # the full CJS load holds FY2027 House: every vision row confirms a stored one, nothing is added
+        self.assertEqual({k: len(v) for k, v in out.items()}, {"confirmed": 38, "conflicting": 0, "added": 0, "held": 0})
+        self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation").fetchone()[0], before)
         sci = {(o["fiscal_year"], o["stage"]): o for o in self.science()}
         self.assertEqual(len(self.science()), 44)                       # 43 + FY2027 House Reported, no duplicate
         self.assertEqual((sci[(2026, "Enacted")]["observation_id"], sci[(2026, "Enacted")]["amount"]),
@@ -868,11 +882,13 @@ class Coverage(StoreCopyTest):
 
     def test_first_and_last_observed_years_and_unchecked_cells(self):
         rows = {r["canonical_account_id"]: r for r in self.rows()}
-        self.assertEqual(len(rows), 146)                 # D-7: + 10 title totals, + 2 bill totals; D-9: + 4 accounts
-        self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2026))   # FY2027: House report on file, figure not yet recorded
+        self.assertEqual(len(rows), 220)                 # D-7: + 10 title totals, + 2 bill totals; D-9: + 4 accounts; the full CJS load: + 74
+        self.assertEqual((rows["ACC-NASA-SCIENCE"]["first_observed_fy"], rows["ACC-NASA-SCIENCE"]["last_observed_fy"]), (2017, 2027))   # FY2027 House: the full CJS load
         # the FY2027-only mechanism accounts: every earlier cell the CJS reports cover is unchecked work
-        self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2027)
-        self.assertIn("FY2017 Enacted", rows["ACC-DOJ-CVF"]["unchecked"])
+        # (the Crime Victims Fund was FY2027-only until the full CJS load: FY2017 on now)
+        self.assertEqual(rows["ACC-DOJ-CVF"]["first_observed_fy"], 2017)
+        self.assertEqual(rows["ACC-HHS-NIH-SUBSTANCE-USE"]["first_observed_fy"], 2027)
+        self.assertIn("FY2017 Enacted", rows["ACC-HHS-NIH-SUBSTANCE-USE"]["unchecked"])
         # a cell with a figure or a confirmed absence is never unchecked
         seen = {(r[0], r[1]) for r in self.conn.execute(
             "SELECT fiscal_year, stage FROM appropriations_observation WHERE canonical_account_id = 'ACC-NASA-SCIENCE' "
@@ -890,7 +906,9 @@ class AfterLastRecord(StoreCopyTest):
     file for any account: no stored end date cuts them off (v33 has none)."""
 
     def test_open_accounts_are_unchanged(self):
-        h = S.history(self.conn, "ACC-NASA-SPACETECH")
+        # (NASA Space Technology's FY2027 House figure is held since the full CJS load; the National Space
+        # Council's isn't printed there)
+        h = S.history(self.conn, "ACC-NSC")
         self.assertEqual(max(y for y, _ in h["missing_cells"]), 2027)
 
 
@@ -913,8 +931,15 @@ class Lifecycle(StoreTest):
         self.assertEqual(L["ACC-HHS-HRSA-CCPF"]["type"], "ongoing")
         # an active account whose enacted figures aren't collected yet stays ongoing, its life open (gaps stay missing)
         cjs = self.life("CJS")
-        self.assertEqual({v["type"] for v in cjs.values()}, {"ongoing"})
-        self.assertTrue(cjs["ACC-NOAA-ORF"]["enacted_not_collected"])
+        # (the full CJS load: accounts whose lines start or stop inside FY2017-FY2027 are new or ended, from the
+        # printed figures; the Title III accounts held before stay ongoing)
+        self.assertEqual({v["type"] for v in cjs.values()}, {"ongoing", "new", "ended_eliminated"})
+        self.assertEqual({cjs[a]["type"] for a in ("ACC-NASA-SCIENCE", "ACC-NSF-RRA", "ACC-NASA-TOTAL")}, {"ongoing"})
+        self.assertEqual((cjs["ACC-DOJ-HIDTA"]["type"], cjs["ACC-DOJ-HIDTA"]["created"]), ("new", 2018))
+        # (NOAA ORF's enacted figures are held since the full CJS load; the Pardon Attorney's FY2017 line has no
+        # enacted figure on file)
+        self.assertNotIn("enacted_not_collected", cjs["ACC-NOAA-ORF"])
+        self.assertTrue(cjs["ACC-DOJ-OPA"]["enacted_not_collected"])
 
     def test_relationship_types_are_explicit(self):
         types = dict(self.conn.execute("SELECT relationship_id, relationship_type FROM account_relationship"))
@@ -1020,8 +1045,12 @@ class NoPrintedTotal(StoreCopyTest):
         rows = self.conn.execute(
             "SELECT o.canonical_account_id, o.stage, v.human_review_status, v.expected_result, v.resolution "
             "FROM validation_record v JOIN appropriations_observation o USING (observation_id) "
+            "JOIN account a USING (canonical_account_id) "
             "WHERE o.fiscal_year = 2022 AND v.rule_applied = 'table_total' AND v.result = 'flag' "
+            "AND a.subcommittee = 'LHHS' "
             "AND (v.resolution IS NULL OR v.resolution NOT LIKE 'informational%')").fetchall()
+        # (Labor-HHS's decisions; the full CJS load's FY2022 request Title V total stays pending review: its
+        # 'DOJ Modernization and Repairs' rescission line names no account, reference/handoff.md)
         # every one is resolved: exactly explained, or explained by the owner's decisions (Program Management,
         # Kids First inside the derived OD, Diaper Grants recorded)
         self.assertEqual([(a, st) for a, st, hs, e, r in rows if hs == "pending"], [])
@@ -1199,7 +1228,7 @@ class LoadRefuses(unittest.TestCase):
         db = Path(self.tmp.name) / "dates.db"
         with contextlib.redirect_stdout(io.StringIO()):
             report = S.load(self.mutate(add), db)
-        self.assertEqual(report["rows"]["account"], 146)   # D-9: + 4 accounts
+        self.assertEqual(report["rows"]["account"], 220)   # D-9: + 4 accounts; the full CJS load: + 74
         conn = S.connect(db, readonly=True)
         self.assertNotIn("effective_start", [r[1] for r in conn.execute("PRAGMA table_info(account)")])
         conn.close()

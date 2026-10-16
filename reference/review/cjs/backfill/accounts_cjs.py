@@ -263,3 +263,11 @@ TITLE_V_ONLY = [
     ("ACC-DOC-WCF", "Title V", "Departmental Management", "Working Capital Fund",
      "Rescission-only line (Title V); the fund has no appropriation in the bill."),
 ]
+
+# the Account tab's fund type where it isn't 'general': the Budget Appendix's (the account_id_code's fund group,
+# reference/review/accounting/appendix_map.csv; appendix_attributes.py records it as the fund_type attribute)
+FUND_TYPES = {
+    "ACC-NOAA-FCF": "special", "ACC-NOAA-FEAFF": "special", "ACC-USTR-TETF": "trust",
+    "ACC-DOJ-FPI": "revolving", "ACC-CENSUS-WCF": "revolving", "ACC-NIST-WCF": "revolving",
+    "ACC-DOC-WCF": "revolving",
+}

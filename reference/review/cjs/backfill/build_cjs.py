@@ -54,7 +54,7 @@ import staged_data  # noqa: E402
 import triage as T  # noqa: E402
 import validate_approps as V  # noqa: E402
 from accounts_cjs import (ACCOUNTS, AGENCY_HEADINGS, TITLE_III_FY, TITLE_III_PATTERNS, TITLE_V_LINES,  # noqa: E402
-                          TITLE_V_ONLY)
+                          TITLE_V_ONLY, FUND_TYPES)
 
 RETIRED = ROOT / "reference" / "review" / "lhhs" / "retired_ids.json"
 TRIAGE_REVIEWER = "triage rules"
@@ -383,6 +383,34 @@ ROLE = {  # role -> (amount_type, component, sign rule)
 }
 
 
+
+def widen_table_pages(docs, new_obs):
+    """A document's source_page lists its table's pages (the main range first, then single pages: other tables,
+    D-8's 302(b) page). The Title III load recorded only the pages it cited; the full table's lines cite the pages
+    around them, so the main range takes in every page a new line cites, and the single pages it now reaches."""
+    cited = collections.defaultdict(set)
+    for o in new_obs:
+        cited[o["source_document_id"]].add(int(o["source_page"]))
+    for d in docs:
+        pages = cited.get(d["document_id"])
+        if not pages or not d["source_page"]:
+            continue
+        parts = [x.strip() for x in d["source_page"].split(";")]
+        lo, _, hi = parts[0].partition("-")
+        lo, hi = int(lo), int(hi or lo)
+        singles = [int(x) for x in parts[1:]]
+        if all(lo <= pg <= hi or pg in singles for pg in pages):
+            continue
+        lo, hi = min(lo, *pages), max(hi, *pages)
+        grew = True
+        while grew:
+            grew = False
+            for x in singles:
+                if lo - 1 <= x <= hi + 1:
+                    lo, hi, grew = min(lo, x), max(hi, x), True
+            singles = [x for x in singles if not lo <= x <= hi]
+        d["source_page"] = "; ".join([f"{lo}-{hi}"] + [str(x) for x in singles])
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
@@ -446,6 +474,8 @@ def main(argv=None):
             found[(target, fy, st)].append((role, r, cell, src, aid))
 
     # 2. observations
+    absent = {(x["canonical_account_id"], x["fiscal_year"], x["stage"], x["amount_type"], x.get("component") or "")
+              for x in data["confirmed_absences"]}
     alloc = IDS.Allocator([o["observation_id"] for o in data["observations"]] + list(retired.get("observations", {}))
                           + [v["validation_id"] for v in data["validations"]] + list(retired.get("validations", {})))
     new_acc = []
@@ -459,7 +489,7 @@ def main(argv=None):
         dept = {"Title I": "Department of Commerce", "Title II": "Department of Justice"}.get(title, bureau)
         new_acc.append({"canonical_account_id": aid, "canonical_name": name, "agency": dept,
                         "bureau": bureau, "treasury_account_symbol": "", "status": "active", "historical_names": "",
-                        "historical_identifiers": "", "fund_type": "general", "subcommittee": "CJS",
+                        "historical_identifiers": "", "fund_type": FUND_TYPES.get(aid, "general"), "subcommittee": "CJS",
                         "notes": "CJS full load (reference/review/cjs/backfill/build_cjs.py).", "title": title,
                         "display_order": 0, "total_scope": "", "parent_account_id": ""})
         known.add(aid)
@@ -468,7 +498,8 @@ def main(argv=None):
             new_acc.append({"canonical_account_id": aid, "canonical_name": name,
                             "agency": "Department of Commerce", "bureau": bureau, "treasury_account_symbol": "",
                             "status": "active", "historical_names": "", "historical_identifiers": "",
-                            "fund_type": "general", "subcommittee": "CJS", "notes": note, "title": title,
+                            "fund_type": FUND_TYPES.get(aid, "general"), "subcommittee": "CJS", "notes": note,
+                            "title": title,
                             "display_order": 0, "total_scope": "", "parent_account_id": ""})
             known.add(aid)
     acc_all = dict(acc, **{x["canonical_account_id"]: x for x in new_acc})
@@ -479,9 +510,8 @@ def main(argv=None):
         src = STAGES[(fy, st)]
         groups = collections.defaultdict(list)
         for role, r, cell, src_, owner in items:
-            groups[ROLE[role]].append((role, r, cell))
+            groups[ROLE[role]].append((role, r, cell, owner))
         for (atype, comp), its in sorted(groups.items()):
-            amounts = {c["amount"] for _, _, c in its}
             if len(its) > 1 and atype == "budget authority" and comp == "":
                 # an account printed under its old and its new name, one of them '---' in this column (EOIR
                 # FY2017, VAWA FY2020-FY2021): the figure is the line that prints one
@@ -499,75 +529,111 @@ def main(argv=None):
             k = (aid, fy, st, atype, comp)
             if k in live:
                 held = live[k]
-                tab = sum(c["amount"] or 0 for _, _, c in its)
+                tab = sum(z[2]["amount"] or 0 for z in its)
                 same = any(h["amount"] == tab for h in held) or sum(h["amount"] for h in held) == tab
                 report.append([fy, st, aid, atype, comp, "held", tab, its[0][1]["page"],
-                               "" if same else "table prints " + ", ".join(f"{c['amount_as_printed']}" for _, _, c in its)
+                               "" if same else "table prints " + ", ".join(f"{z[2]['amount_as_printed']}" for z in its)
                                + "; held " + ", ".join(f"{h['observation_id']} {h['amount']}" for h in held)])
                 if not same:
                     held_diff.append(k)
                 continue
-            for role, r, cell in its:
+            # each line: its amount, link and notes
+            lines = []
+            cvf_out_under = {z[3] for z in its if z[0] == "transfer_out" and aid == "ACC-DOJ-CVF"}
+            for role, r, cell, owner in its:
                 amt = cell["amount"] if cell["amount"] is not None else 0
                 if role == "transfer_out" and amt > 0:
                     amt = -amt
-                sign_note = ""
+                note = ""
                 if role == "offset" and amt > 0 and not POSITIVE_OFFSET.search(letters(r["label"])):
                     # a deduction the page prints with a minus sign, read without it (an OCR text layer: H.Rept.
                     # 115-231 p.112 'Offsetting fee collections ... 13,000', its Bill vs Enacted column -1,000)
                     amt = -amt
-                    sign_note = (f" -- Note: read as '{cell['amount_as_printed']}' without its minus sign; recorded "
-                                 f"negative (a deduction from the account's line; the title total confirms)")
-                printed = cell["amount_as_printed"]
-                agency = acc_all[aid]["bureau"] if acc_all[aid]["bureau"] not in ("", None) else acc_all[aid]["agency"]
-                where = (f"Title V, General Provisions" if role.startswith("rescission") or r["title"] == "V"
-                         else f"{acc_all[aid]['title']}, {agency}")
+                    note = (f" -- Note: read as '{cell['amount_as_printed']}' without its minus sign; recorded "
+                            f"negative (a deduction from the account's line; the title total confirms)")
                 link = ""
                 if role == "transfer_in" and aid == "ACC-NOAA-ORF":
                     link = "ACC-NOAA-PDF"
                 if role == "transfer_out" and aid == "ACC-NOAA-PDF":
                     link = "ACC-NOAA-ORF"
-                if role == "transfer_in" and aid == "ACC-DOJ-VAWA":
-                    link = "ACC-DOJ-CVF"
+                if role == "transfer_in" and any(
+                        z[0] == "transfer_out" and "crimevictimsfund" in letters(z[1]["label"]) and z[4] == aid
+                        for z in found.get(("ACC-DOJ-CVF", fy, st), [])):
+                    link = "ACC-DOJ-CVF"      # '(by transfer)' from the fund printed under this account
+                sec510 = lambda z: re.search(r"sec\.?\s*510", (z["label"] or "").lower())
                 if role == "transfer_out" and aid == "ACC-DOJ-CVF":
-                    link = "ACC-DOJ-VAWA" if r["title"] != "V" else ""
-                note = ""
+                    link = owner if r["title"] != "V" and owner != aid else ""   # the account it's printed under
+                    if r["title"] == "V" and sec510(r):
+                        link = "ACC-DOJ-OIG"      # sec. 510: the fund's transfer to the Inspector General (as FY2027)
+                if role == "transfer_in" and aid == "ACC-DOJ-OIG" and r["title"] == "V" and any(
+                        z[0] == "transfer_out" and sec510(z[1]) for z in found.get(("ACC-DOJ-CVF", fy, st), [])):
+                    link = "ACC-DOJ-CVF"
                 if role == "defense" and "counterintelligence" in letters(r["label"]):
-                    note = (" -- Note: the defense line of the account: the tables' Title V and Other Appropriations "
-                            "lines print the FBI's Salaries and Expenses as defense and nondefense (inferred from them)")
+                    note += (" -- Note: the defense line of the account: the tables' Title V and Other Appropriations "
+                             "lines print the FBI's Salaries and Expenses as defense and nondefense (inferred from them)")
                 if role == "rescission_unlabelled":
-                    note = (" -- Note: printed in Title V as a negative line naming the account, without the word "
-                            "'rescission': read as the title's rescission of it")
+                    note += (" -- Note: printed in Title V as a negative line naming the account, without the word "
+                             "'rescission': read as the title's rescission of it")
                 if role == "cr_addition":
-                    note = (" -- Note: appropriated by the continuing resolution the label names, printed under "
-                            "the account")
+                    note += (" -- Note: appropriated by the continuing resolution the label names, printed under "
+                             "the account")
                 if role == "offset" and "newfees" in letters(r["label"]):
-                    note = " -- Note: a fee line printed under the fund, deducted like its offsetting collections"
+                    note += " -- Note: a fee line printed under the fund, deducted like its offsetting collections"
                 if role == "offset" and "spendingof" in letters(r["label"]):
-                    note = " -- Note: the spending of the collections the line above deducts (printed as a positive)"
+                    note += " -- Note: the spending of the collections the line above deducts (printed as a positive)"
                 if role == "offset" and "diversioncontrol" in letters(r["label"]):
-                    note = " -- Note: the Diversion Control Fund fees the table deducts from the account's line"
-                note += sign_note
-                if printed and printed.strip() in ("---", "--", "-", "—"):
-                    note += " -- printed '---'"
+                    note += " -- Note: the Diversion Control Fund fees the table deducts from the account's line"
+                dash = bool(cell.get("amount_is_dash_zero")) or (cell["amount_as_printed"] or "").strip() in (
+                    "---", "--", "-", "\u2014")
+                lines.append({"role": role, "r": r, "cell": cell, "amt": amt, "link": link, "note": note, "dash": dash})
+            by_link = collections.defaultdict(list)
+            for ln in lines:
+                by_link[ln["link"]].append(ln)
+            for link, lns in sorted(by_link.items()):
+                # one fact per account, year, stage, amount type, component and counterpart (the store's
+                # observation_fact): a '---' beside a printed figure adds nothing; several printed lines of one
+                # fact (FBI's fee and other rescissions, a fund's fee lines) are recorded as their sum
+                use = [ln for ln in lns if not ln["dash"]] or lns[:1]
+                first = use[0]
+                r, cell = first["r"], first["cell"]
+                amt = sum(ln["amt"] for ln in use)
+                agency = acc_all[aid]["bureau"] if acc_all[aid]["bureau"] not in ("", None) else acc_all[aid]["agency"]
+                where = (f"Title V, General Provisions" if first["role"].startswith("rescission") or r["title"] == "V"
+                         else f"{acc_all[aid]['title']}, {agency}")
+                if len(use) == 1:
+                    text = f"{where} -- printed as {r['label']!r} [{cell['column_header']}]" + first["note"]
+                    if first["dash"]:
+                        text += " -- printed '---'"
+                else:
+                    text = (f"{where} -- the sum of {len(use)} lines printed in the cell: "
+                            + "; ".join(f"{ln['r']['label']!r} {ln['cell']['amount_as_printed']} (p.{ln['r']['page']})"
+                                        for ln in use) + f" [{cell['column_header']}]"
+                            + "".join(dict.fromkeys(ln["note"] for ln in use)))
+                if first["dash"] and (aid, fy, st, atype, comp) in absent:
+                    # the bill or law text already records nothing of this fact (a confirmed absence); the
+                    # table's '---' agrees and adds nothing (the store holds one or the other)
+                    report.append([fy, st, aid, atype, comp, "confirmed absence (bill text); '---' printed", "",
+                                   r["page"], r["label"]])
+                    continue
                 oid = alloc.next("OBS", "CJS")
                 o = {"observation_id": oid, "canonical_account_id": aid, "fiscal_year": fy, "stage": st,
                      "chamber": CHAMBER[st], "bill_id": "", "report_id": "", "amount": amt, "amount_type": atype,
                      "offsetting_collections": "TRUE" if atype == "offsetting_collection" else "FALSE",
                      "transfer_link_account_id": link, "source_document_id": src, "source_page": str(r["page"]),
-                     "source_table_or_section": f"{where} -- printed as {r['label']!r} [{cell['column_header']}]" + note,
+                     "source_table_or_section": text,
                      "extraction_method": "AI-extracted" if cell.get("extraction_method") == "vision" else
                      (cell.get("extraction_method") or "text-extracted"),
                      "confidence": cell.get("extraction_confidence") or 0.95, "verification_status": "",
                      "component": comp, "headline_observation_id": "", "added_date": ""}
                 new_obs.append(o)
-                by_cell.setdefault((aid, fy, st), []).append((o, role, r, cell))
-                report.append([fy, st, aid, atype, comp, "found", amt, r["page"], r["label"]])
-                for rec in cell["_records"]:
-                    if rec["rule_applied"] in ("table_total", "structural", "source_text", "unit", "semantic"):
-                        new_val.append({"observation_id": oid, "rule_applied": rec["rule_applied"],
-                                        "expected_result": rec["expected_result"],
-                                        "observed_result": rec["observed_result"], "result": rec["result"]})
+                for ln in use:
+                    by_cell.setdefault((aid, fy, st), []).append((o, ln["role"], ln["r"], ln["cell"]))
+                    for rec in ln["cell"]["_records"]:
+                        if rec["rule_applied"] in ("table_total", "structural", "source_text", "unit", "semantic"):
+                            new_val.append({"observation_id": oid, "rule_applied": rec["rule_applied"],
+                                            "expected_result": rec["expected_result"],
+                                            "observed_result": rec["observed_result"], "result": rec["result"]})
+                report.append([fy, st, aid, atype, comp, "found", amt, r["page"], " + ".join(ln["r"]["label"] for ln in use)])
 
     # 3. sum checks: each printed agency total and title total against our lines in it
     BUREAU = {x[0]: x[2] for x in accts + title3}
@@ -621,6 +687,31 @@ def main(argv=None):
                         block = []
                     continue
                 block.append((tt, r, aid, role))
+    # the agency totals held as accounts (NASA, NSF): a Title III year the load reads (FY2027 House) records the
+    # printed 'Total, <agency>' line where our accounts' lines sum to it (the earlier years are held as rollups)
+    AGENCY_TOTAL = {"National Aeronautics and Space Administration": "ACC-NASA-TOTAL",
+                    "National Science Foundation": "ACC-NSF-TOTAL"}
+    for fy, st, src, r, cell, parts, loose, got, ok, is_title in sums:
+        tid = AGENCY_TOTAL.get(bureau_of_total(r["key"]) or "")
+        if is_title or not tid or not ok or live.get((tid, fy, st, "budget authority", "")):
+            continue
+        o = {"observation_id": alloc.next("OBS", "CJS"), "canonical_account_id": tid, "fiscal_year": fy, "stage": st,
+             "chamber": CHAMBER[st], "bill_id": "", "report_id": "", "amount": cell["amount"],
+             "amount_type": "budget authority", "offsetting_collections": "FALSE", "transfer_link_account_id": "",
+             "source_document_id": src, "source_page": str(r["page"]),
+             "source_table_or_section": f"Title III, {acc_all[tid]['agency']} -- printed as {r['label']!r} "
+                                        f"[{cell['column_header']}]",
+             "extraction_method": "AI-extracted" if cell.get("extraction_method") == "vision" else
+             (cell.get("extraction_method") or "text-extracted"),
+             "confidence": cell.get("extraction_confidence") or 0.95, "verification_status": "",
+             "component": "", "headline_observation_id": "", "added_date": ""}
+        new_obs.append(o)
+        new_val.append({"observation_id": o["observation_id"], "rule_applied": "table_total",
+                        "expected_result": f"the printed '{r['label']}' (p.{r['page']}) = the sum of our lines in it: "
+                                           + " + ".join(f"{(c['amount'] or 0) // 1000:,}" for _, c in parts if c)
+                                           + f" = {got // 1000:,} (thousands)",
+                        "observed_result": f"{cell['amount'] // 1000:,} printed", "result": "pass"})
+        report.append([fy, st, tid, "budget authority", "", "found", cell["amount"], r["page"], r["label"]])
     obs_at = {}
     for o in new_obs:
         obs_at.setdefault((o["source_document_id"], o["fiscal_year"], o["stage"], o["source_page"], o["amount"]), []).append(o)
@@ -766,6 +857,7 @@ def main(argv=None):
                                   for c, k, d in A.COMPONENT_KINDS if c in used_c and c not in have_c)
         have = {b["reference_id"] for b in data["bill_report_refs"]}
         data["bill_report_refs"].extend(b for b in NEW_BRR if b["reference_id"] not in have)
+        widen_table_pages(data["source_docs"], new_obs)
         data["observations"].extend(new_obs)
         data["validations"].extend(new_val)
         staged_data.save(data)
