@@ -243,7 +243,7 @@ The page reads a `features` object from `docs/data/index.json` (written by `expo
 | Basis adjustments (`basis_adjustments`) | each view entry's `adjustments`: the components (a total: grouped by type, with its accounts) that turn As printed into the view | ready (D-6); built (UI-8): adjustment lines under an expanded account or agency, the build-up in the source panel (the Nondefense column's: the nondefense build-up), Σ on a computed total; source addresses from `documents.json` (contract_version 8) |
 | Watch | browser storage only; no alerts or email | ready (UI-6; built: ☆ Watch on Find changes results, the account panel, the phone sheet and the account page; the list on Find changes, with its link export / import) |
 | Find changes (`find_changes`, `find_moves`) | cell states, printed figures and their sources; `rows[].relationships` for Moves | ready (UI-6) |
-| What's new (`whats_new`) | a first-added date per source document and an added date per figure (D-5); the retrieval date is not one (it changes on every re-fetch or reparse) | later (built in UI-6, flag off until D-5; owner, 2026-10-14) |
+| What's new (`whats_new`) | a first-added date per source document (`documents[].first_added`) and an added date per figure (`observations[].added_date`), D-5; the retrieval date is not one (it changes on every re-fetch or reparse) | ready (D-5, contract_version 10): lists each date's new documents and the figures added from documents already on file; the baseline date reads "On file by" |
 
 ## 10. Required tests (Playwright, in `tests/test_compare.py` or a new `tests/test_explore_v1.py`)
 

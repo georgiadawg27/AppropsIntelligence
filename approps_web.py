@@ -31,7 +31,7 @@ API
       computed from the payloads this server answers with -- the same flags the static export writes
       into docs/data/index.json from the same answers
   GET /api/whats-new
-      -> approps_store.whats_new(): every source document with the date it was retrieved into the record,
+      -> approps_store.whats_new(): every source document and figure by the date it first entered the record,
          newest first (the page's "What's new"; the export writes the same answer to data/whats_new.json)
   GET /api/documents
       -> approps_store.documents(): every source document's id, short name (web/documents.js) and address, for

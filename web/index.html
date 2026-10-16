@@ -5175,9 +5175,10 @@ async function fcWatchlist() {
   box.replaceChildren(...kids);
 }
 
-// ---- What's new (brief UI-6): built at export time (data/whats_new.json; live: /api/whats-new). No alerts or email.
-// Hidden behind its flag (owner, 2026-10-14): the retrieval date it lists today changes on every re-fetch or reparse, so
-// it is not an added date; the flag turns on when D-5 publishes first-added dates (web/ui_contract.json "waits_for")
+// ---- What's new (briefs UI-6, D-5): built at export time (data/whats_new.json; live: /api/whats-new). No alerts or
+// email. By the date each document and each figure first entered the record (added_dates.py: set once, never
+// changed; not the retrieval date, which changes on every re-fetch or reparse). The baseline date reads "On file by":
+// records dated that day were held when the data entered the repository, their earlier add date not recorded.
 let whatsNew = null;
 async function fcWhatsNew() {
   const box = $("#fc-new");
@@ -5185,25 +5186,33 @@ async function fcWhatsNew() {
   if (box.hidden) return;
   try { whatsNew = whatsNew || await getJSON(STATIC_BASE ? STATIC_BASE + "whats_new.json" : "/api/whats-new"); }
   catch (e) { box.replaceChildren(el("p", { class: "error", text: "What's new did not load: " + e.message })); return; }
-  const docs = whatsNew.documents.filter((d) => !FC.sc || d.subcommittees.includes(FC.sc) || !d.subcommittees.length);
-  const dates = [...new Set(docs.map((d) => d.retrieved))];
+  const byId = Object.fromEntries(whatsNew.documents.map((d) => [d.document_id, d]));
+  const mine = (d) => !FC.sc || !d || d.subcommittees.includes(FC.sc) || !d.subcommittees.length;
+  const adds = whatsNew.additions.filter((a) => mine(byId[a.document_id]));
+  const dates = [...new Set(adds.map((a) => a.date))];
   const kids = [el("h2", { class: "apsec", id: "fc-new-title", text: "What’s new" }),
-    el("p", { class: "fcnote", text: `Source documents for ${scLabels[FC.sc] || FC.sc} by the date each was added to the record (its retrieval date), newest first. `
+    el("p", { class: "fcnote", text: `Source documents and figures for ${scLabels[FC.sc] || FC.sc} by the date each was first added to the record, newest first. `
       + "Built when the site is published; there are no alerts or emails, so check back here." })];
   const day = (d) => new Date(d + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  const group = (ds) => ds.map((date) => [el("h3", { text: day(date) }), el("ul", {}, ...docs.filter((d) => d.retrieved === date).map((d) => {
-    const name = docName(d.document_id), href = /^https?:/.test(d.url_or_identifier) ? d.url_or_identifier : null;
-    return el("li", { "data-testid": "whats-new-item", dataset: { doc: d.document_id, retrieved: d.retrieved } },
-      href ? el("a", { href, target: "_blank", rel: "noopener", text: name }) : name,
-      el("span", { class: "muted", text: ` · FY${d.fiscal_year} ${d.stage} · `
-        + (!d.figures && !d.attributes ? "on file for its text; no figures recorded from it"
-          : `${d.figures} figure${d.figures === 1 ? "" : "s"}` + (d.attributes ? `, ${d.attributes} account attribute${d.attributes === 1 ? "" : "s"}` : ""))
-        + (d.publication_date ? ` · published ${String(d.publication_date).slice(0, 10)}` : "") }));
-  }))]).flat();
+  const n = (k, word) => `${k} ${word}${k === 1 ? "" : "s"}`;
+  const group = (ds) => ds.map((date) => [el("h3", { text: date === whatsNew.baseline ? `On file by ${day(date)}` : day(date) }),
+    el("ul", {}, ...adds.filter((a) => a.date === date).map((a) => {
+      const d = byId[a.document_id] || { document_id: a.document_id, url_or_identifier: "" };
+      const name = docName(a.document_id), href = /^https?:/.test(d.url_or_identifier) ? d.url_or_identifier : null;
+      const what = a.new_document
+        ? (!d.figures && !d.attributes ? "new document, on file for its text; no figures recorded from it"
+          : "new document" + (a.figures ? `, ${n(a.figures, "figure")}` : "") + (d.attributes ? `, ${n(d.attributes, "account attribute")}` : ""))
+        : `${n(a.figures, "figure")} added`;
+      return el("li", { "data-testid": "whats-new-item", dataset: { doc: a.document_id, added: date, newDocument: a.new_document ? "1" : "" } },
+        href ? el("a", { href, target: "_blank", rel: "noopener", text: name }) : name,
+        el("span", { class: "muted", text: (d.fiscal_year ? ` · FY${d.fiscal_year} ${d.stage}` : "") + ` · ${what}`
+          + (d.publication_date ? ` · published ${String(d.publication_date).slice(0, 10)}` : "") }));
+    }))]).flat();
   kids.push(...group(dates.slice(0, 3)));
   if (dates.length > 3) kids.push(el("details", {}, el("summary", { text: `Earlier (${dates.length - 3} more dates)` }), ...group(dates.slice(3))));
-  if (whatsNew.undated.length) kids.push(el("p", { class: "fcnote", "data-testid": "whats-new-undated",
-    text: `${whatsNew.undated.length} document${whatsNew.undated.length === 1 ? " has" : "s have"} no retrieval date on file and ${whatsNew.undated.length === 1 ? "is" : "are"} not listed: ${whatsNew.undated.join(", ")}.` }));
+  if (whatsNew.undated.length || whatsNew.undated_figures) kids.push(el("p", { class: "fcnote", "data-testid": "whats-new-undated",
+    text: [whatsNew.undated.length ? `${n(whatsNew.undated.length, "document")} with no first-added date on file: ${whatsNew.undated.join(", ")}.` : "",
+           whatsNew.undated_figures ? `${n(whatsNew.undated_figures, "figure")} with no added date on file.` : ""].filter(Boolean).join(" ") + " Not listed." }));
   box.replaceChildren(...kids);
 }
 

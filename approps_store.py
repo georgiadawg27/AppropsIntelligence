@@ -309,7 +309,8 @@ TABS = [
         ("document_id", to_text, True), ("source_agency", to_text, True), ("url_or_identifier", to_text, True),
         ("document_type", to_text, True), ("congress_session", to_text, False), ("fiscal_year", to_int, True),
         ("publication_date", to_date, False), ("stage", to_text, True), ("retrieval_timestamp", to_timestamp, False),
-        ("source_page", to_text, False), ("also_covers", to_text, False), ("notes", to_text, False)]),
+        ("source_page", to_text, False), ("also_covers", to_text, False), ("notes", to_text, False),
+        ("first_added", to_date, False)]),
     ("Bill Report Reference", "bill_report_reference", [
         ("reference_id", to_text, True), ("subcommittee", to_text, True), ("fiscal_year", to_int, True),
         ("stage", to_text, True), ("bill_id", to_text, False), ("report_id", to_text, False),
@@ -329,7 +330,7 @@ TABS = [
         ("source_document_id", to_text, True), ("source_page", to_text, False),
         ("source_table_or_section", to_text, False), ("extraction_method", to_text, True),
         ("confidence", to_real, True), ("verification_status", to_text, True),
-        ("superseded_by_observation_id", to_text, False)]),
+        ("superseded_by_observation_id", to_text, False), ("added_date", to_date, False)]),
     ("Confirmed Absence", "confirmed_absence", [
         ("confirmed_absence_id", to_text, True), ("canonical_account_id", to_text, True),
         ("fiscal_year", to_int, True), ("stage", to_text, True), ("amount_type", to_text, True),
@@ -364,14 +365,18 @@ OPTIONAL_TABS = {"Confirmed Absence", "Component", "Observation Component", "Acc
 # Columns a workbook may not have yet (loaded as NULL; the load report says so).
 OPTIONAL_COLUMNS = {"Appropriations Observation": {"headline_observation_id",
                                                    # the Dictionary's; no workbook carries it yet (v33)
-                                                   "superseded_by_observation_id"},
+                                                   "superseded_by_observation_id",
+                                                   # D-5: the date the figure entered the record
+                                                   "added_date"},
                     # v33: a program line's heading account (Health Centers -> Primary Health Care); agency
                     # reconciliation leaves such an account out (its figure is inside its parent's)
                     # 2026-10-11: a lifecycle override ('unidentified' start) and its required reason
                     "Account": {"parent_account_id", "start_basis", "start_basis_reason"},
                     # v33: a document's / a stage's note (the FY2023 Senate draft: "committee draft
                     # released 2022-07-28; S. 4659 introduced and referred, never reported")
-                    "Source Document": {"notes"},
+                    "Source Document": {"notes",
+                                        # D-5: the date the document entered the record (added_dates.py)
+                                        "first_added"},
                     # v37: how an Enacted year was enacted (vehicle bill, division, date, funding type)
                     "Bill Report Reference": {"notes", "vehicle_bill_id", "division", "enactment_date", "funding_type",
                                               "draft", "not_reported"},
@@ -2006,15 +2011,23 @@ def subcommittee_grid(conn, subcommittee):
 
 
 def whats_new(conn):
-    """The page's "What's new" list (brief UI-6): every source document with the date it was added to the record
-    (source_document.retrieval_timestamp, its date part), newest first, with the subcommittees its records belong to,
-    how many figures it gives (observations, superseded ones left out) and how many account attributes cite it. A document with no retrieval date is
-    counted in "undated", never given a date."""
+    """The page's "What's new" list (briefs UI-6, D-5), from the dates records first entered the record
+    (added_dates.py: source_document.first_added, appropriations_observation.added_date; set once, never changed).
+
+    documents: every source document with its first-added date, newest first, the subcommittees its records belong
+    to, how many figures it gives (observations, superseded ones left out) and how many account attributes cite it.
+    additions: one entry per date and document, newest first: the document was first added that day ("new_document")
+    and/or that day added figures from it ("figures": how many of its current figures carry that date), so a figure
+    added later from a document already on file is listed on the day it was added.
+    A document or figure with no date is counted in "undated", never given a date. "baseline": the day
+    data/staged.json entered the repository; a record dated that day was on file by then, its earlier add date not
+    recorded."""
+    import added_dates
     docs = []
     undated = []
     for d in conn.execute(
             "SELECT d.document_id, d.source_agency, d.document_type, d.fiscal_year, d.stage, d.publication_date, "
-            "d.retrieval_timestamp, d.url_or_identifier, "
+            "d.first_added, d.url_or_identifier, "
             "(SELECT COUNT(*) FROM appropriations_observation o WHERE o.source_document_id = d.document_id "
             " AND o.verification_status != 'superseded') AS figures, "
             "(SELECT COUNT(*) FROM account_attribute t WHERE t.source_document_id = d.document_id) AS attributes, "
@@ -2028,11 +2041,26 @@ def whats_new(conn):
                "publication_date": d["publication_date"], "url_or_identifier": d["url_or_identifier"],
                "figures": d["figures"], "attributes": d["attributes"],
                "subcommittees": sorted((d["subcommittees"] or "").split(",")) if d["subcommittees"] else [],
-               "retrieved": (d["retrieval_timestamp"] or "")[:10] or None}
-        (docs if row["retrieved"] else undated).append(row)
-    docs.sort(key=lambda r: (r["retrieved"], r["document_id"]), reverse=True)
-    return {"documents": docs, "undated": sorted(r["document_id"] for r in undated),
-            "basis": "source_document.retrieval_timestamp: the date each document was retrieved into the record"}
+               "first_added": d["first_added"]}
+        (docs if row["first_added"] else undated).append(row)
+    docs.sort(key=lambda r: (r["first_added"], r["document_id"]), reverse=True)
+    adds = {(r["first_added"], r["document_id"]): {"date": r["first_added"], "document_id": r["document_id"],
+                                                   "new_document": True, "figures": 0} for r in docs}
+    undated_figures = 0
+    for o in conn.execute("SELECT source_document_id, added_date, COUNT(*) AS n FROM appropriations_observation "
+                          "WHERE verification_status != 'superseded' GROUP BY source_document_id, added_date"):
+        if not o["added_date"]:
+            undated_figures += o["n"]
+            continue
+        adds.setdefault((o["added_date"], o["source_document_id"]),
+                        {"date": o["added_date"], "document_id": o["source_document_id"], "new_document": False,
+                         "figures": 0})["figures"] = o["n"]
+    return {"documents": docs, "additions": [adds[k] for k in sorted(adds, reverse=True)],
+            "undated": sorted(r["document_id"] for r in undated), "undated_figures": undated_figures,
+            "baseline": added_dates.BASELINE,
+            "basis": "source_document.first_added and appropriations_observation.added_date: the date each document "
+                     "and each figure first entered the record (set once; a re-fetch or reparse leaves it). Records "
+                     "dated the baseline were on file by that date."}
 
 
 def documents(conn, names=None):

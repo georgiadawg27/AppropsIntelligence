@@ -39,6 +39,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+import added_dates  # noqa: E402
 import legislative_text as L  # noqa: E402
 
 API = "https://api.govinfo.gov"
@@ -244,6 +245,7 @@ def main(argv=None):
             new_rows.append(source_doc_row(req, summ, today))
     if new_rows:
         data["source_docs"].extend(new_rows)
+        added_dates.stamp(data)                              # D-5: each new document's first-added date, today
         L.STAGED.write_text(json.dumps(data, indent=1, ensure_ascii=False))
     for w in written:
         print("wrote %-34s %-9s %4d paragraphs %5d amounts" % w)
