@@ -150,6 +150,19 @@ basis view that is itself not computable or excluded: the exclusion view copies 
    equal to `views.<basis>`. Reason: "not a defense function (subfunction NNN)". Subfunction 999 (the account spans
    more than one function), a subfunction read from a later volume, or none on file doesn't qualify: those cells
    keep the tagging rule (untagged is not none tagged).
+3. **No earmarks in a rescission** (D-7 cleanup, 2026-10-16). A rescission-only cell's `views_excluding_earmarks`
+   equals its views. Reason: "a rescission carries no earmarks (CDS / CPF are appropriations)".
+
+### Rescission lines (D-7 cleanup, 2026-10-16)
+
+A cell with no budget-authority line whose figure is a rescission (amount type `rescission`, no component: the HHS
+general provisions' Nonrecurring Expenses Fund and Adoption Incentives rescissions) is published with views: the
+rescission as printed (negative, its effect on budget authority) on every basis, by the account's budget_class as
+for any account (no class on file: Discretionary not computable). No component applies to it; its '(emergency)'
+rescission is its own line. In a title total it counts only where the total's own table prints it in that title
+(the line's record: the total's document, section '<title>, ...'); printed after the grand total or under another
+title it is not behind the title total; recorded from another document (bill or law text, the Appendix) it stays
+unknown, with that reason. A bill total counts it only where its table prints it inside a title.
 
 ### Totals: built down from a printed anchor (owner, D-8, 2026-10-14; replaces D-6's sum-first rule)
 
