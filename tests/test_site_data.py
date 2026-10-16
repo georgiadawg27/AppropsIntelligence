@@ -84,13 +84,16 @@ class SiteReadsData(unittest.TestCase):
         # the backfill years (FY2022 and earlier), whose records the triage and owner rules resolve
         fy2022 = {o["observation_id"] for o in data["observations"] if o["fiscal_year"] <= 2022
                   and o["observation_id"].startswith("OBS-LHHS-")}
+        # the full CJS load's records (build_cjs.py: OBS-1585 on) wait for review in their own queue
+        full_cjs = {o["observation_id"] for o in data["observations"]
+                    if re.fullmatch(r"OBS-\d+", o["observation_id"]) and int(o["observation_id"][4:]) >= 1585}
         st = [v.get("human_review_status") for v in data["validations"]]
         self.assertEqual(set(st), {"", "pending", "resolved"})
         self.assertEqual(sorted(v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"),
                          sorted(["VAL-0089", "VAL-LHHS-01816", "VAL-LHHS-01821", "VAL-LHHS-01845", "VAL-LHHS-01850",
                                  "VAL-LHHS-02006", "VAL-LHHS-03009", "VAL-LHHS-04166", "VAL-LHHS-06912"]
                                 + [v["validation_id"] for v in data["validations"] if v["human_review_status"] == "pending"
-                                   and (v["observation_id"] in fy2022
+                                   and (v["observation_id"] in fy2022 or v["observation_id"] in full_cjs
                                         or v["validation_id"].startswith(("VAL-TXT-", "VAL-MR-", "VAL-MRV-", "VAL-MRC-")))]))
         # the owner's text-over-table corrections (2026-10-11) close the records on the figures they replace
         # (VAL-LHHS-07178 among them) and resolve the GDM FY2020 House sum check on its replacement
@@ -146,7 +149,14 @@ class SiteReadsData(unittest.TestCase):
                  if o["verification_status"] in ("auto-validated", "human-verified")]
         found = [(row["account"]["canonical_account_id"], key, o["observation_id"], pending(o, False))
                  for row, key, o in cells if pending(o, False)]
-        self.assertEqual(found, [("ACC-DOJ-CVF", "2027|House Reported", "OBS-0966", ["VAL-0089"])])
+        # (since the full CJS load the Crime Victims Fund's first series is the FY2018 request's rescission, so the
+        # FY2027 House cell shows that line, missing there; VAL-0089 stays pending on OBS-0966, the CHIMP line)
+        self.assertEqual(found, [])
+        cvf = next(r for r in grid("CJS")["rows"] if r["account"]["canonical_account_id"] == "ACC-DOJ-CVF")
+        chimp = next(o for l in cvf["cells"]["2027|House Reported"]["lines"] for o in l["observations"]
+                     if o["observation_id"] == "OBS-0966")
+        self.assertEqual([v["validation_id"] for v in chimp["validation"] if v["human_review_status"] == "pending"],
+                         ["VAL-0089"])
         for row, key, o in cells:
             for v in o["validation"]:
                 if v["validation_id"] in pending(o, True):
@@ -856,7 +866,11 @@ class AccountingLayer(unittest.TestCase):
                 self.assertTrue(e["reason"].startswith(tuple(SA.UNTAGGED[p] for p in SA.EXCLUSION_PARTS[exclusion])
                                                        + (SA.UNTAGGED[exclusion],)), (key, field, basis, e["reason"]))
                 if stage == "President's Budget":
-                    self.assertIn("request language not found", e["reason"], (key, field, basis))
+                    # (or, for an account the Appendix map has no account for -- appendix_map.csv status none, the
+                    # full CJS load's three -- no request language read at all)
+                    self.assertTrue(any(x in e["reason"] for x in ("request language not found",
+                                                                   "no request language read for the account")),
+                                    (key, field, basis, e["reason"]))
                 elif len(SA.EXCLUSION_PARTS[exclusion]) == 1:
                     self.assertEqual(e["reason"], SA.UNTAGGED[exclusion], (key, field, basis))
                 self.assertEqual(e["cause"], "components_unknown")

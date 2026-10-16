@@ -45,6 +45,7 @@ import argparse
 import json
 import re
 import sys
+import threading
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -170,17 +171,41 @@ def payloads(db):
 
 
 _FEATURES = {}
+_GRIDS = {}
+_LOCK = threading.Lock()          # one computation of each cached answer; the other requests wait for it
+
+
+def _store_key(db):
+    path = Path(db)
+    return (str(path.resolve()), path.stat().st_mtime_ns)
 
 
 def features(db):
     """The feature flags for this store (cached per database file and its modification time: the store is read-only)."""
-    path = Path(db)
-    key = (str(path.resolve()), path.stat().st_mtime_ns)
-    if key not in _FEATURES:
-        data = payloads(db)
-        _FEATURES[key] = dict(F.flags(list(data), data.__getitem__),
-                              default_subcommittee=default_subcommittee(subcommittees(db)["subcommittees"]))
+    key = _store_key(db)
+    with _LOCK:
+        if key not in _FEATURES:
+            data = payloads(db)
+            _FEATURES[key] = dict(F.flags(list(data), data.__getitem__),
+                                  default_subcommittee=default_subcommittee(subcommittees(db)["subcommittees"]))
     return _FEATURES[key]
+
+
+def served_grid(db, name):
+    """subcommittee(db, name) as the server answers it, cached like features (the full CJS grid takes seconds to
+    build, and the page asks for it on every account it opens); read-only, never changed after it is built."""
+    key = _store_key(db) + (name,)
+    with _LOCK:
+        if key not in _GRIDS:
+            _GRIDS[key] = subcommittee(db, name)
+    return _GRIDS[key]
+
+
+def warm(db):
+    """Build the cached answers the page asks for first (features, each subcommittee's grid)."""
+    features(db)
+    for name in subcommittees(db)["subcommittees"]:
+        served_grid(db, name)
 
 
 def make_handler(db):
@@ -240,7 +265,7 @@ def make_handler(db):
                     return self.json(HTTPStatus.OK, subcommittees(db))
                 if url.path.startswith("/api/subcommittee/"):
                     try:
-                        return self.json(HTTPStatus.OK, subcommittee(db, unquote(url.path[len("/api/subcommittee/"):])))
+                        return self.json(HTTPStatus.OK, served_grid(db, unquote(url.path[len("/api/subcommittee/"):])))
                     except LookupError as e:
                         return self.json(HTTPStatus.NOT_FOUND, {"error": str(e)})
                 return self.json(HTTPStatus.NOT_FOUND, {"error": "not found"})
@@ -259,11 +284,14 @@ def make_handler(db):
     return Handler
 
 
-def serve(db, port=8765, host="127.0.0.1", verbose=True):
+def serve(db, port=8765, host="127.0.0.1", verbose=True, warm_cache=False):
     """-> the server (not yet serving); call serve_forever()."""
     S.connect(db, readonly=True).close()                      # fail now if the store isn't there
     httpd = ThreadingHTTPServer((host, port), make_handler(str(db)))
     httpd.verbose = verbose
+    if warm_cache:
+        # the first page waits on these; start them now (a request that comes first waits on the same computation)
+        threading.Thread(target=warm, args=(str(db),), daemon=True).start()
     return httpd
 
 
@@ -273,7 +301,7 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8765)
     args = p.parse_args(argv)
     try:
-        httpd = serve(args.db, args.port)
+        httpd = serve(args.db, args.port, warm_cache=True)
     except FileNotFoundError:
         raise SystemExit(f"{args.db} not found -- run: python approps_store.py load <workbook>")
     print(f"serving {args.db} read-only at http://127.0.0.1:{httpd.server_address[1]}/")

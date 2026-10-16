@@ -106793,10 +106793,11 @@
   "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Research and related activities' [Bill]",
   "extraction_method": "AI-extracted",
   "confidence": 0.95,
-  "verification_status": "auto-validated",
+  "verification_status": "superseded",
   "component": "",
   "headline_observation_id": "",
-  "added_date": "2026-10-16"
+  "added_date": "2026-10-16",
+  "superseded_by_observation_id": "OBS-5321"
  },
  {
   "observation_id": "OBS-4978",
@@ -106815,10 +106816,11 @@
   "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill]",
   "extraction_method": "AI-extracted",
   "confidence": 0.95,
-  "verification_status": "unverified",
+  "verification_status": "superseded",
   "component": "defense",
   "headline_observation_id": "",
-  "added_date": "2026-10-16"
+  "added_date": "2026-10-16",
+  "superseded_by_observation_id": "OBS-5322"
  },
  {
   "observation_id": "OBS-4979",
@@ -114342,6 +114344,50 @@
   "verification_status": "auto-validated",
   "component": "",
   "headline_observation_id": "",
+  "added_date": "2026-10-16"
+ },
+ {
+  "observation_id": "OBS-5321",
+  "canonical_account_id": "ACC-NSF-RRA",
+  "fiscal_year": 2027,
+  "stage": "House Reported",
+  "chamber": "House",
+  "bill_id": "",
+  "report_id": "",
+  "amount": 6440140000,
+  "amount_type": "budget authority",
+  "offsetting_collections": "FALSE",
+  "transfer_link_account_id": "",
+  "source_document_id": "SRC-BILLS-119HR8845RH",
+  "source_page": "86",
+  "source_table_or_section": "Title III, National Science Foundation -- printed in H.R. 8845 under 'Research and Related Activities': $6,440,140,000; bill or law text controls over the report table for the same scope (owner 2026-10-11; NSF R&RA: the paragraph's total, defense inside (D-3, owner 2026-10-13)) -- Note: H.Rept. 119-652 (SRC-CRPT-119HRPT652 p.170) prints the nondefense line 6,321,069 thousand (OBS-4977) and the 'Defense function' line 119,071 thousand (OBS-4978); the paragraph's amount counts both: 6,321,069 + 119,071 = 6,440,140 thousand",
+  "extraction_method": "text-extracted",
+  "confidence": 0.95,
+  "verification_status": "resolved-by-rule",
+  "component": "",
+  "headline_observation_id": "",
+  "added_date": "2026-10-16"
+ },
+ {
+  "observation_id": "OBS-5322",
+  "canonical_account_id": "ACC-NSF-RRA",
+  "fiscal_year": 2027,
+  "stage": "House Reported",
+  "chamber": "House",
+  "bill_id": "",
+  "report_id": "",
+  "amount": 119071000,
+  "amount_type": "budget authority",
+  "offsetting_collections": "FALSE",
+  "transfer_link_account_id": "",
+  "source_document_id": "SRC-CRPT-119HRPT652",
+  "source_page": "170",
+  "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill] -- inside the paragraph's total (OBS-5321); re-recorded from OBS-4978 (D-3, owner 2026-10-14)",
+  "extraction_method": "AI-extracted",
+  "confidence": 0.95,
+  "verification_status": "unverified",
+  "component": "defense_inside",
+  "headline_observation_id": "OBS-5321",
   "added_date": "2026-10-16"
  }
 ]

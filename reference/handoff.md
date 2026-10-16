@@ -41,9 +41,19 @@ What was loaded (`reference/review/cjs/backfill/build_cjs.py --write`; account l
   column and the title total confirm).
 - Table page ranges: each comparative table's `source_page` now runs over the pages its lines are cited from
   (13 documents; `build_cjs.widen_table_pages`).
-- `site_accounting.account_views`: a figure printed negative with no components (NOAA's Fisheries Finance
-  Program Account, a negative subsidy) is its own base; only components can make a base not computable.
-- Tests moved with the data (test_store): counts, NASA FY2027 House now held, CVF/OIG links, lifecycle types
+- `site_accounting`: a negative base stays not computable (NOAA's Fisheries Finance Program Account, a negative
+  subsidy, shows its printed figure with no views). `Layer.total_layer` now sums each held line as printed, falling
+  back to its headline, so a line with no views no longer crashes the CJS grid.
+- D-3 (`d3_records.EXPECTED`): + NSF R&RA FY2027 House, paragraph total 6,440,140,000 (H.R. 8845 RH p.86,
+  6,321,069,000 + 119,071,000 defense), so the FY2027 House NSF total is held.
+- `request_language.py`: + the Other Independent Agencies chapter; `request_language.json` rebuilt (643 new
+  account-years; the 1,047 already there unchanged but for the chapter list in three not-found reasons).
+- Lifecycle: the new accounts' first printed years drive `new` / 'Created FY<n>.' notes and the before-first blanks
+  (e.g. HIDTA new in FY2018). For accounts printed only as rescissions this reads from the table, not from
+  evidence the account was created then; worth a look (owner).
+- `approps_web`: `/api/features` and each subcommittee grid are cached per store and warmed at start; with CJS
+  full the first load took ~19 s and timed out the browser tests.
+- Tests moved with the data (test_store, test_web, test_compare, test_site_data, test_static): counts, NASA FY2027 House now held, CVF/OIG links, lifecycle types
   (`new` / `ended_eliminated` from the printed years). The FY2022 owner-decision test is scoped to Labor-HHS: its
   CJS FY2022 request Title V total stays pending review (item 2).
 - Checks: agency totals 570 of 570 agree with our lines; title totals 156 of 167 (`sums.csv`); cross-document

@@ -394,11 +394,8 @@ class Layer:
     def account_views(self, a, fy, stage, h):
         cs = self.cell_components(h)
         base = AC.split(h["amount"], cs)[0]
-        # a rescission line is negative as printed (signed as its effect on budget authority): no negative base.
-        # Only components can make a base negative (measure_reconcile's base rule checks headlines with
-        # components): a figure printed negative with none, such as a credit account's negative subsidy (NOAA's
-        # Fisheries Finance Program Account), is its own base
-        if base < 0 and cs and h["amount_type"] != "rescission":
+        # a rescission line is negative as printed (signed as its effect on budget authority): no negative base
+        if base < 0 and h["amount_type"] != "rescission":
             why = (f"the base is negative ({AC.money(base)}): the components the headline includes exceed it "
                    f"(VAL-MR-{M.suffix(h['observation_id'])}, pending review)")
             return {b: [{"amount": None, "timing": None if b == "printed" else "available",
@@ -612,7 +609,10 @@ class Layer:
         self.cell_head = h
         lines, absent, nofig = self.behind(a, key, h["source_document_id"])
         n = len(lines) + len(absent)
-        held = sum(mc["views"]["printed"][0]["amount"] for _, mc in lines)
+        # each line as printed: a line whose views aren't computable (a negative base: NOAA's Fisheries Finance
+        # Program Account, a negative subsidy) is still printed, and counts in the total as printed
+        held = sum(mc["views"]["printed"][0]["amount"] if mc["views"]["printed"][0]["amount"] is not None
+                   else headline_of_cell(mc)["amount"] for _, mc in lines)
         beside = held_lines(lines)
         # owner, D-6 round 3: only the held lines the table prints inside this total (INSIDE_FILE's evidence)
         inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]

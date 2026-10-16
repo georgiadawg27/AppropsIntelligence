@@ -386,7 +386,7 @@ class MovedRules(unittest.TestCase):
 
     def test_appendix_rules(self):
         self.assertEqual(R.active().data("appendix", "LHHS"), {"chapters": ("HHS",)})
-        self.assertEqual(R.active().data("appendix", "CJS")["chapters"], ("COM", "DOJ", "NASA", "NSF", "EOP"))
+        self.assertEqual(R.active().data("appendix", "CJS")["chapters"], ("COM", "DOJ", "NASA", "NSF", "EOP", "OIA"))   # the full CJS load: + Other Independent Agencies
         self.assertEqual(R.active().data("appendix", "OTHER"), {})
 
     # line, table_line, components, extract ------------------------------------------------------------------

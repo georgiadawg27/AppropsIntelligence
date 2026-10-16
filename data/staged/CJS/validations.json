@@ -247731,17 +247731,6 @@
   "resolution": ""
  },
  {
-  "validation_id": "VAL-TXT-4977",
-  "observation_id": "OBS-4977",
-  "rule_applied": "bill_text",
-  "expected_result": "H.R. 8845 (reported in House; BILLS-119hr8845rh, bill xml), TITLE III, 'SCIENCE > NATIONAL SCIENCE FOUNDATION > RESEARCH AND RELATED ACTIVITIES' (TITLE III, heading 68; P0068): $6,321,069,000 (derived as recorded: the main amount $6,440,140,000 = this headline + the defense line $119,071,000 (OBS-4978))",
-  "observed_result": "$6,321,069,000 as recorded (SRC-CRPT-119HRPT652 p.170) -- matches",
-  "result": "pass",
-  "human_review_status": "",
-  "reviewer": "",
-  "resolution": ""
- },
- {
   "validation_id": "VAL-TXT-4979",
   "observation_id": "OBS-4979",
   "rule_applied": "bill_text",
@@ -250129,6 +250118,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-TXT-5321",
+  "observation_id": "OBS-5321",
+  "rule_applied": "bill_text",
+  "expected_result": "H.R. 8845 (reported in House; BILLS-119hr8845rh, bill xml), TITLE III, 'SCIENCE > NATIONAL SCIENCE FOUNDATION > RESEARCH AND RELATED ACTIVITIES' (TITLE III, heading 68; P0068): $6,440,140,000 (the paragraph's main appropriated amount)",
+  "observed_result": "$6,440,140,000 as recorded (SRC-BILLS-119HR8845RH p.86) -- the same document as the figure's source, so not a second document",
+  "result": "info",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-1682",
   "observation_id": "OBS-1682",
   "rule_applied": "measure_reconcile",
@@ -250305,6 +250305,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2581",
+  "observation_id": "OBS-2581",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $437,444,000 = base + the components it includes (CMP-0313 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $433,444,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2583",
   "observation_id": "OBS-2583",
   "rule_applied": "measure_reconcile",
@@ -250332,6 +250343,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $504,500,000 = base + the components it includes (CMP-0182 transfer_in $4,000,000); beside it: none",
   "observed_result": "base $500,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-2589",
+  "observation_id": "OBS-2589",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $505,367,000 = base + the components it includes (CMP-0314 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $501,367,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250371,6 +250393,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2597",
+  "observation_id": "OBS-2597",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $563,407,000 = base + the components it includes (CMP-0315 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $559,407,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2599",
   "observation_id": "OBS-2599",
   "rule_applied": "measure_reconcile",
@@ -250398,6 +250431,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $672,966,000 = base + the components it includes (CMP-0191 transfer_in $4,000,000; CMP-0192 transfer_in $25,000,000); beside it: none",
   "observed_result": "base $643,966,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-2605",
+  "observation_id": "OBS-2605",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $672,966,000 = base + the components it includes (CMP-0316 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $668,966,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250437,6 +250481,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2613",
+  "observation_id": "OBS-2613",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $882,872,000 = base + the components it includes (CMP-0317 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $878,872,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2615",
   "observation_id": "OBS-2615",
   "rule_applied": "measure_reconcile",
@@ -250464,6 +250519,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $891,190,000 = base + the components it includes (CMP-0203 transfer_in $4,000,000; CMP-0204 transfer_in $28,500,000); beside it: none",
   "observed_result": "base $858,690,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-2621",
+  "observation_id": "OBS-2621",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $891,190,000 = base + the components it includes (CMP-0318 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $887,190,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250503,6 +250569,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2629",
+  "observation_id": "OBS-2629",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $1,354,889,000 = base + the components it includes (CMP-0319 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $1,350,889,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2631",
   "observation_id": "OBS-2631",
   "rule_applied": "measure_reconcile",
@@ -250536,6 +250613,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2637",
+  "observation_id": "OBS-2637",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $1,455,316,000 = base + the components it includes (CMP-0320 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $1,451,316,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2639",
   "observation_id": "OBS-2639",
   "rule_applied": "measure_reconcile",
@@ -250550,7 +250638,7 @@
   "validation_id": "VAL-MR-2641",
   "observation_id": "OBS-2641",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $844,000,000 = base + the components it includes (CMP-0314 transfer_in $4,000,000; CMP-0315 transfer_in $28,000,000); beside it: none",
+  "expected_result": "headline $844,000,000 = base + the components it includes (CMP-0348 transfer_in $4,000,000; CMP-0349 transfer_in $28,000,000); beside it: none",
   "observed_result": "base $812,000,000",
   "result": "pass",
   "human_review_status": "",
@@ -250563,6 +250651,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $760,000,000 = base + the components it includes (CMP-0218 transfer_in $4,000,000); beside it: none",
   "observed_result": "base $756,000,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-2645",
+  "observation_id": "OBS-2645",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $981,133,000 = base + the components it includes (CMP-0321 transfer_in $4,000,000); beside it: none",
+  "observed_result": "base $977,133,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250602,6 +250701,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-2653",
+  "observation_id": "OBS-2653",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $844,000,000 = base + the components it includes (CMP-0322 transfer_in $10,000,000); beside it: none",
+  "observed_result": "base $834,000,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-2655",
   "observation_id": "OBS-2655",
   "rule_applied": "measure_reconcile",
@@ -250629,6 +250739,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $420,178,000 = base + the components it includes (CMP-0227 transfer_in $181,000,000); beside it: none",
   "observed_result": "base $239,178,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-2663",
+  "observation_id": "OBS-2663",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $783,482,000 = base + the components it includes (none); beside it: CMP-0323 transfer_in $85,000,000",
+  "observed_result": "base $783,482,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250756,6 +250877,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3076",
+  "observation_id": "OBS-3076",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $957,423,000 = base + the components it includes (CMP-0324 trust_fund_limitation $11,970,000); beside it: none",
+  "observed_result": "base $945,453,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3077",
   "observation_id": "OBS-3077",
   "rule_applied": "measure_reconcile",
@@ -250783,6 +250915,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $897,500,000 = base + the components it includes (CMP-0232 trust_fund_limitation $10,000,000); beside it: none",
   "observed_result": "base $887,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3080",
+  "observation_id": "OBS-3080",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $899,000,000 = base + the components it includes (CMP-0325 trust_fund_limitation $9,340,000); beside it: none",
+  "observed_result": "base $889,660,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250822,6 +250965,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3084",
+  "observation_id": "OBS-3084",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $891,836,000 = base + the components it includes (CMP-0326 trust_fund_limitation $9,340,000); beside it: none",
+  "observed_result": "base $882,496,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3085",
   "observation_id": "OBS-3085",
   "rule_applied": "measure_reconcile",
@@ -250849,6 +251003,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $934,600,000 = base + the components it includes (CMP-0238 trust_fund_limitation $13,000,000); beside it: none",
   "observed_result": "base $921,600,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3088",
+  "observation_id": "OBS-3088",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $927,453,000 = base + the components it includes (CMP-0327 trust_fund_limitation $13,000,000); beside it: none",
+  "observed_result": "base $914,453,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250910,6 +251075,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3125",
+  "observation_id": "OBS-3125",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $57,561,000 = base + the components it includes (CMP-0328 transfer_in $35,400,000); beside it: none",
+  "observed_result": "base $22,161,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3318",
   "observation_id": "OBS-3318",
   "rule_applied": "measure_reconcile",
@@ -250921,11 +251097,55 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3325",
+  "observation_id": "OBS-3325",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $137,500,000 = base + the components it includes (none); beside it: CMP-0329 transfer_in $92,000,000",
+  "observed_result": "base $137,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3330",
+  "observation_id": "OBS-3330",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $229,500,000 = base + the components it includes (CMP-0330 transfer_in $169,000,000); beside it: none",
+  "observed_result": "base $60,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3442",
   "observation_id": "OBS-3442",
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $1,258,500,000 = base + the components it includes (none); beside it: CMP-0150 other_law $7,000,000",
   "observed_result": "base $1,258,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3449",
+  "observation_id": "OBS-3449",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $867,500,000 = base + the components it includes (none); beside it: CMP-0331 transfer_in $73,000,000",
+  "observed_result": "base $867,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3454",
+  "observation_id": "OBS-3454",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $1,132,500,000 = base + the components it includes (CMP-0332 transfer_in $233,000,000); beside it: none",
+  "observed_result": "base $899,500,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -250957,8 +251177,19 @@
   "validation_id": "VAL-MR-3478",
   "observation_id": "OBS-3478",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $2,000,033,000 = base + the components it includes (none); beside it: CMP-0313 designated/emergency $125,000,000",
+  "expected_result": "headline $2,000,033,000 = base + the components it includes (none); beside it: CMP-0347 designated/emergency $125,000,000",
   "observed_result": "base $2,000,033,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3616",
+  "observation_id": "OBS-3616",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $10,000,000 = base + the components it includes (none); beside it: CMP-0333 transfer_in $85,000,000",
+  "observed_result": "base $10,000,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251042,11 +251273,33 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3845",
+  "observation_id": "OBS-3845",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $35,000,000 = base + the components it includes (none); beside it: CMP-0334 transfer_in $445,000,000",
+  "observed_result": "base $35,000,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3848",
   "observation_id": "OBS-3848",
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $104,500,000 = base + the components it includes (none); beside it: CMP-0247 transfer_in $379,000,000",
   "observed_result": "base $104,500,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-3856",
+  "observation_id": "OBS-3856",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $0 = base + the components it includes (none); beside it: CMP-0335 transfer_in $485,500,000",
+  "observed_result": "base $0",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251119,6 +251372,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-3881",
+  "observation_id": "OBS-3881",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $565,000,000 = base + the components it includes (none); beside it: CMP-0336 transfer_in $435,000,000",
+  "observed_result": "base $565,000,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-3884",
   "observation_id": "OBS-3884",
   "rule_applied": "measure_reconcile",
@@ -251144,7 +251408,7 @@
   "validation_id": "VAL-MR-3905",
   "observation_id": "OBS-3905",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $633,000,000 = base + the components it includes (none); beside it: CMP-0316 transfer_in $80,000,000",
+  "expected_result": "headline $633,000,000 = base + the components it includes (none); beside it: CMP-0350 transfer_in $80,000,000",
   "observed_result": "base $633,000,000",
   "result": "pass",
   "human_review_status": "",
@@ -251504,6 +251768,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-4748",
+  "observation_id": "OBS-4748",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $3,494,180,000 = base + the components it includes (none); beside it: CMP-0337 transfer_in $130,164,000",
+  "observed_result": "base $3,494,180,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-4750",
   "observation_id": "OBS-4750",
   "rule_applied": "measure_reconcile",
@@ -251531,6 +251806,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $3,240,199,000 = base + the components it includes (none); beside it: CMP-0278 transfer_in $144,000,000",
   "observed_result": "base $3,240,199,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-4758",
+  "observation_id": "OBS-4758",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $2,965,549,000 = base + the components it includes (none); beside it: CMP-0338 transfer_in $154,199,000",
+  "observed_result": "base $2,965,549,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251570,6 +251856,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-4768",
+  "observation_id": "OBS-4768",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $2,937,753,000 = base + the components it includes (none); beside it: CMP-0339 transfer_in $154,868,000",
+  "observed_result": "base $2,937,753,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-4771",
   "observation_id": "OBS-4771",
   "rule_applied": "measure_reconcile",
@@ -251597,6 +251894,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $3,920,625,000 = base + the components it includes (none); beside it: CMP-0284 transfer_in $177,782,000",
   "observed_result": "base $3,920,625,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-4777",
+  "observation_id": "OBS-4777",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $3,058,383,000 = base + the components it includes (none); beside it: CMP-0340 transfer_in $158,407,000",
+  "observed_result": "base $3,058,383,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251636,6 +251944,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-4785",
+  "observation_id": "OBS-4785",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $3,165,124,000 = base + the components it includes (none); beside it: CMP-0341 transfer_in $183,834,000",
+  "observed_result": "base $3,165,124,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-4787",
   "observation_id": "OBS-4787",
   "rule_applied": "measure_reconcile",
@@ -251663,6 +251982,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $4,425,787,000 = base + the components it includes (CMP-0292 earmark $23,980,000); beside it: CMP-0291 transfer_in $246,171,000",
   "observed_result": "base $4,401,807,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-4794",
+  "observation_id": "OBS-4794",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $4,689,381,000 = base + the components it includes (none); beside it: CMP-0342 transfer_in $246,171,000",
+  "observed_result": "base $4,689,381,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251702,6 +252032,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-4803",
+  "observation_id": "OBS-4803",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $4,484,209,000 = base + the components it includes (none); beside it: CMP-0343 transfer_in $348,871,000",
+  "observed_result": "base $4,484,209,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-4806",
   "observation_id": "OBS-4806",
   "rule_applied": "measure_reconcile",
@@ -251735,6 +252076,17 @@
   "resolution": ""
  },
  {
+  "validation_id": "VAL-MR-4813",
+  "observation_id": "OBS-4813",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $4,616,549,000 = base + the components it includes (none); beside it: CMP-0344 transfer_in $355,081,000",
+  "observed_result": "base $4,616,549,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
   "validation_id": "VAL-MR-4815",
   "observation_id": "OBS-4815",
   "rule_applied": "measure_reconcile",
@@ -251749,7 +252101,7 @@
   "validation_id": "VAL-MR-4818",
   "observation_id": "OBS-4818",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $4,408,986,000 = base + the components it includes (none); beside it: CMP-0317 transfer_in $369,522,000",
+  "expected_result": "headline $4,408,986,000 = base + the components it includes (none); beside it: CMP-0351 transfer_in $369,522,000",
   "observed_result": "base $4,408,986,000",
   "result": "pass",
   "human_review_status": "",
@@ -251771,7 +252123,7 @@
   "validation_id": "VAL-MR-4824",
   "observation_id": "OBS-4824",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $4,357,238,000 = base + the components it includes (none); beside it: CMP-0170 designated/emergency $15,000,000",
+  "expected_result": "headline $4,357,238,000 = base + the components it includes (none); beside it: CMP-0170 designated/emergency $15,000,000; CMP-0345 transfer_in $377,363,000",
   "observed_result": "base $4,357,238,000",
   "result": "pass",
   "human_review_status": "",
@@ -251806,6 +252158,17 @@
   "rule_applied": "measure_reconcile",
   "expected_result": "headline $4,151,800,000 = base + the components it includes (none); beside it: CMP-0309 transfer_in $409,640,000",
   "observed_result": "base $4,151,800,000",
+  "result": "pass",
+  "human_review_status": "",
+  "reviewer": "",
+  "resolution": ""
+ },
+ {
+  "validation_id": "VAL-MR-4835",
+  "observation_id": "OBS-4835",
+  "rule_applied": "measure_reconcile",
+  "expected_result": "headline $3,057,551,000 = base + the components it includes (none); beside it: CMP-0346 transfer_in $409,644,000",
+  "observed_result": "base $3,057,551,000",
   "result": "pass",
   "human_review_status": "",
   "reviewer": "",
@@ -251848,7 +252211,7 @@
   "validation_id": "VAL-MR-4879",
   "observation_id": "OBS-4879",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $1,619,866,000 = base + the components it includes (none); beside it: CMP-0173 designated/emergency $100,000,000; CMP-0318 transfer_in $44,000,000",
+  "expected_result": "headline $1,619,866,000 = base + the components it includes (none); beside it: CMP-0173 designated/emergency $100,000,000; CMP-0352 transfer_in $44,000,000",
   "observed_result": "base $1,619,866,000",
   "result": "pass",
   "human_review_status": "",
@@ -251878,10 +252241,10 @@
   "resolution": ""
  },
  {
-  "validation_id": "VAL-MR-4977",
-  "observation_id": "OBS-4977",
+  "validation_id": "VAL-MR-5321",
+  "observation_id": "OBS-5321",
   "rule_applied": "measure_reconcile",
-  "expected_result": "headline $6,321,069,000 = base + the components it includes (none); beside it: CMP-0176 defense_portion $119,071,000",
+  "expected_result": "headline $6,440,140,000 = base + the components it includes (CMP-0176 defense_portion $119,071,000); beside it: none",
   "observed_result": "base $6,321,069,000",
   "result": "pass",
   "human_review_status": "",
@@ -252387,7 +252750,7 @@
   "validation_id": "VAL-MRS-1343",
   "observation_id": "OBS-1343",
   "rule_applied": "measure_reconcile",
-  "expected_result": "emergency appropriations: the components designated emergency of the title's accounts (CMP-0155 $163,000,000; CMP-0148 $250,000,000; CMP-0137 $328,000,000; CMP-0313 $125,000,000) = $866,000,000",
+  "expected_result": "emergency appropriations: the components designated emergency of the title's accounts (CMP-0155 $163,000,000; CMP-0148 $250,000,000; CMP-0137 $328,000,000; CMP-0347 $125,000,000) = $866,000,000",
   "observed_result": "$741,000,000 printed ('Emergency appropriations', SRC-CRPT-119HRPT272 p.255) -- differs by -$125,000,000 (printed - computed); for review, no figure changed; cause: unexplained (reviewed once for every cell, VAL-MRC-UNEXPLAINED)",
   "result": "info",
   "human_review_status": "",
@@ -252420,7 +252783,7 @@
   "validation_id": "VAL-MRS-1352",
   "observation_id": "OBS-1352",
   "rule_applied": "measure_reconcile",
-  "expected_result": "emergency appropriations: the components designated emergency of the bill's accounts (CMP-0001 $450,000,000; CMP-0005 $250,000,000; CMP-0058 $234,000,000; CMP-0162 $50,000,000; CMP-0127 $20,000,000; CMP-0159 $30,000,000; CMP-0173 $100,000,000; CMP-0155 $163,000,000; CMP-0148 $250,000,000; CMP-0137 $328,000,000; CMP-0313 $125,000,000) = $2,000,000,000",
+  "expected_result": "emergency appropriations: the components designated emergency of the bill's accounts (CMP-0001 $450,000,000; CMP-0005 $250,000,000; CMP-0058 $234,000,000; CMP-0162 $50,000,000; CMP-0127 $20,000,000; CMP-0159 $30,000,000; CMP-0173 $100,000,000; CMP-0155 $163,000,000; CMP-0148 $250,000,000; CMP-0137 $328,000,000; CMP-0347 $125,000,000) = $2,000,000,000",
   "observed_result": "$5,261,664,000 printed ('Emergency appropriations', SRC-CRPT-119HRPT272 p.262) -- differs by $3,261,664,000 (printed - computed); for review, no figure changed; cause: unexplained (reviewed once for every cell, VAL-MRC-UNEXPLAINED)",
   "result": "info",
   "human_review_status": "",
