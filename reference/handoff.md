@@ -15,10 +15,9 @@ Owner chose "D-5 now" (before D-4). Brief: Library ui-build-briefs.md, D-5. #90 
   `source_label` + `draft_release_date` on draft figures, `docs/data/ops.json` intake (10 drafts, none awaiting).
   ui_contract 11: `draft_note`, `ops_intake` (flags on; the page is UI-7's).
 - No figure changed: data/staged.json untouched; the workbook fixture unchanged.
+- CLAUDE.md now lets the daily intake check use GOVINFO_API_KEY too (owner approved 2026-10-16).
 
 Open:
-- CLAUDE.md says GOVINFO_API_KEY is used only by the manual fetch workflow; the brief puts it in the daily check
-  too. CLAUDE.md not edited: the owner's call.
 - Schedules run only from main, so the workflow's first live run is after merge (dry-run done locally).
 - ops.json `last_check` stays null (the check commits nothing when nothing is new); D-4/UI-7 decide how to surface it.
 - SRC-BILL-CJS-FY2021-SENATE has no publication date: its draft_release_date is null.
