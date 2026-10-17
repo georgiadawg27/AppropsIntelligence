@@ -1,5 +1,6 @@
 """The Labor-HHS backfill's rules that are not figures (reference/review/lhhs/backfill)."""
 
+import re
 import json
 import sys
 import unittest
@@ -127,6 +128,11 @@ class StagesAsTheirDocumentsPrint(unittest.TestCase):
                           if r["to_account_id"] == "ACC-HHS-OS-PHSSEF"}, {("proposed_move", 2019), ("moved", 2020)})
 
 
+
+def full_cjs_load(oid):
+    """An observation of the full CJS load (build_cjs.py: OBS-1585 on, the code-less CJS series)."""
+    return bool(re.fullmatch(r"OBS-\d+", oid)) and int(oid[4:]) >= 1585
+
 class Fy2017(unittest.TestCase):
     """FY2017 under the standing rules (owner, 2026-10-09)."""
 
@@ -183,14 +189,15 @@ class Fy2017(unittest.TestCase):
     def test_nothing_left_open(self):
         # the backfill left nothing open; the bill and law text check's findings (VAL-TXT-) and the accounting
         # views' review items (measure_reconcile, VAL-MR*: one per cause, neutral flags) go to review on their own
-        ids = {o["observation_id"] for o in self.obs}
+        # (the full CJS load's own records, OBS-1585 on, wait for review in their own queue: reference/handoff.md)
+        ids = {o["observation_id"] for o in self.obs if not full_cjs_load(o["observation_id"])}
         text = {v["observation_id"] for v in self.data["validations"]
                 if v["validation_id"].startswith("VAL-TXT-") and v["result"] in ("fail", "flag")}
         self.assertFalse([v["validation_id"] for v in self.data["validations"]
                           if v["observation_id"] in ids and v["human_review_status"] == "pending"
                           and not v["validation_id"].startswith(("VAL-TXT-", "VAL-MR"))])
         self.assertFalse([o["observation_id"] for o in self.obs if o["verification_status"] == "flagged"
-                          and o["observation_id"] not in text])
+                          and o["observation_id"] in ids and o["observation_id"] not in text])
 
 
 class PhsEvaluationSetAside(unittest.TestCase):

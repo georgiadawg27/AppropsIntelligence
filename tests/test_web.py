@@ -118,7 +118,7 @@ class Api(WebTest):
         d = self.search("Office of Inspector General")
         self.assertEqual(d["status"], "ambiguous")
         self.assertNotIn("history", d)
-        self.assertEqual([c["canonical_account_id"] for c in d["candidates"]], ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual([c["canonical_account_id"] for c in d["candidates"]], ["ACC-DOC-OIG", "ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])   # the full CJS load: + Commerce's
 
     def test_picked_candidate_and_unknown_id(self):
         status, d = self.get("/api/account/ACC-NSF-OIG")
@@ -137,8 +137,9 @@ class Api(WebTest):
     def test_missing_is_missing_in_the_grid(self):
         g = self.search("NASA Science")["grid"]
         fy2027 = next(r for r in g["rows"] if r["fiscal_year"] == 2027)
+        # (the full CJS load holds FY2027 House's figure; its rescission series stays missing there)
         self.assertEqual({s: {l["state"] for l in fy2027["cells"][s]} for s in FOUR},
-                         {"President's Budget": {"not_collected"}, "House Reported": {"missing"},
+                         {"President's Budget": {"not_collected"}, "House Reported": {"value", "missing"},
                           "Senate Reported": {"not_collected"}, "Enacted": {"not_enacted"}})
         # a blank request cell (v13 dropped the $0 rows) is missing, not zero
         g = self.search("NASA Education")["grid"]
@@ -162,6 +163,9 @@ class BrowserBase(WebTest):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # the server's cached answers the first page waits on (features, the grids: seconds each since the full
+        # CJS load), built before the first page's wait starts
+        W.warm(cls.db)
         cls.pw = sync_playwright().start()
         cls.browser = cls.pw.chromium.launch(executable_path=chromium_path())
 
@@ -243,10 +247,11 @@ class Browser(BrowserBase):
         shown = self.assert_faithful("NASA Science")
         years = sorted({int(k.split("|")[0]) for k in shown})
         self.assertEqual(years, list(range(2017, 2028)))
-        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in NONFIG), 40)
-        # FY2027: only the House report is on file; no FY2027 request or Senate document; no enacted law yet
+        self.assertEqual(sum(1 for k, v in shown.items() if v[0][1] not in NONFIG), 41)   # the full CJS load: + FY2027 House
+        # FY2027: only the House report is on file (its figure held since the full CJS load); no FY2027 request or
+        # Senate document; no enacted law yet
         self.assertEqual({k.split("|")[1]: v[0][1] for k, v in shown.items() if k.startswith("2027|")},
-                         {"President's Budget": "not_collected", "House Reported": "missing",
+                         {"President's Budget": "not_collected", "House Reported": "$6,000,000,000",
                           "Senate Reported": "not_collected", "Enacted": "not_enacted"})
         # v16 gave Science a rescission series (FY2020); v23 confirmed its
         # absence wherever the document could be checked -- the rest stays missing
@@ -290,7 +295,7 @@ class Browser(BrowserBase):
         self.search_ui("Office of Inspector General")
         self.assertFalse(self.page.is_visible("[data-testid=result]"))
         ids = self.page.eval_on_selector_all("[data-testid=candidate]", "bs => bs.map(b => b.dataset.id)")
-        self.assertEqual(ids, ["ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
+        self.assertEqual(ids, ["ACC-DOC-OIG", "ACC-DOJ-OIG", "ACC-HHS-OS-OIG", "ACC-NASA-OIG", "ACC-NSF-OIG"])
         self.page.click("[data-testid=candidate][data-id=ACC-NSF-OIG]")
         self.page.wait_for_selector("[data-testid=result]:not([hidden])")
         self.open_lines()
@@ -334,8 +339,11 @@ class Browser(BrowserBase):
         conn.close()
         self.assertEqual(self.page.get_attribute(
             "tr[data-fy='2017'] td[data-stage='Senate Reported'] [data-testid=not-funded]", "title"), evidence)
-        # FY2027, one state per cell: House Reported is covered and unrecorded; the rest have no document or no law yet
-        for stage, testid in (("House Reported", "missing"), ("President's Budget", "not-collected"),
+        # FY2027, one state per cell: House Reported holds its figure (the full CJS load); the rest have no document
+        # or no law yet
+        self.assertGreaterEqual(self.page.locator("tr[data-fy='2027'] td[data-stage=\"House Reported\"] "
+                                                  ".line[data-state=value]").count(), 1)
+        for stage, testid in (("President's Budget", "not-collected"),
                               ("Senate Reported", "not-collected"), ("Enacted", "not-enacted")):
             self.assertEqual(self.page.locator(f"tr[data-fy='2027'] td.empty[data-stage=\"{stage}\"] [data-testid={testid}]").count(),
                              1, stage)

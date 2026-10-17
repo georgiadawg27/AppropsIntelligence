@@ -50,8 +50,9 @@ PREFIXES = ("VAL-MR-", "VAL-MRV-", "VAL-MRC-", "VAL-MRE-", "VAL-MRS-")
 SUMMARY_CHECKED = ("mandatory", "emergency_appropriations", "advance_appropriations", "rescissions")
 # D-7: the titles whose every account is held, so a printed title (or bill) summary line can be checked against its
 # accounts. Labor-HHS Title II reconciles as its agency totals + General Provisions lines in every printed column
-# (reference/review/lhhs/title_ii_totals.py); Labor-HHS Titles I, III, IV and every CJS title are held only in part.
-TITLES_HELD = {"LHHS": ("Title II",)}
+# (reference/review/lhhs/title_ii_totals.py); Labor-HHS Titles I, III, IV are held only in part. CJS: every account of
+# its five titles, FY2017 on (the full load, reference/review/cjs/backfill/build_cjs.py).
+TITLES_HELD = {"LHHS": ("Title II",), "CJS": ("Title I", "Title II", "Title III", "Title IV", "Title V")}
 # D-7: why a printed summary line differs, read from the title's own table for the cell (total, fiscal year, stage,
 # line) -> cause. Each is reviewed once for every cell it covers; none changes a figure. D-7's three
 # (emergency_line_untagged FY2023 and FY2024 Senate, advance_line_untagged FY2025 Senate) are tagged from the bill

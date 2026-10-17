@@ -227040,17 +227040,6 @@
   "resolution": ""
  },
  {
-  "validation_id": "VAL-MRC-UNEXPLAINED",
-  "observation_id": "OBS-LHHS-0095",
-  "rule_applied": "measure_reconcile",
-  "expected_result": "printed view totals equal the views computed from the components; cause unexplained: not explained yet",
-  "observed_result": "4 printed view(s) differ: OBS-LHHS-0095 ACC-HHS-AHRQ-TOTAL FY2024 President's Budget [program_level] $45,000,000; OBS-LHHS-0531 ACC-HHS-OS-TOTAL FY2023 President's Budget [program_level] $103,614,000; OBS-LHHS-3123 ACC-HHS-NIH-TOTAL FY2019 President's Budget [program_level] $728,400,000; OBS-LHHS-3827 ACC-HHS-ACF-TOTAL FY2017 President's Budget [program_level] $15,000,000 -- for review, no figure changed",
-  "result": "flag",
-  "human_review_status": "pending",
-  "reviewer": "",
-  "resolution": ""
- },
- {
   "validation_id": "VAL-MRE-LHHS-4109",
   "observation_id": "OBS-LHHS-4109",
   "rule_applied": "measure_reconcile",

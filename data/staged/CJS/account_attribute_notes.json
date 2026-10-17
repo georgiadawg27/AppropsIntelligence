@@ -1,5 +1,155 @@
 [
  {
+  "canonical_account_id": "ACC-BEA-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-1500-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-BIS-OA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-1250-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-CSP",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0401-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-CSURV",
+  "fiscal_year": 2022,
+  "stage_basis": "enacted",
+  "note": "the combined Censuses and Survey Programs account has no schedule of its own: the FY2025 and FY2027 volumes still print Current Surveys and Programs (013-0401) and Periodic Censuses and Programs (013-0450) separately; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-CSURV",
+  "fiscal_year": 2022,
+  "stage_basis": "request",
+  "note": "the combined Censuses and Survey Programs account has no schedule of its own: the FY2025 and FY2027 volumes still print Current Surveys and Programs (013-0401) and Periodic Censuses and Programs (013-0450) separately; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-CSURV",
+  "fiscal_year": 2023,
+  "stage_basis": "enacted",
+  "note": "the combined Censuses and Survey Programs account has no schedule of its own: the FY2025 and FY2027 volumes still print Current Surveys and Programs (013-0401) and Periodic Censuses and Programs (013-0450) separately; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-CSURV",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "the combined Censuses and Survey Programs account has no schedule of its own: the FY2025 and FY2027 volumes still print Current Surveys and Programs (013-0401) and Periodic Censuses and Programs (013-0450) separately; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-PCP",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0450-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-CENSUS-WCF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-4512-0-4-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-CSUSOP",
+  "fiscal_year": 2022,
+  "stage_basis": "enacted",
+  "note": "no Commission on the State of U.S. Olympics and Paralympics schedule or text found in the OIA chapter of the FY2017, FY2021, FY2025 or FY2027 volumes"
+ },
+ {
+  "canonical_account_id": "ACC-CSUSOP",
+  "fiscal_year": 2023,
+  "stage_basis": "enacted",
+  "note": "no Commission on the State of U.S. Olympics and Paralympics schedule or text found in the OIA chapter of the FY2017, FY2021, FY2025 or FY2027 volumes"
+ },
+ {
+  "canonical_account_id": "ACC-CSUSOP",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "no Commission on the State of U.S. Olympics and Paralympics schedule or text found in the OIA chapter of the FY2017, FY2021, FY2025 or FY2027 volumes"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-BASM",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2022 Appendix: no Program and Financing schedule for 013-0133 (Departmental Management, Nonrecurring Expenses Fund) in the FY2020 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-DM-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0120-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-ITSMWCF",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 013-2047 (Departmental Management, Information Technology System Modernization and Working Capital Fund) in the FY2021 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-ITSMWCF",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 013-2047 (Departmental Management, Information Technology System Modernization and Working Capital Fund) in the FY2022 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-ITSMWCF",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "no Program and Financing schedule for 013-2047 (Departmental Management, Information Technology System Modernization and Working Capital Fund) in the FY2020 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-NEF",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2022 Appendix: no Program and Financing schedule for 013-0133 (Departmental Management, Nonrecurring Expenses Fund) in the FY2020 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-NEF",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "013-0133-0-1-376: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-NEF",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "013-0133-0-1-376: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-NEF",
+  "fiscal_year": 2026,
+  "stage_basis": "enacted",
+  "note": "013-0133-0-1-376: no budget authority in the 2026 est. column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-NEF",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-0133-0-1-376: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-OIG",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0126-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-RM",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "013-0123-0-1-376: no budget authority in the 2019 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOC-RM",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0123-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
   "canonical_account_id": "ACC-DOJ-AFF",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
@@ -12,10 +162,256 @@
   "note": "015-0319-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 015-0720 (Department of Justice, Bureau of Alcohol, Tobacco, Firearms and Explosives, Construction) in the FY2022 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 015-0720 (Department of Justice, Bureau of Alcohol, Tobacco, Firearms and Explosives, Construction) in the FY2023 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2023,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2025 Appendix: no Program and Financing schedule for 015-0720 (Department of Justice, Bureau of Alcohol, Tobacco, Firearms and Explosives, Construction) in the FY2023 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "015-0720-0-1-751: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "015-0720-0-1-751: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-CONST",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "015-0720-0-1-751: no budget authority in the 2025 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-ATF-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0700-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-BOP-BF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1003-0-1-753: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-BOP-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1060-0-1-753: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-COPS",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "015-0406-0-1-754: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-COPS",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "015-0406-0-1-754: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-COPS",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "015-0406-0-1-754: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-COPS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0406-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-CRS",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "015-0500-0-1-752: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-CRS",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "015-0500-0-1-752: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-CRS",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "015-0500-0-1-752: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-CRS",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "015-0500-0-1-752: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-CRS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0500-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
   "canonical_account_id": "ACC-DOJ-CVF",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
   "note": "015-5041-0-2-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-DEA-CONST",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2023 Appendix: no Program and Financing schedule for 015-1101 (Department of Justice, Drug Enforcement Administration, Construction) in the FY2021 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-DEA-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1100-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-EO13929",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "no schedule or program line for an EO 13929 database in the FY2017, FY2021, FY2025 or FY2027 DOJ chapter"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-EOIR",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0339-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FBI-CONST",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0203-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FBI-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0200-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FCSC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0100-0-1-153: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FEW",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0311-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FPD",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1020-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-FPI",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-4500-0-4-753: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-GA-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0129-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-GLA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0128-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-HIDTA",
+  "fiscal_year": 2018,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): printed in the DOJ chapter in the FY2021 and FY2027 volumes only (the program moves from ONDCP in the request); not in the FY2017 or FY2025 DOJ chapters; ONDCP's own chapter was not read"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-HIDTA",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): printed in the DOJ chapter in the FY2021 and FY2027 volumes only (the program moves from ONDCP in the request); not in the FY2017 or FY2025 DOJ chapters; ONDCP's own chapter was not read"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-HIDTA",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): printed in the DOJ chapter in the FY2021 and FY2027 volumes only (the program moves from ONDCP in the request); not in the FY2017 or FY2025 DOJ chapters; ONDCP's own chapter was not read"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-HIDTA",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): printed in the DOJ chapter in the FY2021 and FY2027 volumes only (the program moves from ONDCP in the request); not in the FY2017 or FY2025 DOJ chapters; ONDCP's own chapter was not read"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-JIST",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0134-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-NSD",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1300-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OAJ",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): own schedule in the FY2025 volume only (not FY2017, FY2021, FY2027)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OAJ",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "no Appendix account mapped (appendix_map.csv): own schedule in the FY2025 volume only (not FY2017, FY2021, FY2027)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OAJ",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 015-0425 (Department of Justice, Legal Activities, Office for Access to Justice) in the FY2027 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OCDETF",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "015-0323-0-1-751: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OCDETF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0323-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
   "canonical_account_id": "ACC-DOJ-OIG",
@@ -24,10 +420,190 @@
   "note": "015-0328-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
+  "canonical_account_id": "ACC-DOJ-OJP-JJ",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0405-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RES",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0401-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2017,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2018,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2018,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2022,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2022,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2023,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2026,
+  "stage_basis": "enacted",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-RESC",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
   "canonical_account_id": "ACC-DOJ-OJP-RESC",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
   "note": "a rescission from Office of Justice Programs balances with no account named; no single Appendix schedule"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OJP-SLLEA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0404-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-OPA",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "the FY2019 schedule 015-0339-0-1-751 (Department of Justice, Executive Office for Immigration Review) prints no program activity line matching '^Office of the Pardon Attorney'"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-PSOB-DEATH",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0403-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-PSOB-DISAB",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0403-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-USA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0322-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-USMS-CONST",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0133-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-USMS-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0324-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-DOJ-USPC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-1061-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
   "canonical_account_id": "ACC-DOJ-USTSF",
@@ -42,10 +618,112 @@
   "note": "015-0409-0-1-754: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
+  "canonical_account_id": "ACC-DOJ-VICTF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "015-0128-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
   "canonical_account_id": "ACC-DOJ-WCF",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
   "note": "015-4526-0-4-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-EDA-EDAP",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-2050-0-1-452: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-EDA-EDAP",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-2050-0-1-452: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-EDA-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0125-0-1-452: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-EEOC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "045-0100-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-ITA-OA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0300-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-LSC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "020-0501-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-MBDA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0201-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-MMC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "387-2200-0-1-302: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-AERONAUTICS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0126-0-1-402: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-CONSTRUCTION",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0130-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-EXPLORATION",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0124-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-OIG",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0109-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-SAFETY-SECURITY",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0122-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-SCIENCE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0120-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-SPACEOPS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0115-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NASA-SPACETECH",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0131-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
   "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
@@ -66,10 +744,382 @@
   "note": "080-0128-0-1-252: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
  },
  {
+  "canonical_account_id": "ACC-NASA-STEM-ENGAGEMENT",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "080-0128-0-1-252: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-CRF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0515-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-ITS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0525-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-STRS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0500-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-TIP",
+  "fiscal_year": 2018,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-TIP",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-TIP",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "no Appendix account mapped (appendix_map.csv): TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-TIP",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "no Appendix account mapped (appendix_map.csv): TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ },
+ {
+  "canonical_account_id": "ACC-NIST-TIP",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "no Appendix account mapped (appendix_map.csv): TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2017 actual column (lines 4000 and 4090 blank or absent); account_id_code, fund_type and budget_subfunction read from the FY2019 Appendix: no Program and Financing schedule for 013-5120 (National Oceanic and Atmospheric Administration, Fishermen's Contingency Fund) in the FY2017 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2017,
+  "stage_basis": "request",
+  "note": "no Program and Financing schedule for 013-5120 (National Oceanic and Atmospheric Administration, Fishermen's Contingency Fund) in the FY2017 Appendix -- the President's Budget stage uses the enacted values"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2018,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2018 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2018,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2018 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2019 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2020,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2020 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2021,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2021 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2022,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2022 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2022,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2022 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2023,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2023 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2023 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2024 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2025 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2026,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2026 est. column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-5120-0-2-376: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FCF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-5120-0-2-376: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "013-2055-0-1-376: no budget authority in the 2017 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2023 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "013-2055-0-1-376: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2024 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2025 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2026,
+  "stage_basis": "enacted",
+  "note": "013-2055-0-1-376: no budget authority in the 2026 est. column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-2055-0-1-376: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FDA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-2055-0-1-376: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2017,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2017 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2018,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2018 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2022,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2022 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2023,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2023 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "013-1456-0-1-376: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2024 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "013-1456-0-1-376: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2025 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-1456-0-1-376: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-FFPA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-1456-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-NOCSF",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 013-2044 (National Oceanic and Atmospheric Administration, National Oceans and Coastal Security Fund) in the FY2019 Appendix"
+ },
+ {
   "canonical_account_id": "ACC-NOAA-ORF",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
   "note": "013-1450-0-1-306: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PAC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-1460-0-1-306: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2018,
+  "stage_basis": "request",
+  "note": "013-1451-0-1-306: no budget authority in the 2018 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "013-1451-0-1-306: no budget authority in the 2019 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2020,
+  "stage_basis": "request",
+  "note": "013-1451-0-1-306: no budget authority in the 2020 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2021,
+  "stage_basis": "request",
+  "note": "013-1451-0-1-306: no budget authority in the 2021 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-1451-0-1-306: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NOAA-PCSR",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-1451-0-1-306: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  },
  {
   "canonical_account_id": "ACC-NOAA-PDF",
@@ -108,9 +1158,159 @@
   "note": "011-0048-0-1-802: no budget authority in the 2026 est. column (lines 4000 and 4090 blank or absent)"
  },
  {
+  "canonical_account_id": "ACC-NSF-AGENCY-OPS",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0180-0-1-251: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NSF-MREFC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0551-0-1-251: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NSF-NSB",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0350-0-1-251: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NSF-OIG",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0300-0-1-251: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NSF-RRA",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0100-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NSF-STEM-EDUCATION",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "049-0106-0-1-251: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2024,
+  "stage_basis": "enacted",
+  "note": "013-0551-0-1-503: no budget authority in the 2024 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2024,
+  "stage_basis": "request",
+  "note": "013-0551-0-1-503: no budget authority in the 2024 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2025,
+  "stage_basis": "enacted",
+  "note": "013-0551-0-1-503: no budget authority in the 2025 actual column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2025,
+  "stage_basis": "request",
+  "note": "013-0551-0-1-503: no budget authority in the 2025 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2026,
+  "stage_basis": "enacted",
+  "note": "013-0551-0-1-503: no budget authority in the 2026 est. column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2026,
+  "stage_basis": "request",
+  "note": "013-0551-0-1-503: no budget authority in the 2026 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-PTFPC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0551-0-1-503: no budget authority in the 2027 est. (request) column (lines 4000 and 4090 blank or absent)"
+ },
+ {
+  "canonical_account_id": "ACC-NTIA-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "013-0550-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-OSTP",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "011-2600-0-1-802: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-SJI",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "453-0052-0-1-752: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-USCCR",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "326-1900-0-1-751: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-USITC",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "034-0100-0-1-153: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
   "canonical_account_id": "ACC-USPTO-SE",
   "fiscal_year": 2027,
   "stage_basis": "enacted",
   "note": "013-1006-0-1-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-SE",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "011-0400-0-1-999: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2017,
+  "stage_basis": "enacted",
+  "note": "no Program and Financing schedule for 011-8581 (Office of the United States Trade Representative, Trade Enforcement Trust Fund) in the FY2019 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2017,
+  "stage_basis": "request",
+  "note": "no Program and Financing schedule for 011-8581 (Office of the United States Trade Representative, Trade Enforcement Trust Fund) in the FY2017 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2018,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2020 Appendix: no Program and Financing schedule for 011-8581 (Office of the United States Trade Representative, Trade Enforcement Trust Fund) in the FY2018 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2019,
+  "stage_basis": "enacted",
+  "note": "account_id_code, fund_type and budget_subfunction read from the FY2021 Appendix: no Program and Financing schedule for 011-8581 (Office of the United States Trade Representative, Trade Enforcement Trust Fund) in the FY2019 Appendix"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2019,
+  "stage_basis": "request",
+  "note": "no Program and Financing schedule for 011-8581 (Office of the United States Trade Representative, Trade Enforcement Trust Fund) in the FY2019 Appendix -- the President's Budget stage uses the enacted values"
+ },
+ {
+  "canonical_account_id": "ACC-USTR-TETF",
+  "fiscal_year": 2027,
+  "stage_basis": "enacted",
+  "note": "011-8581-0-7-376: budget_class read from the FY2027 Appendix's 2026 est. column (the latest enacted level), as the 2027 column is the request"
  }
 ]

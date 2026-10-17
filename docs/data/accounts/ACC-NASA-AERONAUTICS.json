@@ -2259,9 +2259,81 @@
        "component": null,
        "component_kind": null,
        "component_label": null,
-       "missing": true,
-       "observations": [],
-       "state": "missing"
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": 850000000,
+         "amount_type": "budget authority",
+         "bill_id": "H.R.8845",
+         "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+         "canonical_account_id": "ACC-NASA-AERONAUTICS",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2027,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2027,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4396",
+         "offsetting_collections": 0,
+         "publication_date": "2026-05-15",
+         "report_id": "H.Rept.119-652",
+         "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-119HRPT652",
+         "source_page": "169",
+         "source_table_or_section": "Title III, Aeronautics Research Mission Directorate -- printed as 'Aeronautics' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-10120"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-10121"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-10122"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18752"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-18769"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "bill_text",
+           "validation_id": "VAL-TXT-4396"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
       }
      ],
      "President's Budget": [
@@ -2500,12 +2572,7 @@
    "not_reported": []
   },
   "historical_names": [],
-  "missing_cells": [
-   [
-    2027,
-    "House Reported"
-   ]
-  ],
+  "missing_cells": [],
   "observations": [
    {
     "added_date": "2026-10-07",
@@ -4131,16 +4198,83 @@
      }
     ],
     "verification_status": "human-verified"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": 850000000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-NASA-AERONAUTICS",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4396",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-15",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT652",
+    "source_page": "169",
+    "source_table_or_section": "Title III, Aeronautics Research Mission Directorate -- printed as 'Aeronautics' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-10120"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-10121"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-10122"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18752"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-18769"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "bill_text",
+      "validation_id": "VAL-TXT-4396"
+     }
+    ],
+    "verification_status": "auto-validated"
    }
   ],
   "open_cells": [
    [
     2027,
     "President's Budget"
-   ],
-   [
-    2027,
-    "House Reported"
    ],
    [
     2027,

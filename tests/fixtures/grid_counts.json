@@ -1,15 +1,15 @@
 {
- "note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged.json changes on purpose",
+ "note": "the published grid's counts (scripts/grid_counts.py); regenerate when data/staged/ changes on purpose",
  "state_counts": {
   "CJS": {
-   "missing": 475,
+   "missing": 451,
    "no_figure": 0,
    "no_printed_total": 0,
-   "not_collected": 72,
-   "not_enacted": 36,
-   "not_funded": 18,
+   "not_collected": 214,
+   "not_enacted": 107,
+   "not_funded": 96,
    "not_reported": 0,
-   "value": 983
+   "value": 3608
   },
   "LHHS": {
    "missing": 31,
@@ -23,35 +23,35 @@
   }
  },
  "outside_life_cells": {
-  "CJS": 0,
+  "CJS": 364,
   "LHHS": 604
  },
  "flagged_cells": {
-  "CJS": 0,
+  "CJS": 13,
   "LHHS": 4
  },
  "view_status_counts": {
   "CJS": {
    "printed": {
-    "-:checked": 997
+    "-:checked": 3666
    },
    "discretionary": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "discretionary_designated": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "all_appropriations": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3387,
+    "available:not_computable": 279
    },
    "program_level": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3387,
+    "available:not_computable": 279
    }
   },
   "LHHS": {
@@ -93,26 +93,27 @@
  "views_excluding_earmarks_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 849,
-    "-:not_computable": 148
+    "-:checked": 31,
+    "-:computed": 3500,
+    "-:not_computable": 135
    },
    "discretionary": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "discretionary_designated": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "all_appropriations": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3387,
+    "available:not_computable": 279
    },
    "program_level": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3387,
+    "available:not_computable": 279
    }
   },
   "LHHS": {
@@ -154,26 +155,26 @@
  "views_nondefense_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 797,
+    "-:computed": 3466,
     "-:not_computable": 200
    },
    "discretionary": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "discretionary_designated": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "all_appropriations": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3385,
+    "available:not_computable": 281
    },
    "program_level": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3385,
+    "available:not_computable": 281
    }
   },
   "LHHS": {
@@ -214,26 +215,27 @@
  "views_nondefense_excluding_earmarks_status_counts": {
   "CJS": {
    "printed": {
-    "-:computed": 797,
+    "-:checked": 31,
+    "-:computed": 3435,
     "-:not_computable": 200
    },
    "discretionary": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "discretionary_designated": {
-    "available:computed": 783,
-    "available:excluded": 1,
-    "available:not_computable": 213
+    "available:computed": 3186,
+    "available:excluded": 96,
+    "available:not_computable": 384
    },
    "all_appropriations": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3385,
+    "available:not_computable": 281
    },
    "program_level": {
-    "available:computed": 794,
-    "available:not_computable": 203
+    "available:computed": 3385,
+    "available:not_computable": 281
    }
   },
   "LHHS": {

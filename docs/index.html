@@ -1809,7 +1809,10 @@ function headOf(row, y, st) {
   const cell = row.cells[y + "|" + st];
   if (!cell) return null;
   const lines = cell.lines;
-  return { cell, lines, h: lines.find(isHeadline) || lines[0] || null };
+  // with no budget-authority line, the first rescission line that holds a figure (the Crime Victims Fund's FY2027 House
+  // CHIMP, where the account's plain rescission series, from another year, holds nothing); a transfer is never one
+  return { cell, lines, h: lines.find(isHeadline)
+    || lines.find((l) => l.amount_type === "rescission" && l.observations.length) || lines[0] || null };
 }
 const stateOf = (row, y, st) => { const x = row && headOf(row, y, st); return x && x.h && !x.cell.outside_life ? x.h.state : null; };
 // ---- the account lifecycle (row.lifecycle, derived in the store from figures and confirmed absences)

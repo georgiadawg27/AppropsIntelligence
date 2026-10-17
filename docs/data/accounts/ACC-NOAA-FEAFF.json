@@ -1,0 +1,1722 @@
+{
+ "grid": {
+  "rows": [
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -5000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.116-93",
+         "bill_report_reference_id": "BR-CJS-FY2020-ENACTED",
+         "bill_url": "https://www.congress.gov/116/plaws/publ93/PLAW-116publ93.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4694",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-16",
+         "report_id": "JES_CJS_P.L.116-93",
+         "report_jes_url": "https://docs.house.gov/billsthisweek/20191216/BILLS-116HR1158SA-JES-DIVISION-B.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT455",
+         "source_page": "191",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [FY 2020 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11136"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11137"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11138"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11139"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-14942"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-19977"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -5000000,
+         "amount_type": "rescission",
+         "bill_id": "S.2584",
+         "bill_report_reference_id": "BR-CJS-FY2020-SENATE",
+         "bill_url": "https://www.congress.gov/116/bills/s2584/BILLS-116s2584rs.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2020,
+         "document_stage": "Senate Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2020,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4695",
+         "offsetting_collections": 0,
+         "publication_date": "2019-09-26",
+         "report_id": "S.Rept.116-127",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116SRPT127",
+         "source_page": "193",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Fund (rescission)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11140"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11141"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11142"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11143"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11144"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-15330"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2020
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -5000000,
+         "amount_type": "rescission",
+         "bill_id": "P.L.116-260",
+         "bill_report_reference_id": "BR-CJS-FY2021-ENACTED",
+         "bill_url": "https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2022,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4696",
+         "offsetting_collections": 0,
+         "publication_date": "2021-07-19",
+         "report_id": "JES_CJS_P.L.116-260",
+         "report_jes_url": "https://www.congress.gov/117/cprt/HPRT43749/CPRT-117HPRT43749.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-117HRPT97",
+         "source_page": "216",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries Enforcement Asset Forfeiture Fund (rescission)' [FY 2021 Enacted]",
+         "stage": "Enacted",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt97/pdf/CRPT-117hrpt97.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11145"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11146"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11147"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries Enforcement Asset Forfeiture Fund (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11148"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-15453"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "cross_document",
+           "validation_id": "VAL-19978"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -10000000,
+         "amount_type": "rescission",
+         "bill_id": "H.R.7667",
+         "bill_report_reference_id": "BR-CJS-FY2021-HOUSE",
+         "bill_url": "https://www.congress.gov/116/bills/hr7667/BILLS-116hr7667rh.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "House",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4697",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-16",
+         "report_id": "H.Rept.116-455",
+         "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT455",
+         "source_page": "191",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [Bill]",
+         "stage": "House Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11149"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11150"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11151"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11152"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11153"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-15586"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": 0,
+         "amount_type": "rescission",
+         "bill_id": "PREX 2.8:2021/APP",
+         "bill_report_reference_id": "BR-CJS-FY2021-PB",
+         "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "N/A",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_stage": "House Reported",
+         "document_type": "committee_report",
+         "extraction_method": "AI-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4698",
+         "offsetting_collections": 0,
+         "publication_date": "2020-07-16",
+         "report_id": "N/A",
+         "report_jes_url": "N/A",
+         "source_agency": "House Committee on Appropriations",
+         "source_document_id": "SRC-CRPT-116HRPT455",
+         "source_page": "191",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [FY 2021 Request] -- printed '---'",
+         "stage": "President's Budget",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11154"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11155"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11156"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11157"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-15722"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "not_funded"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [
+        {
+         "added_date": "2026-10-16",
+         "amount": -5000000,
+         "amount_type": "rescission",
+         "bill_id": "N/A",
+         "bill_report_reference_id": "BR-CJS-FY2021-SENATE",
+         "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/CJSFY2021.pdf",
+         "canonical_account_id": "ACC-NOAA-FEAFF",
+         "chamber": "Senate",
+         "component": null,
+         "component_kind": null,
+         "component_label": null,
+         "confidence": 0.95,
+         "document_fiscal_year": 2021,
+         "document_stage": "Senate Reported",
+         "document_type": "explanatory_statement",
+         "draft_release_date": "2020-11-10",
+         "extraction_method": "text-extracted",
+         "fiscal_year": 2021,
+         "headline_observation_id": null,
+         "observation_id": "OBS-4699",
+         "offsetting_collections": 0,
+         "publication_date": "2020-11-10",
+         "report_id": "JES_CJS_FY2021-Senate",
+         "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
+         "source_agency": "Senate Committee on Appropriations",
+         "source_document_id": "SRC-EXPL-FY2021-SENATE",
+         "source_label": "Committee draft, unofficial",
+         "source_page": "199",
+         "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [Committee recommendation]",
+         "stage": "Senate Reported",
+         "transfer_link_account_id": null,
+         "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
+         "validation": [
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "structural",
+           "validation_id": "VAL-11158"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "source_text",
+           "validation_id": "VAL-11159"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "unit",
+           "validation_id": "VAL-11160"
+          },
+          {
+           "human_review_status": "resolved",
+           "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+           "result": "flag",
+           "rule_applied": "semantic",
+           "validation_id": "VAL-11161"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "table_total",
+           "validation_id": "VAL-15851"
+          }
+         ],
+         "verification_status": "auto-validated"
+        }
+       ],
+       "state": "value"
+      }
+     ]
+    },
+    "fiscal_year": 2021
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2022
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2023
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2024
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2025
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ]
+    },
+    "fiscal_year": 2026
+   },
+   {
+    "cells": {
+     "Enacted": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_enacted"
+      }
+     ],
+     "House Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": true,
+       "observations": [],
+       "state": "missing"
+      }
+     ],
+     "President's Budget": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ],
+     "Senate Reported": [
+      {
+       "absence": null,
+       "adds_to_headline": true,
+       "amount_type": "rescission",
+       "component": null,
+       "component_kind": null,
+       "component_label": null,
+       "missing": false,
+       "observations": [],
+       "state": "not_collected"
+      }
+     ]
+    },
+    "fiscal_year": 2027
+   }
+  ],
+  "series": [
+   {
+    "amount_type": "rescission",
+    "component": null,
+    "component_kind": null,
+    "component_label": null
+   }
+  ],
+  "stages": [
+   "President's Budget",
+   "House Reported",
+   "Senate Reported",
+   "Enacted"
+  ]
+ },
+ "history": {
+  "absences": [],
+  "account": {
+   "agency": "Department of Commerce",
+   "bureau": "National Oceanic and Atmospheric Administration",
+   "canonical_account_id": "ACC-NOAA-FEAFF",
+   "canonical_name": "Fisheries Enforcement Asset Forfeiture Fund",
+   "display_order": 106,
+   "fund_type": "special",
+   "historical_identifiers": null,
+   "historical_names": null,
+   "notes": "Rescission-only line (Title V).",
+   "parent_account_id": null,
+   "start_basis": null,
+   "start_basis_reason": null,
+   "status": "active",
+   "subcommittee": "CJS",
+   "title": "Title V",
+   "treasury_account_symbol": null
+  },
+  "coverage": {
+   "cells": [
+    [
+     2017,
+     "Enacted"
+    ],
+    [
+     2017,
+     "House Reported"
+    ],
+    [
+     2017,
+     "President's Budget"
+    ],
+    [
+     2017,
+     "Senate Reported"
+    ],
+    [
+     2018,
+     "Enacted"
+    ],
+    [
+     2018,
+     "House Reported"
+    ],
+    [
+     2018,
+     "President's Budget"
+    ],
+    [
+     2018,
+     "Senate Reported"
+    ],
+    [
+     2019,
+     "Enacted"
+    ],
+    [
+     2019,
+     "House Reported"
+    ],
+    [
+     2019,
+     "President's Budget"
+    ],
+    [
+     2019,
+     "Senate Reported"
+    ],
+    [
+     2020,
+     "Enacted"
+    ],
+    [
+     2020,
+     "House Reported"
+    ],
+    [
+     2020,
+     "President's Budget"
+    ],
+    [
+     2020,
+     "Senate Reported"
+    ],
+    [
+     2021,
+     "Enacted"
+    ],
+    [
+     2021,
+     "House Reported"
+    ],
+    [
+     2021,
+     "President's Budget"
+    ],
+    [
+     2021,
+     "Senate Reported"
+    ],
+    [
+     2022,
+     "Enacted"
+    ],
+    [
+     2022,
+     "House Reported"
+    ],
+    [
+     2022,
+     "President's Budget"
+    ],
+    [
+     2022,
+     "Senate Reported"
+    ],
+    [
+     2023,
+     "Enacted"
+    ],
+    [
+     2023,
+     "House Reported"
+    ],
+    [
+     2023,
+     "President's Budget"
+    ],
+    [
+     2023,
+     "Senate Reported"
+    ],
+    [
+     2024,
+     "Enacted"
+    ],
+    [
+     2024,
+     "House Reported"
+    ],
+    [
+     2024,
+     "President's Budget"
+    ],
+    [
+     2024,
+     "Senate Reported"
+    ],
+    [
+     2025,
+     "Enacted"
+    ],
+    [
+     2025,
+     "House Reported"
+    ],
+    [
+     2025,
+     "President's Budget"
+    ],
+    [
+     2025,
+     "Senate Reported"
+    ],
+    [
+     2026,
+     "Enacted"
+    ],
+    [
+     2026,
+     "House Reported"
+    ],
+    [
+     2026,
+     "President's Budget"
+    ],
+    [
+     2026,
+     "Senate Reported"
+    ],
+    [
+     2027,
+     "House Reported"
+    ]
+   ],
+   "enacted_through": 2026,
+   "not_reported": []
+  },
+  "historical_names": [],
+  "missing_cells": [
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "House Reported"
+   ]
+  ],
+  "observations": [
+   {
+    "added_date": "2026-10-16",
+    "amount": -5000000,
+    "amount_type": "rescission",
+    "bill_id": "S.2584",
+    "bill_report_reference_id": "BR-CJS-FY2020-SENATE",
+    "bill_url": "https://www.congress.gov/116/bills/s2584/BILLS-116s2584rs.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2020,
+    "document_stage": "Senate Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4695",
+    "offsetting_collections": 0,
+    "publication_date": "2019-09-26",
+    "report_id": "S.Rept.116-127",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116SRPT127",
+    "source_page": "193",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Fund (rescission)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116srpt127/pdf/CRPT-116srpt127.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11140"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11141"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11142"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11143"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11144"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-15330"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -5000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.116-93",
+    "bill_report_reference_id": "BR-CJS-FY2020-ENACTED",
+    "bill_url": "https://www.congress.gov/116/plaws/publ93/PLAW-116publ93.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2020,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4694",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-16",
+    "report_id": "JES_CJS_P.L.116-93",
+    "report_jes_url": "https://docs.house.gov/billsthisweek/20191216/BILLS-116HR1158SA-JES-DIVISION-B.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "source_page": "191",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [FY 2020 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11136"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11137"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11138"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11139"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-14942"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-19977"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": 0,
+    "amount_type": "rescission",
+    "bill_id": "PREX 2.8:2021/APP",
+    "bill_report_reference_id": "BR-CJS-FY2021-PB",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BUDGET-2021-APP/pdf/BUDGET-2021-APP.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4698",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-16",
+    "report_id": "N/A",
+    "report_jes_url": "N/A",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "source_page": "191",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [FY 2021 Request] -- printed '---'",
+    "stage": "President's Budget",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11154"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11155"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11156"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11157"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-15722"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -10000000,
+    "amount_type": "rescission",
+    "bill_id": "H.R.7667",
+    "bill_report_reference_id": "BR-CJS-FY2021-HOUSE",
+    "bill_url": "https://www.congress.gov/116/bills/hr7667/BILLS-116hr7667rh.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4697",
+    "offsetting_collections": 0,
+    "publication_date": "2020-07-16",
+    "report_id": "H.Rept.116-455",
+    "report_jes_url": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-116HRPT455",
+    "source_page": "191",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [Bill]",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-116hrpt455/pdf/CRPT-116hrpt455.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11149"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11150"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11151"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11152"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11153"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-15586"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -5000000,
+    "amount_type": "rescission",
+    "bill_id": "N/A",
+    "bill_report_reference_id": "BR-CJS-FY2021-SENATE",
+    "bill_url": "https://www.appropriations.senate.gov/imo/media/doc/CJSFY2021.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "Senate",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2021,
+    "document_stage": "Senate Reported",
+    "document_type": "explanatory_statement",
+    "draft_release_date": "2020-11-10",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4699",
+    "offsetting_collections": 0,
+    "publication_date": "2020-11-10",
+    "report_id": "JES_CJS_FY2021-Senate",
+    "report_jes_url": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
+    "source_agency": "Senate Committee on Appropriations",
+    "source_document_id": "SRC-EXPL-FY2021-SENATE",
+    "source_label": "Committee draft, unofficial",
+    "source_page": "199",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)' [Committee recommendation]",
+    "stage": "Senate Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.appropriations.senate.gov/imo/media/doc/CJSRept.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11158"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11159"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11160"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries, Enforcement Asset Forfeiture Funds (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11161"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-15851"
+     }
+    ],
+    "verification_status": "auto-validated"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": -5000000,
+    "amount_type": "rescission",
+    "bill_id": "P.L.116-260",
+    "bill_report_reference_id": "BR-CJS-FY2021-ENACTED",
+    "bill_url": "https://www.congress.gov/116/plaws/publ260/PLAW-116publ260.pdf",
+    "canonical_account_id": "ACC-NOAA-FEAFF",
+    "chamber": "N/A",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2022,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2021,
+    "headline_observation_id": null,
+    "observation_id": "OBS-4696",
+    "offsetting_collections": 0,
+    "publication_date": "2021-07-19",
+    "report_id": "JES_CJS_P.L.116-260",
+    "report_jes_url": "https://www.congress.gov/117/cprt/HPRT43749/CPRT-117HPRT43749.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-117HRPT97",
+    "source_page": "216",
+    "source_table_or_section": "Title V, General Provisions -- printed as 'NOAA, Fisheries Enforcement Asset Forfeiture Fund (rescission)' [FY 2021 Enacted]",
+    "stage": "Enacted",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/CRPT-117hrpt97/pdf/CRPT-117hrpt97.pdf",
+    "validation": [
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "structural",
+      "validation_id": "VAL-11145"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "source_text",
+      "validation_id": "VAL-11146"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "unit",
+      "validation_id": "VAL-11147"
+     },
+     {
+      "human_review_status": "resolved",
+      "resolution": "routine: the amount_type matches the printed label ('NOAA, Fisheries Enforcement Asset Forfeiture Fund (rescission)')",
+      "result": "flag",
+      "rule_applied": "semantic",
+      "validation_id": "VAL-11148"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "table_total",
+      "validation_id": "VAL-15453"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "cross_document",
+      "validation_id": "VAL-19978"
+     }
+    ],
+    "verification_status": "auto-validated"
+   }
+  ],
+  "open_cells": [
+   [
+    2020,
+    "President's Budget"
+   ],
+   [
+    2020,
+    "House Reported"
+   ],
+   [
+    2022,
+    "President's Budget"
+   ],
+   [
+    2022,
+    "House Reported"
+   ],
+   [
+    2022,
+    "Senate Reported"
+   ],
+   [
+    2022,
+    "Enacted"
+   ],
+   [
+    2023,
+    "President's Budget"
+   ],
+   [
+    2023,
+    "House Reported"
+   ],
+   [
+    2023,
+    "Senate Reported"
+   ],
+   [
+    2023,
+    "Enacted"
+   ],
+   [
+    2024,
+    "President's Budget"
+   ],
+   [
+    2024,
+    "House Reported"
+   ],
+   [
+    2024,
+    "Senate Reported"
+   ],
+   [
+    2024,
+    "Enacted"
+   ],
+   [
+    2025,
+    "President's Budget"
+   ],
+   [
+    2025,
+    "House Reported"
+   ],
+   [
+    2025,
+    "Senate Reported"
+   ],
+   [
+    2025,
+    "Enacted"
+   ],
+   [
+    2026,
+    "President's Budget"
+   ],
+   [
+    2026,
+    "House Reported"
+   ],
+   [
+    2026,
+    "Senate Reported"
+   ],
+   [
+    2026,
+    "Enacted"
+   ],
+   [
+    2027,
+    "President's Budget"
+   ],
+   [
+    2027,
+    "House Reported"
+   ],
+   [
+    2027,
+    "Senate Reported"
+   ],
+   [
+    2027,
+    "Enacted"
+   ]
+  ],
+  "relationships": [],
+  "total_scope": null
+ }
+}

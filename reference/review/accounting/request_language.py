@@ -67,7 +67,8 @@ PAGE_IMAGES = [
 PROBABLE_MISPRINTS = {(2027, "HHS", 454, "$833,000")}    # an agency held only as its total, read as an account (owner, D-1 ruling 2)
 CHAPTER_TITLE = {"HHS": "DEPARTMENT OF HEALTH AND HUMAN SERVICES", "COM": "DEPARTMENT OF COMMERCE",
                  "DOJ": "DEPARTMENT OF JUSTICE", "NASA": "NATIONAL AERONAUTICS AND SPACE ADMINISTRATION",
-                 "NSF": "NATIONAL SCIENCE FOUNDATION", "EOP": "EXECUTIVE OFFICE OF THE PRESIDENT"}
+                 "NSF": "NATIONAL SCIENCE FOUNDATION", "EOP": "EXECUTIVE OFFICE OF THE PRESIDENT",
+                 "OIA": "OTHER INDEPENDENT AGENCIES"}
 NOTE = re.compile(r"^\s*Note\.\s*[—-]")
 # the bill check's agency words that do not fit the Appendix: EOP's accounts are under Title III's 'Science' in the
 # bill, under the chapter's own title here

@@ -194,7 +194,11 @@ INCLUDED_COMPONENTS = ("CURES", "kids_first", "congressionally_directed_spending
 # A chamber's one-off line under an account's heading (Labor-HHS: Diaper Grants, House FY2022): a part of the
 # account's cell, never a new account (owner, 2026-10-08)
 PROPOSAL_COMPONENTS = ("chamber_proposal", "request_proposal_ssbg", "chamber_proposal_opioid_response",
-                       "request_proposal_ssbg_research")
+                       "request_proposal_ssbg_research",
+                       # CJS: the 2020 Census line under Periodic Censuses and Programs (FY2019-FY2021), and NIST's
+                       # '(Legislative Proposal)' line under Construction of Research Facilities (FY2020-FY2021
+                       # requests); each printed under the account's line and inside the agency's total
+                       "census_2020", "request_proposal_nist_construction")
 PARALLEL_SCOPE_COMPONENTS = (
     "program_level", "fiscal_year_program_level",
     "program_level_with_cures_and_phs_evaluation_act_funding", "program_level_excluding_arpa_h",
@@ -307,7 +311,11 @@ COMPONENT_KINDS = (
        ("chamber_proposal_opioid_response", "part", "a one-off line a chamber proposed under the account's heading (a "
                                                     "note)"),
        ("request_proposal_ssbg_research", "part", "a one-off line the President's request proposed under the "
-                                                  "account's heading (a note)")]
+                                                  "account's heading (a note)"),
+       ("census_2020", "part", "the 2020 Census line printed under Periodic Censuses and Programs, inside the "
+                               "Census Bureau's total (a note)"),
+       ("request_proposal_nist_construction", "part", "a one-off line the President's request proposed under the "
+                                                      "account's heading (a note)")]
     + [(c, "view", f"parallel total printed with scope '{c.replace('_', ' ')}'") for c in PARALLEL_SCOPE_COMPONENTS]
     + [(c, k, d) for c, (_, k, d, _) in SUMMARY_COMPONENTS.items()])
 # Each component's label (Component.label): the name as a source document
@@ -356,6 +364,11 @@ COMPONENT_LABELS = {
                                             "for Children and Families ('Systems Innovation Center and other expenses')"),
     "chamber_proposal_opioid_response": ("Comprehensive Opioid Response Grants", "printed name",
                                          "H.Rept. 114-699 p.244, the Bill column under Substance Abuse Prevention"),
+    "census_2020": ("2020 Census (H. Res. 293; HR 2021)", "printed name",
+                    "H.Rept. 116-101 p.140, the Bill column under Periodic censuses and programs"),
+    "request_proposal_nist_construction": ("(Legislative Proposal)", "printed name",
+                                           "H.Rept. 116-101 p.141, the FY2020 request column under Construction of "
+                                           "research facilities"),
     "request_proposal_ssbg_research": ("Social Services Block Grant Research/Evaluation", "printed name",
                                        "H.Rept. 114-699 p.250, the FY2017 request column under Social Services Block "
                                        "Grant"),

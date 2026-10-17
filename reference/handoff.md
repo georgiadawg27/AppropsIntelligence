@@ -1,5 +1,94 @@
 # Handoff: accounting views, component backfill FY2017-FY2023, 2026-10-12
 
+## Full CJS load: every account of the five titles, FY2017-FY2027 (2026-10-16, this PR)
+
+Brief: load all five CJS titles, FY2017 to present, every stage on file (agreed order: D-7 cleanup, readiness
+fixes, full CJS, then Leg Branch). Scope from the "Amount basis status" thread: load every account so the title and
+bill summary lines reconcile through D-7's check; keep E strict (no blanket $0 rule).
+
+What was loaded (`reference/review/cjs/backfill/build_cjs.py --write`; account list and line patterns in
+`accounts_cjs.py`):
+- 74 new accounts (Titles I, II, IV; five rescission-only Commerce funds in Title V) and 3,736 observations
+  (OBS-1585 on), each figure from the comparative table the held Title III figures already cite for the same cell
+  (STAGES in build_cjs.py). Title III was held for FY2017-FY2026; only its FY2027 House cells are new (with the printed
+  NASA and NSF agency totals; the vision path's Title III rows confirm all 38). Cells already held were skipped and
+  compared (none differs).
+- Every account of Titles I, II, IV and V is placed in the tables' printed order (display_order 100 on).
+  ACC-DOJ-OIG moved from Title V to Title II (it was filed under Title V for its FY2027 transfer line).
+- `measure_reconcile.TITLES_HELD` now lists all five CJS titles, so CJS title and bill totals are checked against
+  their accounts.
+- Lines and how they are recorded: an '(emergency)' line is `supplemental` on its account; a '(by transfer)' /
+  '(transfer out)' line is `transfer` (ORF <-> Promote and Develop, VAWA <-> Crime Victims Fund linked as in FY2027);
+  offsetting collections and the Diversion Control Fund are `offsetting_collection`; FBI 'Counterintelligence and
+  national security' and BIS's defense lines are the `defense` component; Title V lines are rescissions on the
+  account they name (a negative Title V line that names an account but not the word 'rescission' is read as one,
+  with a note). Continuing-resolution amounts printed under an account (Byrne grants P.L. 114-254; FBI P.L. 117-180)
+  are `supplemental` / `supplemental_act` (the LHHS precedent). Printed '---' is 0, except a one-off line's '---',
+  and except where a confirmed absence already cites the bill text for that fact (NASA Science rescission, FY2021
+  House and request: the absence stands). Several printed lines of one fact (FBI's fee and other rescissions, a
+  fund's temporary and permanent lines) are one observation of their sum, each line named in its text; a Crime
+  Victims Fund transfer is linked to the account it is printed under, and Title V's sec. 510 line to the Inspector
+  General (as FY2027). New accounts take the Budget Appendix's fund type (`accounts_cjs.FUND_TYPES`).
+- New one-off components (accounts.PROPOSAL_COMPONENTS): `census_2020` (the 2020 Census line under Periodic
+  Censuses, FY2019-FY2021) and `request_proposal_nist_construction` (NIST's '(Legislative Proposal)', FY2020-FY2021
+  requests).
+- New accounts for lines printed as their own: Office of the Pardon Attorney (FY2017), DOC IT System Modernization
+  and Working Capital Fund (FY2020 request), EO 13929 Database (FY2021).
+- Readers: the FY2023 House table (H.Rept. 117-395) and the FY2026 explanatory statement were read by vision from
+  page images (their OCR text layers garble numbers; working copies in `extraction_cache/noocr/`); the FY2024 House
+  draft's rotated text table by `fy2024_house_text.py`. Two OCR-layer reads dropped a minus sign on ITA's offsetting
+  collections (FY2018 House and request, H.Rept. 115-231 p.112): recorded negative with a note (the Bill vs Enacted
+  column and the title total confirm).
+- Table page ranges: each comparative table's `source_page` now runs over the pages its lines are cited from
+  (13 documents; `build_cjs.widen_table_pages`).
+- `site_accounting`: a figure printed negative with no components (NOAA's Fisheries Finance Program Account, a
+  negative subsidy) is shown as printed and only as printed, as a total printed negative is (D-7); every other basis
+  is not computable. A negative base made by components stays not computable on every basis. `Layer.total_layer`
+  sums each held line as printed (`printed_id`), so such a line no longer crashes the CJS grid.
+- D-3 (`d3_records.EXPECTED`): + NSF R&RA FY2027 House, paragraph total 6,440,140,000 (H.R. 8845 RH p.86,
+  6,321,069,000 + 119,071,000 defense), so the FY2027 House NSF total is held.
+- `request_language.py`: + the Other Independent Agencies chapter; `request_language.json` rebuilt (643 new
+  account-years; the 1,047 already there unchanged but for the chapter list in three not-found reasons).
+- Lifecycle: the new accounts' first printed years drive `new` / 'Created FY<n>.' notes and the before-first blanks
+  (e.g. HIDTA new in FY2018). For accounts printed only as rescissions this reads from the table, not from
+  evidence the account was created then; worth a look (owner).
+- Page (`headOf`): a cell with no budget-authority line shows its first rescission line that holds a figure (never a
+  transfer). The FY2018 request prints a plain Crime Victims Fund rescission, so the account now has a plain rescission
+  series; without this its FY2027 House cell (the CHIMP, -$2.67B, VAL-0089 pending) showed 'missing'. Its FY2017-FY2026
+  Enacted cells hold only transfers out and show the rescission line as missing (owner: worth a look).
+- `approps_web`: `/api/features` and each subcommittee grid are cached per store and warmed at start; with CJS
+  full the first load took ~19 s and timed out the browser tests.
+- Tests moved with the data (test_store, test_web, test_compare, test_site_data, test_static): counts, NASA FY2027 House now held, CVF/OIG links, lifecycle types
+  (`new` / `ended_eliminated` from the printed years). The FY2022 owner-decision test is scoped to Labor-HHS: its
+  CJS FY2022 request Title V total stays pending review (item 2).
+- Checks: agency totals 570 of 570 agree with our lines; title totals 156 of 167 (`sums.csv`); cross-document
+  1,397 agree, 10 differ (flagged, `cross_document.csv`).
+
+Open (for the owner):
+1. Held FY2026 Senate summary lines carry the FY2025 Enacted column, not the committee recommendation
+   (`held_totals.csv`): OBS-1430 Title I 10,387,810 vs printed 10,873,807; OBS-1433 Title II 36,966,943 vs
+   36,920,094; OBS-1439 Title IV 1,237,490 vs 1,249,490; OBS-1440 Title V -10,300,000 vs -305,000 (S.Rept. 119-44
+   pp.213-220, $K), and the grand total and its sub-lines (OBS-1431/32, -1434/35, -1441..1445) look the same. Our
+   accounts sum to the printed committee figures exactly. Title III's was fixed the same way in D-9; not changed here
+   (headline figures need the owner).
+2. Lines no account takes (`unmatched.csv`), not recorded: FY2017 Enacted NASA Emergency Repairs (emergency)
+   109,000 and Emergency Law Enforcement Assistance 15,000 (H.Rept. 115-231 p.124); Keeping Young Athletes Safe
+   2,500 (FY2018 E); NASA closeouts (rescission) (FY2019 E/PB/S); Rescission of emergency funding -40,000 (FY2019
+   PB); DOJ Modernization and Repairs -15,000 (FY2022 PB); Inflation Reduction Act rescission -22,025,000 (FY2024
+   House, an FSGG account); DOC Derivations -617,276 (FY2026 E). They are why 7 Title V totals differ.
+3. FY2026 request column of the explanatory statement doesn't foot for Titles I, II and V (its lines sum to less
+   than its printed totals; pp.120, 127, 132); flagged, nothing changed.
+4. Not loaded: the Other Appropriations sections (supplemental acts) for Titles I, II and IV accounts (Title III's
+   are held); FY2027 request and Senate (the FY2027 House table prints no request column; no Senate CJS on file).
+5. Budget Appendix map (`appendix_map.csv`): 71 of the 74 new accounts mapped (the Other Independent Agencies
+   chapter added to `appendix_attributes.CHAPTERS`); Census Current Surveys, the EO 13929 Database and the CSUSOP
+   S&E line have no Appendix account of their own (status none).
+6. D-7 (`measure_reconcile`): with all five titles held, 80 CJS summary lines agree and 26 differ (pending review).
+   The differences are the bill totals' emergency and rescission lines that sit in the unloaded lines of item 2 and
+   the supplemental acts of item 4, and the FY2026 Senate lines of item 1.
+7. `intake.py --subcommittee CJS --fy 2025 --stage ENACTED` raises KeyError 'SRC-PLAW-119PUBL4' (on main too);
+   it has no review file.
+
 ## Readiness fix 3: site data reads (R1/R2), 2026-10-16, this PR
 
 Brief: backfill readiness report R1/R2. R1 (no whole file beside a split subcommittee's year files) and the grid's

@@ -330,6 +330,12 @@ def component_record(c):
             "source_table_or_section": c["source_location"]}
 
 
+def printed_id(cell):
+    """The observation behind a line's printed view: its own id, or the cell's headline where the views are not
+    computable (a negative base) and the printed view names none."""
+    return cell["views"]["printed"][0].get("printed_observation_id") or headline_of_cell(cell)["observation_id"]
+
+
 def headline_of_cell(cell):
     """The observation the grid shows for a cell (the page's headOf), when the cell holds a printed figure: a value,
     or a printed zero (ONC's $0 headline has a program level). A confirmed absence holds no observation. A cell with
@@ -395,11 +401,19 @@ class Layer:
         cs = self.cell_components(h)
         base = AC.split(h["amount"], cs)[0]
         # a rescission line is negative as printed (signed as its effect on budget authority): no negative base
-        if base < 0 and h["amount_type"] != "rescission":
+        if base < 0 and h["amount_type"] != "rescission" and cs:
             why = (f"the base is negative ({AC.money(base)}): the components the headline includes exceed it "
                    f"(VAL-MR-{M.suffix(h['observation_id'])}, pending review)")
             return {b: [{"amount": None, "timing": None if b == "printed" else "available",
                          "status": "not_computable", "cause": COMPONENTS_UNKNOWN, "reason": why}] for b in AC.BASES}
+        if base < 0 and h["amount_type"] != "rescission":
+            # a figure printed negative with no components (NOAA's Fisheries Finance Program Account, a negative
+            # subsidy): shown as printed, and only as printed, as a total printed negative is (D-7)
+            out = {b: [{"amount": None, "timing": "available", "status": "not_computable", "cause": COMPONENTS_UNKNOWN,
+                        "reason": f"the figure is printed negative ({AC.money(base)}): no basis is computed from it"}]
+                   for b in AC.BASES[1:]}
+            return {"printed": [{"amount": h["amount"], "timing": None, "status": "checked",
+                                 "reason": "the figure as printed", "printed_observation_id": h["observation_id"]}]} | out
         auto = TC.covered(a["canonical_account_id"], a["subcommittee"], fy, stage)
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)
         cls = rec["value"] if rec else None
@@ -609,7 +623,10 @@ class Layer:
         self.cell_head = h
         lines, absent, nofig = self.behind(a, key, h["source_document_id"])
         n = len(lines) + len(absent)
-        held = sum(mc["views"]["printed"][0]["amount"] for _, mc in lines)
+        # each line as printed: a line whose views aren't computable (a negative base: NOAA's Fisheries Finance
+        # Program Account, a negative subsidy) is still printed, and counts in the total as printed
+        held = sum(mc["views"]["printed"][0]["amount"] if mc["views"]["printed"][0]["amount"] is not None
+                   else headline_of_cell(mc)["amount"] for _, mc in lines)
         beside = held_lines(lines)
         # owner, D-6 round 3: only the held lines the table prints inside this total (INSIDE_FILE's evidence)
         inside = [x for x in beside if (h["observation_id"], x["observation_id"]) in self.inside]
@@ -638,7 +655,7 @@ class Layer:
                               "source_document_id": h["source_document_id"], "source_page": h.get("source_page"),
                               "held": held, "gap": h["amount"] - held, "lines": lines, "beside": beside,
                               "inside": inside + own, "counted": inside + own if not unheld else []})
-        heads = [h] + [self.obs[mc["views"]["printed"][0]["printed_observation_id"]] for _, mc in lines]
+        heads = [h] + [self.obs[printed_id(mc)] for _, mc in lines]
         prints = [o for o in self.printed[(a["canonical_account_id"], fy, stage)]
                   if o["source_document_id"] == h["source_document_id"]]
         parts = {"lines": lines, "absent": absent, "nofig": nofig, "inside": inside, "unheld": unheld, "n": n,
@@ -876,7 +893,7 @@ class Layer:
     def takes_nothing(self, m, mc, exclusion):
         """A structural rule says the exclusion takes nothing out of this line, whatever was read (structural)."""
         fy, stage = self.cell_key
-        x = self.obs[mc["views"]["printed"][0]["printed_observation_id"]]
+        x = self.obs[printed_id(mc)]
         return all(self.structural(self.acc[m], fy, stage, x, one, mc) for one in EXCLUSION_PARTS[exclusion])
 
     # ------------------------------------------------------------------ excluding earmarks, nondefense (UI-0b)
@@ -956,7 +973,8 @@ class Layer:
         ctype = " or ".join(types)
         cs = self.cell_components(h)
         if AC.split(h["amount"], cs)[0] < 0 and h["amount_type"] != "rescission":
-            # account_views' negative base: the same not_computable entries
+            # account_views' negative base: the same entries (not computable; a figure printed negative with no
+            # components keeps only its As printed)
             return {b: [dict(e) for e in es] for b, es in views.items()}
         beside = [c for c in cs if c["component_type"] in types and c["in_headline"] != "TRUE"]
         rec = AC.attribute_value(self.attrs, a["canonical_account_id"], fy, "budget_class", stage)

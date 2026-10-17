@@ -143,3 +143,79 @@ ACC-NOAA-PDF,COM,013-5139,"National Oceanic and Atmospheric Administration, Prom
 ACC-HHS-AHRQ-TOTAL,HHS,075-1700,"Agency for Healthcare Research and Quality, Healthcare Research and Quality",,,,both,,"an agency held only as its total (decision B, D-9): AHRQ's one Appendix account"
 ACC-HHS-ACL-TOTAL,HHS,075-0142,"Administration for Community Living, Aging and Disability Services Programs",,,,both,,"an agency held only as its total (decision B, D-9): ACL's one Appendix account"
 ACC-HHS-AHA-TOTAL,HHS,,,,2026,2027,request,none,"an agency held only as its total (decision B, D-9), proposed in the FY2026 and FY2027 requests: the Appendix spreads it over several new accounts (075-0381, -0382, -0383, -0384, -0385, -0395 and others; discretionary and PAYGO proposals), and the tables' AHA line is only the part 'not displayed under other HHS accounts' (H.Rept. 119-271 p.334 footnote 1/), which no single account matches, so no attribute"
+ACC-ITA-OA,COM,013-0300,"International Trade Administration, Operations and Administration",,,,both,,
+ACC-BIS-OA,COM,013-1250,"Bureau of Industry and Security, Operations and Administration",,,,both,,
+ACC-EDA-EDAP,COM,013-2050,"Economic Development Administration, Economic Development Assistance Programs",,,,both,,
+ACC-EDA-SE,COM,013-0125,"Economic Development Administration, Salaries and Expenses",,,,both,,
+ACC-MBDA,COM,013-0201,"Minority Business Development Agency, Minority Business Development",,,,both,,
+ACC-BEA-SE,COM,013-1500,"Bureau of Economic Analysis, Salaries and Expenses",,,,both,,
+ACC-CENSUS-CSP,COM,013-0401,"Bureau of the Census, Current Surveys and Programs",,,,both,,"schedule printed in the FY2017, FY2021, FY2025 and FY2027 volumes"
+ACC-CENSUS-PCP,COM,013-0450,"Bureau of the Census, Periodic Censuses and Programs",,,,both,,"schedule printed in the FY2017, FY2021, FY2025 and FY2027 volumes"
+ACC-CENSUS-CSURV,COM,,,,,,both,none,the combined Censuses and Survey Programs account has no schedule of its own: the FY2025 and FY2027 volumes still print Current Surveys and Programs (013-0401) and Periodic Censuses and Programs (013-0450) separately; no single Appendix schedule
+ACC-NTIA-SE,COM,013-0550,"National Telecommunications and Information Administration, Salaries and Expenses",,,,both,,
+ACC-NTIA-PTFPC,COM,013-0551,"National Telecommunications and Information Administration, Public Telecommunications Facilities, Planning and Construction",,,,both,,own schedule in all four volumes read
+ACC-NIST-STRS,COM,013-0500,"National Institute of Standards and Technology, Scientific and Technical Research and Services",,,,both,,
+ACC-NIST-ITS,COM,013-0525,"National Institute of Standards and Technology, Industrial Technology Services",,,,both,,
+ACC-NIST-CRF,COM,013-0515,"National Institute of Standards and Technology, Construction of Research Facilities",,,,both,,
+ACC-NOAA-PAC,COM,013-1460,"National Oceanic and Atmospheric Administration, Procurement, Acquisition and Construction",,,,both,,
+ACC-NOAA-PCSR,COM,013-1451,"National Oceanic and Atmospheric Administration, Pacific Coastal Salmon Recovery",,,,both,,
+ACC-NOAA-FCF,COM,013-5120,"National Oceanic and Atmospheric Administration, Fishermen's Contingency Fund",,,,both,,"FY2017 volume prints the appropriation language but no 013-5120 schedule; schedule printed in FY2021, FY2025, FY2027 volumes; first year not verified"
+ACC-NOAA-FDA,COM,013-2055,"National Oceanic and Atmospheric Administration, Fisheries Disaster Assistance",,,,both,,
+ACC-NOAA-FFPA,COM,013-1456,"National Oceanic and Atmospheric Administration, Fisheries Finance Program Account",,,,both,,
+ACC-NOAA-NOCSF,COM,013-2044,"National Oceanic and Atmospheric Administration, National Oceans and Coastal Security Fund",,,2017,both,,"schedule printed in the FY2017 volume only (not in FY2021, FY2025, FY2027); FY2018-FY2020 volumes not read"
+ACC-DOC-DM-SE,COM,013-0120,"Departmental Management, Salaries and Expenses",,,,both,,
+ACC-DOC-RM,COM,013-0123,"Departmental Management, Renovation and Modernization",,,,both,,
+ACC-DOC-NEF,COM,013-0133,"Departmental Management, Nonrecurring Expenses Fund",,,,both,,not printed in the FY2017 volume; first printed year not verified (FY2018-FY2020 volumes not read)
+ACC-DOC-BASM,COM,013-0133,"Departmental Management, Nonrecurring Expenses Fund",,,,both,,no schedule of its own: the FY2021 volume prints the business application system modernization appropriation as language to the Nonrecurring Expenses Fund (Direct program activity); no activity line to match
+ACC-DOC-OIG,COM,013-0126,"Departmental Management, Office of Inspector General",,,,both,,
+ACC-DOC-ITSMWCF,COM,013-2047,"Departmental Management, Information Technology System Modernization and Working Capital Fund",,,,both,,"schedule printed in the FY2027 volume only of the four read (not FY2017, FY2021, FY2025); FY2026 volume not read"
+ACC-DOC-WCF,COM,013-4511,"Departmental Management, Working Capital Fund",,,,both,,Title V rescission of fund balances; the rescission is from this fund's schedule
+ACC-CENSUS-WCF,COM,013-4512,"Bureau of the Census, Census Working Capital Fund",,,,both,,Title V rescission of fund balances; the rescission is from this fund's schedule
+ACC-NIST-WCF,COM,013-4650,"National Institute of Standards and Technology, Working Capital Fund",,,,both,,Title V rescission of fund balances; the rescission is from this fund's schedule
+ACC-NIST-TIP,COM,013-0525,"National Institute of Standards and Technology, Industrial Technology Services",^Technology Innovation Program,,2017,both,,"TIP is a program activity line (0001) of Industrial Technology Services in the FY2017 volume only; not printed in FY2021, FY2025, FY2027; the later TIP items are rescissions with no schedule line"
+ACC-NOAA-FEAFF,COM,013-5583,"National Oceanic and Atmospheric Administration, Fisheries Enforcement Asset Forfeiture Fund",,,,both,,Title V rescission of fund balances; the rescission is from this fund's schedule
+ACC-DOJ-GA-SE,DOJ,015-0129,"Department of Justice, General Administration, Salaries and Expenses",,,,both,,
+ACC-DOJ-JIST,DOJ,015-0134,"Department of Justice, General Administration, Justice Information Sharing Technology",,,,both,,
+ACC-DOJ-EOIR,DOJ,015-0339,"Department of Justice, Executive Office for Immigration Review",,,,both,,same code in all four volumes; FY2017 volume prints it with EOIR (0001) and the Office of the Pardon Attorney (0002) as activities
+ACC-DOJ-OPA,DOJ,015-0339,"Department of Justice, Executive Office for Immigration Review",^Office of the Pardon Attorney,,2017,both,,activity 0002 of 015-0339 in the FY2017 volume; FY2018-FY2020 volumes not read
+ACC-DOJ-OPA,DOJ,015-0128,"Department of Justice, Legal Activities, Salaries and Expenses, General Legal Activities",^Office of (the )?Pardon Attorney,2021,,both,,"activity 0009 of 015-0128 in the FY2021, FY2025 and FY2027 volumes; FY2018-FY2020 volumes not read"
+ACC-DOJ-USPC,DOJ,015-1061,"Department of Justice, United States Parole Commission, Salaries and Expenses",,,,both,,
+ACC-DOJ-GLA,DOJ,015-0128,"Department of Justice, Legal Activities, Salaries and Expenses, General Legal Activities",,,,both,,
+ACC-DOJ-VICTF,DOJ,015-0128,"Department of Justice, Legal Activities, Salaries and Expenses, General Legal Activities",,,,both,,no schedule or activity line of its own: the General Legal Activities language provides an amount 'to be appropriated from the Vaccine Injury Compensation Trust Fund' (all four volumes)
+ACC-DOJ-USA,DOJ,015-0322,"Department of Justice, Legal Activities, Salaries and Expenses, United States Attorneys",,,,both,,
+ACC-DOJ-FCSC,DOJ,015-0100,"Department of Justice, Legal Activities, Salaries and Expenses, Foreign Claims Settlement Commission",,,,both,,
+ACC-DOJ-FEW,DOJ,015-0311,"Department of Justice, Legal Activities, Fees and Expenses of Witnesses",,,,both,,
+ACC-DOJ-CRS,DOJ,015-0500,"Department of Justice, Legal Activities, Salaries and Expenses, Community Relations Service",,,,both,,
+ACC-DOJ-OAJ,DOJ,015-0425,"Department of Justice, Legal Activities, Office for Access to Justice",,2025,2025,both,,"own schedule in the FY2025 volume only (not FY2017, FY2021, FY2027)"
+ACC-DOJ-OAJ,DOJ,015-0128,"Department of Justice, Legal Activities, Salaries and Expenses, General Legal Activities",^Office for Access to Justice,2026,,both,,activity 0010 of 015-0128 in the FY2027 volume (2026 and 2025 columns) and in the FY2025 volume's 2024 and 2023 columns; not printed in the FY2017 or FY2021 volumes; FY2022-FY2024 and FY2026 volumes not read
+ACC-DOJ-USMS-SE,DOJ,015-0324,"Department of Justice, United States Marshals Service, Salaries and Expenses",,,,both,,
+ACC-DOJ-USMS-CONST,DOJ,015-0133,"Department of Justice, United States Marshals Service, Construction",,,,both,,
+ACC-DOJ-FPD,DOJ,015-1020,"Department of Justice, United States Marshals Service, Federal Prisoner Detention",,,,both,,
+ACC-DOJ-NSD,DOJ,015-1300,"Department of Justice, National Security Division, Salaries and Expenses",,,,both,,
+ACC-DOJ-OCDETF,DOJ,015-0323,"Department of Justice, Interagency Law Enforcement, Interagency Crime and Drug Enforcement",,,,both,,
+ACC-DOJ-FBI-SE,DOJ,015-0200,"Department of Justice, Federal Bureau of Investigation, Salaries and Expenses",,,,both,,
+ACC-DOJ-FBI-CONST,DOJ,015-0203,"Department of Justice, Federal Bureau of Investigation, Construction",,,,both,,
+ACC-DOJ-DEA-SE,DOJ,015-1100,"Department of Justice, Drug Enforcement Administration, Salaries and Expenses",,,,both,,
+ACC-DOJ-DEA-CONST,DOJ,015-1101,"Department of Justice, Drug Enforcement Administration, Construction",,,,both,,not printed in the FY2021 volume
+ACC-DOJ-HIDTA,DOJ,015-1103,"Department of Justice, High Intensity Drug Trafficking Areas Program",,,,request,,printed in the DOJ chapter in the FY2021 and FY2027 volumes only (the program moves from ONDCP in the request); not in the FY2017 or FY2025 DOJ chapters; ONDCP's own chapter was not read
+ACC-DOJ-ATF-SE,DOJ,015-0700,"Department of Justice, Bureau of Alcohol, Tobacco, Firearms and Explosives, Salaries and Expenses",,,,both,,
+ACC-DOJ-ATF-CONST,DOJ,015-0720,"Department of Justice, Bureau of Alcohol, Tobacco, Firearms and Explosives, Construction",,,,both,,not printed in the FY2017 volume
+ACC-DOJ-BOP-SE,DOJ,015-1060,"Department of Justice, Federal Prison System, Salaries and Expenses",,,,both,,
+ACC-DOJ-BOP-BF,DOJ,015-1003,"Department of Justice, Federal Prison System, Buildings and Facilities",,,,both,,
+ACC-DOJ-FPI,DOJ,015-4500,"Department of Justice, Federal Prison System, Limitation on Administrative Expenses, Federal Prison Industries, Incorporated",,,,both,,"own schedule (revolving fund, reimbursable activity 0804)"
+ACC-DOJ-OJP-RES,DOJ,015-0401,"Department of Justice, Office of Justice Programs, Research, Evaluation and Statistics",,,,both,,
+ACC-DOJ-OJP-SLLEA,DOJ,015-0404,"Department of Justice, Office of Justice Programs, State and Local Law Enforcement Assistance",,,,both,,
+ACC-DOJ-OJP-JJ,DOJ,015-0405,"Department of Justice, Office of Justice Programs, Juvenile Justice Programs",,,,both,,
+ACC-DOJ-PSOB-DEATH,DOJ,015-0403,"Department of Justice, Office of Justice Programs, Public Safety Officer Benefits",^Public Safety Officers Death,,,both,,
+ACC-DOJ-PSOB-DISAB,DOJ,015-0403,"Department of Justice, Office of Justice Programs, Public Safety Officer Benefits",^Public Safety Officers Discretionary Disability,,,both,,
+ACC-DOJ-COPS,DOJ,015-0406,"Department of Justice, Community Oriented Policing Services, Community Oriented Policing Services Programs",,,,both,,
+ACC-DOJ-EO13929,DOJ,,,,,,both,none,"no schedule or program line for an EO 13929 database in the FY2017, FY2021, FY2025 or FY2027 DOJ chapter"
+ACC-USTR-SE,EOP,011-0400,"Office of the United States Trade Representative, Salaries and Expenses",,,,both,,
+ACC-USTR-TETF,EOP,011-8581,"Office of the United States Trade Representative, Trade Enforcement Trust Fund",,,,both,,"not printed in the FY2017 volume; first printed year not verified (FY2018-FY2020 volumes not read); the General Fund Payment to the Trade Enforcement Trust Fund is a separate schedule, 011-1750"
+ACC-USCCR,OIA,326-1900,"Commission on Civil Rights, Salaries and Expenses",,,,both,,
+ACC-CSUSOP,OIA,,,,,,both,none,"no Commission on the State of U.S. Olympics and Paralympics schedule or text found in the OIA chapter of the FY2017, FY2021, FY2025 or FY2027 volumes"
+ACC-EEOC,OIA,045-0100,"Equal Employment Opportunity Commission, Salaries and Expenses",,,,both,,
+ACC-USITC,OIA,034-0100,"International Trade Commission, Salaries and Expenses",,,,both,,
+ACC-LSC,OIA,020-0501,"Legal Services Corporation, Payment to the Legal Services Corporation",,,,both,,
+ACC-MMC,OIA,387-2200,"Marine Mammal Commission, Salaries and Expenses",,,,both,,
+ACC-SJI,OIA,453-0052,"State Justice Institute, Salaries and Expenses",,,,both,,

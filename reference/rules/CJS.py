@@ -77,7 +77,7 @@ RULES = [
     Rule("CJS-LAYOUT", "layout", ALL, data=LAYOUT,
          moved_from="scripts/check_legislative_text.py AGENCY_WORDS, BUREAU_WORDS",
          doc="the words CJS bills print over NASA, NSF, DOJ, OSTP (Title III -- Science), USPTO and NOAA paragraphs"),
-    Rule("CJS-APPENDIX", "appendix", ALL, data={"chapters": ("COM", "DOJ", "NASA", "NSF", "EOP")},
+    Rule("CJS-APPENDIX", "appendix", ALL, data={"chapters": ("COM", "DOJ", "NASA", "NSF", "EOP", "OIA")},
          moved_from="scripts/appendix_attributes.py SUBCOMMITTEE_CHAPTERS", doc="the Budget Appendix chapters"),
     Rule("CJS-NSF-DEFENSE", "line", Scope(CODE, accounts={"ACC-NSF-RRA"}, fiscal_years=ANY, stages=ANY),
          fn=nsf_defense, moved_from=f"{TC_FILE} retag(): defense, defense_inside",

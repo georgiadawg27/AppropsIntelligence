@@ -73,6 +73,8 @@ EXPECTED = [
     (2026, "House Reported", "OBS-0690", 6373000000, "SRC-BILLS-119HR5342RH", "87", ""),
     (2026, "Senate Reported", "OBS-0689", 7176500000, "SRC-BILLS-119S2354RS", "100", ""),
     (2026, "Enacted", "OBS-0688", 7176500000, "SRC-PLAW-119PUBL74", "41", "140 Stat. 45"),
+    # the full CJS load holds FY2027 House (H.Rept. 119-652 p.170): the same ruling, H.R. 8845's paragraph
+    (2027, "House Reported", "OBS-4977", 6440140000, "SRC-BILLS-119HR8845RH", "86", ""),
 ]
 CR = ("SRC-PLAW-119PUBL4", "2")      # FY2025 Enacted cites the CR (as OBS-LHHS-4122 does)
 PAGE_NOTE = " Page citations are PDF page numbers."
