@@ -262,6 +262,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-7337"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-3616"
           }
          ],
          "verification_status": "auto-validated"
@@ -3930,6 +3936,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-7337"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-3616"
      }
     ],
     "verification_status": "auto-validated"

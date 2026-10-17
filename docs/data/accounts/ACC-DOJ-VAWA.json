@@ -1714,6 +1714,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-8174"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-3845"
           }
          ],
          "verification_status": "auto-validated"
@@ -2661,6 +2667,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-8220"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-3856"
           }
          ],
          "verification_status": "auto-validated"
@@ -4928,6 +4940,12 @@
            "result": "pass",
            "rule_applied": "unit",
            "validation_id": "VAL-8316"
+          },
+          {
+           "human_review_status": null,
+           "result": "pass",
+           "rule_applied": "measure_reconcile",
+           "validation_id": "VAL-MR-3881"
           }
          ],
          "verification_status": "auto-validated"
@@ -10404,6 +10422,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-8174"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-3845"
      }
     ],
     "verification_status": "auto-validated"
@@ -11156,6 +11180,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-8220"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-3856"
      }
     ],
     "verification_status": "auto-validated"
@@ -12784,6 +12814,12 @@
       "result": "pass",
       "rule_applied": "unit",
       "validation_id": "VAL-8316"
+     },
+     {
+      "human_review_status": null,
+      "result": "pass",
+      "rule_applied": "measure_reconcile",
+      "validation_id": "VAL-MR-3881"
      }
     ],
     "verification_status": "auto-validated"

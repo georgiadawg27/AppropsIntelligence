@@ -5857,91 +5857,64 @@
        "observations": [
         {
          "added_date": "2026-10-16",
-         "amount": 6321069000,
+         "amount": 6440140000,
          "amount_type": "budget authority",
          "bill_id": "H.R.8845",
          "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
          "canonical_account_id": "ACC-NSF-RRA",
+         "cell_note": "H.Rept. 119-652 (SRC-CRPT-119HRPT652 p.170) prints the nondefense line 6,321,069 thousand (OBS-4977) and the 'Defense function' line 119,071 thousand (OBS-4978); the paragraph's amount counts both: 6,321,069 + 119,071 = 6,440,140 thousand",
          "chamber": "House",
          "component": null,
          "component_kind": null,
          "component_label": null,
          "confidence": 0.95,
          "document_fiscal_year": 2027,
+         "document_notes": "Making appropriations for the Departments of Commerce and Justice, Science, and Related Agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr8845rh). The bill or law text for BR-CJS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR8845RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers.",
          "document_stage": "House Reported",
-         "document_type": "committee_report",
-         "extraction_method": "AI-extracted",
+         "document_type": "bill",
+         "extraction_method": "text-extracted",
          "fiscal_year": 2027,
          "headline_observation_id": null,
-         "observation_id": "OBS-4977",
+         "observation_id": "OBS-5321",
          "offsetting_collections": 0,
          "publication_date": "2026-05-15",
          "report_id": "H.Rept.119-652",
          "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
-         "source_agency": "House Committee on Appropriations",
-         "source_document_id": "SRC-CRPT-119HRPT652",
-         "source_page": "170",
-         "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Research and related activities' [Bill]",
+         "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+         "source_document_id": "SRC-BILLS-119HR8845RH",
+         "source_page": "86",
+         "source_table_or_section": "Title III, National Science Foundation -- printed in H.R. 8845 under 'Research and Related Activities': $6,440,140,000; bill or law text controls over the report table for the same scope (owner 2026-10-11; NSF R&RA: the paragraph's total, defense inside (D-3, owner 2026-10-13)) -- Note: H.Rept. 119-652 (SRC-CRPT-119HRPT652 p.170) prints the nondefense line 6,321,069 thousand (OBS-4977) and the 'Defense function' line 119,071 thousand (OBS-4978); the paragraph's amount counts both: 6,321,069 + 119,071 = 6,440,140 thousand",
          "stage": "House Reported",
+         "status_text": "Resolved by rule: bill text controls (report table prints 6,321,069,000)",
          "transfer_link_account_id": null,
-         "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+         "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
          "validation": [
           {
            "human_review_status": null,
            "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-12176"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-12177"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-12178"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-18760"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-18777"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
            "rule_applied": "measure_reconcile",
-           "validation_id": "VAL-MR-4977"
+           "validation_id": "VAL-MR-5321"
           },
           {
            "human_review_status": null,
-           "result": "pass",
+           "result": "info",
            "rule_applied": "bill_text",
-           "validation_id": "VAL-TXT-4977"
+           "validation_id": "VAL-TXT-5321"
           }
          ],
-         "verification_status": "auto-validated"
+         "verification_status": "resolved-by-rule"
         }
        ],
        "state": "value"
       },
       {
        "absence": null,
-       "adds_to_headline": true,
+       "adds_to_headline": false,
        "amount_type": "budget authority",
-       "component": "defense",
-       "component_kind": "part",
-       "component_label": "Defense function",
+       "component": "defense_inside",
+       "component_kind": "contained",
+       "component_label": "Defense function (inside the paragraph's total)",
        "missing": false,
        "observations": [
         {
@@ -5953,17 +5926,17 @@
          "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
          "canonical_account_id": "ACC-NSF-RRA",
          "chamber": "House",
-         "component": "defense",
-         "component_kind": "part",
-         "component_label": "Defense function",
+         "component": "defense_inside",
+         "component_kind": "contained",
+         "component_label": "Defense function (inside the paragraph's total)",
          "confidence": 0.95,
          "document_fiscal_year": 2027,
          "document_stage": "House Reported",
          "document_type": "committee_report",
          "extraction_method": "AI-extracted",
          "fiscal_year": 2027,
-         "headline_observation_id": null,
-         "observation_id": "OBS-4978",
+         "headline_observation_id": "OBS-5321",
+         "observation_id": "OBS-5322",
          "offsetting_collections": 0,
          "publication_date": "2026-05-15",
          "report_id": "H.Rept.119-652",
@@ -5971,48 +5944,11 @@
          "source_agency": "House Committee on Appropriations",
          "source_document_id": "SRC-CRPT-119HRPT652",
          "source_page": "170",
-         "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill]",
+         "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill] -- inside the paragraph's total (OBS-5321); re-recorded from OBS-4978 (D-3, owner 2026-10-14)",
          "stage": "House Reported",
          "transfer_link_account_id": null,
          "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
-         "validation": [
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "structural",
-           "validation_id": "VAL-12179"
-          },
-          {
-           "human_review_status": "pending",
-           "result": "flag",
-           "rule_applied": "structural",
-           "validation_id": "VAL-12180"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "source_text",
-           "validation_id": "VAL-12181"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "unit",
-           "validation_id": "VAL-12182"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-18761"
-          },
-          {
-           "human_review_status": null,
-           "result": "pass",
-           "rule_applied": "table_total",
-           "validation_id": "VAL-18778"
-          }
-         ],
+         "validation": [],
          "verification_status": "unverified"
         }
        ],
@@ -13478,6 +13414,7 @@
     "source_page": "170",
     "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Research and related activities' [Bill]",
     "stage": "House Reported",
+    "superseded_by_observation_id": "OBS-5321",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
     "validation": [
@@ -13510,21 +13447,59 @@
       "result": "pass",
       "rule_applied": "table_total",
       "validation_id": "VAL-18777"
-     },
+     }
+    ],
+    "verification_status": "superseded"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": 6440140000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "cell_note": "H.Rept. 119-652 (SRC-CRPT-119HRPT652 p.170) prints the nondefense line 6,321,069 thousand (OBS-4977) and the 'Defense function' line 119,071 thousand (OBS-4978); the paragraph's amount counts both: 6,321,069 + 119,071 = 6,440,140 thousand",
+    "chamber": "House",
+    "component": null,
+    "component_kind": null,
+    "component_label": null,
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_notes": "Making appropriations for the Departments of Commerce and Justice, Science, and Related Agencies for the fiscal year ending September 30, 2027, and for other purposes. -- reported in House (BILLS-119hr8845rh). The bill or law text for BR-CJS-FY2027-HOUSE; parsed into data/legislative_text/SRC-BILLS-119HR8845RH.json (scripts/fetch_legislative_text.py). Page citations are PDF page numbers.",
+    "document_stage": "House Reported",
+    "document_type": "bill",
+    "extraction_method": "text-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": null,
+    "observation_id": "OBS-5321",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-15",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
+    "source_document_id": "SRC-BILLS-119HR8845RH",
+    "source_page": "86",
+    "source_table_or_section": "Title III, National Science Foundation -- printed in H.R. 8845 under 'Research and Related Activities': $6,440,140,000; bill or law text controls over the report table for the same scope (owner 2026-10-11; NSF R&RA: the paragraph's total, defense inside (D-3, owner 2026-10-13)) -- Note: H.Rept. 119-652 (SRC-CRPT-119HRPT652 p.170) prints the nondefense line 6,321,069 thousand (OBS-4977) and the 'Defense function' line 119,071 thousand (OBS-4978); the paragraph's amount counts both: 6,321,069 + 119,071 = 6,440,140 thousand",
+    "stage": "House Reported",
+    "status_text": "Resolved by rule: bill text controls (report table prints 6,321,069,000)",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "validation": [
      {
       "human_review_status": null,
       "result": "pass",
       "rule_applied": "measure_reconcile",
-      "validation_id": "VAL-MR-4977"
+      "validation_id": "VAL-MR-5321"
      },
      {
       "human_review_status": null,
-      "result": "pass",
+      "result": "info",
       "rule_applied": "bill_text",
-      "validation_id": "VAL-TXT-4977"
+      "validation_id": "VAL-TXT-5321"
      }
     ],
-    "verification_status": "auto-validated"
+    "verification_status": "resolved-by-rule"
    },
    {
     "added_date": "2026-10-16",
@@ -13555,6 +13530,7 @@
     "source_page": "170",
     "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill]",
     "stage": "House Reported",
+    "superseded_by_observation_id": "OBS-5322",
     "transfer_link_account_id": null,
     "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
     "validation": [
@@ -13595,6 +13571,40 @@
       "validation_id": "VAL-18778"
      }
     ],
+    "verification_status": "superseded"
+   },
+   {
+    "added_date": "2026-10-16",
+    "amount": 119071000,
+    "amount_type": "budget authority",
+    "bill_id": "H.R.8845",
+    "bill_report_reference_id": "BR-CJS-FY2027-HOUSE",
+    "bill_url": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf",
+    "canonical_account_id": "ACC-NSF-RRA",
+    "chamber": "House",
+    "component": "defense_inside",
+    "component_kind": "contained",
+    "component_label": "Defense function (inside the paragraph's total)",
+    "confidence": 0.95,
+    "document_fiscal_year": 2027,
+    "document_stage": "House Reported",
+    "document_type": "committee_report",
+    "extraction_method": "AI-extracted",
+    "fiscal_year": 2027,
+    "headline_observation_id": "OBS-5321",
+    "observation_id": "OBS-5322",
+    "offsetting_collections": 0,
+    "publication_date": "2026-05-15",
+    "report_id": "H.Rept.119-652",
+    "report_jes_url": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "source_agency": "House Committee on Appropriations",
+    "source_document_id": "SRC-CRPT-119HRPT652",
+    "source_page": "170",
+    "source_table_or_section": "Title III, Research and Related Activities -- printed as 'Defense function' [Bill] -- inside the paragraph's total (OBS-5321); re-recorded from OBS-4978 (D-3, owner 2026-10-14)",
+    "stage": "House Reported",
+    "transfer_link_account_id": null,
+    "url_or_identifier": "https://www.congress.gov/119/crpt/hrpt652/CRPT-119hrpt652.pdf",
+    "validation": [],
     "verification_status": "unverified"
    }
   ],

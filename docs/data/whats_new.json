@@ -39,7 +39,7 @@
   {
    "date": "2026-10-16",
    "document_id": "SRC-CRPT-119HRPT652",
-   "figures": 91,
+   "figures": 90,
    "new_document": false
   },
   {
@@ -317,6 +317,12 @@
    "document_id": "SRC-BUDGET-APP-FY2017-COM",
    "figures": 0,
    "new_document": true
+  },
+  {
+   "date": "2026-10-16",
+   "document_id": "SRC-BILLS-119HR8845RH",
+   "figures": 1,
+   "new_document": false
   },
   {
    "date": "2026-10-15",
@@ -3296,13 +3302,15 @@
    "attributes": 0,
    "document_id": "SRC-BILLS-119HR8845RH",
    "document_type": "bill",
-   "figures": 0,
+   "figures": 1,
    "first_added": "2026-10-11",
    "fiscal_year": 2027,
    "publication_date": "2026-05-15",
    "source_agency": "U.S. House of Representatives (bill; govinfo BILLS collection)",
    "stage": "House Reported",
-   "subcommittees": [],
+   "subcommittees": [
+    "CJS"
+   ],
    "url_or_identifier": "https://www.govinfo.gov/content/pkg/BILLS-119hr8845rh/pdf/BILLS-119hr8845rh.pdf"
   },
   {
@@ -4408,7 +4416,7 @@
    "attributes": 0,
    "document_id": "SRC-CRPT-119HRPT652",
    "document_type": "committee_report",
-   "figures": 126,
+   "figures": 125,
    "first_added": "2026-10-07",
    "fiscal_year": 2027,
    "publication_date": "2026-05-15",

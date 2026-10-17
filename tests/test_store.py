@@ -98,7 +98,7 @@ class Load(StoreTest):
             f"SELECT count(*) FROM {table} t JOIN account a ON a.canonical_account_id = t.{key} "
             "WHERE a.subcommittee = 'CJS'").fetchone()[0]
         self.assertEqual((cjs("appropriations_observation", "canonical_account_id"),
-                          cjs("confirmed_absence", "canonical_account_id")), (5194, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded); the full CJS load: + 3,736
+                          cjs("confirmed_absence", "canonical_account_id")), (5196, 197))   # D-3: + 30 NSF R&RA headlines, + 30 defense_inside; D-3b: + 8, + 8 (request); D-7: + 385 summary lines; D-8: + 126 302(b) lines; D-9: + 1 (the Title III FY2026 Senate total superseded); the full CJS load: + 3,736; + 2 (D-3: FY2027 House NSF R&RA paragraph total and its defense_inside line)
         # v30 has the Component tab: its kinds and labels come from the workbook, not the code
         self.assertEqual(self.report["tabs_not_in_workbook"], [])
         self.assertNotIn("component_kinds_from", self.report)
@@ -436,7 +436,7 @@ class ReRecordedLineExemption(StoreCopyTest):
                                  (line["headline_observation_id"],)).fetchone()
         self.assertNotEqual(line["source_document_id"], head["source_document_id"])
         self.assertEqual(self.conn.execute("SELECT count(*) FROM appropriations_observation WHERE component = "
-                                           "'defense_inside'").fetchone()[0], 38)   # D-3 30, D-3b 8 (request)
+                                           "'defense_inside'").fetchone()[0], 39)   # D-3 30, D-3b 8 (request), FY2027 House 1
 
     def test_a_contained_line_from_another_document_still_fails(self):
         # the headline replaced the table's headline, not one from this document

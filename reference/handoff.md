@@ -41,9 +41,10 @@ What was loaded (`reference/review/cjs/backfill/build_cjs.py --write`; account l
   column and the title total confirm).
 - Table page ranges: each comparative table's `source_page` now runs over the pages its lines are cited from
   (13 documents; `build_cjs.widen_table_pages`).
-- `site_accounting`: a negative base stays not computable (NOAA's Fisheries Finance Program Account, a negative
-  subsidy, shows its printed figure with no views). `Layer.total_layer` now sums each held line as printed, falling
-  back to its headline, so a line with no views no longer crashes the CJS grid.
+- `site_accounting`: a figure printed negative with no components (NOAA's Fisheries Finance Program Account, a
+  negative subsidy) is shown as printed and only as printed, as a total printed negative is (D-7); every other basis
+  is not computable. A negative base made by components stays not computable on every basis. `Layer.total_layer`
+  sums each held line as printed (`printed_id`), so such a line no longer crashes the CJS grid.
 - D-3 (`d3_records.EXPECTED`): + NSF R&RA FY2027 House, paragraph total 6,440,140,000 (H.R. 8845 RH p.86,
   6,321,069,000 + 119,071,000 defense), so the FY2027 House NSF total is held.
 - `request_language.py`: + the Other Independent Agencies chapter; `request_language.json` rebuilt (643 new
@@ -51,6 +52,10 @@ What was loaded (`reference/review/cjs/backfill/build_cjs.py --write`; account l
 - Lifecycle: the new accounts' first printed years drive `new` / 'Created FY<n>.' notes and the before-first blanks
   (e.g. HIDTA new in FY2018). For accounts printed only as rescissions this reads from the table, not from
   evidence the account was created then; worth a look (owner).
+- Page (`headOf`): a cell with no budget-authority line shows its first rescission line that holds a figure (never a
+  transfer). The FY2018 request prints a plain Crime Victims Fund rescission, so the account now has a plain rescission
+  series; without this its FY2027 House cell (the CHIMP, -$2.67B, VAL-0089 pending) showed 'missing'. Its FY2017-FY2026
+  Enacted cells hold only transfers out and show the rescission line as missing (owner: worth a look).
 - `approps_web`: `/api/features` and each subcommittee grid are cached per store and warmed at start; with CJS
   full the first load took ~19 s and timed out the browser tests.
 - Tests moved with the data (test_store, test_web, test_compare, test_site_data, test_static): counts, NASA FY2027 House now held, CVF/OIG links, lifecycle types

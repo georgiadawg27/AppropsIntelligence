@@ -106,6 +106,8 @@ class SiteReadsData(unittest.TestCase):
                               else ("owner (2026-10-11)",) if v["validation_id"].startswith("VAL-TXT-")
                               or (v["observation_id"] in corrected and v["reviewer"] == "owner (2026-10-11)")
                               else ("triage rules", "owner rules (2026-10-08)", "owner (2026-10-09)") if v["observation_id"] in fy2022
+                              # the full CJS load resolves its routine label checks at creation by the triage's reasons
+                              else ("triage rules",) if v["observation_id"] in full_cjs
                               else ("owner (group approval 2026-10-08)",))
                 self.assertIn(v["result"], ("fail", "flag"))
                 self.assertTrue(v["resolution"])
@@ -714,10 +716,12 @@ class AccountingLayer(unittest.TestCase):
                 continue
             if base < 0:
                 for basis, entries in cell["views"].items():
-                    if basis == "printed" and h["amount"] < 0 and re.search(r"-(TITLE-[IVX]+|BILL)-TOTAL$",
-                                                                             row["account"]["canonical_account_id"]):
-                        # a total printed negative (CJS Title V, General Provisions: net of its rescissions, D-7)
-                        # is shown as printed, and only as printed
+                    if basis == "printed" and h["amount"] < 0 and (re.search(
+                            r"-(TITLE-[IVX]+|BILL)-TOTAL$", row["account"]["canonical_account_id"])
+                            or not self.by_obs.get(h["observation_id"])):
+                        # a total printed negative (CJS Title V, General Provisions: net of its rescissions, D-7),
+                        # or an account's figure printed negative with no components (NOAA's Fisheries Finance
+                        # Program Account, a negative subsidy), is shown as printed, and only as printed
                         self.assertEqual([(e["amount"], e["status"]) for e in entries], [(h["amount"], "checked")])
                         continue
                     self.assertTrue(all(e["amount"] is None and e["status"] == "not_computable" for e in entries))
@@ -789,8 +793,9 @@ class AccountingLayer(unittest.TestCase):
             cs = self.by_obs.get(h["observation_id"], [])
             # a rescission line is negative as printed, not a negative base (D-7 cleanup)
             if self.AC.split(h["amount"], cs)[0] < 0 and h["amount_type"] != "rescission":
+                # its views throughout: the same amounts (a structural rule may word a valued one as computed)
                 for _, field, basis, entries in self.exclusion_entries(cell):
-                    self.assertEqual(entries, cell["views"][basis])
+                    self.assertEqual([e["amount"] for e in entries], [e["amount"] for e in cell["views"][basis]])
                 continue
             rec = self.AC.attribute_value(attrs, aid, int(fy), "budget_class", stage)
             for exclusion, field, basis, entries in self.exclusion_entries(cell):

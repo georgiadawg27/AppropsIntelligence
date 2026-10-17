@@ -58,10 +58,14 @@ def without_life_note(cell):
     for l in cell["lines"]:
         for o in l["observations"][:1]:
             if o.get("cell_note") and LIFE_NOTE.search(o["cell_note"]):
-                o["cell_note"] = LIFE_NOTE.sub("", o["cell_note"]) or None
+                o["cell_note"] = LIFE_NOTE.sub("", o["cell_note"])
+                if not o["cell_note"]:
+                    del o["cell_note"]
                 return cell
         if l.get("note") and LIFE_NOTE.search(l["note"]):
-            l["note"] = LIFE_NOTE.sub("", l["note"]) or None
+            l["note"] = LIFE_NOTE.sub("", l["note"])
+            if not l["note"]:
+                del l["note"]
             return cell
     return cell
 
@@ -122,7 +126,7 @@ def thousands(amount):
 
 def expected_headline(row, fy, stage):
     """What a grid cell shows: the headline line's (budget authority, no component; else the cell's
-    first line) state, and its printed figure in $ thousands where it has one."""
+    first rescission line holding a figure, else its first line) state, and its printed figure in $ thousands where it has one."""
     cell = row["cells"].get(f"{fy}|{stage}")           # none before the subcommittee's first year
     if cell is None:
         return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": "",
@@ -132,7 +136,8 @@ def expected_headline(row, fy, stage):
         # (a cell outside the account's life is blank, without the outside-history mark)
         return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": "",
                 "amount": None, "outside": cell["outside_history"] and not cell.get("outside_life")}
-    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), lines[0])
+    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]),
+             next((l for l in lines if l["amount_type"] == "rescission" and l["observations"]), lines[0]))
     return {"account": row["account"]["canonical_account_id"], "fy": fy, "stage": stage, "state": h["state"],
             "amount": thousands(h["observations"][0]["amount"]) if h["state"] == "value" else None,
             "outside": cell["outside_history"]}
@@ -171,7 +176,8 @@ def other_lines(row, fy, stage):
     if not cell or not cell["lines"]:
         return []
     lines = cell["lines"]
-    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]), lines[0])
+    h = next((l for l in lines if l["amount_type"] == "budget authority" and not l["component"]),
+             next((l for l in lines if l["amount_type"] == "rescission" and l["observations"]), lines[0]))
     return [l for l in lines if l is not h and l["state"] == "value" and l["observations"]]
 
 
@@ -222,16 +228,18 @@ class GridData(CompareTest):
                 for y in self.grid["fiscal_years"]:
                     for st in self.grid["stages"]:
                         cell = row["cells"][f"{y}|{st}"]
-                        if y in by_year and st in by_year[y]:
+                        if cell.get("outside_life"):
+                            # outside the account's life (the lifecycle rule, approps_store.life_cells): blank, its
+                            # own history holding no figure there
+                            self.assertEqual((cell["outside_history"], cell["lines"]), (True, []), (aid, y, st))
+                            self.assertFalse([l for l in by_year.get(y, {}).get(st, []) if l["observations"]], (aid, y, st))
+                        elif y in by_year and st in by_year[y]:
                             # the accounting layer (UI-0, UI-0b; site_accounting.py) adds its own keys beside the lines
                             layer = {"views", "components", "earmark", "defense_portion", "views_excluding_earmarks",
                                      "views_nondefense", "views_nondefense_excluding_earmarks"}   # D-8: the combined one
                             # the lifecycle's corner note ('Created FY<n>.', approps_store.life_cells) is the grid's own
                             self.assertEqual(without_life_note({k: v for k, v in cell.items() if k not in layer}),
                                              {"lines": by_year[y][st], "outside_history": False}, (aid, y, st))
-                        elif cell.get("outside_life"):
-                            # outside the account's life (the lifecycle rule, approps_store.life_cells): blank
-                            self.assertEqual((cell["outside_history"], cell["lines"]), (True, []), (aid, y, st))
                         else:
                             self.assertTrue(cell["outside_history"], (aid, y, st))
                             # each series in its computed state: no figure or absence is there
@@ -586,6 +594,7 @@ class GridBrowser(CompareTest):
             def log_message(self, *a):
                 pass
         cls.static = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(cls.out)))
+        W.warm(cls.db)        # as the server warms at start: the first features and grid reads are the slow ones
         cls.live = W.serve(cls.db, port=0, verbose=False)
         for srv in (cls.static, cls.live):
             threading.Thread(target=srv.serve_forever, daemon=True).start()
@@ -1237,11 +1246,12 @@ class CompareBrowser(GridBrowser):
         self.assertEqual((want, t_dots.count()), (10, 10))
         self.assertEqual({(x.get_attribute("data-status"), x.get_attribute("data-pending")) for x in t_dots.all()}, {("unverified", "0")})
         # the full CJS load: + 15, its accounts' figures in view not yet confirmed, or with a record still pending
-        # (law or bill text, table total, structural) or resolved by a person
-        self.assertEqual(dots.count() - t_dots.count(), 17)
+        # (law or bill text, table total, structural) or resolved by a person; + 1, NSF R&RA FY2027 House (D-3);
+        # + 1, the Crime Victims Fund's FY2027 House cell, which holds no budget-authority line and shows its CHIMP
+        self.assertEqual(dots.count() - t_dots.count(), 19)
         rule = self.page.locator("tr[data-account=ACC-NSF-RRA] [data-testid=status-dot]")
-        self.assertEqual((rule.count(), rule.first.get_attribute("data-status"), rule.first.get_attribute("data-pending")),
-                         (1, "resolved-by-rule", "0"))
+        self.assertEqual((rule.count(), {(x.get_attribute("data-status"), x.get_attribute("data-pending")) for x in rule.all()}),
+                         (2, {("resolved-by-rule", "0")}))
         self.assertIn("law text controls (explanatory table prints 7,057,700,000)", rule.first.get_attribute("title"))
         # the full CJS load's own pending records come first in the grid; VAL-0089's cell is the human-verified one
         d = self.page.locator("[data-testid=status-dot].pend[title*='VAL-0089']")
@@ -1251,7 +1261,7 @@ class CompareBrowser(GridBrowser):
         self.assertEqual(d.get_attribute("data-pending"), "1")
         self.assertIn("VAL-0089 semantic flag", d.get_attribute("title"))
         self.assertEqual(self.page.text_content("[data-testid=pending-count]"),
-                         "· 1 cell in view with records pending review")
+                         "· 15 cells in view with records pending review")   # + 14: the full CJS load's text checks (VAL-TXT-)
         self.open("static", "?view=compare&sc=LHHS&grid=stages&fy=2026&rev=1")
         self.menu("click", "#expand-all")
         for d in self.page.locator("[data-testid=status-dot][data-status=flagged]").all():
